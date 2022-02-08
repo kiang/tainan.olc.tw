@@ -23,7 +23,20 @@ function cunliStyle(f) {
     });
     radius = 25;
   } else {
-    color = 'rgba(29,168,165,0)';
+    switch (p.age_type) {
+      case 'super-aged': // rate_elder >= 20
+        color = 'rgba(120,0,0,0.4)';
+        break;
+      case 'aged': // rate_elder < 20
+      color = 'rgba(120,120,0,0.4)';
+        break;
+      case 'aging': // rate_elder < 14
+      color = 'rgba(120,120,0,0.2)';
+        break;
+      default: //rate_elder < 7
+      color = 'rgba(120,120,0,0)';
+    }
+
 
     stroke = new ol.style.Stroke({
       color: '#000',
@@ -116,7 +129,7 @@ map.on('singleclick', function (evt) {
       currentFeature.setStyle(cunliStyle(currentFeature));
       previousFeature = currentFeature;
       var p = feature.getProperties();
-      
+
 
       sidebar.open('home');
       pointClicked = true;
