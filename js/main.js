@@ -12,7 +12,7 @@ for (var z = 0; z < 20; ++z) {
   matrixIds[z] = z;
 }
 
-function areaStyleFunction(f) {
+function cunliStyle(f) {
   var color = '', stroke, radius;
   var p = f.getProperties();
   if (f === currentFeature) {
@@ -23,7 +23,7 @@ function areaStyleFunction(f) {
     });
     radius = 25;
   } else {
-    color = 'rgba(29,168,165,1)';
+    color = 'rgba(29,168,165,0)';
 
     stroke = new ol.style.Stroke({
       color: '#000',
@@ -44,8 +44,28 @@ var appView = new ol.View({
   zoom: 15
 });
 
-var vectorAreas = new ol.layer.Vector({
-  style: areaStyleFunction
+var theArea = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'json/67000-08.json',
+    format: new ol.format.GeoJSON()
+  }),
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(29,168,165,1)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#000',
+      width: 1
+    })
+  })
+});
+
+var cunli = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'json/cunli.json',
+    format: new ol.format.GeoJSON()
+  }),
+  style: cunliStyle
 });
 
 var baseLayer = new ol.layer.Tile({
@@ -67,7 +87,7 @@ var baseLayer = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-  layers: [baseLayer, vectorAreas],
+  layers: [baseLayer, theArea, cunli],
   target: 'map',
   view: appView
 });
@@ -76,19 +96,15 @@ map.addControl(sidebar);
 var pointClicked = false;
 var previousFeature = false;
 var currentFeature = false;
-vectorAreas.setSource(new ol.source.Vector({
-  url: 'json/67000-08.json',
-  format: new ol.format.GeoJSON()
-}));
 map.on('singleclick', function (evt) {
   pointClicked = false;
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
     if (false === pointClicked) {
       currentFeature = feature;
       if (false !== previousFeature) {
-        previousFeature.setStyle(areaStyleFunction(previousFeature));
+        previousFeature.setStyle(cunliStyle(previousFeature));
       }
-      currentFeature.setStyle(areaStyleFunction(currentFeature));
+      currentFeature.setStyle(cunliStyle(currentFeature));
       previousFeature = currentFeature;
       var p = feature.getProperties();
       
