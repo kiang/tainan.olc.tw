@@ -31,12 +31,21 @@ function cunliStyle(f) {
     });
     radius = 15;
   }
-  return new ol.style.Style({
+  var fStyle = new ol.style.Style({
     fill: new ol.style.Fill({
       color: color
     }),
-    stroke: stroke
-  })
+    stroke: stroke,
+    text: new ol.style.Text({
+      font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
+      placement: 'point',
+      fill: new ol.style.Fill({
+        color: 'rgba(0,0,0,1)'
+      })
+    })
+  });
+  fStyle.getText().setText(p.VILLNAME);
+  return fStyle;
 }
 
 var appView = new ol.View({
