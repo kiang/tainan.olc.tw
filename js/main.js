@@ -28,13 +28,13 @@ function cunliStyle(f) {
         color = 'rgba(120,0,0,0.4)';
         break;
       case 'aged': // rate_elder < 20
-      color = 'rgba(120,120,0,0.4)';
+        color = 'rgba(120,120,0,0.4)';
         break;
       case 'aging': // rate_elder < 14
-      color = 'rgba(120,120,0,0.2)';
+        color = 'rgba(120,120,0,0.2)';
         break;
       default: //rate_elder < 7
-      color = 'rgba(120,120,0,0)';
+        color = 'rgba(120,120,0,0)';
     }
 
 
@@ -63,7 +63,7 @@ function cunliStyle(f) {
 
 var appView = new ol.View({
   center: ol.proj.fromLonLat([120.198, 23.004582]),
-  zoom: 15
+  zoom: 14
 });
 
 var theArea = new ol.layer.Vector({
@@ -108,8 +108,26 @@ var baseLayer = new ol.layer.Tile({
   opacity: 0.8
 });
 
+var imgFeature = new ol.Feature({
+  name: 'kiang',
+  geometry: new ol.geom.Point(ol.proj.fromLonLat([120.144, 23.004582])),
+});
+imgFeature.setStyle(
+  new ol.style.Style({
+    image: new ol.style.Icon({
+      scale: 0.6,
+      src: 'img/kiang.png'
+    })
+  })
+);
+var imgLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: [imgFeature]
+  })
+});
+
 var map = new ol.Map({
-  layers: [baseLayer, theArea, cunli],
+  layers: [baseLayer, theArea, cunli, imgLayer],
   target: 'map',
   view: appView
 });
@@ -122,16 +140,19 @@ map.on('singleclick', function (evt) {
   pointClicked = false;
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
     if (false === pointClicked) {
-      currentFeature = feature;
-      if (false !== previousFeature) {
-        previousFeature.setStyle(cunliStyle(previousFeature));
-      }
-      currentFeature.setStyle(cunliStyle(currentFeature));
-      previousFeature = currentFeature;
       var p = feature.getProperties();
-
-
-      sidebar.open('home');
+      if (p.VILLCODE) {
+        currentFeature = feature;
+        if (false !== previousFeature) {
+          previousFeature.setStyle(cunliStyle(previousFeature));
+        }
+        currentFeature.setStyle(cunliStyle(currentFeature));
+        previousFeature = currentFeature;
+        sidebar.open('home');
+      } else {
+        sidebar.open('book');
+      }
+      
       pointClicked = true;
     }
   });
@@ -179,7 +200,7 @@ $('#btn-geolocation').click(function () {
   if (coordinates) {
     appView.setCenter(coordinates);
   } else {
-    console.log('目前使用的設備無法提供地理資訊');
+    alert('目前使用的設備無法提供地理資訊');
   }
   return false;
 });
