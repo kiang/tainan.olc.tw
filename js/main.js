@@ -136,11 +136,95 @@ map.addControl(sidebar);
 var pointClicked = false;
 var previousFeature = false;
 var currentFeature = false;
+var selectedCunli = '';
+
+var viewCunli = function (cunliId) {
+  selectedCunli = cunliId;
+
+  setTimeout(function () {
+    $.getJSON('json/cunli/' + cunliId + '.json', function (c) {
+      cunli.getSource().forEachFeature(function (f) {
+        var fp = f.getProperties();
+        if (fp.VILLCODE == selectedCunli) {
+          currentFeature = f;
+          if (false !== previousFeature) {
+            previousFeature.setStyle(cunliStyle(previousFeature));
+          }
+          currentFeature.setStyle(cunliStyle(currentFeature));
+          previousFeature = currentFeature;
+        }
+      });
+      barTitle.html(c.meta.area);
+      barContent.html('<canvas id="chart2" height="300"></canvas><canvas id="chart1" height="300"></canvas><canvas id="chart3" height="300"></canvas>');
+      const config1 = {
+        type: 'bar',
+        data: c.chart1,
+        options: {
+          scales: {
+            xAxis: {
+              stacked: true
+            },
+            yAxis: {
+              stacked: true
+            }
+          }
+        }
+      };
+      const config2 = {
+        type: 'bar',
+        data: c.chart2,
+        options: {
+          indexAxis: 'y',
+          scales: {
+            xAxis: {
+              stacked: true,
+              ticks: {
+                callback: (val) => (Math.abs(val))
+              }
+            },
+            yAxis: {
+              stacked: true
+            }
+          }
+        }
+      };
+      const config3 = {
+        type: 'line',
+        data: c.chart3
+      };
+
+      const ctx1 = document.getElementById('chart1').getContext('2d');
+      const myChart1 = new Chart(ctx1, config1);
+
+      const ctx2 = document.getElementById('chart2').getContext('2d');
+      const myChart2 = new Chart(ctx2, config2);
+
+      const ctx3 = document.getElementById('chart3').getContext('2d');
+      const myChart3 = new Chart(ctx3, config3);
+
+      sidebar.open('home');
+    });
+  }, 500);
+};
+
+var routes = {
+  '/cunli/:cunliId': viewCunli
+};
+
+var router = Router(routes);
+
+router.init();
+
+var barTitle = $('#sidebarTitle');
+var barContent = $('#sidebarContent');
+
 map.on('singleclick', function (evt) {
   pointClicked = false;
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
     if (false === pointClicked) {
       var p = feature.getProperties();
+      barTitle.html('請點選地圖中的村里');
+      barContent.html('請點選地圖中的村里');
       if (p.VILLCODE) {
         currentFeature = feature;
         if (false !== previousFeature) {
@@ -148,11 +232,12 @@ map.on('singleclick', function (evt) {
         }
         currentFeature.setStyle(cunliStyle(currentFeature));
         previousFeature = currentFeature;
-        sidebar.open('home');
+
+        router.setRoute('/cunli/' + p.VILLCODE);
       } else {
         sidebar.open('book');
       }
-      
+
       pointClicked = true;
     }
   });
