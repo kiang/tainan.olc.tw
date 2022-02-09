@@ -223,9 +223,9 @@ map.on('singleclick', function (evt) {
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
     if (false === pointClicked) {
       var p = feature.getProperties();
-      barTitle.html('請點選地圖中的村里');
-      barContent.html('請點選地圖中的村里');
       if (p.VILLCODE) {
+        barTitle.html('請點選地圖中的村里');
+        barContent.html('請點選地圖中的村里');
         currentFeature = feature;
         if (false !== previousFeature) {
           previousFeature.setStyle(cunliStyle(previousFeature));
