@@ -62,9 +62,9 @@ foreach ($json['features'] as $f) {
 }
 
 $bdmd = [];
-$years = [2016, 2017, 2018, 2019, 2020, 2021];
+$years = [2016, 2017, 2018, 2019, 2020, 2021, 2022];
 foreach ($years as $year) {
-    foreach (glob('/home/kiang/public_html/tw_population/bdmd/' . $year . '/*/data.csv') as $csvFile) {
+    foreach (glob('/home/kiang/public_html/data.moi.gov.tw/raw/bdmd/' . $year . '/*/data.csv') as $csvFile) {
         $fh = fopen($csvFile, 'r');
         $head = fgetcsv($fh, 4096);
         $head[0] = 'statistic_yyymm';
@@ -105,11 +105,14 @@ foreach ($years as $year) {
 }
 
 $stack = [];
-$years = [2016, 2017, 2018, 2019, 2020, 2021];
+$years = [2016, 2017, 2018, 2019, 2020, 2021, 2022];
 $months = ['03', '06', '09', '12'];
 foreach ($years as $year) {
     foreach ($months as $month) {
-        $csvFile = '/home/kiang/public_html/tw_population/population/' . $year . '/' . $month . '/data.csv';
+        $csvFile = '/home/kiang/public_html/data.moi.gov.tw/raw/population/' . $year . '/' . $month . '/data.csv';
+        if(!file_exists($csvFile)) {
+            continue;
+        }
         $fh = fopen($csvFile, 'r');
         $head = fgetcsv($fh, 4096);
         $head[0] = 'statistic_yyymm';
@@ -149,7 +152,7 @@ foreach ($years as $year) {
     }
 }
 
-$fh = fopen('/home/kiang/public_html/tw_population/population/2022/02/data.csv', 'r');
+$fh = fopen('/home/kiang/public_html/data.moi.gov.tw/raw/population/2022/05/data.csv', 'r');
 $head = fgetcsv($fh, 4096);
 fgetcsv($fh, 4096);
 while ($line = fgetcsv($fh, 4096)) {
