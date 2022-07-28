@@ -1,7 +1,8 @@
 <?php
-$config = require __DIR__ . '/config.php';
+$basePath = dirname(dirname(__DIR__));
+$config = require $basePath . '/scripts/config.php';
 $youtubeUrl = 'https://www.googleapis.com/youtube/v3/search?key=' . $config['google-api-key'] . '&channelId=UC4wM1kfI0E_6sZPF-gi0tzw&order=date&maxResults=50&part=snippet,id';
-$youtubePath = dirname(__DIR__) . '/json/youtube';
+$youtubePath = $basePath . '/json/youtube';
 if(!file_exists($youtubePath)) {
   mkdir($youtubePath, 0777, true);
 }
