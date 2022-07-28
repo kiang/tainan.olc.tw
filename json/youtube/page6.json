@@ -1,13 +1,285 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "bLMWDFeXhpu5YiEQKONdTo6F1Rc",
+  "etag": "VjE4WQQZlctk3w-QvqL_1__CtEo",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 275,
-    "resultsPerPage": 21
+    "totalResults": 286,
+    "resultsPerPage": 30
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "p989S12FDAHR-tMSR781C4T7ZUI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "O5MoJNWb3Q8"
+      },
+      "snippet": {
+        "publishedAt": "2018-04-10T08:25:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "測站空氣品質季平均統計圖 網站操作說明",
+        "description": "測站季平均- https://kiang.github.io/erdb/ 縣市季平均- https://kiang.github.io/erdb/city/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-04-10T08:25:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "vNaWAxKibQp4W4mIVUBsi8ENxAU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bCfHqdIQfnk"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:49:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南也要特色公園 - 建立公園功能展示",
+        "description": "展示在https://parks.olc.tw/ 新增的建立公園功能.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:49:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "n-5_9EJI1Oj7dCFERN3_pFySIOY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "k35qD4iXATo"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:48:14Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "時代力量台南小松 01 - 在台南地圖畫線 操作示範",
+        "description": "詳細資訊可以參考懶人包- http://beta.hackfoldr.org/npp-tainan-6001/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:48:14Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "eaHwe1a818JT-tK6TnrBaeIzwKw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "m6rLAbewYaM"
+      },
+      "snippet": {
+        "publishedAt": "2016-10-02T12:28:43Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2016台電電力供需黑客松 成果發表",
+        "description": "活動議程： http://www.accupass.com/go/sdthon 台電開放資料： http://www.taipower.com.tw/content/announcement/ann01-5.aspx.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2016-10-02T12:28:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kHj3fxBxMmI"
+      },
+      "snippet": {
+        "publishedAt": "2016-06-17T04:50:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "demo of current status for https://github.com/tainancity/lines",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2016-06-17T04:50:27Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Lxz8UY63a0kfgA5js3BNJgAQQWo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "eElZM1FpbYQ"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-19T14:09:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "[好想工作室]快速上手 Parse &amp; 前端測試神器 Selenium",
+        "description": "[活動] 5/19 晚上7:30 快速上手Parse & 前端測試神器Selenium 雙主題初體驗建立網路服務過程中有許多瑣事分散了開發者對產品的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-19T14:09:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ywFrMdin1GW8TEVQkIrS7y0WRtA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "BQQERCSH5nU"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-15T17:06:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20150514臺南市都委會第40次大會實錄都發局錄影版",
+        "description": "backup from https://www.youtube.com/watch?v=So6zRgPrfSk.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-15T17:06:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mpVMPZrgcAxthf1SdwaSjGw66DE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "sOZCbY5MkFc"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-12T13:42:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》- 第2天",
+        "description": "主題二｜台南城市發展的想像、願景與公民參與？－公民社會、歷史脈絡與城市規劃的初探】 -時間：2015.05.12（星期二） ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-12T13:42:24Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
@@ -176,6 +448,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-07T12:51:54Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "tCKNtfrWXNY"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-07T12:46:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "JS template &amp; react.js 初探 @ 好想工作室",
+        "description": "活動介紹- ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
@@ -690,7 +996,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "gzVXZeXYgYHWEd37CyplTx4I-rU",
+      "etag": "2QmQIz705xwTGt5TAjWZ8cqGTsI",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
