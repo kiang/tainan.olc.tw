@@ -32,7 +32,7 @@ var points = new ol.layer.Vector({
             radius: 15,
             points: 3,
             fill: new ol.style.Fill({
-                color: '#48c774'
+                color: '#00c0d8'
             }),
             stroke: new ol.style.Stroke({
                 color: '#000',
