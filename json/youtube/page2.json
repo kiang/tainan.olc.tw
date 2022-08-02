@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "oLypX-qSjpLxndci4MND3DGkKTM",
+  "etag": "iR50Gg6NEKaQ8QXgQYmDW0l2UMI",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "TiRISX1bbr6kVJgcxfHIaAjixLM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "rYoEtTV3mo0"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-07T02:03:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "雙江走讀 - 在歸仁敦源聖廟聊地方創生",
+        "description": "疫情發展兩年多，對於地方創生與創業都帶來嚴重的衝擊，國銘在地方創生領域耕耘十多年，透過今天的走讀討論產業所面臨的困境 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-07T02:03:40Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "RAQHqtde5BQ3nkJtHEigo50XF1o",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-09T13:24:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1OhaMN6A5HUsJ6b5RWeg6B1txdk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dllzOHFZ72I"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-06T03:51:49Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220406 江明宗北區街頭宣講",
-        "description": "大家好，我們是台灣民眾黨， 柯文哲創立的台灣民眾黨，我是北區、中西區市議員參選人江明宗，今天一起來到這裡的有新化、善 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dllzOHFZ72I/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dllzOHFZ72I/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dllzOHFZ72I/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-06T03:51:49Z"
       }
     }
   ]

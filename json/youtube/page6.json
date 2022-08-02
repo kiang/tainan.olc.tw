@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "GpSW_idlNSNUWPILtg4RLCmgrGg",
+  "etag": "-k2Xo5fyPGXNAJ1-2pHV5-5F_9k",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
     "totalResults": 298,
-    "resultsPerPage": 41
+    "resultsPerPage": 43
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "K2dBCA_FBmCCVjLK-syyU0sR9xc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xjWPtQUYRYI"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-07T17:53:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2018 08 06 「分齡挑戰 適能冒險」特色公園公聽會記錄",
+        "description": "高雄市議會公聽會107 年08 月06 日(星期一)上午10 時00 分至12 時00 分本會一樓第一會議室康裕成、張豐藤、陳信瑜高雄市政府研 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-07T17:53:28Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "EovAI0ah0IbUq0c25KXdYISERbQ",
@@ -686,6 +720,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-05-12T13:42:24Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "KDX47NdShaSBYj0tCZmLEKBcqFU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "DmFytnY5KSM"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-11T10:32:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》",
+        "description": "Open Tainan!－城市願景、開放決策與公民參與系列論壇》 活動簡介／ 改變台南，從開放政府開始！ 2014年底，一場九合一大選， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-11T10:32:59Z"
       }
     },
     {
@@ -1370,7 +1438,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "yI1sdP5uBgELG0u-d3ZoTuAQPc4",
+      "etag": "Jal51ZeXJjpBjULRbWgveeEJb5k",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
