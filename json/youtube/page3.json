@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "FBC3DBSZhnyhmDiuY9wIsA3myYs",
+  "etag": "fdzoPx8pXnTsAM0aWJM7FPsI4oU",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 298,
+    "totalResults": 299,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VDQoumN_Y9eRIeqQkBQUSfKewCs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "mMc6lDrmEwA"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-02T13:32:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "跟凱鈞哥一起參訪台北士東市場",
+        "description": "士東市場號稱是五星級的公有市場，進入市場的第一印象就非常不一樣，因為在台南逛習慣的市場普遍都有照明不足、環境稍嫌髒亂 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-02T13:32:55Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "XBSgoLDW_yUqidREueC_WEmEpyU",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-17T13:51:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "OLos8iyU4CkUEtOKRDJqVF3IBY4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cvyESoGTf-k"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-15T05:38:36Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "中西區愛國婦人館的美國歷史",
-        "description": "愛國婦人館是日治時期所建造，不過在二次大戰後由美國所承租，是美國在台灣進駐最早的幾個點之一；依據解老師的研究，最初 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-15T05:38:36Z"
       }
     }
   ]

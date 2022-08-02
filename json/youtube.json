@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區忠義路二段\/府前路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.202248,
+                    22.989569
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中華路\/小東路",
                 "count": 5
             },
@@ -180,20 +194,6 @@
                 "coordinates": [
                     120.271885,
                     22.969394
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區忠義路二段\/府前路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.202248,
-                    22.989569
                 ]
             }
         },

@@ -24,7 +24,7 @@ foreach (glob($youtubePath . '/*.json') as $jsonFile) {
         if (!isset($item['id']['videoId'])) {
             continue;
         }
-        $location = $pool[$item['id']['videoId']][2];
+        $location = isset($pool[$item['id']['videoId']]) ? $pool[$item['id']['videoId']][2] : '';
         $latitude = '';
         $longitude = '';
         if (isset($locations[$location])) {

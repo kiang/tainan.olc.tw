@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "oMptmN-tbkrgwc6g8_anzaSO950",
+  "etag": "oLypX-qSjpLxndci4MND3DGkKTM",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 298,
+    "totalResults": 299,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "RAQHqtde5BQ3nkJtHEigo50XF1o",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "0Z13SVw-7kg"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-05T14:16:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220705 下午仁德，江國銘街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-05T14:16:30Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "KYxEUjWdgf7sVCxpa7XaOYAOwY8",
@@ -1133,7 +1167,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "7GUBGilnaThmpqyCaXIY0McVZSs",
+      "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
       "id": {
         "kind": "youtube#video",
         "videoId": "VYHUdFyfXKY"
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-06T03:51:49Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "VDQoumN_Y9eRIeqQkBQUSfKewCs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "mMc6lDrmEwA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-02T13:32:55Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "跟凱鈞哥一起參訪台北士東市場",
-        "description": "士東市場號稱是五星級的公有市場，進入市場的第一印象就非常不一樣，因為在台南逛習慣的市場普遍都有照明不足、環境稍嫌髒亂 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/mMc6lDrmEwA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-02T13:32:55Z"
       }
     }
   ]

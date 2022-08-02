@@ -1,16 +1,50 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "k_dIdoabZwSeUSijp8zYRWkE858",
+  "etag": "9Ybnjausx2KYIt-u2MBlKkeeNpg",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 298,
+    "totalResults": 299,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "tqtPTWS15LBreVVxUpuYZHsazj8",
+      "etag": "fdioPA-NwH6tYdN0S_Q450G0_WI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "OndLUMYlbnc"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-02T03:13:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220802 早上中西區，江明宗街講",
+        "description": "早上來到中西區街講，感謝江品璁、 台南政治實習菜鳥支援，我持續宣揚#步行城市理念。基隆學生步行上學期間發生車禍身亡， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-02T03:13:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fHm3OGnbuCpBNPTWxnvgxDnGgHw",
       "id": {
         "kind": "youtube#video",
         "videoId": "LYj229pw16s"
@@ -112,7 +146,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "eW-mMIf8s9pzpIUTfv41xMOGU7k",
+      "etag": "sgc7YSxXv15vrojxHEmO37xTc8A",
       "id": {
         "kind": "youtube#video",
         "videoId": "Nr0L6aslifY"
@@ -282,7 +316,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "i1ew8Rs1UPKWUUU9tHYWb5RRHOo",
+      "etag": "7NwrdvN-l0Ho-vrX1RUtm6aotew",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
@@ -294,17 +328,17 @@
         "description": "",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/RoZw5EFOIu8/default.jpg",
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/RoZw5EFOIu8/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/RoZw5EFOIu8/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
@@ -520,7 +554,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "mTBZsRGns7btxUvKywlwq3H9jfs",
+      "etag": "bq1mxS7nXklvpepQ4R3I4Pib3Ys",
       "id": {
         "kind": "youtube#video",
         "videoId": "x9q4RLeOHfI"
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-07T02:03:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "RAQHqtde5BQ3nkJtHEigo50XF1o",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "0Z13SVw-7kg"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-05T14:16:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220705 下午仁德，江國銘街講",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-05T14:16:30Z"
       }
     }
   ]

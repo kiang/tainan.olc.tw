@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "3MUwRM2JKvTNgxuAz1Gl6MCl5A4",
+  "etag": "GpSW_idlNSNUWPILtg4RLCmgrGg",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 297,
-    "resultsPerPage": 42
+    "totalResults": 298,
+    "resultsPerPage": 41
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EovAI0ah0IbUq0c25KXdYISERbQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "2aI5Y6aaFOo"
+      },
+      "snippet": {
+        "publishedAt": "2018-07-30T16:03:39Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "北區立德公園鋼柱保護網編織記錄 20180730",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-07-30T16:03:39Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "G4h32RN9qYilpGeZqXY8GlZ-LFc",
@@ -656,40 +690,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "KDX47NdShaSBYj0tCZmLEKBcqFU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "DmFytnY5KSM"
-      },
-      "snippet": {
-        "publishedAt": "2015-05-11T10:32:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》",
-        "description": "Open Tainan!－城市願景、開放決策與公民參與系列論壇》 活動簡介／ 改變台南，從開放政府開始！ 2014年底，一場九合一大選， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-05-11T10:32:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
       "id": {
         "kind": "youtube#video",
@@ -856,40 +856,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-07T12:51:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tCKNtfrWXNY"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:46:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "JS template &amp; react.js 初探 @ 好想工作室",
-        "description": "活動介紹- ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
