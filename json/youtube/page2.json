@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "iR50Gg6NEKaQ8QXgQYmDW0l2UMI",
+  "etag": "tzvoeb3Eo6GzljGdPU4xakS25x8",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 299,
+    "totalResults": 302,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4mBfy0zvfNgex3ZV4atbq0Miq7M",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JPk00GNDEP8"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-07T21:34:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220707 下午永康，江品璁街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JPk00GNDEP8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JPk00GNDEP8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JPk00GNDEP8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-07T21:34:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ACBDYcfBa7YWCiWjowzpwW6ukyQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "irEnlgKCGrM"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-07T05:53:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220707 早上北區，江明宗街講",
+        "description": "步行城市是江明宗這次參選議員的政見核心，江明宗的步行城市希望讓孩子可以用走的走到學校，江明宗的步行城市希望讓長輩可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-07T05:53:59Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "gjgFh6nAwWdYMKvyUFMlWHva6LM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Kg9cI6tGWoQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-07T02:51:35Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220706 早上歸仁，江國銘街講",
+        "description": "早安，早上來到歸仁86 高架橋下跟江國銘在路口宣講，新豐區需要更多地方創生的促成，希望大家支持在地的台灣民眾黨參選人！",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-07T02:51:35Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "TiRISX1bbr6kVJgcxfHIaAjixLM",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-19T23:55:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DFs-huvASL7KaGgvcVnt5pL98Ds",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HTIa-BKf3Ks"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T13:14:53Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣 Covid-19 本土病例地圖介紹 2022 版",
-        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖是在2021/05 上線，去年底疫情有比較緩和，只是今年以來確診 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T13:14:53Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hZIoqHmnsLtdJyUoG5rONgHJVJg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "gqnDAPxEerY"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-10T12:03:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開唱：龍介仙選市長",
-        "description": "謝龍介即將代表國民黨參與年底的市長大選，三江在閒聊時國銘順口唱了兩句\"龍介仙選市長\" ，大家都覺得有趣，所以國銘就把兩句 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-10T12:03:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "gYkdhUfCcz1rckJrT-Gl_Z2sc04",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VgbTRw6dcp8"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-09T13:24:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "五星級士東市場開箱",
-        "description": "台北士東市場乾淨、明亮的環境在傳統市場已經相當難得，能夠落實血水不落地的政策一定要投入相當多努力；除此之外，在攤位 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VgbTRw6dcp8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VgbTRw6dcp8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VgbTRw6dcp8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-09T13:24:05Z"
       }
     }
   ]

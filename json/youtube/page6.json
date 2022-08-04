@@ -1,13 +1,115 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "knrFN0OXxZ1-YkkL69ofec0fk38",
+  "etag": "JbUqJRRv4hZVJ5-75JSdxMaaOEs",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 298,
+    "totalResults": 301,
     "resultsPerPage": 44
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "9st9lIcEPDA"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-22T02:09:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公路交通量統計地圖",
+        "description": "想要聊交通問題？試試公路交通量統計地圖在討論公共運輸時經常會聊到如何替代更多自用車輛，因此會希望有些統計數據作為基礎 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-22T02:09:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1PehnIoXvMIc6SZBFcDqGA1ptJI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1NM8ZYUbQDU"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-14T02:40:35Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "特色公園 @ 全國女性里長人才培訓班 2018-08-12",
+        "description": "8/12 應邀代表還我特色公園行動聯盟在全國女性里長人才培訓班台南場次介紹特色公園，講授對象是一群希望參與年底選舉的里長參 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-14T02:40:35Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4gy-wZj1TZVdzFJ3pv5ltl87JjM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "W7aGqCPqfT0"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-13T14:21:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "自己跟自己比，台灣所得地圖比較版上線",
+        "description": "在原本的所得地圖中已經可以在點選個別村里後檢視它的歷史資料，只是如果想要大量對比就會有些困難，因此基於原本的所得地圖 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-13T14:21:22Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "K2dBCA_FBmCCVjLK-syyU0sR9xc",
@@ -346,40 +448,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-05-15T08:09:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
       }
     },
     {
@@ -724,40 +792,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "KDX47NdShaSBYj0tCZmLEKBcqFU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "DmFytnY5KSM"
-      },
-      "snippet": {
-        "publishedAt": "2015-05-11T10:32:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》",
-        "description": "Open Tainan!－城市願景、開放決策與公民參與系列論壇》 活動簡介／ 改變台南，從開放政府開始！ 2014年底，一場九合一大選， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-05-11T10:32:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
       "id": {
         "kind": "youtube#video",
@@ -924,40 +958,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-07T12:51:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tCKNtfrWXNY"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:46:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "JS template &amp; react.js 初探 @ 好想工作室",
-        "description": "活動介紹- ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
@@ -1472,7 +1472,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Jal51ZeXJjpBjULRbWgveeEJb5k",
+      "etag": "648vkLMaRByjZbFHpCtvsbsSdCQ",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
