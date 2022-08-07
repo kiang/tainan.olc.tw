@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "F1v3VbWpVh7zDO3-bCEslseQE24",
+  "etag": "1cSF_89KT8I9h2HnNVa3Y1vbs4U",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 302,
+    "totalResults": 308,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cuLuBZcnmcM"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-23T00:36:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20210820 南鐵案北區拆遷戶抗爭事件 - 南鐵案拆遷監督交涉記錄",
+        "description": "上個星期五(8/20)凌晨，在得知南鐵案拆遷開始拉起封鎖線後，我前往北區開元陸橋旁現場希望關心與記錄，但每個能夠看到現場的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-23T00:36:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v7-JwRBrY1yVqEDum8twVklzVlo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "3jGCM4wA170"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-12T16:36:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210811-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-12T16:36:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EvFngsfBQ537o5-G4NNHwYA03So",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "N_3cjrZCPic"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-12T00:33:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210811-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-12T00:33:34Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "YvcWoU7xeFJDnD-A7jfcol-HoCU",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-01-10T15:07:08Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "pW6t0adn4jPGV3M23PwR3_kWMFM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Pn214d4p_2s"
-      },
-      "snippet": {
-        "publishedAt": "2019-12-10T09:12:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "人口推估統計資料系統",
-        "description": "國發會在去年有發布了一個人口推估查詢系統，以國家為單位去估算到2065 年可能的人口變化，引起了許多討論；最近在議員質詢時 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-12-10T09:12:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "XtmKxpKPMWI"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-26T00:17:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "e等公務園+學習平臺快速上課方式",
-        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-26T00:17:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MlhVO9VUOMs"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-05T02:40:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "病媒蚊監控採樣數據管理系統",
-        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-05T02:40:05Z"
       }
     }
   ]
