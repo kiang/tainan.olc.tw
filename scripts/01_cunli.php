@@ -16,4 +16,4 @@ foreach($json['features'] AS $f) {
     }
 }
 
-file_put_contents($basePath . '/json/cunli.json', json_encode($fc));
+file_put_contents($basePath . '/docs/json/cunli.json', json_encode($fc));

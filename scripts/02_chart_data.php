@@ -348,6 +348,6 @@ while ($line = fgetcsv($fh, 4096)) {
 
         $vData['meta'] = $meta[$key];
 
-        file_put_contents(dirname(__DIR__) . '/json/cunli/' . $meta[$key]['code'] . '.json', json_encode($vData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        file_put_contents(dirname(__DIR__) . '/docs/json/cunli/' . $meta[$key]['code'] . '.json', json_encode($vData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 }

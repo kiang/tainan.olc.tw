@@ -1,13 +1,13 @@
 <?php
 $basePath = dirname(dirname(__DIR__));
 
-$json1 = json_decode(file_get_contents($basePath . '/json/youtube.json'), true);
-$json2 = json_decode(file_get_contents($basePath . '/json/youtube_list.json'), true);
+$json1 = json_decode(file_get_contents($basePath . '/docs/json/youtube.json'), true);
+$json2 = json_decode(file_get_contents($basePath . '/docs/json/youtube_list.json'), true);
 
 $hours = $minutes = $seconds = 0;
 foreach ($json2 as $place => $videos) {
     foreach ($videos as $video) {
-        $detail = json_decode(file_get_contents($basePath . '/json/youtube/details/' . $video['id'] . '.json'), true);
+        $detail = json_decode(file_get_contents($basePath . '/docs/json/youtube/details/' . $video['id'] . '.json'), true);
         $parts = preg_split('/[^0-9]/', $detail['items'][0]['contentDetails']['duration']);
 
         switch (count($parts)) {

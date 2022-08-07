@@ -1,6 +1,6 @@
 <?php
 $basePath = dirname(dirname(__DIR__));
-$youtubePath = $basePath . '/json/youtube';
+$youtubePath = $basePath . '/docs/json/youtube';
 
 $listFile = $youtubePath . '/list.csv';
 $pool = $locations = [];

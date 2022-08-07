@@ -1,6 +1,6 @@
 <?php
 $basePath = dirname(dirname(__DIR__));
-$youtubePath = $basePath . '/json/youtube';
+$youtubePath = $basePath . '/docs/json/youtube';
 
 $listFile = $youtubePath . '/list.csv';
 $fh = fopen($listFile, 'r');
@@ -44,5 +44,5 @@ while ($line = fgetcsv($fh, 2048)) {
 }
 $fc['features'] = array_values($pool);
 
-file_put_contents($basePath . '/json/youtube.json', json_encode($fc, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-file_put_contents($basePath . '/json/youtube_list.json', json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents($basePath . '/docs/json/youtube.json', json_encode($fc, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents($basePath . '/docs/json/youtube_list.json', json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
