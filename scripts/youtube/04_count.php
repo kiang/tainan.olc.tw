@@ -5,8 +5,10 @@ $json1 = json_decode(file_get_contents($basePath . '/docs/json/youtube.json'), t
 $json2 = json_decode(file_get_contents($basePath . '/docs/json/youtube_list.json'), true);
 
 $hours = $minutes = $seconds = 0;
+$videoCount = 0;
 foreach ($json2 as $place => $videos) {
     foreach ($videos as $video) {
+        ++$videoCount;
         $detail = json_decode(file_get_contents($basePath . '/docs/json/youtube/details/' . $video['id'] . '.json'), true);
         $parts = preg_split('/[^0-9]/', $detail['items'][0]['contentDetails']['duration']);
 
@@ -29,4 +31,4 @@ $minutes += ($seconds - $finalSeconds) / 60;
 $finalMinutes = $minutes % 60;
 $hours += ($minutes - $finalMinutes) / 60;
 
-echo "{$hours}:{$finalMinutes}:{$finalSeconds}\n";
+echo "{$videoCount} times / {$hours}:{$finalMinutes}:{$finalSeconds}\n";
