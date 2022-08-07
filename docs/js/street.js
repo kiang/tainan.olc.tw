@@ -22,24 +22,39 @@ $.getJSON('json/youtube_list.json', {}, function (c) {
     theList = c;
 });
 
+var baseStyle = new ol.style.Style({
+    image: new ol.style.RegularShape({
+        radius: 20,
+        points: 3,
+        fill: new ol.style.Fill({
+            color: '#00c0d8'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#000',
+            width: 2
+        })
+    }),
+    text: new ol.style.Text({
+        font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        fill: new ol.style.Fill({
+            color: 'rgba(255,255,255,1)'
+        })
+    })
+});
+
+var pointStyle = function (f) {
+    var p = f.getProperties();
+    var finalStyle = baseStyle.clone();
+    finalStyle.getText().setText(p.count + '');
+    return finalStyle;
+}
+
 var points = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'json/youtube.json',
         format: new ol.format.GeoJSON()
     }),
-    style: new ol.style.Style({
-        image: new ol.style.RegularShape({
-            radius: 15,
-            points: 3,
-            fill: new ol.style.Fill({
-                color: '#00c0d8'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#000',
-                width: 2
-            })
-        })
-    })
+    style: pointStyle
 });
 
 var baseLayer = new ol.layer.Tile({
@@ -102,9 +117,10 @@ map.on('singleclick', function (evt) {
                 pointClicked = true;
                 sidebar.open('home');
                 var message = '';
-                for(k in theList[p.key]) {
-                    message += '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + theList[p.key][k].id + '" title="' + theList[p.key][k].title + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                for (k in theList[p.key]) {
+                    message += '<iframe width="100%" height="315" src="https://www.youtube.com/embed/' + theList[p.key][k].id + '" title="' + theList[p.key][k].title + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
                 }
+                barTitle.html(p.key);
                 barContent.html(message);
             }
         }
