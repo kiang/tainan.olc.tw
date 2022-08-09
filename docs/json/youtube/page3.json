@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "BQy3ax-0MH_FE8udi_X6KYvKS80",
+  "etag": "dvV-co5cTqOhO8Gk42a8sNTKAZw",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 308,
+    "totalResults": 314,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "GI5uiBh3VBeK4AXlPfp2aBvoktQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "GFVUKlVaRvI"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-25T14:33:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220425 台南北區沿街發放面紙",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GFVUKlVaRvI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GFVUKlVaRvI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GFVUKlVaRvI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-25T14:33:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VzTrMCIJC2at_vpjxovEoGbiMc8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "AUQPbICi2HM"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-24T16:05:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220424 台南新市夜市掃街",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-24T16:05:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "SgHNfdl5y9o6zSYgv6yMddHmV5Y",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "J51cEneQ5GA"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-21T17:00:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2022 年初至今確診病例變化",
+        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖其實有個播放功能，可以展示年初至今確診人數的變化，只是之前 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-21T17:00:10Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Yry2db03TEcjgK9PEJ3_w6oR9IM",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-01-06T02:52:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "UCkUPFa1Re4nA_wZz3Cc4WEZ1V8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "RNdbVDg-geQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-06T02:51:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農地上聊農業發展",
-        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-06T02:51:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "WK0Hoyn6Zb6UKKOnprMNMoh_Eb8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ZVZ6AaAyl5U"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-29T12:15:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "文學館周邊在美國駐軍台南時期的紅燈區",
-        "description": "二戰後台南的物資匱乏，但派駐在此的美軍除了衣食無虞，作戰以外的時間重視休閒生活安排，曾經，文學館一帶以西在台南美軍 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-29T12:15:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "m0bGFbIBZs3UH-gmMP0NnYn6ZII",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "KOImkhNVI64"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-28T09:04:16Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "車站出來走一趟，台南步行體驗充滿障礙 - 全景",
-        "description": "台南的友善騎樓政策從2012 年開始，至今接近10 年時間號稱暢通311 條騎樓，累積近140 公里，但這項政績對於一般居住在這裡的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/KOImkhNVI64/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/KOImkhNVI64/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/KOImkhNVI64/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-28T09:04:16Z"
       }
     }
   ]

@@ -4,6 +4,48 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "仁德區文華路二段\/民安路一段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.240243,
+                    22.959108
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區長榮路四段\/開元路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.220665,
+                    23.007662
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區西門路四段\/北安路一段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.210908,
+                    23.016288
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "歸仁區中山路一段\/信義北路",
                 "count": 1
             },
@@ -159,7 +201,7 @@
             "type": "Feature",
             "properties": {
                 "key": "仁德區中山路\/義林路",
-                "count": 3
+                "count": 4
             },
             "geometry": {
                 "type": "Point",
@@ -194,20 +236,6 @@
                 "coordinates": [
                     120.201219,
                     22.999727
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "仁德區文華路二段\/民安路一段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.240243,
-                    22.959108
                 ]
             }
         },
@@ -264,20 +292,6 @@
                 "coordinates": [
                     120.245347,
                     22.957151
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區長榮路四段\/開元路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.220665,
-                    23.007662
                 ]
             }
         },

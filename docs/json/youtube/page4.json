@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "2K4MnK_CXfFK62k_LCl1IdpVuzw",
+  "etag": "31ueUPPSVIf8MQeb7luG9olydWk",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 308,
+    "totalResults": 314,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "UCkUPFa1Re4nA_wZz3Cc4WEZ1V8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RNdbVDg-geQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-06T02:51:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-06T02:51:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WK0Hoyn6Zb6UKKOnprMNMoh_Eb8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZVZ6AaAyl5U"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-29T12:15:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "文學館周邊在美國駐軍台南時期的紅燈區",
+        "description": "二戰後台南的物資匱乏，但派駐在此的美軍除了衣食無虞，作戰以外的時間重視休閒生活安排，曾經，文學館一帶以西在台南美軍 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-29T12:15:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "m0bGFbIBZs3UH-gmMP0NnYn6ZII",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "KOImkhNVI64"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-28T09:04:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "車站出來走一趟，台南步行體驗充滿障礙 - 全景",
+        "description": "台南的友善騎樓政策從2012 年開始，至今接近10 年時間號稱暢通311 條騎樓，累積近140 公里，但這項政績對於一般居住在這裡的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-28T09:04:16Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "gM3ff57SPR5p1zAjj5tIT2FQqjU",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-08T02:52:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dgG6_Eow2Ys"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1i-7O3b2nl3QnmChN20AYtjPOlY",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhMcVRQXv_kmoB7moJTDIiJ5"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-06T15:16:14Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講",
-        "description": "江國銘 、江品璁跟我(江明宗)剛好都姓江，在討論到一些公眾議題時有些共通的想法想要嘗試，所以用三江的名義作為開始，透過 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-06T15:16:14Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cnckxq5OwgzfknrsLaymmKkWvNw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HA6PWXIgIqM"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-06T14:58:35Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生",
-        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-06T14:58:35Z"
       }
     }
   ]

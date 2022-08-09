@@ -1,13 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "fYLtXrbG62bMhlmfkeMX9V1sots",
+  "etag": "AShkpXY0FHsGkT3WcAskNdyiw0A",
+  "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 307,
-    "resultsPerPage": 49
+    "totalResults": 313,
+    "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-auuf5EIPYkQdF4_HQLMK_CmWcc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Jy6gI-mbrSk"
+      },
+      "snippet": {
+        "publishedAt": "2020-02-16T19:20:48Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "佳里金唐殿蕭壠香 百足真人蜈蚣陣 / 20200216",
+        "description": "昨天帶著孩子去看佳里金唐殿蕭壠香的百足真人蜈蚣陣，過程做了一個簡單的縮時記錄 她們看到除了覺得新奇，沿途坐在蜈蚣陣車上 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-02-16T19:20:48Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hJENJ3uK6ei4XUmCzSqt475kVRE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Syjjy7X0MJQ"
+      },
+      "snippet": {
+        "publishedAt": "2020-02-10T14:35:37Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "藥局口罩採購地圖加入搜尋功能",
+        "description": "剛上線的時候因為熬夜作息有點亂掉，慢慢回神之後開始針對一些網友提到的功能進行嘗試，主要是加入行政區的檢索以及藥局搜尋 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-02-10T14:35:37Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v2XmhMQrt_DLph2Yl2t-Nl1YDNw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TkEW-tKcqxQ"
+      },
+      "snippet": {
+        "publishedAt": "2020-01-21T08:28:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2017-09-25 開放資料介紹與應用案例",
+        "description": "使用投影片： https://kiang.github.io/slides/20170925_csd.html @ 財團法人中衛發展中心.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-01-21T08:28:50Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "5tSORQa1-md-ckTkArvActhzagk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "zPUJN5CFqb8"
+      },
+      "snippet": {
+        "publishedAt": "2020-01-10T15:07:08Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "讓台灣更好，一起來參與台灣賄選實價登錄協作！",
+        "description": "讓台灣更好，一起來參與台灣賄選實價登錄協作！ 台灣賄選實價登錄地圖(*1)過去是以ptt 網友jaystar0423 整理的資料所製作，當時 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-01-10T15:07:08Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "pW6t0adn4jPGV3M23PwR3_kWMFM",
@@ -1570,102 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-06T09:22:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "HxDiaY2Q1Gq-rNIBM3maf8r3D8Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "fcDQVCqaRnI"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-01T07:12:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "臺南市歷史老屋輔導培力計畫",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-01T07:12:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VFC-aFico68"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-01T02:54:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014台南黑客松-HackTainan上午實況 @ 10:25am",
-        "description": "活動網址： http://tdcp.kktix.cc/events/hacktainan2014.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-01T02:54:45Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "06K_cHM5L20fq_J6tbf-mCiT_3Q",
-      "id": {
-        "kind": "youtube#channel",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
-      },
-      "snippet": {
-        "publishedAt": "2009-03-13T01:56:18Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江明宗",
-        "description": "台灣民眾黨公開提名，台南市北區、中西區議員參選人，熟悉資訊科技應用.",
-        "thumbnails": {
-          "default": {
-            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s88-c-k-c0xffffffff-no-rj-mo"
-          },
-          "medium": {
-            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s240-c-k-c0xffffffff-no-rj-mo"
-          },
-          "high": {
-            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s800-c-k-c0xffffffff-no-rj-mo"
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "upcoming",
-        "publishTime": "2009-03-13T01:56:18Z"
       }
     }
   ]

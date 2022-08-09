@@ -1,0 +1,108 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "nMmF2XRXg6SgUw5g9Ltx2JxxWHY",
+  "prevPageToken": "CKwCEAE",
+  "regionCode": "TW",
+  "pageInfo": {
+    "totalResults": 313,
+    "resultsPerPage": 3
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "HxDiaY2Q1Gq-rNIBM3maf8r3D8Q",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "fcDQVCqaRnI"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-01T07:12:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "臺南市歷史老屋輔導培力計畫",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-01T07:12:50Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VFC-aFico68"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-01T02:54:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014台南黑客松-HackTainan上午實況 @ 10:25am",
+        "description": "活動網址： http://tdcp.kktix.cc/events/hacktainan2014.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-01T02:54:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ON-xFTS-Us1A_OorSzy7JTXW5C0",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
+      },
+      "snippet": {
+        "publishedAt": "2009-03-13T01:56:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江明宗",
+        "description": "台灣民眾黨公開提名，台南市北區、中西區議員參選人，熟悉資訊科技應用.",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "upcoming",
+        "publishTime": "2009-03-13T01:56:18Z"
+      }
+    }
+  ]
+}

@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "1cSF_89KT8I9h2HnNVa3Y1vbs4U",
+  "etag": "P40lvuakwu9daK6o_LVo0BTGm9g",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 308,
+    "totalResults": 314,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dgG6_Eow2Ys"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-08T02:52:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210907-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-08T02:52:46Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1i-7O3b2nl3QnmChN20AYtjPOlY",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhMcVRQXv_kmoB7moJTDIiJ5"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-06T15:16:14Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講",
+        "description": "江國銘 、江品璁跟我(江明宗)剛好都姓江，在討論到一些公眾議題時有些共通的想法想要嘗試，所以用三江的名義作為開始，透過 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-06T15:16:14Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cnckxq5OwgzfknrsLaymmKkWvNw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "HA6PWXIgIqM"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-06T14:58:35Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生",
+        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-06T14:58:35Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
@@ -1473,7 +1575,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "fB9JIepeQeGcwOTk_AtfGkjRw5s",
+      "etag": "Cl2Q-wjmQMVgaq4PwgEtujtHLXI",
       "id": {
         "kind": "youtube#video",
         "videoId": "yt38hqcefCI"
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-02-16T19:20:48Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hJENJ3uK6ei4XUmCzSqt475kVRE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Syjjy7X0MJQ"
-      },
-      "snippet": {
-        "publishedAt": "2020-02-10T14:35:37Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "藥局口罩採購地圖加入搜尋功能",
-        "description": "剛上線的時候因為熬夜作息有點亂掉，慢慢回神之後開始針對一些網友提到的功能進行嘗試，主要是加入行政區的檢索以及藥局搜尋 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-02-10T14:35:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "v2XmhMQrt_DLph2Yl2t-Nl1YDNw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "TkEW-tKcqxQ"
-      },
-      "snippet": {
-        "publishedAt": "2020-01-21T08:28:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2017-09-25 開放資料介紹與應用案例",
-        "description": "使用投影片： https://kiang.github.io/slides/20170925_csd.html @ 財團法人中衛發展中心.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-01-21T08:28:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5tSORQa1-md-ckTkArvActhzagk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "zPUJN5CFqb8"
-      },
-      "snippet": {
-        "publishedAt": "2020-01-10T15:07:08Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "讓台灣更好，一起來參與台灣賄選實價登錄協作！",
-        "description": "讓台灣更好，一起來參與台灣賄選實價登錄協作！ 台灣賄選實價登錄地圖(*1)過去是以ptt 網友jaystar0423 整理的資料所製作，當時 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/zPUJN5CFqb8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-01-10T15:07:08Z"
       }
     }
   ]
