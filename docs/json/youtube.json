@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區永大路二段\/永明街",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.261052,
+                    23.024688
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區永大路二段\/公園路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.263655,
+                    23.014068
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "仁德區文華路二段\/民安路一段",
                 "count": 2
             },
@@ -172,20 +200,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "永康區永大路二段\/公園路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.263655,
-                    23.014068
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "歸仁區中山路一段\/86快速道路",
                 "count": 2
             },
@@ -201,7 +215,7 @@
             "type": "Feature",
             "properties": {
                 "key": "仁德區中山路\/義林路",
-                "count": 4
+                "count": 3
             },
             "geometry": {
                 "type": "Point",

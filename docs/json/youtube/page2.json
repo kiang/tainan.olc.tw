@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "PQotTbwnttHIHANJaFHa8vDOYK8",
+  "etag": "LoLEWN8DEKgjdrn0yrNqujmw5vU",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 314,
+    "totalResults": 317,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "SZlIw9nzpQaRStNw_nvptTscSAQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "lZ11BkTu-c8"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-13T03:35:12Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220713 早上中西區，江明宗街講",
+        "description": "早安！早上來到中西區街講，感謝江國銘、 台南政治實習菜鳥支援， #步行城市的理念希望可以帶動台南經濟發展，同時改善台南的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/lZ11BkTu-c8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/lZ11BkTu-c8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/lZ11BkTu-c8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-13T03:35:12Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ujEvT_wflq5NrAqcbDvS4_pzL5g",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-28T14:14:06Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "akHxSz8jbRbjlbfHGjIl63hM5Lk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "x-20EMXQW_I"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-28T13:37:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220428 公私協力齊防疫，家用快篩地圖正式上線記者會",
-        "description": "疫情持續升溫，家用快篩面臨配給問題，政府宣布自即日(4/28)起透過實名制配售，並且比照過去口罩方式開放資料；曾參與口罩 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-28T13:37:10Z"
       }
     }
   ]

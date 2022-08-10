@@ -1,13 +1,115 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "nMmF2XRXg6SgUw5g9Ltx2JxxWHY",
+  "etag": "lKK7KlHJBe8WMPdkxsTZT-TRn1U",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 313,
-    "resultsPerPage": 3
+    "totalResults": 316,
+    "resultsPerPage": 6
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cE8vUPpNQuQgCFHkqaRhzJNsyjk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kSHrbsFcghQ"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-25T18:45:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014-07-24 臺南市北區和順里 里長擬參選人 姜宜宏 訪談",
+        "description": "逐字稿與原始文章： http://goo.gl/dC02oj 這是臺南市北區議員擬參選人江明宗( http://k.olc.tw/ ) 針對臺南市北區和順里里長擬參選人 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-25T18:45:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MqMjhZAijyc"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-06T09:22:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "袁紅冰教授台南板聚",
+        "description": "由於袁教授在7/5 14:00~17:00 參與政大書城舉辦的活動，所以我們順便邀請他在7/6 14:00 ~ 16:00 參與自發舉辦的板聚，這個板聚 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-06T09:22:40Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "HxDiaY2Q1Gq-rNIBM3maf8r3D8Q",
@@ -78,7 +180,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ON-xFTS-Us1A_OorSzy7JTXW5C0",
+      "etag": "J2dFwBkiI2K7Z8Cx38ib83oP9-c",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

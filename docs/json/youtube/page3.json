@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "dvV-co5cTqOhO8Gk42a8sNTKAZw",
+  "etag": "ouC94UbFOEFM8X4pZsYjWE95Ips",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 314,
+    "totalResults": 317,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "akHxSz8jbRbjlbfHGjIl63hM5Lk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "x-20EMXQW_I"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-28T13:37:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220428 公私協力齊防疫，家用快篩地圖正式上線記者會",
+        "description": "疫情持續升溫，家用快篩面臨配給問題，政府宣布自即日(4/28)起透過實名制配售，並且比照過去口罩方式開放資料；曾參與口罩 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/x-20EMXQW_I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-28T13:37:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "pGofw8YEe8DFwKpOqUIeVpEcvMs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "r6_pcq8N4pM"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-26T07:08:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 004 ，聊媒體操作",
+        "description": "少子化問題越來越嚴重，但公共議題討論卻很難聚焦可以帶來改變的契機，因為民進黨把許多心力放在媒體風向的操作上，讓不滿的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/r6_pcq8N4pM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/r6_pcq8N4pM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/r6_pcq8N4pM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-26T07:08:55Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "GI5uiBh3VBeK4AXlPfp2aBvoktQ",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-01-21T23:30:07Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "bN2nJvtt67wGlKBROp9m0yhf7VI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "A0NV-s74W8c"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-10T00:04:26Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220107 民眾黨認同卡新竹掃街記錄",
-        "description": "民眾黨選戰培訓營#百萬之眾集合#百萬之眾選戰培訓營.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-10T00:04:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "GtCGulSY0yErCK03JRM4jb5GSxI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dwN5-w0caKg"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-06T02:52:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農地上聊農業發展 - 全景",
-        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-06T02:52:10Z"
       }
     }
   ]

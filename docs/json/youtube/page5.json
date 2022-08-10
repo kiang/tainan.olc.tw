@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "P40lvuakwu9daK6o_LVo0BTGm9g",
+  "etag": "P7IFIwVs3e5t3Eh4JwRvATJxp9s",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 314,
+    "totalResults": 317,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1Sk4SIRoAKNGd959ujGkLAEFGlE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cyS5QqbxXls"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-09T15:26:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南機車日常 20210909 北區-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cyS5QqbxXls/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cyS5QqbxXls/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cyS5QqbxXls/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-09T15:26:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "U6o4fJAAhclv9Dcf5dGJ-tq5DpY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xYBl3L4CPwA"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-08T02:52:37Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210907-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-08T02:52:37Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "gY9QWNbckiYpiWPVy9Ebrd_z4Zo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Xm2LZtyvw3c"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-08T02:52:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210907-3",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-08T02:52:52Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-03-24T16:04:22Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "T1CmKKteN_20nf9d4WhaevfdqVw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "uenEtm3igkc"
-      },
-      "snippet": {
-        "publishedAt": "2020-03-10T15:08:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "Mask Map for South Korea Online, Made in Taiwan (台灣製的南韓口罩地圖上線)",
-        "description": "Mask Map for South Korea Online, Made in Taiwan (台灣製的南韓口罩地圖上線) (中文內容放在英文後面) I had built a Mask Map ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/uenEtm3igkc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/uenEtm3igkc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/uenEtm3igkc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-03-10T15:08:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "uF5xSKKJoaMw9TXlwwmmhFoHquw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ab-f8RakV_U"
-      },
-      "snippet": {
-        "publishedAt": "2020-02-26T16:23:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "武漢肺炎地圖加入台灣疾管署資料",
-        "description": "武漢肺炎地圖加入台灣疾管署資料疾管署在2/23 上架嚴重特殊傳染性肺炎統計資料，所以試著把資料併入武漢肺炎地圖呈現；在武漢 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ab-f8RakV_U/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ab-f8RakV_U/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ab-f8RakV_U/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-02-26T16:23:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-auuf5EIPYkQdF4_HQLMK_CmWcc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Jy6gI-mbrSk"
-      },
-      "snippet": {
-        "publishedAt": "2020-02-16T19:20:48Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "佳里金唐殿蕭壠香 百足真人蜈蚣陣 / 20200216",
-        "description": "昨天帶著孩子去看佳里金唐殿蕭壠香的百足真人蜈蚣陣，過程做了一個簡單的縮時記錄 她們看到除了覺得新奇，沿途坐在蜈蚣陣車上 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-02-16T19:20:48Z"
       }
     }
   ]
