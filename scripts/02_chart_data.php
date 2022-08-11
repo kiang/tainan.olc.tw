@@ -152,7 +152,7 @@ foreach ($years as $year) {
     }
 }
 
-$fh = fopen('/home/kiang/public_html/data.moi.gov.tw/raw/population/2022/05/data.csv', 'r');
+$fh = fopen('/home/kiang/public_html/data.moi.gov.tw/raw/population/2022/07/data.csv', 'r');
 $head = fgetcsv($fh, 4096);
 fgetcsv($fh, 4096);
 while ($line = fgetcsv($fh, 4096)) {
