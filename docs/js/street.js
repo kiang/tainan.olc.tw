@@ -125,6 +125,9 @@ map.on('singleclick', function (evt) {
             }
         }
     });
+    if (false === pointClicked) {
+        sidebar.open('book');
+    }
 });
 
 var geolocation = new ol.Geolocation({
