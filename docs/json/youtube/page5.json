@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "P7IFIwVs3e5t3Eh4JwRvATJxp9s",
+  "etag": "_9L13bY0-zM-1WMSbuMaJ8ikFEo",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 317,
+    "totalResults": 315,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VYiPbkNY5mC_dCns91J2WQmxRcw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jSZevJCw_rU"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-11T10:23:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210911 神農街",
+        "description": "有人說台南最有味道的散步街道是神農街，你覺得呢？",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jSZevJCw_rU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jSZevJCw_rU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jSZevJCw_rU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-11T10:23:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "qw6OzK6u-s8kaJvMoD0UZT818xw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kAnIkWR6aQE"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-09T15:26:29Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南機車日常 20210909 北區-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kAnIkWR6aQE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kAnIkWR6aQE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kAnIkWR6aQE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-09T15:26:29Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "1Sk4SIRoAKNGd959ujGkLAEFGlE",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-09-10T14:06:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "BM-bBbek-sIBpSmPzE03HdzzJXo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "TGtfirGQoAo"
-      },
-      "snippet": {
-        "publishedAt": "2020-03-31T12:06:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "一個科技人的體制外與體制內 @ 臺南大學行政管理系 2020-03-23",
-        "description": "感謝臺南大學老師的邀請，跟同學分享了一下最近幾年在政治領域進進出出的心得，期待對參與的同學有些幫助。 投影片： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-03-31T12:06:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Cl2Q-wjmQMVgaq4PwgEtujtHLXI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yt38hqcefCI"
-      },
-      "snippet": {
-        "publishedAt": "2020-03-24T16:04:22Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台電再生能源可併網容量地圖操作展示",
-        "description": "台電再生能源可併網容量地圖改版再生能源可併網容量是我過去在經濟部期間參與的開放資料計畫之一，台電主動公開這份資料對於 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yt38hqcefCI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yt38hqcefCI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yt38hqcefCI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-03-24T16:04:22Z"
       }
     }
   ]

@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區金華路四段\/成功路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.196173,
+                    23.001344
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中華路\/小東路",
+                "count": 6
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234713,
+                    22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區永大路二段\/永明街",
                 "count": 1
             },
@@ -138,20 +166,6 @@
                 "coordinates": [
                     120.202248,
                     22.989569
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/小東路",
-                "count": 5
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.234713,
-                    22.998403
                 ]
             }
         },

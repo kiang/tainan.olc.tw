@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ouC94UbFOEFM8X4pZsYjWE95Ips",
+  "etag": "iMKrcyJi2gbpJ7F7oKTanW5mtIM",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 317,
+    "totalResults": 315,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Ics73P5WM_h6GBqjGMjrdOljpQc",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhOahtBASCjDqJ8T2uYuHNxT"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-02T05:53:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "記者會",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-02T05:53:23Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "PbhvoGpPFI_44VOEoWlD7szJ6uQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "4--WUXKigc0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-01T13:14:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220501 南科贊美酒店義賣紀錄",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-01T13:14:30Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "toDpwpDxoE8HpPS8RhxL4-MlWWA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZeeFXgqcf3I"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-28T14:14:06Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220428 台南北區沿街發放面紙",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZeeFXgqcf3I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZeeFXgqcf3I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZeeFXgqcf3I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-28T14:14:06Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "akHxSz8jbRbjlbfHGjIl63hM5Lk",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-04T02:58:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "LBLZlSo6pn8aq3ZC41yVn723_UU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "r4W2pf3WvGw"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-25T07:13:00Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220125 第三劑疫苗施打記錄",
-        "description": "完成第三劑疫苗的施打了，兩劑的AZ 加今天的BNT ，也希望符合資格的朋友能夠盡快完成疫苗施打，保護自己也保護身邊的親友！",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-25T07:13:00Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "sEWZTFemKeiLiKJVOn-v6RqprTs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wD5xThrVIek"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-21T23:30:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區民生路聊人行空間-全景",
-        "description": "三江來到了台南府城歷史街區的核心區域，也是台南少數已經進行騎樓整平工作的路段，忠義路、民生路與永福路形成的路線，距離 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-21T23:30:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "MMc4t36axNUVjoQIv-1RcA3jbfg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "RfFno070k2Q"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-21T23:30:07Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區民生路聊人行空間",
-        "description": "三江來到了台南府城歷史街區的核心區域，也是台南少數已經進行騎樓整平工作的路段，忠義路、民生路與永福路形成的路線，距離 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RfFno070k2Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RfFno070k2Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RfFno070k2Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-21T23:30:07Z"
       }
     }
   ]
