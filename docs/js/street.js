@@ -83,7 +83,7 @@ imgFeature.setStyle(
     new ol.style.Style({
         image: new ol.style.Icon({
             scale: 0.6,
-            src: 'img/kiang.png'
+            src: 'img/3guys.png'
         })
     })
 );
