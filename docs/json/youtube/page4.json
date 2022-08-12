@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "0eeICK1_nZ4Xyc7Q-IxV7hMU08c",
+  "etag": "dmb6NtkIvm60UKa-x3LCB1qzSDE",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 315,
+    "totalResults": 317,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cU7BFb73GkWI1A88yvBkH1z8-u0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "NRBSPdrfwlc"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-04T02:58:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220203 普濟殿燈會",
+        "description": "一年一度的府城普濟燈會逛過了嗎？如果還沒，跟著我的腳步先逛過一遍吧！ 府城普濟燈會特別的地方是背後的各種故事，每個燈籠 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-04T02:58:20Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "LBLZlSo6pn8aq3ZC41yVn723_UU",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-15T15:49:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "TH_IJCeKElRm9sfpGdojEkUgER0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "IH0YHbIWk3w"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-15T12:19:06Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在水仙宮聊傳統市場",
-        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-15T12:19:06Z"
       }
     }
   ]

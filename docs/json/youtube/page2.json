@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "dNFNvmfVmsk6f3va8BQk44Y5j7w",
+  "etag": "6q7LrtUr3g0l0_cTx92FBCp6XB8",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 315,
+    "totalResults": 317,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "b3xeyLJqVaxhHZfQDaZ3oH2NH2U",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kf4pY_Gq-54"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-14T14:51:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220714 下午中西區，江明宗街講",
+        "description": "下午在民生圓環旁街講， 江國銘、 江品璁、 黃國晏與台南政治實習菜鳥到場支援， #步行城市理念可以解決許多台南面臨的問題， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-14T14:51:59Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "xfR2xt0ERJYY0RWAayoELt-ss60",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-05-03T23:40:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VYHUdFyfXKY"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-02T05:54:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "【民眾黨團撐民眾 防疫服務隊成立】記者會",
-        "description": "日期：2022年5月2日（一） ○時間：上午9:00 ○地點：立法院台灣民眾黨黨團會議室（青島東路1-3號3樓） ○出席人員：立法委員 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-02T05:54:20Z"
       }
     }
   ]
