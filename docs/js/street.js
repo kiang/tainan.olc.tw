@@ -75,6 +75,31 @@ var baseLayer = new ol.layer.Tile({
     opacity: 0.8
 });
 
+var vectorAreasStyleBase = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: '#000',
+        width: 1
+    }),
+    text: new ol.style.Text({
+        font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        fill: new ol.style.Fill({
+            color: 'rgba(0,0,255,0.7)'
+        })
+    })
+});
+var vectorAreasStyleFunc = function(f) {
+    var s = vectorAreasStyleBase.clone(), p = f.getProperties();
+    s.getText().setText(p.name + ' ' + p.areas);
+    return s;
+}
+var vectorAreas = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        url: 'https://kiang.github.io/vote2022/2022.json',
+        format: new ol.format.GeoJSON()
+    }),
+    style: vectorAreasStyleFunc
+});
+
 var imgFeature = new ol.Feature({
     name: 'kiang',
     geometry: new ol.geom.Point(ol.proj.fromLonLat([120.144, 23.004582])),
@@ -94,7 +119,7 @@ var imgLayer = new ol.layer.Vector({
 });
 
 var map = new ol.Map({
-    layers: [baseLayer, points, imgLayer],
+    layers: [baseLayer, vectorAreas, points, imgLayer],
     target: 'map',
     view: appView
 });
