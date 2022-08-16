@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "i5jZZZozOEZ9n80_8buPyMhIKDU",
+  "etag": "bhMdXRFrfwV7NQRFrGqqxVx2b7Q",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 316,
+    "totalResults": 324,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Uj6n7sesQbSwSDK_1NXgSkizUIs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "819XCQJfBLU"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 永大樂林居 5",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/819XCQJfBLU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/819XCQJfBLU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/819XCQJfBLU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v74oCVbQHgyJF0YUEYfMIVWVAM4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "v5raGcecIEU"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 和平公園 3",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/v5raGcecIEU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/v5raGcecIEU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/v5raGcecIEU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hVJDO0eh2VlRy9FQa7Xai6bWERk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wyvSG69w_io"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "OfaQRIgSiO5KAWDaQQ5KPKWiXMU",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-08-29T13:25:19Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aKh-K8vWWNuVZFfHjXwABHNGwkI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "RGQplv4w7kI"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:10:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "林一方 苗栗抗暴經驗分享",
-        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:10:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Zink-nCvjA_enmjPr5fZy2V_6Gg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yXRavNWcBkA"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:08:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "林一方 苗栗抗暴經驗分享",
-        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:08:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1Fmbouiypco"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:00:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "請轉往 https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48",
-        "description": "原有網址出狀況，請改為： https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:00:23Z"
       }
     }
   ]

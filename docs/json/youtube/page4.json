@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "dmb6NtkIvm60UKa-x3LCB1qzSDE",
+  "etag": "mFq7yOnddzbsP317uDX23cSEGMU",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 317,
+    "totalResults": 325,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "X9AUamjRWkodIWwwT9zsoKwCDr0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "t5kMI_PhZDI"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-14T12:06:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展 - 全景剪輯",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-14T12:06:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "RzNqWNrpEJt1_WC_F0VMDKpwPoU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "4IXjIORHUSs"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-08T11:42:21Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在永康區忠孝運動公園聊公共設施-全景",
+        "description": "三江這次拜訪了永康的忠孝運動公園，這是個超過5 公頃的大型公園，但實際走訪其中卻發現只有零星的設施，很難想像是一個擁有 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-08T11:42:21Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hxCT5x5LxaxoThf5TZhm4fIxrgI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "DUEmy3miBZ4"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-08T11:04:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在永康區忠孝運動公園聊公共設施",
+        "description": "三江這次拜訪了永康的忠孝運動公園，這是個超過5 公頃的大型公園，但實際走訪其中卻發現只有零星的設施，很難想像是一個擁有 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-08T11:04:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "qTmG-dxid7xjNxjq7lv-KqBe-10",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "STqUHR1_X_A"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-05T03:07:43Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220204 台南市區腳踏車走春",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-05T03:07:43Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "cU7BFb73GkWI1A88yvBkH1z8-u0",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-10-05T04:18:51Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "APprCAeQK18j3C0h3kRlw6waFuc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "WSpM1CSYv54"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-01T12:15:53Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康中華路聊路平問題 - 全景",
-        "description": "這週三江一起來到永康中華路，帶大家看看台南人口最多的行政區平常的樣貌；中華路正在進行CF幹線第2期工程，為的是解決鄰近 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/WSpM1CSYv54/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/WSpM1CSYv54/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/WSpM1CSYv54/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-01T12:15:53Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "9cWPNRxE9DInnpdFJfa_Gf6MmEg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "YF0BfhqD4-o"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-01T12:03:43Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康中華路聊路平問題",
-        "description": "這週三江一起來到永康中華路，帶大家看看台南人口最多的行政區平常的樣貌；中華路正在進行CF幹線第2期工程，為的是解決鄰近 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/YF0BfhqD4-o/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/YF0BfhqD4-o/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/YF0BfhqD4-o/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-01T12:03:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "S2MxkD1RLnBBq3i-586hOlA7h5Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "0a7fZXRHNss"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-26T02:58:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210926 台南水仙宮市場宣傳 1218 公民投票",
-        "description": "今天早上在水仙宮市場宣傳1218 公民投票，請大家一定要站出來投票，告訴政府我們要#反萊豬#護藻礁.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-26T02:58:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XepcUUKGHsFZyK_CxXp4qUsvS04",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "GevbcI0Hs0s"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-15T15:49:43Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在水仙宮聊傳統市場 - 全景",
-        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-15T15:49:43Z"
       }
     }
   ]

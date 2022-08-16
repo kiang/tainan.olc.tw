@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "9sFYt6FFrStSDt3o6RWJpN-u9Ak",
+  "etag": "YBwdZdj4fNF60NNK2aGxWB8CxGY",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 317,
+    "totalResults": 325,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "NW-TjbEDnabfbJmWhK5MSo1X-UI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "7-dE1ZmQY4E"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-09T17:26:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 005 ，聊疫情、防疫與超前布署",
+        "description": "最近一個月來疫情迅速升溫，每日確診人數已經突破4 萬人，政府宣傳多時的\"超前布署\" 在遇到眼前大規模感染情況下跟民眾期待 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-09T17:26:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-_hqzZ5THYFjTp6y2yFcUsG8Xc8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "g5OHOa6B5rA"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-08T07:55:48Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220508 母親節快樂！歸仁早市發放康乃馨",
+        "description": "今天是母親節， 江國銘江品璁蔡宛秦洪岳銘一起來到歸仁早市發放康乃馨，沿途民眾相當熱情，一下子就全部發完，祝福大家母親節 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-08T07:55:48Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JTd9MYjmr00nUeVz8Z132gH3smY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-d660euugZ0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-05T12:00:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南也買不到快篩，超前布署成空話",
+        "description": "台南也買不到快篩，超前布署成空話今日確診數突破3 萬，台南也有許多市民面臨居家隔離的要求，但行政程序塞車導致遲遲無法 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-d660euugZ0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-d660euugZ0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-d660euugZ0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-05T12:00:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "6HKSLC4jMAaF5DOrqS60o6s-FiA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JQFuqjSr9cg"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-03T23:40:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220503 阿榮之聲 feat. 三江",
+        "description": "5/3 參與劉家榮律師的#阿榮之聲阿榮律師新的服務處（高雄市鼓山區壽山街13-1號） 開箱第一播～～ 今晚的陣容非常堅強   畫面都 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-03T23:40:42Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-24T17:38:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "X9AUamjRWkodIWwwT9zsoKwCDr0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "t5kMI_PhZDI"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-14T12:06:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農地上聊農業發展 - 全景剪輯",
-        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/t5kMI_PhZDI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-14T12:06:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "RzNqWNrpEJt1_WC_F0VMDKpwPoU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "4IXjIORHUSs"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-08T11:42:21Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康區忠孝運動公園聊公共設施-全景",
-        "description": "三江這次拜訪了永康的忠孝運動公園，這是個超過5 公頃的大型公園，但實際走訪其中卻發現只有零星的設施，很難想像是一個擁有 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/4IXjIORHUSs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-08T11:42:21Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hxCT5x5LxaxoThf5TZhm4fIxrgI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "DUEmy3miBZ4"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-08T11:04:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康區忠孝運動公園聊公共設施",
-        "description": "三江這次拜訪了永康的忠孝運動公園，這是個超過5 公頃的大型公園，但實際走訪其中卻發現只有零星的設施，很難想像是一個擁有 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-08T11:04:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "qTmG-dxid7xjNxjq7lv-KqBe-10",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "STqUHR1_X_A"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-05T03:07:43Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220204 台南市區腳踏車走春",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-05T03:07:43Z"
       }
     }
   ]
