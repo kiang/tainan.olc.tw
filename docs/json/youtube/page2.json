@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "twqO-jMP8xI8GJmGphaBmQJ6oF8",
+  "etag": "13Deat5K-l23gVwoo92sp_9IRjw",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 325,
+    "totalResults": 324,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rkr1lBtGcX2HqgNkg3WBGljb9ag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jAfwKmYaNv8"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-19T02:02:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "港濱歷史公園兒童遊戲場開箱",
+        "description": "港濱公園遊戲場有加高、加長的溜索，加上兩組彈跳床與兩組極限飛輪，豐富的遊戲方式在開幕第一天就吸引許多家長帶著孩子來， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-19T02:02:10Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "vS4kCQUhmIvWYzzeH0PfbiBX0vM",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-05-19T12:02:53Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "7GW-YEGhTtdy87aGHHldXW8UK2c",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "t4YGKgh5KY0"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-16T13:21:39Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台中走讀，跟警鴿俊凱切磋交通的想像",
-        "description": "林俊凱是現職員警，也是民眾黨的台中市議員參選人之一，努力在台中東區、南區耕耘中；俊凱有別於一般民眾對於員警的想像， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-16T13:21:39Z"
       }
     }
   ]

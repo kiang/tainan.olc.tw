@@ -1,16 +1,50 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "TndYVsAvkPKd-rZwlToUevQbxjk",
+  "etag": "DyIXtgR2mUr_1U5T7IUoUWxgfuM",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 325,
+    "totalResults": 324,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "a_YIea6-6wSNeHiba6GUWhPdY1o",
+      "etag": "UT6bU13rPdai4zlJpNl4axZbXfE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "zYvAwASqVjM"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-16T13:05:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220816 下午北區，江明宗 5 分鐘街講",
+        "description": "下午在北區街講，感謝江品璁前來支援， 江國銘在路上車子拋錨，我們講不到10 分鐘也開始下起大雨，這次比較多狀況，不過還是 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-16T13:05:50Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ZwIyCDnJizSaVQXBq9xsFjpN-4U",
       "id": {
         "kind": "youtube#video",
         "videoId": "f8Ch068nJU8"
@@ -180,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "WERmOhDzC64KjbY3hRYPKtJYJyg",
+      "etag": "0FillzJuHQEzfjyfscaqithizWU",
       "id": {
         "kind": "youtube#video",
         "videoId": "Y0OgMs1ZPMQ"
@@ -996,7 +1030,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "tRbZH9_JKjPQ49aYkN59YLQ2UEc",
+      "etag": "EMGYJmXlpbn0cbfoabVviHos7LY",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-19T03:37:08Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rkr1lBtGcX2HqgNkg3WBGljb9ag",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "jAfwKmYaNv8"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-19T02:02:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "港濱歷史公園兒童遊戲場開箱",
-        "description": "港濱公園遊戲場有加高、加長的溜索，加上兩組彈跳床與兩組極限飛輪，豐富的遊戲方式在開幕第一天就吸引許多家長帶著孩子來， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/jAfwKmYaNv8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-19T02:02:10Z"
       }
     }
   ]

@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "YBwdZdj4fNF60NNK2aGxWB8CxGY",
+  "etag": "4jEPeTLYoYn66FUbiu56zSEgcZw",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 325,
+    "totalResults": 324,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "7GW-YEGhTtdy87aGHHldXW8UK2c",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "t4YGKgh5KY0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-16T13:21:39Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台中走讀，跟警鴿俊凱切磋交通的想像",
+        "description": "林俊凱是現職員警，也是民眾黨的台中市議員參選人之一，努力在台中東區、南區耕耘中；俊凱有別於一般民眾對於員警的想像， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/t4YGKgh5KY0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-16T13:21:39Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "NW-TjbEDnabfbJmWhK5MSo1X-UI",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-25T07:54:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "utzXI-REiyKOMNAppNCNJae4z_A",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "onkz4PPbEf0"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-24T17:38:26Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南市長小編經驗談",
-        "description": "過去在台南市政府工作的期間，有參與過市長臉書的小編工作，今天運用機會跟大家聊聊這個角色在做些什麼事情，也針對今天發生 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/onkz4PPbEf0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/onkz4PPbEf0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/onkz4PPbEf0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-24T17:38:26Z"
       }
     }
   ]
