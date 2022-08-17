@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "PCtCFUip5v8KQN_knJsgGqV3Us4",
+  "etag": "h0J0YGyObi_6_CA0JzwHa-8ZDZg",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 323,
+    "totalResults": 327,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rWh9P3WxfvW12Ju2u1UuSxM0A00",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VA6UIE0M3Ms"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 8",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mcRuMU4PrRFnUEGZI6TjMYJ_xcA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yVZySw6PRro"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 和平公園 5",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yVZySw6PRro/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yVZySw6PRro/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yVZySw6PRro/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:24Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "8YYl966AEC4PUw2Jc1vrXLC-cMA",
@@ -1031,6 +1099,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "P_jTjn5V7MM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-10T10:25:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公民科技 @ 成大資工系 2018-05-04",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-10T10:25:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "qdZpezfVBUjVW9REPwJd-MesJpU",
       "id": {
         "kind": "youtube#video",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-01-29T09:56:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "CVNKrL_s6qUcBlJCfJvcoqwv0wQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "iJWf1_0i9Ls"
-      },
-      "snippet": {
-        "publishedAt": "2014-12-10T09:20:19Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-12-10 立法院內政委員會審查政治獻金法記錄，下午場",
-        "description": "立法院第8屆第6會期內政委員會第26次全體委員會議； 一、審查行政院函請審議「政治獻金法部分條文修正草案」案。 二、審查本 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-12-10T09:20:19Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "y_87OJukQYg7v-zkG4ZUHC1IQ4Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "bwc3ila56CI"
-      },
-      "snippet": {
-        "publishedAt": "2014-11-20T14:10:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "have a nice day",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/bwc3ila56CI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/bwc3ila56CI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/bwc3ila56CI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-11-20T14:10:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6L4jS3s7-t4Tlxea7HvJaEc-Qzk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "23JydRUB3kQ"
-      },
-      "snippet": {
-        "publishedAt": "2014-10-24T17:33:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-10-24 g0v &amp; open data @ NCKU-CSIE-自由軟體開發與社群發展",
-        "description": "使用投影片： http://k.olc.tw/slide/20141024_ncku_csie.html 口語討論時有諸多細節的錯誤，如果有發現問題還請告知;) 已知問題： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-10-24T17:33:42Z"
       }
     }
   ]

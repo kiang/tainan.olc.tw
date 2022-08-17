@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區中華西路二段\/和緯路四段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.186358,
+                    23.006768
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區和緯路四段\/文賢路",
                 "count": 3
             },
@@ -54,20 +68,6 @@
                 "coordinates": [
                     120.244098,
                     22.973908
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區中華西路二段\/和緯路四段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.186358,
-                    23.006768
                 ]
             }
         },

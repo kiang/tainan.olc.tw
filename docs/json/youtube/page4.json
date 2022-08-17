@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "0K9-8ztcnRgoR2KN9O9OHzn_L74",
+  "etag": "Lkj61lsik8GE9zvJiKBSkPuLOsM",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 324,
+    "totalResults": 328,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rE3fzZ1V5ldHdOWiCsDhsMBft9g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "NbueBUDLbxo"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-25T07:54:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在仁德運動公園聊清官要比貪官奸",
+        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-25T07:54:40Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "utzXI-REiyKOMNAppNCNJae4z_A",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-10-18T12:05:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "GaQrdLg9GcyDj2PxuLRre8_K11Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-Wphxq6qDF4"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-05T04:18:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20211004-1",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-Wphxq6qDF4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-Wphxq6qDF4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-Wphxq6qDF4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-05T04:18:46Z"
       }
     }
   ]

@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "4jEPeTLYoYn66FUbiu56zSEgcZw",
+  "etag": "alICrI5dkNRg0DzhW3eTiOihYsA",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 324,
+    "totalResults": 328,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "N_XStkvDoGXjTiYLLoVjWPjK15E",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "V6iWMD4wafw"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-26T09:15:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 005 ，聊為什麼要參選",
+        "description": "三江都不是來自政治世家，經常會有民眾詢問為什麼要參與議員選舉，這次簡短回應大家的問題，也期待素人身份的我們可以獲得 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/V6iWMD4wafw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/V6iWMD4wafw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/V6iWMD4wafw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-26T09:15:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "kiqbGglUQslK5gYSWnN7c49Ae70",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LipCluJvAOw"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-19T12:02:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220519 台南中西區沿街發放面紙",
+        "description": "今天小女兒自願一起來幫忙，透過頭戴式攝影機記錄過程#北中西區台南市議員參選人江明宗.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LipCluJvAOw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LipCluJvAOw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LipCluJvAOw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-19T12:02:53Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "7GW-YEGhTtdy87aGHHldXW8UK2c",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-28T21:16:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "A-zDPDBg5Ykk5Rdt-54Qc8-ho78",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "5klnuqdTDus"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-25T07:56:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在仁德運動公園聊清官要比貪官奸 - 全景",
-        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-25T07:56:29Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rE3fzZ1V5ldHdOWiCsDhsMBft9g",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "NbueBUDLbxo"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-25T07:54:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在仁德運動公園聊清官要比貪官奸",
-        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-25T07:54:40Z"
       }
     }
   ]
