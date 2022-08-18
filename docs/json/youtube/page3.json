@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "alICrI5dkNRg0DzhW3eTiOihYsA",
+  "etag": "HW0nPqh9eBlcGnS_Es8MsF-Q0JE",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 328,
+    "totalResults": 330,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "jzBuyv8-QKHztl78g68ySYOfzu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZPOury5h4P0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-30T06:27:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220529 台南安平運河環河體驗-全景",
+        "description": "星期天參與了觀旅局主辦的「2022臺南市水域遊憩體驗活動-環河挑戰」活動，這次特別的地方是主辦單位申請了完整的航道， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-30T06:27:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "R1X0-uZv8ZarGqCk0sr_NLmMv-s",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "aKpKg3_PibI"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-29T07:00:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "善用視訊診療與社區藥局，抗疫不一定要出門",
+        "description": "政府最新規定中，家用快篩取得陽性結果後，可以透過視訊診療方式由醫師協助判定確診，之後視醫生評估開立處方箋領藥；不過 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-29T07:00:27Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "N_XStkvDoGXjTiYLLoVjWPjK15E",
@@ -1473,7 +1541,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "oz5LJeOCYLUMotMLngD9QEr1HSY",
+      "etag": "mdIAZCdX1bvi-Jv3RFjZhU5hRLo",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhNVd4kZ6zgwisA-hUveNXUQ"
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-28T21:15:13Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "zr7IaE_9xQ-3fyHTSRpLBUs5El0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "nuARWF7-4l8"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:15:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-2",
-        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:15:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6Qc5ESyjm0nhxyAs4WoO8T7hGLA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "u06Rl1unVdA"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:16:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-3",
-        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:16:09Z"
       }
     }
   ]

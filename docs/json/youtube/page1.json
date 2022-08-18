@@ -1,16 +1,84 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "7OgjlkQeVrd9F5b9bL_6MrtVPvo",
+  "etag": "zSGmQKZzvWaeACaR5q5Y_Etip1g",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 328,
+    "totalResults": 330,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "XCNOB63C2MwigKUraRF8ScAMskk",
+      "etag": "AAYDRxelLm3N_C5OZCBYvnIzKDo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "HckFbQhTy_A"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-18T12:25:49Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220818 下午永康，江品璁街講",
+        "description": "下午 江品璁 在永康街講，我跟 江國銘 一起支援，三江持續在街頭告訴市民我們的參政理念。台南 4 年來 45 歲以下人口減少逾 7 萬 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-18T12:25:49Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "naoobgwIBCtRCjamDFpTksEK-jU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "m9MDy1ajfrg"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-17T12:39:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220817 下午歸仁，江國銘街講",
+        "description": "下午江國銘來到歸仁街講，我跟江品璁到場支援，繼續宣揚三江的參政理念。我們是三明治世代，上有老、下有小，加上大環境壓縮 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/m9MDy1ajfrg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/m9MDy1ajfrg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/m9MDy1ajfrg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-17T12:39:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "nz6JiR3Qk_Bb24cd0XpXkH_jZ7c",
       "id": {
         "kind": "youtube#video",
         "videoId": "OfX4KxCoG7Q"
@@ -214,7 +282,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "FRO7i1_BJB-FFGmwFUy3npXCeSI",
+      "etag": "0eBRAZYfW0yusNU-smxfXQs7vTc",
       "id": {
         "kind": "youtube#video",
         "videoId": "wQcexcicn2g"
@@ -1098,7 +1166,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ddrxGPGsxy1q29IDMjeW5UpmlGc",
+      "etag": "Udjp8Xa_Ola02OG0BW0dLqCvEt8",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
@@ -1110,17 +1178,17 @@
         "description": "",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/default.jpg",
+            "url": "https://i.ytimg.com/vi/tZ5RK_07AZc/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/tZ5RK_07AZc/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/tZ5RK_07AZc/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-21T09:37:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-pocBANzEzzNtCaTEoF0S1ygtCc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Hqmp8dsLTzA"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-20T13:45:00Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220720 下午仁德，江國銘街講",
-        "description": "下午江國銘來到仁德街講，我跟江品璁、 台南政治實習菜鳥一起參與，我們在街頭探討少子化問題的根源，除了生育補助外更需要 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Hqmp8dsLTzA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Hqmp8dsLTzA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Hqmp8dsLTzA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-20T13:45:00Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "_bgrrj8q1qzAADIbk6a0_vwMoP8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ghuKNJUko6U"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-20T03:46:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220720 早上歸仁，江國銘街講",
-        "description": "早上江國銘的街講來到歸仁高鐵橋下，我跟台南政治實習菜鳥一起參與，在街頭訴說眼前青年人面對的困境，為了買一間房子 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ghuKNJUko6U/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ghuKNJUko6U/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ghuKNJUko6U/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-20T03:46:24Z"
       }
     }
   ]

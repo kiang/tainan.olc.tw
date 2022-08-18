@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Lkj61lsik8GE9zvJiKBSkPuLOsM",
+  "etag": "MSMbCuf5BApxLcJHJW3Sh4BgODU",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 328,
+    "totalResults": 330,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "zr7IaE_9xQ-3fyHTSRpLBUs5El0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "nuARWF7-4l8"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-28T21:15:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-2",
+        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-28T21:15:50Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "6Qc5ESyjm0nhxyAs4WoO8T7hGLA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "u06Rl1unVdA"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-28T21:16:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-3",
+        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-28T21:16:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "A-zDPDBg5Ykk5Rdt-54Qc8-ho78",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5klnuqdTDus"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-25T07:56:29Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在仁德運動公園聊清官要比貪官奸 - 全景",
+        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5klnuqdTDus/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5klnuqdTDus/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5klnuqdTDus/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-25T07:56:29Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "rE3fzZ1V5ldHdOWiCsDhsMBft9g",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-10-19T08:57:32Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "yJ_MqkWyZZ2I6il91GjFaz3UUxc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "KB9Z62-KTXE"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-19T08:55:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生 - 全景",
-        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-19T08:55:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JGVxkfSLZ7dZpD6Gb_JwosujKak",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cGTsc8ESY8Q"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-18T12:06:55Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農會穀倉聊社區營造(全景)",
-        "description": "這週三江一起來到歸仁農會穀倉，這個穀倉因為時代變遷已經不再用來囤積稻米，新的樣貌正在籌備當中；同時由國銘帶來的主題， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-18T12:06:55Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5FwSBsR2LjgX9Dqy8dRm9502ybM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "i0qiXYb7beA"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-18T12:05:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農會穀倉聊社區營造",
-        "description": "這週三江一起來到歸仁農會穀倉，這個穀倉因為時代變遷已經不再用來囤積稻米，新的樣貌正在籌備當中；同時由國銘帶來的主題， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-18T12:05:25Z"
       }
     }
   ]

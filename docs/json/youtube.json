@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區中華路\/中華二路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.233813,
+                    23.008439
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "歸仁區中山路一段\/86快速道路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.30966,
+                    22.963693
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
                 "count": 2
             },
@@ -250,20 +278,6 @@
                 "coordinates": [
                     120.20878,
                     23.01143
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "歸仁區中山路一段\/86快速道路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.30966,
-                    22.963693
                 ]
             }
         },

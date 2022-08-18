@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "oMDY_Z9CcWlQYqmLqgQUPzTEa1Y",
+  "etag": "MII23yWYv6IaEheYKs0e7oBTUq0",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 326,
-    "resultsPerPage": 15
+    "totalResults": 329,
+    "resultsPerPage": 16
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "tCKNtfrWXNY"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-07T12:46:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "JS template &amp; react.js 初探 @ 好想工作室",
+        "description": "活動介紹- ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-07T12:46:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "L9GP7utT6fNarwSNny9moWDqwEQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "vQ6Pmk37xVk"
+      },
+      "snippet": {
+        "publishedAt": "2015-03-13T03:35:36Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南公民智庫 3/13 成立大會",
+        "description": "觀禮單位：張信堂（台教會）；莊國榮（台灣智庫執行長）；小英基金會代表智庫委員： 人文環境-陳奕齊、陳信安、何澄輝、 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-03-13T03:35:36Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "TVDvZevRltfEluOfrnZduHbCLTA",
@@ -418,40 +486,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "HxDiaY2Q1Gq-rNIBM3maf8r3D8Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "fcDQVCqaRnI"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-01T07:12:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "臺南市歷史老屋輔導培力計畫",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/fcDQVCqaRnI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-01T07:12:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
       "id": {
         "kind": "youtube#video",
@@ -486,7 +520,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "yn9V2lIvgqkSl-_Y1lwwUdnRXVQ",
+      "etag": "31xMtjlCsFwjyy77Lzc2mie5Dl0",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
@@ -495,7 +529,7 @@
         "publishedAt": "2009-03-13T01:56:18Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "江明宗",
-        "description": "台灣民眾黨公開提名，台南市北區、中西區議員參選人，熟悉資訊科技應用.",
+        "description": "北中西區台南市議員參選人，台灣民眾黨唯一提名，熟悉資訊科技應用，作品包含口罩地圖、本土病例地圖與登革熱地圖等數十個 ...",
         "thumbnails": {
           "default": {
             "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s88-c-k-c0xffffffff-no-rj-mo"
