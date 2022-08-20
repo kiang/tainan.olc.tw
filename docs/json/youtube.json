@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路二段\/民生路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.196406,
+                    22.995264
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區永大路三段\/自強路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.259714,
+                    23.034092
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中華路\/中華二路",
                 "count": 1
             },

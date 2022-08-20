@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "TJHStws-8gpNOH9iqOfA0inPXUU",
+  "etag": "Zg9iWH3AkOmmJjP-gfh3FoPpWcc",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 329,
+    "totalResults": 332,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "dyahf5P4pyVxNpfYeVTeEuAqBo8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "4of5uRCNY6U"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-22T14:25:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220722 下午北區，江明宗街講",
+        "description": "下午在台南公園街講，感謝江國銘、 江品璁與台南政治實習菜鳥到場支援，繼續對大家闡述#步行城市的理念。台南的歷史街區 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/4of5uRCNY6U/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/4of5uRCNY6U/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/4of5uRCNY6U/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-22T14:25:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "GsXoZbc5ynt8xvHxjejlqqz7kmM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "H9qWkgBZyrI"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-22T05:21:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220722 【保障網路言論自由，請NCC重提數位中介服務法草案】記者會發言",
+        "description": "草案第五條定義了七個大方向，除了\"兒童及少年權益之保障\" 較有共識外，其他方向都有很大想像空間，以最近林智堅市長論文案為 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/H9qWkgBZyrI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/H9qWkgBZyrI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/H9qWkgBZyrI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-22T05:21:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WBf6J7zmDTEBJBBJ70XxjNFSvqc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5EpUfMG203Y"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-21T21:24:37Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220721 下午永康，江品璁街講",
+        "description": "下午江品璁在永康街講，我跟江國銘、 台南政治實習菜鳥一起站在街頭，共同訴說這次的參選理念。眼前台灣與台南的政策明顯傾向 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5EpUfMG203Y/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5EpUfMG203Y/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5EpUfMG203Y/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-21T21:24:37Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "AuxqvIIUi2oHPrw5hlEjvAWKRTU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cJA6v14vzkQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-21T09:37:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220721 早上中西區，江明宗街講",
+        "description": "早上在中西區街講，感謝台南政治實習菜鳥支援， #步行城市希望台南可以打造更友善的步行環境，既有的通學步道與友善騎樓政策 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cJA6v14vzkQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cJA6v14vzkQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cJA6v14vzkQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-21T09:37:34Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "-pocBANzEzzNtCaTEoF0S1ygtCc",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-06-08T00:00:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ybUdyjYrauLhbiqAF5C5GiamKnQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Y3iURz9owv0"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-07T19:13:19Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220607 東區街講 蔡宛秦+三江",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-07T19:13:19Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-hO-tiUG2gzBI3_oxjyeI_f53AQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "y_OdmA3HskE"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-01T15:36:33Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220601 台南中西區沿街發放面紙",
-        "description": "今天兩個孩子只上半天課程，所以下午跟著一起來發面紙#北中西區台南市議員參選人江明宗.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-01T15:36:33Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XlBzJ17tc37bhsNvTuEkHHCpihM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MTfNN2L67ew"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-31T13:39:16Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣幼兒園地圖加入檢索與分享功能",
-        "description": "這兩天運用一點時間，在幼兒園地圖加入一些功能與調整，主要是幼兒園的檢索以及個別幼兒園的分享網址，希望簡化大家在查找 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-31T13:39:16Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "l1pwN-_XQ-qd0wVc10v-R5o_5Aw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xomi5RmlRb4"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-30T19:54:27Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220529 台南安平運河環河體驗",
-        "description": "星期天參與了觀旅局主辦的「2022臺南市水域遊憩體驗活動-環河挑戰」活動，這次特別的地方是主辦單位申請了完整的航道， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-30T19:54:27Z"
       }
     }
   ]

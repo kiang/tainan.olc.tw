@@ -1,13 +1,149 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "MII23yWYv6IaEheYKs0e7oBTUq0",
+  "etag": "iM26W-m7mIVnQCEhW67h3scKZ1w",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 329,
-    "resultsPerPage": 16
+    "totalResults": 330,
+    "resultsPerPage": 20
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1gid0zfc6yg"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-17T01:42:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "藥要看網站基本介紹",
+        "description": "藥要看( http://drugs.olc.tw/ )提供簡單的介面檢索國內有註冊登記的藥品資訊.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-17T01:42:28Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rHYdM6DMNnzXyXtytZmefgGcieI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jBQfjtCGW9I"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T13:53:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府? -2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T13:53:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cbkenZ1KrZk5phEH9UYV78_6_ug",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Ji9CgunPQPA"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T12:51:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府?",
+        "description": "電源不足，請轉往https://www.youtube.com/watch?v=jBQfjtCGW9I 瀏覽活動網址： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T12:51:55Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "voLOCRZdDbKzuD9C6GkKaMU_8WE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "hFEUd_bXnr8"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-07T12:51:54Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "NPM 套件管理 + AWS 101 雙主題 @ 好想工作室",
+        "description": "設備忘記充電，現場還在繼續，如果沒辦法過來的下次請早XD ** [活動] 4/7 晚上7:30 NPM 套件管理+ AWS 101 雙主題初體驗未來五 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-07T12:51:54Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
@@ -520,7 +656,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "31xMtjlCsFwjyy77Lzc2mie5Dl0",
+      "etag": "wbiCv-h2uDtZGJUIx1S-jOeQFGw",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
