@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "歸仁區中山路一段\/86快速道路",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.30966,
+                    22.963693
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區西門路四段\/北安路一段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.210908,
+                    23.016288
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 1
             },
@@ -40,20 +68,6 @@
                 "coordinates": [
                     120.233813,
                     23.008439
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "歸仁區中山路一段\/86快速道路",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.30966,
-                    22.963693
                 ]
             }
         },
@@ -194,20 +208,6 @@
                 "coordinates": [
                     120.220665,
                     23.007662
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區西門路四段\/北安路一段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.210908,
-                    23.016288
                 ]
             }
         },
