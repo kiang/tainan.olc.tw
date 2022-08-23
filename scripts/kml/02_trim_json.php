@@ -48,11 +48,28 @@ $fc = [
     'type' => 'FeatureCollection',
     'features' => [],
 ];
+$videos = [
+    '2022042115' => '',
+    '2022042516' => 'GFVUKlVaRvI',
+    '2022042816' => 'ZeeFXgqcf3I',
+    '2022051915' => 'LipCluJvAOw',
+    '2022060115' => 'y_OdmA3HskE',
+    '2022061815' => 'ig9V57L8sUA',
+    '2022062416' => 'C5Lpe2XmNQI',
+    '2022070410' => 'ww2-Sw3FQmM',
+    '2022070415' => '',
+    '2022080315' => 'XbQ5lpJo910',
+    '2022081316' => '',
+    '2022081814' => 'OFGO2S_PdwU',
+    '2022082110' => 'a5OfXHZJsH4',
+];
+
 foreach ($timePoints as $k => $points) {
     $fc['features'][] = [
         'type' => 'Feature',
         'properties' => [
             'ymdh' => $k,
+            'v' => isset($videos[$k]) ? $videos[$k] : '',
         ],
         'geometry' => [
             'type' => 'LineString',
