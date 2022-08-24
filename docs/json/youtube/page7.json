@@ -1,45 +1,113 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ELnNJ_lFZXqf2e2qZAC67-AfPL8",
+  "etag": "3QQkEqkKdRkzmndgSfdII-xVLb0",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 335,
-    "resultsPerPage": 23
+    "totalResults": 334,
+    "resultsPerPage": 24
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "KDX47NdShaSBYj0tCZmLEKBcqFU",
+      "etag": "Lxz8UY63a0kfgA5js3BNJgAQQWo",
       "id": {
         "kind": "youtube#video",
-        "videoId": "DmFytnY5KSM"
+        "videoId": "eElZM1FpbYQ"
       },
       "snippet": {
-        "publishedAt": "2015-05-11T10:32:59Z",
+        "publishedAt": "2015-05-19T14:09:22Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》",
-        "description": "Open Tainan!－城市願景、開放決策與公民參與系列論壇》 活動簡介／ 改變台南，從開放政府開始！ 2014年底，一場九合一大選， ...",
+        "title": "[好想工作室]快速上手 Parse &amp; 前端測試神器 Selenium",
+        "description": "[活動] 5/19 晚上7:30 快速上手Parse & 前端測試神器Selenium 雙主題初體驗建立網路服務過程中有許多瑣事分散了開發者對產品的 ...",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/default.jpg",
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/DmFytnY5KSM/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2015-05-11T10:32:59Z"
+        "publishTime": "2015-05-19T14:09:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ywFrMdin1GW8TEVQkIrS7y0WRtA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "BQQERCSH5nU"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-15T17:06:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20150514臺南市都委會第40次大會實錄都發局錄影版",
+        "description": "backup from https://www.youtube.com/watch?v=So6zRgPrfSk.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-15T17:06:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mpVMPZrgcAxthf1SdwaSjGw66DE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "sOZCbY5MkFc"
+      },
+      "snippet": {
+        "publishedAt": "2015-05-12T13:42:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》- 第2天",
+        "description": "主題二｜台南城市發展的想像、願景與公民參與？－公民社會、歷史脈絡與城市規劃的初探】 -時間：2015.05.12（星期二） ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-05-12T13:42:24Z"
       }
     },
     {
@@ -210,40 +278,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-07T12:51:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tCKNtfrWXNY"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:46:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "JS template &amp; react.js 初探 @ 好想工作室",
-        "description": "活動介紹- ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
@@ -758,7 +792,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "MUqfdFfX0qpDlaV2VWQn69sFVaQ",
+      "etag": "Bqwv7X6KNpYqM1i7XpdIp4BduFE",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

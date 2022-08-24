@@ -1,16 +1,84 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "HKQgCEhh7ZnBXlwifsFzh5idKSY",
+  "etag": "bFRrvXELconjtBfb3bIM9tAaHK8",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 336,
+    "totalResults": 335,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "7CwbI-CyEufgzKk2vgKa9ecY3Is",
+      "etag": "cSkOMqA9TOQxgSZAooSUK-yvj-0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "mtpzScuMLbE"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-23T13:43:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220823 下午中西區，江明宗街講",
+        "description": "下午在中西區街講，感謝江國銘與志工前來支援，我們在街頭繼續述說參選政見。眼前政府一直在發明新名詞，逃獄不僅沒有發布 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-23T13:43:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "azAa077dj2MHZRaHV_clLj5tQPA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "6B3WVwfTuk4"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-23T05:55:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220823 早上仁德，江國銘街講",
+        "description": "早上 江國銘 在仁德街講，我跟志工一起來支援，站在街頭持續宣揚理念。今天一個大哥特別來找我們聊，他表達對於這次兇案的憂心 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-23T05:55:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XTwkdQ0Ilu4BurL07lBrenBJgsk",
       "id": {
         "kind": "youtube#video",
         "videoId": "htk3VY_6cN0"
@@ -44,7 +112,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "5OclemPqcxmd2avO2TNRFJISr5Y",
+      "etag": "d7pIZ-_f0iBirswud4yo_6H1Xu0",
       "id": {
         "kind": "youtube#video",
         "videoId": "HBz12xYEc5g"
@@ -112,7 +180,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "JwcWu5ovhMexx35h19cigJH_hqg",
+      "etag": "kYdLQBDgltLi4f-K_XjRcNqh-XY",
       "id": {
         "kind": "youtube#video",
         "videoId": "zzcRWLoLJUc"
@@ -180,7 +248,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "nI9J4-JpZ0ihKvK7OcCSU19tnWk",
+      "etag": "zsdmTX5OpWzDFXwVRcRZI_akvhc",
       "id": {
         "kind": "youtube#video",
         "videoId": "CtFden_aeB0"
@@ -1404,7 +1472,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "35DuTifP_9o5OpPFZ2j4wEL7b6o",
+      "etag": "Y3ChOH1K0s5JpC7CaghqfA59oJg",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
@@ -1416,17 +1484,17 @@
         "description": "",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/default.jpg",
+            "url": "https://i.ytimg.com/vi/zzcRWLoLJUc/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/zzcRWLoLJUc/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/HckFbQhTy_A/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/zzcRWLoLJUc/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-27T12:14:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "bq1mxS7nXklvpepQ4R3I4Pib3Ys",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "x9q4RLeOHfI"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-27T02:32:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220727 早上永康，江品璁街講",
-        "description": "早上江品璁在永康街講，我跟江國銘、 台南政治實習菜鳥與志工們一起到場支援，持續宣揚我們的政治理念。現有政治在財團影響下 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-27T02:32:29Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1bK807Fhi6S2YDv-97iipa4s_40",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "S-Yjr8GARGM"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-26T13:15:18Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220726 下午永康，江品璁街講",
-        "description": "下午江品璁在永康的街講，我跟江國銘、 台南政治實習菜鳥一起參與，繼續在街頭宣傳我們的參政理念。眼前街上可以看到的廣告， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-26T13:15:18Z"
       }
     }
   ]

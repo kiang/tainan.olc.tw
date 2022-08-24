@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "A_K8iHWvDp9IwMMvVbM-cq2p1lY",
+  "etag": "fSUUYHSaN6W_BHNrVpehLQGY3F0",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 335,
+    "totalResults": 334,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "dlwXcXBCLItr56qajCpRJaJtJwg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yzsDjX_USrA"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 4",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yzsDjX_USrA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yzsDjX_USrA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yzsDjX_USrA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "I8aOoNxCg82MPQWyUTWUW5GiAEM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "gDWOx2USiFE"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 7",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/gDWOx2USiFE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/gDWOx2USiFE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/gDWOx2USiFE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "iFhWfk9xPXkDf6cX05ybWTAGKVY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "mkC6WYiQVY0"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 6",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/mkC6WYiQVY0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/mkC6WYiQVY0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/mkC6WYiQVY0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "xewVfVdV_TNJ2EZzjU1qTS69bew",
@@ -895,6 +997,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MlhVO9VUOMs"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-05T02:40:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "病媒蚊監控採樣數據管理系統",
+        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-05T02:40:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
       "id": {
         "kind": "youtube#video",
@@ -1337,40 +1473,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "qdZpezfVBUjVW9REPwJd-MesJpU",
       "id": {
         "kind": "youtube#video",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2016-06-17T04:50:27Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Lxz8UY63a0kfgA5js3BNJgAQQWo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "eElZM1FpbYQ"
-      },
-      "snippet": {
-        "publishedAt": "2015-05-19T14:09:22Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "[好想工作室]快速上手 Parse &amp; 前端測試神器 Selenium",
-        "description": "[活動] 5/19 晚上7:30 快速上手Parse & 前端測試神器Selenium 雙主題初體驗建立網路服務過程中有許多瑣事分散了開發者對產品的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/eElZM1FpbYQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-05-19T14:09:22Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ywFrMdin1GW8TEVQkIrS7y0WRtA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "BQQERCSH5nU"
-      },
-      "snippet": {
-        "publishedAt": "2015-05-15T17:06:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20150514臺南市都委會第40次大會實錄都發局錄影版",
-        "description": "backup from https://www.youtube.com/watch?v=So6zRgPrfSk.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/BQQERCSH5nU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-05-15T17:06:02Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "mpVMPZrgcAxthf1SdwaSjGw66DE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "sOZCbY5MkFc"
-      },
-      "snippet": {
-        "publishedAt": "2015-05-12T13:42:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "《Open Tainan!－城市願景、開放決策與公民參與系列論壇》- 第2天",
-        "description": "主題二｜台南城市發展的想像、願景與公民參與？－公民社會、歷史脈絡與城市規劃的初探】 -時間：2015.05.12（星期二） ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/sOZCbY5MkFc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-05-12T13:42:24Z"
       }
     }
   ]

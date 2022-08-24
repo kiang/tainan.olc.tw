@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "H9eI7p6uLV0aDiuQoRLAPQJjehI",
+  "etag": "PDnTya8uGyz1L2aE_aKRLpx-ZN4",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 336,
+    "totalResults": 335,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "bq1mxS7nXklvpepQ4R3I4Pib3Ys",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "x9q4RLeOHfI"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-27T02:32:29Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220727 早上永康，江品璁街講",
+        "description": "早上江品璁在永康街講，我跟江國銘、 台南政治實習菜鳥與志工們一起到場支援，持續宣揚我們的政治理念。現有政治在財團影響下 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/x9q4RLeOHfI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-27T02:32:29Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1bK807Fhi6S2YDv-97iipa4s_40",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "S-Yjr8GARGM"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-26T13:15:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220726 下午永康，江品璁街講",
+        "description": "下午江品璁在永康的街講，我跟江國銘、 台南政治實習菜鳥一起參與，繼續在街頭宣傳我們的參政理念。眼前街上可以看到的廣告， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/S-Yjr8GARGM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-26T13:15:18Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "byE0hjijlG5EQqY0JnPztjKAksI",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-06-14T13:34:33Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Hdi839lZfjY1QMVBvzb__6wWrGI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "faZOz0b4rM8"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-14T03:50:36Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "綠能俠 MV",
-        "description": "綠能俠MV 正式發表，民進黨別再雙標！ 「綠能你不能」是從2021 年中旬開始出現的網路流行語，主要是諷刺民主進步黨在執政後一 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/faZOz0b4rM8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/faZOz0b4rM8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/faZOz0b4rM8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-14T03:50:36Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "jkvW2N4m1QhEYHnGCQaRdFycIYk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "oTetdMu-_28"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-10T15:47:58Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220610 仁德區公所街講",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/oTetdMu-_28/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/oTetdMu-_28/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/oTetdMu-_28/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-10T15:47:58Z"
       }
     }
   ]

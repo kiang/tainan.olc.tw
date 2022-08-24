@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "POTxGQFP0RS0g6zrQEdequLxBH0",
+  "etag": "I3lSz4G6ZgrfNm0JbUeN2tMv_8c",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 336,
+    "totalResults": 335,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "bTJX3LkBwri9pwgLniUCppTYpbU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "PNvutp8SzDE"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-11T22:55:21Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220311 記者會江明宗發言 - 部會發包平台APP億來億去！數位轉型不該淪為數位錢坑！",
+        "description": "日期：111年3月11日(五) ○時間：上午9:30 ○地點：立法院台灣民眾黨黨團會議室（青島東路1-3號3樓） ○出席人員： 立法委員 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PNvutp8SzDE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/PNvutp8SzDE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/PNvutp8SzDE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-11T22:55:21Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Tgk57qwZzCTr7ikp-CpVMAgriAs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5jXPDCfRj8w"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-09T14:38:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在北區和順公園聊道路設計與停車",
+        "description": "三江這次到訪北區和順公園，這個公園週邊人口密度很高，衍生了許多交通需求，在最近的一個公共工程中改造了路口的道路設計， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5jXPDCfRj8w/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5jXPDCfRj8w/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5jXPDCfRj8w/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-09T14:38:46Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "kkxlcNAjdnsP6E8vVzlAX-L-X5Q",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-11-23T07:32:13Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "vPlpB76N8rgp1WmRfBCzCdYqJEs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MCQKKMHjQQI"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-13T10:48:36Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在臺南市立圖書館新總館聊青年低薪問題(全景)",
-        "description": "臺南市立圖書館新總館是最近很熱門的一個地方，鄰近的東橋重劃區也吸引了許多民眾進駐，只是房價持續高漲的同時青年朋友的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MCQKKMHjQQI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MCQKKMHjQQI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MCQKKMHjQQI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-13T10:48:36Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "A20-rX_hUUJe7BzrYTvfXc3mAVM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "gNB8BOt0efs"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-13T10:49:01Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在臺南市立圖書館新總館聊青年低薪問題",
-        "description": "臺南市立圖書館新總館是最近很熱門的一個地方，鄰近的東橋重劃區也吸引了許多民眾進駐，只是房價持續高漲的同時青年朋友的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/gNB8BOt0efs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/gNB8BOt0efs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/gNB8BOt0efs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-13T10:49:01Z"
       }
     }
   ]

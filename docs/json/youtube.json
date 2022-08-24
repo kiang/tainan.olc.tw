@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路一段\/府前路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.195513,
+                    22.990902
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "仁德區中山路\/中正路三段",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.251645,
+                    22.971681
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "歸仁區中山路一段\/86快速道路",
                 "count": 4
             },
@@ -278,20 +306,6 @@
                 "coordinates": [
                     120.202248,
                     22.989569
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "仁德區中山路\/中正路三段",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.251645,
-                    22.971681
                 ]
             }
         },
