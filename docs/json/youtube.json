@@ -4,6 +4,76 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "東區林森路一段\/東門路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.222474,
+                    22.985436
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "仁德區文華路三段\/中山路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.244098,
+                    22.973908
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區海安路三段\/臨安路二段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.199835,
+                    23.003653
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中華路\/中華二路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.233813,
+                    23.008439
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中華路\/小東路",
+                "count": 8
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234713,
+                    22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區海安路一段\/府前路二段",
                 "count": 1
             },
@@ -88,20 +158,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "永康區中華路\/中華二路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.233813,
-                    23.008439
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
                 "count": 2
             },
@@ -138,34 +194,6 @@
                 "coordinates": [
                     120.237534,
                     23.041165
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/小東路",
-                "count": 7
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.234713,
-                    22.998403
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "仁德區文華路三段\/中山路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.244098,
-                    22.973908
                 ]
             }
         },
@@ -446,20 +474,6 @@
                 "coordinates": [
                     120.212672,
                     23.000057
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區海安路三段\/臨安路二段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.199835,
-                    23.003653
                 ]
             }
         },

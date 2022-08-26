@@ -1,14 +1,184 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "I3lSz4G6ZgrfNm0JbUeN2tMv_8c",
+  "etag": "SuQAWO_-RxFWAGTgJH0PHgD_nXI",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 335,
+    "totalResults": 345,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "N1JXFXBT95KIUlplNB2jJbFWj3o",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "G1IHgyyo6PE"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-20T13:31:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2022台南甜點節紀錄",
+        "description": "台南甜點節今年是第2屆，雖然因為疫情關係禁止邊走邊吃，但看起來大家生意還是不錯；期待未來可以在細節跟上，讓活動舉辦可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-20T13:31:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-giM5SYtDoOZmMQNJnHHfAEAz7U",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "vX82pfD58Ro"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-16T18:14:47Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 002 ，聊公有市場、社會福利與長輩們的網路依賴",
+        "description": "公有市場攤位轉租問題持續存在，台南市政府願意嘗試處理值得鼓勵，但過程中仍然衍生爭議，應該要怎麼處理？許多人知道社會 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-16T18:14:47Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "8AhwiZmLoqzCpy88kXI4K0ltCko",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "aM2jC3JBZNk"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-16T11:09:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "跟鐵道哥一起搭台南公車、聊台南公車 - 全景",
+        "description": "鐵道哥在跟我們陸續交流了捷運與步行空間的想法後，我們這次嘗試帶大家一起體驗台南公車的搭乘，沿途也探討各種關於公車的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/aM2jC3JBZNk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/aM2jC3JBZNk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/aM2jC3JBZNk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-16T11:09:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JiU1OGzCsQTXYRQZUXHLgkbc6Cc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "2VjDJlcIiZs"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-16T11:08:32Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "跟鐵道哥一起搭台南公車、聊台南公車",
+        "description": "鐵道哥在跟我們陸續交流了捷運與步行空間的想法後，我們這次嘗試帶大家一起體驗台南公車的搭乘，沿途也探討各種關於公車的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/2VjDJlcIiZs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/2VjDJlcIiZs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/2VjDJlcIiZs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-16T11:08:32Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "3FH-37oWMj-o5w_LYTyxDk-zzr0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MiA6AdGpXUY"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-12T15:08:14Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220312 華山論壇國家治理，江明宗總結",
+        "description": "今天在華山論壇有機會代表小組上台發言，我們聚焦在國家治理這個方向討論，提出了幾個面向讓大家可以思考，也就是到底台灣是 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MiA6AdGpXUY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MiA6AdGpXUY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MiA6AdGpXUY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-12T15:08:14Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "bTJX3LkBwri9pwgLniUCppTYpbU",
@@ -1235,7 +1405,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "yt7kQy8qJKIaQBRe2sFVJvscY9I",
+      "etag": "18PFVI4Bmc0JniKdhm91WsEmSQg",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhN2_kp0gQpLrTR6pTJ4-oQ3"
@@ -1537,176 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-01T08:57:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "odvyOLHWxnNsbg-_AoifQi648_I",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "hJ1sHK4Y9Gw"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-30T14:37:31Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211128 善化牛墟宣傳 1218 公投",
-        "description": "上午蔡壁如委員來到善化牛墟一起宣傳#1218公投， 江國銘、 江品璁兩位主任也一起發放文宣與宣講， Lin Kiya 、 楊家宜-白犀牛與 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-30T14:37:31Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "W-9J2NpZxd9djFyps4v4UUGatPc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "aBInEzo3k2w"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-30T14:36:47Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211127 民眾黨台南教育論壇 江明宗 –幼兒園地圖發展過程的觀察與體驗",
-        "description": "投影片https://kiang.github.io/slides/20211127_tpp.html.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-30T14:36:47Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "oHdrDvKK-sV2bz28zj1rnPEzQNE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "3VYZ7_UnpAw"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-28T14:59:22Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211128 善化牛墟",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/3VYZ7_UnpAw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/3VYZ7_UnpAw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/3VYZ7_UnpAw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-28T14:59:22Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "py-PfKdgPBNWO61rn4iv_DWamOw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "sAJErG-6mOE"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-25T06:38:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "Oculus Quest 2 體驗",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/sAJErG-6mOE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/sAJErG-6mOE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/sAJErG-6mOE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-25T06:38:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "xPjyKpzdMy8aioyzzL5Tq-pnGro",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "lWdhoDpVpmM"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-23T07:32:13Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211123 黃市長不只胸悶，眼睛也該檢查，台南市政府採購亂象一籮筐",
-        "description": "黃市長剛因為胸悶住院檢查，希望健康檢查過程也有包含眼睛，因為台南市政府採購出現各種亂象，除了設立12 天就能拿下千萬標案 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/lWdhoDpVpmM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/lWdhoDpVpmM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/lWdhoDpVpmM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-23T07:32:13Z"
       }
     }
   ]
