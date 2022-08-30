@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區南門路\/中正路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.204713,
+                    22.992175
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中華路\/小東路",
+                "count": 9
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234713,
+                    22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "東區林森路一段\/東門路二段",
                 "count": 1
             },
@@ -54,20 +82,6 @@
                 "coordinates": [
                     120.233813,
                     23.008439
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/小東路",
-                "count": 8
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.234713,
-                    22.998403
                 ]
             }
         },
@@ -418,20 +432,6 @@
                 "coordinates": [
                     120.245347,
                     22.957151
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區南門路\/中正路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.204713,
-                    22.992175
                 ]
             }
         },

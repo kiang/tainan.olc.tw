@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "QK6FfAihHZi5IiZPXIhzJ1KlBog",
+  "etag": "SQDHKrn8QC-gAwy3IScpKLwbI2c",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 345,
+    "totalResults": 354,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Bg5l9ueJY5PRslXZvelG2L93x7M",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Tgqcll9pSeE"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-01T12:35:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在關廟新光社區聊社區營造甘苦談(全景)",
+        "description": "三江這次走訪了關廟的新光社區，過去是第一個以彩繪聞名的社區，過去最熱門的時候甚至衍生許多市集攤位，帶動社區的活絡與 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Tgqcll9pSeE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Tgqcll9pSeE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Tgqcll9pSeE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-01T12:35:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lczNi2cCVxgeP99iSBuf8lWMrgU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RsBxs4w9bg4"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-01T08:57:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在關廟新光社區聊社區營造甘苦談",
+        "description": "三江這次走訪了關廟的新光社區，過去是第一個以彩繪聞名的社區，過去最熱門的時候甚至衍生許多市集攤位，帶動社區的活絡與 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-01T08:57:42Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "odvyOLHWxnNsbg-_AoifQi648_I",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-02-17T02:55:30Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "_qDSWSH4gfZJZh12xdElY9Co1Pc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "kj5TM74hLZw"
-      },
-      "snippet": {
-        "publishedAt": "2021-02-12T15:50:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "從口罩地圖到公民參與 &amp; 開源創新 @ 第九屆數位傳播國際學術研討會",
-        "description": "論壇一：疫情下的防疫公衛教育與傳播 - https://link.medium.com/h4F95ugqQdb.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kj5TM74hLZw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kj5TM74hLZw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kj5TM74hLZw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-02-12T15:50:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4rtPmns61Cv_60aQ7OOmnRPwzz8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "YnZTYpag4tM"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-20T02:10:47Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南市後壁區 天九興業台南廠 &amp; Google Earth 操作歷史衛星影像",
-        "description": "沒有爐渣米？台南後壁會一直長大的爐渣田位於後壁的天九興業台南廠主要是將廢玻璃與廢陶瓷放進混凝土磚進行再利用，只是這兩 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-20T02:10:47Z"
       }
     }
   ]
