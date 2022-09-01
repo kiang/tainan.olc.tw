@@ -4,6 +4,76 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區中山南路\/東橋七路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.239257,
+                    23.017849
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中山北路\/中山路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.257347,
+                    23.02605
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區西門路四段\/北安路一段",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.210908,
+                    23.016288
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "仁德區中山路\/文心路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.241577,
+                    22.974604
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "仁德區中正路一段\/保學路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234198,
+                    22.919906
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區南門路\/中正路",
                 "count": 2
             },
@@ -124,20 +194,6 @@
                 "coordinates": [
                     120.30966,
                     22.963693
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區西門路四段\/北安路一段",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.210908,
-                    23.016288
                 ]
             }
         },
@@ -320,20 +376,6 @@
                 "coordinates": [
                     120.255668,
                     22.991398
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中山南路\/東橋七路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.239257,
-                    23.017849
                 ]
             }
         },

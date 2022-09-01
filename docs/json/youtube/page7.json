@@ -1,13 +1,149 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "WndK7C8IRRlqVJWBfZysUAic-hc",
+  "etag": "L-iop7YyUXKAr_nIEEi14ACDUks",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 353,
-    "resultsPerPage": 30
+    "totalResults": 354,
+    "resultsPerPage": 34
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wlJjSOqwOFM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-29T02:25:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做成果介紹 3 分鐘版",
+        "description": "簡介： https://www.facebook.com/k.olc.tw/posts/959671350872995.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-29T02:25:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M0mqaBIRuURiF2JpmHuD52afYzA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ko2U8dU889M"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T11:09:12Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南市里鄰編組及調整前後比較",
+        "description": "文章介紹： http://k.olc.tw/2018/05/台南市里鄰編組及調整前後比較/ #捐款支持明宗以科技監督台南郵局劃撥： 31639415 收款戶名： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T11:09:12Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ECD5Vxd0CXNQg2q0YM5jXFGKlkc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JmxFhvGzw6E"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T08:09:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做雛型介紹",
+        "description": "介紹資訊可以參考https://g0v.hackpad.tw/0NkW64xhg7g.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T08:09:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "P_jTjn5V7MM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-10T10:25:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公民科技 @ 成大資工系 2018-05-04",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-10T10:25:10Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "qdZpezfVBUjVW9REPwJd-MesJpU",
@@ -996,7 +1132,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "EXEkMLS3h6WVL33BcYS0k7gGpX8",
+      "etag": "ORZXVOp3TzFDpvbVaMlCaZN_sgU",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
