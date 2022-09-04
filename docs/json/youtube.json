@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "歸仁區中山路一段\/86快速道路",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.30966,
+                    22.963693
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "中西區金華路四段\/成功路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.196173,
+                    23.001344
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中山南路\/東橋七路",
                 "count": 3
             },
@@ -186,20 +214,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "歸仁區中山路一段\/86快速道路",
-                "count": 4
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.30966,
-                    22.963693
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 1
             },
@@ -264,20 +278,6 @@
                 "coordinates": [
                     120.237534,
                     23.041165
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區金華路四段\/成功路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.196173,
-                    23.001344
                 ]
             }
         },

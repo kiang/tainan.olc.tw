@@ -1,13 +1,149 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "L-iop7YyUXKAr_nIEEi14ACDUks",
+  "etag": "M4TvbMaau6twVW1qbR4MKWS-sMU",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 354,
-    "resultsPerPage": 34
+    "totalResults": 353,
+    "resultsPerPage": 38
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ENApCGR4JoFWpds1Kg_8v3ucZZw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "AFkpJmjPjLo"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-22T02:20:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "如果廟會是文化的一部分，就讓這個文化精彩",
+        "description": "Medium 討論： https://bit.ly/2MMo1rZ 在台南，每年有超過一千場的廟會活動，這只是有在民政局登載的數量，實際情況各種大小 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-22T02:20:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "nTVOoaWemdCDmuEfheCwfajVCIw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5IwO4IbU3RM"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-19T13:48:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南區域排水狀態地圖操作說明",
+        "description": "網址： http://kiang.github.io/TainanWaterMap/ 台南區域排水狀態是運用台南市水利局的開放資料製作，包含了77 個水位站與11 個 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-19T13:48:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Aamukpm9tp7oAi1WSnrkRk4S-so",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yRs_J0dW2zc"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-09T00:46:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "細談國土巡守隊",
+        "description": "國土巡守隊是我在總統盃黑客松的比賽題目，這個題目有個很簡單的訴求，希望政府能夠釋出全國的地籍圖成為開放資料，然後關心 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-09T00:46:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4aBRDKHuZ0lgsER4dqR16yV4hVM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "arTmrSXkXzA"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-06T03:56:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公開徵求參選人共同進行台南議題探討",
+        "description": "傳統的政治因為露臉的機會不多，在有機會露臉時就會希望有十足的準備與盡可能的接觸更多人群，也因此跑攤文化在台南一直存在 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-06T03:56:16Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
@@ -1132,7 +1268,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ORZXVOp3TzFDpvbVaMlCaZN_sgU",
+      "etag": "VPP0ciznIvJ8AB7HkvYdJaSeTmU",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

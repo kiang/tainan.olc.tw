@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "EXbvJO69yJIhp5rdijmLAQfC-vo",
+  "etag": "vdrgmsba7puiBESJHAuKYDvYLLE",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 355,
+    "totalResults": 353,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "RAQHqtde5BQ3nkJtHEigo50XF1o",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "0Z13SVw-7kg"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-05T14:16:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220705 下午仁德，江國銘街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-05T14:16:30Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "KYxEUjWdgf7sVCxpa7XaOYAOwY8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ww2-Sw3FQmM"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-05T06:49:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220704 北區掃街發面紙 +3 實習生",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-05T06:49:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "a42Ppkswmw0dNIX7rQKMChlqT3w",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "7_JXw9KnFFc"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-02T09:14:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台灣所得地圖操作介紹",
+        "description": "台灣所得地圖是我以財政部公布的資料製作，透過村里層級的地圖與資料快速了解經濟變遷與分佈情形，透過這個影片跟大家介紹 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-02T09:14:17Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "NV3Xs2sE_sNZDoMudR2yd4kGEA4",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-02T13:32:55Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XBSgoLDW_yUqidREueC_WEmEpyU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "rrkFh-hliLo"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-01T13:41:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講 003 ，聊公園",
-        "description": "有聽過台南築角、好望角政策嗎？台南透過這個方式進行了許多社區的綠美化工作，讓社區的景觀有所改善。永康三莰店神社遺址 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/rrkFh-hliLo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/rrkFh-hliLo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/rrkFh-hliLo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-01T13:41:30Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "W-RESt18tvmKccFXZoMD4CEPkBY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "76g4yLuAqw4"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-01T12:28:06Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220401 兒童節前夕，台南也要特色公園唱出三大訴求",
-        "description": "今年兒童節前夕，「台南也要特色公園」社團家長自主性發動「台南特色公園滿意度調查」，記者會現場首度發表高唱改編自 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/76g4yLuAqw4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/76g4yLuAqw4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/76g4yLuAqw4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-01T12:28:06Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "9UWJpt_V-S6Z0sl83F_6cw2DGQg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "joiHxOBYKOo"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-01T07:47:38Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南也要特色公園 江明宗從身體力行到成為議員參選政見",
-        "description": "今日(4/1)台南也要特色公園網路社團舉辦記者會公佈問卷調查結果，除了證明台南特色公園的進展市民普遍不滿意，北、中西區議員 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-01T07:47:38Z"
       }
     }
   ]
