@@ -48,21 +48,11 @@ $fc = [
     'type' => 'FeatureCollection',
     'features' => [],
 ];
-$videos = [
-    '2022042115' => '',
-    '2022042516' => 'GFVUKlVaRvI',
-    '2022042816' => 'ZeeFXgqcf3I',
-    '2022051915' => 'LipCluJvAOw',
-    '2022060115' => 'y_OdmA3HskE',
-    '2022061815' => 'ig9V57L8sUA',
-    '2022062416' => 'C5Lpe2XmNQI',
-    '2022070410' => 'ww2-Sw3FQmM',
-    '2022070415' => '',
-    '2022080315' => 'XbQ5lpJo910',
-    '2022081316' => '',
-    '2022081814' => 'OFGO2S_PdwU',
-    '2022082110' => 'a5OfXHZJsH4',
-];
+$videos = [];
+$mapFile = $basePath . '/raw/line_video_map.json';
+if (file_exists($mapFile)) {
+    $videos = json_decode(file_get_contents($mapFile), true);
+}
 
 foreach ($timePoints as $k => $points) {
     $fc['features'][] = [
@@ -76,5 +66,9 @@ foreach ($timePoints as $k => $points) {
             'coordinates' => array_values($points),
         ],
     ];
+    if (!isset($videos[$k])) {
+        $videos[$k] = '';
+    }
 }
+file_put_contents($mapFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 file_put_contents($basePath . '/docs/json/lines.json', json_encode($fc, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
