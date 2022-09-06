@@ -21,7 +21,10 @@ var baseStyle = new ol.style.Style({
     text: new ol.style.Text({
         font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
         fill: new ol.style.Fill({
-            color: 'rgba(0,0,0,1)'
+            color: 'rgba(255,255,255,1)'
+        }),
+        backgroundFill: new ol.style.Fill({
+            color: 'rgba(29,168,165,0.7)'
         })
     })
 });
