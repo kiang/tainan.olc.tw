@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/西門路三段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.203427,
+                    23.002694
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "永康區中正北路\/中正路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.237534,
+                    23.041165
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "歸仁區中山路一段\/86快速道路",
                 "count": 5
             },
@@ -264,20 +292,6 @@
                 "coordinates": [
                     120.193953,
                     23.009592
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中正北路\/中正路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.237534,
-                    23.041165
                 ]
             }
         },

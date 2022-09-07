@@ -1,14 +1,184 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "gGrow9V3K8zAwMpY8XzUwKoWjYc",
+  "etag": "oDF_kW8zWcOtAT1rd3zP7uofric",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 353,
+    "totalResults": 355,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "9ovpyAfh1kc4YFY51El0AzyvPcQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "XHt-SIfqA2M"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-23T02:09:48Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "水交社的 AIR 台南館需要多花些心思",
+        "description": "今天跟著解老師走訪位於水交社的AIR 台南館，我們期待裡面會講述1946年美國進駐台灣到1979年中美斷交之間的故事，特別是美軍 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-23T02:09:48Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "AI5e3FdP1HDhDlhBpHY6F9IDWbM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "uV1Bm9kawPc"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-21T13:22:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在永康區新總圖聊房價問題(全景)",
+        "description": "三江再次拜訪了美麗的永康新總圖書館，延續上次在這裡聊的一些話題，這次我們聚焦在討論最近很熱門的房價問題；台南剛通過了 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-21T13:22:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "NQbCLaxk0aqjAlFgL1Bo2cEFO9c",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "8_-zQHr7jlU"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-21T13:21:01Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在永康區新總圖聊房價問題",
+        "description": "三江再次拜訪了美麗的永康新總圖書館，延續上次在這裡聊的一些話題，這次我們聚焦在討論最近很熱門的房價問題；台南剛通過了 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-21T13:21:01Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "A3l0nn71-oI95vYXtfoF8shajAU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "47rvj5MjvqE"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-17T13:51:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211217 公投宣講記錄 @ 台北",
+        "description": "20211217 公投宣講記錄@ 台北.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-17T13:51:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "OLos8iyU4CkUEtOKRDJqVF3IBY4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cvyESoGTf-k"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-15T05:38:36Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "中西區愛國婦人館的美國歷史",
+        "description": "愛國婦人館是日治時期所建造，不過在二次大戰後由美國所承租，是美國在台灣進駐最早的幾個點之一；依據解老師的研究，最初 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-15T05:38:36Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "C_8YnqS24v0_lx4Gen1OINEbcW0",
@@ -1537,176 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-08-12T00:33:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "YvcWoU7xeFJDnD-A7jfcol-HoCU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "8oooHrnn6Ow"
-      },
-      "snippet": {
-        "publishedAt": "2021-08-06T06:21:15Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210806 麻豆民眾陳情會勘",
-        "description": "上午參與麻豆舉行的民眾陳情會勘，民眾陳情當地為施工進行的道路調整產生諸多影響，現場施工單位承諾會盡快完成工程，市府 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/8oooHrnn6Ow/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/8oooHrnn6Ow/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/8oooHrnn6Ow/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-08-06T06:21:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "WV-BFGGEI74mhiEnhIwdJ4aE7Ck",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1dN4juLimiw"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-31T14:22:38Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210731 疫苗施打記錄",
-        "description": "上午外面下著雨，到場的時候人不會很多，大部分民眾都有依照預約系統上面的時間到現場；到場之後先拿號碼牌，接著量測體溫後 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1dN4juLimiw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1dN4juLimiw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1dN4juLimiw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-31T14:22:38Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "9btcqt1dkUBADU1LMaaX-i4lS7o",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "PFpbQN85OmM"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-27T10:41:12Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南夜遊 20210724",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-27T10:41:12Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "retA8bXcsb7QUomC6N4-ThtYypA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HUM0t0RtmWs"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-26T13:30:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南黃昏街景 20210725",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-26T13:30:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5EW9JniuwDjllO8NCNWY0SB0Wcw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "w-OcFUn_8m8"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-25T11:22:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南黃昏街景 20210725",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-25T11:22:41Z"
       }
     }
   ]
