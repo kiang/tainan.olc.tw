@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "g_zLK5CS1HlQ72XbVZANYbIORM4",
+  "etag": "E8GgvBPpOyQUjYYidLcWmaf9ORQ",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-rnOHaZwCoJjf0hEBgfY9LTP4lg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "j7sw3gsaQpU"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T23:55:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220419 夜遊台南-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T23:55:17Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "DFs-huvASL7KaGgvcVnt5pL98Ds",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-24T11:13:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "37TOa27RkAv2pLl0Vlb1ZQ_GH0c",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "woDADRNwllk"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-24T11:14:08Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區建興國中聊教育(全景)",
-        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-24T11:14:08Z"
       }
     }
   ]

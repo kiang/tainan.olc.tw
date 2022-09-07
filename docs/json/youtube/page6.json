@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "y7Oa95MommhL0pJiQ_Rnvpz10Co",
+  "etag": "d4aa2Wp30lKZ_Wx4rMbi7pfx-rQ",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EvFngsfBQ537o5-G4NNHwYA03So",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "N_3cjrZCPic"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-12T00:33:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210811-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-12T00:33:34Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "YvcWoU7xeFJDnD-A7jfcol-HoCU",
@@ -1507,6 +1541,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "v2XmhMQrt_DLph2Yl2t-Nl1YDNw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TkEW-tKcqxQ"
+      },
+      "snippet": {
+        "publishedAt": "2020-01-21T08:28:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2017-09-25 開放資料介紹與應用案例",
+        "description": "使用投影片： https://kiang.github.io/slides/20170925_csd.html @ 財團法人中衛發展中心.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TkEW-tKcqxQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-01-21T08:28:50Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "5tSORQa1-md-ckTkArvActhzagk",
       "id": {
         "kind": "youtube#video",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-08-22T02:09:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4gy-wZj1TZVdzFJ3pv5ltl87JjM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "W7aGqCPqfT0"
-      },
-      "snippet": {
-        "publishedAt": "2018-08-13T14:21:22Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "自己跟自己比，台灣所得地圖比較版上線",
-        "description": "在原本的所得地圖中已經可以在點選個別村里後檢視它的歷史資料，只是如果想要大量對比就會有些困難，因此基於原本的所得地圖 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-08-13T14:21:22Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "K2dBCA_FBmCCVjLK-syyU0sR9xc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xjWPtQUYRYI"
-      },
-      "snippet": {
-        "publishedAt": "2018-08-07T17:53:28Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2018 08 06 「分齡挑戰 適能冒險」特色公園公聽會記錄",
-        "description": "高雄市議會公聽會107 年08 月06 日(星期一)上午10 時00 分至12 時00 分本會一樓第一會議室康裕成、張豐藤、陳信瑜高雄市政府研 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-08-07T17:53:28Z"
       }
     }
   ]
