@@ -18,14 +18,14 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "歸仁區中山路一段\/信義南路",
-                "count": 1
+                "key": "歸仁區中山路一段\/信義北路",
+                "count": 2
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    120.297762,
-                    22.966294
+                    120.297668,
+                    22.966459
                 ]
             }
         },
@@ -362,20 +362,6 @@
                 "coordinates": [
                     120.220665,
                     23.007662
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "歸仁區中山路一段\/信義北路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.297668,
-                    22.966459
                 ]
             }
         },
