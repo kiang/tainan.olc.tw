@@ -1,11 +1,11 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "m-UubwieqnMXabYi9YvsbElZh6w",
+  "etag": "dW3VYqxbAfOWFZ2BlDDM5DA7be0",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 354,
-    "resultsPerPage": 42
+    "totalResults": 360,
+    "resultsPerPage": 40
   },
   "items": [
     {
@@ -384,40 +384,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "qdZpezfVBUjVW9REPwJd-MesJpU",
       "id": {
         "kind": "youtube#video",
@@ -758,6 +724,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-KV9XGVUoSU"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-24T10:17:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
+        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-24T10:17:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
       "id": {
         "kind": "youtube#video",
@@ -856,74 +856,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-09T12:51:55Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "voLOCRZdDbKzuD9C6GkKaMU_8WE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "hFEUd_bXnr8"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:51:54Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "NPM 套件管理 + AWS 101 雙主題 @ 好想工作室",
-        "description": "設備忘記充電，現場還在繼續，如果沒辦法過來的下次請早XD ** [活動] 4/7 晚上7:30 NPM 套件管理+ AWS 101 雙主題初體驗未來五 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/hFEUd_bXnr8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:51:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tCKNtfrWXNY"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:46:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "JS template &amp; react.js 初探 @ 好想工作室",
-        "description": "活動介紹- ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
@@ -1404,7 +1336,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "yzxtwxC3Wd2DpKNFQVUpyEON2KQ",
+      "etag": "SgiFhHS1aPjA0g728N5htQP9jVM",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

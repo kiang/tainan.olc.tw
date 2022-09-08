@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "oUQas88qyUzWuiPGsbz2md1_NdU",
+  "etag": "ci_oTlUXfsY-6wFzbjAbnGu25kI",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 355,
+    "totalResults": 361,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cbQUT2G86Amwhl-YlwLwMJD7-Wo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "qbYErISIAgA"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-05T07:16:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220805 早上歸仁，江國銘街講",
+        "description": "早上江國銘的街講來到歸仁，我跟江品璁、 台南政治實習菜鳥一起到場支援，站在街口講述我們的政見。眼前年輕人負擔沉重，我們 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/qbYErISIAgA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/qbYErISIAgA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/qbYErISIAgA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-05T07:16:16Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "CiM9u7SjvdwRcWqTNt--ei9VGR0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "KT5aB91e8ng"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-05T06:56:21Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220804 踢批批開講",
+        "description": "誰來開講   #許甫（主持人） 政治評論員／#郭正亮   民眾黨新竹市議員參選人#許登淇   民眾黨台南市議員參選人#江明宗.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KT5aB91e8ng/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KT5aB91e8ng/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KT5aB91e8ng/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-05T06:56:21Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "vun5L0OT8KAyNfB4d92j5UtX04w",
@@ -453,7 +521,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Kz38g3ZGf79kbOlFivqCO6dVW6Q",
+      "etag": "-cJquuOk0UUvPfvCr3-Y6nRCMLA",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhO8Pw2781bZ-QZZO2MrbJva"
@@ -483,40 +551,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-28T13:00:27Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DntjZwmTt3M_ZZEBtUpfVLUT56A",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-28T12:57:21Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "街講記錄",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/u5inrCPwJQs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/u5inrCPwJQs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/u5inrCPwJQs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-28T12:57:21Z"
       }
     },
     {
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-11T03:53:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aMF2xArTVdEOgN5VOb3X6Z6ZeOw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "GXU5pE7Mys0"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-09T14:22:13Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220708 全台大眾走到台南中西區水仙宮市場",
-        "description": "台灣民眾黨透過#全台大眾走活動宣揚共同政見與18 歲公投，希望大家年底選舉支持我們、也支持下修公民權門檻，共同打造更好的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-09T14:22:13Z"
       }
     }
   ]

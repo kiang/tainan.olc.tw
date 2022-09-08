@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ga9rRKLEcrVNEV5zAqmrDcyhJYw",
+  "etag": "APKYGvycPQHQ8X2q4AHB55Hp-5Y",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 355,
+    "totalResults": 361,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "aMF2xArTVdEOgN5VOb3X6Z6ZeOw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "GXU5pE7Mys0"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-09T14:22:13Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220708 全台大眾走到台南中西區水仙宮市場",
+        "description": "台灣民眾黨透過#全台大眾走活動宣揚共同政見與18 歲公投，希望大家年底選舉支持我們、也支持下修公民權門檻，共同打造更好的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-09T14:22:13Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ZMqvGNReCiQKvFAn-haAi92eYzo",
@@ -215,7 +249,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "KYxEUjWdgf7sVCxpa7XaOYAOwY8",
+      "etag": "QntbN5CwNXipkdf1p4FiFhaYGtA",
       "id": {
         "kind": "youtube#video",
         "videoId": "ww2-Sw3FQmM"
@@ -223,7 +257,7 @@
       "snippet": {
         "publishedAt": "2022-07-05T06:49:20Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220704 北區掃街發面紙 +3 實習生",
+        "title": "20220704 上午北區，江明宗掃街",
         "description": "",
         "thumbnails": {
           "default": {
@@ -487,7 +521,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "2REWKS3XuZNBVr41XsTAp5223ms",
+      "etag": "0riIob1XIajbKU4yZCsFg85KJbo",
       "id": {
         "kind": "youtube#video",
         "videoId": "C5Lpe2XmNQI"
@@ -495,7 +529,7 @@
       "snippet": {
         "publishedAt": "2022-06-24T16:44:09Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220624 中西區掃街發放面紙",
+        "title": "20220624 下午中西區，江明宗掃街",
         "description": "",
         "thumbnails": {
           "default": {
@@ -623,7 +657,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "cRbKbVi2_l_xwJXHOqzx-PrJ0ac",
+      "etag": "T4eaJEigzcwPlXvRIqUjPTjbZa0",
       "id": {
         "kind": "youtube#video",
         "videoId": "ig9V57L8sUA"
@@ -631,7 +665,7 @@
       "snippet": {
         "publishedAt": "2022-06-18T16:21:56Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220618 台南中西區掃街發面紙",
+        "title": "20220618 下午中西區，江明宗掃街",
         "description": "",
         "thumbnails": {
           "default": {
@@ -827,7 +861,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "o1Ijtd9XZIA4-_ywKBFTwVSLEzc",
+      "etag": "cTmErt1R1Aw30_H8lrum7zG7wvg",
       "id": {
         "kind": "youtube#video",
         "videoId": "877U036bhg4"
@@ -929,7 +963,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "-hO-tiUG2gzBI3_oxjyeI_f53AQ",
+      "etag": "2DHkVudje2TiEYF2Uze2ThlV8Jg",
       "id": {
         "kind": "youtube#video",
         "videoId": "y_OdmA3HskE"
@@ -937,7 +971,7 @@
       "snippet": {
         "publishedAt": "2022-06-01T15:36:33Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220601 台南中西區沿街發放面紙",
+        "title": "20220601 下午中西區，江明宗掃街",
         "description": "今天兩個孩子只上半天課程，所以下午跟著一起來發面紙#北中西區台南市議員參選人江明宗.",
         "thumbnails": {
           "default": {
@@ -1133,7 +1167,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "kiqbGglUQslK5gYSWnN7c49Ae70",
+      "etag": "_t7GMxy6zpnSpchiNR-VoHrPud0",
       "id": {
         "kind": "youtube#video",
         "videoId": "LipCluJvAOw"
@@ -1141,7 +1175,7 @@
       "snippet": {
         "publishedAt": "2022-05-19T12:02:53Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220519 台南中西區沿街發放面紙",
+        "title": "20220519 下午中西區，江明宗掃街",
         "description": "今天小女兒自願一起來幫忙，透過頭戴式攝影機記錄過程#北中西區台南市議員參選人江明宗.",
         "thumbnails": {
           "default": {
@@ -1439,7 +1473,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "toDpwpDxoE8HpPS8RhxL4-MlWWA",
+      "etag": "ZhkmV1CYbX8OSRDqXabUkS1MV9s",
       "id": {
         "kind": "youtube#video",
         "videoId": "ZeeFXgqcf3I"
@@ -1447,7 +1481,7 @@
       "snippet": {
         "publishedAt": "2022-04-28T14:14:06Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220428 台南北區沿街發放面紙",
+        "title": "20220428 下午北區，江明宗掃街",
         "description": "",
         "thumbnails": {
           "default": {
@@ -1541,7 +1575,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "GI5uiBh3VBeK4AXlPfp2aBvoktQ",
+      "etag": "bak6VkcPY63VddjspA_8PLirISw",
       "id": {
         "kind": "youtube#video",
         "videoId": "GFVUKlVaRvI"
@@ -1549,7 +1583,7 @@
       "snippet": {
         "publishedAt": "2022-04-25T14:33:17Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220425 台南北區沿街發放面紙",
+        "title": "20220425 下午北區，江明宗掃街",
         "description": "",
         "thumbnails": {
           "default": {
@@ -1639,40 +1673,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-21T17:00:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Yry2db03TEcjgK9PEJ3_w6oR9IM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MPFM6jJr0fU"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:56:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:56:02Z"
       }
     },
     {
