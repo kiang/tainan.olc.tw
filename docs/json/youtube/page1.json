@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "mdB77-XBZjaLrvrMXS17s4Pt6Z4",
+  "etag": "glVBzkZ05s4NdMrY-4_lNuBCI9c",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 361,
+    "totalResults": 362,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "0XJlIyc6ICIdMyXvdr-WlHXdzxE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "fkUGt5Q0vKc"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-08T15:26:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220908 下午永康，江品璁街講",
+        "description": "下午是江品璁在永康的街講，我跟江國銘一起到場支援，三江不厭其煩的在街頭告訴大家居住正義的重要。台南至今社會住宅完工 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-08T15:26:41Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "0S7_-3gAqFxm0HfeGIpLWNR4-Kw",
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-08T22:18:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "tuO2EwI2dOjWm-brahCRhSqC544",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Vy4EQ-mPKvI"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-08T03:02:54Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220808 早上北區，江明宗街講",
-        "description": "早上在北區街講，感謝江國銘、 江品璁前來支援，三江一起站在街口宣傳#步行城市的理念。台南是個有400 年歷史的文化古都， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-08T03:02:54Z"
       }
     }
   ]

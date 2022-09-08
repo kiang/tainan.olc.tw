@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ci_oTlUXfsY-6wFzbjAbnGu25kI",
+  "etag": "zR27OGacRYHJBFuRcqfWTDpJ2jE",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 361,
+    "totalResults": 362,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "tuO2EwI2dOjWm-brahCRhSqC544",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Vy4EQ-mPKvI"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-08T03:02:54Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220808 早上北區，江明宗街講",
+        "description": "早上在北區街講，感謝江國銘、 江品璁前來支援，三江一起站在街口宣傳#步行城市的理念。台南是個有400 年歷史的文化古都， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-08T03:02:54Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "cbQUT2G86Amwhl-YlwLwMJD7-Wo",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-11T13:35:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "gFPBy4eyQ5Y6JGK_g-mWk8huso8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "bKp09_C2LJI"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-11T03:53:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220711 早上北區，江明宗街講",
-        "description": "早上來到北區街講， 江國銘與台南政治實習菜鳥一起前來支援，我還是持續強調#步行城市對台南的重要性，希望市民朋友年底選舉 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-11T03:53:25Z"
       }
     }
   ]

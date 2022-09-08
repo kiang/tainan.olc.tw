@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "7a-BIxojwpGf5lq2ihmJryZNs4E",
+  "etag": "UMvwikPMmXT5u5GFhnM77OeGpPs",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 361,
+    "totalResults": 362,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cuLuBZcnmcM"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-23T00:36:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20210820 南鐵案北區拆遷戶抗爭事件 - 南鐵案拆遷監督交涉記錄",
+        "description": "上個星期五(8/20)凌晨，在得知南鐵案拆遷開始拉起封鎖線後，我前往北區開元陸橋旁現場希望關心與記錄，但每個能夠看到現場的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-23T00:36:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v7-JwRBrY1yVqEDum8twVklzVlo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "3jGCM4wA170"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-12T16:36:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210811-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/3jGCM4wA170/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-12T16:36:45Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "EvFngsfBQ537o5-G4NNHwYA03So",
@@ -143,6 +211,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-07-27T10:41:12Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "retA8bXcsb7QUomC6N4-ThtYypA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "HUM0t0RtmWs"
+      },
+      "snippet": {
+        "publishedAt": "2021-07-26T13:30:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南黃昏街景 20210725",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-07-26T13:30:04Z"
       }
     },
     {
@@ -653,6 +755,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-10-14T01:49:24Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VICp9tyw9DH4w2rhJuOLIOG06ak",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "QoZ_I_C5kcg"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 永大樂林居 4",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
       }
     },
     {
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2019-12-10T09:12:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "XtmKxpKPMWI"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-26T00:17:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "e等公務園+學習平臺快速上課方式",
-        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-26T00:17:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MlhVO9VUOMs"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-05T02:40:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "病媒蚊監控採樣數據管理系統",
-        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-05T02:40:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "9st9lIcEPDA"
-      },
-      "snippet": {
-        "publishedAt": "2018-08-22T02:09:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公路交通量統計地圖",
-        "description": "想要聊交通問題？試試公路交通量統計地圖在討論公共運輸時經常會聊到如何替代更多自用車輛，因此會希望有些統計數據作為基礎 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-08-22T02:09:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1PehnIoXvMIc6SZBFcDqGA1ptJI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1NM8ZYUbQDU"
-      },
-      "snippet": {
-        "publishedAt": "2018-08-14T02:40:35Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "特色公園 @ 全國女性里長人才培訓班 2018-08-12",
-        "description": "8/12 應邀代表還我特色公園行動聯盟在全國女性里長人才培訓班台南場次介紹特色公園，講授對象是一群希望參與年底選舉的里長參 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-08-14T02:40:35Z"
       }
     }
   ]
