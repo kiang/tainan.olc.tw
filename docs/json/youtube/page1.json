@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "glVBzkZ05s4NdMrY-4_lNuBCI9c",
+  "etag": "quRWocBcqkiO4UCWQeMROqOY9tM",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
@@ -10,7 +10,41 @@
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "0XJlIyc6ICIdMyXvdr-WlHXdzxE",
+      "etag": "_UDpZFfoajC8b4KdeK7xBJWxn34",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LUHc1ryLlcU"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-09T15:56:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220909 下午北區，江明宗街講",
+        "description": "下午在北區街講，感謝江國銘與志工前來支援，繼續站在街頭告訴大家#步行城市的理念。台南一直存在頭痛醫頭的問題，沒辦法系統 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-09T15:56:59Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "bU9DxgEfmyRYdhJpEmLFwUuV7O4",
       "id": {
         "kind": "youtube#video",
         "videoId": "fkUGt5Q0vKc"
@@ -78,7 +112,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "IG6OZElthv1ErKvMuWVtJgr5F0I",
+      "etag": "4hXGvLdT_EHRNySmG7_eHgn_oYA",
       "id": {
         "kind": "youtube#video",
         "videoId": "wpNRf8p20yk"
@@ -146,7 +180,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "LtvOf2sfUjWj4YiAi5eFbvArNPU",
+      "etag": "jlxSeLHk3hKB3FdSx4JS34e47tI",
       "id": {
         "kind": "youtube#video",
         "videoId": "BYawrQLVlfc"
@@ -180,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "c1GJv6SjNjQnVyGrKXjDJXsAQs0",
+      "etag": "KkVdFSdg0bH29H6yHXr_hU2NZGk",
       "id": {
         "kind": "youtube#video",
         "videoId": "g7MMqHawkd0"
@@ -214,7 +248,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "C07S8p2RjZiPXxbKoQnmaH-DSUo",
+      "etag": "4Xehk-pcNKUDWc2LtAAtgcbSbrA",
       "id": {
         "kind": "youtube#video",
         "videoId": "2G1oeUWlf_E"
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-09T04:53:11Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Wet78fjdc1lh6wRW1x-wpK3SITs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tK6lei8tA2s"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-08T22:18:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220808 下午北區，江明宗街講",
-        "description": "下午一樣是北區的街講，感謝江品璁、 江國銘前來支援，在離開前碰巧遇到羅智強、 蔡宗豪台南市中西、北區市議員候選人也要在同 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-08T22:18:24Z"
       }
     }
   ]

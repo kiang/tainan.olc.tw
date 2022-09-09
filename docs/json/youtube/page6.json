@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "UMvwikPMmXT5u5GFhnM77OeGpPs",
+  "etag": "C8-MCyVu1ptkuKkAq1EUSwBwioQ",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cnckxq5OwgzfknrsLaymmKkWvNw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "HA6PWXIgIqM"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-06T14:58:35Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生",
+        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-06T14:58:35Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
@@ -517,40 +551,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-03-28T14:01:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "vyjIjMz5cfFLRptDOjfCdEPElQg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "jrWqn33V0io"
-      },
-      "snippet": {
-        "publishedAt": "2021-02-17T02:55:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "安南區海環街歷史空拍照查詢記錄",
-        "description": "FB 討論- https://www.facebook.com/k.olc.tw/posts/1755122904661165 在安南區發現了農地填埋工程進行中，依據亂倒糾察隊提供 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/jrWqn33V0io/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/jrWqn33V0io/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/jrWqn33V0io/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-02-17T02:55:30Z"
       }
     },
     {
@@ -1371,6 +1371,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "hVJDO0eh2VlRy9FQa7Xai6bWERk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wyvSG69w_io"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wyvSG69w_io/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "OfaQRIgSiO5KAWDaQQ5KPKWiXMU",
       "id": {
         "kind": "youtube#playlist",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-01-10T15:07:08Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "pW6t0adn4jPGV3M23PwR3_kWMFM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Pn214d4p_2s"
-      },
-      "snippet": {
-        "publishedAt": "2019-12-10T09:12:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "人口推估統計資料系統",
-        "description": "國發會在去年有發布了一個人口推估查詢系統，以國家為單位去估算到2065 年可能的人口變化，引起了許多討論；最近在議員質詢時 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-12-10T09:12:09Z"
       }
     }
   ]

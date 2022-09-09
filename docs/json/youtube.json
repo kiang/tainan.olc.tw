@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區和緯路二段\/西門路四段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.20878,
+                    23.01143
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中華路\/中華二路",
                 "count": 3
             },
@@ -404,20 +418,6 @@
                 "coordinates": [
                     120.202248,
                     22.989569
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區和緯路二段\/西門路四段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.20878,
-                    23.01143
                 ]
             }
         },

@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "5Xugw3GAJ493Jpo9BHbS8zCGJFk",
+  "etag": "D6vVS_NiqTzkBaHZ7aBX59O7md8",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
@@ -9,6 +9,74 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "3HkU0S93VVHFMv49-THfXSnXH_8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "NiXqj2dfmAE"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-11T22:21:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 008 ，談染疫與未染疫心境",
+        "description": "三江有兩位同日快篩確診，隨後迎來的是行程調整與家庭成員跟著確診的衝擊；同行的我雖然持續快篩陰性，共同行程的影響以及 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-11T22:21:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "try40dHOvcl2ZmGMUTd6h8GKewI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "iXH-H3AYLUc"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-11T13:35:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220711 下午北區，江明宗街講",
+        "description": "下午來到台南公園街講，感謝江國銘、 江品璁跟台南政治實習菜鳥的支援， #步行城市的理念希望讓長輩走到街上、走入市場，台南 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-11T13:35:26Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "gFPBy4eyQ5Y6JGK_g-mWk8huso8",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-25T14:33:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "VzTrMCIJC2at_vpjxovEoGbiMc8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "AUQPbICi2HM"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-24T16:05:31Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220424 台南新市夜市掃街",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/AUQPbICi2HM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-24T16:05:31Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "SgHNfdl5y9o6zSYgv6yMddHmV5Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "J51cEneQ5GA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-21T17:00:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2022 年初至今確診病例變化",
-        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖其實有個播放功能，可以展示年初至今確診人數的變化，只是之前 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-21T17:00:10Z"
       }
     }
   ]
