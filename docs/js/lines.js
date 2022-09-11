@@ -108,8 +108,35 @@ var imgLayer = new ol.layer.Vector({
     })
 });
 
+function cunliStyleFunction(f) {
+    var p = f.getProperties();
+    let cunliStyle = new ol.style.Style({
+        fill: null,
+        stroke: new ol.style.Stroke({
+            color: '#00f',
+            width: 1
+        }),
+        text: new ol.style.Text({
+            font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+            fill: new ol.style.Fill({
+                color: 'rgba(0,0,255,0.7)'
+            })
+        })
+    });
+    cunliStyle.getText().setText(p.name.toString() + "\n" + p.rate.toString() + '% | ' + p.votes.toString());
+    return cunliStyle;
+}
+
+var vectorCunli = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        url: 'https://kiang.github.io/vote2022/tpp_zone/67000-08.json',
+        format: new ol.format.GeoJSON()
+    }),
+    style: cunliStyleFunction
+});
+
 var map = new ol.Map({
-    layers: [baseLayer, theArea, points, imgLayer],
+    layers: [baseLayer, theArea, points, imgLayer, vectorCunli],
     target: 'map',
     view: appView
 });
