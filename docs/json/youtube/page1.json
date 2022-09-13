@@ -1,16 +1,84 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "iuJo9FKyCmvzGL7GfayTzDFyoVU",
+  "etag": "CjDVbv4PzfwNW37LI2hkYEsb5bQ",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 368,
+    "totalResults": 371,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "JySn1EjbVe1_eIpa3k6MpB_vKuM",
+      "etag": "9FXo6f1EkENPRt4vIl_x29krne0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SU2a8ZJLgfs"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-13T13:15:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220913 下午永康，江品璁街講",
+        "description": "下午是 江品璁 在永康的街講，我跟 江國銘 一起到場，三江今天都背著旗子，互相撞來撞去有著莫名的喜感 (?) 。這兩天盜圖新聞從 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-13T13:15:57Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "9DcFjIqfiTI-7yV2ekohIzwGWas",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "KL2I3j5yxLA"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-13T05:52:01Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220913 早上中西區，江明宗掃街",
+        "description": "上午掃街的位置是#中西區城隍里，城隍里就在台南車站旁邊，巷弄間可以看到許多不同年代的建築交錯，馬路邊則是商家店面為主； ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KL2I3j5yxLA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KL2I3j5yxLA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KL2I3j5yxLA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-13T05:52:01Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Wm_-Yl2ewHkueJHSMNn8Tnbjf4E",
       "id": {
         "kind": "youtube#video",
         "videoId": "8n7bGmR5SG4"
@@ -19,7 +87,7 @@
         "publishedAt": "2022-09-12T13:09:59Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20220912 下午關廟，江國銘街講",
-        "description": "連假過後持續站在街頭的三江，今天跟著 江國銘 的腳步來到關廟，我跟 江品璁 一起參與，繼續告訴在地鄉親我們的理念。台南出生 ...",
+        "description": "連假過後持續站在街頭的三江，今天跟著江國銘的腳步來到關廟，我跟江品璁一起參與，繼續告訴在地鄉親我們的理念。台南出生 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/8n7bGmR5SG4/default.jpg",
@@ -78,7 +146,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "t0uqNywi4xW9mAeaC0L5h-idYs4",
+      "etag": "9ruMQAdgFfXoT-whjK1OsOasoks",
       "id": {
         "kind": "youtube#video",
         "videoId": "Jm5syE0nd6s"
@@ -146,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "_UDpZFfoajC8b4KdeK7xBJWxn34",
+      "etag": "_nsw7fAFG7he-vGETCKCNQCIKII",
       "id": {
         "kind": "youtube#video",
         "videoId": "LUHc1ryLlcU"
@@ -214,7 +282,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "0S7_-3gAqFxm0HfeGIpLWNR4-Kw",
+      "etag": "e8PXfrJ0WYZgnUEpBMPMBdOm6Yg",
       "id": {
         "kind": "youtube#video",
         "videoId": "Fv1bEG170k8"
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-12T04:31:06Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0FillzJuHQEzfjyfscaqithizWU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Y0OgMs1ZPMQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-11T13:52:39Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220811 下午中西區，江明宗街講",
-        "description": "下午在中西區進行街講，感謝江國銘、 江品璁前來支援，我繼續跟大家介紹我的理念與經歷。江明宗是口罩地圖的開發者、江明宗是 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-11T13:52:39Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ibKblk9vxlcHIRTrtP2H6bUDsNk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "NRaYJ54OqkE"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-11T03:26:48Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220811 早上永康，江品璁街講",
-        "description": "早上江品璁在永康街講，我跟江國銘前來支援，一起站在街頭暢談參選政見。眼前#林志堅抄襲事件持續發燒，民進黨無視台大審查 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/NRaYJ54OqkE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-11T03:26:48Z"
       }
     }
   ]

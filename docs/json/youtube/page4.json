@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "l_NoT0Lw6XF3DLWCWno8IbkQO44",
+  "etag": "F0d7rVVW_HRBWb0lKmA2Q_XwPe4",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 368,
+    "totalResults": 371,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XQ5FohAuY0Gj_xT85m5dfvq3T-g",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhOahtBASCjDqJ8T2uYuHNxT"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-02T05:53:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "記者會",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-02T05:53:23Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "PbhvoGpPFI_44VOEoWlD7szJ6uQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "4--WUXKigc0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-01T13:14:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220501 南科贊美酒店義賣紀錄",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/4--WUXKigc0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-01T13:14:30Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ZhkmV1CYbX8OSRDqXabUkS1MV9s",
@@ -211,40 +279,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-21T17:00:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Yry2db03TEcjgK9PEJ3_w6oR9IM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MPFM6jJr0fU"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:56:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:56:02Z"
       }
     },
     {
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-01-25T07:13:00Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "sEWZTFemKeiLiKJVOn-v6RqprTs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wD5xThrVIek"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-21T23:30:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區民生路聊人行空間-全景",
-        "description": "三江來到了台南府城歷史街區的核心區域，也是台南少數已經進行騎樓整平工作的路段，忠義路、民生路與永福路形成的路線，距離 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-21T23:30:25Z"
       }
     }
   ]

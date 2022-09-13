@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區永大路二段\/公園路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.263655,
+                    23.014068
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "關廟區中正路\/南雄路二段",
                 "count": 1
             },
@@ -348,20 +362,6 @@
                 "coordinates": [
                     120.261052,
                     23.024688
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區永大路二段\/公園路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.263655,
-                    23.014068
                 ]
             }
         },
