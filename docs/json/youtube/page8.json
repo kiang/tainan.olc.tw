@@ -1,16 +1,118 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "l4utjxXYa9uxKNAB_TxjeUPk5So",
+  "etag": "Xre2d3GO15IJNPVDTQpswQGUMdk",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 370,
-    "resultsPerPage": 1
+    "totalResults": 366,
+    "resultsPerPage": 4
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "1h0DGjD7KSU7v74pJWjeHvPX4-Y",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MqMjhZAijyc"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-06T09:22:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "袁紅冰教授台南板聚",
+        "description": "由於袁教授在7/5 14:00~17:00 參與政大書城舉辦的活動，所以我們順便邀請他在7/6 14:00 ~ 16:00 參與自發舉辦的板聚，這個板聚 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-06T09:22:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VFC-aFico68"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-01T02:54:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014台南黑客松-HackTainan上午實況 @ 10:25am",
+        "description": "活動網址： http://tdcp.kktix.cc/events/hacktainan2014.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-01T02:54:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4JiSRPm7DOSVJGsrgp_MbUaNLYg",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

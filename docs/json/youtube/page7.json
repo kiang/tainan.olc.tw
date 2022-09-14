@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "QnK-VWoqhSQGUfMEJIJgIV-xBMM",
+  "etag": "wF-fEwx-CmsheKOr4HfzI9r9O_A",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 370,
+    "totalResults": 366,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "BM-bBbek-sIBpSmPzE03HdzzJXo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TGtfirGQoAo"
+      },
+      "snippet": {
+        "publishedAt": "2020-03-31T12:06:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "一個科技人的體制外與體制內 @ 臺南大學行政管理系 2020-03-23",
+        "description": "感謝臺南大學老師的邀請，跟同學分享了一下最近幾年在政治領域進進出出的心得，期待對參與的同學有些幫助。 投影片： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-03-31T12:06:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Cl2Q-wjmQMVgaq4PwgEtujtHLXI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yt38hqcefCI"
+      },
+      "snippet": {
+        "publishedAt": "2020-03-24T16:04:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台電再生能源可併網容量地圖操作展示",
+        "description": "台電再生能源可併網容量地圖改版再生能源可併網容量是我過去在經濟部期間參與的開放資料計畫之一，台電主動公開這份資料對於 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yt38hqcefCI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yt38hqcefCI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yt38hqcefCI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-03-24T16:04:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "T1CmKKteN_20nf9d4WhaevfdqVw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "uenEtm3igkc"
+      },
+      "snippet": {
+        "publishedAt": "2020-03-10T15:08:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "Mask Map for South Korea Online, Made in Taiwan (台灣製的南韓口罩地圖上線)",
+        "description": "Mask Map for South Korea Online, Made in Taiwan (台灣製的南韓口罩地圖上線) (中文內容放在英文後面) I had built a Mask Map ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/uenEtm3igkc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/uenEtm3igkc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/uenEtm3igkc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-03-10T15:08:24Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "uF5xSKKJoaMw9TXlwwmmhFoHquw",
@@ -211,6 +313,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2019-12-10T09:12:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "XtmKxpKPMWI"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-26T00:17:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "e等公務園+學習平臺快速上課方式",
+        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-26T00:17:40Z"
       }
     },
     {
@@ -691,40 +827,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "qdZpezfVBUjVW9REPwJd-MesJpU",
       "id": {
         "kind": "youtube#video",
@@ -1099,6 +1201,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1gid0zfc6yg"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-17T01:42:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "藥要看網站基本介紹",
+        "description": "藥要看( http://drugs.olc.tw/ )提供簡單的介面檢索國內有註冊登記的藥品資訊.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-17T01:42:28Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "rHYdM6DMNnzXyXtytZmefgGcieI",
       "id": {
         "kind": "youtube#video",
@@ -1197,40 +1333,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-07T12:51:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aHzrYXlscEQsMTNKbcFl_9gy3Lc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tCKNtfrWXNY"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-07T12:46:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "JS template &amp; react.js 初探 @ 好想工作室",
-        "description": "活動介紹- ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tCKNtfrWXNY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-07T12:46:45Z"
       }
     },
     {
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Bamzy7hI3sg"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-15T16:03:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "蘇煥智：大台南願景與交通佈局",
-        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-15T16:03:02Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MqMjhZAijyc"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-06T09:22:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "袁紅冰教授台南板聚",
-        "description": "由於袁教授在7/5 14:00~17:00 參與政大書城舉辦的活動，所以我們順便邀請他在7/6 14:00 ~ 16:00 參與自發舉辦的板聚，這個板聚 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-06T09:22:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VFC-aFico68"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-01T02:54:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014台南黑客松-HackTainan上午實況 @ 10:25am",
-        "description": "活動網址： http://tdcp.kktix.cc/events/hacktainan2014.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VFC-aFico68/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-01T02:54:45Z"
       }
     }
   ]

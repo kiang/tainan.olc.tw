@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "F0d7rVVW_HRBWb0lKmA2Q_XwPe4",
+  "etag": "J1choVs5oj99fU5EvI5zqCHlqgE",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 371,
+    "totalResults": 367,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VYHUdFyfXKY"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-02T05:54:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "【民眾黨團撐民眾 防疫服務隊成立】記者會",
+        "description": "日期：2022年5月2日（一） ○時間：上午9:00 ○地點：立法院台灣民眾黨黨團會議室（青島東路1-3號3樓） ○出席人員：立法委員 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-02T05:54:20Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "XQ5FohAuY0Gj_xT85m5dfvq3T-g",
@@ -279,6 +313,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-21T17:00:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Yry2db03TEcjgK9PEJ3_w6oR9IM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MPFM6jJr0fU"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T23:56:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220419 夜遊台南-3",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MPFM6jJr0fU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T23:56:02Z"
       }
     },
     {
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-02-05T03:07:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cU7BFb73GkWI1A88yvBkH1z8-u0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "NRBSPdrfwlc"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-04T02:58:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220203 普濟殿燈會",
-        "description": "一年一度的府城普濟燈會逛過了嗎？如果還沒，跟著我的腳步先逛過一遍吧！ 府城普濟燈會特別的地方是背後的各種故事，每個燈籠 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-04T02:58:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "LBLZlSo6pn8aq3ZC41yVn723_UU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "r4W2pf3WvGw"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-25T07:13:00Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220125 第三劑疫苗施打記錄",
-        "description": "完成第三劑疫苗的施打了，兩劑的AZ 加今天的BNT ，也希望符合資格的朋友能夠盡快完成疫苗施打，保護自己也保護身邊的親友！",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/r4W2pf3WvGw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-25T07:13:00Z"
       }
     }
   ]
