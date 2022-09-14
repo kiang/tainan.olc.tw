@@ -1,45 +1,79 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Xre2d3GO15IJNPVDTQpswQGUMdk",
+  "etag": "nZfbXwzBIVhCd_ffsoSJ5Lnia6Y",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 366,
-    "resultsPerPage": 4
+    "totalResults": 368,
+    "resultsPerPage": 5
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "etag": "G1mD_aj4fAEpVHAgTFLVedmVYn8",
       "id": {
         "kind": "youtube#video",
-        "videoId": "Bamzy7hI3sg"
+        "videoId": "eYeVAHP-k9k"
       },
       "snippet": {
-        "publishedAt": "2014-07-15T16:03:02Z",
+        "publishedAt": "2014-08-15T13:06:48Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "蘇煥智：大台南願景與交通佈局",
-        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "title": "台南民主人權地圖＠公民覺醒星期五",
+        "description": "時間：2014-08-15 19:00~21:00 地點：瑪莎羅芙主講者：王昭文老師主題：台南民主地圖活動資訊： ...",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2014-07-15T16:03:02Z"
+        "publishTime": "2014-08-15T13:06:48Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cE8vUPpNQuQgCFHkqaRhzJNsyjk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kSHrbsFcghQ"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-25T18:45:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014-07-24 臺南市北區和順里 里長擬參選人 姜宜宏 訪談",
+        "description": "逐字稿與原始文章： http://goo.gl/dC02oj 這是臺南市北區議員擬參選人江明宗( http://k.olc.tw/ ) 針對臺南市北區和順里里長擬參選人 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-25T18:45:05Z"
       }
     },
     {
@@ -112,7 +146,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4JiSRPm7DOSVJGsrgp_MbUaNLYg",
+      "etag": "oweGwMclticuNpBgylsMRevKss0",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

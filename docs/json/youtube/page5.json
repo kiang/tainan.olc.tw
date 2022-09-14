@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "2zY1f72Nj7e44Fb0lQAHT45lzl4",
+  "etag": "r-2P6OQnbLS7dE09bvK8g1jgLKs",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 367,
+    "totalResults": 369,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hxCT5x5LxaxoThf5TZhm4fIxrgI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "DUEmy3miBZ4"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-08T11:04:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在永康區忠孝運動公園聊公共設施",
+        "description": "三江這次拜訪了永康的忠孝運動公園，這是個超過5 公頃的大型公園，但實際走訪其中卻發現只有零星的設施，很難想像是一個擁有 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DUEmy3miBZ4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-08T11:04:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "qTmG-dxid7xjNxjq7lv-KqBe-10",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "STqUHR1_X_A"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-05T03:07:43Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220204 台南市區腳踏車走春",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/STqUHR1_X_A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-05T03:07:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cU7BFb73GkWI1A88yvBkH1z8-u0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "NRBSPdrfwlc"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-04T02:58:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220203 普濟殿燈會",
+        "description": "一年一度的府城普濟燈會逛過了嗎？如果還沒，跟著我的腳步先逛過一遍吧！ 府城普濟燈會特別的地方是背後的各種故事，每個燈籠 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NRBSPdrfwlc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-04T02:58:20Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "LBLZlSo6pn8aq3ZC41yVn723_UU",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-10-01T12:03:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "S2MxkD1RLnBBq3i-586hOlA7h5Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "0a7fZXRHNss"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-26T02:58:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210926 台南水仙宮市場宣傳 1218 公民投票",
-        "description": "今天早上在水仙宮市場宣傳1218 公民投票，請大家一定要站出來投票，告訴政府我們要#反萊豬#護藻礁.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/0a7fZXRHNss/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-26T02:58:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XepcUUKGHsFZyK_CxXp4qUsvS04",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "GevbcI0Hs0s"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-15T15:49:43Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在水仙宮聊傳統市場 - 全景",
-        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-15T15:49:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "TH_IJCeKElRm9sfpGdojEkUgER0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "IH0YHbIWk3w"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-15T12:19:06Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在水仙宮聊傳統市場",
-        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/IH0YHbIWk3w/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-15T12:19:06Z"
       }
     }
   ]

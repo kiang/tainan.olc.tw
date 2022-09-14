@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "c4WNq7_EM_69WPwDSdKI7dZeujs",
+  "etag": "eOaH1Wq8NWmqkjLTAvrMyKhvMXA",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 367,
+    "totalResults": 369,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "8UOMHpnZuFF-MLqtF7VTMpzrIJc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "nMaTyI-kf9U"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-14T14:46:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220914 下午北區，江明宗街講",
+        "description": "下午來到北區街講，感謝江國銘、 江品璁前來支援，三江繼續在街頭宣傳參政理念。台南的美食不只胡椒蝦、魚丸湯，但是台南 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/nMaTyI-kf9U/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/nMaTyI-kf9U/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/nMaTyI-kf9U/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-14T14:46:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v1T013otWgj_Jb_E-OBZeiA-YKk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "E3L1B4YuJH0"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-14T07:24:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220914 早上北區，江明宗掃街",
+        "description": "早上走在#北區福德里，福德里位於鄭子寮重劃區的核心區域，街道與房舍都相當新穎，雖然並未設置完整的步行空間，但新建築要求 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-14T07:24:50Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "6GOlEKjV2ZUqqW9KUFCegD3Grvs",
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-15T13:04:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "MFZz--kHJijlq_jsJlyLnZZrXsI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "681odBJapco"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-15T04:57:51Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220815 早上仁德，江國銘街講",
-        "description": "早上江國銘來到仁德街講，我跟志工一起現場參與，繼續在街頭分享參政理念。現在的大環境，年輕人再怎麼打拼也沒有太大改變， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/681odBJapco/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/681odBJapco/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/681odBJapco/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-15T04:57:51Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0eBRAZYfW0yusNU-smxfXQs7vTc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wQcexcicn2g"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-13T22:32:07Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220813 北區掃街發面紙",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wQcexcicn2g/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wQcexcicn2g/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wQcexcicn2g/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-13T22:32:07Z"
       }
     }
   ]

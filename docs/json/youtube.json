@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/西門路三段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.203427,
+                    23.002694
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區永大路二段\/公園路",
                 "count": 3
             },
@@ -68,20 +82,6 @@
                 "coordinates": [
                     120.297668,
                     22.966459
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/西門路三段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.203427,
-                    23.002694
                 ]
             }
         },
