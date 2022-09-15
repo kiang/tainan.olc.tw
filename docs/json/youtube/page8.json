@@ -1,11 +1,11 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "nZfbXwzBIVhCd_ffsoSJ5Lnia6Y",
+  "etag": "FMx0D_JEHsxQuCBaUgb1bd1368g",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 368,
-    "resultsPerPage": 5
+    "totalResults": 373,
+    "resultsPerPage": 6
   },
   "items": [
     {
@@ -74,6 +74,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {

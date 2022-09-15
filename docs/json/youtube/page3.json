@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "9xSvzSahnJDZ_qsyLGrB2Y2Pxjw",
+  "etag": "BAhkx-HH9c3nvir-HAfYUU6NCzc",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 369,
+    "totalResults": 373,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DZAfGRVG0RJaM51oemtIGdyRsnA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ThUiY3WD5Cc"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-18T04:37:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220718 早上仁德，江國銘街講",
+        "description": "早上在仁德參與江國銘的街講， 台南政治實習菜鳥一起支援，共同傳達不花大錢、不綁樁腳與不抹黑的參政理念， 柯文哲主席說過， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ThUiY3WD5Cc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ThUiY3WD5Cc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ThUiY3WD5Cc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-18T04:37:28Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ScymyK8AL72Yj2vTQm8Gtpnnn9Q",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-05-09T17:26:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-_hqzZ5THYFjTp6y2yFcUsG8Xc8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "g5OHOa6B5rA"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-08T07:55:48Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220508 母親節快樂！歸仁早市發放康乃馨",
-        "description": "今天是母親節， 江國銘江品璁蔡宛秦洪岳銘一起來到歸仁早市發放康乃馨，沿途民眾相當熱情，一下子就全部發完，祝福大家母親節 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/g5OHOa6B5rA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-08T07:55:48Z"
       }
     }
   ]
