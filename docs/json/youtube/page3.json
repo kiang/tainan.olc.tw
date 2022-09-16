@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "BAhkx-HH9c3nvir-HAfYUU6NCzc",
+  "etag": "5muNJ61L0cnTZqpfDyJL6JRp_E4",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "vS4kCQUhmIvWYzzeH0PfbiBX0vM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "2-IM9H33Jyc"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-18T22:03:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220718 下午永康，江品璁街講",
+        "description": "下午江品璁的街講來到鹽行夜市，我跟江國銘、 台南政治實習菜鳥一起宣揚參選理念，眼前許多公共政策跟財團利益掛勾，一般民眾 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/2-IM9H33Jyc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/2-IM9H33Jyc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/2-IM9H33Jyc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-18T22:03:24Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "DZAfGRVG0RJaM51oemtIGdyRsnA",
@@ -1167,7 +1201,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Oryqfage8OBu-gLe3LFI5y2Go28",
+      "etag": "Xs-BU2JoCw-3EA5QSUwwi0miYjg",
       "id": {
         "kind": "youtube#video",
         "videoId": "tHYiCcYD5K0"
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-05-16T13:21:39Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "NW-TjbEDnabfbJmWhK5MSo1X-UI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "7-dE1ZmQY4E"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-09T17:26:26Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講 005 ，聊疫情、防疫與超前布署",
-        "description": "最近一個月來疫情迅速升溫，每日確診人數已經突破4 萬人，政府宣傳多時的\"超前布署\" 在遇到眼前大規模感染情況下跟民眾期待 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7-dE1ZmQY4E/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-09T17:26:26Z"
       }
     }
   ]

@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "仁德區中正路一段\/崑崙路",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.244628,
+                    22.929178
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/西門路三段",
                 "count": 2
             },
