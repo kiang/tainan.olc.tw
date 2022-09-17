@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區中華路\/小東路",
+                "count": 10
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234713,
+                    22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "仁德區中正路一段\/崑崙路",
                 "count": 1
             },
@@ -222,20 +236,6 @@
                 "coordinates": [
                     120.204713,
                     22.992175
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/小東路",
-                "count": 9
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.234713,
-                    22.998403
                 ]
             }
         },

@@ -1,47 +1,13 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "6DkcoaCokm18zsKBNKIEfZOaPGc",
+  "etag": "2gp38AcERrEWtYzrzHl6TAmO9jc",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 372,
-    "resultsPerPage": 8
+    "totalResults": 377,
+    "resultsPerPage": 7
   },
   "items": [
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Zink-nCvjA_enmjPr5fZy2V_6Gg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yXRavNWcBkA"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:08:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "林一方 苗栗抗暴經驗分享",
-        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:08:17Z"
-      }
-    },
     {
       "kind": "youtube#searchResult",
       "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
@@ -248,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ANs93XyKHsq7x9WflweKfWgdAvI",
+      "etag": "1TrI4cvbpMGLsBB3J5OVFGsSKYM",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
