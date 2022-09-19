@@ -1,14 +1,218 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "6doFer7Le_l89xyOfMaMh_aZI70",
+  "etag": "ofiJIElasVrMaEVW2yrGeSkiINw",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 378,
+    "totalResults": 385,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lpe8sPkO879ZaD_hhRSwy_j6M_I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Y3iURz9owv0"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-07T19:13:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220607 下午東區，蔡宛秦街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-07T19:13:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "2DHkVudje2TiEYF2Uze2ThlV8Jg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "y_OdmA3HskE"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-01T15:36:33Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220601 下午中西區，江明宗掃街",
+        "description": "今天兩個孩子只上半天課程，所以下午跟著一起來發面紙#北中西區台南市議員參選人江明宗.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/y_OdmA3HskE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-01T15:36:33Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XlBzJ17tc37bhsNvTuEkHHCpihM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MTfNN2L67ew"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-31T13:39:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台灣幼兒園地圖加入檢索與分享功能",
+        "description": "這兩天運用一點時間，在幼兒園地圖加入一些功能與調整，主要是幼兒園的檢索以及個別幼兒園的分享網址，希望簡化大家在查找 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MTfNN2L67ew/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-31T13:39:16Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "tR_AJrkHGXydnp8MLGtKp8AlAq4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xomi5RmlRb4"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-30T19:54:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220529 台南安平運河環河體驗",
+        "description": "星期天參與了觀旅局主辦的「2022臺南市水域遊憩體驗活動-環河挑戰」活動，這次特別的地方是主辦單位申請了完整的航道， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xomi5RmlRb4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-30T19:54:27Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "jzBuyv8-QKHztl78g68ySYOfzu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZPOury5h4P0"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-30T06:27:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220529 台南安平運河環河體驗-全景",
+        "description": "星期天參與了觀旅局主辦的「2022臺南市水域遊憩體驗活動-環河挑戰」活動，這次特別的地方是主辦單位申請了完整的航道， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZPOury5h4P0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-30T06:27:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fY6UeSsyN7mmkhlfhUKh06nmFP8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "aKpKg3_PibI"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-29T07:00:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "善用視訊診療與社區藥局，抗疫不一定要出門",
+        "description": "政府最新規定中，家用快篩取得陽性結果後，可以透過視訊診療方式由醫師協助判定確診，之後視醫生評估開立處方箋領藥；不過 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/aKpKg3_PibI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-29T07:00:27Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "69F19iNBHGytPVPwHIJ5AfeTmPU",
@@ -551,6 +755,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-21T17:00:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M8JInlFcUAJ79-h1r_sKASCCFcE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "atCqDU1RbCA"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T23:55:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220419 夜遊台南-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T23:55:44Z"
       }
     },
     {
@@ -1469,244 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-03-03T09:44:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "M6IKFhro8WiFTRVle01sj52q7_Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "r1V_wKwDHjk"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-03T09:43:15Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "跟鐵道哥一起聊台南歷史街區的步行空間問題-全景",
-        "description": "鐵道哥是台灣少數的典型鐵道迷，對於鐵道的研究非常深入，進而延伸到各種公共運輸與步行空間的連結，最難得的地方是自己 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-03T09:43:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ss-E9Baw2xrc8vpBnBIQAEP9slM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "chdVWWs8pag"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:20:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220225 自行車 @ 中西區",
-        "description": "柯文哲市長過兩天(2/27)第三度挑戰腳踏車一日北高，我已經準備好從嘉義跟進陪騎，同時也響應#比昨天的你再往前騎一點活動， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:20:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Do10HA4qZOrzfbhV6EIiKbwhEdA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ygvTv_b7sUE"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:15:13Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-1",
-        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:15:13Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "zr7IaE_9xQ-3fyHTSRpLBUs5El0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "nuARWF7-4l8"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:15:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-2",
-        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:15:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6Qc5ESyjm0nhxyAs4WoO8T7hGLA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "u06Rl1unVdA"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:16:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-3",
-        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/u06Rl1unVdA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:16:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "A-zDPDBg5Ykk5Rdt-54Qc8-ho78",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "5klnuqdTDus"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-25T07:56:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在仁德運動公園聊清官要比貪官奸 - 全景",
-        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/5klnuqdTDus/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-25T07:56:29Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rE3fzZ1V5ldHdOWiCsDhsMBft9g",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "NbueBUDLbxo"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-25T07:54:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在仁德運動公園聊清官要比貪官奸",
-        "description": "三江前往仁德運動公園走訪，這裡有籃球場、網球場、游泳池與壘球場，提供了相當豐富的運動設施；不過我們聊的題目比較有趣， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/NbueBUDLbxo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-25T07:54:40Z"
       }
     }
   ]
