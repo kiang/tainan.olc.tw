@@ -16,7 +16,7 @@ foreach (glob($jsonPath . '/*.geojson') as $jsonFile) {
                             $timePoints[$currentKey] = [];
                         }
                         $timeS = date('YmdHi', $time);
-                        if (!isset($timePoints[$currentKey][$timeS])) {
+                        if (!isset($timePoints[$currentKey][$timeS]) && isset($f['geometry']['geometries'][$k])) {
                             $timePoints[$currentKey][$timeS] = [
                                 $f['geometry']['geometries'][$k]['coordinates'][$pk][0],
                                 $f['geometry']['geometries'][$k]['coordinates'][$pk][1]
