@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "9nEwUFbNcJTQcv45SMAzi_1tmlQ",
+  "etag": "bFgB4C4DyNtFiE3XUWNMXNhV7aM",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 385,
+    "totalResults": 387,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EH6TTEDqK8UGb5gtowrd3th5p78",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-U7Ki0neAQ8"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 和平公園 2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-U7Ki0neAQ8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-U7Ki0neAQ8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-U7Ki0neAQ8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "L2OHwDoEgEwFAYke412HnChPhzM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "z5ePB_PO2Kw"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 永大樂林居 2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/z5ePB_PO2Kw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/z5ePB_PO2Kw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/z5ePB_PO2Kw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "soxeGgWwu268fiasozqAfUnyavw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1U2ryty3cMU"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 永大樂林居 6",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "-zookGzLfAWn1LpsXX1qeF_EGs0",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-05-12T13:42:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-KV9XGVUoSU"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-24T10:17:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
-        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-24T10:17:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1gid0zfc6yg"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-17T01:42:28Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "藥要看網站基本介紹",
-        "description": "藥要看( http://drugs.olc.tw/ )提供簡單的介面檢索國內有註冊登記的藥品資訊.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-17T01:42:28Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rHYdM6DMNnzXyXtytZmefgGcieI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "jBQfjtCGW9I"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-09T13:53:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "opengov tainan 台南公民智庫:甚麼是開放政府? -2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-09T13:53:04Z"
       }
     }
   ]

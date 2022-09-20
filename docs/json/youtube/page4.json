@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ofiJIElasVrMaEVW2yrGeSkiINw",
+  "etag": "wzQyvXYk_n5b_cpBKjqO8qkriUQ",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 385,
+    "totalResults": 387,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VMNDjPFxnH95whhKYUgmWaGX2hg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "oTetdMu-_28"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-10T15:47:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220610 早上仁德，江國銘街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/oTetdMu-_28/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/oTetdMu-_28/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/oTetdMu-_28/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-10T15:47:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "uegv2mT8YqeP3ZPOwue0TkurmC4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "7R1mgCUZ5dE"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-09T14:19:08Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220609 下午北區，江明宗街講",
+        "description": "下午三江一起來到北區進行街講，過程我一再強調的是這次參選的政見核心『步行城市』，希望孩子可以用步行的方式上學、長輩 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-09T14:19:08Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cTmErt1R1Aw30_H8lrum7zG7wvg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "877U036bhg4"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-08T06:36:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 006 ，候選人平時都在忙什麼？",
+        "description": "傳統政治運作方式不是素人參政的三江所能夠負荷，口袋深度無法跟上，所以努力的在腦袋深度上下功夫，希望能夠走出一條不同的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/877U036bhg4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/877U036bhg4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/877U036bhg4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-08T06:36:53Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "HUXyzMyLtQhzs_MynXfM497_e6g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "lOOHtqLJD5o"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-08T00:00:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220606 存心藥命館，江明宗談府城交通、青年就業、節慶管理",
+        "description": "「存心藥命館」是由台南社大＆存心堂咖啡館舉辦的直播節目，在節目中邀請市議員參選人一起探討台南所面臨的問題與解方，我在 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/lOOHtqLJD5o/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/lOOHtqLJD5o/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/lOOHtqLJD5o/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-08T00:00:34Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "lpe8sPkO879ZaD_hhRSwy_j6M_I",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-03-09T14:38:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "kkxlcNAjdnsP6E8vVzlAX-L-X5Q",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "5xdjKK5k-fc"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-09T14:38:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在北區和順公園聊道路設計與停車-全景",
-        "description": "三江這次到訪北區和順公園，這個公園週邊人口密度很高，衍生了許多交通需求，在最近的一個公共工程中改造了路口的道路設計， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-09T14:38:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "neRrsCPUnhwHuk7QyRGbYYu-AHY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-uxwvtUgMTU"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-04T07:19:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講 001 ，聊國民黨初選、俄烏戰爭與民眾黨",
-        "description": "最近兩大黨的台南市長初選議題持續出現在媒體版面，我們也看到國民黨針對青年參選提出難得的評選加分，究竟這樣的加分是否 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-04T07:19:30Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "mdIAZCdX1bvi-Jv3RFjZhU5hRLo",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhNVd4kZ6zgwisA-hUveNXUQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-04T07:19:15Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-04T07:19:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "IIAqZuBR1xBsP0ybhpue8FBLDLc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "S5bd0X8b7kM"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-03T09:44:15Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "跟鐵道哥一起聊台南歷史街區的步行空間問題",
-        "description": "鐵道哥是台灣少數的典型鐵道迷，對於鐵道的研究非常深入，進而延伸到各種公共運輸與步行空間的連結，最難得的地方是自己 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-03T09:44:15Z"
       }
     }
   ]

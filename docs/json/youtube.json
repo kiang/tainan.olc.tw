@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區和緯路四段\/文賢路",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.193953,
+                    23.009592
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "歸仁區中山路一段\/86快速道路",
                 "count": 6
             },
@@ -348,20 +362,6 @@
                 "coordinates": [
                     120.186358,
                     23.006768
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區和緯路四段\/文賢路",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.193953,
-                    23.009592
                 ]
             }
         },

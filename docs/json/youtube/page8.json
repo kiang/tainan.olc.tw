@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "xBlD9J6KyYLiD0czx22C2aT2jYE",
+  "etag": "3Zs9t6TCJxzYXunwAQU6ck9PKQ4",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 385,
-    "resultsPerPage": 13
+    "totalResults": 386,
+    "resultsPerPage": 17
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rHYdM6DMNnzXyXtytZmefgGcieI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jBQfjtCGW9I"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T13:53:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府? -2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T13:53:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cbkenZ1KrZk5phEH9UYV78_6_ug",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Ji9CgunPQPA"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T12:51:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府?",
+        "description": "電源不足，請轉往https://www.youtube.com/watch?v=jBQfjtCGW9I 瀏覽活動網址： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T12:51:55Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "L9GP7utT6fNarwSNny9moWDqwEQ",
@@ -142,6 +210,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-11-20T14:10:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "6L4jS3s7-t4Tlxea7HvJaEc-Qzk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "23JydRUB3kQ"
+      },
+      "snippet": {
+        "publishedAt": "2014-10-24T17:33:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014-10-24 g0v &amp; open data @ NCKU-CSIE-自由軟體開發與社群發展",
+        "description": "使用投影片： http://k.olc.tw/slide/20141024_ncku_csie.html 口語討論時有諸多細節的錯誤，如果有發現問題還請告知;) 已知問題： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-10-24T17:33:42Z"
       }
     },
     {
@@ -350,6 +452,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
       "id": {
         "kind": "youtube#video",
@@ -418,7 +554,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "AKkr7ucd0KFgUCTBFNbDwQs8wjA",
+      "etag": "qheK-zysWrAO1JCmrbcnPkzpebo",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
