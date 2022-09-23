@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區中華路\/中華二路",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.233813,
+                    23.008439
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區和緯路四段\/文賢路",
                 "count": 4
             },
@@ -110,20 +124,6 @@
                 "coordinates": [
                     120.20878,
                     23.01143
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/中華二路",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.233813,
-                    23.008439
                 ]
             }
         },
