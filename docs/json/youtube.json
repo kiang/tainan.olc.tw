@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路一段\/永華路一段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.194732,
+                    22.987517
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中華路\/中華二路",
                 "count": 4
             },

@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "chxHV7x1qqix4NTyj5cEL6k35S4",
+  "etag": "8oOeHyOP6w2-41aK3tVt35xRTt8",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 391,
+    "totalResults": 395,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lczNi2cCVxgeP99iSBuf8lWMrgU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RsBxs4w9bg4"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-01T08:57:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在關廟新光社區聊社區營造甘苦談",
+        "description": "三江這次走訪了關廟的新光社區，過去是第一個以彩繪聞名的社區，過去最熱門的時候甚至衍生許多市集攤位，帶動社區的活絡與 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-01T08:57:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "odvyOLHWxnNsbg-_AoifQi648_I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "hJ1sHK4Y9Gw"
+      },
+      "snippet": {
+        "publishedAt": "2021-11-30T14:37:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211128 善化牛墟宣傳 1218 公投",
+        "description": "上午蔡壁如委員來到善化牛墟一起宣傳#1218公投， 江國銘、 江品璁兩位主任也一起發放文宣與宣講， Lin Kiya 、 楊家宜-白犀牛與 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hJ1sHK4Y9Gw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-11-30T14:37:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "W-9J2NpZxd9djFyps4v4UUGatPc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "aBInEzo3k2w"
+      },
+      "snippet": {
+        "publishedAt": "2021-11-30T14:36:47Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211127 民眾黨台南教育論壇 江明宗 –幼兒園地圖發展過程的觀察與體驗",
+        "description": "投影片https://kiang.github.io/slides/20211127_tpp.html.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/aBInEzo3k2w/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-11-30T14:36:47Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "oHdrDvKK-sV2bz28zj1rnPEzQNE",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-02-12T15:50:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4rtPmns61Cv_60aQ7OOmnRPwzz8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "YnZTYpag4tM"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-20T02:10:47Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南市後壁區 天九興業台南廠 &amp; Google Earth 操作歷史衛星影像",
-        "description": "沒有爐渣米？台南後壁會一直長大的爐渣田位於後壁的天九興業台南廠主要是將廢玻璃與廢陶瓷放進混凝土磚進行再利用，只是這兩 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-20T02:10:47Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "tAVfx2ZpUhk9ljMTbCnaoUTi9lM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wb-nvVev2yY"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-16T05:21:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20201016 學甲區爐碴掩埋案清運記錄片段",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wb-nvVev2yY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wb-nvVev2yY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wb-nvVev2yY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-16T05:21:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "wzWvaauRgSLewvD7cpk2fJEnuFQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "7BG1B2NRQkE"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T02:00:36Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20201014 學甲農地爐碴清運過程記錄",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7BG1B2NRQkE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7BG1B2NRQkE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7BG1B2NRQkE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T02:00:36Z"
       }
     }
   ]

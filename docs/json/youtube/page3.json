@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "8h2wPkIhujB2GXiqHrjlPuJeI8Q",
+  "etag": "8jO_VyHFoKYxhJmhkq5m1hlSamE",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 391,
+    "totalResults": 395,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "AbmSbZOUVUXzwUFIU3gvsJutNdI",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhMdSdB-H355iLvAc9qLNVlV"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T12:57:21Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "街講記錄",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/BVYf58OMqSI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/BVYf58OMqSI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/BVYf58OMqSI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T12:57:21Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "v7m1rqqjefgugCADmPdi2REYNko",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jNmDz8-KP6I"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T12:17:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 009 ，談選舉的空軍策略",
+        "description": "三江的參選背後都沒有財團或家族的奧援，因此不容易透過傳統的宣傳管道讓大家認識我們，除了持續站在街頭宣揚理念，持續透過 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T12:17:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "HE1YxBYW-19z_2IWNNd8q7BGF0w",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "oUPzEMBNd_c"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T12:01:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "憲哥帶路，安南區廟宇走讀(3/3) - 海尾寮朝皇宮",
+        "description": "台南是眾神之都，登記的廟宇就有超過千家，有些廟宇集合了各式藝術創作，有些廟宇嘗試為傳統與現代之間搭起橋樑，期待眾多的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/oUPzEMBNd_c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/oUPzEMBNd_c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/oUPzEMBNd_c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T12:01:26Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "zEOWsYtGxbPqsoM-4Rs4yUQQVKU",
@@ -1541,7 +1643,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Zx18t5grsewIH0isF-k1LPJc8Ng",
+      "etag": "c9zULvB4u5V3IGI_b6d57uKo9qk",
       "id": {
         "kind": "youtube#video",
         "videoId": "AorctFu5TlA"
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-06-25T05:35:49Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0riIob1XIajbKU4yZCsFg85KJbo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "C5Lpe2XmNQI"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-24T16:44:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220624 下午中西區，江明宗掃街",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-24T16:44:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "o8jVeO-sXBRzPZQHCGnNZQ2xCCg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "rpRhoqNVx3Y"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-23T07:28:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220622 政見論述戰鬥營登台演練",
-        "description": "昨天在台中的政見論述戰鬥營，我嘗試挑戰3 分鐘的政見論述，不過看起來3 分鐘不太夠XD 這也是我需要改變的地方，太習慣講 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-23T07:28:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JCFuyzPYJ8afsJA0jI0p3LWZ9R4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Up0xpN1P-7k"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-22T22:36:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220622 新竹新豐鄉徐勝凌掃街",
-        "description": "上午在新竹新豐鄉跟著徐勝凌的腳步掃街，新豐是個介於都市與鄉村之間的城鎮，年輕的家庭需要有代言人發聲；勝凌是年輕的爸爸 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-22T22:36:52Z"
       }
     }
   ]

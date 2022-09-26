@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "1NVdS2gsgFPD35xvhOXFeAmOfKk",
+  "etag": "6Y9youFviBhY1CEBV97CKKFo868",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 391,
+    "totalResults": 395,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "0riIob1XIajbKU4yZCsFg85KJbo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "C5Lpe2XmNQI"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-24T16:44:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220624 下午中西區，江明宗掃街",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-24T16:44:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XyZ-HMisBt0_tlFjIYvwnb3AZ_0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "rpRhoqNVx3Y"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-23T07:28:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220622 政見論述戰鬥營登台演練",
+        "description": "昨天在台中的政見論述戰鬥營，我嘗試挑戰3 分鐘的政見論述，不過看起來3 分鐘不太夠XD 這也是我需要改變的地方，太習慣講 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-23T07:28:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JCFuyzPYJ8afsJA0jI0p3LWZ9R4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Up0xpN1P-7k"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-22T22:36:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220622 新竹新豐鄉徐勝凌掃街",
+        "description": "上午在新竹新豐鄉跟著徐勝凌的腳步掃街，新豐是個介於都市與鄉村之間的城鎮，年輕的家庭需要有代言人發聲；勝凌是年輕的爸爸 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-22T22:36:52Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "RpMUknHr3YOPvojAXT0sG7_jRvA",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-03-25T11:39:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "_XCLLxYaI8YP31bcTGo63gaZa7g",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "AkfxExBMWsg"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-24T13:25:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康大灣重劃區聊人行道規劃",
-        "description": "大灣重劃區是永康最新的房地產熱門區域，許多漂亮的別墅正如火如荼的興建，只是來到這裡會發現一點跟其他重劃區不太一樣， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/AkfxExBMWsg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/AkfxExBMWsg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/AkfxExBMWsg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-24T13:25:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "N1JXFXBT95KIUlplNB2jJbFWj3o",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "G1IHgyyo6PE"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-20T13:31:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2022台南甜點節紀錄",
-        "description": "台南甜點節今年是第2屆，雖然因為疫情關係禁止邊走邊吃，但看起來大家生意還是不錯；期待未來可以在細節跟上，讓活動舉辦可以 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/G1IHgyyo6PE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-20T13:31:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-giM5SYtDoOZmMQNJnHHfAEAz7U",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "vX82pfD58Ro"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-16T18:14:47Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講 002 ，聊公有市場、社會福利與長輩們的網路依賴",
-        "description": "公有市場攤位轉租問題持續存在，台南市政府願意嘗試處理值得鼓勵，但過程中仍然衍生爭議，應該要怎麼處理？許多人知道社會 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/vX82pfD58Ro/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-16T18:14:47Z"
       }
     }
   ]
