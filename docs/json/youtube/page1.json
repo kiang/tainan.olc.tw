@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "-efVW0ScPK7ea21dlinwM5xnKuU",
+  "etag": "oeDU93V3xUAYabfaR9FGHimuGBA",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 394,
+    "totalResults": 395,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "e8KHptGkNsfWQL_FVmBMVfve8Ks",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "teSCScXZu_s"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-26T13:17:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220926 下午永康，江品璁街講",
+        "description": "下午江品璁來到鹽行夜市街講，我跟江國銘一起到場支援，三江一如往常的在路口告訴大家我們的理念。政治工作尋求的是社會最大 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/teSCScXZu_s/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/teSCScXZu_s/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/teSCScXZu_s/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-26T13:17:41Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ckDZ8Q2qHMqVOjQp6szl7OcvirQ",
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-30T13:00:07Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "VhFepFR1F2l_gDessBiV_Xe5sbE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-Vx4CQx_3-0"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-30T03:53:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220830 早上中西區，江明宗街講",
-        "description": "早上來到文學館街講，感謝江國銘、 江品璁一起到場支援，三江一直在街頭跟大家訴說參政理念。台南是擁有超過400 年歷史的文化 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-30T03:53:44Z"
       }
     }
   ]

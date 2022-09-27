@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "gJPVXdhLkNGoT2hnklWDHPieDgc",
+  "etag": "qdC4HSUWZ-t0iwlrLDSjdP3X1Kc",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 394,
+    "totalResults": 396,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VhFepFR1F2l_gDessBiV_Xe5sbE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-Vx4CQx_3-0"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-30T03:53:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220830 早上中西區，江明宗街講",
+        "description": "早上來到文學館街講，感謝江國銘、 江品璁一起到場支援，三江一直在街頭跟大家訴說參政理念。台南是擁有超過400 年歷史的文化 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-Vx4CQx_3-0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-30T03:53:44Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Jppi9kL7MOvZ7xhEehipx_jTs2k",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-28T13:32:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "pS3-_cY0b2bozEFmRMR5Do_FZAg",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhO8Pw2781bZ-QZZO2MrbJva"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-28T13:00:27Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "掃街記錄",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-28T13:00:27Z"
       }
     }
   ]

@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "6Y9youFviBhY1CEBV97CKKFo868",
+  "etag": "dLzqkpR0GGQ_yDKxGPP7LioqfYA",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
@@ -9,6 +9,40 @@
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JJXz-cz248Zx8xyymRcRSTfgDL4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "pk6NFk-L8JM"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-25T05:35:49Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220624 @DearNaNa 採訪記錄",
+        "description": "直播內容時間表0:00 節目開始，調一下音量02:01 明宗的自我介紹03:02 姑姑和明宗的靈異故事06:15 來自窮苦的家庭，爹親國中時 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-25T05:35:49Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "0riIob1XIajbKU4yZCsFg85KJbo",
@@ -1163,40 +1197,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-21T17:00:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "M8JInlFcUAJ79-h1r_sKASCCFcE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "atCqDU1RbCA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:55:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:55:44Z"
       }
     },
     {

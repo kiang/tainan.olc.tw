@@ -1,81 +1,13 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "aNSXhdnMgT18_Gj3qKokJr8b2GM",
+  "etag": "e_osjlhbKvOaFcQo-zX8VtZQSso",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 393,
+    "totalResults": 394,
     "resultsPerPage": 23
   },
   "items": [
-    {
-      "kind": "youtube#searchResult",
-      "etag": "vNaWAxKibQp4W4mIVUBsi8ENxAU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "bCfHqdIQfnk"
-      },
-      "snippet": {
-        "publishedAt": "2017-11-29T15:49:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南也要特色公園 - 建立公園功能展示",
-        "description": "展示在https://parks.olc.tw/ 新增的建立公園功能.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2017-11-29T15:49:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JMv0Y-bJshW1C9mBw0W7YlVPEuE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "k35qD4iXATo"
-      },
-      "snippet": {
-        "publishedAt": "2017-11-29T15:48:14Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "時代力量台南小松 01 - 在台南地圖畫線 操作示範",
-        "description": "詳細資訊可以參考懶人包- http://beta.hackfoldr.org/npp-tainan-6001/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/k35qD4iXATo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/k35qD4iXATo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/k35qD4iXATo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2017-11-29T15:48:14Z"
-      }
-    },
     {
       "kind": "youtube#searchResult",
       "etag": "eaHwe1a818JT-tK6TnrBaeIzwKw",
@@ -108,6 +40,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2016-10-02T12:28:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kHj3fxBxMmI"
+      },
+      "snippet": {
+        "publishedAt": "2016-06-17T04:50:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "demo of current status for https://github.com/tainancity/lines",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2016-06-17T04:50:27Z"
       }
     },
     {
@@ -690,6 +656,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
       "id": {
         "kind": "youtube#video",
@@ -758,7 +758,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "_8vffxCWwb6sFLg59J2K3w9rvOc",
+      "etag": "SSVAorT60s2ROUoq5CY8awuhUzo",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
