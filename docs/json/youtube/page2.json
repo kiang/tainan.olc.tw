@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "qdC4HSUWZ-t0iwlrLDSjdP3X1Kc",
+  "etag": "g9_7R2Q3ciMkjgNPP612dDYK7t0",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 396,
+    "totalResults": 395,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "RmZzc9gum30jimZwBD4pBdR2ePk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "hbmGRh5MxiM"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-31T08:36:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220831 早上仁德，江國銘街講",
+        "description": "早上江國銘的街講在仁德，我跟江品璁一起到場支援，三江在街頭不停傳達政治理念。台南的好，不用米其林就有很多人知道；台南 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-31T08:36:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "pgFWvdfcIpCmEFwWVCIa5ljDUSg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "h12O1yTF0Lg"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-30T13:00:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220830 下午仁德，江國銘街講",
+        "description": "下午江國銘的街講來到仁德，我跟江品璁一起參與，三江在另一個台南的轉角處告訴大家參選理念。 台灣民眾黨的我們希望改變選舉 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-30T13:00:07Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "VhFepFR1F2l_gDessBiV_Xe5sbE",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-29T11:21:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4ohAiRT3hXyiKm4sb6yOVIBqxTw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "y4UVO7xDtA4"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-29T04:41:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220729 早上仁德，江國銘街講",
-        "description": "早上江國銘的街講來到仁德，我跟江品璁、台南政治實習菜鳥一起站在街頭，持續呼喊我們的參政理念。林志堅論文案的背後是現有 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-29T04:41:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cO_4glDg8m3Pkdpyeruj0qX6fL4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "TmZJA2GYJ2Q"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-28T13:32:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220728 下午仁德，江國銘街講",
-        "description": "下午江國銘在仁德街講，我跟江品璁、 台南政治實習菜鳥一起站在街頭，訴說參政理念。台南與台灣的政治傾向財團嚴重，導致許多 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-28T13:32:09Z"
       }
     }
   ]

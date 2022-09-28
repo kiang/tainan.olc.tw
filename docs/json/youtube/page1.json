@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "oeDU93V3xUAYabfaR9FGHimuGBA",
+  "etag": "rTzYyH3CZ9qkP7FZV7l8tb3vIYw",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 395,
+    "totalResults": 398,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "9_vIPMCp5MrVR_Uep9HRixQoLSc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "FsNJOLyuk60"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-27T15:41:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220927 下午中西區，江明宗街講",
+        "description": "下午來到中西區街講，感謝江國銘、 江品璁到場支援，三江街講繼續在街頭宣揚參政理念。台南年輕人出走很有感，從人口統計數字 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/FsNJOLyuk60/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/FsNJOLyuk60/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/FsNJOLyuk60/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-27T15:41:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lvVKYwU41KNQULVQlD4VVrGmKKU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Sxe03zvGeHg"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-27T04:48:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220927 早上中西區，江明宗掃街",
+        "description": "早上的掃街進入到#中西區大涼里，鄰近安平運河的好處是很容易親近開闊的景觀，只是看到社區張貼的公告也可以發現這裡的蚊蟲 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Sxe03zvGeHg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Sxe03zvGeHg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Sxe03zvGeHg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-27T04:48:40Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "e8KHptGkNsfWQL_FVmBMVfve8Ks",
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-31T14:50:13Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "RmZzc9gum30jimZwBD4pBdR2ePk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "hbmGRh5MxiM"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-31T08:36:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220831 早上仁德，江國銘街講",
-        "description": "早上江國銘的街講在仁德，我跟江品璁一起到場支援，三江在街頭不停傳達政治理念。台南的好，不用米其林就有很多人知道；台南 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/hbmGRh5MxiM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-31T08:36:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "pgFWvdfcIpCmEFwWVCIa5ljDUSg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "h12O1yTF0Lg"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-30T13:00:07Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220830 下午仁德，江國銘街講",
-        "description": "下午江國銘的街講來到仁德，我跟江品璁一起參與，三江在另一個台南的轉角處告訴大家參選理念。 台灣民眾黨的我們希望改變選舉 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/h12O1yTF0Lg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-30T13:00:07Z"
       }
     }
   ]
