@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "LaMCXlBQtD_tsBkROsreuzIev_g",
+  "etag": "jIU65Bg4pAJ-WjCfYmpjQZsOtME",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 398,
-    "resultsPerPage": 29
+    "totalResults": 395,
+    "resultsPerPage": 28
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ECD5Vxd0CXNQg2q0YM5jXFGKlkc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JmxFhvGzw6E"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T08:09:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做雛型介紹",
+        "description": "介紹資訊可以參考https://g0v.hackpad.tw/0NkW64xhg7g.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T08:09:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "P_jTjn5V7MM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-10T10:25:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公民科技 @ 成大資工系 2018-05-04",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-10T10:25:10Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Euf8LwZuCknrs8DMP47SA36HxcY",
@@ -210,40 +278,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2016-10-02T12:28:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "kHj3fxBxMmI"
-      },
-      "snippet": {
-        "publishedAt": "2016-06-17T04:50:27Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "demo of current status for https://github.com/tainancity/lines",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2016-06-17T04:50:27Z"
       }
     },
     {
@@ -758,40 +792,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1Fmbouiypco"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:00:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "請轉往 https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48",
-        "description": "原有網址出狀況，請改為： https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1Fmbouiypco/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:00:23Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "G1mD_aj4fAEpVHAgTFLVedmVYn8",
       "id": {
         "kind": "youtube#video",
@@ -856,40 +856,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Bamzy7hI3sg"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-15T16:03:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "蘇煥智：大台南願景與交通佈局",
-        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {
@@ -962,7 +928,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "bzmOiHJyFA8JPzwCHWmZiKO2drE",
+      "etag": "MDR7SkefmNMDoQm58GKi8mG1MBE",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

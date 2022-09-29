@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "KVLb07SOhRdJbJAfJpq6CevpstA",
+  "etag": "CiiOdl3elPCn3bjqhXVeV5hJhyg",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 398,
+    "totalResults": 396,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "5V0A1iLCDm8mz8-KMHcVcOT-4bE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JSk7fTUbZKs"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-29T13:24:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220619 江明宗自我介紹與參選理念",
+        "description": "上週日柯文哲與蔡壁如前來台南與黨員聚餐，我在台上介紹自己與參選理念，期待可以爭取更多夥伴的認同與支持，在年底選舉一起 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-29T13:24:55Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ta50QgPqPEJQk3wn6Ii7KKdLkEA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "toH5sPL7F84"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-29T08:48:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220629 江明宗 步行城市、科技監督",
+        "description": "大家好，我是北中西區台南市議員參選人江明宗，我這一次參選有一個重要的政見，叫做步行城市；我所在的地區叫做府城歷史街區 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/toH5sPL7F84/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/toH5sPL7F84/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/toH5sPL7F84/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-29T08:48:23Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "jTTCShS_p0Dx5XLa42kWRhdVy7E",
@@ -1269,40 +1337,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "M8JInlFcUAJ79-h1r_sKASCCFcE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "atCqDU1RbCA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:55:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:55:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "-rnOHaZwCoJjf0hEBgfY9LTP4lg",
       "id": {
         "kind": "youtube#video",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-03-29T13:42:33Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "8ZGzSvBrILWrU3UR8ZLLluHeWBU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cIWseULlI8M"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-27T11:56:34Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220327 凹仔底森林公園遊戲場縮時",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cIWseULlI8M/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cIWseULlI8M/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cIWseULlI8M/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-27T11:56:34Z"
       }
     }
   ]
