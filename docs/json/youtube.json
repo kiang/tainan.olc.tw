@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "永康區中華路\/小東路",
+                "count": 11
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.234713,
+                    22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/西門路三段",
                 "count": 3
             },
@@ -96,20 +110,6 @@
                 "coordinates": [
                     120.30966,
                     22.963693
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "永康區中華路\/小東路",
-                "count": 10
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.234713,
-                    22.998403
                 ]
             }
         },

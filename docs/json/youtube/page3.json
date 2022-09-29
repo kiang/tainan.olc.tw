@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "8U64QS7xV1cLlFh63vlG_FFbnSA",
+  "etag": "NS5MLN_kdD-Rxi6WoDTNFxJ0iX8",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 396,
+    "totalResults": 398,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "J3Mnf2s4p4PwL7e3Jy7xAXo9bls",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Tecoxv-22qk"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-31T14:27:32Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "買不起厝 MV",
+        "description": "台南的房價持續攀上歷史新高，對於一般年輕人來說買房的目標真的越來越遙遠， #江國銘透過#買不起厝這首歌要唱出年輕人的心聲 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-31T14:27:32Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "JOGjgtMmw5m6RUJXqSsCC-iibZA",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-05T06:49:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "a42Ppkswmw0dNIX7rQKMChlqT3w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "7_JXw9KnFFc"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-02T09:14:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣所得地圖操作介紹",
-        "description": "台灣所得地圖是我以財政部公布的資料製作，透過村里層級的地圖與資料快速了解經濟變遷與分佈情形，透過這個影片跟大家介紹 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-02T09:14:17Z"
       }
     }
   ]

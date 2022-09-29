@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "BNCW1725_9VtFG4559T-BIQiQDQ",
+  "etag": "B_1fKPwg5pv4HRmomcGLWArJKUY",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 396,
+    "totalResults": 398,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "x9HljwbcGjpmekQEdEpEf_ksYA4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "X1uVwfgyeZs"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-29T14:19:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220929 下午永康，江品璁街講",
+        "description": "下午是江品璁在永康的街講，我跟江國銘、 #北區力行里#周家宏到場支援，站在路口告訴大家這次參選的政見與主張。近來各種沒有 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/X1uVwfgyeZs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/X1uVwfgyeZs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/X1uVwfgyeZs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-29T14:19:18Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "r8S9IiDxR62taMyrc4CA7bbQelE",
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-02T07:31:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "tihPkmHCyujKaVQBEuXm0W-2C90",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "NOGQZCgNvXw"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-01T13:11:57Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220901 下午永康，江品璁街講",
-        "description": "下午江品璁在永康街講，我跟江國銘一起站在街頭，三江一步一腳印的告訴大家我們的理念。疫情影響下，許多三明治世代的年輕 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/NOGQZCgNvXw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/NOGQZCgNvXw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/NOGQZCgNvXw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-01T13:11:57Z"
       }
     }
   ]

@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Ve_E_onqdN5EckSIcv-atbqWqvo",
+  "etag": "ceFLX9gYmsoKp7Ta0s3-69pnX9I",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 396,
+    "totalResults": 398,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "9UWJpt_V-S6Z0sl83F_6cw2DGQg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "joiHxOBYKOo"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-01T07:47:38Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南也要特色公園 江明宗從身體力行到成為議員參選政見",
+        "description": "今日(4/1)台南也要特色公園網路社團舉辦記者會公佈問卷調查結果，除了證明台南特色公園的進展市民普遍不滿意，北、中西區議員 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/joiHxOBYKOo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-01T07:47:38Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "QeTatuuMbxij4od49FWgfsXyReA",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-09T12:51:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XObFrUwMn_vQpGLPvl9intzjO0Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MMNMrZ6Isrg"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-09T12:51:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南北區原美國學校的歷史不簡單",
-        "description": "在北區振興公園西北面的草地上，可以看到開元路旁遺留的大門遺跡，過去在沒有人介紹的情況下，一直都誤以為真的只是一間學校 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-09T12:51:41Z"
       }
     }
   ]

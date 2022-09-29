@@ -1,13 +1,115 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "jIU65Bg4pAJ-WjCfYmpjQZsOtME",
+  "etag": "Cz8Nl78h9xivWlGEqzW-2t7zDyo",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 395,
-    "resultsPerPage": 28
+    "totalResults": 397,
+    "resultsPerPage": 33
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4aBRDKHuZ0lgsER4dqR16yV4hVM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "arTmrSXkXzA"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-06T03:56:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公開徵求參選人共同進行台南議題探討",
+        "description": "傳統的政治因為露臉的機會不多，在有機會露臉時就會希望有十足的準備與盡可能的接觸更多人群，也因此跑攤文化在台南一直存在 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-06T03:56:16Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wlJjSOqwOFM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-29T02:25:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做成果介紹 3 分鐘版",
+        "description": "簡介： https://www.facebook.com/k.olc.tw/posts/959671350872995.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-29T02:25:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M0mqaBIRuURiF2JpmHuD52afYzA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ko2U8dU889M"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T11:09:12Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南市里鄰編組及調整前後比較",
+        "description": "文章介紹： http://k.olc.tw/2018/05/台南市里鄰編組及調整前後比較/ #捐款支持明宗以科技監督台南郵局劃撥： 31639415 收款戶名： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T11:09:12Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ECD5Vxd0CXNQg2q0YM5jXFGKlkc",
@@ -248,36 +350,36 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "eaHwe1a818JT-tK6TnrBaeIzwKw",
+      "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
       "id": {
         "kind": "youtube#video",
-        "videoId": "m6rLAbewYaM"
+        "videoId": "kHj3fxBxMmI"
       },
       "snippet": {
-        "publishedAt": "2016-10-02T12:28:43Z",
+        "publishedAt": "2016-06-17T04:50:27Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2016台電電力供需黑客松 成果發表",
-        "description": "活動議程： http://www.accupass.com/go/sdthon 台電開放資料： http://www.taipower.com.tw/content/announcement/ann01-5.aspx.",
+        "title": "demo of current status for https://github.com/tainancity/lines",
+        "description": "",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/default.jpg",
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2016-10-02T12:28:43Z"
+        "publishTime": "2016-06-17T04:50:27Z"
       }
     },
     {
@@ -792,6 +894,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1Fmbouiypco"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:00:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "請轉往 https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48",
+        "description": "原有網址出狀況，請改為： https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:00:23Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "G1mD_aj4fAEpVHAgTFLVedmVYn8",
       "id": {
         "kind": "youtube#video",
@@ -856,6 +992,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {
@@ -928,7 +1098,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "MDR7SkefmNMDoQm58GKi8mG1MBE",
+      "etag": "KmfQhpPptFEtkEwhT_6AyItlnHo",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
