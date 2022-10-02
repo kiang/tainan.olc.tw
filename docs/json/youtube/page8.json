@@ -1,13 +1,319 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Cz8Nl78h9xivWlGEqzW-2t7zDyo",
+  "etag": "iTk5jd4rmJeuxg1tOAKTm0kH4eQ",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 397,
-    "resultsPerPage": 33
+    "totalResults": 411,
+    "resultsPerPage": 41
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "9st9lIcEPDA"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-22T02:09:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公路交通量統計地圖",
+        "description": "想要聊交通問題？試試公路交通量統計地圖在討論公共運輸時經常會聊到如何替代更多自用車輛，因此會希望有些統計數據作為基礎 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-22T02:09:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1PehnIoXvMIc6SZBFcDqGA1ptJI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1NM8ZYUbQDU"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-14T02:40:35Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "特色公園 @ 全國女性里長人才培訓班 2018-08-12",
+        "description": "8/12 應邀代表還我特色公園行動聯盟在全國女性里長人才培訓班台南場次介紹特色公園，講授對象是一群希望參與年底選舉的里長參 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1NM8ZYUbQDU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-14T02:40:35Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4gy-wZj1TZVdzFJ3pv5ltl87JjM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "W7aGqCPqfT0"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-13T14:21:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "自己跟自己比，台灣所得地圖比較版上線",
+        "description": "在原本的所得地圖中已經可以在點選個別村里後檢視它的歷史資料，只是如果想要大量對比就會有些困難，因此基於原本的所得地圖 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-13T14:21:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "K2dBCA_FBmCCVjLK-syyU0sR9xc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xjWPtQUYRYI"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-07T17:53:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2018 08 06 「分齡挑戰 適能冒險」特色公園公聽會記錄",
+        "description": "高雄市議會公聽會107 年08 月06 日(星期一)上午10 時00 分至12 時00 分本會一樓第一會議室康裕成、張豐藤、陳信瑜高雄市政府研 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-07T17:53:28Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EovAI0ah0IbUq0c25KXdYISERbQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "2aI5Y6aaFOo"
+      },
+      "snippet": {
+        "publishedAt": "2018-07-30T16:03:39Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "北區立德公園鋼柱保護網編織記錄 20180730",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/2aI5Y6aaFOo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-07-30T16:03:39Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "G4h32RN9qYilpGeZqXY8GlZ-LFc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "AU8mLmZ6Mc0"
+      },
+      "snippet": {
+        "publishedAt": "2018-07-10T03:08:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "想要知道鄰居的所得？台灣所得地圖全新改版上線",
+        "description": "台灣所得地圖網址： https://kiang.github.io/salary/map/ 高解析操作介紹： https://youtu.be/AU8mLmZ6Mc0 Medium 討論： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AU8mLmZ6Mc0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AU8mLmZ6Mc0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AU8mLmZ6Mc0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-07-10T03:08:18Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ENApCGR4JoFWpds1Kg_8v3ucZZw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "AFkpJmjPjLo"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-22T02:20:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "如果廟會是文化的一部分，就讓這個文化精彩",
+        "description": "Medium 討論： https://bit.ly/2MMo1rZ 在台南，每年有超過一千場的廟會活動，這只是有在民政局登載的數量，實際情況各種大小 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-22T02:20:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "nTVOoaWemdCDmuEfheCwfajVCIw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5IwO4IbU3RM"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-19T13:48:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南區域排水狀態地圖操作說明",
+        "description": "網址： http://kiang.github.io/TainanWaterMap/ 台南區域排水狀態是運用台南市水利局的開放資料製作，包含了77 個水位站與11 個 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5IwO4IbU3RM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-19T13:48:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Aamukpm9tp7oAi1WSnrkRk4S-so",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yRs_J0dW2zc"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-09T00:46:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "細談國土巡守隊",
+        "description": "國土巡守隊是我在總統盃黑客松的比賽題目，這個題目有個很簡單的訴求，希望政府能夠釋出全國的地籍圖成為開放資料，然後關心 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-09T00:46:34Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "4aBRDKHuZ0lgsER4dqR16yV4hVM",
@@ -142,40 +448,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-05-15T08:09:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
       }
     },
     {
@@ -350,6 +622,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "eaHwe1a818JT-tK6TnrBaeIzwKw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "m6rLAbewYaM"
+      },
+      "snippet": {
+        "publishedAt": "2016-10-02T12:28:43Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2016台電電力供需黑客松 成果發表",
+        "description": "活動議程： http://www.accupass.com/go/sdthon 台電開放資料： http://www.taipower.com.tw/content/announcement/ann01-5.aspx.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/m6rLAbewYaM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2016-10-02T12:28:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
       "id": {
         "kind": "youtube#video",
@@ -482,40 +788,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-05-12T13:42:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-KV9XGVUoSU"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-24T10:17:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
-        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-24T10:17:41Z"
       }
     },
     {
@@ -1098,7 +1370,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "KmfQhpPptFEtkEwhT_6AyItlnHo",
+      "etag": "VBJBQ513KUt5BwTWn3hyqkxqIRA",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

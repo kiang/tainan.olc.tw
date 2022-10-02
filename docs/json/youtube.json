@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "歸仁區中正南路一段\/凱旋路三段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.278051,
+                    22.950436
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中華路\/小東路",
                 "count": 11
             },
