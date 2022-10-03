@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "5kPCc_Ek11ZWXnp8fQQ0aZ6j_qs",
+  "etag": "bBzfTP-SNu17MIc_RE6JyVzTjrQ",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 411,
+    "totalResults": 412,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "OI-wN-n0xA5GmtD4l2Vk1yIvIV0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "fkUGt5Q0vKc"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-08T15:26:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220908 下午永康，江品璁街講",
+        "description": "下午是江品璁在永康的街講，我跟江國銘一起到場支援，三江不厭其煩的在街頭告訴大家居住正義的重要。台南至今社會住宅完工 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-08T15:26:41Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "e8PXfrJ0WYZgnUEpBMPMBdOm6Yg",
@@ -283,7 +317,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "wWHbOTbMcCmP9e4_Qt95Zh_00Ko",
+      "etag": "KMtFdbMrPCafIFlUtTJnHOundQE",
       "id": {
         "kind": "youtube#video",
         "videoId": "cbnlfSCMyUw"
@@ -292,7 +326,7 @@
         "publishedAt": "2022-09-02T07:31:15Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20220902 早上北區，江明宗街講",
-        "description": "早上來到北區街講，感謝 江國銘 、 江品璁 一起到場支援，三江今天在強風中繼續宣傳政見。今天是登記最後一天，下週開始三江街 ...",
+        "description": "早上來到北區街講，感謝江國銘、 江品璁一起到場支援，三江今天在強風中繼續宣傳政見。今天是登記最後一天，下週開始三江街講 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/cbnlfSCMyUw/default.jpg",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-08T22:18:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "tuO2EwI2dOjWm-brahCRhSqC544",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Vy4EQ-mPKvI"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-08T03:02:54Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220808 早上北區，江明宗街講",
-        "description": "早上在北區街講，感謝江國銘、 江品璁前來支援，三江一起站在街口宣傳#步行城市的理念。台南是個有400 年歷史的文化古都， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-08T03:02:54Z"
       }
     }
   ]

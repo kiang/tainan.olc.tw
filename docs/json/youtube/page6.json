@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "BQVCR7RFa3ZwXLjt1uOrIHVrtRs",
+  "etag": "RL2ir3v1YQimXZbGEqbBTSeKFl0",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 411,
+    "totalResults": 412,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "gM3ff57SPR5p1zAjj5tIT2FQqjU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "sDcC8UhWY6M"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-28T00:58:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "車站出來走一趟，台南步行體驗充滿障礙",
+        "description": "台南的友善騎樓政策從2012 年開始，至今接近10 年時間號稱暢通311 條騎樓，累積近140 公里，但這項政績對於一般居住在這裡的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-28T00:58:07Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "DOGZEvAkjqbvpC-G5FLluOPtsnc",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-06T14:58:35Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cuLuBZcnmcM"
-      },
-      "snippet": {
-        "publishedAt": "2021-08-23T00:36:07Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210820 南鐵案北區拆遷戶抗爭事件 - 南鐵案拆遷監督交涉記錄",
-        "description": "上個星期五(8/20)凌晨，在得知南鐵案拆遷開始拉起封鎖線後，我前往北區開元陸橋旁現場希望關心與記錄，但每個能夠看到現場的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-08-23T00:36:07Z"
       }
     }
   ]

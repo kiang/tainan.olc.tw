@@ -1,6 +1,6 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "5n7nl1ddgXS7sTlOEYghiExMBNQ",
+  "etag": "ccgPdcSnzHnoH0ZupTmmgAQnju0",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
@@ -9,40 +9,6 @@
     "resultsPerPage": 50
   },
   "items": [
-    {
-      "kind": "youtube#searchResult",
-      "etag": "M8JInlFcUAJ79-h1r_sKASCCFcE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "atCqDU1RbCA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:55:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:55:44Z"
-      }
-    },
     {
       "kind": "youtube#searchResult",
       "etag": "-rnOHaZwCoJjf0hEBgfY9LTP4lg",
@@ -997,40 +963,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ss-E9Baw2xrc8vpBnBIQAEP9slM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "chdVWWs8pag"
-      },
-      "snippet": {
-        "publishedAt": "2022-02-28T21:20:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220225 自行車 @ 中西區",
-        "description": "柯文哲市長過兩天(2/27)第三度挑戰腳踏車一日北高，我已經準備好從嘉義跟進陪騎，同時也響應#比昨天的你再往前騎一點活動， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/chdVWWs8pag/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-02-28T21:20:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "Do10HA4qZOrzfbhV6EIiKbwhEdA",
       "id": {
         "kind": "youtube#video",
@@ -1707,6 +1639,74 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-28T00:58:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DOGZEvAkjqbvpC-G5FLluOPtsnc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xYYiNWhrD6k"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-24T11:13:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在中西區建興國中聊教育",
+        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-24T11:13:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "37TOa27RkAv2pLl0Vlb1ZQ_GH0c",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "woDADRNwllk"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-24T11:14:08Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在中西區建興國中聊教育(全景)",
+        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/woDADRNwllk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/woDADRNwllk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/woDADRNwllk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-24T11:14:08Z"
       }
     }
   ]

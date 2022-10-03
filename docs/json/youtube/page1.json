@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "IZp7qGMW2PH_WCqoCSW1kjonWCM",
+  "etag": "A-VAnEv6HCJFH4pntESHekQNW0c",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 411,
+    "totalResults": 412,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "8u8144N6dd0EL2Um6BVWUgyYo9Q",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "t_JSfNjJMU8"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-03T13:59:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221003 下午中西區，江明宗街講",
+        "description": "下午在孔廟旁街講，感謝 #北區力行里 #周家宏 前來支援，我們持續在街頭宣揚參政理念。 台灣民眾黨 的我們很多都是素人參政， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/t_JSfNjJMU8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/t_JSfNjJMU8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/t_JSfNjJMU8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-03T13:59:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "zDvovn2zoK2rVbmHU4tNI8vgvUA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ItPrMla_Uus"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-03T06:31:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221003 早上北區，江明宗掃街",
+        "description": "今天一早來到#北區大豐里掃街，這一帶有比較多的公寓，人口密度高一些，走在巷弄中也可以看到一些小型工廠；里內的自辦市地重 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ItPrMla_Uus/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ItPrMla_Uus/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ItPrMla_Uus/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-03T06:31:55Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "5D5z8b9cdOMZQPyyqqDHBTieIS8",
@@ -78,7 +146,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "FwaaufZ8gyd-Hp5SzT-GYJPq9kI",
+      "etag": "vSE-mIbHFVXSoLIV6S7tPzIlRwY",
       "id": {
         "kind": "youtube#video",
         "videoId": "fqqglT2qn-k"
@@ -112,7 +180,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "jRdLoSoZpbJ_pAJyI8SkrqCJyxs",
+      "etag": "yIZ5oaWkiCWEFE4aGMQZ7qFbm8w",
       "id": {
         "kind": "youtube#video",
         "videoId": "oVOVMdqQBSM"
@@ -248,7 +316,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "X-2-YEpfwe4hGb1s4_0lko6sveo",
+      "etag": "BxVBnd4H0BL6_C_pXA-wO7vByys",
       "id": {
         "kind": "youtube#video",
         "videoId": "0Jhq2a6XZj8"
@@ -282,7 +350,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "C4GohuEsnPQGsauiuQGsjD5Yf2o",
+      "etag": "Kbt6JcJRsRSqRF2DtO3NVlD4rXk",
       "id": {
         "kind": "youtube#video",
         "videoId": "flenrFKSiGA"
@@ -291,7 +359,7 @@
         "publishedAt": "2022-09-29T15:23:20Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20220929 下午北區，江明宗掃街",
-        "description": "下午的掃街進行到 #北區振興里 ，里內有大型的開元振興公園，這同時也是過去美國學校遺址，目前只剩下校門、圍牆與體育器材室 ...",
+        "description": "下午的掃街進行到#北區振興里，里內有大型的開元振興公園，這同時也是過去美國學校遺址，目前只剩下校門、圍牆與體育器材室等 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/flenrFKSiGA/default.jpg",
@@ -316,7 +384,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "yYj9RSlqcshoMKqOOcm6Z_JYaqg",
+      "etag": "vX7vblfHY_M1S0_HMvr8AZ8DzE4",
       "id": {
         "kind": "youtube#video",
         "videoId": "X1uVwfgyeZs"
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-10T01:00:25Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "pTBSSwNNsYgiJkBAuL1c1QVChRg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "LUHc1ryLlcU"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-09T15:56:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220909 下午北區，江明宗街講",
-        "description": "下午在北區街講，感謝江國銘與志工前來支援，繼續站在街頭告訴大家#步行城市的理念。台南一直存在頭痛醫頭的問題，沒辦法系統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-09T15:56:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "OI-wN-n0xA5GmtD4l2Vk1yIvIV0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "fkUGt5Q0vKc"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-08T15:26:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220908 下午永康，江品璁街講",
-        "description": "下午是江品璁在永康的街講，我跟江國銘一起到場支援，三江不厭其煩的在街頭告訴大家居住正義的重要。台南至今社會住宅完工 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-08T15:26:41Z"
       }
     }
   ]
