@@ -73,7 +73,7 @@ var theArea = new ol.layer.Vector({
   }),
   style: new ol.style.Style({
     fill: new ol.style.Fill({
-      color: 'rgba(29,168,165,1)'
+      color: '#50a5a4'
     }),
     stroke: new ol.style.Stroke({
       color: '#000',
@@ -108,26 +108,8 @@ var baseLayer = new ol.layer.Tile({
   opacity: 0.8
 });
 
-var imgFeature = new ol.Feature({
-  name: 'kiang',
-  geometry: new ol.geom.Point(ol.proj.fromLonLat([120.144, 23.004582])),
-});
-imgFeature.setStyle(
-  new ol.style.Style({
-    image: new ol.style.Icon({
-      scale: 0.6,
-      src: 'img/kiang.png'
-    })
-  })
-);
-var imgLayer = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: [imgFeature]
-  })
-});
-
 var map = new ol.Map({
-  layers: [baseLayer, theArea, cunli, imgLayer],
+  layers: [baseLayer, theArea, cunli],
   target: 'map',
   view: appView
 });

@@ -100,26 +100,8 @@ var vectorAreas = new ol.layer.Vector({
     style: vectorAreasStyleFunc
 });
 
-var imgFeature = new ol.Feature({
-    name: 'kiang',
-    geometry: new ol.geom.Point(ol.proj.fromLonLat([120.144, 23.004582])),
-});
-imgFeature.setStyle(
-    new ol.style.Style({
-        image: new ol.style.Icon({
-            scale: 0.6,
-            src: 'img/3guys.png'
-        })
-    })
-);
-var imgLayer = new ol.layer.Vector({
-    source: new ol.source.Vector({
-        features: [imgFeature]
-    })
-});
-
 var map = new ol.Map({
-    layers: [baseLayer, vectorAreas, points, imgLayer],
+    layers: [baseLayer, vectorAreas, points],
     target: 'map',
     view: appView
 });

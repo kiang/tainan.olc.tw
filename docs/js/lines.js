@@ -90,24 +90,6 @@ var theArea = new ol.layer.Vector({
     })
 });
 
-var imgFeature = new ol.Feature({
-    name: 'kiang',
-    geometry: new ol.geom.Point(ol.proj.fromLonLat([120.144, 23.004582])),
-});
-imgFeature.setStyle(
-    new ol.style.Style({
-        image: new ol.style.Icon({
-            scale: 0.6,
-            src: 'img/kiang.png'
-        })
-    })
-);
-var imgLayer = new ol.layer.Vector({
-    source: new ol.source.Vector({
-        features: [imgFeature]
-    })
-});
-
 function cunliStyleFunction(f) {
     var p = f.getProperties();
     let cunliStyle = new ol.style.Style({
@@ -136,7 +118,7 @@ var vectorCunli = new ol.layer.Vector({
 });
 
 var map = new ol.Map({
-    layers: [baseLayer, theArea, points, imgLayer, vectorCunli],
+    layers: [baseLayer, theArea, points, vectorCunli],
     target: 'map',
     view: appView
 });
