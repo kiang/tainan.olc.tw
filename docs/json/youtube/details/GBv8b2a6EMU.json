@@ -1,0 +1,38 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "LhrrEBpBrPVxsZmmwWhaKGEk8qM",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "wGfjAcGvhJFHjUi6gUmErZjr4D4",
+      "id": "GBv8b2a6EMU",
+      "contentDetails": {
+        "duration": "PT59M55S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "statistics": {
+        "viewCount": "22",
+        "likeCount": "2",
+        "favoriteCount": "0",
+        "commentCount": "2"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 1
+  }
+}

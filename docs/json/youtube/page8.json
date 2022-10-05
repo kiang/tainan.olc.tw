@@ -1,13 +1,183 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "HTo4gp6OdKTceGaDbJRc90kNq3w",
+  "etag": "0Rg7QzzN1Z-GYo_sWBxglBGotYM",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 411,
-    "resultsPerPage": 37
+    "totalResults": 413,
+    "resultsPerPage": 43
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "XtmKxpKPMWI"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-26T00:17:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "e等公務園+學習平臺快速上課方式",
+        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-26T00:17:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MlhVO9VUOMs"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-05T02:40:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "病媒蚊監控採樣數據管理系統",
+        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-05T02:40:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "9st9lIcEPDA"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-22T02:09:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公路交通量統計地圖",
+        "description": "想要聊交通問題？試試公路交通量統計地圖在討論公共運輸時經常會聊到如何替代更多自用車輛，因此會希望有些統計數據作為基礎 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9st9lIcEPDA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-22T02:09:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4gy-wZj1TZVdzFJ3pv5ltl87JjM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "W7aGqCPqfT0"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-13T14:21:22Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "自己跟自己比，台灣所得地圖比較版上線",
+        "description": "在原本的所得地圖中已經可以在點選個別村里後檢視它的歷史資料，只是如果想要大量對比就會有些困難，因此基於原本的所得地圖 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/W7aGqCPqfT0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-13T14:21:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "K2dBCA_FBmCCVjLK-syyU0sR9xc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xjWPtQUYRYI"
+      },
+      "snippet": {
+        "publishedAt": "2018-08-07T17:53:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2018 08 06 「分齡挑戰 適能冒險」特色公園公聽會記錄",
+        "description": "高雄市議會公聽會107 年08 月06 日(星期一)上午10 時00 分至12 時00 分本會一樓第一會議室康裕成、張豐藤、陳信瑜高雄市政府研 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xjWPtQUYRYI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-08-07T17:53:28Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "EovAI0ah0IbUq0c25KXdYISERbQ",
@@ -312,6 +482,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-05-15T08:09:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "P_jTjn5V7MM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-10T10:25:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公民科技 @ 成大資工系 2018-05-04",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-10T10:25:10Z"
       }
     },
     {
@@ -1234,7 +1438,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "VBJBQ513KUt5BwTWn3hyqkxqIRA",
+      "etag": "KVyOkqvhE94NTXa743BGVQZb6O4",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

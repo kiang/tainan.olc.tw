@@ -1,16 +1,50 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "A-VAnEv6HCJFH4pntESHekQNW0c",
+  "etag": "UA7dqCa48qA8xNtCxoYKEe7tCM0",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 412,
+    "totalResults": 414,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "8u8144N6dd0EL2Um6BVWUgyYo9Q",
+      "etag": "mfU-2ELhFhV_ABZ12tH6VHQvQRo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "GBv8b2a6EMU"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-04T13:45:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221004 下午中西區，江明宗街講",
+        "description": "下午來到中西區街講，感謝#北區力行里周家宏前來支援，持續在街頭跟大家報告自己的理念。談到#步行城市許多人都會直覺反應不 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GBv8b2a6EMU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GBv8b2a6EMU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GBv8b2a6EMU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-04T13:45:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4KI5M-aZNKh2wLc3P1FCWBPdZ58",
       "id": {
         "kind": "youtube#video",
         "videoId": "t_JSfNjJMU8"
@@ -19,7 +53,7 @@
         "publishedAt": "2022-10-03T13:59:31Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221003 下午中西區，江明宗街講",
-        "description": "下午在孔廟旁街講，感謝 #北區力行里 #周家宏 前來支援，我們持續在街頭宣揚參政理念。 台灣民眾黨 的我們很多都是素人參政， ...",
+        "description": "下午在孔廟旁街講，感謝#北區力行里#周家宏前來支援，我們持續在街頭宣揚參政理念。 台灣民眾黨的我們很多都是素人參政，沒有 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/t_JSfNjJMU8/default.jpg",
@@ -248,7 +282,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "tR1HIwtxNRisM90qp4ypBaB1UV4",
+      "etag": "0ORVzvYniKHh5Tbgmmtn-COnBuM",
       "id": {
         "kind": "youtube#video",
         "videoId": "SpYFDMBQX7Q"
@@ -282,7 +316,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "0q1i8TSPUzD0LRXfw_HIYkYP7ik",
+      "etag": "OOLnsw9IEt2W74w7sjH1rF0KzWg",
       "id": {
         "kind": "youtube#video",
         "videoId": "aNIHU0aLcNo"
@@ -1672,40 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-10T08:42:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "xQllObv_xQB8ZMrEE0RYqsjWYdo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "H__ZFyudBqc"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-10T01:00:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "當柯文哲遇上三江，江明宗、江品璁、江國銘",
-        "description": "當柯文哲遇上三江，會帶來什麼樣的火花？一起來看看！ #江明宗、 江國銘與江品璁剛好都姓江，所以稱為三江；三江在參選前彼此 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/H__ZFyudBqc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/H__ZFyudBqc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/H__ZFyudBqc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-10T01:00:25Z"
       }
     }
   ]
