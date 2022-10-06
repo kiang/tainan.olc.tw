@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Wbm1GFWJF_3WLRCqOMUZ-Tsok5Y",
+  "etag": "4VtZ5p-1JksUs_OUEk-_IihVYrg",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 416,
+    "totalResults": 417,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1tUb8hhp4h33QQAWgVMUWkeNZcE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SU2a8ZJLgfs"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-13T13:15:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220913 下午永康，江品璁街講",
+        "description": "下午是江品璁在永康的街講，我跟江國銘一起到場，三江今天都背著旗子，互相撞來撞去有著莫名的喜感(?) 。這兩天盜圖新聞從台北 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/SU2a8ZJLgfs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-13T13:15:57Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "FpELUm16qL1FZVixxLtwNE-x3To",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-12T04:31:06Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0FillzJuHQEzfjyfscaqithizWU",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Y0OgMs1ZPMQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-11T13:52:39Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220811 下午中西區，江明宗街講",
-        "description": "下午在中西區進行街講，感謝江國銘、 江品璁前來支援，我繼續跟大家介紹我的理念與經歷。江明宗是口罩地圖的開發者、江明宗是 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Y0OgMs1ZPMQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-11T13:52:39Z"
       }
     }
   ]

@@ -1,11 +1,11 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "gckIdJlibanV_geFFDa91ojRmWo",
+  "etag": "v3rHyOGmi8wmt4EZ_eEbvAfmNnA",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 415,
-    "resultsPerPage": 48
+    "totalResults": 416,
+    "resultsPerPage": 46
   },
   "items": [
     {
@@ -146,6 +146,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "pW6t0adn4jPGV3M23PwR3_kWMFM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Pn214d4p_2s"
+      },
+      "snippet": {
+        "publishedAt": "2019-12-10T09:12:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "人口推估統計資料系統",
+        "description": "國發會在去年有發布了一個人口推估查詢系統，以國家為單位去估算到2065 年可能的人口變化，引起了許多討論；最近在議員質詢時 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Pn214d4p_2s/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-12-10T09:12:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
       "id": {
         "kind": "youtube#video",
@@ -176,40 +210,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2019-06-26T00:17:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MlhVO9VUOMs"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-05T02:40:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "病媒蚊監控採樣數據管理系統",
-        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-05T02:40:05Z"
       }
     },
     {
@@ -996,40 +996,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-KV9XGVUoSU"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-24T10:17:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
-        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-24T10:17:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
       "id": {
         "kind": "youtube#video",
@@ -1502,40 +1468,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Bamzy7hI3sg"
-      },
-      "snippet": {
-        "publishedAt": "2014-07-15T16:03:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "蘇煥智：大台南願景與交通佈局",
-        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {
