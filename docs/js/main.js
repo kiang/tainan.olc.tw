@@ -189,8 +189,16 @@ var viewCunli = function (cunliId) {
   }, 500);
 };
 
+var setZoom = function (zoomCode) {
+  zoomCode = parseInt(zoomCode);
+  if (zoomCode > 8 && zoomCode < 21) {
+    map.getView().setZoom(zoomCode);
+  }
+}
+
 var routes = {
-  '/cunli/:cunliId': viewCunli
+  '/cunli/:cunliId': viewCunli,
+  '/zoom/:zoomCode': setZoom
 };
 
 var router = Router(routes);

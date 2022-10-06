@@ -183,3 +183,18 @@ $('#btn-geolocation').click(function () {
     }
     return false;
 });
+
+var setZoom = function (zoomCode) {
+    zoomCode = parseInt(zoomCode);
+    if (zoomCode > 8 && zoomCode < 21) {
+        map.getView().setZoom(zoomCode);
+    }
+}
+
+var routes = {
+    '/zoom/:zoomCode': setZoom
+};
+
+var router = Router(routes);
+
+router.init();
