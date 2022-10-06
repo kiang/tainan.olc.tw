@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/北門路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.212658,
+                    23.000052
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區金華路四段\/成功路",
                 "count": 3
             },

@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "C1EOlJvy4xI639Ws_7xcfKGn4ys",
+  "etag": "9VQcuPorEZOJ2J0TVcpE7eKHLLg",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 413,
+    "totalResults": 416,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ubbwT3aUV8IbiBoqtp6dY8SWs9s",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "A0NV-s74W8c"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-10T00:04:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220107 民眾黨認同卡新竹掃街記錄",
+        "description": "民眾黨選戰培訓營#百萬之眾集合#百萬之眾選戰培訓營.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-10T00:04:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "GtCGulSY0yErCK03JRM4jb5GSxI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dwN5-w0caKg"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-06T02:52:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展 - 全景",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-06T02:52:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "UCkUPFa1Re4nA_wZz3Cc4WEZ1V8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RNdbVDg-geQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-06T02:51:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-06T02:51:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WK0Hoyn6Zb6UKKOnprMNMoh_Eb8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZVZ6AaAyl5U"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-29T12:15:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "文學館周邊在美國駐軍台南時期的紅燈區",
+        "description": "二戰後台南的物資匱乏，但派駐在此的美軍除了衣食無虞，作戰以外的時間重視休閒生活安排，曾經，文學館一帶以西在台南美軍 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-29T12:15:41Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "m0bGFbIBZs3UH-gmMP0NnYn6ZII",
@@ -351,7 +487,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "88sxV7hQyves3LTj6VEGui4r3GI",
+      "etag": "RFRwaLgTFvZHE5NgQYEXOuCV3c4",
       "id": {
         "kind": "youtube#playlist",
         "playlistId": "PLdRkz-b8ybhN2_kp0gQpLrTR6pTJ4-oQ3"
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-09T15:26:44Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "U6o4fJAAhclv9Dcf5dGJ-tq5DpY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xYBl3L4CPwA"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:37Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-1",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xYBl3L4CPwA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "gY9QWNbckiYpiWPVy9Ebrd_z4Zo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Xm2LZtyvw3c"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dgG6_Eow2Ys"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1i-7O3b2nl3QnmChN20AYtjPOlY",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhMcVRQXv_kmoB7moJTDIiJ5"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-06T15:16:14Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講",
-        "description": "江國銘 、江品璁跟我(江明宗)剛好都姓江，在討論到一些公眾議題時有些共通的想法想要嘗試，所以用三江的名義作為開始，透過 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-06T15:16:14Z"
       }
     }
   ]
