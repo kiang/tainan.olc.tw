@@ -35,6 +35,7 @@
       right: 6px; } }
 
 .sidebar-tabs {
+  opacity: 0;
   top: 0;
   bottom: 0;
   height: 100%;
@@ -136,8 +137,8 @@
   .sidebar-right .sidebar-close {
     left: 0; }
 
-.sidebar {
-  background-color: rgba(255, 255, 255, 0.4); }
+/* .sidebar {
+  background-color: rgba(255, 255, 255, 0.4); } */
   @media (min-width: 768px) {
     .sidebar {
       border: 3px solid transparent;
