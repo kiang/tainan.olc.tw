@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路二段\/民生路二段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.196406,
+                    22.995264
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/臨安路二段",
                 "count": 1
             },
@@ -390,20 +404,6 @@
                 "coordinates": [
                     120.251645,
                     22.971681
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區海安路二段\/民生路二段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.196406,
-                    22.995264
                 ]
             }
         },

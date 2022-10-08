@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "_dIvO1_UEJpDJW3KZMdigkz2d1c",
+  "etag": "OPBrvSG8qpWTk_X88cag5LYKxyk",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 417,
+    "totalResults": 419,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "6HKSLC4jMAaF5DOrqS60o6s-FiA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JQFuqjSr9cg"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-03T23:40:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220503 阿榮之聲 feat. 三江",
+        "description": "5/3 參與劉家榮律師的#阿榮之聲阿榮律師新的服務處（高雄市鼓山區壽山街13-1號） 開箱第一播～～ 今晚的陣容非常堅強   畫面都 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-03T23:40:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VYHUdFyfXKY"
+      },
+      "snippet": {
+        "publishedAt": "2022-05-02T05:54:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "【民眾黨團撐民眾 防疫服務隊成立】記者會",
+        "description": "日期：2022年5月2日（一） ○時間：上午9:00 ○地點：立法院台灣民眾黨黨團會議室（青島東路1-3號3樓） ○出席人員：立法委員 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-05-02T05:54:20Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "XQ5FohAuY0Gj_xT85m5dfvq3T-g",
@@ -1133,40 +1201,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "d3moybLFkW77CmfgkK1-PKaHSoc",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhNVd4kZ6zgwisA-hUveNXUQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-03-04T07:19:15Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "江江江講",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-03-04T07:19:15Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "IIAqZuBR1xBsP0ybhpue8FBLDLc",
       "id": {
         "kind": "youtube#video",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-01-25T07:13:00Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "sEWZTFemKeiLiKJVOn-v6RqprTs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wD5xThrVIek"
-      },
-      "snippet": {
-        "publishedAt": "2022-01-21T23:30:25Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區民生路聊人行空間-全景",
-        "description": "三江來到了台南府城歷史街區的核心區域，也是台南少數已經進行騎樓整平工作的路段，忠義路、民生路與永福路形成的路線，距離 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wD5xThrVIek/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-01-21T23:30:25Z"
       }
     }
   ]

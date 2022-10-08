@@ -1,81 +1,13 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "v3rHyOGmi8wmt4EZ_eEbvAfmNnA",
+  "etag": "5NXCTBXxWGI7rhPY4BaNFpGvty4",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 416,
-    "resultsPerPage": 46
+    "totalResults": 419,
+    "resultsPerPage": 42
   },
   "items": [
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-auuf5EIPYkQdF4_HQLMK_CmWcc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Jy6gI-mbrSk"
-      },
-      "snippet": {
-        "publishedAt": "2020-02-16T19:20:48Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "佳里金唐殿蕭壠香 百足真人蜈蚣陣 / 20200216",
-        "description": "昨天帶著孩子去看佳里金唐殿蕭壠香的百足真人蜈蚣陣，過程做了一個簡單的縮時記錄 她們看到除了覺得新奇，沿途坐在蜈蚣陣車上 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Jy6gI-mbrSk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-02-16T19:20:48Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hJENJ3uK6ei4XUmCzSqt475kVRE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Syjjy7X0MJQ"
-      },
-      "snippet": {
-        "publishedAt": "2020-02-10T14:35:37Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "藥局口罩採購地圖加入搜尋功能",
-        "description": "剛上線的時候因為熬夜作息有點亂掉，慢慢回神之後開始針對一些網友提到的功能進行嘗試，主要是加入行政區的檢索以及藥局搜尋 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Syjjy7X0MJQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-02-10T14:35:37Z"
-      }
-    },
     {
       "kind": "youtube#searchResult",
       "etag": "v2XmhMQrt_DLph2Yl2t-Nl1YDNw",
@@ -210,6 +142,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2019-06-26T00:17:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MlhVO9VUOMs"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-05T02:40:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "病媒蚊監控採樣數據管理系統",
+        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-05T02:40:05Z"
       }
     },
     {
@@ -486,40 +452,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Aamukpm9tp7oAi1WSnrkRk4S-so",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yRs_J0dW2zc"
-      },
-      "snippet": {
-        "publishedAt": "2018-06-09T00:46:34Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "細談國土巡守隊",
-        "description": "國土巡守隊是我在總統盃黑客松的比賽題目，這個題目有個很簡單的訴求，希望政府能夠釋出全國的地籍圖成為開放資料，然後關心 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-06-09T00:46:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "4aBRDKHuZ0lgsER4dqR16yV4hVM",
       "id": {
         "kind": "youtube#video",
@@ -550,40 +482,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-06-06T03:56:16Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "wlJjSOqwOFM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-29T02:25:31Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "國土巡守隊實做成果介紹 3 分鐘版",
-        "description": "簡介： https://www.facebook.com/k.olc.tw/posts/959671350872995.",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-29T02:25:31Z"
       }
     },
     {
@@ -860,40 +758,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Yp06sim1IfTLRCHBkVGduYDiiRI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "kHj3fxBxMmI"
-      },
-      "snippet": {
-        "publishedAt": "2016-06-17T04:50:27Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "demo of current status for https://github.com/tainancity/lines",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kHj3fxBxMmI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2016-06-17T04:50:27Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "yblGisww20cWhWp8WfDNR1Cud9g",
       "id": {
         "kind": "youtube#video",
@@ -996,6 +860,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-KV9XGVUoSU"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-24T10:17:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
+        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-24T10:17:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
       "id": {
         "kind": "youtube#video",
@@ -1060,40 +958,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-04-09T13:53:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cbkenZ1KrZk5phEH9UYV78_6_ug",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Ji9CgunPQPA"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-09T12:51:55Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "opengov tainan 台南公民智庫:甚麼是開放政府?",
-        "description": "電源不足，請轉往https://www.youtube.com/watch?v=jBQfjtCGW9I 瀏覽活動網址： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-09T12:51:55Z"
       }
     },
     {
@@ -1438,36 +1302,36 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "cE8vUPpNQuQgCFHkqaRhzJNsyjk",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
       "id": {
         "kind": "youtube#video",
-        "videoId": "kSHrbsFcghQ"
+        "videoId": "Bamzy7hI3sg"
       },
       "snippet": {
-        "publishedAt": "2014-07-25T18:45:05Z",
+        "publishedAt": "2014-07-15T16:03:02Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-07-24 臺南市北區和順里 里長擬參選人 姜宜宏 訪談",
-        "description": "逐字稿與原始文章： http://goo.gl/dC02oj 這是臺南市北區議員擬參選人江明宗( http://k.olc.tw/ ) 針對臺南市北區和順里里長擬參選人 ...",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/default.jpg",
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2014-07-25T18:45:05Z"
+        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {
@@ -1540,7 +1404,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "bh5hXmFFAN5zEXkEIOQMiwxYMS4",
+      "etag": "w8CcsuKPXaJwQl3N1DyDCvfQS-I",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

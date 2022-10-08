@@ -1,16 +1,84 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "EWfYwneVFgJ4rfg9ZiMaWyBQnUU",
+  "etag": "mesaLnBVQZQY7_jVVbZ5hO478-M",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 417,
+    "totalResults": 419,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "rijp-_CL5gwtIJFLi3QIEit3x5Y",
+      "etag": "M4-Uwg6Hd0fvHEkAMMhcP9-tvOk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kt5tF_A8pQw"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-07T15:27:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221007 下午中西區，江明宗街講",
+        "description": "下午的街講在海安路，感謝#孟青前來幫忙，今天有下了點小雨，幸運的是沒有像江品璁、 江國銘那邊那麼大，三江在各自的選區 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-07T15:27:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sOX3Ntz3IimFfkWEnnoQC_2DkEw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LuY2POV8FzM"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-07T09:39:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221007 早上北區，江明宗掃街",
+        "description": "早上走在#北區正覺里掃街，這裡也大多是老社區，走在巷弄中遇到的都是長輩居多，或是年輕的外籍看護；正覺里應該是以正覺寺為 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-07T09:39:57Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Co7OXVE1BWzTq01wP2VxJAuFJm4",
       "id": {
         "kind": "youtube#video",
         "videoId": "PPnyw5s7ZHk"
@@ -44,7 +112,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "dbUKxUya-RovjUfyUk1iU2U0XpE",
+      "etag": "p5I3Vo6M_--GWzd_djrRnUF89HI",
       "id": {
         "kind": "youtube#video",
         "videoId": "GBSEeee41_g"
@@ -78,7 +146,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "aiI8LOpbzCMhlTnbZWGIbbyxVE0",
+      "etag": "dWCFW3pZwlBngRl4D8vL7iyCFUM",
       "id": {
         "kind": "youtube#video",
         "videoId": "6JL2v960FVU"
@@ -146,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "7ZAlf4UUeAmjngDTF0WgpA8_0qU",
+      "etag": "yti1whWfNyH7_88SKeeHv8iox2Y",
       "id": {
         "kind": "youtube#video",
         "videoId": "lOayn-Qnk_A"
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-14T14:46:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "WrATMcNfa8ZTQEYfcIauYtfxUJA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "E3L1B4YuJH0"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-14T07:24:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220914 早上北區，江明宗掃街",
-        "description": "早上走在#北區福德里，福德里位於鄭子寮重劃區的核心區域，街道與房舍都相當新穎，雖然並未設置完整的步行空間，但新建築要求 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/E3L1B4YuJH0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-14T07:24:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "mxMZAy71KJ2oScWe8SHqNawEwG0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "UIfbUsaGtDM"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-13T14:30:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220913 下午北區，江明宗掃街",
-        "description": "下午掃街的位置是#北區合興里，合興里鄰近北區、永康交界，區域內有崑山國際學校，也是一個新舊交陳的社區；里內人口3683 人 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/UIfbUsaGtDM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/UIfbUsaGtDM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/UIfbUsaGtDM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-13T14:30:29Z"
       }
     }
   ]

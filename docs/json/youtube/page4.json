@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "ojTVAT1iKhlIz_i2dmueWAKpBR8",
+  "etag": "Pysoq-yG4Uk6GZ5xfzxfNS3l_Ko",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 417,
+    "totalResults": 419,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-flWMFZvX2X7F1pZgCJst1hmn2o",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "7LVUREo2GD0"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-15T02:46:42Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220715 早上北區，江明宗街講",
+        "description": "早安！早上跟江國銘在北區街講， 台南政治實習菜鳥與志工一起在現場支援， #步行城市的參選理念是希望打造更友善的步行環境， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/7LVUREo2GD0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/7LVUREo2GD0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/7LVUREo2GD0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-15T02:46:42Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "b3xeyLJqVaxhHZfQDaZ3oH2NH2U",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kf4pY_Gq-54"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-14T14:51:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220714 下午中西區，江明宗街講",
+        "description": "下午在民生圓環旁街講， 江國銘、 江品璁、 黃國晏與台南政治實習菜鳥到場支援， #步行城市理念可以解決許多台南面臨的問題， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kf4pY_Gq-54/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-14T14:51:59Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "xfR2xt0ERJYY0RWAayoELt-ss60",
@@ -351,7 +419,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ZMqvGNReCiQKvFAn-haAi92eYzo",
+      "etag": "9g19WaLyWHwCo_Vy3D65Q-7Ext8",
       "id": {
         "kind": "youtube#video",
         "videoId": "BCJehyaTE3Y"
@@ -385,7 +453,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4mBfy0zvfNgex3ZV4atbq0Miq7M",
+      "etag": "IHYS6A8LLy6G1sM4rKvkqK3rgLw",
       "id": {
         "kind": "youtube#video",
         "videoId": "JPk00GNDEP8"
@@ -419,7 +487,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ACBDYcfBa7YWCiWjowzpwW6ukyQ",
+      "etag": "1X1XJpTep4neZeC2Gn8YCkiJjAI",
       "id": {
         "kind": "youtube#video",
         "videoId": "irEnlgKCGrM"
@@ -453,7 +521,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "gjgFh6nAwWdYMKvyUFMlWHva6LM",
+      "etag": "vvJgpDLuY14Bs9DabA7P_ZcrXpI",
       "id": {
         "kind": "youtube#video",
         "videoId": "Kg9cI6tGWoQ"
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-05-05T12:00:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6HKSLC4jMAaF5DOrqS60o6s-FiA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "JQFuqjSr9cg"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-03T23:40:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220503 阿榮之聲 feat. 三江",
-        "description": "5/3 參與劉家榮律師的#阿榮之聲阿榮律師新的服務處（高雄市鼓山區壽山街13-1號） 開箱第一播～～ 今晚的陣容非常堅強   畫面都 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/JQFuqjSr9cg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-03T23:40:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "WBDFci4Gqeh9DqqFwOGwUBvidgM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VYHUdFyfXKY"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-02T05:54:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "【民眾黨團撐民眾 防疫服務隊成立】記者會",
-        "description": "日期：2022年5月2日（一） ○時間：上午9:00 ○地點：立法院台灣民眾黨黨團會議室（青島東路1-3號3樓） ○出席人員：立法委員 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-02T05:54:20Z"
       }
     }
   ]
