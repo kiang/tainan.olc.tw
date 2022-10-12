@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區中華西路二段\/和緯路四段",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.186358,
+                    23.006768
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 2
             },
@@ -418,20 +432,6 @@
                 "coordinates": [
                     120.259714,
                     23.034092
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區中華西路二段\/和緯路四段",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.186358,
-                    23.006768
                 ]
             }
         },
