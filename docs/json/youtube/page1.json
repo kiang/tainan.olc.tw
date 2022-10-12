@@ -1,16 +1,84 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "2HHDJ2-K7Cb64GNyvxGA9oAuYHE",
+  "etag": "hoJjqK8ITo-mbbLpTvU42LX78ec",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 423,
+    "totalResults": 427,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "8s9nTbNoMcryoRTUA3FfLg0C1rE",
+      "etag": "Rr7TY7Tt9NyXGidHnZOu3HPVbfo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-AmAjBh9_mY"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-12T14:14:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221012 下午北區，江明宗街講",
+        "description": "下午來到台南公園街講，今天風有點大，一直被身上的關東旗蓋臉，不過還是持續在街頭講述參政理念。這兩天在新市發生的大火， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-AmAjBh9_mY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-AmAjBh9_mY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-AmAjBh9_mY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-12T14:14:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "kThHwN-cntcTr_uOhzH4UBrmEao",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "QX5_nCq85Ak"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-12T05:15:54Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221012 早上北區，江明宗掃街",
+        "description": "早上的掃街在#北區雙安里進行，這裡的社區規劃整齊許多，環繞著文賢國中的房子都還蠻新的，只是里內人口2583 不算多，可能都 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/QX5_nCq85Ak/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/QX5_nCq85Ak/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/QX5_nCq85Ak/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-12T05:15:54Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "jnCsYAwKUfUN2vnBall9P4hU6iw",
       "id": {
         "kind": "youtube#video",
         "videoId": "5BcGGrl3GVM"
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-16T18:02:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "MSs67eEGf2227uNeGM4UM_8vsL4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ptPwnQqpt7Y"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-16T17:36:18Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220916 早上北區，江明宗掃街",
-        "description": "早上走在#北區華德里，華德里也是鄭子寮重劃區範圍，從成德里分割出來後人口還是持續成長中，區域內有許多小公園，以及小北 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-16T17:36:18Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "7ltiX486KhXYhJo__J8pNZX9wh0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "_I7Sx157SO8"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-16T07:28:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220916 早上北區，江明宗掃街",
-        "description": "早上走在#北區華德里，華德里也是鄭子寮重劃區範圍，從成德里分割出來後人口還是持續成長中，區域內有許多小公園，以及小北 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-16T07:28:23Z"
       }
     }
   ]

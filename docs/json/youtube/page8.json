@@ -1,13 +1,47 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "eDFuDEuz3VfydFeD26lp0-75Pb4",
+  "etag": "SjE7UzoU5Scf4zlp6oG7h7EKyOI",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 422,
-    "resultsPerPage": 46
+    "totalResults": 426,
+    "resultsPerPage": 49
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "BM-bBbek-sIBpSmPzE03HdzzJXo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TGtfirGQoAo"
+      },
+      "snippet": {
+        "publishedAt": "2020-03-31T12:06:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "一個科技人的體制外與體制內 @ 臺南大學行政管理系 2020-03-23",
+        "description": "感謝臺南大學老師的邀請，跟同學分享了一下最近幾年在政治領域進進出出的心得，期待對參與的同學有些幫助。 投影片： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TGtfirGQoAo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-03-31T12:06:40Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Cl2Q-wjmQMVgaq4PwgEtujtHLXI",
@@ -278,6 +312,74 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2019-12-10T09:12:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "XtmKxpKPMWI"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-26T00:17:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "e等公務園+學習平臺快速上課方式",
+        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-26T00:17:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MlhVO9VUOMs"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-05T02:40:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "病媒蚊監控採樣數據管理系統",
+        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-05T02:40:05Z"
       }
     },
     {
@@ -588,6 +690,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wlJjSOqwOFM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-29T02:25:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做成果介紹 3 分鐘版",
+        "description": "簡介： https://www.facebook.com/k.olc.tw/posts/959671350872995.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-29T02:25:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "M0mqaBIRuURiF2JpmHuD52afYzA",
       "id": {
         "kind": "youtube#video",
@@ -652,40 +788,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-05-15T08:09:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "4_jOT3ZBPB94WvfBhjIMQt9G-Xs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "P_jTjn5V7MM"
-      },
-      "snippet": {
-        "publishedAt": "2018-05-10T10:25:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "公民科技 @ 成大資工系 2018-05-04",
-        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/P_jTjn5V7MM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T10:25:10Z"
       }
     },
     {
@@ -996,40 +1098,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "HgetNKxQz8xF2tlfDMcmLjOOx_w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "-KV9XGVUoSU"
-      },
-      "snippet": {
-        "publishedAt": "2015-04-24T10:17:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2015 04 24 140735 從群眾外包到連結的開放資料：從地理資訊談起 by 鄧東波",
-        "description": "活動網址： http://www.up.ncku.edu.tw/chinese/index.php/home/lastnews-2/1048-104-04-22.html 時間：2015年4月24 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/-KV9XGVUoSU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2015-04-24T10:17:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
       "id": {
         "kind": "youtube#video",
@@ -1268,40 +1336,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "6L4jS3s7-t4Tlxea7HvJaEc-Qzk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "23JydRUB3kQ"
-      },
-      "snippet": {
-        "publishedAt": "2014-10-24T17:33:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-10-24 g0v &amp; open data @ NCKU-CSIE-自由軟體開發與社群發展",
-        "description": "使用投影片： http://k.olc.tw/slide/20141024_ncku_csie.html 口語討論時有諸多細節的錯誤，如果有發現問題還請告知;) 已知問題： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-10-24T17:33:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "Od0IaxUiesP7YjTornXgMObpj5g",
       "id": {
         "kind": "youtube#video",
@@ -1438,6 +1472,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "G1mD_aj4fAEpVHAgTFLVedmVYn8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "eYeVAHP-k9k"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-15T13:06:48Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南民主人權地圖＠公民覺醒星期五",
+        "description": "時間：2014-08-15 19:00~21:00 地點：瑪莎羅芙主講者：王昭文老師主題：台南民主地圖活動資訊： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/eYeVAHP-k9k/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-15T13:06:48Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "cE8vUPpNQuQgCFHkqaRhzJNsyjk",
       "id": {
         "kind": "youtube#video",
@@ -1468,6 +1536,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-07-25T18:45:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
       }
     },
     {

@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/公園路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.208789,
+                    23.001025
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
                 "count": 3
             },
@@ -32,14 +46,14 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區公園南路\/臨安路二段",
-                "count": 1
+                "key": "北區海安路三段\/臨安路二段",
+                "count": 3
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    120.2004,
-                    23.003846
+                    120.199835,
+                    23.003653
                 ]
             }
         },
@@ -396,20 +410,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區海安路三段\/臨安路二段",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.199835,
-                    23.003653
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "仁德區中山路\/中正路三段",
                 "count": 4
             },
@@ -544,20 +544,6 @@
                 "coordinates": [
                     120.263953,
                     22.970142
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/公園路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.208789,
-                    23.001025
                 ]
             }
         },

@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "fKZcFY9Lx2znnhBae0qCAczRa9s",
+  "etag": "uv3uLkgQSSyrXNuL6MaV-sfdYA4",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 423,
+    "totalResults": 427,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "MSs67eEGf2227uNeGM4UM_8vsL4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ptPwnQqpt7Y"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-16T17:36:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220916 早上北區，江明宗掃街",
+        "description": "早上走在#北區華德里，華德里也是鄭子寮重劃區範圍，從成德里分割出來後人口還是持續成長中，區域內有許多小公園，以及小北 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ptPwnQqpt7Y/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-16T17:36:18Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "7ltiX486KhXYhJo__J8pNZX9wh0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "_I7Sx157SO8"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-16T07:28:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220916 早上北區，江明宗掃街",
+        "description": "早上走在#北區華德里，華德里也是鄭子寮重劃區範圍，從成德里分割出來後人口還是持續成長中，區域內有許多小公園，以及小北 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/_I7Sx157SO8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-16T07:28:23Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "QPXapFrfxqoEEovzcEaTupCOm8A",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-17T08:09:38Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "jGBzbU4aeAD6QZqmLA4W-kzfhD4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VL097POcsfY"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-17T06:56:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220817 早上北區，江明宗街講",
-        "description": "早上在北區街講，感謝江國銘、 江品璁前來支援，三江都是本人站在街頭，拜託大家支持台灣民眾黨的參選人！ #步行城市可以讓更 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VL097POcsfY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VL097POcsfY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VL097POcsfY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-17T06:56:29Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "_aTVhGXkChKjiOc2N3YfcU46kyE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "zYvAwASqVjM"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-16T13:05:50Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220816 下午北區，江明宗 5 分鐘街講",
-        "description": "下午在北區街講，感謝江品璁前來支援， 江國銘在路上車子拋錨，我們講不到10 分鐘也開始下起大雨，這次比較多狀況，不過還是 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/zYvAwASqVjM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-16T13:05:50Z"
       }
     }
   ]
