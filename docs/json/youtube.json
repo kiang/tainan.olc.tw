@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/北門路二段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.212658,
+                    23.000052
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區林森路三段\/開南街",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.22437,
+                    23.006572
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區海安路三段\/臨安路二段",
                 "count": 4
             },
@@ -68,20 +96,6 @@
                 "coordinates": [
                     120.196406,
                     22.995264
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/北門路二段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.212658,
-                    23.000052
                 ]
             }
         },
@@ -299,7 +313,7 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中山南路\/東橋七路",
-                "count": 3
+                "count": 2
             },
             "geometry": {
                 "type": "Point",

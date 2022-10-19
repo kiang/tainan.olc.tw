@@ -1,14 +1,184 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "tZ8bCXR3XfCsG3MvNMfQa8EfBzE",
+  "etag": "MJPQCtxmN_zmb2IDa7WKhW-hM1w",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 431,
+    "totalResults": 439,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "IIAqZuBR1xBsP0ybhpue8FBLDLc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "S5bd0X8b7kM"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-03T09:44:15Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "跟鐵道哥一起聊台南歷史街區的步行空間問題",
+        "description": "鐵道哥是台灣少數的典型鐵道迷，對於鐵道的研究非常深入，進而延伸到各種公共運輸與步行空間的連結，最難得的地方是自己 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/S5bd0X8b7kM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-03T09:44:15Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M6IKFhro8WiFTRVle01sj52q7_Y",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "r1V_wKwDHjk"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-03T09:43:15Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "跟鐵道哥一起聊台南歷史街區的步行空間問題-全景",
+        "description": "鐵道哥是台灣少數的典型鐵道迷，對於鐵道的研究非常深入，進而延伸到各種公共運輸與步行空間的連結，最難得的地方是自己 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/r1V_wKwDHjk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-03T09:43:15Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ss-E9Baw2xrc8vpBnBIQAEP9slM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "chdVWWs8pag"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-28T21:20:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220225 自行車 @ 中西區",
+        "description": "柯文哲市長過兩天(2/27)第三度挑戰腳踏車一日北高，我已經準備好從嘉義跟進陪騎，同時也響應#比昨天的你再往前騎一點活動， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/chdVWWs8pag/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/chdVWWs8pag/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/chdVWWs8pag/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-28T21:20:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Do10HA4qZOrzfbhV6EIiKbwhEdA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ygvTv_b7sUE"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-28T21:15:13Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-1",
+        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ygvTv_b7sUE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-28T21:15:13Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "zr7IaE_9xQ-3fyHTSRpLBUs5El0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "nuARWF7-4l8"
+      },
+      "snippet": {
+        "publishedAt": "2022-02-28T21:15:50Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220227 柯文哲一日北高 - 嘉義台南片段記錄-2",
+        "description": "2/27 從嘉義布袋開始跟上柯文哲市長的車隊中，透過360 影片記錄開始的一個多小時；這段路燈光時有時無，真的有興趣騎乘的朋友 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/nuARWF7-4l8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-02-28T21:15:50Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "6Qc5ESyjm0nhxyAs4WoO8T7hGLA",
@@ -1537,176 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-11-06T23:38:49Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "wMedzWmJg7e2ihpdKMvev4vprMM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Jg03-nSOG50"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-28T04:52:00Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區普濟殿聊廟宇文化的創新(全景)",
-        "description": "這週三江一起來到中西區的普濟殿，普濟殿每年舉辦的燈會都吸引非常多觀光客來到台南，有別於傳統廟宇舉辦的活動，普濟殿燈會 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-28T04:52:00Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "LRBzwUpbHnbAF1_LbZGR6hO3Qx0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "c-EwuFH4-qQ"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-28T04:51:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區普濟殿聊廟宇文化的創新",
-        "description": "這週三江一起來到中西區的普濟殿，普濟殿每年舉辦的燈會都吸引非常多觀光客來到台南，有別於傳統廟宇舉辦的活動，普濟殿燈會 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-28T04:51:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hadv5nwectRAtIsWQBCWn_C-XfY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "S-rRUg7T5nI"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-23T14:01:57Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211023 台灣民眾黨台南市黨部黨員座談暨慶生活動",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-23T14:01:57Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "yJ_MqkWyZZ2I6il91GjFaz3UUxc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "KB9Z62-KTXE"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-19T08:55:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生 - 全景",
-        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-19T08:55:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JGVxkfSLZ7dZpD6Gb_JwosujKak",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cGTsc8ESY8Q"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-18T12:06:55Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁農會穀倉聊社區營造(全景)",
-        "description": "這週三江一起來到歸仁農會穀倉，這個穀倉因為時代變遷已經不再用來囤積稻米，新的樣貌正在籌備當中；同時由國銘帶來的主題， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-18T12:06:55Z"
       }
     }
   ]

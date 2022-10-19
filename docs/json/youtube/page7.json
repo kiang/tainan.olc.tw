@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "xubjTGkTs-SHvzbT_6CjZWmVRfA",
+  "etag": "g3KyLIk7us8mwIPVrEU7TpJpUDs",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 431,
+    "totalResults": 439,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "yJ_MqkWyZZ2I6il91GjFaz3UUxc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "KB9Z62-KTXE"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-19T08:55:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生 - 全景",
+        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KB9Z62-KTXE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-19T08:55:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JGVxkfSLZ7dZpD6Gb_JwosujKak",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cGTsc8ESY8Q"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-18T12:06:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農會穀倉聊社區營造(全景)",
+        "description": "這週三江一起來到歸仁農會穀倉，這個穀倉因為時代變遷已經不再用來囤積稻米，新的樣貌正在籌備當中；同時由國銘帶來的主題， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-18T12:06:55Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "5FwSBsR2LjgX9Dqy8dRm9502ybM",
@@ -623,6 +691,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "EvFngsfBQ537o5-G4NNHwYA03So",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "N_3cjrZCPic"
+      },
+      "snippet": {
+        "publishedAt": "2021-08-12T00:33:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20210811-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-08-12T00:33:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "YvcWoU7xeFJDnD-A7jfcol-HoCU",
       "id": {
         "kind": "youtube#video",
@@ -721,74 +823,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-07-27T10:41:12Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "retA8bXcsb7QUomC6N4-ThtYypA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HUM0t0RtmWs"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-26T13:30:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南黃昏街景 20210725",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HUM0t0RtmWs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-26T13:30:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5EW9JniuwDjllO8NCNWY0SB0Wcw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "w-OcFUn_8m8"
-      },
-      "snippet": {
-        "publishedAt": "2021-07-25T11:22:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南黃昏街景 20210725",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-07-25T11:22:41Z"
       }
     },
     {
@@ -1099,40 +1133,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "4rtPmns61Cv_60aQ7OOmnRPwzz8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "YnZTYpag4tM"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-20T02:10:47Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南市後壁區 天九興業台南廠 &amp; Google Earth 操作歷史衛星影像",
-        "description": "沒有爐渣米？台南後壁會一直長大的爐渣田位於後壁的天九興業台南廠主要是將廢玻璃與廢陶瓷放進混凝土磚進行再利用，只是這兩 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-20T02:10:47Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "tAVfx2ZpUhk9ljMTbCnaoUTi9lM",
       "id": {
         "kind": "youtube#video",
@@ -1201,6 +1201,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "xYZXlhFFxRhrieNaXpZ-2Lsz7IQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MyYZg2Yr-3w"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 阿猴1909綠水園區 9",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "q-zQtmwScIIetkgpcHuC0S6FlXk",
       "id": {
         "kind": "youtube#video",
@@ -1231,6 +1265,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-10-14T01:49:24Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VICp9tyw9DH4w2rhJuOLIOG06ak",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "QoZ_I_C5kcg"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-14T01:49:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20200910 參訪屏東 永大樂林居 4",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/QoZ_I_C5kcg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-14T01:49:03Z"
       }
     },
     {
@@ -1428,40 +1496,6 @@
           },
           "high": {
             "url": "https://i.ytimg.com/vi/z5ePB_PO2Kw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "soxeGgWwu268fiasozqAfUnyavw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "1U2ryty3cMU"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 永大樂林居 6",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/1U2ryty3cMU/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-10-14T01:49:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "8YYl966AEC4PUw2Jc1vrXLC-cMA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yuLna21fxEM"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 阿猴1909綠水園區 5",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yuLna21fxEM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yuLna21fxEM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yuLna21fxEM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:04Z"
       }
     }
   ]
