@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "g3KyLIk7us8mwIPVrEU7TpJpUDs",
+  "etag": "zmDuqnN00qmPNGSRezS2VLnAGo8",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
+    "totalResults": 444,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lTQfUhbvZ9-obWEB_i1P7n3kEGg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "I2SwQaMrQtc"
+      },
+      "snippet": {
+        "publishedAt": "2021-11-06T23:38:49Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南科技發展潛力 @ 台南青年的未來",
+        "description": "民眾黨台南市黨部於11 月6 日14:00~17:00 舉辦「#台南青年的未來」青年議題研討會，會中我(#江明宗)以主題台南科技發展潛力跟 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-11-06T23:38:49Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wMedzWmJg7e2ihpdKMvev4vprMM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Jg03-nSOG50"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-28T04:52:00Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在中西區普濟殿聊廟宇文化的創新(全景)",
+        "description": "這週三江一起來到中西區的普濟殿，普濟殿每年舉辦的燈會都吸引非常多觀光客來到台南，有別於傳統廟宇舉辦的活動，普濟殿燈會 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Jg03-nSOG50/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-28T04:52:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "LRBzwUpbHnbAF1_LbZGR6hO3Qx0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "c-EwuFH4-qQ"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-28T04:51:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在中西區普濟殿聊廟宇文化的創新",
+        "description": "這週三江一起來到中西區的普濟殿，普濟殿每年舉辦的燈會都吸引非常多觀光客來到台南，有別於傳統廟宇舉辦的活動，普濟殿燈會 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/c-EwuFH4-qQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-28T04:51:46Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hadv5nwectRAtIsWQBCWn_C-XfY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "S-rRUg7T5nI"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-23T14:01:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211023 台灣民眾黨台南市黨部黨員座談暨慶生活動",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/S-rRUg7T5nI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-23T14:01:57Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "yJ_MqkWyZZ2I6il91GjFaz3UUxc",
@@ -691,40 +827,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "EvFngsfBQ537o5-G4NNHwYA03So",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "N_3cjrZCPic"
-      },
-      "snippet": {
-        "publishedAt": "2021-08-12T00:33:34Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210811-1",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/N_3cjrZCPic/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-08-12T00:33:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "YvcWoU7xeFJDnD-A7jfcol-HoCU",
       "id": {
         "kind": "youtube#video",
@@ -823,6 +925,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-07-27T10:41:12Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "5EW9JniuwDjllO8NCNWY0SB0Wcw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "w-OcFUn_8m8"
+      },
+      "snippet": {
+        "publishedAt": "2021-07-25T11:22:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南黃昏街景 20210725",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/w-OcFUn_8m8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-07-25T11:22:41Z"
       }
     },
     {
@@ -1129,6 +1265,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-02-12T15:50:25Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4rtPmns61Cv_60aQ7OOmnRPwzz8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "YnZTYpag4tM"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-20T02:10:47Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南市後壁區 天九興業台南廠 &amp; Google Earth 操作歷史衛星影像",
+        "description": "沒有爐渣米？台南後壁會一直長大的爐渣田位於後壁的天九興業台南廠主要是將廢玻璃與廢陶瓷放進混凝土磚進行再利用，只是這兩 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/YnZTYpag4tM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-20T02:10:47Z"
       }
     },
     {
@@ -1537,176 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-10-14T01:49:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JLXAynx1tDQ81X5OhnlXU5qaQ-U",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ncwIYIydhOQ"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 和平公園 6",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ncwIYIydhOQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ncwIYIydhOQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ncwIYIydhOQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "NTlIEi5z0byNOy_NuFDJOvDHnGA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "c_yBKyDCyAg"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 和平公園 4",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/c_yBKyDCyAg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/c_yBKyDCyAg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/c_yBKyDCyAg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "d3hfKLbuJrZDz6pzDrnZSRN2UgE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xhJFKA1EHfI"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 阿猴1909綠水園區 3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rWh9P3WxfvW12Ju2u1UuSxM0A00",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "VA6UIE0M3Ms"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:04Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 阿猴1909綠水園區 8",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VA6UIE0M3Ms/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "mcRuMU4PrRFnUEGZI6TjMYJ_xcA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "yVZySw6PRro"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 和平公園 5",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/yVZySw6PRro/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/yVZySw6PRro/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/yVZySw6PRro/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:24Z"
       }
     }
   ]

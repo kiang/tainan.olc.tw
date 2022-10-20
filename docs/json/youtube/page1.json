@@ -1,13 +1,81 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "1WpD4u1YX76iOuUzt6YFp_Zqgsk",
+  "etag": "doJA74ALqQSPCOWdFytmzne8haA",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
+    "totalResults": 444,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WpsRmk_yarKqj8FZTC5PF7FJTb4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "qquGLprR1ic"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-19T13:29:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221019 下午北區，江明宗街講",
+        "description": "下午在北區街講，現在天暗的比較快，所以每天都是從白天講到入夜的感覺，不變的是對於#步行城市理念的堅持與期待。2021 年 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/qquGLprR1ic/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/qquGLprR1ic/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/qquGLprR1ic/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-19T13:29:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "uFpJWXTRAPHYFUt6CJNtqOr2HB0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bW0vO7tIH6I"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-19T07:35:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221019 早上中西區，江明宗掃街",
+        "description": "早上前往#中西區藥王里掃街，這兩天一度要頂讓的牛肉湯店就在這裡，老闆娘遇到的接班問題也是許多在地產業共通的難題，期待 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bW0vO7tIH6I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bW0vO7tIH6I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bW0vO7tIH6I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-19T07:35:57Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "1RokqwvkTbL3saFs18_TaRsM5BQ",
@@ -1638,74 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-09-21T12:02:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ZS3Za2XMbyT4mWHKjogPj39-m24",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "hEHiPJ6ZakY"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-21T06:23:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220921 早上北區，江明宗掃街",
-        "description": "早上是#北區和順里的掃街，和順里是一個有5520 人口的里，在大樓的區域人口密集，舊有透天社區則是慢慢有些凋零，兩個區域隔 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-21T06:23:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "qfTvE6SD8Vqs7W2Tg6tMGeZNCGs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "RiiYZSwJwys"
-      },
-      "snippet": {
-        "publishedAt": "2022-09-20T14:06:53Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220920 下午北區，江明宗街講",
-        "description": "下午來到北區街講，感謝江國銘、 江品璁前來支援，三江繼續在街頭訴說理念。政治不是變魔術，是一個持續溝通的過程，對象也不 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-09-20T14:06:53Z"
       }
     }
   ]

@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/西門路三段",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.203427,
+                    23.002694
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/北門路二段",
                 "count": 2
             },
@@ -131,27 +145,13 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中華路\/小東路",
-                "count": 11
+                "count": 10
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
                     120.234713,
                     22.998403
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/西門路三段",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.203427,
-                    23.002694
                 ]
             }
         },
@@ -257,7 +257,7 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區永大路二段\/公園路",
-                "count": 3
+                "count": 2
             },
             "geometry": {
                 "type": "Point",
@@ -285,7 +285,7 @@
             "type": "Feature",
             "properties": {
                 "key": "",
-                "count": 2
+                "count": 3
             },
             "geometry": {
                 "type": "Point",
@@ -425,7 +425,7 @@
             "type": "Feature",
             "properties": {
                 "key": "仁德區中山路\/中正路三段",
-                "count": 4
+                "count": 5
             },
             "geometry": {
                 "type": "Point",

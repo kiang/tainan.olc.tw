@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "QZfEpHUiLqUKcvYjBKrll3A2EuE",
+  "etag": "ZuaFR0alo_j7Cppwl0XSyVzztms",
   "nextPageToken": "CMgBEAA",
   "prevPageToken": "CJYBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
+    "totalResults": 445,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "byE0hjijlG5EQqY0JnPztjKAksI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "H1M-nS3EGwE"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-26T12:19:37Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "憲哥帶路，安南區廟宇走讀(1/3) - 啟程",
+        "description": "台南是眾神之都，登記的廟宇就有超過千家，有些廟宇集合了各式藝術創作，有些廟宇嘗試為傳統與現代之間搭起橋樑，期待眾多的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/H1M-nS3EGwE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/H1M-nS3EGwE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/H1M-nS3EGwE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-26T12:19:37Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "emWSUkstowGtMxFNI2iUsj0iaoE",
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-06-10T15:47:58Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "uegv2mT8YqeP3ZPOwue0TkurmC4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "7R1mgCUZ5dE"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-09T14:19:08Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220609 下午北區，江明宗街講",
-        "description": "下午三江一起來到北區進行街講，過程我一再強調的是這次參選的政見核心『步行城市』，希望孩子可以用步行的方式上學、長輩 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7R1mgCUZ5dE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-09T14:19:08Z"
       }
     }
   ]

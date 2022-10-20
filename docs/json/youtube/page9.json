@@ -1,115 +1,13 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "juweOTEK9MOXpUozyFDtBSPUlh8",
+  "etag": "Ila1haqXsfma1OrKeeTtyZf6BaM",
   "prevPageToken": "CJADEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
-    "resultsPerPage": 9
+    "totalResults": 443,
+    "resultsPerPage": 8
   },
   "items": [
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6L4jS3s7-t4Tlxea7HvJaEc-Qzk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "23JydRUB3kQ"
-      },
-      "snippet": {
-        "publishedAt": "2014-10-24T17:33:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-10-24 g0v &amp; open data @ NCKU-CSIE-自由軟體開發與社群發展",
-        "description": "使用投影片： http://k.olc.tw/slide/20141024_ncku_csie.html 口語討論時有諸多細節的錯誤，如果有發現問題還請告知;) 已知問題： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-10-24T17:33:42Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Od0IaxUiesP7YjTornXgMObpj5g",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "TYzFWv8KbAA"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T13:25:19Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "林一方 苗栗抗暴經驗分享",
-        "description": "林一方苗栗抗暴經驗分享說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T13:25:19Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "aKh-K8vWWNuVZFfHjXwABHNGwkI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "RGQplv4w7kI"
-      },
-      "snippet": {
-        "publishedAt": "2014-08-29T11:10:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "林一方 苗栗抗暴經驗分享",
-        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-08-29T11:10:44Z"
-      }
-    },
     {
       "kind": "youtube#searchResult",
       "etag": "Zink-nCvjA_enmjPr5fZy2V_6Gg",
@@ -142,6 +40,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-08-29T11:08:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1Fmbouiypco"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:00:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "請轉往 https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48",
+        "description": "原有網址出狀況，請改為： https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:00:23Z"
       }
     },
     {
@@ -214,6 +146,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "rVS8df_sXF_Fbi2jAjwYa7iPlu0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Bamzy7hI3sg"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-15T16:03:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "蘇煥智：大台南願景與交通佈局",
+        "description": "台南市建築經營協會邀請蘇前縣長於活動中做專題分享，活動資訊可以 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Bamzy7hI3sg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-15T16:03:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
       "id": {
         "kind": "youtube#video",
@@ -282,7 +248,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "lJQYHuOLE2nStKwagc7soulFVag",
+      "etag": "RnjKpXmU8b33MO4mY5KR3kVAXDE",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"

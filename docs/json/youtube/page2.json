@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "HcKYuIz5f6ciIl7FZF6-Werzivw",
+  "etag": "UWylvG2uRByZL4G98Te8PPiD32I",
   "nextPageToken": "CGQQAA",
   "prevPageToken": "CDIQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
+    "totalResults": 444,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ZS3Za2XMbyT4mWHKjogPj39-m24",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "hEHiPJ6ZakY"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-21T06:23:24Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220921 早上北區，江明宗掃街",
+        "description": "早上是#北區和順里的掃街，和順里是一個有5520 人口的里，在大樓的區域人口密集，舊有透天社區則是慢慢有些凋零，兩個區域隔 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hEHiPJ6ZakY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-21T06:23:24Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "qfTvE6SD8Vqs7W2Tg6tMGeZNCGs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RiiYZSwJwys"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-20T14:06:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220920 下午北區，江明宗街講",
+        "description": "下午來到北區街講，感謝江國銘、 江品璁前來支援，三江繼續在街頭訴說理念。政治不是變魔術，是一個持續溝通的過程，對象也不 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RiiYZSwJwys/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-20T14:06:53Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "1cKRgQSgrh2c9m0J4rsd59mzXTk",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-24T03:23:45Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "CMpbLgG0T59bWIo_p5uhG6xjQSA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "mtpzScuMLbE"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-23T13:43:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220823 下午中西區，江明宗街講",
-        "description": "下午在中西區街講，感謝江國銘與志工前來支援，我們在街頭繼續述說參選政見。眼前政府一直在發明新名詞，逃獄不僅沒有發布 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/mtpzScuMLbE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-23T13:43:45Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "N_ahNlR8_8qQPjY3GkGk1TS9SPw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "6B3WVwfTuk4"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-23T05:55:02Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220823 早上仁德，江國銘街講",
-        "description": "早上江國銘在仁德街講，我跟志工一起來支援，站在街頭持續宣揚理念。今天一個大哥特別來找我們聊，他表達對於這次兇案的憂心 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/6B3WVwfTuk4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-23T05:55:02Z"
       }
     }
   ]

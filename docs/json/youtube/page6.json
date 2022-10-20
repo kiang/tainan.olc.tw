@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "MJPQCtxmN_zmb2IDa7WKhW-hM1w",
+  "etag": "s_Zn2jqxFEIpuM_1kc_f2oX3X1k",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 439,
+    "totalResults": 444,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "kkxlcNAjdnsP6E8vVzlAX-L-X5Q",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5xdjKK5k-fc"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-09T14:38:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在北區和順公園聊道路設計與停車-全景",
+        "description": "三江這次到訪北區和順公園，這個公園週邊人口密度很高，衍生了許多交通需求，在最近的一個公共工程中改造了路口的道路設計， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5xdjKK5k-fc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-09T14:38:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "neRrsCPUnhwHuk7QyRGbYYu-AHY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-uxwvtUgMTU"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-04T07:19:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 001 ，聊國民黨初選、俄烏戰爭與民眾黨",
+        "description": "最近兩大黨的台南市長初選議題持續出現在媒體版面，我們也看到國民黨針對青年參選提出難得的評選加分，究竟這樣的加分是否 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-04T07:19:30Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "d3moybLFkW77CmfgkK1-PKaHSoc",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhNVd4kZ6zgwisA-hUveNXUQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-04T07:19:15Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-uxwvtUgMTU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-04T07:19:15Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "IIAqZuBR1xBsP0ybhpue8FBLDLc",
@@ -827,40 +929,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "37TOa27RkAv2pLl0Vlb1ZQ_GH0c",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "woDADRNwllk"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-24T11:14:08Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區建興國中聊教育(全景)",
-        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-24T11:14:08Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "9ovpyAfh1kc4YFY51El0AzyvPcQ",
       "id": {
         "kind": "youtube#video",
@@ -1095,40 +1163,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-09T12:51:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XObFrUwMn_vQpGLPvl9intzjO0Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MMNMrZ6Isrg"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-09T12:51:41Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南北區原美國學校的歷史不簡單",
-        "description": "在北區振興公園西北面的草地上，可以看到開元路旁遺留的大門遺跡，過去在沒有人介紹的情況下，一直都誤以為真的只是一間學校 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MMNMrZ6Isrg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-09T12:51:41Z"
       }
     },
     {
@@ -1673,40 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-11-07T14:05:50Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "lTQfUhbvZ9-obWEB_i1P7n3kEGg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "I2SwQaMrQtc"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-06T23:38:49Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南科技發展潛力 @ 台南青年的未來",
-        "description": "民眾黨台南市黨部於11 月6 日14:00~17:00 舉辦「#台南青年的未來」青年議題研討會，會中我(#江明宗)以主題台南科技發展潛力跟 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/I2SwQaMrQtc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-06T23:38:49Z"
       }
     }
   ]
