@@ -4,6 +4,48 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區中華西路二段\/和緯路四段",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.186358,
+                    23.006768
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區和緯路二段\/西門路四段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.20878,
+                    23.01143
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區和緯路四段\/文賢路",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.193953,
+                    23.009592
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/西門路三段",
                 "count": 4
             },
@@ -88,20 +130,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區中華西路二段\/和緯路四段",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.186358,
-                    23.006768
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 2
             },
@@ -158,20 +186,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "中西區海安路一段\/府前路二段",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.195513,
-                    22.990902
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "永康區中正北路\/中正路",
                 "count": 4
             },
@@ -208,20 +222,6 @@
                 "coordinates": [
                     120.233813,
                     23.008439
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區和緯路四段\/文賢路",
-                "count": 4
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.193953,
-                    23.009592
                 ]
             }
         },
@@ -285,7 +285,7 @@
             "type": "Feature",
             "properties": {
                 "key": "",
-                "count": 3
+                "count": 5
             },
             "geometry": {
                 "type": "Point",
@@ -424,8 +424,22 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路一段\/府前路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.195513,
+                    22.990902
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "仁德區中山路\/中正路三段",
-                "count": 5
+                "count": 4
             },
             "geometry": {
                 "type": "Point",
@@ -530,20 +544,6 @@
                 "coordinates": [
                     120.202248,
                     22.989569
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區和緯路二段\/西門路四段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.20878,
-                    23.01143
                 ]
             }
         },

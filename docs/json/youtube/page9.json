@@ -1,13 +1,285 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Ila1haqXsfma1OrKeeTtyZf6BaM",
+  "etag": "bOvaheVKsCSSafH-cc2pH4Rbp_k",
   "prevPageToken": "CJADEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 443,
-    "resultsPerPage": 8
+    "totalResults": 450,
+    "resultsPerPage": 16
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rHYdM6DMNnzXyXtytZmefgGcieI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jBQfjtCGW9I"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T13:53:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府? -2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jBQfjtCGW9I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T13:53:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cbkenZ1KrZk5phEH9UYV78_6_ug",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Ji9CgunPQPA"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-09T12:51:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "opengov tainan 台南公民智庫:甚麼是開放政府?",
+        "description": "電源不足，請轉往https://www.youtube.com/watch?v=jBQfjtCGW9I 瀏覽活動網址： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Ji9CgunPQPA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-09T12:51:55Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "L9GP7utT6fNarwSNny9moWDqwEQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "vQ6Pmk37xVk"
+      },
+      "snippet": {
+        "publishedAt": "2015-03-13T03:35:36Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南公民智庫 3/13 成立大會",
+        "description": "觀禮單位：張信堂（台教會）；莊國榮（台灣智庫執行長）；小英基金會代表智庫委員： 人文環境-陳奕齊、陳信安、何澄輝、 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/vQ6Pmk37xVk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-03-13T03:35:36Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "TVDvZevRltfEluOfrnZduHbCLTA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1i2zZ5Y9IZM"
+      },
+      "snippet": {
+        "publishedAt": "2015-01-29T09:56:04Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "【兩人三腳式的政府與民間】座談會 後半段",
+        "description": "細節可以參考https://hackpad.com/ZViW8a752zf ，這個影片主要是後半段的Q&A.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1i2zZ5Y9IZM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1i2zZ5Y9IZM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1i2zZ5Y9IZM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-01-29T09:56:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "CVNKrL_s6qUcBlJCfJvcoqwv0wQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "iJWf1_0i9Ls"
+      },
+      "snippet": {
+        "publishedAt": "2014-12-10T09:20:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014-12-10 立法院內政委員會審查政治獻金法記錄，下午場",
+        "description": "立法院第8屆第6會期內政委員會第26次全體委員會議； 一、審查行政院函請審議「政治獻金法部分條文修正草案」案。 二、審查本 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/iJWf1_0i9Ls/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-12-10T09:20:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "y_87OJukQYg7v-zkG4ZUHC1IQ4Y",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bwc3ila56CI"
+      },
+      "snippet": {
+        "publishedAt": "2014-11-20T14:10:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "have a nice day",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bwc3ila56CI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bwc3ila56CI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bwc3ila56CI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-11-20T14:10:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Od0IaxUiesP7YjTornXgMObpj5g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TYzFWv8KbAA"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T13:25:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "林一方 苗栗抗暴經驗分享",
+        "description": "林一方苗栗抗暴經驗分享說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T13:25:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "aKh-K8vWWNuVZFfHjXwABHNGwkI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RGQplv4w7kI"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:10:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "林一方 苗栗抗暴經驗分享",
+        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:10:44Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "Zink-nCvjA_enmjPr5fZy2V_6Gg",
@@ -248,7 +520,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "RnjKpXmU8b33MO4mY5KR3kVAXDE",
+      "etag": "pQprJhnReIJ3gJAz5XLyh7WdAB8",
       "id": {
         "kind": "youtube#channel",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
