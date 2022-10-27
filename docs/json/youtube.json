@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "中西區海安路一段\/府前路二段",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.195513,
+                    22.990902
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "中西區民生路二段\/中華西路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.186765,
+                    22.997976
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
                 "count": 4
             },
@@ -186,6 +214,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "",
+                "count": 6
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "永康區中正北路\/中正路",
                 "count": 4
             },
@@ -278,20 +320,6 @@
                 "coordinates": [
                     120.328479,
                     22.962517
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "",
-                "count": 5
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0,
-                    0
                 ]
             }
         },
@@ -418,20 +446,6 @@
                 "coordinates": [
                     120.244098,
                     22.973908
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區海安路一段\/府前路二段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.195513,
-                    22.990902
                 ]
             }
         },
@@ -614,20 +628,6 @@
                 "coordinates": [
                     120.277423,
                     22.99226
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區民生路二段\/中華西路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.186765,
-                    22.997976
                 ]
             }
         },
