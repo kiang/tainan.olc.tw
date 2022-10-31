@@ -1,0 +1,38 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "lBjOLIxDN44i4fhSW9VNjG_AUo0",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "GtpfRNvkLH1tq54tYSB-WIU7Nx0",
+      "id": "LyVMjH-ZEMI",
+      "contentDetails": {
+        "duration": "PT3M29S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "statistics": {
+        "viewCount": "34",
+        "likeCount": "7",
+        "favoriteCount": "0",
+        "commentCount": "1"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 1
+  }
+}

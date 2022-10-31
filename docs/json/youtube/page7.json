@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "m7IEaePAMcTSk6Qw7Y6yDXQDUPk",
+  "etag": "2IPgHE8LjDJWOTab3y_WH4O2Cqo",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 454,
+    "totalResults": 469,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "A3l0nn71-oI95vYXtfoF8shajAU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "47rvj5MjvqE"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-17T13:51:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211217 公投宣講記錄 @ 台北",
+        "description": "20211217 公投宣講記錄@ 台北.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/47rvj5MjvqE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-17T13:51:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "OLos8iyU4CkUEtOKRDJqVF3IBY4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "cvyESoGTf-k"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-15T05:38:36Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "中西區愛國婦人館的美國歷史",
+        "description": "愛國婦人館是日治時期所建造，不過在二次大戰後由美國所承租，是美國在台灣進駐最早的幾個點之一；依據解老師的研究，最初 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/cvyESoGTf-k/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-15T05:38:36Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "C_8YnqS24v0_lx4Gen1OINEbcW0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "lwLSg-gdcag"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-13T01:48:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211212 花園夜市宣講 1218 公投",
+        "description": "跟志工們一起再次來到花園夜市，宣講#1218公投過程有許多路過的朋友特別靠過來加油打氣，希望大家在#反萊豬與#三接遷離兩題 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/lwLSg-gdcag/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/lwLSg-gdcag/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/lwLSg-gdcag/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-13T01:48:46Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "RFRwaLgTFvZHE5NgQYEXOuCV3c4",
@@ -555,40 +657,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "FFkMuc2re_9KY4D2ZP9gkVIK6v0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dStu1SEppXU"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-07T14:49:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211107 公投宣講 江明宗 @ 正興街 (短版)",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-07T14:49:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "MygybdcyWSLcqGrQIDdXf_nQGWA",
       "id": {
         "kind": "youtube#video",
@@ -759,40 +827,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "tmiAOib_LoFFbL8Hlw3e5EY4Wlk",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhPjXUzkx0tuTG1i0chpmHFP"
-      },
-      "snippet": {
-        "publishedAt": "2021-10-19T08:57:32Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講-全景",
-        "description": "江國銘、江品璁跟我(江明宗)剛好都姓江，在討論到一些公眾議題時有些共通的想法想要嘗試，所以用三江的名義作為開始，透過 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cGTsc8ESY8Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-10-19T08:57:32Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "yJ_MqkWyZZ2I6il91GjFaz3UUxc",
       "id": {
         "kind": "youtube#video",
@@ -861,6 +895,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "5FwSBsR2LjgX9Dqy8dRm9502ybM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "i0qiXYb7beA"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-18T12:05:25Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農會穀倉聊社區營造",
+        "description": "這週三江一起來到歸仁農會穀倉，這個穀倉因為時代變遷已經不再用來囤積稻米，新的樣貌正在籌備當中；同時由國銘帶來的主題， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/i0qiXYb7beA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-18T12:05:25Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "GaQrdLg9GcyDj2PxuLRre8_K11Q",
       "id": {
         "kind": "youtube#video",
@@ -891,6 +959,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-10-05T04:18:46Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "_TWh806a1Hz4pltEAdJTA6wirlQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Otw0WB-oGF8"
+      },
+      "snippet": {
+        "publishedAt": "2021-10-05T04:18:51Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "慢遊台南 20211004-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Otw0WB-oGF8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Otw0WB-oGF8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Otw0WB-oGF8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-10-05T04:18:51Z"
       }
     },
     {
@@ -1235,40 +1337,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dgG6_Eow2Ys"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "1i-7O3b2nl3QnmChN20AYtjPOlY",
       "id": {
         "kind": "youtube#playlist",
@@ -1337,36 +1405,36 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "v7-JwRBrY1yVqEDum8twVklzVlo",
+      "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
       "id": {
         "kind": "youtube#video",
-        "videoId": "3jGCM4wA170"
+        "videoId": "cuLuBZcnmcM"
       },
       "snippet": {
-        "publishedAt": "2021-08-12T16:36:45Z",
+        "publishedAt": "2021-08-23T00:36:07Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210811-2",
-        "description": "",
+        "title": "20210820 南鐵案北區拆遷戶抗爭事件 - 南鐵案拆遷監督交涉記錄",
+        "description": "上個星期五(8/20)凌晨，在得知南鐵案拆遷開始拉起封鎖線後，我前往北區開元陸橋旁現場希望關心與記錄，但每個能夠看到現場的 ...",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/3jGCM4wA170/default.jpg",
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/3jGCM4wA170/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/3jGCM4wA170/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2021-08-12T16:36:45Z"
+        "publishTime": "2021-08-23T00:36:07Z"
       }
     },
     {
@@ -1435,6 +1503,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-07-31T14:22:38Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "9btcqt1dkUBADU1LMaaX-i4lS7o",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "PFpbQN85OmM"
+      },
+      "snippet": {
+        "publishedAt": "2021-07-27T10:41:12Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南夜遊 20210724",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/PFpbQN85OmM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-07-27T10:41:12Z"
       }
     },
     {
@@ -1541,40 +1643,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "cP1-271Mah3HZhW_z3Ja_nrxw1E",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "86LAIDbXmbM"
-      },
-      "snippet": {
-        "publishedAt": "2021-06-14T15:49:12Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "自己的頭髮自己理",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/86LAIDbXmbM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/86LAIDbXmbM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/86LAIDbXmbM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-06-14T15:49:12Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "a2K7-CGhmx4dt-SETHokMx-srVw",
       "id": {
         "kind": "youtube#video",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-05-23T03:38:21Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "sc1yhRFESTw0jgnObCQe0VbU8Ao",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhPmyAX3v97zvR3v6dMgQ8F2"
-      },
-      "snippet": {
-        "publishedAt": "2021-05-23T03:37:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "作品介紹",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-05-23T03:37:30Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "wyKECMPWmDm7Iw-IcZppUtOq09k",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Gdo857Yp7sM"
-      },
-      "snippet": {
-        "publishedAt": "2021-03-28T14:01:44Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "永康閱之森公園遊戲場導覽",
-        "description": "座落在永康新總圖旁的公園，最近遊戲場部分正式開幕，吸引了非常多的孩子前來，透過這個影片希望讓大家感受一下現場的人潮 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-03-28T14:01:44Z"
       }
     }
   ]

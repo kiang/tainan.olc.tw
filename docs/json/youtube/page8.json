@@ -1,14 +1,82 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "7N91tCF6X_6iFNWnUNuerKqJHTo",
+  "etag": "CB2dtSgBUrDcyQDzn2xKP_YM9eo",
   "nextPageToken": "CJADEAA",
   "prevPageToken": "CN4CEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 454,
+    "totalResults": 469,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sc1yhRFESTw0jgnObCQe0VbU8Ao",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhPmyAX3v97zvR3v6dMgQ8F2"
+      },
+      "snippet": {
+        "publishedAt": "2021-05-23T03:37:30Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "作品介紹",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kkp0-P5dTxY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-05-23T03:37:30Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wyKECMPWmDm7Iw-IcZppUtOq09k",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Gdo857Yp7sM"
+      },
+      "snippet": {
+        "publishedAt": "2021-03-28T14:01:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "永康閱之森公園遊戲場導覽",
+        "description": "座落在永康新總圖旁的公園，最近遊戲場部分正式開幕，吸引了非常多的孩子前來，透過這個影片希望讓大家感受一下現場的人潮 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Gdo857Yp7sM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-03-28T14:01:44Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "vyjIjMz5cfFLRptDOjfCdEPElQg",
@@ -143,40 +211,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2020-10-14T02:00:36Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "xYZXlhFFxRhrieNaXpZ-2Lsz7IQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MyYZg2Yr-3w"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 阿猴1909綠水園區 9",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MyYZg2Yr-3w/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:03Z"
       }
     },
     {
@@ -578,40 +612,6 @@
           },
           "high": {
             "url": "https://i.ytimg.com/vi/c_yBKyDCyAg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2020-10-14T01:49:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "d3hfKLbuJrZDz6pzDrnZSRN2UgE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xhJFKA1EHfI"
-      },
-      "snippet": {
-        "publishedAt": "2020-10-14T01:49:03Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20200910 參訪屏東 阿猴1909綠水園區 3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xhJFKA1EHfI/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
@@ -1167,74 +1167,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "xofsgj0D1eC17zHQ-jgGbidiC5k",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "XtmKxpKPMWI"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-26T00:17:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "e等公務園+學習平臺快速上課方式",
-        "description": "e等公務園+學習平臺快速上課方式對於許多公務員來說，除了做不完的事情，還有上不完的課程，所以會覺得很厭世(?)。最近被人事 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/XtmKxpKPMWI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-26T00:17:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "foTAH4v8p2sBYWbi2K6KsB1E0K8",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "MlhVO9VUOMs"
-      },
-      "snippet": {
-        "publishedAt": "2019-06-05T02:40:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "病媒蚊監控採樣數據管理系統",
-        "description": "最近開始有登革熱本土疫情，在上次登革熱疫情爆發後各單位陸續有些新的嘗試，其中之一就是誘卵桶的觀測；傳統的病媒蚊密度 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/MlhVO9VUOMs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2019-06-05T02:40:05Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "yYVIkx5ScVA_ENsaEj_ZFa4Qk3g",
       "id": {
         "kind": "youtube#video",
@@ -1435,40 +1367,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2018-07-10T03:08:18Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JgG0uqVAbIhMXCi_jKpv6ptsSbA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "AFkpJmjPjLo"
-      },
-      "snippet": {
-        "publishedAt": "2018-06-22T02:20:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "如果廟會是文化的一部分，就讓這個文化精彩",
-        "description": "Medium 討論： https://bit.ly/2MMo1rZ 在台南，每年有超過一千場的廟會活動，這只是有在民政局登載的數量，實際情況各種大小 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/AFkpJmjPjLo/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2018-06-22T02:20:45Z"
       }
     },
     {
@@ -1677,36 +1575,138 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Euf8LwZuCknrs8DMP47SA36HxcY",
+      "etag": "d4QakLPogwM4C-AVOBPx9OS6RGQ",
       "id": {
         "kind": "youtube#video",
-        "videoId": "U1JVQTzore4"
+        "videoId": "Psf4hqtxSyg"
       },
       "snippet": {
-        "publishedAt": "2018-05-10T05:58:44Z",
+        "publishedAt": "2018-04-14T18:58:33Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台南地圖產生器 操作介紹",
-        "description": "台南地圖產生器初步上線台南地圖產生器- https://kiang.github.io/map_print/ 操作介紹影片- ...",
+        "title": "公民科技 @ 交大土木系 2018-04-11",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
         "thumbnails": {
           "default": {
-            "url": "https://i.ytimg.com/vi/U1JVQTzore4/default.jpg",
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/default.jpg",
             "width": 120,
             "height": 90
           },
           "medium": {
-            "url": "https://i.ytimg.com/vi/U1JVQTzore4/mqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/mqdefault.jpg",
             "width": 320,
             "height": 180
           },
           "high": {
-            "url": "https://i.ytimg.com/vi/U1JVQTzore4/hqdefault.jpg",
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/hqdefault.jpg",
             "width": 480,
             "height": 360
           }
         },
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
-        "publishTime": "2018-05-10T05:58:44Z"
+        "publishTime": "2018-04-14T18:58:33Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "p989S12FDAHR-tMSR781C4T7ZUI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "O5MoJNWb3Q8"
+      },
+      "snippet": {
+        "publishedAt": "2018-04-10T08:25:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "測站空氣品質季平均統計圖 網站操作說明",
+        "description": "測站季平均- https://kiang.github.io/erdb/ 縣市季平均- https://kiang.github.io/erdb/city/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-04-10T08:25:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "vNaWAxKibQp4W4mIVUBsi8ENxAU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bCfHqdIQfnk"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:49:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南也要特色公園 - 建立公園功能展示",
+        "description": "展示在https://parks.olc.tw/ 新增的建立公園功能.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:49:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JMv0Y-bJshW1C9mBw0W7YlVPEuE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "k35qD4iXATo"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:48:14Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "時代力量台南小松 01 - 在台南地圖畫線 操作示範",
+        "description": "詳細資訊可以參考懶人包- http://beta.hackfoldr.org/npp-tainan-6001/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:48:14Z"
       }
     }
   ]

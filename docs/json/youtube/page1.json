@@ -1,16 +1,186 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "gP7AzfGqS90RXPXzMkHJc8yxXUs",
+  "etag": "z76SqR_ShaRGNp6yNgVqnbyBAcU",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 454,
+    "totalResults": 469,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "l6h3E6xfRLhuBc4icliI30wkWbg",
+      "etag": "2g8NOK4pdkKIRYewJMkW_F1uevk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RBqRGkkZ3Og"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-30T19:10:52Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221030 森山市集發放面紙文宣",
+        "description": "下午來到 #森山市集 發送面紙文宣，即使已經是最後一天，人潮還是絡繹不絕。這次市集在外側保留比較多開放空間，也安排了接駁 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RBqRGkkZ3Og/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RBqRGkkZ3Og/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RBqRGkkZ3Og/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-30T19:10:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "dFKWyuaYCInQxKGB4oIIEQTJ7UE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "WOVmFqQiRPA"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-29T09:30:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221029 路口宣講，推廣捐血活動",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/WOVmFqQiRPA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/WOVmFqQiRPA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/WOVmFqQiRPA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-29T09:30:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mLI93NerOKuqPeohuh-gzT9P3Bc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LyVMjH-ZEMI"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-29T08:32:56Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221029 北區中山捐血車捐血",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LyVMjH-ZEMI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LyVMjH-ZEMI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LyVMjH-ZEMI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-29T08:32:56Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "B7WLU11RtKMFa7eN7wgAmsWFP18",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "h-HP7Agnkvs"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-28T15:41:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221028 下午北區，江明宗街講",
+        "description": "下午來到台南公園街講， #步行城市的理念希望可以讓台南發揮文化古都的價值，同時減少交通事故死傷。市長#黃偉哲持續批評在野 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/h-HP7Agnkvs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/h-HP7Agnkvs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/h-HP7Agnkvs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-28T15:41:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "IyDDPWXygVazPec0sUNaIJP6kY4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "6YTRA9b1CLw"
+      },
+      "snippet": {
+        "publishedAt": "2022-10-28T05:03:21Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221028 早上中西區，江明宗掃街",
+        "description": "早上走在全國知名的#中西區開山里，過去因為登革熱警報誤傳讓大家知道這個里的存在，社區裡面處處可以發現新舊並陳的房舍， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/6YTRA9b1CLw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/6YTRA9b1CLw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/6YTRA9b1CLw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-10-28T05:03:21Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "KRmdRgZQy6zqjA3GzzcWRLm8Pwk",
       "id": {
         "kind": "youtube#video",
         "videoId": "gHgY4LuBDzE"
@@ -44,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "WaJAB8tIzOY7TUyFk_FNIuIhX1I",
+      "etag": "kDjlTmvM1P_RsZWJqrdVVnnPC5k",
       "id": {
         "kind": "youtube#video",
         "videoId": "9NC-WPCNDqw"
@@ -78,7 +248,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ea3DopYtrsu9-7MUsuFUwYav-ic",
+      "etag": "NPvo5CoRckudExbTXIWqCSV8FIo",
       "id": {
         "kind": "youtube#video",
         "videoId": "xl_v5Jfuy_8"
@@ -112,7 +282,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "-5G9yRfPalxmt0j2NBQBZ1cUMNY",
+      "etag": "4BqNvA4NdXkYDqV4xHhNret92lg",
       "id": {
         "kind": "youtube#video",
         "videoId": "g7S1W7vqvSQ"
@@ -121,7 +291,7 @@
         "publishedAt": "2022-10-26T14:39:00Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221026 下午中西區，江明宗街講",
-        "description": "下午在民生路與中華西路口街講，讓更多朋友可以知道#步行城市的理念，期待在11/26 進入議會實踐。眼前民進黨為了打壓#高虹安 ...",
+        "description": "下午在民生路與中華西路口街講，讓更多朋友可以知道 #步行城市 的理念，期待在 11/26 進入議會實踐。眼前民進黨為了打壓 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/g7S1W7vqvSQ/default.jpg",
@@ -146,7 +316,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "J51fn--qAE785AbJfNGrjywnuL8",
+      "etag": "gOPbSV4g5LQQqFf_d6GHNsl_WAo",
       "id": {
         "kind": "youtube#video",
         "videoId": "9mMCYOoSZRo"
@@ -180,7 +350,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "pzVC2hUiwmL37LfEmXJOLlMiX50",
+      "etag": "OOReBS5D-pwmJ9b8kRsXAhZeUOc",
       "id": {
         "kind": "youtube#video",
         "videoId": "mgCcZh7uDxI"
@@ -189,7 +359,7 @@
         "publishedAt": "2022-10-25T15:03:24Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221025 下午北區，江明宗街講",
-        "description": "下午的街講在北區和緯路與中華西路交叉口，繼續宣揚#步行城市的理念。台南面臨了許多問題，在地方選舉有很多議題可以探討， ...",
+        "description": "下午的街講在北區和緯路與中華西路交叉口，繼續宣揚 #步行城市 的理念。台南面臨了許多問題，在地方選舉有很多議題可以探討， ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/mgCcZh7uDxI/default.jpg",
@@ -214,7 +384,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "nInRaIM11CnMkdJXhRZj2Ab2G5w",
+      "etag": "ouneVWZaBxQl5MDtERKkIzwQ-8E",
       "id": {
         "kind": "youtube#video",
         "videoId": "DG1cZmQ1uNk"
@@ -223,7 +393,7 @@
         "publishedAt": "2022-10-25T08:52:17Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221025 早上北區，江明宗掃街",
-        "description": "早上的掃街進行到#北區長興里，里內人口2964 ，是另一個人口快速減少的社區，老舊社區的轉型寄望在兵工廠的轉型規劃中；目前 ...",
+        "description": "早上的掃街進行到 #北區長興里 ，里內人口 2964 ，是另一個人口快速減少的社區，老舊社區的轉型寄望在兵工廠的轉型規劃中； ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/DG1cZmQ1uNk/default.jpg",
@@ -588,7 +758,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "5k9bh16rZ4t0UGbU4zEVQveDUPw",
+      "etag": "u1AOw4JpJ88C8Wz8flNYHBN3Ucs",
       "id": {
         "kind": "youtube#video",
         "videoId": "qquGLprR1ic"
@@ -597,7 +767,7 @@
         "publishedAt": "2022-10-19T13:29:07Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221019 下午北區，江明宗街講",
-        "description": "下午在北區街講，現在天暗的比較快，所以每天都是從白天講到入夜的感覺，不變的是對於 #步行城市 理念的堅持與期待。2021 年 ...",
+        "description": "下午在北區街講，現在天暗的比較快，所以每天都是從白天講到入夜的感覺，不變的是對於#步行城市理念的堅持與期待。2021 年 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/qquGLprR1ic/default.jpg",
@@ -622,7 +792,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "KAp1XD3u23lParUoItuBb1FIKFc",
+      "etag": "DilCP9naN4ruV8fmdtW_iOCx_9c",
       "id": {
         "kind": "youtube#video",
         "videoId": "bW0vO7tIH6I"
@@ -631,7 +801,7 @@
         "publishedAt": "2022-10-19T07:35:57Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221019 早上中西區，江明宗掃街",
-        "description": "早上前往 #中西區藥王里 掃街，這兩天一度要頂讓的牛肉湯店就在這裡，老闆娘遇到的接班問題也是許多在地產業共通的難題，期待 ...",
+        "description": "早上前往#中西區藥王里掃街，這兩天一度要頂讓的牛肉湯店就在這裡，老闆娘遇到的接班問題也是許多在地產業共通的難題，期待 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/bW0vO7tIH6I/default.jpg",
@@ -1536,176 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-10-01T14:57:19Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rUwHcyeQFAcpj3ALYBQzdAr1Jes",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Ezdn3c4cJEE"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-01T14:56:28Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221001 北區國姓社區發展協會餐會-擺放文宣",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Ezdn3c4cJEE/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Ezdn3c4cJEE/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Ezdn3c4cJEE/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-01T14:56:28Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "vSE-mIbHFVXSoLIV6S7tPzIlRwY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "fqqglT2qn-k"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-01T09:59:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221001 北區和順里重陽節餐會-擺放文宣",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/fqqglT2qn-k/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/fqqglT2qn-k/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/fqqglT2qn-k/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-01T09:59:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "yIZ5oaWkiCWEFE4aGMQZ7qFbm8w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "oVOVMdqQBSM"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-01T09:58:28Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221001 博愛長壽會重陽節活動 - 發放文宣",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/oVOVMdqQBSM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/oVOVMdqQBSM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/oVOVMdqQBSM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-01T09:58:28Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "66Vk7WZcziKppwGhYEqIweu5YGE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "03k0-FbHRks"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-01T09:59:29Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221001 北區和順里重陽節餐會-上台致詞",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/03k0-FbHRks/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/03k0-FbHRks/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/03k0-FbHRks/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-01T09:59:29Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0ORVzvYniKHh5Tbgmmtn-COnBuM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "SpYFDMBQX7Q"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-01T09:58:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221001 中西區民生社區餐會 - 擺放文宣",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/SpYFDMBQX7Q/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/SpYFDMBQX7Q/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/SpYFDMBQX7Q/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-01T09:58:45Z"
       }
     }
   ]

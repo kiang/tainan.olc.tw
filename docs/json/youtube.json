@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/公園路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.208789,
+                    23.001025
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "中西區海安路一段\/府前路二段",
                 "count": 2
             },
@@ -144,20 +158,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區公園南路\/公園路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.208789,
-                    23.001025
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 2
             },
@@ -215,7 +215,7 @@
             "type": "Feature",
             "properties": {
                 "key": "",
-                "count": 6
+                "count": 5
             },
             "geometry": {
                 "type": "Point",
@@ -656,20 +656,6 @@
                 "coordinates": [
                     120.211631,
                     22.996782
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "東區中華東路三段\/崇明路",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.223144,
-                    22.974233
                 ]
             }
         }
