@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "-ThcunbBP2Q7yGG-UfrA1x-IzkE",
+  "etag": "8knpeALHaYkGFGcepwUSqMF6bm0",
   "nextPageToken": "CJYBEAA",
   "prevPageToken": "CGQQAQ",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 469,
+    "totalResults": 470,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4J5lIX5phQ97TerU4FqhjSfmFBk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LUHc1ryLlcU"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-09T15:56:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220909 下午北區，江明宗街講",
+        "description": "下午在北區街講，感謝江國銘與志工前來支援，繼續站在街頭告訴大家#步行城市的理念。台南一直存在頭痛醫頭的問題，沒辦法系統 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LUHc1ryLlcU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-09T15:56:59Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "OI-wN-n0xA5GmtD4l2Vk1yIvIV0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "fkUGt5Q0vKc"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-08T15:26:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220908 下午永康，江品璁街講",
+        "description": "下午是江品璁在永康的街講，我跟江國銘一起到場支援，三江不厭其煩的在街頭告訴大家居住正義的重要。台南至今社會住宅完工 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fkUGt5Q0vKc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-08T15:26:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "e8PXfrJ0WYZgnUEpBMPMBdOm6Yg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Fv1bEG170k8"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-07T15:06:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220907 下午北區，江明宗掃街",
+        "description": "下午繼續在北區掃街，巷弄中偶爾會出現特別妝點自己家門的房子，讓巷弄間多了些趣味。 #北中西區台南市議員參選人江明宗#小額 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Fv1bEG170k8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Fv1bEG170k8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Fv1bEG170k8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-07T15:06:45Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "4hXGvLdT_EHRNySmG7_eHgn_oYA",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-08-09T04:53:11Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Wet78fjdc1lh6wRW1x-wpK3SITs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "tK6lei8tA2s"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-08T22:18:24Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220808 下午北區，江明宗街講",
-        "description": "下午一樣是北區的街講，感謝江品璁、 江國銘前來支援，在離開前碰巧遇到羅智強、 蔡宗豪台南市中西、北區市議員候選人也要在同 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/tK6lei8tA2s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-08T22:18:24Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "tuO2EwI2dOjWm-brahCRhSqC544",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Vy4EQ-mPKvI"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-08T03:02:54Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220808 早上北區，江明宗街講",
-        "description": "早上在北區街講，感謝江國銘、 江品璁前來支援，三江一起站在街口宣傳#步行城市的理念。台南是個有400 年歷史的文化古都， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Vy4EQ-mPKvI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-08T03:02:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cbQUT2G86Amwhl-YlwLwMJD7-Wo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "qbYErISIAgA"
-      },
-      "snippet": {
-        "publishedAt": "2022-08-05T07:16:16Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220805 早上歸仁，江國銘街講",
-        "description": "早上江國銘的街講來到歸仁，我跟江品璁、 台南政治實習菜鳥一起到場支援，站在街口講述我們的政見。眼前年輕人負擔沉重，我們 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/qbYErISIAgA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/qbYErISIAgA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/qbYErISIAgA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-08-05T07:16:16Z"
       }
     }
   ]

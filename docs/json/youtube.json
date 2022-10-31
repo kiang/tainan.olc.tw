@@ -4,6 +4,20 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區開元路442巷口",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.226199,
+                    23.011312
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/公園路",
                 "count": 3
             },
@@ -215,7 +229,7 @@
             "type": "Feature",
             "properties": {
                 "key": "",
-                "count": 5
+                "count": 7
             },
             "geometry": {
                 "type": "Point",
@@ -508,20 +522,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區長榮路四段\/開元路",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.220665,
-                    23.007662
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "中西區西門路\/府前路二段",
                 "count": 1
             },
@@ -614,6 +614,20 @@
                 "coordinates": [
                     120.245347,
                     22.957151
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區長榮路四段\/開元路",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.220665,
+                    23.007662
                 ]
             }
         },

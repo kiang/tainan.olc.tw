@@ -1,14 +1,116 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "FcZxBETa60IzxL14p8PLd8fnyyI",
+  "etag": "hBQKDWdrsLwr8PdBHX2jZ_0LMt0",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 469,
+    "totalResults": 470,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lk5MCTNc1mP8pQ528_-PBxNa7f0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "NiXqj2dfmAE"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-11T22:21:02Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 008 ，談染疫與未染疫心境",
+        "description": "三江有兩位同日快篩確診，隨後迎來的是行程調整與家庭成員跟著確診的衝擊；同行的我雖然持續快篩陰性，共同行程的影響以及 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NiXqj2dfmAE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-11T22:21:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mVt5ShwIINaUdrVg-DFBBatg1vI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "iXH-H3AYLUc"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-11T13:35:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220711 下午北區，江明宗街講",
+        "description": "下午來到台南公園街講，感謝江國銘、 江品璁跟台南政治實習菜鳥的支援， #步行城市的理念希望讓長輩走到街上、走入市場，台南 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/iXH-H3AYLUc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-11T13:35:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ODpdmWaZhvgSRmlJLeyuHsHn1HA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bKp09_C2LJI"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-11T03:53:25Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220711 早上北區，江明宗街講",
+        "description": "早上來到北區街講， 江國銘與台南政治實習菜鳥一起前來支援，我還是持續強調#步行城市對台南的重要性，希望市民朋友年底選舉 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bKp09_C2LJI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-11T03:53:25Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "aMF2xArTVdEOgN5VOb3X6Z6ZeOw",
@@ -449,6 +551,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-06-28T14:40:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "c9zULvB4u5V3IGI_b6d57uKo9qk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "AorctFu5TlA"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-25T13:53:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220625 台南南區龍崗國小淨灘",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AorctFu5TlA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AorctFu5TlA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AorctFu5TlA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-25T13:53:53Z"
       }
     },
     {
@@ -895,6 +1031,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "lpe8sPkO879ZaD_hhRSwy_j6M_I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Y3iURz9owv0"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-07T19:13:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220607 下午東區，蔡宛秦街講",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Y3iURz9owv0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-07T19:13:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "2DHkVudje2TiEYF2Uze2ThlV8Jg",
       "id": {
         "kind": "youtube#video",
@@ -1337,40 +1507,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "XQ5FohAuY0Gj_xT85m5dfvq3T-g",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhOahtBASCjDqJ8T2uYuHNxT"
-      },
-      "snippet": {
-        "publishedAt": "2022-05-02T05:53:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "記者會",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/VYHUdFyfXKY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-05-02T05:53:23Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "PbhvoGpPFI_44VOEoWlD7szJ6uQ",
       "id": {
         "kind": "youtube#video",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-04-24T16:05:31Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "SgHNfdl5y9o6zSYgv6yMddHmV5Y",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "J51cEneQ5GA"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-21T17:00:10Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2022 年初至今確診病例變化",
-        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖其實有個播放功能，可以展示年初至今確診人數的變化，只是之前 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/J51cEneQ5GA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-21T17:00:10Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-rnOHaZwCoJjf0hEBgfY9LTP4lg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "j7sw3gsaQpU"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T23:55:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220419 夜遊台南-1",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T23:55:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DFs-huvASL7KaGgvcVnt5pL98Ds",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HTIa-BKf3Ks"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-19T13:14:53Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣 Covid-19 本土病例地圖介紹 2022 版",
-        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖是在2021/05 上線，去年底疫情有比較緩和，只是今年以來確診 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-19T13:14:53Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "hZIoqHmnsLtdJyUoG5rONgHJVJg",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "gqnDAPxEerY"
-      },
-      "snippet": {
-        "publishedAt": "2022-04-10T12:03:05Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開唱：龍介仙選市長",
-        "description": "謝龍介即將代表國民黨參與年底的市長大選，三江在閒聊時國銘順口唱了兩句\"龍介仙選市長\" ，大家都覺得有趣，所以國銘就把兩句 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-04-10T12:03:05Z"
       }
     }
   ]

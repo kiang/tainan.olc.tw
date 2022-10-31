@@ -1,13 +1,353 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "5FjBiR6poRrYYfFuPszbfDI0LHg",
+  "etag": "HTYe-tK43viLWB04jkArx8Su_oY",
   "prevPageToken": "CJADEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 469,
-    "resultsPerPage": 22
+    "totalResults": 470,
+    "resultsPerPage": 32
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Aamukpm9tp7oAi1WSnrkRk4S-so",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yRs_J0dW2zc"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-09T00:46:34Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "細談國土巡守隊",
+        "description": "國土巡守隊是我在總統盃黑客松的比賽題目，這個題目有個很簡單的訴求，希望政府能夠釋出全國的地籍圖成為開放資料，然後關心 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yRs_J0dW2zc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-09T00:46:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "4aBRDKHuZ0lgsER4dqR16yV4hVM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "arTmrSXkXzA"
+      },
+      "snippet": {
+        "publishedAt": "2018-06-06T03:56:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公開徵求參選人共同進行台南議題探討",
+        "description": "傳統的政治因為露臉的機會不多，在有機會露臉時就會希望有十足的準備與盡可能的接觸更多人群，也因此跑攤文化在台南一直存在 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/arTmrSXkXzA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-06-06T03:56:16Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JMrnzYikRe_bIGabdxDcE0ZhQ9I",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "wlJjSOqwOFM"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-29T02:25:31Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做成果介紹 3 分鐘版",
+        "description": "簡介： https://www.facebook.com/k.olc.tw/posts/959671350872995.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wlJjSOqwOFM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-29T02:25:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M0mqaBIRuURiF2JpmHuD52afYzA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ko2U8dU889M"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T11:09:12Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南市里鄰編組及調整前後比較",
+        "description": "文章介紹： http://k.olc.tw/2018/05/台南市里鄰編組及調整前後比較/ #捐款支持明宗以科技監督台南郵局劃撥： 31639415 收款戶名： ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ko2U8dU889M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T11:09:12Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ECD5Vxd0CXNQg2q0YM5jXFGKlkc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JmxFhvGzw6E"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-15T08:09:03Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "國土巡守隊實做雛型介紹",
+        "description": "介紹資訊可以參考https://g0v.hackpad.tw/0NkW64xhg7g.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JmxFhvGzw6E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-15T08:09:03Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Euf8LwZuCknrs8DMP47SA36HxcY",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "U1JVQTzore4"
+      },
+      "snippet": {
+        "publishedAt": "2018-05-10T05:58:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南地圖產生器 操作介紹",
+        "description": "台南地圖產生器初步上線台南地圖產生器- https://kiang.github.io/map_print/ 操作介紹影片- ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/U1JVQTzore4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/U1JVQTzore4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/U1JVQTzore4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-05-10T05:58:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "d4QakLPogwM4C-AVOBPx9OS6RGQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Psf4hqtxSyg"
+      },
+      "snippet": {
+        "publishedAt": "2018-04-14T18:58:33Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "公民科技 @ 交大土木系 2018-04-11",
+        "description": "投影片： http://kiang.github.io/slides/20180411_nctu.html 更多作品： https://kiang.github.io/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Psf4hqtxSyg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-04-14T18:58:33Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "p989S12FDAHR-tMSR781C4T7ZUI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "O5MoJNWb3Q8"
+      },
+      "snippet": {
+        "publishedAt": "2018-04-10T08:25:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "測站空氣品質季平均統計圖 網站操作說明",
+        "description": "測站季平均- https://kiang.github.io/erdb/ 縣市季平均- https://kiang.github.io/erdb/city/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/O5MoJNWb3Q8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-04-10T08:25:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "vNaWAxKibQp4W4mIVUBsi8ENxAU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "bCfHqdIQfnk"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:49:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台南也要特色公園 - 建立公園功能展示",
+        "description": "展示在https://parks.olc.tw/ 新增的建立公園功能.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/bCfHqdIQfnk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:49:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JMv0Y-bJshW1C9mBw0W7YlVPEuE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "k35qD4iXATo"
+      },
+      "snippet": {
+        "publishedAt": "2017-11-29T15:48:14Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "時代力量台南小松 01 - 在台南地圖畫線 操作示範",
+        "description": "詳細資訊可以參考懶人包- http://beta.hackfoldr.org/npp-tainan-6001/",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/k35qD4iXATo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-11-29T15:48:14Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "5MdHJxDcFbD-on66XY14pume2Gs",
@@ -176,6 +516,40 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2015-05-12T13:42:24Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "1Dx7rSSBljsGC16Fy94cysrYpBU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1gid0zfc6yg"
+      },
+      "snippet": {
+        "publishedAt": "2015-04-17T01:42:28Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "藥要看網站基本介紹",
+        "description": "藥要看( http://drugs.olc.tw/ )提供簡單的介面檢索國內有註冊登記的藥品資訊.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1gid0zfc6yg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2015-04-17T01:42:28Z"
       }
     },
     {
@@ -380,40 +754,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2014-11-20T14:10:03Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "6L4jS3s7-t4Tlxea7HvJaEc-Qzk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "23JydRUB3kQ"
-      },
-      "snippet": {
-        "publishedAt": "2014-10-24T17:33:42Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "2014-10-24 g0v &amp; open data @ NCKU-CSIE-自由軟體開發與社群發展",
-        "description": "使用投影片： http://k.olc.tw/slide/20141024_ncku_csie.html 口語討論時有諸多細節的錯誤，如果有發現問題還請告知;) 已知問題： ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/23JydRUB3kQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2014-10-24T17:33:42Z"
       }
     },
     {

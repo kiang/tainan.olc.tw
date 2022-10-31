@@ -1,14 +1,150 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "IEWQXvfnETWB2wyYgm0XVPemt10",
+  "etag": "FCWOTUbd5uVUXAPSgPj9fVOiW2E",
   "nextPageToken": "CKwCEAA",
   "prevPageToken": "CPoBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 469,
+    "totalResults": 470,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "M8JInlFcUAJ79-h1r_sKASCCFcE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "atCqDU1RbCA"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T23:55:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220419 夜遊台南-2",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/atCqDU1RbCA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T23:55:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-rnOHaZwCoJjf0hEBgfY9LTP4lg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "j7sw3gsaQpU"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T23:55:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220419 夜遊台南-1",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/j7sw3gsaQpU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T23:55:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DFs-huvASL7KaGgvcVnt5pL98Ds",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "HTIa-BKf3Ks"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-19T13:14:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "台灣 Covid-19 本土病例地圖介紹 2022 版",
+        "description": "台灣Covid-19 本土病例地圖- https://kiang.github.io/covid19/ 地圖是在2021/05 上線，去年底疫情有比較緩和，只是今年以來確診 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HTIa-BKf3Ks/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-19T13:14:53Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "hZIoqHmnsLtdJyUoG5rONgHJVJg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "gqnDAPxEerY"
+      },
+      "snippet": {
+        "publishedAt": "2022-04-10T12:03:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開唱：龍介仙選市長",
+        "description": "謝龍介即將代表國民黨參與年底的市長大選，三江在閒聊時國銘順口唱了兩句\"龍介仙選市長\" ，大家都覺得有趣，所以國銘就把兩句 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/gqnDAPxEerY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-04-10T12:03:05Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "gYkdhUfCcz1rckJrT-Gl_Z2sc04",
@@ -1571,142 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-28T00:58:07Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "DOGZEvAkjqbvpC-G5FLluOPtsnc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "xYYiNWhrD6k"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-24T11:13:34Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區建興國中聊教育",
-        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/xYYiNWhrD6k/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-24T11:13:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "9ovpyAfh1kc4YFY51El0AzyvPcQ",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "XHt-SIfqA2M"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-23T02:09:48Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "水交社的 AIR 台南館需要多花些心思",
-        "description": "今天跟著解老師走訪位於水交社的AIR 台南館，我們期待裡面會講述1946年美國進駐台灣到1979年中美斷交之間的故事，特別是美軍 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/XHt-SIfqA2M/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-23T02:09:48Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "AI5e3FdP1HDhDlhBpHY6F9IDWbM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "uV1Bm9kawPc"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-21T13:22:26Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康區新總圖聊房價問題(全景)",
-        "description": "三江再次拜訪了美麗的永康新總圖書館，延續上次在這裡聊的一些話題，這次我們聚焦在討論最近很熱門的房價問題；台南剛通過了 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/uV1Bm9kawPc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-21T13:22:26Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "NQbCLaxk0aqjAlFgL1Bo2cEFO9c",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "8_-zQHr7jlU"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-21T13:21:01Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在永康區新總圖聊房價問題",
-        "description": "三江再次拜訪了美麗的永康新總圖書館，延續上次在這裡聊的一些話題，這次我們聚焦在討論最近很熱門的房價問題；台南剛通過了 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/8_-zQHr7jlU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-21T13:21:01Z"
       }
     }
   ]
