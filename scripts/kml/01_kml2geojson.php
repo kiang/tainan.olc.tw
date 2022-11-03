@@ -9,5 +9,10 @@ foreach (glob($basePath . '/raw/kml/*.kml') as $kmlFile) {
     $jsonFile = $jsonPath . '/' . $p['filename'] . '.geojson';
     if (!file_exists($jsonFile)) {
         exec("/home/kiang/.local/bin/k2g {$kmlFile} {$jsonPath}");
+        $styleFile = $jsonPath . '/style.json';
+        if (file_exists($styleFile)) {
+            copy($styleFile, $jsonFile);
+            unlink($styleFile);
+        }
     }
 }
