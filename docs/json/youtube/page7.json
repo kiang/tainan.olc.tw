@@ -1,14 +1,218 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "Tsx3LQXeJ01L4Qr01BCzsaf9Ao0",
+  "etag": "kUagk0Lm7sgd1DRoHGDtV6NpdYM",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 470,
+    "totalResults": 476,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ubbwT3aUV8IbiBoqtp6dY8SWs9s",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "A0NV-s74W8c"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-10T00:04:26Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220107 民眾黨認同卡新竹掃街記錄",
+        "description": "民眾黨選戰培訓營#百萬之眾集合#百萬之眾選戰培訓營.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/A0NV-s74W8c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-10T00:04:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "GtCGulSY0yErCK03JRM4jb5GSxI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dwN5-w0caKg"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-06T02:52:10Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展 - 全景",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dwN5-w0caKg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-06T02:52:10Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "UCkUPFa1Re4nA_wZz3Cc4WEZ1V8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RNdbVDg-geQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-06T02:51:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在歸仁農地上聊農業發展",
+        "description": "三江這次走進了位於歸仁的一處農地，這個由青農所經營的農地不大，因此會透過種植多元的農產與延伸體驗活動來增加競爭力， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RNdbVDg-geQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-06T02:51:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "WK0Hoyn6Zb6UKKOnprMNMoh_Eb8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZVZ6AaAyl5U"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-29T12:15:41Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "文學館周邊在美國駐軍台南時期的紅燈區",
+        "description": "二戰後台南的物資匱乏，但派駐在此的美軍除了衣食無虞，作戰以外的時間重視休閒生活安排，曾經，文學館一帶以西在台南美軍 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZVZ6AaAyl5U/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-29T12:15:41Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "m0bGFbIBZs3UH-gmMP0NnYn6ZII",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "KOImkhNVI64"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-28T09:04:16Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "車站出來走一趟，台南步行體驗充滿障礙 - 全景",
+        "description": "台南的友善騎樓政策從2012 年開始，至今接近10 年時間號稱暢通311 條騎樓，累積近140 公里，但這項政績對於一般居住在這裡的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KOImkhNVI64/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-28T09:04:16Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "gM3ff57SPR5p1zAjj5tIT2FQqjU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "sDcC8UhWY6M"
+      },
+      "snippet": {
+        "publishedAt": "2021-12-28T00:58:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "車站出來走一趟，台南步行體驗充滿障礙",
+        "description": "台南的友善騎樓政策從2012 年開始，至今接近10 年時間號稱暢通311 條騎樓，累積近140 公里，但這項政績對於一般居住在這裡的 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/sDcC8UhWY6M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-12-28T00:58:07Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "DOGZEvAkjqbvpC-G5FLluOPtsnc",
@@ -41,40 +245,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-24T11:13:34Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "37TOa27RkAv2pLl0Vlb1ZQ_GH0c",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "woDADRNwllk"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-24T11:14:08Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在中西區建興國中聊教育(全景)",
-        "description": "三江來到了台南知名的建興國中，這所學校除了位於孔廟、美術館與鄰近許多名勝古蹟外，最特別的地方是有許多家長擠破頭也要把 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/woDADRNwllk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-24T11:14:08Z"
       }
     },
     {
@@ -415,40 +585,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-12-09T09:22:04Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rrEm0Y-XAdpYe6W-K_SLKKv_B6k",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "w9IrZFem0KU"
-      },
-      "snippet": {
-        "publishedAt": "2021-12-09T00:58:57Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211208 武聖夜市宣講 1218 公投",
-        "description": "晚上繼續在武聖夜市宣傳#1218公投，已經不是第一次來，所以跟一些管理員與攤商們都會互相寒暄幾句；這次除了志工幫忙發放 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/w9IrZFem0KU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/w9IrZFem0KU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/w9IrZFem0KU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-12-09T00:58:57Z"
       }
     },
     {
@@ -823,40 +959,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-11-13T10:49:01Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "FFkMuc2re_9KY4D2ZP9gkVIK6v0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dStu1SEppXU"
-      },
-      "snippet": {
-        "publishedAt": "2021-11-07T14:49:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20211107 公投宣講 江明宗 @ 正興街 (短版)",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dStu1SEppXU/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-11-07T14:49:59Z"
       }
     },
     {
@@ -1337,40 +1439,6 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "XepcUUKGHsFZyK_CxXp4qUsvS04",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "GevbcI0Hs0s"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-15T15:49:43Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在水仙宮聊傳統市場 - 全景",
-        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-15T15:49:43Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
       "etag": "TH_IJCeKElRm9sfpGdojEkUgER0",
       "id": {
         "kind": "youtube#video",
@@ -1639,74 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-06T15:16:14Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "cnckxq5OwgzfknrsLaymmKkWvNw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "HA6PWXIgIqM"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-06T14:58:35Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講，在歸仁仁壽宮聊社區營造與地方創生",
-        "description": "上週我們來到知名的歸仁仁壽宮，走讀過程討論的是社區營造與地方創生，國銘長期在這個領域耕耘，透過影片可以看看他分享的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/HA6PWXIgIqM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-06T14:58:35Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "Y1YbFTrmCSt5-sU2zGKZl1SfVNc",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "cuLuBZcnmcM"
-      },
-      "snippet": {
-        "publishedAt": "2021-08-23T00:36:07Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20210820 南鐵案北區拆遷戶抗爭事件 - 南鐵案拆遷監督交涉記錄",
-        "description": "上個星期五(8/20)凌晨，在得知南鐵案拆遷開始拉起封鎖線後，我前往北區開元陸橋旁現場希望關心與記錄，但每個能夠看到現場的 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/cuLuBZcnmcM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-08-23T00:36:07Z"
       }
     }
   ]

@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區公園南路\/公園路",
+                "count": 4
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.208789,
+                    23.001025
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區長榮路四段\/開元路",
+                "count": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.220665,
+                    23.007662
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區開元路442巷口",
                 "count": 1
             },
@@ -12,20 +40,6 @@
                 "coordinates": [
                     120.226199,
                     23.011312
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/公園路",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.208789,
-                    23.001025
                 ]
             }
         },
@@ -159,7 +173,7 @@
             "type": "Feature",
             "properties": {
                 "key": "中西區金華路四段\/成功路",
-                "count": 4
+                "count": 5
             },
             "geometry": {
                 "type": "Point",
@@ -222,20 +236,6 @@
                 "coordinates": [
                     120.234713,
                     22.998403
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "",
-                "count": 7
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0,
-                    0
                 ]
             }
         },
@@ -334,6 +334,20 @@
                 "coordinates": [
                     120.328479,
                     22.962517
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "",
+                "count": 7
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
                 ]
             }
         },
@@ -614,20 +628,6 @@
                 "coordinates": [
                     120.245347,
                     22.957151
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區長榮路四段\/開元路",
-                "count": 2
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.220665,
-                    23.007662
                 ]
             }
         },
