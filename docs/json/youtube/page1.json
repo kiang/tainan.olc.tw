@@ -1,16 +1,186 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "SmcYCLFpbZwOzuaxzTV2EyK5zxM",
+  "etag": "mD6vtqTVaZ0XfkArWRNuMzFiqAI",
   "nextPageToken": "CDIQAA",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 476,
+    "totalResults": 478,
     "resultsPerPage": 50
   },
   "items": [
     {
       "kind": "youtube#searchResult",
-      "etag": "HSkTQu34dkTzetIemmNGn-Dbca4",
+      "etag": "AKI1tAk3o2aug24r2x6VgzwWan4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "9aNRbupppPs"
+      },
+      "snippet": {
+        "publishedAt": "2022-11-07T14:46:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221107 下午北區，江明宗街講",
+        "description": "下午來到#和緯黃昏市場對面街講， #步行城市的理念還是宣傳的重心，今天立冬的天氣對台南來說相當適合散步，晚上有空就走出來 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9aNRbupppPs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9aNRbupppPs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9aNRbupppPs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-11-07T14:46:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DrNcFlMUuVU3Z8YVB5O-Uw5-Qdw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZwSbV6CGV9c"
+      },
+      "snippet": {
+        "publishedAt": "2022-11-07T13:16:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江明宗參選回顧 EP1",
+        "description": "早在民眾黨台南黨部成立前，我就開始針對今年的議員選舉進行準備，不過我的準備不是循著傳統選舉的作法，而是找到更多市民 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZwSbV6CGV9c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZwSbV6CGV9c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZwSbV6CGV9c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-11-07T13:16:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "V8CMLCKwgBedzvinwbylEeFUFeU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ePxoEg6oxmg"
+      },
+      "snippet": {
+        "publishedAt": "2022-11-07T05:34:53Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221107 早上中西區，水仙宮發放文宣",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ePxoEg6oxmg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ePxoEg6oxmg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ePxoEg6oxmg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-11-07T05:34:53Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Ko_rNjPl8o-7fjyhjghzJILTknI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "3VixWedMVFA"
+      },
+      "snippet": {
+        "publishedAt": "2022-11-04T15:21:47Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221104 下午中西區，江明宗街講",
+        "description": "下午來到成功路與金華路交叉口街講，感謝志工#雅玲前來協助，今天在大風中繼續講著#步行城市的願景，陸續有許多朋友特地過來 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/3VixWedMVFA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/3VixWedMVFA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/3VixWedMVFA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-11-04T15:21:47Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "BFTEoBEKySiwVnhu3n9DS-d6LKs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "c0O6nlX_iKk"
+      },
+      "snippet": {
+        "publishedAt": "2022-11-04T08:47:57Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20221104 早上北區，江明宗掃街",
+        "description": "早上的掃街再次造訪#中西區光賢里，感謝志工#雅玲參與，上一回走在這裡因為設備故障維修而沒能夠完成街景的紀錄，所以安排再 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/c0O6nlX_iKk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/c0O6nlX_iKk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/c0O6nlX_iKk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-11-04T08:47:57Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "kFjedjLvSBWsUCCoRn5RZkPXXc8",
       "id": {
         "kind": "youtube#video",
         "videoId": "Qa0GBSbKot4"
@@ -19,7 +189,7 @@
         "publishedAt": "2022-11-03T14:27:57Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221103 下午北區，江明宗街講",
-        "description": "下午在台南公園街講，感謝志工 #雅玲 、 #俊吉 前來協助，期間 #俊吉 還幫我拿了一陣子的麥克風，持續在街頭宣揚 #步行城市 ...",
+        "description": "下午在台南公園街講，感謝志工#雅玲、 #俊吉前來協助，期間#俊吉還幫我拿了一陣子的麥克風，持續在街頭宣揚#步行城市#科技 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/Qa0GBSbKot4/default.jpg",
@@ -44,7 +214,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "Y1kgU7xbLf6av-JOmhKk2UHhGfM",
+      "etag": "0vTK79Ry1w5vG7Pbw1kolZZgfOk",
       "id": {
         "kind": "youtube#video",
         "videoId": "G5uhkb6jtCo"
@@ -53,7 +223,7 @@
         "publishedAt": "2022-11-03T09:12:10Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221103 早上北區，江明宗掃街",
-        "description": "早上掃街到 #北區重興里 ，走的過程很容易遇到 #寶仁國小 的家長帶著孩子穿越其中，只是從人口結構看會有些矛盾，學校有逾千 ...",
+        "description": "早上掃街到#北區重興里，走的過程很容易遇到#寶仁國小的家長帶著孩子穿越其中，只是從人口結構看會有些矛盾，學校有逾千學生 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/G5uhkb6jtCo/default.jpg",
@@ -78,7 +248,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "I83M-XXHahB5iruajwTWWEDbjk8",
+      "etag": "jNE5QRJdi4QDm9UBIKId_FaALBQ",
       "id": {
         "kind": "youtube#video",
         "videoId": "--LHWaxqESc"
@@ -87,7 +257,7 @@
         "publishedAt": "2022-11-02T14:37:57Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221102 下午北區，江明宗街講",
-        "description": "下午在長榮路與開元路交叉口街講，感謝志工 #小怡 、 #偉傑 前來協助，繼續在街頭跟大家宣傳 #步行城市 理念。昨天在北區再次 ...",
+        "description": "下午在長榮路與開元路交叉口街講，感謝志工#小怡、 #偉傑前來協助，繼續在街頭跟大家宣傳#步行城市理念。昨天在北區再次發生 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/--LHWaxqESc/default.jpg",
@@ -112,7 +282,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "VZKgw-0PsYhU-1t4cS9B8LeQN_E",
+      "etag": "gWpsVwBwSwKbh89HYaX5TqWYm6M",
       "id": {
         "kind": "youtube#video",
         "videoId": "yj9GcS2mCRQ"
@@ -121,7 +291,7 @@
         "publishedAt": "2022-11-02T05:52:57Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221102 早上北區，江明宗掃街",
-        "description": "早上走到#北區東興里掃街，位於永康交界且沒有明顯的界線，所以走著走著就會跨到永康，路上遇到的大哥還特別提醒北區應該要到 ...",
+        "description": "早上走到 #北區東興里 掃街，位於永康交界且沒有明顯的界線，所以走著走著就會跨到永康，路上遇到的大哥還特別提醒北區應該要 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/yj9GcS2mCRQ/default.jpg",
@@ -180,7 +350,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "FbEvf8HIyN52377AnYukLU0UzXI",
+      "etag": "x_9wUpVpHJlywLbgzoQzb_rl3Qw",
       "id": {
         "kind": "youtube#video",
         "videoId": "iZWGtgIUI8o"
@@ -418,7 +588,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "McOaHlpva4XNAMBmzcSLHQeBO2A",
+      "etag": "B7WLU11RtKMFa7eN7wgAmsWFP18",
       "id": {
         "kind": "youtube#video",
         "videoId": "h-HP7Agnkvs"
@@ -427,7 +597,7 @@
         "publishedAt": "2022-10-28T15:41:17Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221028 下午北區，江明宗街講",
-        "description": "下午來到台南公園街講， #步行城市 的理念希望可以讓台南發揮文化古都的價值，同時減少交通事故死傷。市長 #黃偉哲 持續批評 ...",
+        "description": "下午來到台南公園街講， #步行城市的理念希望可以讓台南發揮文化古都的價值，同時減少交通事故死傷。市長#黃偉哲持續批評在野 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/h-HP7Agnkvs/default.jpg",
@@ -656,7 +826,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "OOReBS5D-pwmJ9b8kRsXAhZeUOc",
+      "etag": "glIhsrsVWk0klR1atqiZeFDqBsw",
       "id": {
         "kind": "youtube#video",
         "videoId": "mgCcZh7uDxI"
@@ -665,7 +835,7 @@
         "publishedAt": "2022-10-25T15:03:24Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221025 下午北區，江明宗街講",
-        "description": "下午的街講在北區和緯路與中華西路交叉口，繼續宣揚 #步行城市 的理念。台南面臨了許多問題，在地方選舉有很多議題可以探討， ...",
+        "description": "下午的街講在北區和緯路與中華西路交叉口，繼續宣揚#步行城市的理念。台南面臨了許多問題，在地方選舉有很多議題可以探討， ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/mgCcZh7uDxI/default.jpg",
@@ -690,7 +860,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "ouneVWZaBxQl5MDtERKkIzwQ-8E",
+      "etag": "o1XuPFchOwYP3WDyWK_2P4PgWEI",
       "id": {
         "kind": "youtube#video",
         "videoId": "DG1cZmQ1uNk"
@@ -699,7 +869,7 @@
         "publishedAt": "2022-10-25T08:52:17Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221025 早上北區，江明宗掃街",
-        "description": "早上的掃街進行到 #北區長興里 ，里內人口 2964 ，是另一個人口快速減少的社區，老舊社區的轉型寄望在兵工廠的轉型規劃中； ...",
+        "description": "早上的掃街進行到#北區長興里，里內人口2964 ，是另一個人口快速減少的社區，老舊社區的轉型寄望在兵工廠的轉型規劃中；目前 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/DG1cZmQ1uNk/default.jpg",
@@ -996,7 +1166,7 @@
     },
     {
       "kind": "youtube#searchResult",
-      "etag": "8sivtUAZpPZlLFAXEDFNLWBpBFg",
+      "etag": "TT-d5bwBaqht7s0ec8IDYvfSLnk",
       "id": {
         "kind": "youtube#video",
         "videoId": "ZHb_8RlvlEY"
@@ -1005,7 +1175,7 @@
         "publishedAt": "2022-10-20T15:36:00Z",
         "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
         "title": "20221020 下午北區，江明宗街講",
-        "description": "下午在北區街講，有幾個同學經過時很大聲的喊加油，不知道是不是玩大冒險遊戲輸了 (?) 。越來越接近選舉，許多的政績宣傳持續 ...",
+        "description": "下午在北區街講，有幾個同學經過時很大聲的喊加油，不知道是不是玩大冒險遊戲輸了(?) 。越來越接近選舉，許多的政績宣傳持續 ...",
         "thumbnails": {
           "default": {
             "url": "https://i.ytimg.com/vi/ZHb_8RlvlEY/default.jpg",
@@ -1536,176 +1706,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-10-12T05:15:54Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "jnCsYAwKUfUN2vnBall9P4hU6iw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "5BcGGrl3GVM"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-11T16:44:33Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221011 下午北區，江明宗街講",
-        "description": "下午來到和緯黃昏市場對面街講，感謝#北區力行里周家宏前來協助，站在街頭告訴更多市民朋友我們的理念。 #蔡英文總統在國慶 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/5BcGGrl3GVM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/5BcGGrl3GVM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/5BcGGrl3GVM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-11T16:44:33Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JOFxJesRw0lnKE3OU-SNWrq-xYA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "AaFydf9fxqA"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-11T05:58:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221011 早上中西區，江明宗掃街",
-        "description": "早上前往#中西區小西門里掃街，這裡有大飯店、大型百貨公司，但也有相對老舊的社區，除了南英商工在里內，鄰近也有許多學校， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/AaFydf9fxqA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/AaFydf9fxqA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/AaFydf9fxqA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-11T05:58:23Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "rVip5iBBWTwmYjwh_FEUkBYAaZw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "mEO-oCODZDg"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-08T10:09:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221008 早上中西區，江明宗掃街",
-        "description": "早上的掃街前進到#中西區南美里，美術館二館、林百貨與許多古蹟就在其中，蝸牛巷的形象塑造也讓巷弄間出現不少觀光客的身影， ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/mEO-oCODZDg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/mEO-oCODZDg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/mEO-oCODZDg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-08T10:09:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "TSLxC50ehy8o4IMkQXm3BkB8Lcw",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "kt5tF_A8pQw"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-07T15:27:45Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221007 下午中西區，江明宗街講",
-        "description": "下午的街講在海安路，感謝#孟青前來幫忙，今天有下了點小雨，幸運的是沒有像江品璁、 江國銘那邊那麼大，三江在各自的選區 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/kt5tF_A8pQw/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-07T15:27:45Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "K1g5Vq_p6wEFfj_ml25cC2fvCm0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "LuY2POV8FzM"
-      },
-      "snippet": {
-        "publishedAt": "2022-10-07T09:39:57Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20221007 早上北區，江明宗掃街",
-        "description": "早上走在#北區正覺里掃街，這裡也大多是老社區，走在巷弄中遇到的都是長輩居多，或是年輕的外籍看護；正覺里應該是以正覺寺為 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/LuY2POV8FzM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-10-07T09:39:57Z"
       }
     }
   ]

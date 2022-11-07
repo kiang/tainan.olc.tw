@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區中華西路二段\/和緯路四段",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.186358,
+                    23.006768
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "中西區金華路四段\/成功路",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.196173,
+                    23.001344
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區公園南路\/公園路",
                 "count": 4
             },
@@ -74,20 +102,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區中華西路二段\/和緯路四段",
-                "count": 4
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.186358,
-                    23.006768
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "北區和緯路二段\/西門路四段",
                 "count": 2
             },
@@ -103,7 +117,7 @@
             "type": "Feature",
             "properties": {
                 "key": "北區和緯路四段\/文賢路",
-                "count": 5
+                "count": 6
             },
             "geometry": {
                 "type": "Point",
@@ -166,20 +180,6 @@
                 "coordinates": [
                     120.199835,
                     23.003653
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "中西區金華路四段\/成功路",
-                "count": 5
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.196173,
-                    23.001344
                 ]
             }
         },

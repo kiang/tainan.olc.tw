@@ -1,14 +1,48 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "kUagk0Lm7sgd1DRoHGDtV6NpdYM",
+  "etag": "hN-e8WKdmH3HZzMcIPPTbGb5jfA",
   "nextPageToken": "CN4CEAA",
   "prevPageToken": "CKwCEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 476,
+    "totalResults": 478,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "MMc4t36axNUVjoQIv-1RcA3jbfg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RfFno070k2Q"
+      },
+      "snippet": {
+        "publishedAt": "2022-01-21T23:30:07Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在中西區民生路聊人行空間",
+        "description": "三江來到了台南府城歷史街區的核心區域，也是台南少數已經進行騎樓整平工作的路段，忠義路、民生路與永福路形成的路線，距離 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RfFno070k2Q/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RfFno070k2Q/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RfFno070k2Q/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-01-21T23:30:07Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "ubbwT3aUV8IbiBoqtp6dY8SWs9s",
@@ -963,6 +997,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "FFkMuc2re_9KY4D2ZP9gkVIK6v0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dStu1SEppXU"
+      },
+      "snippet": {
+        "publishedAt": "2021-11-07T14:49:59Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20211107 公投宣講 江明宗 @ 正興街 (短版)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dStu1SEppXU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dStu1SEppXU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dStu1SEppXU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-11-07T14:49:59Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "MygybdcyWSLcqGrQIDdXf_nQGWA",
       "id": {
         "kind": "youtube#video",
@@ -1439,6 +1507,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "XepcUUKGHsFZyK_CxXp4qUsvS04",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "GevbcI0Hs0s"
+      },
+      "snippet": {
+        "publishedAt": "2021-09-15T15:49:43Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "三江開講，在水仙宮聊傳統市場 - 全景",
+        "description": "今天我們來到歷史悠久的水仙宮市場，帶大家逛逛水仙宮與永樂市場，也就是過去日治時期的永樂町範圍；走讀過程討論的是傳統 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GevbcI0Hs0s/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-09-15T15:49:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "TH_IJCeKElRm9sfpGdojEkUgER0",
       "id": {
         "kind": "youtube#video",
@@ -1605,108 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2021-09-08T02:52:37Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "gY9QWNbckiYpiWPVy9Ebrd_z4Zo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Xm2LZtyvw3c"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-3",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Xm2LZtyvw3c/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "-DbgeZIqO7_7UcuX3Tvc4gL4EJs",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "dgG6_Eow2Ys"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-08T02:52:46Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "慢遊台南 20210907-2",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/dgG6_Eow2Ys/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-08T02:52:46Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1i-7O3b2nl3QnmChN20AYtjPOlY",
-      "id": {
-        "kind": "youtube#playlist",
-        "playlistId": "PLdRkz-b8ybhMcVRQXv_kmoB7moJTDIiJ5"
-      },
-      "snippet": {
-        "publishedAt": "2021-09-06T15:16:14Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "三江開講",
-        "description": "江國銘 、江品璁跟我(江明宗)剛好都姓江，在討論到一些公眾議題時有些共通的想法想要嘗試，所以用三江的名義作為開始，透過 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/RsBxs4w9bg4/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2021-09-06T15:16:14Z"
       }
     }
   ]
