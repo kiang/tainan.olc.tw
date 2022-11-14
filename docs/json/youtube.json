@@ -5,13 +5,27 @@
             "type": "Feature",
             "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
-                "count": 5
+                "count": 6
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
                     120.186358,
                     23.006768
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區海安路三段\/臨安路二段",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.199835,
+                    23.003653
                 ]
             }
         },
@@ -75,7 +89,7 @@
             "type": "Feature",
             "properties": {
                 "key": "中西區海安路一段\/府前路二段",
-                "count": 2
+                "count": 1
             },
             "geometry": {
                 "type": "Point",
@@ -117,7 +131,7 @@
             "type": "Feature",
             "properties": {
                 "key": "北區和緯路四段\/文賢路",
-                "count": 6
+                "count": 5
             },
             "geometry": {
                 "type": "Point",
@@ -172,20 +186,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區海安路三段\/臨安路二段",
-                "count": 4
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.199835,
-                    23.003653
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "中西區海安路二段\/民生路二段",
                 "count": 2
             },
@@ -229,7 +229,7 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中華路\/小東路",
-                "count": 10
+                "count": 9
             },
             "geometry": {
                 "type": "Point",
@@ -341,7 +341,7 @@
             "type": "Feature",
             "properties": {
                 "key": "",
-                "count": 7
+                "count": 8
             },
             "geometry": {
                 "type": "Point",
