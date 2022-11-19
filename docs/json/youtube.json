@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區西門路四段\/北安路一段",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.210908,
+                    23.016288
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區公園南路\/西門路三段",
+                "count": 5
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.203427,
+                    23.002694
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區中華西路二段\/和緯路四段",
                 "count": 6
             },
@@ -144,20 +172,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區公園南路\/西門路三段",
-                "count": 4
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.203427,
-                    23.002694
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "北區公園南路\/北門路二段",
                 "count": 2
             },
@@ -229,13 +243,27 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中華路\/小東路",
-                "count": 9
+                "count": 8
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
                     120.234713,
                     22.998403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "",
+                "count": 10
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
                 ]
             }
         },
@@ -340,20 +368,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "",
-                "count": 8
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0,
-                    0
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "歸仁區中山路一段\/信義北路",
                 "count": 2
             },
@@ -390,20 +404,6 @@
                 "coordinates": [
                     120.257347,
                     23.02605
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區西門路四段\/北安路一段",
-                "count": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.210908,
-                    23.016288
                 ]
             }
         },
@@ -614,20 +614,6 @@
                 "coordinates": [
                     120.271885,
                     22.969394
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "仁德區德洋路\/民安路一段",
-                "count": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.245347,
-                    22.957151
                 ]
             }
         },
