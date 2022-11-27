@@ -1,11 +1,278 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "bTgpNPFH4vgm2QkiF_83f1THgjc",
+  "etag": "IuwgDlJh3lqzz_HlQSoZjT7S0Js",
   "prevPageToken": "CMIDEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 493,
-    "resultsPerPage": 0
+    "totalResults": 514,
+    "resultsPerPage": 8
   },
-  "items": []
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Od0IaxUiesP7YjTornXgMObpj5g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TYzFWv8KbAA"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T13:25:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "林一方 苗栗抗暴經驗分享",
+        "description": "林一方苗栗抗暴經驗分享說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TYzFWv8KbAA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T13:25:19Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "aKh-K8vWWNuVZFfHjXwABHNGwkI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RGQplv4w7kI"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:10:44Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "林一方 苗栗抗暴經驗分享",
+        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RGQplv4w7kI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:10:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Zink-nCvjA_enmjPr5fZy2V_6Gg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yXRavNWcBkA"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:08:17Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "林一方 苗栗抗暴經驗分享",
+        "description": "說起大埔張家，相信有在關心社會議題的朋友們一定都不會陌生，就在上個月，大埔張家剛辦過周年紀念晚會。而提起聲援大埔活動 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yXRavNWcBkA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:08:17Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wc67-941YF0SIeL1YDKg3LRZKE0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1Fmbouiypco"
+      },
+      "snippet": {
+        "publishedAt": "2014-08-29T11:00:23Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "請轉往 https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48",
+        "description": "原有網址出狀況，請改為： https://plus.google.com/events/c0ph6vtqod95u9e6sp872r60m48.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1Fmbouiypco/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-08-29T11:00:23Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cE8vUPpNQuQgCFHkqaRhzJNsyjk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kSHrbsFcghQ"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-25T18:45:05Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014-07-24 臺南市北區和順里 里長擬參選人 姜宜宏 訪談",
+        "description": "逐字稿與原始文章： http://goo.gl/dC02oj 這是臺南市北區議員擬參選人江明宗( http://k.olc.tw/ ) 針對臺南市北區和順里里長擬參選人 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kSHrbsFcghQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-25T18:45:05Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "EFykQm2q3rF9CVtdVSUA_TyyUWw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "MqMjhZAijyc"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-06T09:22:40Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "袁紅冰教授台南板聚",
+        "description": "由於袁教授在7/5 14:00~17:00 參與政大書城舉辦的活動，所以我們順便邀請他在7/6 14:00 ~ 16:00 參與自發舉辦的板聚，這個板聚 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MqMjhZAijyc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-06T09:22:40Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "DOcQaD-0JhSxR-2XNBtpzoNY0Ag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "VFC-aFico68"
+      },
+      "snippet": {
+        "publishedAt": "2014-07-01T02:54:45Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "2014台南黑客松-HackTainan上午實況 @ 10:25am",
+        "description": "活動網址： http://tdcp.kktix.cc/events/hacktainan2014.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VFC-aFico68/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2014-07-01T02:54:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "rPuuuZCb3_IzdEDj4qSX65iXtYk",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw"
+      },
+      "snippet": {
+        "publishedAt": "2009-03-13T01:56:18Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江明宗",
+        "description": "北中西區台南市議員參選人，台灣民眾黨唯一提名，熟悉資訊科技應用，作品包含口罩地圖、本土病例地圖與登革熱地圖等數十個 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/6B8HzSYyrhHWv351lpJrEehAxD2yP7bXL_rpSszeic_pW7RNF20JnNSzBgyo_d3EAuymiZDF=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "upcoming",
+        "publishTime": "2009-03-13T01:56:18Z"
+      }
+    }
+  ]
 }

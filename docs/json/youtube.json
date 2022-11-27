@@ -4,6 +4,34 @@
         {
             "type": "Feature",
             "properties": {
+                "key": "北區和緯路四段\/文賢路",
+                "count": 7
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.193953,
+                    23.009592
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "北區公園南路\/西門路三段",
+                "count": 7
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.203427,
+                    23.002694
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "key": "北區西門路四段\/北安路一段",
                 "count": 5
             },
@@ -12,20 +40,6 @@
                 "coordinates": [
                     120.210908,
                     23.016288
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "北區公園南路\/西門路三段",
-                "count": 5
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.203427,
-                    23.002694
                 ]
             }
         },
@@ -158,20 +172,6 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區和緯路四段\/文賢路",
-                "count": 5
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    120.193953,
-                    23.009592
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "key": "北區公園南路\/北門路二段",
                 "count": 2
             },
@@ -250,20 +250,6 @@
                 "coordinates": [
                     120.234713,
                     22.998403
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "key": "",
-                "count": 10
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0,
-                    0
                 ]
             }
         },
@@ -362,6 +348,20 @@
                 "coordinates": [
                     120.328479,
                     22.962517
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "",
+                "count": 11
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
                 ]
             }
         },

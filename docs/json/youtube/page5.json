@@ -1,14 +1,490 @@
 {
   "kind": "youtube#searchListResponse",
-  "etag": "KdNKhK1LslSGEEIjZ3NzGkIeEzM",
+  "etag": "cIYhNlpmj2F_jQGhdZcjVoQPjJQ",
   "nextPageToken": "CPoBEAA",
   "prevPageToken": "CMgBEAE",
   "regionCode": "TW",
   "pageInfo": {
-    "totalResults": 494,
+    "totalResults": 515,
     "resultsPerPage": 50
   },
   "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "_WdC3WSYhYQwpTmmFp_kDdkiEfg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "XbQ5lpJo910"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-04T10:52:08Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220803 下午中西區，江明宗掃街",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/XbQ5lpJo910/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/XbQ5lpJo910/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/XbQ5lpJo910/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-04T10:52:08Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "7k84sODaLQl36OVQ0agodSXyy9g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "v-6BROYlc0g"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-03T15:45:51Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220803 下午中西區，江明宗街講",
+        "description": "下午在中西區街講，感謝江國銘、 台南政治實習菜鳥到場支援，持續站在街頭跟大家宣傳#步行城市理念。我們沒有豐厚的家產或 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/v-6BROYlc0g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/v-6BROYlc0g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/v-6BROYlc0g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-03T15:45:51Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cRkVOlKSZTbWg89SlmcmWRAcbh0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ZbAWou3dC5A"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-03T08:01:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220803 早上仁德，江國銘街講",
+        "description": "早上江國銘來到仁德街講，我跟江品璁、 台南政治實習菜鳥一起支援，繼續在街口宣揚我們的理念。 裴洛西（Nancy Pelosi）的訪台 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZbAWou3dC5A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZbAWou3dC5A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZbAWou3dC5A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-03T08:01:46Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "70dNJG356shgATaa6V6xtY04fPQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "i4GnBHzSHr0"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-02T14:24:55Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220802 下午永康，江品璁街講",
+        "description": "下午江品璁在永康街講，我跟台南政治實習菜鳥一起到場支援，在街頭宣傳我們的參政理念。作為政治素人，我們沒有家族或是財團 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/i4GnBHzSHr0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/i4GnBHzSHr0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/i4GnBHzSHr0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-02T14:24:55Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "5EHsFrsqYgKc22P2x40I4-Tsp28",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "OndLUMYlbnc"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-02T03:13:58Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220802 早上中西區，江明宗街講",
+        "description": "早上來到中西區街講，感謝江品璁、 台南政治實習菜鳥支援，我持續宣揚#步行城市理念。基隆學生步行上學期間發生車禍身亡， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/OndLUMYlbnc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-02T03:13:58Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "JLV-HVbR_ITI4eL5hv_pk4Jg_bw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LYj229pw16s"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-01T02:42:46Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220801 早上永康，江品璁街講",
+        "description": "早上江品璁來到永康街講，我跟江國銘、 台南政治實習菜鳥一起到場支援，繼續在街頭探討我們的參政理念。台南市議會存在許多 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LYj229pw16s/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LYj229pw16s/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LYj229pw16s/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-01T02:42:46Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "J3Mnf2s4p4PwL7e3Jy7xAXo9bls",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Tecoxv-22qk"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-31T14:27:32Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "買不起厝 MV",
+        "description": "台南的房價持續攀上歷史新高，對於一般年輕人來說買房的目標真的越來越遙遠， #江國銘透過#買不起厝這首歌要唱出年輕人的心聲 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Tecoxv-22qk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-31T14:27:32Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "G0xCGJYZv9csC9rc8KEf-DCxt9E",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "QqGQ21UenCI"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-30T13:59:36Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220730 江明宗台南社大市政肥皂箱",
+        "description": "在台南社大舉辦的市政肥皂箱活動中，我針對一直在提的#步行城市做了進一步的解釋，希望真的能夠讓孩子、長輩好好走在路上， ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/QqGQ21UenCI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-30T13:59:36Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "NEN975pm0aAa1yJ1NkOssUZjhBc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Nr0L6aslifY"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-29T12:11:11Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "全台大眾走台南、雲林站",
+        "description": "台灣民眾黨的#全台大眾走活動實際走入大街小巷，跟大家宣揚年底11/26 選舉時同步進行的18 歲公民權修憲複決案，希望大家都 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Nr0L6aslifY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Nr0L6aslifY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Nr0L6aslifY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-29T12:11:11Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Aq5dolPYxqu28zDqJbHVgp9e58A",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "_F2OFi32T1g"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-29T11:21:37Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220729 JETS 嘉年華台南遊樂場開箱",
+        "description": "利用今天開幕記者會的空檔，簡單開箱這個美式風格的遊戲場JETS 嘉年華；聽現場試玩的朋友表示，設施的遊戲速度比預期快一些 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/_F2OFi32T1g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/_F2OFi32T1g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/_F2OFi32T1g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-29T11:21:37Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fAOEP7DVkIpb1Nibx6zb-m2YKrA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "y4UVO7xDtA4"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-29T04:41:20Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220729 早上仁德，江國銘街講",
+        "description": "早上江國銘的街講來到仁德，我跟江品璁、台南政治實習菜鳥一起站在街頭，持續呼喊我們的參政理念。林志堅論文案的背後是現有 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/y4UVO7xDtA4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-29T04:41:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "VckFch4EO9uPNUhynoyce_qxqBg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TmZJA2GYJ2Q"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T13:32:09Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220728 下午仁德，江國銘街講",
+        "description": "下午江國銘在仁德街講，我跟江品璁、 台南政治實習菜鳥一起站在街頭，訴說參政理念。台南與台灣的政治傾向財團嚴重，導致許多 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TmZJA2GYJ2Q/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T13:32:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "3aIAVDxU267Y6BJ1SoApX1RA7uA",
+      "id": {
+        "kind": "youtube#playlist",
+        "playlistId": "PLdRkz-b8ybhO8Pw2781bZ-QZZO2MrbJva"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T13:00:27Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "掃街記錄",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GXU5pE7Mys0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T13:00:27Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Wm225YIwyVu6HWD3JQCF9pyAzVI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "jNmDz8-KP6I"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-28T12:17:19Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "江江江講 009 ，談選舉的空軍策略",
+        "description": "三江的參選背後都沒有財團或家族的奧援，因此不容易透過傳統的宣傳管道讓大家認識我們，除了持續站在街頭宣揚理念，持續透過 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/jNmDz8-KP6I/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-28T12:17:19Z"
+      }
+    },
     {
       "kind": "youtube#searchResult",
       "etag": "_LZ7ZeziWtheqZcRF1fnBqbH-DE",
@@ -725,6 +1201,40 @@
     },
     {
       "kind": "youtube#searchResult",
+      "etag": "11uVkW3syYrDny1v19bXLtFYQzg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "9i2CKpxPDHs"
+      },
+      "snippet": {
+        "publishedAt": "2022-07-16T01:32:15Z",
+        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
+        "title": "20220715 下午仁德，江國銘街講",
+        "description": "下午參與江國銘在仁德的街講， 江品璁、 台南政治實習菜鳥也一起支援，三江一起在街口拜託大家支持，支持台灣民眾黨的我們進入 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/9i2CKpxPDHs/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/9i2CKpxPDHs/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/9i2CKpxPDHs/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "江明宗",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-07-16T01:32:15Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
       "etag": "SzZIYZN4iJutfKrhw__AsYDTKWM",
       "id": {
         "kind": "youtube#video",
@@ -1197,516 +1707,6 @@
         "channelTitle": "江明宗",
         "liveBroadcastContent": "none",
         "publishTime": "2022-07-07T21:34:41Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "1X1XJpTep4neZeC2Gn8YCkiJjAI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "irEnlgKCGrM"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-07T05:53:59Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220707 早上北區，江明宗街講",
-        "description": "步行城市是江明宗這次參選議員的政見核心，江明宗的步行城市希望讓孩子可以用走的走到學校，江明宗的步行城市希望讓長輩可以 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/irEnlgKCGrM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-07T05:53:59Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "vvJgpDLuY14Bs9DabA7P_ZcrXpI",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Kg9cI6tGWoQ"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-07T02:51:35Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220706 早上歸仁，江國銘街講",
-        "description": "早安，早上來到歸仁86 高架橋下跟江國銘在路口宣講，新豐區需要更多地方創生的促成，希望大家支持在地的台灣民眾黨參選人！",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Kg9cI6tGWoQ/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-07T02:51:35Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "TiRISX1bbr6kVJgcxfHIaAjixLM",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "rYoEtTV3mo0"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-07T02:03:40Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "雙江走讀 - 在歸仁敦源聖廟聊地方創生",
-        "description": "疫情發展兩年多，對於地方創生與創業都帶來嚴重的衝擊，國銘在地方創生領域耕耘十多年，透過今天的走讀討論產業所面臨的困境 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/rYoEtTV3mo0/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-07T02:03:40Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5RILpd2JvunLjxmAh4sYXymG0WY",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "0Z13SVw-7kg"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-05T14:16:30Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220705 下午仁德，江國銘街講",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/0Z13SVw-7kg/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-05T14:16:30Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "QntbN5CwNXipkdf1p4FiFhaYGtA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "ww2-Sw3FQmM"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-05T06:49:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220704 上午北區，江明宗掃街",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/ww2-Sw3FQmM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-05T06:49:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "a42Ppkswmw0dNIX7rQKMChlqT3w",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "7_JXw9KnFFc"
-      },
-      "snippet": {
-        "publishedAt": "2022-07-02T09:14:17Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣所得地圖操作介紹",
-        "description": "台灣所得地圖是我以財政部公布的資料製作，透過村里層級的地圖與資料快速了解經濟變遷與分佈情形，透過這個影片跟大家介紹 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/7_JXw9KnFFc/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-07-02T09:14:17Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "5V0A1iLCDm8mz8-KMHcVcOT-4bE",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "JSk7fTUbZKs"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-29T13:24:55Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220619 江明宗自我介紹與參選理念",
-        "description": "上週日柯文哲與蔡壁如前來台南與黨員聚餐，我在台上介紹自己與參選理念，期待可以爭取更多夥伴的認同與支持，在年底選舉一起 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/JSk7fTUbZKs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-29T13:24:55Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "ta50QgPqPEJQk3wn6Ii7KKdLkEA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "toH5sPL7F84"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-29T08:48:23Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220629 江明宗 步行城市、科技監督",
-        "description": "大家好，我是北中西區台南市議員參選人江明宗，我這一次參選有一個重要的政見，叫做步行城市；我所在的地區叫做府城歷史街區 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/toH5sPL7F84/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/toH5sPL7F84/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/toH5sPL7F84/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-29T08:48:23Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "jTTCShS_p0Dx5XLa42kWRhdVy7E",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "jx30ASY8kbs"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-28T14:40:20Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "An English introduction of Taiwan Bribes Map - 台灣賄選實價登錄地圖英文簡介",
-        "description": "(中文接在後面) Thanks OCF to invite me sharing the topic Taiwan Bribes Map. This project was inspired by a guy from PTT, ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/jx30ASY8kbs/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/jx30ASY8kbs/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/jx30ASY8kbs/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-28T14:40:20Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "c9zULvB4u5V3IGI_b6d57uKo9qk",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "AorctFu5TlA"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-25T13:53:53Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220625 台南南區龍崗國小淨灘",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/AorctFu5TlA/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/AorctFu5TlA/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/AorctFu5TlA/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-25T13:53:53Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JJXz-cz248Zx8xyymRcRSTfgDL4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "pk6NFk-L8JM"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-25T05:35:49Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220624 @DearNaNa 採訪記錄",
-        "description": "直播內容時間表0:00 節目開始，調一下音量02:01 明宗的自我介紹03:02 姑姑和明宗的靈異故事06:15 來自窮苦的家庭，爹親國中時 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/pk6NFk-L8JM/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-25T05:35:49Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "0riIob1XIajbKU4yZCsFg85KJbo",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "C5Lpe2XmNQI"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-24T16:44:09Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220624 下午中西區，江明宗掃街",
-        "description": "",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/C5Lpe2XmNQI/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-24T16:44:09Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "XyZ-HMisBt0_tlFjIYvwnb3AZ_0",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "rpRhoqNVx3Y"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-23T07:28:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220622 政見論述戰鬥營登台演練",
-        "description": "昨天在台中的政見論述戰鬥營，我嘗試挑戰3 分鐘的政見論述，不過看起來3 分鐘不太夠XD 這也是我需要改變的地方，太習慣講 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/rpRhoqNVx3Y/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-23T07:28:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "JCFuyzPYJ8afsJA0jI0p3LWZ9R4",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "Up0xpN1P-7k"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-22T22:36:52Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "20220622 新竹新豐鄉徐勝凌掃街",
-        "description": "上午在新竹新豐鄉跟著徐勝凌的腳步掃街，新豐是個介於都市與鄉村之間的城鎮，年輕的家庭需要有代言人發聲；勝凌是年輕的爸爸 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/Up0xpN1P-7k/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-22T22:36:52Z"
-      }
-    },
-    {
-      "kind": "youtube#searchResult",
-      "etag": "RpMUknHr3YOPvojAXT0sG7_jRvA",
-      "id": {
-        "kind": "youtube#video",
-        "videoId": "8LMTD8HqqAk"
-      },
-      "snippet": {
-        "publishedAt": "2022-06-20T15:39:12Z",
-        "channelId": "UC4wM1kfI0E_6sZPF-gi0tzw",
-        "title": "台灣賄選實價登錄地圖資料整理工作展示",
-        "description": "我的作品有個台灣賄選實價登錄地圖，過去主要是運用一位網友整理的成果製作，過兩天要跟國際上的朋友分享這個成果，回顧時 ...",
-        "thumbnails": {
-          "default": {
-            "url": "https://i.ytimg.com/vi/8LMTD8HqqAk/default.jpg",
-            "width": 120,
-            "height": 90
-          },
-          "medium": {
-            "url": "https://i.ytimg.com/vi/8LMTD8HqqAk/mqdefault.jpg",
-            "width": 320,
-            "height": 180
-          },
-          "high": {
-            "url": "https://i.ytimg.com/vi/8LMTD8HqqAk/hqdefault.jpg",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "channelTitle": "江明宗",
-        "liveBroadcastContent": "none",
-        "publishTime": "2022-06-20T15:39:12Z"
       }
     }
   ]
