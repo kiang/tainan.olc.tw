@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <title>國土利用監測地圖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <meta property="og:title" content="國土利用監測地圖">
+  <meta property="og:description" content="國土利用監測地圖">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://tainan.olc.tw/p/landchg/og_image.png">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/ol.css" type="text/css">
+  <link rel="stylesheet" href="../css/ol3-sidebar.css" />
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    html,
+    body,
+    #map {
+      height: 100%;
+      font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+  </style>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3GE076J7DJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-3GE076J7DJ');
+  </script>
+</head>
+
+<body>
+  <div id="sidebar" class="sidebar collapsed">
+    <!-- Nav tabs -->
+    <div class="sidebar-tabs">
+      <ul role="tablist">
+        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+        <li><a href="https://www.facebook.com/k.olc.tw/" role="tab" target="_blank"><i class="fa fa-facebook"></i></a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="sidebar-content">
+      <div class="sidebar-pane" id="home">
+        <h1 class="sidebar-header">
+          <span id="sidebarTitle">國土利用監測地圖</span>
+          <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+        </h1>
+        <div id="sidebarContent"></div>
+        <select id="pointCity" class="form-control select-filter"></select>
+        <select id="pointYear" class="form-control select-filter"></select>
+        <select id="pointType" class="form-control select-filter"></select>
+        <hr />
+        <a href="https://landchg.tcd.gov.tw/Module/RWD/Web/Default.aspx" target="_blank">資料來源</a>
+      </div>
+    </div>
+  </div>
+  <div id="map" class="map"></div>
+  <div style="position: fixed; bottom: 0px; left: 0px;">
+    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
+  </div>
+  <script
+    src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+  <script src="../../js/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
+  <script src="../../js/ol.js"></script>
+  <script src="../../js/ol5-sidebar.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
