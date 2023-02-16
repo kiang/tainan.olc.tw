@@ -35,34 +35,51 @@ var typeOptions = {
 };
 
 var pointsStyle = function (f) {
-  var p = f.getProperties().properties;
+  var p = f.getProperties().properties, z = map.getView().getZoom();
   var imgColor = 'rgba(236, 120, 62, 1)';
   if (p['查證結果'] === '合法') {
     imgColor = 'rgba(120, 236, 62, 1)';
   }
-  return new ol.style.Style({
-    image: new ol.style.RegularShape({
-      radius: 10,
-      points: 3,
-      fill: new ol.style.Fill({
-        color: imgColor
+  if (z > 12) {
+    return new ol.style.Style({
+      image: new ol.style.RegularShape({
+        radius: 10,
+        points: 3,
+        fill: new ol.style.Fill({
+          color: imgColor
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#00f',
+          width: 1
+        })
       }),
-      stroke: new ol.style.Stroke({
-        color: '#00f',
-        width: 1
+      text: new ol.style.Text({
+        font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        placement: 'point',
+        textAlign: 'left',
+        textBaseline: 'bottom',
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 0, 255, 1)'
+        }),
+        text: p['變異類型']
       })
-    }),
-    text: new ol.style.Text({
-      font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
-      placement: 'point',
-      textAlign: 'left',
-      textBaseline: 'bottom',
-      fill: new ol.style.Fill({
-        color: 'rgba(255, 0, 255, 1)'
-      }),
-      text: p['變異類型']
-    })
-  });
+    });
+  } else {
+    return new ol.style.Style({
+      image: new ol.style.RegularShape({
+        radius: 10,
+        points: 3,
+        fill: new ol.style.Fill({
+          color: imgColor
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#00f',
+          width: 1
+        })
+      })
+    });
+  }
+
 }
 
 var points = new ol.layer.Vector({
