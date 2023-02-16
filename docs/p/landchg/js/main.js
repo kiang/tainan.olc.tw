@@ -125,6 +125,7 @@ function showData(city, year, type = 'all') {
     points.getSource().addFeatures(fc);
     map.getView().fit(points.getSource().getExtent());
   }
+  sidebar.close();
 }
 showData(selectedCity, selectedYear);
 
