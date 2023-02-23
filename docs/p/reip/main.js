@@ -34,8 +34,8 @@ var baseLayer = new ol.layer.Tile({
     source: new ol.source.WMTS({
         matrixSet: 'EPSG:3857',
         format: 'image/png',
-        url: 'http://wmts.nlsc.gov.tw/wmts',
-        layer: 'EMAP',
+        url: 'https://wmts.nlsc.gov.tw/wmts',
+        layer: 'PHOTO_MIX',
         tileGrid: new ol.tilegrid.WMTS({
             origin: ol.extent.getTopLeft(projectionExtent),
             resolutions: resolutions,
@@ -45,7 +45,7 @@ var baseLayer = new ol.layer.Tile({
         wrapX: true,
         attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
     }),
-    opacity: 0.3
+    opacity: 1
 });
 
 var parkStyle = new ol.style.Style({
