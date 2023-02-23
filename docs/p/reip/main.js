@@ -30,22 +30,31 @@ var layerYellow = new ol.style.Style({
   })
 });
 
+// var baseLayer = new ol.layer.Tile({
+//     source: new ol.source.WMTS({
+//         matrixSet: 'EPSG:3857',
+//         format: 'image/png',
+//         url: 'https://wmts.nlsc.gov.tw/wmts',
+//         layer: 'PHOTO_MIX',
+//         tileGrid: new ol.tilegrid.WMTS({
+//             origin: ol.extent.getTopLeft(projectionExtent),
+//             resolutions: resolutions,
+//             matrixIds: matrixIds
+//         }),
+//         style: 'default',
+//         wrapX: true,
+//         attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+//     }),
+//     opacity: 1
+// });
+
+// ref https://github.com/openlayers/openlayers/issues/9900
 var baseLayer = new ol.layer.Tile({
-    source: new ol.source.WMTS({
-        matrixSet: 'EPSG:3857',
-        format: 'image/png',
-        url: 'https://wmts.nlsc.gov.tw/wmts',
-        layer: 'PHOTO_MIX',
-        tileGrid: new ol.tilegrid.WMTS({
-            origin: ol.extent.getTopLeft(projectionExtent),
-            resolutions: resolutions,
-            matrixIds: matrixIds
-        }),
-        style: 'default',
-        wrapX: true,
-        attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-    }),
-    opacity: 1
+  source: new ol.source.XYZ({
+    url: 'http://mt0.google.com/vt/lyrs=y&hl=zh-hant&x={x}&y={y}&z={z}',
+    attributions: '<a href="https://www.google.com/maps" target="_blank">Google Maps</a>'
+  }),
+  opacity: 1
 });
 
 var parkStyle = new ol.style.Style({
