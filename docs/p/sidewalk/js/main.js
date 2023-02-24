@@ -224,19 +224,9 @@ positionFeature.setStyle(new ol.style.Style({
   })
 }));
 
-var firstPosDone = false;
 geolocation.on('change:position', function () {
   var coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-  if (false === firstPosDone) {
-    map.dispatchEvent({
-      type: 'singleclick',
-      coordinate: coordinates,
-      pixel: map.getPixelFromCoordinate(coordinates)
-    });
-    appView.setCenter(coordinates);
-    firstPosDone = true;
-  }
 });
 
 new ol.layer.Vector({
