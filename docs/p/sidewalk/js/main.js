@@ -164,11 +164,14 @@ map.on('singleclick', function (evt) {
 
         var message = '<table class="table table-dark">';
         message += '<tbody>';
-        message += '<tr><th scope="row" style="width: 100px;">Road</th><td>' + p.road + '</td></tr>';
-        message += '<tr><th scope="row">width</th><td>' + p.width + '</td></tr>';
+        for (k in p) {
+          if (k !== 'geometry') {
+            message += '<tr><th scope="row" style="width: 100px;">' + k + '</th><td>' + p[k] + '</td></tr>';
+          }
+        }
         message += '</tbody></table>';
         clickedRoad = p.road;
-        sidebarTitle.innerHTML = p.road;
+        sidebarTitle.innerHTML = p.name;
         content.innerHTML = message;
       }
     }
@@ -179,7 +182,8 @@ map.on('singleclick', function (evt) {
   message += '<tr><th scope="row">Latitude</th><td>' + lonLat[1] + '</td></tr>';
   message += '</tbody></table>';
   message += '<div class="btn-group-vertical" role="group" style="width: 100%;">';
-  message += '<a class="btn btn-info btn-lg btn-block" href="https://docs.google.com/forms/d/e/1FAIpQLSfl6z6ciMFJK2SFRhqWjY8qBtMYJ71XLzTPF8mqvTwWfFbTQA/viewform?usp=pp_url&entry.383105126=' + clickedRoad + '&entry.1777912860=' + lonLat[0] + '&entry.1403726968=' + lonLat[0] + '" target="_blank">通報</a>';
+  message += '<a class="btn btn-info btn-lg btn-block" href="https://docs.google.com/forms/d/e/1FAIpQLSfl6z6ciMFJK2SFRhqWjY8qBtMYJ71XLzTPF8mqvTwWfFbTQA/viewform?usp=pp_url&entry.383105126=' + clickedRoad + '&entry.1777912860=' + lonLat[0] + '&entry.1403726968=' + lonLat[0] + '" target="_blank">民間通報</a>';
+  message += '<a class="btn btn-info btn-lg btn-block" href="https://docs.google.com/forms/d/e/1FAIpQLScTXiLjjniBgHkDRUwHRnm6fxl32jDSZFeE703Z273LeUogCg/viewform" target="_blank">營建署通報</a>';
   message += '</div>';
   content.innerHTML += message;
   sidebar.open('home');
