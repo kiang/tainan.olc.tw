@@ -15,27 +15,14 @@ for (var z = 0; z < 20; ++z) {
 var cityList = {};
 var filterCity = '', filterTown = '';
 var filterExtent = false;
-function pointStyle(f) {
-  var p = f.getProperties(), color = '#03c', stroke, radius;
-  if (f === currentFeature) {
-    color = '#3c0';
-    stroke = new ol.style.Stroke({
-      color: '#000',
-      width: 5
-    });
-    radius = 25;
-  } else {
-    stroke = new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    });
-    radius = 20;
-  }
-
+function areaStyle(f) {
   let polygonStyle = new ol.style.Style({
-    stroke: stroke,
+    stroke: new ol.style.Stroke({
+      color: '#3c0',
+      width: 5
+    }),
     fill: new ol.style.Fill({
-      color: color
+      color: '#3c0'
     }),
   });
   return polygonStyle;
@@ -48,15 +35,15 @@ var appView = new ol.View({
   zoom: 9
 });
 
-var pointFormat = new ol.format.GeoJSON({
+var areaFormat = new ol.format.GeoJSON({
   featureProjection: appView.getProjection()
 });
 
-var vectorPoints = new ol.layer.Vector({
+var vectorPolygons = new ol.layer.Vector({
   source: new ol.source.Vector({
-    format: pointFormat
+    format: areaFormat
   }),
-  style: pointStyle
+  style: areaStyle
 });
 
 var baseLayer = new ol.layer.Tile({
@@ -119,7 +106,7 @@ var county = new ol.layer.Vector({
 
 
 var map = new ol.Map({
-  layers: [baseLayer, county, vectorPoints],
+  layers: [baseLayer, county, vectorPolygons],
   target: 'map',
   view: appView
 });
@@ -162,16 +149,18 @@ map.on('singleclick', function (evt) {
         if (!mapPool[selectedKey]) {
           $.getJSON('https://kiang.github.io/sidewalk.cpami.gov.tw/json/sidewalks/' + selectedKey + '.json', function (c) {
             mapPool[selectedKey] = true;
-            vectorPoints.getSource().addFeatures(pointFormat.readFeatures(c));
-            vectorPoints.getSource().refresh();
+            vectorPolygons.getSource().addFeatures(areaFormat.readFeatures(c));
+            vectorPolygons.getSource().refresh();
           });
         } else {
-          vectorPoints.getSource().refresh();
+          vectorPolygons.getSource().refresh();
         }
+        map.getView().fit(feature.getGeometry().getExtent());
+        map.getView().setZoom(16);
         county.getSource().refresh();
       } else {
         currentFeature = feature;
-        vectorPoints.getSource().refresh();
+        vectorPolygons.getSource().refresh();
 
         var message = '<table class="table table-dark">';
         message += '<tbody>';
