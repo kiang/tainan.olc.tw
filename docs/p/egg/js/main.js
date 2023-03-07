@@ -41,9 +41,8 @@ function pointStyleFunction(f) {
       break;
   }
   let pointStyle = new ol.style.Style({
-    image: new ol.style.RegularShape({
+    image: new ol.style.Circle({
       radius: radius,
-      points: fPoints,
       fill: new ol.style.Fill({
         color: color
       }),
@@ -263,50 +262,58 @@ function showPoint(pointId) {
 }
 
 var points = {};
-$.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vqO_2OJlcNvcsjIunCYMfX43OnG3RwBH721vkScuYgArgLe_2huNPnBU/pub?output=csv', {}, function (c) {
-  var lines = $.csv.toArrays(c);
-  lines.shift();
-  for (k in lines) {
-    var key = lines[k][5];
-    var status = 1;
-    switch (lines[k][2]) {
-      case '有買到，剩不多':
-        status = 2;
-        break;
-      case '沒買到！！！':
-        status = 3;
-        break;
+var baseLines = [];
+$.get('data/base.csv', {}, function (c) {
+  baseLines = $.csv.toArrays(c);
+  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vqO_2OJlcNvcsjIunCYMfX43OnG3RwBH721vkScuYgArgLe_2huNPnBU/pub?output=csv', {}, function (c) {
+    var lines = $.csv.toArrays(c);
+    lines.shift();
+    for(k in lines) {
+      baseLines.push(lines[k]);
     }
-    if (!points[key]) {
-      points[key] = {
-        'id': key,
-        'name': lines[k][1],
-        'status': status,
-        'statusText': lines[k][2],
-        'longitude': parseFloat(lines[k][3]),
-        'latitude': parseFloat(lines[k][4]),
-        'time': lines[k][0]
-      };
-    } else {
-      points[key]['status'] = status;
+    lines = baseLines;
+    for (k in lines) {
+      var key = lines[k][5];
+      var status = 1;
+      switch (lines[k][2]) {
+        case '有買到，剩不多':
+          status = 2;
+          break;
+        case '沒買到！！！':
+          status = 3;
+          break;
+      }
+      if (!points[key]) {
+        points[key] = {
+          'id': key,
+          'name': lines[k][1],
+          'status': status,
+          'statusText': lines[k][2],
+          'longitude': parseFloat(lines[k][3]),
+          'latitude': parseFloat(lines[k][4]),
+          'time': lines[k][0]
+        };
+      } else {
+        points[key]['status'] = status;
+      }
     }
-  }
-  var pointsFc = [];
-  for (k in points) {
-    var pointFeature = new ol.Feature({
-      geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([points[k].longitude, points[k].latitude])
-      )
-    });
-    pointFeature.setProperties(points[k]);
-    pointsFc.push(pointFeature);
-  }
-  if (pointsFc.length > 0) {
-    vectorPoints.getSource().addFeatures(pointsFc);
-  }
+    var pointsFc = [];
+    for (k in points) {
+      var pointFeature = new ol.Feature({
+        geometry: new ol.geom.Point(
+          ol.proj.fromLonLat([points[k].longitude, points[k].latitude])
+        )
+      });
+      pointFeature.setProperties(points[k]);
+      pointsFc.push(pointFeature);
+    }
+    if (pointsFc.length > 0) {
+      vectorPoints.getSource().addFeatures(pointsFc);
+    }
 
-  routie('point/:pointId', showPoint);
-  routie('pos/:lng/:lat', showPos);
+    routie('point/:pointId', showPoint);
+    routie('pos/:lng/:lat', showPos);
+  });
 });
 
 // ref https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
