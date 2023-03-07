@@ -131,7 +131,7 @@ map.on('singleclick', function (evt) {
       if (false !== previousFeature) {
         previousFeature.setStyle(pointStyleFunction(previousFeature));
       }
-      $('#sidebarContent').append('<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeinHt2wCmXMFYXzrN6GRK3YEW2AjLy27XUunXh6oa_mwVEBg/viewform?usp=pp_url&entry.953842169=&entry.424539609=&entry.1998738256=' + clickedCoordinate[0] + '&entry.1387778236=' + clickedCoordinate[1] + '&entry.2072773208=' + nextId + '&embedded=true" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="width: 100%;">Loading…</iframe>');
+      $('#sidebarContent').append('<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeinHt2wCmXMFYXzrN6GRK3YEW2AjLy27XUunXh6oa_mwVEBg/viewform?usp=pp_url&entry.953842169=&entry.424539609=&entry.1998738256=' + clickedCoordinate[0] + '&entry.1387778236=' + clickedCoordinate[1] + '&entry.2072773208=' + uuidv4() + '&embedded=true" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="width: 100%;">Loading…</iframe>');
       newFeature.setStyle(new ol.style.Style({
         image: new ol.style.RegularShape({
           radius: 15,
@@ -258,7 +258,6 @@ function showPoint(pointId) {
 }
 
 var points = {};
-var nextId = 1;
 $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vqO_2OJlcNvcsjIunCYMfX43OnG3RwBH721vkScuYgArgLe_2huNPnBU/pub?output=csv', {}, function (c) {
   var lines = $.csv.toArrays(c);
   lines.shift();
@@ -282,10 +281,6 @@ $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vq
         'longitude': parseFloat(lines[k][3]),
         'latitude': parseFloat(lines[k][4]),
       };
-      nextId = parseInt(key) + 1;
-      if (Number.isNaN(nextId)) {
-        nextId = 1;
-      }
     } else {
       points[key]['status'] = status;
     }
@@ -307,3 +302,10 @@ $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vq
   routie('point/:pointId', showPoint);
   routie('pos/:lng/:lat', showPos);
 });
+
+// ref https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
