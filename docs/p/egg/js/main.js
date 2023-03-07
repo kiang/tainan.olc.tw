@@ -295,6 +295,8 @@ $.get('data/base.csv', {}, function (c) {
         };
       } else {
         points[key]['status'] = status;
+        points[key]['statusText'] = lines[k][2];
+        points[key]['time'] = lines[k][0];
       }
     }
     var pointsFc = [];
