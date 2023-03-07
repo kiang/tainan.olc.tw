@@ -52,7 +52,11 @@ function pointStyleFunction(f) {
     text: new ol.style.Text({
       font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
       fill: new ol.style.Fill({
-        color: 'rgba(0,0,255,0.7)'
+        color: 'rgba(0,0,0,1)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#fff',
+        width: 3
       })
     })
   });
@@ -234,6 +238,7 @@ function showPoint(pointId) {
       message += '<tbody>';
       message += '<tr><th scope="row" style="width: 100px;">名稱</th><td>' + p.name + '</td></tr>';
       message += '<tr><th scope="row">狀態</th><td>' + p.statusText + '</td></tr>';
+      message += '<tr><th scope="row">更新時間</th><td>' + p.time + '</td></tr>';
       message += '<tr><td colspan="2">';
       message += '<div class="btn-group-vertical" role="group" style="width: 100%;">';
       message += '<input type="button" class="btn btn-info btn-lg btn-block" data-id="' + p.id + '" id="btn-update" value="更新這個地點" />';
@@ -280,6 +285,7 @@ $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vq
         'statusText': lines[k][2],
         'longitude': parseFloat(lines[k][3]),
         'latitude': parseFloat(lines[k][4]),
+        'time': lines[k][0]
       };
     } else {
       points[key]['status'] = status;
@@ -305,7 +311,7 @@ $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vq
 
 // ref https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
 function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
