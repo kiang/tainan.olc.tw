@@ -307,6 +307,7 @@ $.get('data/base.csv', {}, function (c) {
         points[key]['status'] = status;
         points[key]['statusText'] = lines[k][2];
         points[key]['time'] = lines[k][0];
+        points[key]['type'] = lines[k][6];
       }
     }
     var pointsFc = [];
