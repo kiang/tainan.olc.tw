@@ -29,17 +29,22 @@ function pointStyleFunction(f) {
 
     radius = 20;
   }
-  switch (p.status) {
-    case 1:
-      color = '#00ff00';
-      break;
-    case 2:
-      color = '#ffff00';
-      break;
-    case 3:
-      color = '#ff0000';
-      break;
+  if (p.type == 1) {
+    color = '#cccccc';
+  } else {
+    switch (p.status) {
+      case 1:
+        color = '#00ff00';
+        break;
+      case 2:
+        color = '#ffff00';
+        break;
+      case 3:
+        color = '#ff0000';
+        break;
+    }
   }
+
   let pointStyle = new ol.style.Style({
     image: new ol.style.Circle({
       radius: radius,
@@ -265,10 +270,14 @@ var points = {};
 var baseLines = [];
 $.get('data/base.csv', {}, function (c) {
   baseLines = $.csv.toArrays(c);
+  for (k in baseLines) {
+    baseLines[k].push('1');
+  }
   $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vqO_2OJlcNvcsjIunCYMfX43OnG3RwBH721vkScuYgArgLe_2huNPnBU/pub?output=csv', {}, function (c) {
     var lines = $.csv.toArrays(c);
     lines.shift();
-    for(k in lines) {
+    for (k in lines) {
+      lines[k].push('2');
       baseLines.push(lines[k]);
     }
     lines = baseLines;
@@ -291,7 +300,8 @@ $.get('data/base.csv', {}, function (c) {
           'statusText': lines[k][2],
           'longitude': parseFloat(lines[k][3]),
           'latitude': parseFloat(lines[k][4]),
-          'time': lines[k][0]
+          'time': lines[k][0],
+          'type': lines[k][6]
         };
       } else {
         points[key]['status'] = status;
