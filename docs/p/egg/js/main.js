@@ -271,13 +271,13 @@ var baseLines = [];
 $.get('data/base.csv', {}, function (c) {
   baseLines = $.csv.toArrays(c);
   for (k in baseLines) {
-    baseLines[k].push('1');
+    baseLines[k].push(1);
   }
   $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSWfgWA8YW5DnbWsg11CFa3vqO_2OJlcNvcsjIunCYMfX43OnG3RwBH721vkScuYgArgLe_2huNPnBU/pub?output=csv', {}, function (c) {
     var lines = $.csv.toArrays(c);
     lines.shift();
     for (k in lines) {
-      lines[k].push('2');
+      lines[k].push(2);
       baseLines.push(lines[k]);
     }
     lines = baseLines;
@@ -291,6 +291,9 @@ $.get('data/base.csv', {}, function (c) {
         case '沒買到！！！':
           status = 3;
           break;
+      }
+      if(lines[k][6] == 1) {
+        lines[k][2] = '未有通報';
       }
       if (!points[key]) {
         points[key] = {
