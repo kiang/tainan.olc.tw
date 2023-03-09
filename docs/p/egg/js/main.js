@@ -282,6 +282,9 @@ $.get('data/base.csv', {}, function (c) {
     }
     lines = baseLines;
     for (k in lines) {
+      if(!lines[k][3] || Number.isNaN(lines[k][3])) {
+        continue;
+      }
       var key = lines[k][5];
       var status = 1;
       switch (lines[k][2]) {
