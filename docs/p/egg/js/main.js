@@ -13,7 +13,7 @@ for (var z = 0; z < 20; ++z) {
 }
 
 function pointStyleFunction(f) {
-  var p = f.getProperties(), color, stroke, radius, fPoints = 3;
+  var p = f.getProperties(), color, stroke, radius, fPoints = 3, z = map.getView().getZoom();
   if (f === currentFeature) {
     stroke = new ol.style.Stroke({
       color: 'rgba(255,0,255,0.5)',
@@ -28,6 +28,9 @@ function pointStyleFunction(f) {
     });
 
     radius = 20;
+    if (z <= 12) {
+      radius = 10;
+    }
   }
   if (p.type == 1) {
     color = '#cccccc';
@@ -64,7 +67,10 @@ function pointStyleFunction(f) {
       })
     })
   });
-  pointStyle.getText().setText(p.name);
+  if (z > 12 || radius === 35) {
+    pointStyle.getText().setText(p.name);
+  }
+
   return pointStyle;
 }
 var sidebarTitle = document.getElementById('sidebarTitle');
