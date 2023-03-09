@@ -282,20 +282,23 @@ $.get('data/base.csv', {}, function (c) {
     }
     lines = baseLines;
     for (k in lines) {
-      if(!lines[k][3] || Number.isNaN(lines[k][3])) {
+      if (!lines[k][3] || Number.isNaN(lines[k][3])) {
         continue;
       }
       var key = lines[k][5];
       var status = 1;
       switch (lines[k][2]) {
-        case '有買到，剩不多':
-          status = 2;
+        case '有買到，還很多':
+          status = 1;
           break;
         case '沒買到！！！':
           status = 3;
           break;
+        default:
+          status = 2;
+          break;
       }
-      if(lines[k][6] == 1) {
+      if (lines[k][6] == 1) {
         lines[k][2] = '未有通報';
       }
       if (!points[key]) {
