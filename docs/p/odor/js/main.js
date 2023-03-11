@@ -42,6 +42,7 @@ function pointStyleFunction(f) {
     case 3:
       color = '#ffff00';
       break;
+    case 0:
     case 4:
       color = '#cccccc';
       break;
@@ -272,58 +273,71 @@ function showPoint(pointId) {
 
 var points = {};
 
-$.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSoaizyRl8yFlOV7HWrZkiRsxJN76j53OloP_YdGb1dc3A2l2Wuz9yOgopZ1b073ZFRgZEuHeqE4bCm/pub?output=csv', {}, function (c) {
-  var lines = $.csv.toArrays(c);
-  lines.shift();
-  for (k in lines) {
-    if (!lines[k][2] || Number.isNaN(lines[k][2])) {
-      continue;
-    }
-    var key = lines[k][4];
-    var status = 1;
-    switch (lines[k][1]) {
-      case '很臭':
-        status = 2;
-        break;
-      case '有點臭':
-        status = 3;
-        break;
-      case '感覺有異味':
-        status = 4;
-        break;
-    }
-    if (!points[key]) {
-      points[key] = {
-        'id': key,
-        'status': status,
-        'statusText': lines[k][1],
-        'longitude': parseFloat(lines[k][2]),
-        'latitude': parseFloat(lines[k][3]),
-        'time': lines[k][0]
-      };
-    } else {
-      points[key]['status'] = status;
-      points[key]['statusText'] = lines[k][1];
-      points[key]['time'] = lines[k][0];
-    }
+$.get('data/base.csv', {}, function (bc) {
+  var baseLines = $.csv.toArrays(bc);
+  for (k in baseLines) {
+    points[baseLines[k][0]] = {
+      'id': baseLines[k][0],
+      'status': 0,
+      'statusText': '未填報',
+      'longitude': parseFloat(baseLines[k][2]),
+      'latitude': parseFloat(baseLines[k][1]),
+      'time': ''
+    };
   }
-  var pointsFc = [];
-  for (k in points) {
-    var pointFeature = new ol.Feature({
-      geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([points[k].longitude, points[k].latitude])
-      )
-    });
-    pointFeature.setProperties(points[k]);
-    pointsFc.push(pointFeature);
-  }
-  if (pointsFc.length > 0) {
-    vectorPoints.getSource().addFeatures(pointsFc);
-  }
+  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSoaizyRl8yFlOV7HWrZkiRsxJN76j53OloP_YdGb1dc3A2l2Wuz9yOgopZ1b073ZFRgZEuHeqE4bCm/pub?output=csv', {}, function (c) {
+    var lines = $.csv.toArrays(c);
+    lines.shift();
+    for (k in lines) {
+      if (!lines[k][2] || Number.isNaN(lines[k][2])) {
+        continue;
+      }
+      var key = lines[k][4];
+      var status = 1;
+      switch (lines[k][1]) {
+        case '很臭':
+          status = 2;
+          break;
+        case '有點臭':
+          status = 3;
+          break;
+        case '感覺有異味':
+          status = 4;
+          break;
+      }
+      if (!points[key]) {
+        points[key] = {
+          'id': key,
+          'status': status,
+          'statusText': lines[k][1],
+          'longitude': parseFloat(lines[k][2]),
+          'latitude': parseFloat(lines[k][3]),
+          'time': lines[k][0]
+        };
+      } else {
+        points[key]['status'] = status;
+        points[key]['statusText'] = lines[k][1];
+        points[key]['time'] = lines[k][0];
+      }
+    }
+    var pointsFc = [];
+    for (k in points) {
+      var pointFeature = new ol.Feature({
+        geometry: new ol.geom.Point(
+          ol.proj.fromLonLat([points[k].longitude, points[k].latitude])
+        )
+      });
+      pointFeature.setProperties(points[k]);
+      pointsFc.push(pointFeature);
+    }
+    if (pointsFc.length > 0) {
+      vectorPoints.getSource().addFeatures(pointsFc);
+    }
 
-  routie('point/:pointId', showPoint);
-  routie('pos/:lng/:lat', showPos);
-});
+    routie('point/:pointId', showPoint);
+    routie('pos/:lng/:lat', showPos);
+  });
+})
 
 // ref https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
 function uuidv4() {
