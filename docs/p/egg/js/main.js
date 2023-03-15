@@ -288,7 +288,9 @@ $.get('data/base.csv', {}, function (c) {
     }
     lines = baseLines;
     for (k in lines) {
-      if (!lines[k][3] || Number.isNaN(lines[k][3])) {
+      lines[k][3] = parseFloat(lines[k][3]);
+      lines[k][4] = parseFloat(lines[k][4]);
+      if (!lines[k][4] || Number.isNaN(lines[k][3]) || Number.isNaN(lines[k][4])) {
         continue;
       }
       var key = lines[k][5];
@@ -313,8 +315,8 @@ $.get('data/base.csv', {}, function (c) {
           'name': lines[k][1],
           'status': status,
           'statusText': lines[k][2],
-          'longitude': parseFloat(lines[k][3]),
-          'latitude': parseFloat(lines[k][4]),
+          'longitude': lines[k][3],
+          'latitude': lines[k][4],
           'time': lines[k][0],
           'type': lines[k][6]
         };
