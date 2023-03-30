@@ -290,7 +290,7 @@ $.get('data/base.csv', {}, function (c) {
     for (k in lines) {
       lines[k][3] = parseFloat(lines[k][3]);
       lines[k][4] = parseFloat(lines[k][4]);
-      if (!lines[k][4] || Number.isNaN(lines[k][3]) || Number.isNaN(lines[k][4])) {
+      if (!lines[k][4] || Number.isNaN(lines[k][3]) || Number.isNaN(lines[k][4]) || lines[k][3] < lines[k][4]) {
         continue;
       }
       var key = lines[k][5];
