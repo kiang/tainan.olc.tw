@@ -1,6 +1,21 @@
 <?php
 $oFh = fopen(dirname(dirname(__DIR__)) . '/docs/p/community/data/community-culture.csv', 'w');
-fputcsv($oFh, ['name', 'address', 'longitude', 'latitude', 'id']);
+fputcsv($oFh, ['name', 'address', 'longitude', 'latitude', 'id', 'type']);
+
+$xml = simplexml_load_file(__DIR__ . '/points.kml');
+foreach ($xml->Document->Folder->Placemark as $placemark) {
+    $parts = explode(',', trim((string) $placemark->Point->coordinates));
+    $data = [
+        (string) $placemark->name,
+        '',
+        $parts[0],
+        $parts[1],
+        md5((string) $placemark->name),
+        'star',
+    ];
+    fputcsv($oFh, $data);
+}
+
 $page = file_get_contents('https://community-culture.tainan.gov.tw/community/index.php?m2=19');
 $pos = strpos($page, 'mapList_Array');
 $posEnd = strpos($page, '</script>', $pos);
@@ -18,5 +33,6 @@ foreach ($lines as $line) {
     $pos = strpos($data[1], '<br>');
     $posEnd = strpos($data[1], '<br/>', $pos);
     $data[1] = strip_tags(substr($data[1], $pos, $posEnd - $pos));
+    $data[] = 'community';
     fputcsv($oFh, $data);
 }

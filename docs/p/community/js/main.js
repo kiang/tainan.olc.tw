@@ -32,7 +32,12 @@ function pointStyleFunction(f) {
       radius = 10;
     }
   }
-  color = 'rgba(255,0,255,0.5)';
+  if (points[p.id].type == 'star') {
+    color = 'rgba(255,0,255,1)';
+  } else {
+    color = 'rgba(255,255,0,1)';
+  }
+
 
   let pointStyle = new ol.style.Style({
     image: new ol.style.Circle({
@@ -206,9 +211,16 @@ function showPoint(pointId) {
       var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
       var message = '<table class="table table-dark">';
       message += '<tbody>';
-      for (k in points[p.id]) {
-        message += '<tr><th scope="row" style="width: 100px;">' + k + '</th><td>' + points[p.id][k] + '</td></tr>';
+      message += '<tr><th scope="row" style="width: 100px;">名稱</th><td>' + points[p.id]['name'] + '</td></tr>';
+      if (points[p.id]['address'] !== '') {
+        message += '<tr><th scope="row" style="width: 100px;">住址</th><td>' + points[p.id]['address'] + '</td></tr>';
       }
+      if (points[p.id]['type'] == 'star') {
+        message += '<tr><th scope="row" style="width: 100px;">類型</th><td>社區據點</td></tr>';
+      } else {
+        message += '<tr><th scope="row" style="width: 100px;">類型</th><td>社區營造據點</td></tr>';
+      }
+
       message += '<tr><td colspan="2">';
       message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
       message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
