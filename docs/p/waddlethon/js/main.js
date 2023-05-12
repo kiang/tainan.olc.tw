@@ -117,6 +117,17 @@ map.on('singleclick', function (evt) {
 
 });
 
+map.on("pointermove", function (evt) {
+    var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+        return true;
+    }); 
+    if (hit) {
+        this.getTargetElement().style.cursor = 'pointer';
+    } else {
+        this.getTargetElement().style.cursor = '';
+    }
+});
+
 var geolocation = new ol.Geolocation({
     projection: appView.getProjection()
 });
