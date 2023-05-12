@@ -1,9 +1,9 @@
 <?php
-$bastPath = dirname(dirname(__DIR__));
-require_once $bastPath . '/scripts/vendor/autoload.php';
+$basePath = dirname(dirname(__DIR__));
+require_once $basePath . '/scripts/vendor/autoload.php';
 
 $totalMeters = 0.0;
-foreach (glob($bastPath . '/raw/json/*.geojson') as $jsonFile) {
+foreach (glob($basePath . '/raw/json/*.geojson') as $jsonFile) {
     $raw = file_get_contents($jsonFile);
     $json = json_decode($raw, true);
     $timeBegin = $timeEnd = false;
