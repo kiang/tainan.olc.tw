@@ -37,7 +37,12 @@ var lineStyle = function (f) {
             })
         })
     });
-    finalStyle.getText().setText(p.name + "\n" + Math.round(p.length / 100) / 10 + ' KM');
+    var label = p.name + "\n";
+    if (videos[p.name]) {
+        label += videos[p.name].date + "\n";
+    }
+    label += Math.round(p.length / 100) / 10 + ' KM';
+    finalStyle.getText().setText(label);
     return finalStyle;
 }
 
@@ -105,8 +110,8 @@ map.on('singleclick', function (evt) {
                 sidebar.open('home');
                 var message = '';
                 if (videos[p.name]) {
-                    for (k in videos[p.name]) {
-                        message += '<iframe width="100%" height="315" src="https://www.youtube.com/embed/' + videos[p.name][k] + '" title="' + p.name + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    for (k in videos[p.name].videos) {
+                        message += '<iframe width="100%" height="315" src="https://www.youtube.com/embed/' + videos[p.name].videos[k] + '" title="' + p.name + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
                     }
                 }
                 barTitle.html(p.name);
@@ -118,9 +123,9 @@ map.on('singleclick', function (evt) {
 });
 
 map.on("pointermove", function (evt) {
-    var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+    var hit = this.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
         return true;
-    }); 
+    });
     if (hit) {
         this.getTargetElement().style.cursor = 'pointer';
     } else {
