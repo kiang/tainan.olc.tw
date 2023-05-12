@@ -164,6 +164,11 @@ $('#btn-geolocation').click(function () {
     return false;
 });
 
+$('#btn-fit').click(function () {
+    setFit();
+    return false;
+});
+
 var setZoom = function (zoomCode) {
     zoomCode = parseInt(zoomCode);
     if (zoomCode > 8 && zoomCode < 21) {
@@ -172,8 +177,12 @@ var setZoom = function (zoomCode) {
 }
 
 setTimeout(() => {
+    setFit();
+}, 1000);
+
+var setFit = function () {
     map.getView().fit(lines.getSource().getExtent(), map.getSize());
-}, 500);
+}
 
 var routes = {
     '/zoom/:zoomCode': setZoom
