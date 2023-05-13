@@ -34,6 +34,13 @@ foreach ($json['features'] as $f) {
         }
         if (!empty($line)) {
             $length = round($line->greatCircleLength());
+            $parts = explode(' ', $f['properties']['name']);
+            foreach ($parts as $k => $part) {
+                if ($part === 'Day') {
+                    $f['properties']['name'] = $part . ' ' . $parts[$k + 1];
+                    break;
+                }
+            }
             echo "{$f['properties']['name']}: {$length} meters\n";
             $totalMeters += $length;
             $reduced_geometry = $line->simplify(0.00001);
