@@ -25,6 +25,7 @@ $fc = [
     'type' => 'FeatureCollection',
     'features' => [],
 ];
+$dayOneGot = false;
 foreach ($json['features'] as $f) {
     if ($f['geometry']['type'] === 'LineString') {
         try {
@@ -34,13 +35,20 @@ foreach ($json['features'] as $f) {
         }
         if (!empty($line)) {
             $length = round($line->greatCircleLength());
-            $parts = explode(' ', $f['properties']['name']);
-            foreach ($parts as $k => $part) {
-                if ($part === 'Day') {
-                    $f['properties']['name'] = $part . ' ' . $parts[$k + 1];
-                    break;
+            if (false === $dayOneGot) {
+                $parts = explode(' ', $f['properties']['name']);
+                foreach ($parts as $k => $part) {
+                    if ($part === 'Day') {
+                        $f['properties']['name'] = $part . ' ' . $parts[$k + 1];
+                        break;
+                    }
                 }
+                $dayOneGot = 1;
+            } else {
+                $dayOneGot += 1;
+                $f['properties']['name'] = 'Day ' . $dayOneGot;
             }
+
             echo "{$f['properties']['name']}: {$length} meters\n";
             $totalMeters += $length;
             $reduced_geometry = $line->simplify(0.00001);
@@ -53,4 +61,4 @@ foreach ($json['features'] as $f) {
     }
 }
 echo "Total: {$totalMeters} meters\n";
-file_put_contents($basePath . '/docs/p/waddlethon/json/lines.json', json_encode($fc));
+file_put_contents($basePath . '/docs/p/waddlethon/json/lines.json', json_encode($fc, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
