@@ -250,7 +250,7 @@ function showPoint(pointId) {
       $('input#btn-update').click(function (e) {
         var p = currentFeature.getProperties();
         e.preventDefault();
-        $(this).parent().html('<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSesg6d6ExJfYWm33GzVHW_TGxTW-ZmHz42fqcWNcSc_cyKe-g/viewform?usp=pp_url&entry.1998738256=' + p.longitude + '&entry.1387778236=' + p.latitude + '&entry.2072773208=' + p.id + '&embedded=true" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="width: 100%;">Loading…</iframe>');
+        $(this).parent().html('<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSesg6d6ExJfYWm33GzVHW_TGxTW-ZmHz42fqcWNcSc_cyKe-g/viewform?usp=pp_url&entry.424539609=' + p.title + '&entry.1998738256=' + p.longitude + '&entry.1387778236=' + p.latitude + '&entry.2072773208=' + p.id + '&embedded=true" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="width: 100%;">Loading…</iframe>');
       });
     }
   }
