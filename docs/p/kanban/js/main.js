@@ -233,7 +233,6 @@ function showPoint(pointId) {
       var message = '<table class="table table-dark">';
       message += '<tbody>';
       message += '<tr><th scope="row">看板</th><td>' + p.title + '</td></tr>';
-      message += '<tr><th scope="row">介紹</th><td>' + p.description + '</td></tr>';
       message += '<tr><th scope="row">更新時間</th><td>' + p.time + '</td></tr>';
       message += '<tr><td colspan="2">';
       message += '<div class="btn-group-vertical" role="group" style="width: 100%;">';
@@ -265,10 +264,9 @@ $.get('data/base.csv', {}, function (bc) {
   for (k in baseLines) {
     points[baseLines[k][0]] = {
       'id': baseLines[k][0],
-      'title': baseLines[k][3],
-      'description': baseLines[k][4],
+      'title': baseLines[k][1],
       'longitude': parseFloat(baseLines[k][2]),
-      'latitude': parseFloat(baseLines[k][1]),
+      'latitude': parseFloat(baseLines[k][3]),
       'time': ''
     };
   }
@@ -284,14 +282,12 @@ $.get('data/base.csv', {}, function (bc) {
         points[key] = {
           'id': key,
           'title': lines[k][1],
-          'description': lines[k][2],
           'longitude': parseFloat(lines[k][2]),
           'latitude': parseFloat(lines[k][3]),
           'time': lines[k][0]
         };
       } else {
         points[key]['title'] = lines[k][1];
-        points[key]['description'] = lines[k][2];
         points[key]['time'] = lines[k][0];
       }
     }
