@@ -272,7 +272,7 @@ $.get('data/base.csv', {}, function (bc) {
       'time': ''
     };
   }
-  $.get('https://docs.google.com/spreadsheets/d/e/1UjHk8g39Q7khJY5LTs8wTPGZCYCgZqwQ152Hcqku5c8/pub?output=csv', {}, function (c) {
+  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1OLo1ZSjoIIq7k84u0qGfs0e7s-wXJA107JKvy0UxqRhViaILm4Mc7OgxNBAWeEJ6tIx7loZSfpK7/pub?output=csv', {}, function (c) {
     var lines = $.csv.toArrays(c);
     lines.shift();
     for (k in lines) {
@@ -285,8 +285,8 @@ $.get('data/base.csv', {}, function (bc) {
           'id': key,
           'title': lines[k][1],
           'description': lines[k][2],
-          'longitude': parseFloat(lines[k][3]),
-          'latitude': parseFloat(lines[k][4]),
+          'longitude': parseFloat(lines[k][2]),
+          'latitude': parseFloat(lines[k][3]),
           'time': lines[k][0]
         };
       } else {
