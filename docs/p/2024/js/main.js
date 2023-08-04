@@ -130,6 +130,10 @@ map.on('singleclick', function (evt) {
             $('#sidebarContent').html(c);
             sidebar.open('home');
             pointClicked = true;
+
+            if (FB) {
+                FB.XFBML.parse();
+            }
         }
     });
 });
