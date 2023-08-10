@@ -217,7 +217,7 @@ $zones = array(
     '6400001' => //高雄市第01選區
     array(
         'name' => '曾尹儷',
-        'fb' => 'https://www.facebook.com/KHHMayor',
+        'fb' => 'https://www.facebook.com/TPPCongressW',
         'info' => '學歷：
 美國巴爾的摩大學公共管理博士
 美國喬治梅森大學法學經濟碩士
