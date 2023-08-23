@@ -110,7 +110,11 @@ map.on('singleclick', function (evt) {
                 sidebarTitle = tpp[p.id].name;
                 c = '<img src="img/' + p.id + '.jpg" style="width: 100%;" />';
                 c += '<table class="table table-striped">';
-                c += '<tr><th>姓名</th><td><a href="' + tpp[p.id].fb + '" target="_blank">' + tpp[p.id].name + '</a></td></tr>';
+                if (tpp[p.id].fb !== '') {
+                    c += '<tr><th>姓名</th><td><a href="' + tpp[p.id].fb + '" target="_blank">' + tpp[p.id].name + '</a></td></tr>';
+                } else {
+                    c += '<tr><th>姓名</th><td>' + tpp[p.id].name + '</td></tr>';
+                }
                 c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
                 c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
                 c += '<tr><th>介紹</th><td>' + tpp[p.id].info.replace("\n", '<br />') + '</td></tr>';
