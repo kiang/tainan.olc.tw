@@ -118,6 +118,9 @@ map.on('singleclick', function (evt) {
                 c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
                 c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
                 c += '<tr><th>介紹</th><td>' + tpp[p.id].info.replace("\n", '<br />') + '</td></tr>';
+                if (tpp[p.id].yt) {
+                    c += '<tr><td colspan="2"><iframe width="100%" height="315" src="https://www.youtube.com/embed/' + tpp[p.id].yt + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></td></tr>';
+                }
                 c += '</table>';
                 if (tpp[p.id].fb !== '') {
                     c += '<div class="fb-page" data-href="' + tpp[p.id].fb + '" data-tabs="timeline" data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="' + tpp[p.id].fb + '" class="fb-xfbml-parse-ignore"><a href="' + tpp[p.id].fb + '">' + tpp[p.id].name + '</a></blockquote></div>';
