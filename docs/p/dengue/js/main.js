@@ -14,27 +14,57 @@ for (var z = 0; z < 20; ++z) {
     resolutions[z] = size / Math.pow(2, z);
     matrixIds[z] = z;
 }
+var mapStyle = 'countBased';
+var colorTable = {
+    'countBased': [
+        [5120, '#470617'],
+        [2560, '#5f0926'],
+        [1280, '#64036b'],
+        [640, '#75008b'],
+        [320, '#af004f'],
+        [160, '#d21a34'],
+        [80, '#ec6234'],
+        [40, '#ffa133'],
+        [20, '#ffd02c'],
+        [10, '#fffb26'],
+        [0, '#89cd43']
+    ],
+};
+
+function updateColorTable() {
+    var tableLines = '';
+    for (k in colorTable[mapStyle]) {
+        tableLines += '<tr><td style="background-color: ' + colorTable[mapStyle][k][1] + '">&nbsp;&nbsp;</td><td> &gt;' + colorTable[mapStyle][k][0] + '</td></tr>';
+    }
+    $('table#colorTable').html(tableLines);
+}
+updateColorTable();
 
 function areaStyleFunction(f) {
     var color = 'rgba(200,200,200,0.5)',
         stroke, radius;
     var p = f.getProperties();
+
     if (dengue[p.VILLCODE]) {
-        color = 'rgba(255,0,0,0.5)';
+        for (k in colorTable[mapStyle]) {
+            if (color === 'rgba(200,200,200,0.5)' && dengue[p.VILLCODE] > colorTable[mapStyle][k][0]) {
+                color = colorTable[mapStyle][k][1];
+            }
+        }
         stroke = new ol.style.Stroke({
             color: '#000',
             width: 1
         });
     }
-    
+
     if (f === currentFeature) {
-        color = 'rgba(200,200,0,0.5)';
+        color = 'rgba(200,200,0,0)';
         stroke = new ol.style.Stroke({
             color: 'rgba(255,0,0,0.5)',
             width: 5
         });
     }
-    
+
     return new ol.style.Style({
         fill: new ol.style.Fill({
             color: color
@@ -122,7 +152,7 @@ map.on('singleclick', function (evt) {
             } else {
                 sidebarTitle = p.name;
                 c += '<table class="table table-striped">';
-                c += '<tr><th>行政區</th><td>' + p.COUNTYNAME + p.TOWNNAME + p.VILLNAME + '</td></tr>';
+                c += '<tr><th>村里</th><td>' + p.COUNTYNAME + p.TOWNNAME + p.VILLNAME + '</td></tr>';
                 c += '</table>';
             }
 
