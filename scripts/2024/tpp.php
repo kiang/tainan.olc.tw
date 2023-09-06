@@ -4,7 +4,7 @@ $zones = array(
     '0900701' => //連江縣第01選區
     array(
         'name' => '曹爾凱',
-        'fb' => '',
+        'fb' => 'https://www.facebook.com/profile.php?id=61550914441971',
         'info' => '學歷：國立政治大學政治系
 經歷：
 民眾黨連江縣黨部主委
