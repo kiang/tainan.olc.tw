@@ -142,15 +142,13 @@ map.on('singleclick', function (evt) {
             previousFeature = currentFeature;
             var p = feature.getProperties();
             var c = '',
-                sidebarTitle = '';
-            if (dengue[p.VILLCODE]) {
                 sidebarTitle = p.COUNTYNAME + p.TOWNNAME + p.VILLNAME;
+            if (dengue[p.VILLCODE]) {
                 c += '<table class="table table-striped">';
                 c += '<tr><th>村里</th><td>' + p.COUNTYNAME + p.TOWNNAME + p.VILLNAME + '</td></tr>';
                 c += '<tr><th>確診數</th><td>' + dengue[p.VILLCODE] + '</td></tr>';
                 c += '</table>';
             } else {
-                sidebarTitle = p.name;
                 c += '<table class="table table-striped">';
                 c += '<tr><th>村里</th><td>' + p.COUNTYNAME + p.TOWNNAME + p.VILLNAME + '</td></tr>';
                 c += '</table>';
