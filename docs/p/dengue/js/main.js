@@ -193,6 +193,7 @@ geolocation.on('change:position', function () {
     positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
     if (false === firstPosDone) {
         appView.setCenter(coordinates);
+        appView.setZoom(13);
         firstPosDone = true;
     }
 });
