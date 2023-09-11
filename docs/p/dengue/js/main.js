@@ -42,7 +42,7 @@ updateColorTable();
 
 function areaStyleFunction(f) {
     var color = 'rgba(200,200,200,0.5)',
-        stroke, radius;
+        stroke, theStyle;
     var p = f.getProperties();
 
     if (dengue[p.VILLCODE]) {
@@ -65,12 +65,30 @@ function areaStyleFunction(f) {
         });
     }
 
-    return new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: color
-        }),
-        stroke: stroke
-    })
+    if (dengue[p.VILLCODE]) {
+        theStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: color
+            }),
+            stroke: stroke,
+            text: new ol.style.Text({
+                font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 0, 1)'
+                }),
+                text: dengue[p.VILLCODE] + ''
+            })
+        });
+    } else {
+        theStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: color
+            }),
+            stroke: stroke
+        });
+    }
+
+    return theStyle;
 }
 
 var appView = new ol.View({
