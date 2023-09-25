@@ -62,6 +62,19 @@ var pointsStyle = function (f) {
 
 }
 
+var lines = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'https://kiang.github.io/traffic.tainan.gov.tw/bike/lines.json',
+    format: new ol.format.GeoJSON()
+  }),
+  style: new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'rgba(100, 100, 255, 0.5)',
+      width: 3
+    })
+  })
+});
+
 var points = new ol.layer.Vector({
   source: new ol.source.Vector(),
   style: pointsStyle
@@ -141,7 +154,7 @@ geolocation.on('change:position', function () {
 });
 
 var map = new ol.Map({
-  layers: [baseLayer, points],
+  layers: [baseLayer, points, lines],
   target: 'map',
   view: appView
 });
@@ -163,21 +176,30 @@ map.on('singleclick', function (evt) {
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
     if (false === pointClicked) {
       var p = feature.getProperties();
-      var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-      var message = '<table class="table table-dark">';
-      message += '<tbody>';
-      for (k in p) {
-        if (k !== 'geometry') {
-          message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p[k] + '</td></tr>';
+      var message = '<table class="table table-dark"><tbody>';
+      if (p.capcity) {
+        var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
+        for (k in p) {
+          if (k !== 'geometry') {
+            message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p[k] + '</td></tr>';
+          }
+        }
+        message += '<tr><td colspan="2">';
+        message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
+        message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
+        message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
+        message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
+        message += '</div></td></tr>';
+
+      } else {
+        for (k in p) {
+          if (k !== 'geometry') {
+            message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p[k] + '</td></tr>';
+          }
         }
       }
-      message += '<tr><td colspan="2">';
-      message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-      message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-      message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-      message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-      message += '</div></td></tr>';
       message += '</tbody></table>';
+
       sidebarTitle.innerHTML = p.name;
       content.innerHTML = message;
       sidebar.open('home');
