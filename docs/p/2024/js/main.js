@@ -1,4 +1,7 @@
-var sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
+var sidebar = new ol.control.Sidebar({
+    element: 'sidebar',
+    position: 'right'
+});
 var jsonFiles, filesLength, fileKey = 0;
 
 var projection = ol.proj.get('EPSG:3857');
@@ -13,7 +16,8 @@ for (var z = 0; z < 20; ++z) {
 }
 
 function areaStyleFunction(f) {
-    var color = 'rgba(200,200,200,0.5)', stroke, radius;
+    var color = 'rgba(200,200,200,0.5)',
+        stroke, radius;
     var p = f.getProperties();
     if (tpp[p.id]) {
         color = 'rgba(29,168,165,0.7)';
@@ -47,6 +51,44 @@ function areaStyleFunction(f) {
     })
 }
 
+function pointStyleFunction(f) {
+    var color = 'rgba(200,200,200,0.7)',
+        stroke, radius;
+    var p = f.getProperties();
+    if (p.days > 7) {
+        color = 'rgba(0,200,0,0.7)'
+    } else if (p.days > 0) {
+        color = 'rgba(200,200,0,0.7)'
+    } else {
+        color = 'rgba(200,200,200,0.7)'
+    }
+
+    if (f === currentFeature) {
+        color = 'rgba(200,200,0,0.5)';
+        stroke = new ol.style.Stroke({
+            color: 'rgba(255,0,0,0.5)',
+            width: 5
+        });
+        radius = 15;
+    } else {
+        stroke = new ol.style.Stroke({
+            color: '#000',
+            width: 1
+        });
+        radius = 10;
+    }
+    return new ol.style.Style({
+        image: new ol.style.RegularShape({
+            points: 3,
+            radius: radius,
+            fill: new ol.style.Fill({
+                color: color
+            }),
+            stroke: stroke
+        })
+    });
+}
+
 var appView = new ol.View({
     center: ol.proj.fromLonLat([120.341986, 23.176082]),
     zoom: 8
@@ -54,6 +96,11 @@ var appView = new ol.View({
 
 var vectorAreas = new ol.layer.Vector({
     style: areaStyleFunction
+});
+
+var vectorPoints = new ol.layer.Vector({
+    source: new ol.source.Vector(),
+    style: pointStyleFunction
 });
 
 var baseLayer = new ol.layer.Tile({
@@ -75,7 +122,7 @@ var baseLayer = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-    layers: [baseLayer, vectorAreas],
+    layers: [baseLayer, vectorAreas, vectorPoints],
     target: 'map',
     view: appView
 });
@@ -94,44 +141,85 @@ $.getJSON('json/tpp.json', function (c) {
     }));
 });
 
+$.getJSON('https://c.olc.tw/places', function (c) {
+    var pointsFc = [],
+        counter = 0;
+    for (k in c) {
+        if (c[k].longitude > 0) {}
+        var pointFeature = new ol.Feature({
+            geometry: new ol.geom.Point(
+                ol.proj.fromLonLat([
+                    parseFloat(c[k].longitude),
+                    parseFloat(c[k].latitude)
+                ])
+            )
+        });
+        pointFeature.setProperties(c[k]);
+        if (pointFeature) {
+            pointsFc.push(pointFeature);
+        }
+    }
+    vectorPoints.getSource().addFeatures(pointsFc);
+    vectorPoints.getSource().refresh();
+})
+
 map.on('singleclick', function (evt) {
     pointClicked = false;
     map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
         if (false === pointClicked) {
             currentFeature = feature;
-            if (false !== previousFeature) {
-                previousFeature.setStyle(areaStyleFunction(previousFeature));
-            }
-            currentFeature.setStyle(areaStyleFunction(currentFeature));
-            previousFeature = currentFeature;
             var p = feature.getProperties();
-            var c = '', sidebarTitle = '';
-            if (tpp[p.id]) {
-                sidebarTitle = tpp[p.id].name;
-                c = '<img src="img/' + p.id + '.jpg" style="width: 100%;" />';
-                c += '<table class="table table-striped">';
-                if (tpp[p.id].fb !== '') {
-                    c += '<tr><th>姓名</th><td><a href="' + tpp[p.id].fb + '" target="_blank">' + tpp[p.id].name + '</a></td></tr>';
+            var c = '',
+                sidebarTitle = '';
+            if (p.areas) {
+                if (false !== previousFeature) {
+                    previousFeature.setStyle(areaStyleFunction(previousFeature));
+                }
+                currentFeature.setStyle(areaStyleFunction(currentFeature));
+                previousFeature = currentFeature;
+                if (tpp[p.id]) {
+                    sidebarTitle = tpp[p.id].name;
+                    c = '<img src="img/' + p.id + '.jpg" style="width: 100%;" />';
+                    c += '<table class="table table-striped">';
+                    if (tpp[p.id].fb !== '') {
+                        c += '<tr><th>姓名</th><td><a href="' + tpp[p.id].fb + '" target="_blank">' + tpp[p.id].name + '</a></td></tr>';
+                    } else {
+                        c += '<tr><th>姓名</th><td>' + tpp[p.id].name + '</td></tr>';
+                    }
+                    c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
+                    c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
+                    c += '<tr><th>介紹</th><td>' + tpp[p.id].info.replace("\n", '<br />') + '</td></tr>';
+                    if (tpp[p.id].yt) {
+                        c += '<tr><td colspan="2"><iframe width="100%" height="315" src="https://www.youtube.com/embed/' + tpp[p.id].yt + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></td></tr>';
+                    }
+                    c += '</table>';
+                    if (tpp[p.id].fb !== '') {
+                        c += '<div class="fb-page" data-href="' + tpp[p.id].fb + '" data-tabs="timeline" data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="' + tpp[p.id].fb + '" class="fb-xfbml-parse-ignore"><a href="' + tpp[p.id].fb + '">' + tpp[p.id].name + '</a></blockquote></div>';
+                    }
                 } else {
-                    c += '<tr><th>姓名</th><td>' + tpp[p.id].name + '</td></tr>';
-                }
-                c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
-                c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
-                c += '<tr><th>介紹</th><td>' + tpp[p.id].info.replace("\n", '<br />') + '</td></tr>';
-                if (tpp[p.id].yt) {
-                    c += '<tr><td colspan="2"><iframe width="100%" height="315" src="https://www.youtube.com/embed/' + tpp[p.id].yt + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></td></tr>';
-                }
-                c += '</table>';
-                if (tpp[p.id].fb !== '') {
-                    c += '<div class="fb-page" data-href="' + tpp[p.id].fb + '" data-tabs="timeline" data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="' + tpp[p.id].fb + '" class="fb-xfbml-parse-ignore"><a href="' + tpp[p.id].fb + '">' + tpp[p.id].name + '</a></blockquote></div>';
+                    sidebarTitle = p.name;
+                    c += '<table class="table table-striped">';
+                    c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
+                    c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
+                    c += '</table>';
                 }
             } else {
+                if (false !== previousFeature) {
+                    previousFeature.setStyle(pointStyleFunction(previousFeature));
+                }
+                currentFeature.setStyle(pointStyleFunction(currentFeature));
+                previousFeature = currentFeature;
                 sidebarTitle = p.name;
                 c += '<table class="table table-striped">';
-                c += '<tr><th>選區</th><td>' + p.name + '</td></tr>';
-                c += '<tr><th>行政區</th><td>' + p.areas.replaceAll(',', '<br />') + '</td></tr>';
+                c += '<tr><th>地點</th><td>' + p.name + '</td></tr>';
+                c += '<tr><th>活動時間</th><td>' + p.events[0].time_gather + '</td></tr>';
+                c += '<tr><th>活動內容</th><td>' + p.events[0].name + '</td></tr>';
                 c += '</table>';
+                c += '<div class="btn-group-vertical" role="group" style="width: 100%;">';
+                c += '<a href="https://c.olc.tw/places/' + p.id + '" target="_blank" class="btn btn-primary btn-lg btn-block">';
+                c += '詳細資訊</a></div>';
             }
+
 
             $('#sidebarTitle').html(sidebarTitle);
             $('#sidebarContent').html(c);
