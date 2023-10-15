@@ -145,19 +145,21 @@ $.getJSON('https://c.olc.tw/places', function (c) {
     var pointsFc = [],
         counter = 0;
     for (k in c) {
-        if (c[k].longitude > 0) {}
-        var pointFeature = new ol.Feature({
-            geometry: new ol.geom.Point(
-                ol.proj.fromLonLat([
-                    parseFloat(c[k].longitude),
-                    parseFloat(c[k].latitude)
-                ])
-            )
-        });
-        pointFeature.setProperties(c[k]);
-        if (pointFeature) {
-            pointsFc.push(pointFeature);
+        if (c[k].longitude && !isNaN(c[k].longitude)) {
+            var pointFeature = new ol.Feature({
+                geometry: new ol.geom.Point(
+                    ol.proj.fromLonLat([
+                        parseFloat(c[k].longitude),
+                        parseFloat(c[k].latitude)
+                    ])
+                )
+            });
+            pointFeature.setProperties(c[k]);
+            if (pointFeature) {
+                pointsFc.push(pointFeature);
+            }
         }
+        
     }
     vectorPoints.getSource().addFeatures(pointsFc);
     vectorPoints.getSource().refresh();
