@@ -183,10 +183,10 @@ var firstPosDone = false;
 geolocation.on('change:position', function () {
   var coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-  // if (false === firstPosDone) {
-  //   appView.setCenter(coordinates);
-  //   firstPosDone = true;
-  // }
+  if (false === firstPosDone) {
+    appView.setCenter(coordinates);
+    firstPosDone = true;
+  }
 });
 
 new ol.layer.Vector({
