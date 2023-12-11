@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="DearNaNa-扛阿北守台灣">
+    <meta property="og:description" content="DearNaNa-扛阿北守台灣">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tainan.olc.tw/p/dearnana/og_image.png">
+    <title>DearNaNa-扛阿北守台灣</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../css/ol3-sidebar.css" type="text/css" />
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/theme.min.css"
+        crossorigin="anonymous">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        .ui-front {
+            z-index: 9999;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZW5G2MFGY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3ZW5G2MFGY');
+    </script>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header"><span id="sidebarTitle">Click any line in the map</span><span
+                        class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <div id="sidebarContent">Click any line in the map</div>
+                <div class="btn-group-vertical" role="group" style="width: 100%;">
+                    <a href="https://www.google.com/maps/d/u/0/viewer?mid=1AHxHvFe6Aq0hLxMF9BxXPJK9AW-TzUY"
+                        target="_blank" class="btn btn-primary btn-lg btn-block">原始地圖</a>
+                    <a href="https://facebook.com/k.olc.tw/" target="_blank"
+                        class="btn btn-primary btn-lg btn-block">網站製作：江明宗</a>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header"><span id="weekTitle">Settings</span><span class="sidebar-close"><i
+                            class="fa fa-caret-left"></i></span></h1>
+                <div>
+                    <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-fit">檢視全圖</a>
+                    <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-geolocation">目前位置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Director/1.2.8/director.min.js"></script>
+    <script src="../../js/jquery.min.js" type="text/javascript"></script>
+    <script src="../../js/ol.js" type="text/javascript"></script>
+    <script src="../../js/ol5-sidebar.min.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+</body>
+
+</html>
