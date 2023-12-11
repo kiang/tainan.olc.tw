@@ -21,6 +21,8 @@ var lineStyle = function (f) {
     var p = f.getProperties(), theColor = '#00c0d8';
     if (f === currentFeature) {
         theColor = '#d800c0';
+    } else if (videos[p.name].videos.length == 0) {
+        theColor = '#00d800';
     }
     var finalStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
