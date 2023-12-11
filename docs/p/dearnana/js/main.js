@@ -38,9 +38,6 @@ var lineStyle = function (f) {
         })
     });
     var label = p.name;
-    if (videos[p.name]) {
-        label += videos[p.name].date + "\n";
-    }
     if(p.length) {
         label += "\n" + Math.round(p.length / 100) / 10 + ' KM';
     }

@@ -27,6 +27,7 @@ $fc = [
     'type' => 'FeatureCollection',
     'features' => [],
 ];
+$videos = [];
 foreach ($json['features'] as $f) {
     if ($f['geometry']['type'] === 'LineString') {
         try {
@@ -38,6 +39,9 @@ foreach ($json['features'] as $f) {
             $length = round($line->greatCircleLength());
 
             echo "{$f['properties']['name']}: {$length} meters\n";
+            $videos[$f['properties']['name']] = [
+                'videos' => [],
+            ];
             $totalMeters += $length;
             $reduced_geometry = $line->simplify(0.00001);
             $json = json_decode($reduced_geometry->out('json'), true);
@@ -48,7 +52,14 @@ foreach ($json['features'] as $f) {
         }
     } else {
         $fc['features'][] = $f;
+        $videos[$f['properties']['name']] = [
+            'videos' => [],
+        ];
     }
 }
 echo "Total: {$totalMeters} meters\n";
+$videoFile = $basePath . '/docs/p/dearnana/json/videos.json';
+if (!file_exists($videoFile)) {
+    file_put_contents($videoFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
 file_put_contents($basePath . '/docs/p/dearnana/json/lines.json', json_encode($fc, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
