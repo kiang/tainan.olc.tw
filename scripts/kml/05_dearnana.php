@@ -28,7 +28,10 @@ $fc = [
     'features' => [],
 ];
 $videos = [];
-foreach ($json['features'] as $f) {
+foreach ($json['features'] as $k => $f) {
+    if ($k < 61) {
+        continue;
+    }
     if ($f['geometry']['type'] === 'LineString') {
         try {
             $line = geoPHP::load(json_encode($f), 'json');
@@ -38,10 +41,6 @@ foreach ($json['features'] as $f) {
         if (!empty($line)) {
             $length = round($line->greatCircleLength());
 
-            echo "{$f['properties']['name']}: {$length} meters\n";
-            $videos[$f['properties']['name']] = [
-                'videos' => [],
-            ];
             $totalMeters += $length;
             $reduced_geometry = $line->simplify(0.00001);
             $json = json_decode($reduced_geometry->out('json'), true);
@@ -52,12 +51,12 @@ foreach ($json['features'] as $f) {
         }
     } else {
         $fc['features'][] = $f;
-        $videos[$f['properties']['name']] = [
-            'videos' => [],
-        ];
     }
+    $videos[$f['properties']['name']] = [
+        'videos' => [],
+    ];
 }
-echo "Total: {$totalMeters} meters\n";
+
 $videoFile = $basePath . '/docs/p/dearnana/json/videos.json';
 if (!file_exists($videoFile)) {
     file_put_contents($videoFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
