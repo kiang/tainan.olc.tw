@@ -57,6 +57,8 @@ foreach ($json['features'] as $k => $f) {
     ];
 }
 
+echo $totalMeters;
+
 $videoFile = $basePath . '/docs/p/dearnana/json/videos.json';
 if (!file_exists($videoFile)) {
     file_put_contents($videoFile, json_encode($videos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
