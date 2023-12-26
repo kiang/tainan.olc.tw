@@ -18,40 +18,43 @@ var appView = new ol.View({
 });
 
 var lineStyle = function (f) {
-    var p = f.getProperties(), theColor = '#00c0d8';
+    var p = f.getProperties().properties, theColor = '#00c0d8';
     if (f === currentFeature) {
         theColor = '#d800c0';
-    } else if (videos[p.name].videos.length == 0) {
+    } else if (videos[p.name] && videos[p.name].videos.length == 0) {
         theColor = '#00d800';
     }
-    var finalStyle = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: theColor,
-            width: 5
-        }),
-        text: new ol.style.Text({
-            font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
-            fill: new ol.style.Fill({
-                color: 'rgba(255,255,255,1)'
+    if ('Point' === f.getGeometry().getType()) {
+        var finalStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: theColor,
+                width: 5
             }),
-            backgroundFill: new ol.style.Fill({
-                color: theColor
+            text: new ol.style.Text({
+                font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,255,255,1)'
+                }),
+                backgroundFill: new ol.style.Fill({
+                    color: theColor
+                })
             })
-        })
-    });
-    var label = p.name;
-    if(p.length) {
-        label += "\n" + Math.round(p.length / 100) / 10 + ' KM';
+        });
+        var label = p.name;
+        finalStyle.getText().setText(label);
+    } else {
+        var finalStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: theColor,
+                width: 5
+            })
+        });
     }
-    finalStyle.getText().setText(label);
     return finalStyle;
 }
 
 var lines = new ol.layer.Vector({
-    source: new ol.source.Vector({
-        url: 'json/lines.json',
-        format: new ol.format.GeoJSON()
-    }),
+    source: new ol.source.Vector(),
     style: lineStyle
 });
 
@@ -88,8 +91,41 @@ var barTitle = $('#sidebarTitle');
 var barContent = $('#sidebarContent');
 var videos = {};
 
-$.getJSON('json/videos.json', function (data) {
+$.getJSON('json/points.json', function (data) {
     videos = data;
+    var features = [];
+    var pointStart = false, pointEnd = false;
+    for (k in data) {
+        if (false === pointStart) {
+            pointStart = new ol.geom.Point(ol.proj.transform([data[k].longitude, data[k].latitude], 'EPSG:4326', 'EPSG:3857'));
+            features.push(new ol.Feature({
+                properties: {
+                    name: k
+                },
+                geometry: pointStart
+            }));
+        } else {
+            pointEnd = new ol.geom.Point(ol.proj.transform([data[k].longitude, data[k].latitude], 'EPSG:4326', 'EPSG:3857'));
+            features.push(new ol.Feature({
+                properties: {
+                    name: k
+                },
+                geometry: pointEnd
+            }));
+
+            var line = new ol.geom.LineString([pointStart.getCoordinates(), pointEnd.getCoordinates()]);
+            features.push(new ol.Feature({
+                properties: {
+                    name: k
+                },
+                geometry: line
+            }));
+            pointStart = pointEnd;
+        }
+
+    }
+    lines.getSource().addFeatures(features);
+    lines.getSource().refresh();
 });
 
 map.on('singleclick', function (evt) {
@@ -105,7 +141,7 @@ map.on('singleclick', function (evt) {
                 currentFeature.setStyle(lineStyle(currentFeature));
             }
 
-            var p = feature.getProperties();
+            var p = feature.getProperties().properties;
             if (p.name) {
                 lineClicked = true;
                 sidebar.open('home');
