@@ -95,6 +95,9 @@ $.getJSON('json/points.json', function (data) {
     points = data;
     var features = [], linePoints = [], thePoint = false, pointEnd = false;
     for (k1 in points) {
+        if ('總統戰線' != k1) {
+            continue;
+        }
         for (k2 in points[k1]) {
             linePoints = [];
             for (k3 in points[k1][k2]) {
