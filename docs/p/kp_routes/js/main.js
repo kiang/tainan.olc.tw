@@ -94,7 +94,11 @@ var currentFeature = false;
 
 var barTitle = $('#sidebarTitle');
 var barContent = $('#sidebarContent');
-var points = {};
+var points = {}, videos = {};
+
+$.getJSON('json/video.json', function (data) {
+    videos = data;
+});
 
 $.getJSON('json/points.json', function (data) {
     points = data;
@@ -149,7 +153,11 @@ map.on('singleclick', function (evt) {
             if (p.line) {
                 lineClicked = true;
                 sidebar.open('home');
-                var message = '<div class="list-group">';
+                var message = '';
+                if (videos[p.team] && videos[p.team][p.line] && videos[p.team][p.line] != '') {
+                    message += '<iframe width="100%" height="315" src="https://www.youtube.com/embed/' + videos[p.team][p.line] + '" title="' + p.team + p.line + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                }
+                message += '<div class="list-group">';
                 message += '<div class="list-group-item bg-secondary text-light">' + p.team + '<br />' + p.line;
                 message += '<ul><li>上午路線 9:00-11:30</li><li>下午路線 14:00-16:00</li></ul>';
                 message += '</div>';
