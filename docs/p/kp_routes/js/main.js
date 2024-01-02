@@ -150,7 +150,9 @@ map.on('singleclick', function (evt) {
                 lineClicked = true;
                 sidebar.open('home');
                 var message = '<div class="list-group">';
-                message += '<div class="list-group-item bg-secondary text-light">' + p.team + '<br />' + p.line + '</div>';
+                message += '<div class="list-group-item bg-secondary text-light">' + p.team + '<br />' + p.line;
+                message += '<ul><li>上午路線 9:00-11:30</li><li>下午路線 14:00-16:00</li></ul>';
+                message += '</div>';
                 for (k1 in points[p.team][p.line]) {
                     if (k1 === p.name) {
                         message += '<div class="list-group-item bg-info text-light">' + k1 + '</div>';
