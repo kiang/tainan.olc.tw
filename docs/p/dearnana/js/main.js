@@ -18,7 +18,7 @@ var appView = new ol.View({
 });
 
 var lineStyle = function (f) {
-    var p = f.getProperties().properties, theColor = '#00c0d8';
+    var p = f.getProperties().properties, theColor = '#00c0d8', label = '';
     if (f === currentFeature) {
         theColor = '#d800c0';
     } else if (videos[p.name] && videos[p.name].videos.length == 0) {
@@ -40,7 +40,12 @@ var lineStyle = function (f) {
                 })
             })
         });
-        var label = p.name;
+        if (map.getView().getZoom() > 10) {
+            label = p.name;
+        } else {
+            var part1 = p.name.split('《')[1];
+            label = part1.split('》')[0];
+        }
         finalStyle.getText().setText(label);
     } else {
         var finalStyle = new ol.style.Style({
