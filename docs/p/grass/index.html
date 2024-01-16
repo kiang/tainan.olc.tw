@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="江明宗的萬眾小草計畫">
+    <meta property="og:description" content="江明宗的萬眾小草計畫">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tainan.olc.tw/p/grass/og_image.png">
+    <title>江明宗的萬眾小草計畫</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/ol3-sidebar.min.css" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/jquery-ui.min.css"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/theme.min.css"
+        crossorigin="anonymous">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        .lorem {
+            font-style: italic;
+            color: #AAA;
+        }
+
+        .ui-front {
+            z-index: 9999;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#book" role="tab"><i class="fa fa-book"></i></a></li>
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+                <li><a href="#fb" role="tab"><i class="fa fa-facebook"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header"><span id="sidebarTitle">請點選地圖中的點</span><span class="sidebar-close"><i
+                            class="fa fa-caret-left"></i></span></h1>
+                <div id="sidebarContent"></div>
+                <div class="btn-group-vertical" role="group" style="width: 100%;">
+                    <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank"
+                        class="btn btn-primary btn-lg btn-block">網站問題反應</a>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="book">
+                <h1 class="sidebar-header"><span id="weekTitle">說明</span><span class="sidebar-close"><i
+                            class="fa fa-caret-left"></i></span></h1>
+                <div>
+                    <h3>江明宗的萬眾小草計畫</h3>
+
+                    <p>江明宗是以公民科技創作著稱的軟體工程師，作品包括口罩地圖、所得地圖與幼兒園地圖等數十個環繞公共議題的應用，擁有超過 20 年的程式開發經驗，目前是多個單位的資訊顧問；除了資訊專長，江明宗也是現任台灣民眾黨的黨代表，過去曾在經濟部部長、台南市市長身邊擔任核心幕僚，實際參選過三次的議員選舉，以及作為幕僚參與台南市長選舉，有許多政治工作的實務經驗。</p>
+                    
+                    <p>江明宗的作品 - <a href="https://kiang.github.io/" target="_blank">https://kiang.github.io/</a><br />
+                    江明宗的FB - <a href="https://fb.me/k.olc.tw" target="_blank">https://fb.me/k.olc.tw</a></p>
+                    
+                    <p>江明宗的萬眾小草計畫希望運用資訊工具去協助現任村里長或是有意參選村里長的朋友，透過數位工具去關心所在村里，包含但不限於彙整政府單位最新動態與提供具體行動建議等，初期將免費提供服務給有意在地經營的朋友；支援的對象不一定要具有民眾黨籍，只求不要排斥民眾黨，而個別村里也可能同時有一位以上的朋友參與其中，只是因為地理位置限制，實體活動安排會以台南市區為優先，初期也希望一個人只聚焦在一個村里。任何參與者都可以隨時加入與退出，系統服務只會在加入期間生效，同時在系統上一律實名制，本計畫只會直接提供本人服務，不接受代理等中間身份，簡單的說，希望我打電話給你的時候，不是其他人接起來。</p>
+                    
+                    <p>這是江明宗以個人名義發起的計畫，目前沒有直接接受來自民眾黨或任何其他團體的資助，會依據需求與規模逐步調整運作模式；開始的方式很簡單，請在下面地圖選擇一個你戶籍所在地的村里，或是一個你能夠設定戶籍的村里，接著完成表單的填寫，相關服務開始運作時會主動通知。</p>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header"><span id="weekTitle">設定</span><span class="sidebar-close"><i
+                            class="fa fa-caret-left"></i></span></h1>
+                <div>
+                    <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-geolocation">回到目前位置</a>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="fb">
+                <div class="fb-page" data-href="https://www.facebook.com/k.olc.tw/" data-tabs="timeline"
+                    data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                    data-show-facepile="true">
+                    <blockquote cite="https://www.facebook.com/k.olc.tw/" class="fb-xfbml-parse-ignore"><a
+                            href="https://www.facebook.com/k.olc.tw/">江明宗</a></blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+    <div style="position: fixed; bottom: 0px; left: 0px;">
+        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
+    </div>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"
+        integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg=="
+        crossorigin="anonymous"></script>
+    <script src="js/ol.js" type="text/javascript"></script>
+    <script src="js/ol5-sidebar.min.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+</body>
+
+</html>
