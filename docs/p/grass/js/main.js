@@ -11,6 +11,9 @@ for (var z = 0; z < 20; ++z) {
   resolutions[z] = size / Math.pow(2, z);
   matrixIds[z] = z;
 }
+var cunliList = ['63000040032', '68000020036', '65000060020', '64000040016', '63000020030', '65000080015',
+  '10013010060', '63000110026', '68000060010', '63000040035', '66000040004', '63000020024', '68000100029',
+  '68000040030', '68000010079', '66000050004', '64000120049'];
 
 function areaStyleFunction(f) {
   var p = f.getProperties(), color, stroke, z = map.getView().getZoom();
@@ -27,6 +30,9 @@ function areaStyleFunction(f) {
 
   }
   color = 'rgba(29,168,165,0)';
+  if (cunliList.indexOf(p.VILLCODE) > -1) {
+    color = 'rgba(29,168,165,0.7)';
+  }
 
   let areaStyle = new ol.style.Style({
     fill: new ol.style.Fill({
@@ -110,7 +116,7 @@ map.on('singleclick', function (evt) {
     if (false === pointClicked) {
       pointClicked = true;
       var p = feature.getProperties();
-      if(!p.VILLCODE) {
+      if (!p.VILLCODE) {
         return;
       }
       console.log(p);
