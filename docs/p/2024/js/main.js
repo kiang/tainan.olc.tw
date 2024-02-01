@@ -141,7 +141,7 @@ $.getJSON('json/tpp.json', function (c) {
     }));
 });
 
-$.getJSON('https://c.olc.tw/places', function (c) {
+$.getJSON('json/places.json', function (c) {
     var pointsFc = [],
         counter = 0;
     for (k in c) {
@@ -217,9 +217,6 @@ map.on('singleclick', function (evt) {
                 c += '<tr><th>活動時間</th><td>' + p.events[0].time_gather + '</td></tr>';
                 c += '<tr><th>活動內容</th><td>' + p.events[0].name + '</td></tr>';
                 c += '</table>';
-                c += '<div class="btn-group-vertical" role="group" style="width: 100%;">';
-                c += '<a href="https://c.olc.tw/places/' + p.id + '" target="_blank" class="btn btn-primary btn-lg btn-block">';
-                c += '詳細資訊</a></div>';
             }
 
 
