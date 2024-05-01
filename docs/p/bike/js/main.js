@@ -166,7 +166,15 @@ map.on('singleclick', function (evt) {
       if (false !== previousFeature) {
         previousFeature.setStyle(pointStyleFunction(previousFeature));
       }
-      $('#sidebarContent').append('<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc4B4X0H8VTCWKOgtAa_Ig3xYyedJBfsTa74zmTUQ5K_wQi3A/viewform?usp=pp_url&hl=zh_TW&entry.1588782081=' + selectedCity + '&entry.1966779823=' + selectedTown + '&entry.1998738256=' + clickedCoordinate[0] + '&entry.1387778236=' + clickedCoordinate[1] + '&entry.2072773208=' + uuidv4() + '&embedded=true" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="width: 100%;">Loading…</iframe>');
+      var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc4B4X0H8VTCWKOgtAa_Ig3xYyedJBfsTa74zmTUQ5K_wQi3A/viewform?usp=pp_url&hl=zh_TW';
+      formUrl += '&entry.1588782081=' + selectedCity;
+      formUrl += '&entry.1966779823=' + selectedTown;
+      formUrl += '&entry.1998738256=' + clickedCoordinate[0];
+      formUrl += '&entry.1387778236=' + clickedCoordinate[1];
+      formUrl += '&entry.2072773208=' + uuidv4();
+      var message = '<p>請點選以下按鈕，填寫淹水點資訊</p><div class="btn-group-vertical" role="group" style="width: 100%;">';
+      message += '<a href="' + formUrl + '" target="_blank" class="btn btn-primary btn-lg btn-block">通報</a></div><hr />';
+      $('#sidebarContent').append(message);
       newFeature.setStyle(new ol.style.Style({
         image: new ol.style.RegularShape({
           radius: 15,
