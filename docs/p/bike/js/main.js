@@ -243,6 +243,7 @@ $('#btn-geolocation').click(function () {
   var coordinates = geolocation.getPosition();
   if (coordinates) {
     appView.setCenter(coordinates);
+    sidebar.close();
   } else {
     alert('目前使用的設備無法提供地理資訊');
   }
