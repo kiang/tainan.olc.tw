@@ -275,6 +275,10 @@ function showPoint(pointId) {
       var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
       var message = '<table class="table table-dark">';
       message += '<tbody>';
+      if (p.img) {
+        message += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + p.img + '/preview" width="100%" height="480" allow="autoplay"></iframe></td></tr>';
+      }
+
       message += '<tr><th scope="row">狀態</th><td>' + p.statusText + '</td></tr>';
       message += '<tr><th scope="row">更新時間</th><td>' + p.time + '</td></tr>';
       message += '<tr><td colspan="2">';
@@ -324,10 +328,12 @@ $.get('data/base.csv', {}, function (bc) {
       var key = lines[k][7];
       var status = 1;
       if (!points[key]) {
+        var imgParts = lines[k][2].split('?id=');
         points[key] = {
           'id': key,
           'status': status,
           'statusText': '已填報',
+          'img': imgParts[1],
           'longitude': parseFloat(lines[k][5]),
           'latitude': parseFloat(lines[k][6]),
           'time': lines[k][0]
