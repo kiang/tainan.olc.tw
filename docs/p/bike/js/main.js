@@ -314,22 +314,22 @@ $.get('data/base.csv', {}, function (bc) {
       'time': ''
     };
   }
-  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSk6NQmY509huZDxxQ4Co9LxejnAHQdKZkJzE0JdRPosKv020YwfOW5mSkccOaU7CaCzUC1TI2m4U9k/pub?output=csv', {}, function (c) {
+  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vQItH5bgo9kOWQIt-zMznug2xt1SPlndsc-bg0ZNANx6drnitbiKB_I1GLkzwBFG7LfyPfnFdljaPk7/pub?gid=1067869242&single=true&output=csv', {}, function (c) {
     var lines = $.csv.toArrays(c);
     lines.shift();
     for (k in lines) {
       if (!lines[k][2] || Number.isNaN(lines[k][2])) {
         continue;
       }
-      var key = lines[k][6];
+      var key = lines[k][7];
       var status = 1;
       if (!points[key]) {
         points[key] = {
           'id': key,
           'status': status,
           'statusText': '已填報',
-          'longitude': parseFloat(lines[k][2]),
-          'latitude': parseFloat(lines[k][3]),
+          'longitude': parseFloat(lines[k][5]),
+          'latitude': parseFloat(lines[k][6]),
           'time': lines[k][0]
         };
       } else {
