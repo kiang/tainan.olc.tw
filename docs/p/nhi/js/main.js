@@ -127,7 +127,7 @@ function showPoint(pointId) {
       var message = '<table class="table table-dark">';
       message += '<tbody>';
       message += '<tr><th scope="row" style="width: 100px;">名稱</th><td>';
-      message += '<a href="http://www.nhi.gov.tw/QueryN/Query3_Detail.aspx?HospID=' + p.id + '" target="_blank" class="sidebar-link">' + p.name + '</a>';
+      message += '<a href="https://info.nhi.gov.tw/INAE1000/INAE1000S03?id=' + p.id + '" target="_blank" class="sidebar-link">' + p.name + '</a>';
       message += '</td></tr>';
       message += '<tr><th scope="row">一般掛號</th><td>' + p.normal + '</td></tr>';
       if (p.emergency > 0) {
