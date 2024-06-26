@@ -134,7 +134,7 @@ var previousFeature = false;
 var currentFeature = false;
 var dengue = {};
 
-$.getJSON('https://kiang.github.io/dengue/daily/2023/cunli.json', {}, function (data) {
+$.getJSON('https://kiang.github.io/dengue/daily/2024/cunli.json', {}, function (data) {
     $.each(data, function (k, v) {
         var prefix = k.substr(0, 1);
         if (prefix === '6') {
