@@ -22,7 +22,7 @@ var pointsStyle = function (f) {
       radius: 15,
       points: 3,
       fill: new ol.style.Fill({
-        color: '#cb5c26'
+        color: '#e7870c'
       }),
       stroke: new ol.style.Stroke({
         color: '#00f',
