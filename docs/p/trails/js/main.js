@@ -14,6 +14,13 @@ for (var z = 0; z < 20; ++z) {
 
 function lineStyleFunction(f) {
   var p = f.getProperties(), color, stroke, radius, z = map.getView().getZoom();
+  if (p.TrailHeight < 500) {
+    color = '#ff0000';
+  } else if (p.TrailHeight < 1000) {
+    color = '#ffff00';
+  } else {
+    color = '#00ff00';
+  }
   if (f === currentFeature) {
     stroke = new ol.style.Stroke({
       color: 'rgba(255,0,255,1)',
@@ -22,7 +29,7 @@ function lineStyleFunction(f) {
     radius = 35;
   } else {
     stroke = new ol.style.Stroke({
-      color: '#00f',
+      color: color,
       width: 5
     });
 
@@ -30,21 +37,6 @@ function lineStyleFunction(f) {
     if (z <= 12) {
       radius = 10;
     }
-  }
-  switch (p.status) {
-    case 1:
-      color = '#ff0000';
-      break;
-    case 2:
-      color = '#ff00ff';
-      break;
-    case 3:
-      color = '#ffff00';
-      break;
-    case 0:
-    case 4:
-      color = '#cccccc';
-      break;
   }
 
   let lineStyle = new ol.style.Style({
@@ -71,7 +63,7 @@ var content = document.getElementById('sidebarContent');
 
 var appView = new ol.View({
   center: ol.proj.fromLonLat([120.221507, 23.000694]),
-  zoom: 14
+  zoom: 10
 });
 
 var vectorLines = new ol.layer.Vector({
