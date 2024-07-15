@@ -15,11 +15,13 @@ for (var z = 0; z < 20; ++z) {
 function lineStyleFunction(f) {
   var p = f.getProperties(), color, stroke, radius, z = map.getView().getZoom();
   if (p.TrailHeight < 500) {
-    color = '#ff0000';
-  } else if (p.TrailHeight < 1000) {
-    color = '#ffff00';
-  } else {
     color = '#00ff00';
+  } else if (p.TrailHeight < 1000) {
+    color = '#0000ff';
+  } else if (p.TrailHeight < 2000) {
+    color = '#5ca9bd';
+  } else {
+    color = '#b4e9f7';
   }
   if (f === currentFeature) {
     stroke = new ol.style.Stroke({
@@ -52,8 +54,8 @@ function lineStyleFunction(f) {
       })
     })
   });
-  if (z > 12 || radius === 35) {
-    lineStyle.getText().setText(p.statusText);
+  if (z > 11 || radius === 35) {
+    lineStyle.getText().setText('H:' + p.TrailHeight);
   }
 
   return lineStyle;
@@ -89,7 +91,7 @@ var baseLayer = new ol.layer.Tile({
     wrapX: true,
     attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
   }),
-  opacity: 1
+  opacity: 0.5
 });
 
 var map = new ol.Map({
