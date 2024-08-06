@@ -29,7 +29,9 @@ function pointStyleFunction(f) {
 
     radius = 20;
   }
-  if (p.capacity > p.status) {
+  if(p.is_active != true){
+    color = '#cccccc';
+  } else if (p.capacity > p.status) {
     color = '#48c774';
   } else {
     color = '#ffdd57';
