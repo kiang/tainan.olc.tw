@@ -161,7 +161,7 @@ map.on('singleclick', function (evt) {
   setTimeout(() => {
     if (false === pointClicked) {
       window.location.hash = '';
-      sidebarTitle.innerHTML = '提供新的積水點';
+      sidebarTitle.innerHTML = '提供新的看板';
       currentFeature = false;
       if (false !== previousFeature) {
         previousFeature.setStyle(pointStyleFunction(previousFeature));
