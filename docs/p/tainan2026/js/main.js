@@ -174,7 +174,13 @@ map.on('singleclick', function (evt) {
       formUrl += '&entry.2072773208=' + uuidv4();
       var message = '<p>請點選以下按鈕，填寫看板資訊</p><div class="btn-group-vertical" role="group" style="width: 100%;">';
       message += '<a href="' + formUrl + '" target="_blank" class="btn btn-primary btn-lg btn-block">通報</a></div><hr />';
-      $('#sidebarContent').append(message);
+      message += '<p>以下程式自動產生的資訊會自動帶進表單中，點選上面 "通報" 按鈕就可以開始！</p><table class="table table-dark"><tbody>';
+      message += '<tr><th scope="row">縣市</th><td>' + selectedCity + '</td></tr>';
+      message += '<tr><th scope="row">鄉鎮市區</th><td>' + selectedTown + '</td></tr>';
+      message += '<tr><th scope="row">經度</th><td>' + clickedCoordinate[0] + '</td></tr>';
+      message += '<tr><th scope="row">緯度</th><td>' + clickedCoordinate[1] + '</td></tr>';
+      message += '</tbody></table>';
+      $('#sidebarContent').html(message);
       newFeature.setStyle(new ol.style.Style({
         image: new ol.style.RegularShape({
           radius: 15,
