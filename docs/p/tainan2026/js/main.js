@@ -32,19 +32,13 @@ function pointStyleFunction(f) {
       radius = 10;
     }
   }
-  switch (p.status) {
-    case 1:
-      color = '#ffff00';
+  color = '#ffff00';
+  switch (p.statusText) {
+    case '陳亭妃':
+      color = '#d04f95';
       break;
-    case 2:
-      color = '#ff00ff';
-      break;
-    case 3:
-      color = '#ffff00';
-      break;
-    case 0:
-    case 4:
-      color = '#cccccc';
+    case '林俊憲':
+      color = '#7f9c73';
       break;
   }
 
@@ -321,7 +315,7 @@ $.get('data/base.csv', {}, function (bc) {
     var lines = $.csv.toArrays(c);
     lines.shift();
     for (k in lines) {
-      if (!lines[k][1] || Number.isNaN(lines[k][1])) {
+      if (!lines[k][1]) {
         continue;
       }
       var key = lines[k][7];
@@ -339,6 +333,7 @@ $.get('data/base.csv', {}, function (bc) {
         };
       }
     }
+    console.log(points);
     var pointsFc = [];
     for (k in points) {
       var pointFeature = new ol.Feature({
