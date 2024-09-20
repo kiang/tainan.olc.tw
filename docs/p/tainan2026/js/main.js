@@ -282,6 +282,7 @@ function showPoint(pointId) {
 
       message += '<tr><th scope="row">候選人</th><td>' + p.statusText + '</td></tr>';
       message += '<tr><th scope="row">更新時間</th><td>' + p.time + '</td></tr>';
+      message += '<tr><th scope="row">粗估成本</th><td>' + p.cost + '</td></tr>';
       message += '<tr><td colspan="2">';
       message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
       message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
@@ -298,6 +299,17 @@ function showPoint(pointId) {
 }
 
 var points = {};
+var today = new Date();
+var countSheet = {
+  '林俊憲': {
+    count: 0,
+    cost: 0
+  },
+  '陳亭妃': {
+    count: 0,
+    cost: 0
+  }
+};
 
 $.get('data/base.csv', {}, function (bc) {
   var baseLines = $.csv.toArrays(bc);
@@ -322,6 +334,16 @@ $.get('data/base.csv', {}, function (bc) {
       var status = 1;
       if (!points[key]) {
         var imgParts = lines[k][1].split('?id=');
+        var theDay = new Date(lines[k][0]);
+        var countDays = Math.ceil((today - theDay) / 86400000);
+        var cost = 3000 + (countDays * 100);
+        var theName = '' + lines[k][2];
+        for (j in countSheet) {
+          if (-1 !== theName.indexOf(j)) {
+            countSheet[j].count++;
+            countSheet[j].cost += cost;
+          }
+        }
         points[key] = {
           'id': key,
           'status': status,
@@ -329,11 +351,12 @@ $.get('data/base.csv', {}, function (bc) {
           'img': imgParts[1],
           'longitude': parseFloat(lines[k][5]),
           'latitude': parseFloat(lines[k][6]),
-          'time': lines[k][0]
+          'time': lines[k][0],
+          'cost': cost
         };
       }
     }
-    console.log(points);
+
     var pointsFc = [];
     for (k in points) {
       var pointFeature = new ol.Feature({
@@ -350,6 +373,17 @@ $.get('data/base.csv', {}, function (bc) {
 
     routie('point/:pointId', showPoint);
     routie('pos/:lng/:lat', showPos);
+
+    var message = '<hr /><h3>粗估花費</h3>';
+    for (k in countSheet) {
+      message += '<table class="table table-dark">';
+      message += '<tbody>';
+      message += '<tr><th scope="row">候選人</th><td>' + k + '</td></tr>';
+      message += '<tr><th scope="row">看板數量</th><td>' + countSheet[k].count + '</td></tr>';
+      message += '<tr><th scope="row">粗估成本</th><td>' + countSheet[k].cost + '</td></tr>';
+      message += '</tbody></table>';
+    }
+    $('#block-info').html(message);
   });
 })
 
