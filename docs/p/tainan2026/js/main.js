@@ -308,6 +308,14 @@ var countSheet = {
   '陳亭妃': {
     count: 0,
     cost: 0
+  },
+  '王定宇': {
+    count: 0,
+    cost: 0
+  },
+  '謝龍介': {
+    count: 0,
+    cost: 0
   }
 };
 
