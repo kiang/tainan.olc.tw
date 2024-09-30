@@ -227,8 +227,13 @@ geolocation.on('change:position', function () {
   var coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
   if (false === firstPosDone) {
-    appView.setCenter(coordinates);
-    firstPosDone = true;
+    map.forEachFeatureAtPixel(map.getPixelFromCoordinate(coordinates), function (feature, layer) {
+      var p = feature.getProperties();
+      if (p.COUNTYNAME && p.COUNTYNAME === '臺南市') {
+        appView.setCenter(coordinates);
+        firstPosDone = true;
+      }
+    });
   }
 });
 
