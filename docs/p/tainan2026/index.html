@@ -36,28 +36,71 @@
         .ui-front {
             z-index: 9999;
         }
+
+        /* Popup container */
+        .ol-popup {
+            position: absolute;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            min-width: 350px;
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+
+        /* Arrow for the popup */
+        .ol-popup:after {
+            content: '';
+            position: absolute;
+            bottom: 100%; /* Position above the popup */
+            left: 50%;
+            margin-left: -10px; /* Center the arrow */
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent white transparent; /* Arrow color */
+        }
+
+        /* Close button */
+        .ol-popup-closer {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Optional: Add hover effect for the close button */
+        .ol-popup-closer:hover {
+            color: red; /* Change color on hover */
+        }
     </style>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-FJ1JR851SJ');
+        if (document.location.hostname !== 'localhost') {
+            document.write('<script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"><\/script>');
+            document.write('<script>');
+            document.write('window.dataLayer = window.dataLayer || [];');
+            document.write('function gtag() { dataLayer.push(arguments); }');
+            document.write('gtag(\'js\', new Date());');
+            document.write('gtag(\'config\', \'G-FJ1JR851SJ\');');
+            document.write('<\/script>');
+        }
     </script>
 </head>
 
 <body>
     <div id="fb-root"></div>
     <script>
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        if (document.location.hostname !== 'localhost') {
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        }
     </script>
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
@@ -118,6 +161,10 @@
     </div>
 
     <div id="map" class="sidebar-map"></div>
+    <div id="popup" class="ol-popup" style="display: none;">
+        <a href="#" id="popup-closer" class="ol-popup-closer">×</a>
+        <!-- Content will be dynamically inserted here -->
+      </div>
     <div style="position: fixed; bottom: 0px; left: 0px;">
         <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
     </div>

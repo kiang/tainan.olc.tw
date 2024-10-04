@@ -175,6 +175,11 @@ map.on('singleclick', function (evt) {
       message += '<tr><th scope="row">緯度</th><td>' + clickedCoordinate[1] + '</td></tr>';
       message += '</tbody></table>';
       $('#sidebarContent').html(message);
+      // Set the content of the popup and position it
+      popup.setPosition(ol.proj.fromLonLat(clickedCoordinate));
+      $(popup.getElement()).html(message);
+      $(popup.getElement()).show(); // Show the popup
+
       newFeature.setStyle(new ol.style.Style({
         image: new ol.style.RegularShape({
           radius: 15,
@@ -190,7 +195,6 @@ map.on('singleclick', function (evt) {
       }));
       newFeature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(clickedCoordinate)));
     }
-    sidebar.open('home');
   }, 500);
 });
 
@@ -262,6 +266,19 @@ function showPos(lng, lat) {
 
 var previousFeature = false;
 var currentFeature = false;
+
+// Create an overlay for the pop-up window
+var popup = new ol.Overlay({
+  element: document.getElementById('popup'),
+  autoPan: true,
+  autoPanAnimation: {
+    duration: 250,
+  },
+});
+
+// Add the overlay to the map
+map.addOverlay(popup);
+
 function showPoint(pointId) {
   firstPosDone = true;
   var features = vectorPoints.getSource().getFeatures();
@@ -298,9 +315,12 @@ function showPoint(pointId) {
 
       sidebarTitle.innerHTML = p.statusText;
       content.innerHTML = message;
+      // Set the content of the popup and position it
+      popup.setPosition(ol.proj.fromLonLat(lonLat));
+      $(popup.getElement()).html(message);
+      $(popup.getElement()).show(); // Show the popup
     }
   }
-  sidebar.open('home');
 }
 
 var points = {};
