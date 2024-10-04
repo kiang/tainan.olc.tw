@@ -194,6 +194,7 @@ map.on('singleclick', function (evt) {
         })
       }));
       newFeature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(clickedCoordinate)));
+      updateLine();
     }
   }, 500);
 });
@@ -426,3 +427,33 @@ function uuidv4() {
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
+
+// Create a new feature for the line
+var lineFeature = new ol.Feature();
+
+// Function to update the line and distance
+function updateLine() {
+    var positionCoordinates = positionFeature.getGeometry().getCoordinates();
+    var newFeatureCoordinates = newFeature.getGeometry().getCoordinates();
+    
+    // Create a line geometry from positionFeature to newFeature
+    var line = new ol.geom.LineString([positionCoordinates, newFeatureCoordinates]);
+    lineFeature.setGeometry(line);
+}
+
+// Add the line feature to the map
+var lineLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        features: [lineFeature]
+    }),
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#ff0000',
+            width: 2,
+            lineDash: [10, 10] // Dashed line
+        })
+    })
+});
+
+// Add the line layer to the map
+map.addLayer(lineLayer);
