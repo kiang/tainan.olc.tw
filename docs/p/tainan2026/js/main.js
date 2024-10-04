@@ -177,7 +177,7 @@ map.on('singleclick', function (evt) {
       $('#sidebarContent').html(message);
       // Set the content of the popup and position it
       popup.setPosition(ol.proj.fromLonLat(clickedCoordinate));
-      $(popup.getElement()).html(message);
+      $('#popupContent').html(message);
       $(popup.getElement()).show(); // Show the popup
 
       newFeature.setStyle(new ol.style.Style({
@@ -277,6 +277,8 @@ var popup = new ol.Overlay({
   },
 });
 
+var popupContent = document.getElementById('popupContent');
+
 // Add the overlay to the map
 map.addOverlay(popup);
 
@@ -318,7 +320,7 @@ function showPoint(pointId) {
       content.innerHTML = message;
       // Set the content of the popup and position it
       popup.setPosition(ol.proj.fromLonLat(lonLat));
-      $(popup.getElement()).html(message);
+      $('#popupContent').html(message);
       $(popup.getElement()).show(); // Show the popup
     }
   }
@@ -457,3 +459,7 @@ var lineLayer = new ol.layer.Vector({
 
 // Add the line layer to the map
 map.addLayer(lineLayer);
+
+$('#popup-closer').click(function() {
+  $(popup.getElement()).hide();
+});
