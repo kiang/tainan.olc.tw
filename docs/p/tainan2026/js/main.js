@@ -278,14 +278,18 @@ function initMap() {
                 // Single feature clicked
                 var clickedFeature = features ? features[0] : feature;
                 var coordinate = clickedFeature.getGeometry().getCoordinates();
-                var content = '<p>Name: ' + clickedFeature.get('name') + '</p>' +
-                              '<p>Timestamp: ' + clickedFeature.get('timestamp') + '</p>';
+                
+                var content = '<table class="popup-table">';
+                content += '<tr><th>名稱</th><td>' + clickedFeature.get('name') + '</td></tr>';
+                content += '<tr><th>時間戳記</th><td>' + clickedFeature.get('timestamp') + '</td></tr>';
                 
                 var fileId = clickedFeature.get('fileId');
                 if (fileId) {
-                    content += '<p>File ID: ' + fileId + '</p>';
-                    content += '<iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe>';
+                    content += '<tr><th>檔案 ID</th><td>' + fileId + '</td></tr>';
+                    content += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></td></tr>';
                 }
+                
+                content += '</table>';
 
                 document.getElementById('popup-content').innerHTML = content;
                 overlay.setPosition(coordinate);
