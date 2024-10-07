@@ -206,6 +206,40 @@ function showPopup(feature, coordinate) {
     overlay.setPosition(coordinate);
 }
 
+function showEmptyPointPopup(coordinate, city, town) {
+    var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+    
+    var content = '<table class="popup-table">';
+    content += '<tr><th>經度</th><td>' + lonLat[0].toFixed(6) + '</td></tr>';
+    content += '<tr><th>緯度</th><td>' + lonLat[1].toFixed(6) + '</td></tr>';
+    content += '<tr><th>縣市</th><td>' + (city || 'N/A') + '</td></tr>';
+    content += '<tr><th>鄉鎮市區</th><td>' + (town || 'N/A') + '</td></tr>';
+    content += '</table>';
+
+    // Add button to open Google Form
+    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeTfx52aNFu9eY-IGU7wn3t1y8iEdBtEqg2FHHJE1_Wuc5xLQ/viewform?usp=pp_url&hl=zh_TW';
+    formUrl += '&entry.1588782081=' + encodeURIComponent(city || '');
+    formUrl += '&entry.1966779823=' + encodeURIComponent(town || '');
+    formUrl += '&entry.1998738256=' + lonLat[0].toFixed(6);
+    formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
+    formUrl += '&entry.2072773208=' + uuidv4(); // Generate a new UUID for each submission
+
+    content += '<div class="routing-buttons">';
+    content += '<button onclick="window.open(\'' + formUrl + '\', \'_blank\')">新增看板資訊</button>';
+    content += '</div>';
+
+    document.getElementById('popup-content').innerHTML = content;
+    overlay.setPosition(coordinate);
+}
+
+// Function to generate UUID
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
@@ -331,8 +365,21 @@ function initMap() {
                 }
             }
         } else {
-            overlay.setPosition(undefined);
-            window.location.hash = ''; // Clear hash when clicking on empty space
+            // Clicked on empty point
+            var coordinate = evt.coordinate;
+            var city = '';
+            var town = '';
+
+            // Check if the click is on a feature from the TopoJSON layer
+            map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                if (layer === topoJSONLayer) {
+                    city = feature.get('COUNTYNAME');
+                    town = feature.get('TOWNNAME');
+                    return true; // Stop iteration
+                }
+            });
+
+            showEmptyPointPopup(coordinate, city, town);
         }
     });
 
