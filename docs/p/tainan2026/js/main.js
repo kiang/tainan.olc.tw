@@ -240,6 +240,7 @@ function uuidv4() {
     });
 }
 
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
@@ -389,6 +390,16 @@ function initMap() {
     // Hide popup when zoom changes
     map.getView().on('change:resolution', function() {
         overlay.setPosition(undefined);
+    });
+
+    // Add click event listener for readme icon
+    document.getElementById('readme-icon').addEventListener('click', function() {
+      document.getElementById('readme-popup').style.display = 'block';
+    });
+
+    // Add click event listener for readme closer
+    document.getElementById('readme-closer').addEventListener('click', function() {
+        document.getElementById('readme-popup').style.display = 'none';
     });
 
 }

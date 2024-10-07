@@ -74,17 +74,21 @@
             padding: 0 15px;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
         }
-        .navbar button, .navbar input {
+        .navbar button, .navbar input, .navbar .icon {
             padding: 8px 15px;
             border: 1px solid #007bff;
             border-radius: 5px;
         }
-        .navbar button {
+        .navbar .icon {
             background-color: #007bff;
             color: white;
             cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .navbar button:hover {
+        .navbar .icon:hover {
             background-color: #0056b3;
         }
         .navbar input {
@@ -132,6 +136,30 @@
         .routing-buttons button:hover {
             background-color: #45a049;
         }
+        
+        /* Readme popup styles */
+        .readme-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .readme-closer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +171,20 @@
     <div class="navbar">
         <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
         <button id="locate-me">定位我的位置</button>
+        <div class="icon" id="readme-icon">?</div>
+    </div>
+    <div id="readme-popup" class="readme-popup">
+        <span class="readme-closer" id="readme-closer">&times;</span>
+        <div id="readme-content">
+            依據<a href="https://law01.tainan.gov.tw/glrsnewsout/NewsContent.aspx?id=1119"
+                        target="_blank">「臺南市公職人員選舉競選廣告物使用管理規則」</a>
+                    <ul>
+                        <li>第六條 公告之競選活動期間開始前，政黨任何人不得設置各類競選廣告物，違者由各主管機關依權責逕行處理。</li>
+                        <li>第九條
+                            為有效維護選後市容觀瞻及環境衛生，政黨任何人設置之各類競選廣告物，除旗幟廣告應於投票日當日下午四時前自行清除外，其餘應於投票日後七日內自行清除或移除，違者視為一般廢棄物依廢棄物清理法相關規定逕予拆除並銷毀。
+                        </li>
+                    </ul>
+        </div>
     </div>
     <script src="../js/ol-10.2.1.js"></script>
     <script src="../js/routie.min.js"></script>
