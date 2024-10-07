@@ -60,25 +60,33 @@ function setupTopoJSONLayer() {
 // Function to create style for markers
 function createMarkerStyle(feature) {
     var name = feature.get('name');
-    let color = '#ffff00'; // default color
+    let backgroundColor, textColor;
     if (name === '陳亭妃') {
-        color = '#d04f95';
+        backgroundColor = '#d04f95';
+        textColor = '#ffffff';
     } else if (name === '林俊憲') {
-        color = '#7f9c73';
+        backgroundColor = '#7f9c73';
+        textColor = '#ffffff';
+    } else {
+        backgroundColor = '#ffff00';
+        textColor = '#000000';
     }
+
+    // Determine the radius based on the name length
+    var radius = Math.max(30, name.length * 5);
 
     return new ol.style.Style({
         image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({color: color}),
-            stroke: new ol.style.Stroke({color: 'white', width: 2})
+            radius: radius,
+            fill: new ol.style.Fill({color: backgroundColor}),
+            stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
         }),
         text: new ol.style.Text({
             text: name,
-            font: '12px Calibri,sans-serif',
-            fill: new ol.style.Fill({color: '#000'}),
-            stroke: new ol.style.Stroke({color: '#fff', width: 3}),
-            offsetY: -15
+            font: 'bold 14px Arial,sans-serif',
+            fill: new ol.style.Fill({color: textColor}),
+            stroke: new ol.style.Stroke({color: backgroundColor, width: 1}),
+            offsetY: 1
         })
     });
 }
@@ -86,16 +94,19 @@ function createMarkerStyle(feature) {
 // Function to create style for clusters
 function createClusterStyle(feature) {
     var size = feature.get('features').length;
+    var radius = Math.min(40, 20 + Math.sqrt(size) * 3);
     return new ol.style.Style({
         image: new ol.style.Circle({
-            radius: 10 + Math.min(size, 20),
-            fill: new ol.style.Fill({color: 'rgba(255, 153, 0, 0.8)'}),
-            stroke: new ol.style.Stroke({color: '#fff'})
+            radius: radius,
+            fill: new ol.style.Fill({color: 'rgba(0, 123, 255, 0.8)'}),
+            stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
         }),
         text: new ol.style.Text({
             text: size.toString(),
-            fill: new ol.style.Fill({color: '#fff'}),
-            stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.6)', width: 3})
+            font: 'bold 14px Arial,sans-serif',
+            fill: new ol.style.Fill({color: '#ffffff'}),
+            stroke: new ol.style.Stroke({color: 'rgba(0, 123, 255, 0.8)', width: 1}),
+            offsetY: 1
         })
     });
 }
