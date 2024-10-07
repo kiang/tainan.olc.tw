@@ -57,12 +57,23 @@
         .ol-popup-closer {
             text-decoration: none;
             position: absolute;
-            top: 2px;
-            right: 8px;
+            top: -10px;
+            right: -10px;
             font-size: 18px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            z-index: 1;
         }
         .ol-popup-closer:after {
             content: "✖";
+        }
+        .ol-popup-closer:hover {
+            background-color: #f8f9fa;
         }
         .navbar {
             position: fixed;
