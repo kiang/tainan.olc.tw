@@ -278,6 +278,7 @@ function initMap() {
                 // Single feature clicked
                 var clickedFeature = features ? features[0] : feature;
                 var coordinate = clickedFeature.getGeometry().getCoordinates();
+                var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
                 
                 var content = '<table class="popup-table">';
                 content += '<tr><th>名稱</th><td>' + clickedFeature.get('name') + '</td></tr>';
@@ -290,6 +291,13 @@ function initMap() {
                 }
                 
                 content += '</table>';
+
+                // Add routing buttons
+                content += '<div class="routing-buttons">';
+                content += '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">Google Maps</button>';
+                content += '<button onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')">Bing Maps</button>';
+                content += '<button onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">HERE Maps</button>';
+                content += '</div>';
 
                 document.getElementById('popup-content').innerHTML = content;
                 overlay.setPosition(coordinate);
