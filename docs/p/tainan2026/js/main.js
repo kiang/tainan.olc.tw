@@ -1,5 +1,7 @@
 // Initialize the map
 var map;
+var vectorSource;
+var vectorLayer;
 
 // Set up the WMTS layer
 function setupWMTSLayer() {
@@ -52,19 +54,57 @@ function setupTopoJSONLayer() {
     });
 }
 
+// Function to fetch CSV data and add markers
+function addMarkersFromCSV() {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n').map(row => row.split(','));
+            // Assuming the first row is headers, we'll start from index 1
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const lon = parseFloat(row[5]); // Assuming longitude is in column 6
+                const lat = parseFloat(row[6]); // Assuming latitude is in column 7
+                if (!isNaN(lon) && !isNaN(lat)) {
+                    const feature = new ol.Feature({
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
+                        name: row[2], // Assuming name is in column 3
+                        timestamp: row[0], // Assuming timestamp is in column 1
+                    });
+                    vectorSource.addFeature(feature);
+                }
+            }
+        });
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
     var topoJSONLayer = setupTopoJSONLayer();
 
+    vectorSource = new ol.source.Vector();
+    vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({color: 'red'}),
+                stroke: new ol.style.Stroke({color: 'white', width: 2})
+            })
+        })
+    });
+
     map = new ol.Map({
         target: 'map',
-        layers: [emapLayer, topoJSONLayer],
+        layers: [emapLayer, topoJSONLayer, vectorLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
             zoom: 12
         })
     });
+
+    // Add markers from CSV
+    addMarkersFromCSV();
 
     // Add map click event
     map.on('singleclick', function(evt) {
@@ -73,16 +113,19 @@ function initMap() {
 
         var content = '<p>You clicked here:</p><code>' + hdms + '</code>';
         
-        // Check if the click is on a feature from the TopoJSON layer
+        // Check if the click is on a feature
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-            if (layer === topoJSONLayer) {
-                return feature;
-            }
+            return feature;
         });
 
         if (feature) {
-            content += '<p>City: ' + feature.get('COUNTYNAME') + '</p>';
-            content += '<p>District: ' + feature.get('TOWNNAME') + '</p>';
+            if (feature.get('COUNTYNAME')) {
+                content += '<p>City: ' + feature.get('COUNTYNAME') + '</p>';
+                content += '<p>District: ' + feature.get('TOWNNAME') + '</p>';
+            } else if (feature.get('name')) {
+                content += '<p>Name: ' + feature.get('name') + '</p>';
+                content += '<p>Timestamp: ' + feature.get('timestamp') + '</p>';
+            }
         }
 
         document.getElementById('popup-content').innerHTML = content;
