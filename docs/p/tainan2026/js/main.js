@@ -186,20 +186,24 @@ function showPoint(pointId) {
 function showPopup(feature, coordinate) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     
-    var content = '<table class="popup-table">';
+    var content = '<div class="card">';
     var fileId = feature.get('fileId');
     if (fileId) {
-        content += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></td></tr>';
+        content += '<div class="card-img-top"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></div>';
     }
-    content += '<tr><th>候選人</th><td>' + feature.get('name') + '</td></tr>';
-    content += '<tr><th>時間</th><td>' + feature.get('timestamp') + '</td></tr>';
-    content += '</table>';
+    content += '<div class="card-body">';
+    content += '<h5 class="card-title">' + feature.get('name') + '</h5>';
+    content += '<p class="card-text">時間: ' + feature.get('timestamp') + '</p>';
+    content += '</div>';
 
     // Add routing buttons
-    content += '<div class="routing-buttons">';
-    content += '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">Google Maps</button>';
-    content += '<button onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')">Bing Maps</button>';
-    content += '<button onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">HERE Maps</button>';
+    content += '<div class="card-footer">';
+    content += '<div class="d-grid gap-2">';
+    content += '<button class="btn btn-primary btn-sm" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-google"></i> Google Maps</button>';
+    content += '<button class="btn btn-secondary btn-sm" onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-map"></i> Bing Maps</button>';
+    content += '<button class="btn btn-info btn-sm" onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-signpost-2"></i> HERE Maps</button>';
+    content += '</div>';
+    content += '</div>';
     content += '</div>';
 
     document.getElementById('popup-content').innerHTML = content;
@@ -209,12 +213,14 @@ function showPopup(feature, coordinate) {
 function showEmptyPointPopup(coordinate, city, town) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     
-    var content = '<table class="popup-table">';
-    content += '<tr><th>經度</th><td>' + lonLat[0].toFixed(6) + '</td></tr>';
-    content += '<tr><th>緯度</th><td>' + lonLat[1].toFixed(6) + '</td></tr>';
-    content += '<tr><th>縣市</th><td>' + (city || 'N/A') + '</td></tr>';
-    content += '<tr><th>鄉鎮市區</th><td>' + (town || 'N/A') + '</td></tr>';
-    content += '</table>';
+    var content = '<div class="card">';
+    content += '<div class="card-body">';
+    content += '<h5 class="card-title">位置資訊</h5>';
+    content += '<p class="card-text">經度: ' + lonLat[0].toFixed(6) + '</p>';
+    content += '<p class="card-text">緯度: ' + lonLat[1].toFixed(6) + '</p>';
+    content += '<p class="card-text">縣市: ' + (city || 'N/A') + '</p>';
+    content += '<p class="card-text">鄉鎮市區: ' + (town || 'N/A') + '</p>';
+    content += '</div>';
 
     // Add button to open Google Form
     var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeTfx52aNFu9eY-IGU7wn3t1y8iEdBtEqg2FHHJE1_Wuc5xLQ/viewform?usp=pp_url&hl=zh_TW';
@@ -224,8 +230,11 @@ function showEmptyPointPopup(coordinate, city, town) {
     formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
     formUrl += '&entry.2072773208=' + uuidv4(); // Generate a new UUID for each submission
 
-    content += '<div class="routing-buttons">';
-    content += '<button onclick="window.open(\'' + formUrl + '\', \'_blank\')">新增看板資訊</button>';
+    content += '<div class="card-footer">';
+    content += '<div class="d-grid">';
+    content += '<button class="btn btn-primary" onclick="window.open(\'' + formUrl + '\', \'_blank\')"><i class="bi bi-plus-circle"></i> 新增看板資訊</button>';
+    content += '</div>';
+    content += '</div>';
     content += '</div>';
 
     document.getElementById('popup-content').innerHTML = content;

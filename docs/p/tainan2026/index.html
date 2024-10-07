@@ -4,20 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>台南看板地圖</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/ol-10.2.1.css" type="text/css">
     <style>
         html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
         .map {
             position: absolute;
             top: 0;
-            bottom: 60px; /* Adjusted to make room for the navbar */
+            bottom: 60px;
             left: 0;
             right: 0;
         }
@@ -69,100 +69,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: auto;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            background-color: rgba(248, 249, 250, 0.9);
         }
-        .navbar-left, .navbar-right {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .navbar button, .navbar input, .navbar .icon {
-            padding: 8px 15px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-            margin-right: 5px;
-            font-size: 14px;
-        }
-        .navbar .icon {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 40px;
-            height: 40px;
-        }
-        .navbar .icon:hover {
-            background-color: #0056b3;
-        }
-        .navbar input {
-            flex-grow: 1;
-            min-width: 150px;
-        }
-        .author-info {
-            font-size: 12px;
-            margin-right: 5px;
-            text-align: right;
-        }
-        .author-info a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .author-info a:hover {
-            text-decoration: underline;
-        }
-        
-        .popup-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .popup-table th, .popup-table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-        }
-        .popup-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            text-align: left;
-        }
-        .popup-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .popup-table tr:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .routing-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .routing-buttons button {
-            flex: 1 0 30%;
-            margin: 2px;
-            padding: 8px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .routing-buttons button:hover {
-            background-color: #45a049;
-        }
-        
         .readme-popup {
             display: none;
             position: fixed;
@@ -177,7 +85,6 @@
             max-height: 80%;
             overflow-y: auto;
             z-index: 1000;
-            font-size: 14px;
         }
         .readme-closer {
             position: absolute;
@@ -185,28 +92,6 @@
             right: 10px;
             cursor: pointer;
             font-size: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .navbar {
-                flex-direction: column;
-                height: auto;
-            }
-            .navbar-left, .navbar-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .navbar input {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            .author-info {
-                text-align: center;
-                margin-bottom: 5px;
-            }
-            .map {
-                bottom: 120px;
-            }
         }
     </style>
 </head>
@@ -216,31 +101,39 @@
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
-    <div class="navbar">
-        <div class="navbar-left">
-            <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
-            <button id="locate-me">定位</button>
-        </div>
-        <div class="navbar-right">
-            <div class="author-info">
-                <a href="https://facebook.com/k.olc.tw/" target="_blank">北中西區台南市議員參選人江明宗 製作</a>
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-8 mb-2 mb-md-0">
+                    <div class="input-group">
+                        <input type="text" id="filter-input" class="form-control" placeholder="輸入名稱過濾...">
+                        <button class="btn btn-outline-secondary" type="button" id="locate-me">
+                            <i class="bi bi-geo-alt"></i> 定位
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                    <small class="text-muted me-2">
+                        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="text-decoration-none">北中西區台南市議員參選人江明宗 製作</a>
+                    </small>
+                    <button id="readme-icon" class="btn btn-outline-info">
+                        <i class="bi bi-question-circle"></i>
+                    </button>
+                </div>
             </div>
-            <div class="icon" id="readme-icon">?</div>
         </div>
-    </div>
+    </nav>
     <div id="readme-popup" class="readme-popup">
         <span class="readme-closer" id="readme-closer">&times;</span>
         <div id="readme-content">
-            依據<a href="https://law01.tainan.gov.tw/glrsnewsout/NewsContent.aspx?id=1119"
-                        target="_blank">「臺南市公職人員選舉競選廣告物使用管理規則」</a>
-                    <ul>
-                        <li>第六條 公告之競選活動期間開始前，政黨任何人不得設置各類競選廣告物，違者由各主管機關依權責逕行處理。</li>
-                        <li>第九條
-                            為有效維護選後市容觀瞻及環境衛生，政黨任何人設置之各類競選廣告物，除旗幟廣告應於投票日當日下午四時前自行清除外，其餘應於投票日後七日內自行清除或移除，違者視為一般廢棄物依廢棄物清理法相關規定逕予拆除並銷毀。
-                        </li>
-                    </ul>
+            <h5>依據<a href="https://law01.tainan.gov.tw/glrsnewsout/NewsContent.aspx?id=1119" target="_blank">「臺南市公職人員選舉競選廣告物使用管理規則」</a></h5>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-check2-square"></i> 第六條 公告之競選活動期間開始前，政黨任何人不得設置各類競選廣告物，違者由各主管機關依權責逕行處理。</li>
+                <li><i class="bi bi-check2-square"></i> 第九條 為有效維護選後市容觀瞻及環境衛生，政黨任何人設置之各類競選廣告物，除旗幟廣告應於投票日當日下午四時前自行清除外，其餘應於投票日後七日內自行清除或移除，違者視為一般廢棄物依廢棄物清理法相關規定逕予拆除並銷毀。</li>
+            </ul>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/ol-10.2.1.js"></script>
     <script src="../js/routie.min.js"></script>
     <script src="js/main.js"></script>
