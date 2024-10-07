@@ -12,11 +12,12 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         .map {
             position: absolute;
             top: 0;
-            bottom: 50px; /* Adjusted to make room for the navbar */
+            bottom: 60px; /* Adjusted to make room for the navbar */
             left: 0;
             right: 0;
         }
@@ -30,6 +31,7 @@
             bottom: 12px;
             left: -50px;
             min-width: 280px;
+            max-width: 90vw;
         }
         .ol-popup:after, .ol-popup:before {
             top: 100%;
@@ -57,6 +59,7 @@
             position: absolute;
             top: 2px;
             right: 8px;
+            font-size: 18px;
         }
         .ol-popup-closer:after {
             content: "✖";
@@ -66,46 +69,48 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 50px;
+            height: auto;
             background-color: #f8f9fa;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            padding: 0 15px;
+            padding: 10px;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
         }
-        .navbar-left {
+        .navbar-left, .navbar-right {
             display: flex;
             align-items: center;
-        }
-        .navbar-right {
-            display: flex;
-            align-items: center;
+            margin-bottom: 5px;
         }
         .navbar button, .navbar input, .navbar .icon {
             padding: 8px 15px;
             border: 1px solid #007bff;
             border-radius: 5px;
-            margin-right: 10px;
+            margin-right: 5px;
+            font-size: 14px;
         }
         .navbar .icon {
             background-color: #007bff;
             color: white;
             cursor: pointer;
-            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-width: 40px;
+            height: 40px;
         }
         .navbar .icon:hover {
             background-color: #0056b3;
         }
         .navbar input {
             flex-grow: 1;
+            min-width: 150px;
         }
         .author-info {
-            font-size: 14px;
-            margin-right: 10px;
+            font-size: 12px;
+            margin-right: 5px;
+            text-align: right;
         }
         .author-info a {
             color: #007bff;
@@ -119,6 +124,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10px;
+            font-size: 14px;
         }
         .popup-table th, .popup-table td {
             padding: 8px;
@@ -138,25 +144,25 @@
         
         .routing-buttons {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             margin-top: 10px;
         }
         .routing-buttons button {
-            flex: 1;
-            margin: 0 5px;
+            flex: 1 0 30%;
+            margin: 2px;
             padding: 8px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
         }
         .routing-buttons button:hover {
             background-color: #45a049;
         }
         
-        /* Readme popup styles */
         .readme-popup {
             display: none;
             position: fixed;
@@ -167,10 +173,11 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            max-width: 80%;
+            max-width: 90%;
             max-height: 80%;
             overflow-y: auto;
             z-index: 1000;
+            font-size: 14px;
         }
         .readme-closer {
             position: absolute;
@@ -178,6 +185,28 @@
             right: 10px;
             cursor: pointer;
             font-size: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+            }
+            .navbar-left, .navbar-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .navbar input {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .author-info {
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            .map {
+                bottom: 120px;
+            }
         }
     </style>
 </head>
@@ -190,7 +219,7 @@
     <div class="navbar">
         <div class="navbar-left">
             <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
-            <button id="locate-me">定位我的位置</button>
+            <button id="locate-me">定位</button>
         </div>
         <div class="navbar-right">
             <div class="author-info">
