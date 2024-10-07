@@ -6,9 +6,19 @@
     <title>台南看板地圖</title>
     <link rel="stylesheet" href="../css/ol-10.2.1.css" type="text/css">
     <style>
-        .map {
-            height: 100vh;
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             width: 100%;
+            overflow: hidden;
+        }
+        .map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
         }
         .ol-popup {
             position: absolute;
