@@ -147,13 +147,51 @@ function initMap() {
         }
     });
 
+    // Create a vector layer for the user's location
+    positionFeature = new ol.Feature();
+    positionFeature.setStyle(new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+                color: '#3399CC'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#fff',
+                width: 2
+            })
+        })
+    }));
+
+    var userLocationLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: [positionFeature]
+        })
+    });
+
     map = new ol.Map({
         target: 'map',
-        layers: [emapLayer, topoJSONLayer, clusterLayer],
+        layers: [emapLayer, topoJSONLayer, clusterLayer, userLocationLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
             zoom: 12
         })
+    });
+
+    // Set up geolocation
+    geolocation = new ol.Geolocation({
+        projection: map.getView().getProjection(),
+        trackingOptions: {
+            enableHighAccuracy: true
+        }
+    });
+
+    geolocation.setTracking(true); // Start tracking
+
+    // Update the position feature when the position changes
+    geolocation.on('change:position', function() {
+        var coordinates = geolocation.getPosition();
+        positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+        map.getView().setCenter(coordinates);
     });
 
     // Add markers from CSV
