@@ -185,13 +185,24 @@ function initMap() {
         }
     });
 
-    geolocation.setTracking(true); // Start tracking
-
     // Update the position feature when the position changes
     geolocation.on('change:position', function() {
         var coordinates = geolocation.getPosition();
         positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-        map.getView().setCenter(coordinates);
+    });
+
+    // Add click event listener to the locate button
+    document.getElementById('locate-me').addEventListener('click', function() {
+        geolocation.setTracking(true); // Start tracking
+        geolocation.once('change:position', function() {
+            var coordinates = geolocation.getPosition();
+            map.getView().animate({
+                center: coordinates,
+                zoom: 15,
+                duration: 1000
+            });
+            geolocation.setTracking(false); // Stop tracking after centering
+        });
     });
 
     // Add markers from CSV

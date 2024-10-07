@@ -16,7 +16,7 @@
         .map {
             position: absolute;
             top: 0;
-            bottom: 0;
+            bottom: 50px; /* Adjusted to make room for the navbar */
             left: 0;
             right: 0;
         }
@@ -61,6 +61,30 @@
         .ol-popup-closer:after {
             content: "✖";
         }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 15px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .navbar button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +92,9 @@
     <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
+    </div>
+    <div class="navbar">
+        <button id="locate-me">定位我的位置</button>
     </div>
     <script src="../js/ol-10.2.1.js"></script>
     <script src="js/main.js"></script>
