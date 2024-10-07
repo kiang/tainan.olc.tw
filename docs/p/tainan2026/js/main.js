@@ -2,6 +2,9 @@
 var map;
 var vectorSource;
 var vectorLayer;
+var clusterSource;
+var clusterLayer;
+var overlay;
 
 // Set up the WMTS layer
 function setupWMTSLayer() {
@@ -55,7 +58,8 @@ function setupTopoJSONLayer() {
 }
 
 // Function to create style for markers
-function createMarkerStyle(name) {
+function createMarkerStyle(feature) {
+    var name = feature.get('name');
     let color = '#ffff00'; // default color
     if (name === '陳亭妃') {
         color = '#d04f95';
@@ -79,6 +83,23 @@ function createMarkerStyle(name) {
     });
 }
 
+// Function to create style for clusters
+function createClusterStyle(feature) {
+    var size = feature.get('features').length;
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10 + Math.min(size, 20),
+            fill: new ol.style.Fill({color: 'rgba(255, 153, 0, 0.8)'}),
+            stroke: new ol.style.Stroke({color: '#fff'})
+        }),
+        text: new ol.style.Text({
+            text: size.toString(),
+            fill: new ol.style.Fill({color: '#fff'}),
+            stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.6)', width: 3})
+        })
+    });
+}
+
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
@@ -97,7 +118,6 @@ function addMarkersFromCSV() {
                         name: name,
                         timestamp: row[0], // Assuming timestamp is in column 1
                     });
-                    feature.setStyle(createMarkerStyle(name));
                     vectorSource.addFeature(feature);
                 }
             }
@@ -110,13 +130,26 @@ function initMap() {
     var topoJSONLayer = setupTopoJSONLayer();
 
     vectorSource = new ol.source.Vector();
-    vectorLayer = new ol.layer.Vector({
+    clusterSource = new ol.source.Cluster({
+        distance: 40,
         source: vectorSource
+    });
+
+    clusterLayer = new ol.layer.Vector({
+        source: clusterSource,
+        style: function(feature) {
+            var size = feature.get('features').length;
+            if (size > 1) {
+                return createClusterStyle(feature);
+            } else {
+                return createMarkerStyle(feature.get('features')[0]);
+            }
+        }
     });
 
     map = new ol.Map({
         target: 'map',
-        layers: [emapLayer, topoJSONLayer, vectorLayer],
+        layers: [emapLayer, topoJSONLayer, clusterLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
             zoom: 12
@@ -128,32 +161,36 @@ function initMap() {
 
     // Add map click event
     map.on('singleclick', function(evt) {
-        var coordinate = ol.proj.toLonLat(evt.coordinate);
-        var hdms = ol.coordinate.toStringHDMS(coordinate);
-
-        var content = '<p>You clicked here:</p><code>' + hdms + '</code>';
-        
-        // Check if the click is on a feature
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
             return feature;
         });
 
         if (feature) {
-            if (feature.get('COUNTYNAME')) {
-                content += '<p>City: ' + feature.get('COUNTYNAME') + '</p>';
-                content += '<p>District: ' + feature.get('TOWNNAME') + '</p>';
-            } else if (feature.get('name')) {
-                content += '<p>Name: ' + feature.get('name') + '</p>';
-                content += '<p>Timestamp: ' + feature.get('timestamp') + '</p>';
-            }
-        }
+            var features = feature.get('features');
+            if (features.length > 1) {
+                // Cluster clicked
+                var extent = ol.extent.createEmpty();
+                features.forEach(function(f) {
+                    ol.extent.extend(extent, f.getGeometry().getExtent());
+                });
+                map.getView().fit(extent, {duration: 1000, padding: [50, 50, 50, 50]});
+            } else {
+                // Single feature clicked
+                var clickedFeature = features[0];
+                var coordinate = clickedFeature.getGeometry().getCoordinates();
+                var content = '<p>Name: ' + clickedFeature.get('name') + '</p>' +
+                              '<p>Timestamp: ' + clickedFeature.get('timestamp') + '</p>';
 
-        document.getElementById('popup-content').innerHTML = content;
-        overlay.setPosition(evt.coordinate);
+                document.getElementById('popup-content').innerHTML = content;
+                overlay.setPosition(coordinate);
+            }
+        } else {
+            overlay.setPosition(undefined);
+        }
     });
 
     // Create an overlay for the popup
-    var overlay = new ol.Overlay({
+    overlay = new ol.Overlay({
         element: document.getElementById('popup'),
         autoPan: true,
         autoPanAnimation: {
@@ -167,6 +204,11 @@ function initMap() {
         overlay.setPosition(undefined);
         return false;
     };
+
+    // Hide popup when zoom changes
+    map.getView().on('change:resolution', function() {
+        overlay.setPosition(undefined);
+    });
 }
 
 // Initialize the map when the window loads
