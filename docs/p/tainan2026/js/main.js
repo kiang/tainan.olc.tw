@@ -119,6 +119,8 @@ function updateFilter() {
     clusterSource.refresh();
 }
 
+var points = {};
+
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
@@ -132,10 +134,10 @@ function addMarkersFromCSV() {
                 const lat = parseFloat(row[6]);
                 const name = row[2];
                 const timestamp = row[0];
-                const fileUrl = row[1]; // Assuming the file URL is in column 2
+                const fileUrl = row[1];
+                const uuid = row[7]; // Assuming the UUID is in column 8
                 let fileId = '';
                 
-                // Extract file ID from Google Drive URL
                 if (fileUrl) {
                     const match = fileUrl.match(/[-\w]{25,}/);
                     if (match) {
@@ -148,15 +150,55 @@ function addMarkersFromCSV() {
                         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
                         name: name,
                         timestamp: timestamp,
-                        fileId: fileId
+                        fileId: fileId,
+                        uuid: uuid
                     });
                     features.push(feature);
+                    points[uuid] = feature;
                 }
             }
             vectorSource.addFeatures(features);
             clusterSource.refresh();
         })
         .catch(error => console.error('Error fetching CSV:', error));
+}
+
+function showPoint(pointId) {
+    const feature = points[pointId];
+    if (feature) {
+        const coordinate = feature.getGeometry().getCoordinates();
+        map.getView().animate({
+            center: coordinate,
+            zoom: 18,
+            duration: 1000
+        });
+        setTimeout(() => {
+            showPopup(feature, coordinate);
+        }, 1000);
+    }
+}
+
+function showPopup(feature, coordinate) {
+    var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+    
+    var content = '<table class="popup-table">';
+    var fileId = feature.get('fileId');
+    if (fileId) {
+        content += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></td></tr>';
+    }
+    content += '<tr><th>候選人</th><td>' + feature.get('name') + '</td></tr>';
+    content += '<tr><th>時間</th><td>' + feature.get('timestamp') + '</td></tr>';
+    content += '</table>';
+
+    // Add routing buttons
+    content += '<div class="routing-buttons">';
+    content += '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">Google Maps</button>';
+    content += '<button onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')">Bing Maps</button>';
+    content += '<button onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">HERE Maps</button>';
+    content += '</div>';
+
+    document.getElementById('popup-content').innerHTML = content;
+    overlay.setPosition(coordinate);
 }
 
 // Initialize the map
@@ -278,29 +320,7 @@ function initMap() {
                 // Single feature clicked
                 var clickedFeature = features ? features[0] : feature;
                 var coordinate = clickedFeature.getGeometry().getCoordinates();
-                var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-                
-                var content = '<table class="popup-table">';
-                content += '<tr><th>名稱</th><td>' + clickedFeature.get('name') + '</td></tr>';
-                content += '<tr><th>時間戳記</th><td>' + clickedFeature.get('timestamp') + '</td></tr>';
-                
-                var fileId = clickedFeature.get('fileId');
-                if (fileId) {
-                    content += '<tr><th>檔案 ID</th><td>' + fileId + '</td></tr>';
-                    content += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></td></tr>';
-                }
-                
-                content += '</table>';
-
-                // Add routing buttons
-                content += '<div class="routing-buttons">';
-                content += '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">Google Maps</button>';
-                content += '<button onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')">Bing Maps</button>';
-                content += '<button onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')">HERE Maps</button>';
-                content += '</div>';
-
-                document.getElementById('popup-content').innerHTML = content;
-                overlay.setPosition(coordinate);
+                showPopup(clickedFeature, coordinate);
             }
         } else {
             overlay.setPosition(undefined);
@@ -327,6 +347,9 @@ function initMap() {
     map.getView().on('change:resolution', function() {
         overlay.setPosition(undefined);
     });
+
+    // Set up routing
+    routie('point/:pointId', showPoint);
 }
 
 // Initialize the map when the window loads
