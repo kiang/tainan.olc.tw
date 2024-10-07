@@ -169,11 +169,13 @@ function initMap() {
             var features = feature.get('features');
             if (features.length > 1) {
                 // Cluster clicked
-                var extent = ol.extent.createEmpty();
-                features.forEach(function(f) {
-                    ol.extent.extend(extent, f.getGeometry().getExtent());
+                var view = map.getView();
+                var zoom = view.getZoom();
+                view.animate({
+                    center: feature.getGeometry().getCoordinates(),
+                    zoom: zoom + 1,
+                    duration: 250
                 });
-                map.getView().fit(extent, {duration: 1000, padding: [50, 50, 50, 50]});
             } else {
                 // Single feature clicked
                 var clickedFeature = features[0];
