@@ -159,6 +159,11 @@ function addMarkersFromCSV() {
             }
             vectorSource.addFeatures(features);
             clusterSource.refresh();
+
+            // Set up routing
+    routie({
+      'point/:pointId': showPoint
+  });
         })
         .catch(error => console.error('Error fetching CSV:', error));
 }
@@ -169,8 +174,8 @@ function showPoint(pointId) {
         const coordinate = feature.getGeometry().getCoordinates();
         map.getView().animate({
             center: coordinate,
-            zoom: 18,
-            duration: 1000
+            zoom: 16,
+            duration: 500
         });
         setTimeout(() => {
             showPopup(feature, coordinate);
@@ -319,11 +324,15 @@ function initMap() {
             } else {
                 // Single feature clicked
                 var clickedFeature = features ? features[0] : feature;
-                var coordinate = clickedFeature.getGeometry().getCoordinates();
-                showPopup(clickedFeature, coordinate);
+                var uuid = clickedFeature.get('uuid');
+                if (uuid) {
+                    // Update the hash and let routie handle it
+                    window.location.hash = 'point/' + uuid;
+                }
             }
         } else {
             overlay.setPosition(undefined);
+            window.location.hash = ''; // Clear hash when clicking on empty space
         }
     });
 
@@ -340,6 +349,7 @@ function initMap() {
     // Add a click handler to hide the popup
     document.getElementById('popup-closer').onclick = function() {
         overlay.setPosition(undefined);
+        window.location.hash = ''; // Clear hash when closing popup
         return false;
     };
 
@@ -348,8 +358,6 @@ function initMap() {
         overlay.setPosition(undefined);
     });
 
-    // Set up routing
-    routie('point/:pointId', showPoint);
 }
 
 // Initialize the map when the window loads
