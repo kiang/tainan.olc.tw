@@ -1,465 +1,77 @@
-var sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
-var jsonFiles, filesLength, fileKey = 0;
+// Initialize the map
+var map;
 
-var projection = ol.proj.get('EPSG:3857');
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(20);
-var matrixIds = new Array(20);
-for (var z = 0; z < 20; ++z) {
-  // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
+// Set up the WMTS layer
+function setupWMTSLayer() {
+    var projection = ol.proj.get('EPSG:3857');
+    var projectionExtent = projection.getExtent();
+    var size = ol.extent.getWidth(projectionExtent) / 256;
+    var resolutions = new Array(20);
+    var matrixIds = new Array(20);
+    for (var z = 0; z < 20; ++z) {
+        resolutions[z] = size / Math.pow(2, z);
+        matrixIds[z] = z;
+    }
+
+    return new ol.layer.Tile({
+        source: new ol.source.WMTS({
+            matrixSet: 'EPSG:3857',
+            format: 'image/png',
+            url: 'https://wmts.nlsc.gov.tw/wmts',
+            layer: 'EMAP',
+            tileGrid: new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(projectionExtent),
+                resolutions: resolutions,
+                matrixIds: matrixIds
+            }),
+            style: 'default',
+            wrapX: true,
+            attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+        }),
+        opacity: 1
+    });
 }
 
-function pointStyleFunction(f) {
-  var p = f.getProperties(), color, stroke, radius, fPoints = 3, z = map.getView().getZoom();
-  if (f === currentFeature) {
-    stroke = new ol.style.Stroke({
-      color: 'rgba(255,0,255,0.5)',
-      width: 10
-    });
-    radius = 35;
-    fPoints = 5;
-  } else {
-    stroke = new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    });
+// Initialize the map
+function initMap() {
+    var emapLayer = setupWMTSLayer();
 
-    radius = 20;
-    if (z <= 12) {
-      radius = 10;
-    }
-  }
-  color = '#ffff00';
-  switch (p.statusText) {
-    case '陳亭妃':
-      color = '#d04f95';
-      break;
-    case '林俊憲':
-      color = '#7f9c73';
-      break;
-  }
-
-  let pointStyle = new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: radius,
-      fill: new ol.style.Fill({
-        color: color
-      }),
-      stroke: stroke
-    }),
-    text: new ol.style.Text({
-      font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
-      fill: new ol.style.Fill({
-        color: 'rgba(0,0,0,1)'
-      }),
-      stroke: new ol.style.Stroke({
-        color: '#fff',
-        width: 3
-      })
-    })
-  });
-  if (z > 12 || radius === 35) {
-    pointStyle.getText().setText(p.statusText);
-  }
-
-  return pointStyle;
-}
-var sidebarTitle = document.getElementById('sidebarTitle');
-var content = document.getElementById('sidebarContent');
-
-var appView = new ol.View({
-  center: ol.proj.fromLonLat([120.221507, 23.000694]),
-  zoom: 14
-});
-
-var vectorPoints = new ol.layer.Vector({
-  source: new ol.source.Vector(),
-  style: pointStyleFunction
-});
-
-var vectorCity = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'https://kiang.github.io/taiwan_basecode/city/topo/20230317.json',
-    format: new ol.format.TopoJSON()
-  }),
-  style: new ol.style.Style({
-    fill: new ol.style.Fill({
-      color: 'rgba(255, 255, 255, 0)'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#319FD3',
-      width: 1
-    })
-  })
-});
-
-var baseLayer = new ol.layer.Tile({
-  source: new ol.source.WMTS({
-    matrixSet: 'EPSG:3857',
-    format: 'image/png',
-    url: 'https://wmts.nlsc.gov.tw/wmts',
-    layer: 'EMAP',
-    tileGrid: new ol.tilegrid.WMTS({
-      origin: ol.extent.getTopLeft(projectionExtent),
-      resolutions: resolutions,
-      matrixIds: matrixIds
-    }),
-    style: 'default',
-    wrapX: true,
-    attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-  }),
-  opacity: 1
-});
-
-var map = new ol.Map({
-  layers: [baseLayer, vectorCity, vectorPoints],
-  target: 'map',
-  view: appView
-});
-
-map.addControl(sidebar);
-var pointClicked = false;
-var clickedCoordinate = {};
-var newFeature = new ol.Feature();
-new ol.layer.Vector({
-  map: map,
-  source: new ol.source.Vector({
-    features: [newFeature]
-  })
-});
-
-var selectedCity = '', selectedTown = '';
-map.on('singleclick', function (evt) {
-  clickedCoordinate = ol.proj.toLonLat(evt.coordinate);
-  content.innerHTML = '';
-  pointClicked = false;
-  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (false === pointClicked) {
-      var p = feature.getProperties();
-      if (p.TOWNNAME) {
-        selectedCity = p.COUNTYNAME;
-        selectedTown = p.TOWNNAME;
-      } else if (p.id) {
-        var targetHash = '#point/' + p.id;
-        if (window.location.hash !== targetHash) {
-          window.location.hash = targetHash;
-        }
-        pointClicked = true;
-        newFeature.setStyle(null);
-      }
-    }
-  });
-  setTimeout(() => {
-    if (false === pointClicked) {
-      window.location.hash = '';
-      sidebarTitle.innerHTML = '提供新的看板';
-      currentFeature = false;
-      if (false !== previousFeature) {
-        previousFeature.setStyle(pointStyleFunction(previousFeature));
-      }
-      var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeTfx52aNFu9eY-IGU7wn3t1y8iEdBtEqg2FHHJE1_Wuc5xLQ/viewform?usp=pp_url&hl=zh_TW';
-      formUrl += '&entry.1588782081=' + selectedCity;
-      formUrl += '&entry.1966779823=' + selectedTown;
-      formUrl += '&entry.1998738256=' + clickedCoordinate[0];
-      formUrl += '&entry.1387778236=' + clickedCoordinate[1];
-      formUrl += '&entry.2072773208=' + uuidv4();
-      var message = '<p>請點選以下按鈕，填寫看板資訊</p><div class="btn-group-vertical" role="group" style="width: 100%;">';
-      message += '<a href="' + formUrl + '" target="_blank" class="btn btn-primary btn-lg btn-block">通報</a></div><hr />';
-      message += '<p>以下程式自動產生的資訊會自動帶進表單中，點選上面 "通報" 按鈕就可以開始！</p><table class="table table-dark"><tbody>';
-      message += '<tr><th scope="row">縣市</th><td>' + selectedCity + '</td></tr>';
-      message += '<tr><th scope="row">鄉鎮市區</th><td>' + selectedTown + '</td></tr>';
-      message += '<tr><th scope="row">經度</th><td>' + clickedCoordinate[0] + '</td></tr>';
-      message += '<tr><th scope="row">緯度</th><td>' + clickedCoordinate[1] + '</td></tr>';
-      message += '</tbody></table>';
-      $('#sidebarContent').html(message);
-      // Set the content of the popup and position it
-      popup.setPosition(ol.proj.fromLonLat(clickedCoordinate));
-      $('#popupContent').html(message);
-      $(popup.getElement()).show(); // Show the popup
-
-      newFeature.setStyle(new ol.style.Style({
-        image: new ol.style.RegularShape({
-          radius: 15,
-          points: 3,
-          fill: new ol.style.Fill({
-            color: '#CC9900'
-          }),
-          stroke: new ol.style.Stroke({
-            color: '#fff',
-            width: 2
-          })
+    map = new ol.Map({
+        target: 'map',
+        layers: [emapLayer],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
+            zoom: 12
         })
-      }));
-      newFeature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(clickedCoordinate)));
-      updateLine();
-    }
-  }, 500);
-});
-
-var previousFeature = false;
-var currentFeature = false;
-
-var geolocation = new ol.Geolocation({
-  projection: appView.getProjection()
-});
-
-geolocation.setTracking(true);
-
-geolocation.on('error', function (error) {
-  console.log(error.message);
-});
-
-var positionFeature = new ol.Feature();
-
-positionFeature.setStyle(new ol.style.Style({
-  image: new ol.style.Circle({
-    radius: 6,
-    fill: new ol.style.Fill({
-      color: '#3399CC'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    })
-  })
-}));
-
-var firstPosDone = false;
-geolocation.on('change:position', function () {
-  var coordinates = geolocation.getPosition();
-  positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-  if (false === firstPosDone) {
-    map.forEachFeatureAtPixel(map.getPixelFromCoordinate(coordinates), function (feature, layer) {
-      var p = feature.getProperties();
-      if (p.COUNTYNAME && p.COUNTYNAME === '臺南市') {
-        appView.setCenter(coordinates);
-        firstPosDone = true;
-      }
     });
-  }
-});
 
-new ol.layer.Vector({
-  map: map,
-  source: new ol.source.Vector({
-    features: [positionFeature]
-  })
-});
+    // Add map click event
+    map.on('singleclick', function(evt) {
+        var coordinate = ol.proj.toLonLat(evt.coordinate);
+        var hdms = ol.coordinate.toStringHDMS(coordinate);
 
-$('#btn-geolocation').click(function () {
-  var coordinates = geolocation.getPosition();
-  if (coordinates) {
-    appView.setCenter(coordinates);
-    sidebar.close();
-  } else {
-    alert('目前使用的設備無法提供地理資訊');
-  }
-  return false;
-});
+        var content = '<p>You clicked here:</p><code>' + hdms + '</code>';
+        
+        document.getElementById('popup-content').innerHTML = content;
+        overlay.setPosition(evt.coordinate);
+    });
 
-function showPos(lng, lat) {
-  firstPosDone = true;
-  appView.setCenter(ol.proj.fromLonLat([parseFloat(lng), parseFloat(lat)]));
-}
+    // Create an overlay for the popup
+    var overlay = new ol.Overlay({
+        element: document.getElementById('popup'),
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
+    map.addOverlay(overlay);
 
-var previousFeature = false;
-var currentFeature = false;
-
-// Create an overlay for the pop-up window
-var popup = new ol.Overlay({
-  element: document.getElementById('popup'),
-  autoPan: true,
-  autoPanAnimation: {
-    duration: 250,
-  },
-});
-
-var popupContent = document.getElementById('popupContent');
-
-// Add the overlay to the map
-map.addOverlay(popup);
-
-function showPoint(pointId) {
-  firstPosDone = true;
-  var features = vectorPoints.getSource().getFeatures();
-  var pointFound = false;
-  for (k in features) {
-    var p = features[k].getProperties();
-    if (p.id === pointId) {
-      pointFound = true;
-      currentFeature = features[k];
-      features[k].setStyle(pointStyleFunction(features[k]));
-      if (false !== previousFeature) {
-        previousFeature.setStyle(pointStyleFunction(previousFeature));
-      }
-      previousFeature = currentFeature;
-      appView.setCenter(features[k].getGeometry().getCoordinates());
-      appView.setZoom(15);
-      var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-      var message = '<table class="table table-dark">';
-      message += '<tbody>';
-      if (p.img) {
-        message += '<tr><td colspan="2"><iframe src="https://drive.google.com/file/d/' + p.img + '/preview" width="100%" height="480" allow="autoplay"></iframe></td></tr>';
-      }
-
-      message += '<tr><th scope="row">候選人</th><td>' + p.statusText + '</td></tr>';
-      message += '<tr><th scope="row">更新時間</th><td>' + p.time + '</td></tr>';
-      message += '<tr><th scope="row">粗估成本</th><td>' + p.cost + '</td></tr>';
-      message += '<tr><td colspan="2">';
-      message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-      message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-      message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-      message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-      message += '</div></td></tr>';
-      message += '</tbody></table>';
-
-      sidebarTitle.innerHTML = p.statusText;
-      content.innerHTML = message;
-      // Set the content of the popup and position it
-      popup.setPosition(ol.proj.fromLonLat(lonLat));
-      $('#popupContent').html(message);
-      $(popup.getElement()).show(); // Show the popup
-    }
-  }
-}
-
-var points = {};
-var today = new Date();
-var countSheet = {
-  '林俊憲': {
-    count: 0,
-    cost: 0
-  },
-  '陳亭妃': {
-    count: 0,
-    cost: 0
-  },
-  '王定宇': {
-    count: 0,
-    cost: 0
-  },
-  '謝龍介': {
-    count: 0,
-    cost: 0
-  }
-};
-
-$.get('data/base.csv', {}, function (bc) {
-  var baseLines = $.csv.toArrays(bc);
-  for (k in baseLines) {
-    points[baseLines[k][0]] = {
-      'id': baseLines[k][0],
-      'status': 0,
-      'statusText': '未填報',
-      'longitude': parseFloat(baseLines[k][2]),
-      'latitude': parseFloat(baseLines[k][1]),
-      'time': ''
+    // Add a click handler to hide the popup
+    document.getElementById('popup-closer').onclick = function() {
+        overlay.setPosition(undefined);
+        return false;
     };
-  }
-  $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv', {}, function (c) {
-    var lines = $.csv.toArrays(c);
-    lines.shift();
-    for (k in lines) {
-      if (!lines[k][1]) {
-        continue;
-      }
-      var key = lines[k][7];
-      var status = 1;
-      if (!points[key]) {
-        var imgParts = lines[k][1].split('?id=');
-        var theDay = new Date(lines[k][0]);
-        var countDays = Math.ceil((today - theDay) / 86400000);
-        var cost = 3000 + (countDays * 100);
-        var theName = '' + lines[k][2];
-        for (j in countSheet) {
-          if (-1 !== theName.indexOf(j)) {
-            countSheet[j].count++;
-            countSheet[j].cost += cost;
-          }
-        }
-        points[key] = {
-          'id': key,
-          'status': status,
-          'statusText': lines[k][2],
-          'img': imgParts[1],
-          'longitude': parseFloat(lines[k][5]),
-          'latitude': parseFloat(lines[k][6]),
-          'time': lines[k][0],
-          'cost': cost
-        };
-      }
-    }
-
-    var pointsFc = [];
-    for (k in points) {
-      var pointFeature = new ol.Feature({
-        geometry: new ol.geom.Point(
-          ol.proj.fromLonLat([points[k].longitude, points[k].latitude])
-        )
-      });
-      pointFeature.setProperties(points[k]);
-      pointsFc.push(pointFeature);
-    }
-    if (pointsFc.length > 0) {
-      vectorPoints.getSource().addFeatures(pointsFc);
-    }
-
-    routie('point/:pointId', showPoint);
-    routie('pos/:lng/:lat', showPos);
-
-    var message = '<hr /><h3>粗估花費</h3>';
-    for (k in countSheet) {
-      message += '<table class="table table-dark">';
-      message += '<tbody>';
-      message += '<tr><th scope="row">候選人</th><td>' + k + '</td></tr>';
-      message += '<tr><th scope="row">看板數量</th><td>' + countSheet[k].count + '</td></tr>';
-      message += '<tr><th scope="row">粗估成本</th><td>' + countSheet[k].cost + '</td></tr>';
-      message += '</tbody></table>';
-    }
-    $('#block-info').html(message);
-  });
-})
-
-// ref https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
-function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
 }
 
-// Create a new feature for the line
-var lineFeature = new ol.Feature();
-
-// Function to update the line and distance
-function updateLine() {
-    var positionCoordinates = positionFeature.getGeometry().getCoordinates();
-    var newFeatureCoordinates = newFeature.getGeometry().getCoordinates();
-    
-    // Create a line geometry from positionFeature to newFeature
-    var line = new ol.geom.LineString([positionCoordinates, newFeatureCoordinates]);
-    lineFeature.setGeometry(line);
-}
-
-// Add the line feature to the map
-var lineLayer = new ol.layer.Vector({
-    source: new ol.source.Vector({
-        features: [lineFeature]
-    }),
-    style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#ff0000',
-            width: 2,
-            lineDash: [10, 10] // Dashed line
-        })
-    })
-});
-
-// Add the line layer to the map
-map.addLayer(lineLayer);
-
-$('#popup-closer').click(function() {
-  $(popup.getElement()).hide();
-});
+// Initialize the map when the window loads
+window.onload = initMap;

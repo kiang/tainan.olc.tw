@@ -1,170 +1,65 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-Hant-TW">
 <head>
     <meta charset="utf-8">
-    <meta property="og:title" content="台南看板地圖">
-    <meta property="og:description" content="台南看板地圖">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://tainan.olc.tw/p/tainan2026/og_image.png">
-    <title>台南看板地圖</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol3-sidebar.css" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <title>台南看板地圖</title>
+    <link rel="stylesheet" href="../css/ol-10.2.1.css" type="text/css">
     <style>
-        body {
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
+        .map {
+            height: 100vh;
+            width: 100%;
         }
-
-        html,
-        body,
-        #map {
-            height: 100%;
-            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
-        }
-
-        .lorem {
-            font-style: italic;
-            color: #AAA;
-        }
-
-        .ui-front {
-            z-index: 9999;
-        }
-
-        /* Popup container */
         .ol-popup {
             position: absolute;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
             padding: 15px;
-            min-width: 350px;
-            z-index: 1000; /* Ensure it appears above other elements */
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
         }
-
-        /* Close button */
-        .ol-popup-closer {
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
             position: absolute;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
-            color: #333;
-            font-weight: bold;
+            pointer-events: none;
         }
-
-        /* Optional: Add hover effect for the close button */
-        .ol-popup-closer:hover {
-            color: red; /* Change color on hover */
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+        .ol-popup-closer:after {
+            content: "✖";
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-    <script>
-        if (document.location.hostname !== 'localhost') {
-            document.write('<script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"><\/script>');
-            document.write('<script>');
-            document.write('window.dataLayer = window.dataLayer || [];');
-            document.write('function gtag() { dataLayer.push(arguments); }');
-            document.write('gtag(\'js\', new Date());');
-            document.write('gtag(\'config\', \'G-FJ1JR851SJ\');');
-            document.write('<\/script>');
-        }
-    </script>
 </head>
-
 <body>
-    <div id="fb-root"></div>
-    <script>
-        if (document.location.hostname !== 'localhost') {
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        }
-    </script>
-    <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#book" role="tab"><i class="fa fa-book"></i></a></li>
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-                <li><a href="https://github.com/kiang/tainan.olc.tw" role="tab" target="_blank"><i
-                            class="fa fa-github"></i></a>
-                </li>
-                <li><a href="#fb" role="tab"><i class="fa fa-facebook"></i></a></li>
-            </ul>
-        </div>
-
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="home">
-                <h1 class="sidebar-header"><span id="sidebarTitle">請點選地圖中的點</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div id="sidebarContent"></div>
-                <div>
-                    <hr />
-                    依據<a href="https://law01.tainan.gov.tw/glrsnewsout/NewsContent.aspx?id=1119"
-                        target="_blank">「臺南市公職人員選舉競選廣告物使用管理規則」</a>
-                    <ul>
-                        <li>第六條 公告之競選活動期間開始前，政黨任何人不得設置各類競選廣告物，違者由各主管機關依權責逕行處理。</li>
-                        <li>第九條
-                            為有效維護選後市容觀瞻及環境衛生，政黨任何人設置之各類競選廣告物，除旗幟廣告應於投票日當日下午四時前自行清除外，其餘應於投票日後七日內自行清除或移除，違者視為一般廢棄物依廢棄物清理法相關規定逕予拆除並銷毀。
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="book">
-                <h1 class="sidebar-header"><span id="weekTitle">說明</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div>
-                    <p>每個標記代表一個看板</p>
-                    <div id="block-info"></div>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header"><span id="weekTitle">設定</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div>
-                    <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-geolocation">回到目前位置</a>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="fb">
-                <div class="fb-page" data-href="https://www.facebook.com/k.olc.tw/" data-tabs="timeline"
-                    data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                    data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/k.olc.tw/" class="fb-xfbml-parse-ignore"><a
-                            href="https://www.facebook.com/k.olc.tw/">江明宗</a></blockquote>
-                </div>
-            </div>
-        </div>
+    <div id="map" class="map"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
     </div>
-
-    <div id="map" class="sidebar-map"></div>
-    <div id="popup" class="ol-popup" style="display: none;">
-        <a href="#" id="popup-closer" class="ol-popup-closer">×</a>
-        <!-- Content will be dynamically inserted here -->
-         <div id="popupContent"></div>
-      </div>
-    <div style="position: fixed; bottom: 0px; left: 0px;">
-        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
-    </div>
-    <script src="../js/jquery.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"
-        integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg=="
-        crossorigin="anonymous"></script>
-    <script src="../js/routie.min.js" type="text/javascript"></script>
-    <script src="../js/ol.js" type="text/javascript"></script>
-    <script src="../js/ol5-sidebar.min.js" type="text/javascript"></script>
-    <script src="js/main.js" type="text/javascript"></script>
+    <script src="../js/ol-10.2.1.js"></script>
+    <script src="js/main.js"></script>
 </body>
-
 </html>
