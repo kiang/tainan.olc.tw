@@ -69,15 +69,24 @@
             height: 50px;
             background-color: #f8f9fa;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             padding: 0 15px;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
         }
         .navbar button, .navbar input, .navbar .icon {
             padding: 8px 15px;
             border: 1px solid #007bff;
             border-radius: 5px;
+            margin-right: 10px;
         }
         .navbar .icon {
             background-color: #007bff;
@@ -93,7 +102,17 @@
         }
         .navbar input {
             flex-grow: 1;
+        }
+        .author-info {
+            font-size: 14px;
             margin-right: 10px;
+        }
+        .author-info a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .author-info a:hover {
+            text-decoration: underline;
         }
         
         .popup-table {
@@ -169,9 +188,16 @@
         <div id="popup-content"></div>
     </div>
     <div class="navbar">
-        <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
-        <button id="locate-me">定位我的位置</button>
-        <div class="icon" id="readme-icon">?</div>
+        <div class="navbar-left">
+            <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
+            <button id="locate-me">定位我的位置</button>
+        </div>
+        <div class="navbar-right">
+            <div class="author-info">
+                <a href="https://facebook.com/k.olc.tw/" target="_blank">北中西區台南市議員參選人江明宗 製作</a>
+            </div>
+            <div class="icon" id="readme-icon">?</div>
+        </div>
     </div>
     <div id="readme-popup" class="readme-popup">
         <span class="readme-closer" id="readme-closer">&times;</span>
