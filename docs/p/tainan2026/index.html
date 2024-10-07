@@ -74,16 +74,22 @@
             padding: 0 15px;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
         }
-        .navbar button {
+        .navbar button, .navbar input {
             padding: 8px 15px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+        }
+        .navbar button {
             background-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
         .navbar button:hover {
             background-color: #0056b3;
+        }
+        .navbar input {
+            flex-grow: 1;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -94,6 +100,7 @@
         <div id="popup-content"></div>
     </div>
     <div class="navbar">
+        <input type="text" id="filter-input" placeholder="輸入名稱過濾...">
         <button id="locate-me">定位我的位置</button>
     </div>
     <script src="../js/ol-10.2.1.js"></script>

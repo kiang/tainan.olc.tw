@@ -100,28 +100,50 @@ function createClusterStyle(feature) {
     });
 }
 
+// Function to filter features
+function filterFeatures(feature) {
+    var filterValue = document.getElementById('filter-input').value.toLowerCase();
+    var name = feature.get('name').toLowerCase();
+    return name.includes(filterValue);
+}
+
+var originalFeatures = [];
+// Function to update the cluster source based on the filter
+function updateFilter() {
+  if(originalFeatures.length === 0){
+    originalFeatures = vectorSource.getFeatures();
+  }
+    var filteredFeatures = originalFeatures.filter(filterFeatures);
+    vectorSource.clear(true);
+    vectorSource.addFeatures(filteredFeatures);
+    clusterSource.refresh();
+}
+
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
         .then(response => response.text())
         .then(data => {
             const rows = data.split('\n').map(row => row.split(','));
-            // Assuming the first row is headers, we'll start from index 1
+            const features = [];
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
-                const lon = parseFloat(row[5]); // Assuming longitude is in column 6
-                const lat = parseFloat(row[6]); // Assuming latitude is in column 7
-                const name = row[2]; // Assuming name is in column 3
+                const lon = parseFloat(row[5]);
+                const lat = parseFloat(row[6]);
+                const name = row[2];
                 if (!isNaN(lon) && !isNaN(lat)) {
                     const feature = new ol.Feature({
                         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
                         name: name,
-                        timestamp: row[0], // Assuming timestamp is in column 1
+                        timestamp: row[0],
                     });
-                    vectorSource.addFeature(feature);
+                    features.push(feature);
                 }
             }
-        });
+            vectorSource.addFeatures(features);
+            clusterSource.refresh();
+        })
+        .catch(error => console.error('Error fetching CSV:', error));
 }
 
 // Initialize the map
@@ -138,11 +160,22 @@ function initMap() {
     clusterLayer = new ol.layer.Vector({
         source: clusterSource,
         style: function(feature) {
-            var size = feature.get('features').length;
+            var features = feature.get('features');
+            if (!features) {
+                // Return a default style if features is undefined
+                return new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({color: 'gray'}),
+                        stroke: new ol.style.Stroke({color: 'white', width: 1})
+                    })
+                });
+            }
+            var size = features.length;
             if (size > 1) {
                 return createClusterStyle(feature);
             } else {
-                return createMarkerStyle(feature.get('features')[0]);
+                return createMarkerStyle(features[0]);
             }
         }
     });
@@ -207,6 +240,9 @@ function initMap() {
 
     // Add markers from CSV
     addMarkersFromCSV();
+
+    // Add event listener for the filter input
+    document.getElementById('filter-input').addEventListener('input', updateFilter);
 
     // Add map click event
     map.on('singleclick', function(evt) {
