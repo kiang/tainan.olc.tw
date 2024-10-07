@@ -32,13 +32,34 @@ function setupWMTSLayer() {
     });
 }
 
+// Set up the TopoJSON vector layer
+function setupTopoJSONLayer() {
+    return new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: 'https://kiang.github.io/taiwan_basecode/city/topo/20230317.json',
+            format: new ol.format.TopoJSON(),
+            overlaps: false
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255, 0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#319FD3',
+                width: 1
+            })
+        })
+    });
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
+    var topoJSONLayer = setupTopoJSONLayer();
 
     map = new ol.Map({
         target: 'map',
-        layers: [emapLayer],
+        layers: [emapLayer, topoJSONLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
             zoom: 12
@@ -52,6 +73,18 @@ function initMap() {
 
         var content = '<p>You clicked here:</p><code>' + hdms + '</code>';
         
+        // Check if the click is on a feature from the TopoJSON layer
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            if (layer === topoJSONLayer) {
+                return feature;
+            }
+        });
+
+        if (feature) {
+            content += '<p>City: ' + feature.get('COUNTYNAME') + '</p>';
+            content += '<p>District: ' + feature.get('TOWNNAME') + '</p>';
+        }
+
         document.getElementById('popup-content').innerHTML = content;
         overlay.setPosition(evt.coordinate);
     });
