@@ -131,11 +131,24 @@ function addMarkersFromCSV() {
                 const lon = parseFloat(row[5]);
                 const lat = parseFloat(row[6]);
                 const name = row[2];
+                const timestamp = row[0];
+                const fileUrl = row[1]; // Assuming the file URL is in column 2
+                let fileId = '';
+                
+                // Extract file ID from Google Drive URL
+                if (fileUrl) {
+                    const match = fileUrl.match(/[-\w]{25,}/);
+                    if (match) {
+                        fileId = match[0];
+                    }
+                }
+
                 if (!isNaN(lon) && !isNaN(lat)) {
                     const feature = new ol.Feature({
                         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
                         name: name,
-                        timestamp: row[0],
+                        timestamp: timestamp,
+                        fileId: fileId
                     });
                     features.push(feature);
                 }
@@ -252,7 +265,7 @@ function initMap() {
 
         if (feature) {
             var features = feature.get('features');
-            if (features.length > 1) {
+            if (features && features.length > 1) {
                 // Cluster clicked
                 var view = map.getView();
                 var zoom = view.getZoom();
@@ -263,10 +276,16 @@ function initMap() {
                 });
             } else {
                 // Single feature clicked
-                var clickedFeature = features[0];
+                var clickedFeature = features ? features[0] : feature;
                 var coordinate = clickedFeature.getGeometry().getCoordinates();
                 var content = '<p>Name: ' + clickedFeature.get('name') + '</p>' +
                               '<p>Timestamp: ' + clickedFeature.get('timestamp') + '</p>';
+                
+                var fileId = clickedFeature.get('fileId');
+                if (fileId) {
+                    content += '<p>File ID: ' + fileId + '</p>';
+                    content += '<iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe>';
+                }
 
                 document.getElementById('popup-content').innerHTML = content;
                 overlay.setPosition(coordinate);
