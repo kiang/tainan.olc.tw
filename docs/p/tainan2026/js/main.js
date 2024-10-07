@@ -341,10 +341,10 @@ function initMap() {
     // Add map click event
     map.on('singleclick', function(evt) {
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-            return feature;
-        });
-
-        if (feature) {
+          var p = feature.getProperties();
+          if(p.COUNTYNAME) {
+            showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
+          } else {
             var features = feature.get('features');
             if (features && features.length > 1) {
                 // Cluster clicked
@@ -364,23 +364,9 @@ function initMap() {
                     window.location.hash = 'point/' + uuid;
                 }
             }
-        } else {
-            // Clicked on empty point
-            var coordinate = evt.coordinate;
-            var city = '';
-            var town = '';
-
-            // Check if the click is on a feature from the TopoJSON layer
-            map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-                if (layer === topoJSONLayer) {
-                    city = feature.get('COUNTYNAME');
-                    town = feature.get('TOWNNAME');
-                    return true; // Stop iteration
-                }
-            });
-
-            showEmptyPointPopup(coordinate, city, town);
-        }
+          }
+            
+        });
     });
 
     // Create an overlay for the popup
