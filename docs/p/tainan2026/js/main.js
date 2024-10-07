@@ -54,6 +54,31 @@ function setupTopoJSONLayer() {
     });
 }
 
+// Function to create style for markers
+function createMarkerStyle(name) {
+    let color = '#ffff00'; // default color
+    if (name === '陳亭妃') {
+        color = '#d04f95';
+    } else if (name === '林俊憲') {
+        color = '#7f9c73';
+    }
+
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({color: color}),
+            stroke: new ol.style.Stroke({color: 'white', width: 2})
+        }),
+        text: new ol.style.Text({
+            text: name,
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({color: '#000'}),
+            stroke: new ol.style.Stroke({color: '#fff', width: 3}),
+            offsetY: -15
+        })
+    });
+}
+
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
@@ -65,12 +90,14 @@ function addMarkersFromCSV() {
                 const row = rows[i];
                 const lon = parseFloat(row[5]); // Assuming longitude is in column 6
                 const lat = parseFloat(row[6]); // Assuming latitude is in column 7
+                const name = row[2]; // Assuming name is in column 3
                 if (!isNaN(lon) && !isNaN(lat)) {
                     const feature = new ol.Feature({
                         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
-                        name: row[2], // Assuming name is in column 3
+                        name: name,
                         timestamp: row[0], // Assuming timestamp is in column 1
                     });
+                    feature.setStyle(createMarkerStyle(name));
                     vectorSource.addFeature(feature);
                 }
             }
@@ -84,14 +111,7 @@ function initMap() {
 
     vectorSource = new ol.source.Vector();
     vectorLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 6,
-                fill: new ol.style.Fill({color: 'red'}),
-                stroke: new ol.style.Stroke({color: 'white', width: 2})
-            })
-        })
+        source: vectorSource
     });
 
     map = new ol.Map({
