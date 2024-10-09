@@ -131,6 +131,12 @@ function updateFilter() {
 }
 
 var points = {};
+const nameCounts = {
+    '林俊憲': 0,
+    '陳亭妃': 0,
+    '王定宇': 0,
+    '謝龍介': 0    
+};
 
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
@@ -139,6 +145,7 @@ function addMarkersFromCSV() {
         .then(data => {
             const rows = data.split('\n').map(row => row.split(','));
             const features = [];
+
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
                 const lon = parseFloat(row[5]);
@@ -146,7 +153,7 @@ function addMarkersFromCSV() {
                 const name = row[2];
                 const timestamp = row[0];
                 const fileUrl = row[1];
-                const uuid = row[7]; // Assuming the UUID is in column 8
+                const uuid = row[7];
                 let fileId = '';
                 
                 if (fileUrl) {
@@ -166,15 +173,25 @@ function addMarkersFromCSV() {
                     });
                     features.push(feature);
                     points[uuid] = feature;
+
+                    // Count names
+                    for(let k in nameCounts){
+                        if (name.includes(k)) {
+                            nameCounts[k] += 1;
+                        }
+                    }
                 }
             }
             vectorSource.addFeatures(features);
             clusterSource.refresh();
 
+            // Create the pie chart
+            createNameChart(nameCounts);
+
             // Set up routing
-    routie({
-      'point/:pointId': showPoint
-  });
+            routie({
+                'point/:pointId': showPoint
+            });
         })
         .catch(error => console.error('Error fetching CSV:', error));
 }
@@ -260,6 +277,34 @@ function uuidv4() {
     });
 }
 
+// Add this function to create the pie chart
+function createNameChart(data) {
+    const ctx = document.getElementById('nameChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(data),
+            datasets: [{
+                data: Object.values(data),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Distribution of Names'
+            }
+        }
+    });
+}
 
 // Initialize the map
 function initMap() {
