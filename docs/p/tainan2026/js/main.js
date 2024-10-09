@@ -135,7 +135,8 @@ const nameCounts = {
     '林俊憲': 0,
     '陳亭妃': 0,
     '王定宇': 0,
-    '謝龍介': 0    
+    '謝龍介': 0,
+    '其他': 0
 };
 
 // Function to fetch CSV data and add markers
@@ -175,10 +176,15 @@ function addMarkersFromCSV() {
                     points[uuid] = feature;
 
                     // Count names
+                    let found = false;
                     for(let k in nameCounts){
                         if (name.includes(k)) {
                             nameCounts[k] += 1;
+                            found = true;
                         }
+                    }
+                    if(!found){
+                        nameCounts['其他'] += 1;
                     }
                 }
             }
@@ -280,6 +286,8 @@ function uuidv4() {
 // Add this function to create the pie chart
 function createNameChart(data) {
     const ctx = document.getElementById('nameChart').getContext('2d');
+    const totalCount = Object.values(data).reduce((sum, count) => sum + count, 0);
+    
     new Chart(ctx, {
         type: 'pie',
         data: {
@@ -290,17 +298,48 @@ function createNameChart(data) {
                     '#7f9c73',
                     '#d04f95',
                     '#FFCE56',
-                    '#0000ff'
+                    '#0000ff',
+                    '#cccccc'
                 ]
             }]
         },
         options: {
             responsive: true,
-            title: {
-                display: true,
-                text: 'Distribution of Names'
+            plugins: {
+                title: {
+                    display: true,
+                    text: `總計: ${totalCount}`,
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let label = ctx.chart.data.labels[ctx.dataIndex];
+                        return `${label}: ${value}`;
+                    },
+                    color: 'white',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    textAlign: 'center',
+                    textBaseline: 'middle'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.raw || 0;
+                            let percentage = ((value / totalCount) * 100).toFixed(2);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 
