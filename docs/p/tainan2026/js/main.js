@@ -442,12 +442,14 @@ function initMap() {
     document.getElementById('filter-input').addEventListener('input', updateFilter);
 
     // Add map click event
+    let featureFound = false;
     map.on('singleclick', function(evt) {
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
           var p = feature.getProperties();
-          if(p.COUNTYNAME) {
+          if(p.COUNTYNAME && !featureFound) {
             showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
           } else {
+            featureFound = true;
             var features = feature.get('features');
             if (features && features.length > 1) {
                 // Cluster clicked
@@ -470,6 +472,7 @@ function initMap() {
           }
             
         });
+        document.getElementById('readme-popup').style.display = 'none';
     });
 
     // Create an overlay for the popup
