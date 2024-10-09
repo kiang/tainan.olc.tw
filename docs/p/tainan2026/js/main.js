@@ -287,12 +287,10 @@ function createNameChart(data) {
             datasets: [{
                 data: Object.values(data),
                 backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
+                    '#7f9c73',
+                    '#d04f95',
                     '#FFCE56',
-                    '#4BC0C0',
-                    '#9966FF',
-                    '#FF9F40'
+                    '#0000ff'
                 ]
             }]
         },
