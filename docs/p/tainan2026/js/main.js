@@ -442,8 +442,8 @@ function initMap() {
     document.getElementById('filter-input').addEventListener('input', updateFilter);
 
     // Add map click event
-    let featureFound = false;
     map.on('singleclick', function(evt) {
+        let featureFound = false;
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
           var p = feature.getProperties();
           if(p.COUNTYNAME && !featureFound) {
