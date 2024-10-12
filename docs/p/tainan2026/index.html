@@ -121,6 +121,9 @@
                         <button class="btn btn-outline-secondary" type="button" id="locate-me">
                             <i class="bi bi-geo-alt"></i> 定位
                         </button>
+                        <button class="btn btn-outline-secondary" type="button" id="input-coordinates">
+                            <i class="bi bi-geo"></i> 座標
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-4 d-flex justify-content-md-end align-items-center">
@@ -143,6 +146,34 @@
                 <li><i class="bi bi-check2-square"></i> 第九條 為有效維護選後市容觀瞻及環境衛生，政黨任何人設置之各類競選廣告物，除旗幟廣告應於投票日當日下午四時前自行清除外，其餘應於投票日後七日內自行清除或移除，違者視為一般廢棄物依廢棄物清理法相關規定逕予拆除並銷毀。</li>
             </ul>
             <canvas id="nameChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div class="modal fade" id="coordinatesModal" tabindex="-1" aria-labelledby="coordinatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coordinatesModalLabel">輸入座標</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="coordinatesInput" class="form-label">座標 (緯度,經度)</label>
+                        <input type="text" class="form-control" id="coordinatesInput" placeholder="例如: 23.123456,120.123456">
+                    </div>
+                    <div class="mb-3">
+                        <label for="latitude" class="form-label">緯度</label>
+                        <input type="number" class="form-control" id="latitude" step="any" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="longitude" class="form-label">經度</label>
+                        <input type="number" class="form-control" id="longitude" step="any" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="zoomToCoordinates">確定</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

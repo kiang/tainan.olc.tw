@@ -5,6 +5,12 @@ var vectorLayer;
 var clusterSource;
 var clusterLayer;
 var overlay;
+var coordinatesModal;
+const inputCoordinatesBtn = document.getElementById('input-coordinates');
+const coordinatesInput = document.getElementById('coordinatesInput');
+const latitudeInput = document.getElementById('latitude');
+const longitudeInput = document.getElementById('longitude');
+const zoomToCoordinatesBtn = document.getElementById('zoomToCoordinates');
 
 // Set up the WMTS layer
 function setupWMTSLayer() {
@@ -343,6 +349,72 @@ function createNameChart(data) {
     });
 }
 
+// Add this function to parse coordinates
+function parseCoordinates(input) {
+    const parts = input.split(',').map(part => part.trim());
+    if (parts.length === 2) {
+        const lat = parseFloat(parts[0]);
+        const lon = parseFloat(parts[1]);
+        if (!isNaN(lat) && !isNaN(lon)) {
+            return { latitude: lat, longitude: lon };
+        }
+    }
+    return null;
+}
+
+// Add this to your initMap function or wherever you initialize your page
+function initCoordinatesModal() {
+    coordinatesModal = new bootstrap.Modal(document.getElementById('coordinatesModal'));
+
+    inputCoordinatesBtn.addEventListener('click', () => {
+        coordinatesInput.value = '';
+        latitudeInput.value = '';
+        longitudeInput.value = '';
+        coordinatesModal.show();
+    });
+
+    coordinatesInput.addEventListener('input', function() {
+        const coords = parseCoordinates(this.value);
+        if (coords) {
+            latitudeInput.value = coords.latitude;
+            longitudeInput.value = coords.longitude;
+        } else {
+            latitudeInput.value = '';
+            longitudeInput.value = '';
+        }
+    });
+
+    zoomToCoordinatesBtn.addEventListener('click', () => {
+        const latitude = parseFloat(latitudeInput.value);
+        const longitude = parseFloat(longitudeInput.value);
+
+        if (isNaN(latitude) || isNaN(longitude)) {
+            alert('請輸入有效的緯度和經度');
+            return;
+        }
+
+        const coordinates = ol.proj.fromLonLat([longitude, latitude]);
+        map.getView().animate({
+            center: coordinates,
+            zoom: 18,
+            duration: 1000
+        }, () => {
+            // This callback function runs after the animation is complete
+            // Trigger a single click event at the specified coordinates
+            const pixel = map.getPixelFromCoordinate(coordinates);
+            
+            // Dispatch the click event on the map's viewport
+            map.dispatchEvent({
+                type: 'singleclick',
+                coordinate: coordinates,
+                pixel: pixel
+            });
+        });
+
+        coordinatesModal.hide();
+    });
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
@@ -506,6 +578,9 @@ function initMap() {
     document.getElementById('readme-closer').addEventListener('click', function() {
         document.getElementById('readme-popup').style.display = 'none';
     });
+
+    // Call this function in your initMap function or wherever you initialize your page
+    initCoordinatesModal();
 
 }
 
