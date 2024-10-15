@@ -133,13 +133,13 @@ function parseCSV(text) {
 function addMarkers(data) {
   data.forEach((row, index) => {
     try {
-      const x = parseFloat(row[6]);
-      const y = parseFloat(row[7]);
+      const x = parseFloat(row[7]);
+      const y = parseFloat(row[8]);
       const label = row[3];
       const uuid = row[0];
 
       if (isNaN(x) || isNaN(y)) {
-        console.error(`Invalid coordinates for row ${index + 1}:`, row[6], row[7]);
+        console.error(`Invalid coordinates for row ${index + 1}:`, row[7], row[8]);
         return; // Skip this iteration
       }
 
@@ -199,7 +199,7 @@ function createPopupContent(properties, lat, lon) {
           <li class="list-group-item"><strong>公告日期:</strong> ${properties[1]}</li>
           <li class="list-group-item"><strong>容積移轉:</strong> ${properties[2]}</li>
           <li class="list-group-item"><strong>建設公司:</strong> ${properties[4]}</li>
-          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[5] || '未記載'}</li>
+          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[6] || '未記載'}</li>
         </ul>
         ${createRouteButtons(lat, lon)}
       </div>
