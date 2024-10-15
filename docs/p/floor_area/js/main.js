@@ -201,7 +201,7 @@ function createPopupContent(properties, lat, lon) {
           <li class="list-group-item"><strong>公告日期:</strong> ${properties[1]}</li>
           <li class="list-group-item"><strong>容積移轉:</strong> ${properties[2]}</li>
           <li class="list-group-item"><strong>建設公司:</strong> ${properties[4]}</li>
-          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[5] || '無'}</li>
+          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[6] || '無'}</li>
         </ul>
         ${createRouteButtons(lat, lon)}
         <div id="additional-data" class="mt-3">
