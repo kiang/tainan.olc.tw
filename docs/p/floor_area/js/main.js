@@ -71,6 +71,8 @@ const buildingIcon = createBuildingIcon();
 // Create a popup overlay
 const popupElement = document.createElement('div');
 popupElement.className = 'ol-popup';
+popupElement.style.minWidth = '500px'; // Increased minimum width
+popupElement.style.maxWidth = '800px'; // Increased maximum width
 const popup = new ol.Overlay({
   element: popupElement,
   autoPan: true,
@@ -190,8 +192,8 @@ function createRouteButtons(lat, lon) {
 
 // Function to create popup content
 function createPopupContent(properties, lat, lon) {
-  return `
-    <div class="card">
+  const content = `
+    <div class="card" style="width: 100%;">
       <div class="card-body">
         <button type="button" class="btn-close float-end" aria-label="Close"></button>
         <h5 class="card-title">${properties[3]}</h5>
@@ -199,12 +201,84 @@ function createPopupContent(properties, lat, lon) {
           <li class="list-group-item"><strong>公告日期:</strong> ${properties[1]}</li>
           <li class="list-group-item"><strong>容積移轉:</strong> ${properties[2]}</li>
           <li class="list-group-item"><strong>建設公司:</strong> ${properties[4]}</li>
-          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[6] || '未記載'}</li>
+          <li class="list-group-item"><strong>公益回饋:</strong> ${properties[5] || '無'}</li>
         </ul>
         ${createRouteButtons(lat, lon)}
+        <div id="additional-data" class="mt-3">
+          <p>載入中...</p>
+        </div>
       </div>
     </div>
   `;
+
+  // Lazy load additional data
+  setTimeout(() => {
+    const key = properties[5];
+    if (key) {
+      fetch(`https://kiang.github.io/ardata.cy.gov.tw/incomes/business/${key}.csv`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(text => {
+          const rows = text.trim().split('\n').map(row => row.split(','));
+          if (rows.length > 1) {
+            const dataCount = rows.length - 1; // Subtract 1 for header row
+            const additionalDataElement = document.getElementById('additional-data');
+            additionalDataElement.innerHTML = `
+              <button class="btn btn-primary" id="show-details-btn">
+                歷年政治獻金捐款有 (${dataCount} 筆)
+              </button>
+            `;
+            
+            // Add click event to show details
+            document.getElementById('show-details-btn').addEventListener('click', function() {
+              const tableContent = `
+                <table class="table table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>選舉</th>
+                      <th>捐贈對象</th>
+                      <th>捐贈人</th>
+                      <th>捐贈日期</th>
+                      <th>捐贈金額</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rows.slice(1).map(row => `
+                      <tr>
+                        <td>${row[0]}</td>
+                        <td>${row[1]}</td>
+                        <td>${row[2]}</td>
+                        <td>${row[3]}</td>
+                        <td>${row[4]}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              `;
+              additionalDataElement.innerHTML = tableContent;
+            });
+          } else {
+            document.getElementById('additional-data').innerHTML = '<p>無政治獻金捐款資料</p>';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching additional data:', error);
+          if (error.message.includes('404')) {
+            document.getElementById('additional-data').innerHTML = '<p>無政治獻金捐款資料</p>';
+          } else {
+            document.getElementById('additional-data').innerHTML = '<p>無法載入政治獻金捐款資料</p>';
+          }
+        });
+    } else {
+      document.getElementById('additional-data').innerHTML = '<p>無政治獻金捐款資料</p>';
+    }
+  }, 100);
+
+  return content;
 }
 
 // Function to open popup for a feature
@@ -270,3 +344,30 @@ fetch('data/buildings.csv')
 
 // Listen for hash changes
 window.addEventListener('hashchange', checkUrlHash);
+
+// Add some additional styles to the document
+const style = document.createElement('style');
+style.textContent = `
+  .ol-popup {
+    min-width: 500px;
+    max-width: 800px;
+  }
+  .ol-popup .card {
+    width: 100%;
+  }
+  .ol-popup table {
+    font-size: 0.9em;
+    width: 100%;
+  }
+  .ol-popup .card-body {
+    padding: 1.25rem;
+  }
+  .ol-popup .list-group-item {
+    padding: 0.75rem 1.25rem;
+  }
+  .ol-popup .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+`;
+document.head.appendChild(style);
