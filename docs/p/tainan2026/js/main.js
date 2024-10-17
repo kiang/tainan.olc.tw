@@ -161,6 +161,7 @@ function addMarkersFromCSV() {
                 const timestamp = row[0];
                 const fileUrl = row[1];
                 const uuid = row[7];
+                const hasLocal = (row[8] == 1) ? '1' : '0';
                 let fileId = '';
                 
                 if (fileUrl) {
@@ -176,7 +177,8 @@ function addMarkersFromCSV() {
                         name: name,
                         timestamp: timestamp,
                         fileId: fileId,
-                        uuid: uuid
+                        uuid: uuid,
+                        hasLocal: hasLocal
                     });
                     features.push(feature);
                     points[uuid] = feature;
@@ -228,7 +230,10 @@ function showPopup(feature, coordinate) {
     
     var content = '<div class="card">';
     var fileId = feature.get('fileId');
-    if (fileId) {
+    var hasLocal = feature.get('hasLocal');
+    if(hasLocal == '1'){
+        content += '<div class="card-img-top"><img src="pic/' + feature.get('uuid') + '.jpg" width="100%" height="300"></iframe></div>';
+    } else if (fileId) {
         content += '<div class="card-img-top"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></div>';
     }
     content += '<div class="card-body">';
