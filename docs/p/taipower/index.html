@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台電系統各機組發電量</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        #powerSourcesBarChart, #powerSourcesPieChart {
+            height: 500px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">台電系統各機組發電量（單位 MW）</h1>
+        <p id="updateTime" class="text-muted">更新時間 - </p>
+
+        <h2 class="mt-4">各能源別即時發電量小計(每10分鐘更新)：</h2>
+        <p id="totalPower" class="lead">總計： - MW</p>
+
+        <!-- Charts and power sources will be inserted here by JavaScript -->
+        <div id="powerSources" class="mb-4"></div>
+        
+        <div class="table-responsive">
+            <table id="powerTable" class="table table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>燃料別</th>
+                        <th>次燃料別</th>
+                        <th>機組名稱</th>
+                        <th>裝置容量(註1)</th>
+                        <th>淨發電量(註2)</th>
+                        <th>淨發電量/裝置容量比(%)(註3)</th>
+                        <th>備註(註11)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="notes" class="mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
