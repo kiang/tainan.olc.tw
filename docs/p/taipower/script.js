@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const jsonUrl = 'json/genary.json';
+    const jsonUrl = 'https://kiang.github.io/taipower_data/genary.json';
 
     fetch(jsonUrl)
         .then(response => response.json())
