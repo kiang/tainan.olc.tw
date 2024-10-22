@@ -158,6 +158,8 @@ function addMarkersFromCSV() {
                 const lon = parseFloat(row[5]);
                 const lat = parseFloat(row[6]);
                 const name = row[2];
+                const city = row[3];
+                const town = row[4];
                 const timestamp = row[0];
                 const fileUrl = row[1];
                 const uuid = row[7];
@@ -177,6 +179,8 @@ function addMarkersFromCSV() {
                         name: name,
                         timestamp: timestamp,
                         fileId: fileId,
+                        city: city,
+                        town: town,
                         uuid: uuid,
                         hasLocal: hasLocal
                     });
@@ -239,7 +243,18 @@ function showPopup(feature, coordinate) {
     content += '<div class="card-body">';
     content += '<h5 class="card-title">' + feature.get('name') + '</h5>';
     content += '<p class="card-text">時間: ' + feature.get('timestamp') + '</p>';
+    content += '<p class="card-text">縣市: ' + feature.get('city') + '</p>';
+    content += '<p class="card-text">鄉鎮市區: ' + feature.get('town') + '</p>';
     content += '</div>';
+
+    // Add button to open Google Form
+    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfRKV0gaEcV6ln0_pFBOck-GayKQQeBpfdPir9jHyVyEcJufQ/viewform?usp=pp_url&hl=zh_TW';
+    formUrl += '&entry.465818780=' + encodeURIComponent(feature.get('name') || '');
+    formUrl += '&entry.1588782081=' + encodeURIComponent(feature.get('city') || '');
+    formUrl += '&entry.1966779823=' + encodeURIComponent(feature.get('town') || '');
+    formUrl += '&entry.1998738256=' + lonLat[0].toFixed(6);
+    formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
+    formUrl += '&entry.2072773208=' + feature.get('uuid'); // Generate a new UUID for each submission
 
     // Add routing buttons
     content += '<div class="card-footer">';
@@ -247,6 +262,9 @@ function showPopup(feature, coordinate) {
     content += '<button class="btn btn-primary btn-sm" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-google"></i> Google Maps</button>';
     content += '<button class="btn btn-secondary btn-sm" onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-map"></i> Bing Maps</button>';
     content += '<button class="btn btn-info btn-sm" onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-signpost-2"></i> HERE Maps</button>';
+    content += '</div>';
+    content += '<div class="d-grid">';
+    content += '<button class="btn btn-primary" onclick="window.open(\'' + formUrl + '\', \'_blank\')"><i class="bi bi-plus-circle"></i> 更新</button>';
     content += '</div>';
     content += '</div>';
     content += '</div>';
@@ -263,8 +281,8 @@ function showEmptyPointPopup(coordinate, city, town) {
     content += '<h5 class="card-title">位置資訊</h5>';
     content += '<p class="card-text">經度: ' + lonLat[0].toFixed(6) + '</p>';
     content += '<p class="card-text">緯度: ' + lonLat[1].toFixed(6) + '</p>';
-    content += '<p class="card-text">縣市: ' + (city || 'N/A') + '</p>';
-    content += '<p class="card-text">鄉鎮市區: ' + (town || 'N/A') + '</p>';
+    content += '<p class="card-text">縣市: ' + (city || '') + '</p>';
+    content += '<p class="card-text">鄉鎮市區: ' + (town || '') + '</p>';
     content += '</div>';
 
     // Add button to open Google Form
