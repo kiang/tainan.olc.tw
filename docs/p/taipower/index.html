@@ -41,8 +41,9 @@
         <div class="row align-items-center">
             <p id="updateTime" class="text-muted col-md-4 mb-0">更新時間 - </p>
             <div class="col-md-4 mb-3">
-                <!-- This is where the new dropdown will be inserted -->
-                <select id="dataSourceSelect" class="form-select" style="display: none;"></select>
+                <!-- Replace the select with an input and datalist -->
+                <input list="dataSourceOptions" id="dataSourceSelect" class="form-control" placeholder="選擇時間...">
+                <datalist id="dataSourceOptions"></datalist>
             </div>
             <div class="col-md-4 text-end">
                 <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-primary">資料來源</a>
