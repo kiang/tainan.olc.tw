@@ -1,24 +1,99 @@
 document.addEventListener('DOMContentLoaded', function() {
     const jsonUrl = 'https://kiang.github.io/taipower_data/genary.json';
+    let updateTime; // Declare updateTime at a higher scope
+    const dataCache = {}; // Cache object to store loaded data
 
     fetch(jsonUrl)
         .then(response => response.json())
         .then(data => {
+            updateTime = data[''];  // Store updateTime from the fetched data
             updatePage(data);
+            // Call the function to fetch and populate the dropdown
+            fetchAndPopulateDropdown();
         })
         .catch(error => {
             console.error('Error fetching data:', error);
             document.body.innerHTML = '<h1>Error loading data. Please try again later.</h1>';
         });
+
+    // Function to fetch and populate the dropdown
+    function fetchAndPopulateDropdown() {
+        // Use the updateTime from the fetched data
+        const [date, time] = updateTime.split(' ');
+        const [year, month, day] = date.split('-');
+        const Y = year;
+        const Ymd = year + month + day;
+
+        fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('dataSourceSelect');
+                select.innerHTML = ''; // Clear existing options
+
+                // Sort the data in descending order
+                data.sort((a, b) => b.localeCompare(a));
+
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    // Parse the filename to create the label
+                    const [itemHour, itemMinute, itemSecond] = item.split('.')[0].match(/\d{2}/g);
+                    const label = `${date} ${itemHour}:${itemMinute}`;
+                    option.textContent = label;
+                    select.appendChild(option);
+                });
+
+                // Show the select element
+                select.style.display = 'block';
+
+                // Add event listener to the select element
+                select.addEventListener('change', function() {
+                    const selectedHis = this.value;
+                    const newDataSource = `https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/${selectedHis}.json`;
+                    
+                    if (dataCache[selectedHis]) {
+                        // If data is in cache, use it directly
+                        updatePage(dataCache[selectedHis]);
+                    } else {
+                        // If not in cache, fetch and store in cache
+                        fetch(newDataSource)
+                            .then(response => response.json())
+                            .then(data => {
+                                dataCache[selectedHis] = data; // Store in cache
+                                updatePage(data);
+                            })
+                            .catch(error => console.error('Error fetching new data:', error));
+                    }
+                });
+
+                // Trigger change event for the first (most recent) option
+                if (select.options.length > 0) {
+                    select.selectedIndex = 0;
+                    select.dispatchEvent(new Event('change'));
+                }
+            })
+            .catch(error => console.error('Error fetching list.json:', error));
+    }
+
 });
 
 function updatePage(data) {
     // Update time
-    const updateTime = data[''];
+    const updateTime = data[''] || data['updateTime'];
     document.getElementById('updateTime').textContent = `更新時間 - ${updateTime}`;
 
     // Process and display power sources
-    const powerSources = processPowerSources(data.aaData);
+    let aaData;
+    if (Array.isArray(data)) {
+        aaData = data;
+    } else if (data.aaData) {
+        aaData = data.aaData;
+    } else {
+        console.error('Unexpected data structure:', data);
+        return;
+    }
+
+    const powerSources = processPowerSources(aaData);
     displayPowerSources(powerSources);
 
     // Display total power
@@ -26,7 +101,7 @@ function updatePage(data) {
     document.getElementById('totalPower').textContent = `總計： ${totalPower.toFixed(1)} MW`;
 
     // Display table data
-    displayTableData(data.aaData);
+    displayTableData(aaData);
 
     // Display notes
     displayNotes();
@@ -73,9 +148,13 @@ function groupPowerSources(powerSources) {
     return groups;
 }
 
+// Add these variables at the top of your script, outside any function
+let barChart = null;
+let pieChart = null;
+
 function displayPowerSources(powerSources) {
     const powerSourcesContainer = document.getElementById('powerSources');
-    powerSourcesContainer.innerHTML = '';
+    powerSourcesContainer.innerHTML = ''; // Clear all existing content
     
     const labels = [];
     const data = [];
@@ -103,7 +182,7 @@ function displayPowerSources(powerSources) {
             </div>
         </div>
     `;
-    powerSourcesContainer.parentNode.insertBefore(chartsContainer, powerSourcesContainer);
+    powerSourcesContainer.appendChild(chartsContainer);
 
     // Create smaller cards for power sources
     const cardsContainer = document.createElement('div');
@@ -141,9 +220,19 @@ function displayPowerSources(powerSources) {
 
     powerSourcesContainer.appendChild(cardsContainer);
 
+    // Destroy existing charts if they exist
+    if (barChart) {
+        barChart.destroy();
+        barChart = null;
+    }
+    if (pieChart) {
+        pieChart.destroy();
+        pieChart = null;
+    }
+
     // Create the bar chart
     const barCtx = document.getElementById('powerSourcesBarChart').getContext('2d');
-    new Chart(barCtx, {
+    barChart = new Chart(barCtx, {
         type: 'bar',
         data: {
             labels: labels,
@@ -191,7 +280,7 @@ function displayPowerSources(powerSources) {
     const pieCtx = document.getElementById('powerSourcesPieChart').getContext('2d');
     const totalOutput = Object.values(groupedData).reduce((sum, value) => sum + value, 0);
     
-    new Chart(pieCtx, {
+    pieChart = new Chart(pieCtx, {
         type: 'pie',
         data: {
             labels: Object.keys(groupedData),

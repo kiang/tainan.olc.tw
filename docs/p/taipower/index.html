@@ -38,10 +38,16 @@
 <body>
     <div class="container mt-4">
         <h1 class="mb-4">台電系統各機組發電量（單位 MW）</h1>
-        <p id="updateTime" class="text-muted col-md-4">更新時間 - </p>
-        <div class="text-end">
-            <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-primary">資料來源</a>
-            <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-primary">北中西區台南市議員參選人江明宗 製作</a>
+        <div class="row align-items-center">
+            <p id="updateTime" class="text-muted col-md-4 mb-0">更新時間 - </p>
+            <div class="col-md-4 mb-3">
+                <!-- This is where the new dropdown will be inserted -->
+                <select id="dataSourceSelect" class="form-select" style="display: none;"></select>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-primary">資料來源</a>
+                <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-primary">北中西區台南市議員參選人江明宗 製作</a>
+            </div>
         </div>
 
         <h2 class="mt-4">各能源別即時發電量小計(每10分鐘更新)：</h2>
