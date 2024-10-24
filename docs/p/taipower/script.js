@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.innerHTML = '<h1>Error loading data. Please try again later.</h1>';
         });
 
+    let autoUpdateInterval = null;
+    const autoUpdateDelay = 1000; // 1 second delay
+
     function fetchAndPopulateSlider() {
         const [date, time] = updateTime.split(' ');
         const [year, month, day] = date.split('-');
@@ -25,14 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
             .then(response => response.json())
             .then(data => {
-                // Sort the data in descending order
-                dataOptions = data.sort((a, b) => b.localeCompare(a));
+                // Sort the data in ascending order
+                dataOptions = data.sort((a, b) => a.localeCompare(b));
 
                 const slider = document.getElementById('timeSlider');
+                const autoUpdateButton = document.getElementById('autoUpdateButton');
+                
                 slider.max = dataOptions.length - 1;
-                slider.value = 0;
+                slider.value = slider.max; // Set to the last (latest) option
 
-                updateSliderValue(0);
+                updateSliderValue(slider.max);
                 updateSliderLabels();
 
                 slider.addEventListener('input', function() {
@@ -43,10 +48,39 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadDataForIndex(this.value);
                 });
 
-                // Load the most recent data
-                loadDataForIndex(0);
+                autoUpdateButton.addEventListener('click', toggleAutoUpdate);
+
+                // Load the latest data
+                loadDataForIndex(slider.max);
             })
             .catch(error => console.error('Error fetching list.json:', error));
+    }
+
+    function toggleAutoUpdate() {
+        const button = document.getElementById('autoUpdateButton');
+        if (autoUpdateInterval) {
+            clearInterval(autoUpdateInterval);
+            autoUpdateInterval = null;
+            button.textContent = '自動更新';
+            button.classList.remove('btn-danger');
+            button.classList.add('btn-primary');
+        } else {
+            autoUpdateInterval = setInterval(autoUpdate, autoUpdateDelay);
+            button.textContent = '暫停';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-danger');
+        }
+    }
+
+    function autoUpdate() {
+        const slider = document.getElementById('timeSlider');
+        let nextValue = parseInt(slider.value) + 1;
+        if (nextValue > slider.max) {
+            nextValue = 0; // Loop back to the beginning
+        }
+        slider.value = nextValue;
+        updateSliderValue(nextValue);
+        loadDataForIndex(nextValue);
     }
 
     function updateSliderLabels() {
@@ -54,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const endLabel = document.getElementById('sliderEnd');
         
         if (dataOptions.length > 0) {
-            const startTime = formatTime(dataOptions[dataOptions.length - 1]);
-            const endTime = formatTime(dataOptions[0]);
+            const startTime = formatTime(dataOptions[0]);
+            const endTime = formatTime(dataOptions[dataOptions.length - 1]);
             
             startLabel.textContent = startTime;
             endLabel.textContent = endTime;
@@ -208,6 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const cardsContainer = document.createElement('div');
         cardsContainer.className = 'row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 mb-4';
 
+        // Function to remove HTML tags
+        const stripHtml = (html) => {
+            let tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+        };
+
         Object.entries(powerSources).forEach(([name, sourceData], index) => {
             const col = document.createElement('div');
             col.className = 'col';
@@ -215,9 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'card h-100 shadow-sm';
             card.style.borderLeft = `4px solid ${backgroundColors[index % backgroundColors.length]}`;
             
+            const cleanName = stripHtml(name);
             card.innerHTML = `
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-1">${name}</h6>
+                    <h6 class="card-title mb-1">${cleanName}</h6>
                     <p class="card-text mb-0">
                         <strong>${sourceData.output.toFixed(1)}</strong> MW
                         <br>
@@ -229,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cardsContainer.appendChild(col);
 
             // Prepare data for the chart
-            labels.push(name);
+            labels.push(cleanName);
             data.push(sourceData.output);
         });
 
@@ -249,8 +291,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateBarChart(labels, data, backgroundColors) {
         const ctx = document.getElementById('powerSourcesBarChart').getContext('2d');
         
+        // Function to remove HTML tags
+        const stripHtml = (html) => {
+            let tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+        };
+
+        // Clean labels
+        const cleanLabels = labels.map(stripHtml);
+        
         if (barChart) {
-            barChart.data.labels = labels;
+            barChart.data.labels = cleanLabels;
             barChart.data.datasets[0].data = data;
             barChart.data.datasets[0].backgroundColor = backgroundColors;
             barChart.update();
@@ -258,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             barChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: cleanLabels,
                     datasets: [{
                         label: '發電量 (MW)',
                         data: data,
