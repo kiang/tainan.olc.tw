@@ -43,6 +43,29 @@
                 font-size: 0.8rem;
             }
         }
+        #timeSlider {
+            width: 100%;
+        }
+        #sliderValue {
+            text-align: center;
+            margin-top: 5px;
+        }
+        .slider-container {
+            position: relative;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .slider-label {
+            position: absolute;
+            top: 0;
+            font-size: 0.8rem;
+        }
+        .slider-label-start {
+            left: 0;
+        }
+        .slider-label-end {
+            right: 0;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -63,8 +86,12 @@
                 <p id="updateTime" class="text-muted mb-0">更新時間 - </p>
             </div>
             <div class="col-md-4 mb-2">
-                <input list="dataSourceOptions" id="dataSourceSelect" class="form-control" placeholder="選擇時間...">
-                <datalist id="dataSourceOptions"></datalist>
+                <div class="slider-container">
+                    <span class="slider-label slider-label-start" id="sliderStart"></span>
+                    <span class="slider-label slider-label-end" id="sliderEnd"></span>
+                    <input type="range" class="form-range" id="timeSlider" min="0" max="0" step="1">
+                    <div id="sliderValue"></div>
+                </div>
             </div>
             <div class="col-md-4 mb-2 text-md-end">
                 <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-primary mb-2 mb-md-0">資料來源</a>

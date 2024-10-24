@@ -2,20 +2,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const jsonUrl = 'https://kiang.github.io/taipower_data/genary.json';
     let updateTime;
     const dataCache = {};
+    let dataOptions = [];
 
     fetch(jsonUrl)
         .then(response => response.json())
         .then(data => {
             updateTime = data[''];
             updatePage(data);
-            fetchAndPopulateDatalist();
+            fetchAndPopulateSlider();
         })
         .catch(error => {
             console.error('Error fetching data:', error);
             document.body.innerHTML = '<h1>Error loading data. Please try again later.</h1>';
         });
 
-    function fetchAndPopulateDatalist() {
+    function fetchAndPopulateSlider() {
         const [date, time] = updateTime.split(' ');
         const [year, month, day] = date.split('-');
         const Y = year;
@@ -24,50 +25,73 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
             .then(response => response.json())
             .then(data => {
-                const datalist = document.getElementById('dataSourceOptions');
-                datalist.innerHTML = ''; // Clear existing options
-
                 // Sort the data in descending order
-                data.sort((a, b) => b.localeCompare(a));
+                dataOptions = data.sort((a, b) => b.localeCompare(a));
 
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    const [itemHour, itemMinute, itemSecond] = item.split('.')[0].match(/\d{2}/g);
-                    const label = `${date} ${itemHour}:${itemMinute}`;
-                    option.value = label;
-                    option.dataset.filename = item; // Store the filename in a data attribute
-                    datalist.appendChild(option);
+                const slider = document.getElementById('timeSlider');
+                slider.max = dataOptions.length - 1;
+                slider.value = 0;
+
+                updateSliderValue(0);
+                updateSliderLabels();
+
+                slider.addEventListener('input', function() {
+                    updateSliderValue(this.value);
                 });
 
-                // Add event listener to the input element
-                const input = document.getElementById('dataSourceSelect');
-                input.addEventListener('change', function() {
-                    const selectedOption = Array.from(datalist.options).find(option => option.value === this.value);
-                    if (selectedOption) {
-                        const selectedHis = selectedOption.dataset.filename;
-                        const newDataSource = `https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/${selectedHis}.json`;
-                        
-                        if (dataCache[selectedHis]) {
-                            updatePage(dataCache[selectedHis]);
-                        } else {
-                            fetch(newDataSource)
-                                .then(response => response.json())
-                                .then(data => {
-                                    dataCache[selectedHis] = data;
-                                    updatePage(data);
-                                })
-                                .catch(error => console.error('Error fetching new data:', error));
-                        }
-                    }
+                slider.addEventListener('change', function() {
+                    loadDataForIndex(this.value);
                 });
 
-                // Set the input value to the most recent option and trigger the change event
-                if (datalist.options.length > 0) {
-                    input.value = datalist.options[0].value;
-                    input.dispatchEvent(new Event('change'));
-                }
+                // Load the most recent data
+                loadDataForIndex(0);
             })
             .catch(error => console.error('Error fetching list.json:', error));
+    }
+
+    function updateSliderLabels() {
+        const startLabel = document.getElementById('sliderStart');
+        const endLabel = document.getElementById('sliderEnd');
+        
+        if (dataOptions.length > 0) {
+            const startTime = formatTime(dataOptions[dataOptions.length - 1]);
+            const endTime = formatTime(dataOptions[0]);
+            
+            startLabel.textContent = startTime;
+            endLabel.textContent = endTime;
+        }
+    }
+
+    function formatTime(filename) {
+        const [hour, minute] = filename.split('.')[0].match(/\d{2}/g);
+        return `${hour}:${minute}`;
+    }
+
+    function updateSliderValue(index) {
+        const sliderValue = document.getElementById('sliderValue');
+        const formattedTime = formatTime(dataOptions[index]);
+        sliderValue.textContent = `${updateTime.split(' ')[0]} ${formattedTime}`;
+    }
+
+    function loadDataForIndex(index) {
+        const selectedHis = dataOptions[index];
+        const [date] = updateTime.split(' ');
+        const [year, month, day] = date.split('-');
+        const Y = year;
+        const Ymd = year + month + day;
+        const newDataSource = `https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/${selectedHis}.json`;
+        
+        if (dataCache[selectedHis]) {
+            updatePage(dataCache[selectedHis]);
+        } else {
+            fetch(newDataSource)
+                .then(response => response.json())
+                .then(data => {
+                    dataCache[selectedHis] = data;
+                    updatePage(data);
+                })
+                .catch(error => console.error('Error fetching new data:', error));
+        }
     }
 
     function updatePage(data) {
