@@ -65,8 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.remove('btn-danger');
             button.classList.add('btn-primary');
         } else {
-            totalPowerData.length = 0; // Clear the data when starting auto-update
-            totalPowerTimes.length = 0; // Clear the times when starting auto-update
+            totalPowerData.length = 0;
+            nuclearData.length = 0;
+            thermalData.length = 0;
+            renewableData.length = 0;
+            totalPowerTimes.length = 0;
             autoUpdateInterval = setInterval(autoUpdate, autoUpdateDelay);
             button.textContent = '暫停';
             button.classList.remove('btn-primary');
@@ -151,12 +154,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Calculate and cache total power
         const totalPower = calculateTotalPower(powerSources);
+        const groupedData = groupPowerSources(powerSources);
+        
         if (isAutoUpdate) {
-            const slider = document.getElementById('timeSlider'); // Get the slider element
+            const slider = document.getElementById('timeSlider');
             totalPowerData.push(totalPower);
+            nuclearData.push(groupedData['核能']);
+            thermalData.push(groupedData['火力發電']);
+            renewableData.push(groupedData['再生能源']);
             totalPowerTimes.push(formatTime(dataOptions[slider.value]));
+            
             if (totalPowerData.length > maxDataPoints) {
                 totalPowerData.shift();
+                nuclearData.shift();
+                thermalData.shift();
+                renewableData.shift();
                 totalPowerTimes.shift();
             }
             updateTotalPowerChart();
@@ -220,6 +232,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalPowerData = [];
     const maxDataPoints = 144; // 24 hours * 6 (10-minute intervals)
     const totalPowerTimes = [];
+    const nuclearData = [];
+    const thermalData = [];
+    const renewableData = [];
 
     function displayPowerSources(powerSources) {
         const powerSourcesContainer = document.getElementById('powerSources');
@@ -365,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         title: {
                             display: true,
-                            text: '各能源別即時發電量'
+                            text: '各源別即時發電量'
                         }
                     }
                 }
@@ -377,19 +392,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('powerSourcesPieChart').getContext('2d');
         const totalOutput = Object.values(groupedData).reduce((sum, value) => sum + value, 0);
         
+        const labels = Object.keys(groupedData);
+        const data = Object.values(groupedData);
+        const colors = labels.map(label => colorMapping[label]);
+
         if (pieChart) {
-            pieChart.data.labels = Object.keys(groupedData);
-            pieChart.data.datasets[0].data = Object.values(groupedData);
+            pieChart.data.labels = labels;
+            pieChart.data.datasets[0].data = data;
+            pieChart.data.datasets[0].backgroundColor = colors;
+            pieChart.data.datasets[0].borderColor = colors;
             pieChart.update();
         } else {
             pieChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: Object.keys(groupedData),
+                    labels: labels,
                     datasets: [{
-                        data: Object.values(groupedData),
-                        backgroundColor: backgroundColors.slice(0, Object.keys(groupedData).length),
-                        borderColor: backgroundColors.slice(0, Object.keys(groupedData).length),
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors,
                         borderWidth: 1
                     }]
                 },
@@ -498,59 +519,91 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTotalPowerChart() {
         const ctx = document.getElementById('totalPowerChart').getContext('2d');
         
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '時間'
+                    }
+                },
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: '發電量 (MW)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: '總發電量變化'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                legend: {
+                    position: 'top',
+                }
+            }
+        };
+
+        const datasets = [
+            {
+                label: '總發電量 (MW)',
+                data: totalPowerData,
+                borderColor: colorMapping['總發電量'],
+                tension: 0.1,
+                fill: false
+            },
+            {
+                label: '核能 (MW)',
+                data: nuclearData,
+                borderColor: colorMapping['核能'],
+                tension: 0.1,
+                fill: false
+            },
+            {
+                label: '火力發電 (MW)',
+                data: thermalData,
+                borderColor: colorMapping['火力發電'],
+                tension: 0.1,
+                fill: false
+            },
+            {
+                label: '再生能源 (MW)',
+                data: renewableData,
+                borderColor: colorMapping['再生能源'],
+                tension: 0.1,
+                fill: false
+            }
+        ];
+
         if (totalPowerChart) {
             totalPowerChart.data.labels = totalPowerTimes;
-            totalPowerChart.data.datasets[0].data = totalPowerData;
+            totalPowerChart.data.datasets = datasets;
             totalPowerChart.update();
         } else {
             totalPowerChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: totalPowerTimes,
-                    datasets: [{
-                        label: '總發電量 (MW)',
-                        data: totalPowerData,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
+                    datasets: datasets
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: '時間'
-                            }
-                        },
-                        y: {
-                            beginAtZero: false,
-                            title: {
-                                display: true,
-                                text: '發電量 (MW)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '總發電量變化'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                title: function(context) {
-                                    return '時間: ' + context[0].label;
-                                },
-                                label: function(context) {
-                                    return '總發電量: ' + context.parsed.y.toFixed(2) + ' MW';
-                                }
-                            }
-                        }
-                    }
-                }
+                options: chartOptions
             });
         }
     }
+
+    const colorMapping = {
+        '核能': 'rgb(255, 99, 132)',
+        '火力發電': 'rgb(255, 205, 86)',
+        '再生能源': 'rgb(54, 162, 235)',
+        '總發電量': 'rgb(75, 192, 192)'
+    };
 
 });

@@ -20,7 +20,8 @@
         }
 
         #powerSourcesBarChart,
-        #powerSourcesPieChart {
+        #powerSourcesPieChart,
+        #totalPowerChart {
             height: 300px !important;
         }
 
@@ -33,7 +34,8 @@
                 padding: 0.375rem 0.5rem;
             }
             #powerSourcesBarChart,
-            #powerSourcesPieChart {
+            #powerSourcesPieChart,
+            #totalPowerChart {
                 height: 250px !important;
             }
             .table {
@@ -136,7 +138,11 @@
         <!-- Move the totalPowerChart here, above the h2 title -->
         <div class="row mb-3">
             <div class="col-12">
-                <canvas id="totalPowerChart"></canvas>
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <canvas id="totalPowerChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
