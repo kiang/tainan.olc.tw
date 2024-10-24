@@ -171,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displayPowerSources(powerSources) {
         const powerSourcesContainer = document.getElementById('powerSources');
-        powerSourcesContainer.innerHTML = ''; // Clear all existing content
         
         const labels = [];
         const data = [];
@@ -180,26 +179,30 @@ document.addEventListener('DOMContentLoaded', function() {
             '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
         ];
 
-        // Create the charts container
-        const chartsContainer = document.createElement('div');
-        chartsContainer.className = 'row mb-4';
-        chartsContainer.innerHTML = `
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <canvas id="powerSourcesBarChart"></canvas>
+        // Create the charts container if it doesn't exist
+        let chartsContainer = document.getElementById('chartsContainer');
+        if (!chartsContainer) {
+            chartsContainer = document.createElement('div');
+            chartsContainer.id = 'chartsContainer';
+            chartsContainer.className = 'row mb-4';
+            chartsContainer.innerHTML = `
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <canvas id="powerSourcesBarChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <canvas id="powerSourcesPieChart"></canvas>
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <canvas id="powerSourcesPieChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-        powerSourcesContainer.appendChild(chartsContainer);
+            `;
+            powerSourcesContainer.appendChild(chartsContainer);
+        }
 
         // Create smaller cards for power sources
         const cardsContainer = document.createElement('div');
@@ -212,14 +215,9 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'card h-100 shadow-sm';
             card.style.borderLeft = `4px solid ${backgroundColors[index % backgroundColors.length]}`;
             
-            // Create a temporary element to strip HTML tags
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = name;
-            const cleanName = tempElement.textContent || tempElement.innerText;
-            
             card.innerHTML = `
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-1">${cleanName}</h6>
+                    <h6 class="card-title mb-1">${name}</h6>
                     <p class="card-text mb-0">
                         <strong>${sourceData.output.toFixed(1)}</strong> MW
                         <br>
@@ -231,121 +229,142 @@ document.addEventListener('DOMContentLoaded', function() {
             cardsContainer.appendChild(col);
 
             // Prepare data for the chart
-            labels.push(cleanName);
+            labels.push(name);
             data.push(sourceData.output);
         });
 
+        // Clear existing content and append new elements
+        powerSourcesContainer.innerHTML = '';
+        powerSourcesContainer.appendChild(chartsContainer);
         powerSourcesContainer.appendChild(cardsContainer);
 
-        // Destroy existing charts if they exist
-        if (barChart) {
-            barChart.destroy();
-            barChart = null;
-        }
-        if (pieChart) {
-            pieChart.destroy();
-            pieChart = null;
-        }
+        // Update or create the bar chart
+        updateBarChart(labels, data, backgroundColors);
 
-        // Create the bar chart
-        const barCtx = document.getElementById('powerSourcesBarChart').getContext('2d');
-        barChart = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '發電量 (MW)',
-                    data: data,
-                    backgroundColor: backgroundColors,
-                    borderColor: backgroundColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',  // This makes the chart horizontal
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: '發電量 (MW)'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: '能源類型'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: '各能源別即時發電量'
-                    }
-                }
-            }
-        });
-
-        // Create the pie chart
+        // Update or create the pie chart
         const groupedData = groupPowerSources(powerSources);
-        const pieCtx = document.getElementById('powerSourcesPieChart').getContext('2d');
-        const totalOutput = Object.values(groupedData).reduce((sum, value) => sum + value, 0);
+        updatePieChart(groupedData, backgroundColors);
+    }
+
+    function updateBarChart(labels, data, backgroundColors) {
+        const ctx = document.getElementById('powerSourcesBarChart').getContext('2d');
         
-        pieChart = new Chart(pieCtx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(groupedData),
-                datasets: [{
-                    data: Object.values(groupedData),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                    borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
+        if (barChart) {
+            barChart.data.labels = labels;
+            barChart.data.datasets[0].data = data;
+            barChart.data.datasets[0].backgroundColor = backgroundColors;
+            barChart.update();
+        } else {
+            barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '發電量 (MW)',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 500
                     },
-                    title: {
-                        display: true,
-                        text: '發電來源分布'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                const percentage = ((value / totalOutput) * 100).toFixed(1);
-                                return `${label}: ${value.toFixed(1)} MW (${percentage}%)`;
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '發電量 (MW)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '能源類型'
                             }
                         }
                     },
-                    datalabels: {
-                        color: '#fff',
-                        font: {
-                            weight: 'bold',
-                            size: 14
+                    plugins: {
+                        legend: {
+                            display: false
                         },
-                        formatter: (value, ctx) => {
-                            const dataset = ctx.chart.data.datasets[0];
-                            const total = dataset.data.reduce((acc, data) => acc + data, 0);
-                            const percentage = ((value / total) * 100).toFixed(1);
-                            return `${percentage}%`;
+                        title: {
+                            display: true,
+                            text: '各能源別即時發電量'
                         }
                     }
                 }
-            },
-            plugins: [ChartDataLabels]
-        });
+            });
+        }
+    }
+
+    function updatePieChart(groupedData, backgroundColors) {
+        const ctx = document.getElementById('powerSourcesPieChart').getContext('2d');
+        const totalOutput = Object.values(groupedData).reduce((sum, value) => sum + value, 0);
+        
+        if (pieChart) {
+            pieChart.data.labels = Object.keys(groupedData);
+            pieChart.data.datasets[0].data = Object.values(groupedData);
+            pieChart.update();
+        } else {
+            pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(groupedData),
+                    datasets: [{
+                        data: Object.values(groupedData),
+                        backgroundColor: backgroundColors.slice(0, Object.keys(groupedData).length),
+                        borderColor: backgroundColors.slice(0, Object.keys(groupedData).length),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 500
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: '發電來源分布'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const percentage = ((value / totalOutput) * 100).toFixed(1);
+                                    return `${label}: ${value.toFixed(1)} MW (${percentage}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: (value, ctx) => {
+                                const dataset = ctx.chart.data.datasets[0];
+                                const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${percentage}%`;
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
     }
 
     function calculateTotalPower(powerSources) {
