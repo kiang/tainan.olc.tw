@@ -66,6 +66,33 @@
         .slider-label-end {
             right: 0;
         }
+        .btn-sm {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 576px) {
+            .btn-sm {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .button-container .btn {
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+        @media (max-width: 576px) {
+            .button-container {
+                justify-content: center;
+            }
+            .button-container .btn {
+                margin: 0 2px 5px;
+            }
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -81,22 +108,28 @@
 <body>
     <div class="container mt-4">
         <h1 class="mb-4">台電系統各機組發電量（單位 MW）</h1>
+        
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="button-container">
+                    <button id="autoUpdateButton" class="btn btn-primary btn-sm">自動更新</button>
+                    <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-outline-secondary btn-sm">資料來源</a>
+                    <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-outline-info btn-sm">北中西區台南市議員參選人江明宗 製作</a>
+                </div>
+            </div>
+        </div>
+
         <div class="row align-items-center mb-3">
             <div class="col-md-4 mb-2">
                 <p id="updateTime" class="text-muted mb-0">更新時間 - </p>
             </div>
-            <div class="col-md-6 mb-2">
+            <div class="col-md-8 mb-2">
                 <div class="slider-container">
                     <span class="slider-label slider-label-start" id="sliderStart"></span>
                     <span class="slider-label slider-label-end" id="sliderEnd"></span>
                     <input type="range" class="form-range" id="timeSlider" min="0" max="0" step="1">
                     <div id="sliderValue"></div>
                 </div>
-            </div>
-            <div class="col-md-2 mb-2">
-                <button id="autoUpdateButton" class="btn btn-primary mb-2">自動更新</button>
-                <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-primary mb-2">資料來源</a>
-                <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-primary">北中西區台南市議員參選人江明宗 製作</a>
             </div>
         </div>
 
