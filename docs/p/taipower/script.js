@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.remove('btn-danger');
             button.classList.add('btn-primary');
         } else {
+            totalPowerData.length = 0; // Clear the data when starting auto-update
+            totalPowerTimes.length = 0; // Clear the times when starting auto-update
             autoUpdateInterval = setInterval(autoUpdate, autoUpdateDelay);
             button.textContent = '暫停';
             button.classList.remove('btn-primary');
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         slider.value = nextValue;
         updateSliderValue(nextValue);
-        loadDataForIndex(nextValue);
+        loadDataForIndex(nextValue, true); // Add a parameter to indicate it's an auto update
     }
 
     function updateSliderLabels() {
@@ -107,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sliderValue.textContent = `${updateTime.split(' ')[0]} ${formattedTime}`;
     }
 
-    function loadDataForIndex(index) {
+    function loadDataForIndex(index, isAutoUpdate = false) {
         const selectedHis = dataOptions[index];
         const [date] = updateTime.split(' ');
         const [year, month, day] = date.split('-');
@@ -116,19 +118,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const newDataSource = `https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/${selectedHis}.json`;
         
         if (dataCache[selectedHis]) {
-            updatePage(dataCache[selectedHis]);
+            updatePage(dataCache[selectedHis], isAutoUpdate);
         } else {
             fetch(newDataSource)
                 .then(response => response.json())
                 .then(data => {
                     dataCache[selectedHis] = data;
-                    updatePage(data);
+                    updatePage(data, isAutoUpdate);
                 })
                 .catch(error => console.error('Error fetching new data:', error));
         }
     }
 
-    function updatePage(data) {
+    function updatePage(data, isAutoUpdate = false) {
         // Update time
         const updateTime = data[''] || data['updateTime'];
         document.getElementById('updateTime').textContent = `更新時間 - ${updateTime}`;
@@ -147,8 +149,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const powerSources = processPowerSources(aaData);
         displayPowerSources(powerSources);
 
-        // Display total power
+        // Calculate and cache total power
         const totalPower = calculateTotalPower(powerSources);
+        if (isAutoUpdate) {
+            const slider = document.getElementById('timeSlider'); // Get the slider element
+            totalPowerData.push(totalPower);
+            totalPowerTimes.push(formatTime(dataOptions[slider.value]));
+            if (totalPowerData.length > maxDataPoints) {
+                totalPowerData.shift();
+                totalPowerTimes.shift();
+            }
+            updateTotalPowerChart();
+        }
+
+        // Display total power
         document.getElementById('totalPower').textContent = `總計： ${totalPower.toFixed(1)} MW`;
 
         // Display table data
@@ -202,6 +216,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add these variables at the top of your script, outside any function
     let barChart = null;
     let pieChart = null;
+    let totalPowerChart = null;
+    const totalPowerData = [];
+    const maxDataPoints = 144; // 24 hours * 6 (10-minute intervals)
+    const totalPowerTimes = [];
 
     function displayPowerSources(powerSources) {
         const powerSourcesContainer = document.getElementById('powerSources');
@@ -475,6 +493,64 @@ document.addEventListener('DOMContentLoaded', function() {
             p.textContent = `註${index + 1}： ${note}`;
             notesContainer.appendChild(p);
         });
+    }
+
+    function updateTotalPowerChart() {
+        const ctx = document.getElementById('totalPowerChart').getContext('2d');
+        
+        if (totalPowerChart) {
+            totalPowerChart.data.labels = totalPowerTimes;
+            totalPowerChart.data.datasets[0].data = totalPowerData;
+            totalPowerChart.update();
+        } else {
+            totalPowerChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: totalPowerTimes,
+                    datasets: [{
+                        label: '總發電量 (MW)',
+                        data: totalPowerData,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '時間'
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: '發電量 (MW)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '總發電量變化'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return '時間: ' + context[0].label;
+                                },
+                                label: function(context) {
+                                    return '總發電量: ' + context.parsed.y.toFixed(2) + ' MW';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
 });
