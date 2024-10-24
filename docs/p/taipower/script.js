@@ -79,9 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function autoUpdate() {
         const slider = document.getElementById('timeSlider');
-        let nextValue = parseInt(slider.value) + 1;
+        let nextValue = parseInt(slider.value) + 3;
         if (nextValue > slider.max) {
             nextValue = 0; // Loop back to the beginning
+            // Clear the cached data when looping back
+            totalPowerData.length = 0;
+            nuclearData.length = 0;
+            thermalData.length = 0;
+            renewableData.length = 0;
+            totalPowerTimes.length = 0;
         }
         slider.value = nextValue;
         updateSliderValue(nextValue);
