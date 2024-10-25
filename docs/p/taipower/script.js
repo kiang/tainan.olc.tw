@@ -555,6 +555,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 legend: {
                     position: 'top',
                 }
+            },
+            animation: {
+                duration: 0
             }
         };
 
