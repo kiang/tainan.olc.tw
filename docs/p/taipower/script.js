@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTime = data[''];
             updatePage(data);
             fetchAndPopulateSlider();
+            initializeDatePicker(); // Call this function after fetching initial data
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -432,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         title: {
                             display: true,
-                            text: '發電來源分布'
+                            text: '發電源分布'
                         },
                         tooltip: {
                             callbacks: {
@@ -614,5 +615,36 @@ document.addEventListener('DOMContentLoaded', function() {
         '再生能源': 'rgb(54, 162, 235)',
         '總發電量': 'rgb(75, 192, 192)'
     };
+
+    function initializeDatePicker() {
+        const datePicker = document.getElementById('datePicker');
+
+        // Set the initial date to the current updateTime
+        const [currentDate] = updateTime.split(' ');
+        datePicker.value = currentDate;
+
+        datePicker.addEventListener('change', function() {
+            const selectedDate = this.value;
+            fetchDataForDate(selectedDate);
+        });
+    }
+
+    function fetchDataForDate(date) {
+        const [year, month, day] = date.split('-');
+        const Ymd = year + month + day;
+        const jsonUrl = `https://kiang.github.io/taipower_data/genary/${year}/${Ymd}/list.json`;
+
+        fetch(jsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                updateTime = `${date} 00:00`; // Set updateTime to the start of the selected date
+                dataOptions = data.sort((a, b) => a.localeCompare(b));
+                fetchAndPopulateSlider();
+            })
+            .catch(error => {
+                console.error('Error fetching data for selected date:', error);
+                alert('無法取得所選日期的資料。請選擇其他日期。');
+            });
+    }
 
 });
