@@ -376,8 +376,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         y: {
                             title: {
-                                display: true,
-                                text: '能源類型'
+                                display: false
+                            },
+                            ticks: {
+                                crossAlign: 'left',
+                                autoSkip: false
                             }
                         }
                     },
@@ -387,7 +390,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         title: {
                             display: true,
-                            text: '各源別即時發電量'
+                            text: '各能源別即時發電量'
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0
                         }
                     }
                 }
