@@ -158,7 +158,7 @@ function addMarkersFromCSV() {
                 const timestamp = row[2];
                 const fileUrl = row[3];
                 const note = row[4];
-                const uuid = row[7];
+                const uuid = row[7].replace(/[^a-zA-Z0-9\-]/g, '');
                 const hasLocal = (row[8] == 1) ? '1' : '0';
                 let fileId = '';
                 
@@ -240,7 +240,7 @@ function showPopup(feature, coordinate) {
     overlay.setPosition(coordinate);
 }
 
-function showEmptyPointPopup(coordinate, city, town) {
+function showEmptyPointPopup(coordinate) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     
     var content = '<div class="card">';
@@ -445,7 +445,7 @@ function initMap() {
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
           var p = feature.getProperties();
           if(p.COUNTYNAME && !featureFound) {
-            showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
+            showEmptyPointPopup(evt.coordinate);
           } else {
             featureFound = true;
             var features = feature.get('features');
