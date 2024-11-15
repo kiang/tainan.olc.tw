@@ -68,22 +68,18 @@ function createMarkerStyle(feature) {
     var type = feature.get('type');
     let backgroundColor, textColor;
     
-    switch(type) {
-        case '活體':
-            backgroundColor = '#ff0000'; // Red for live iguanas
-            textColor = '#ffffff';
-            break;
-        case '屍體':
-            backgroundColor = '#000000'; // Black for dead iguanas
-            textColor = '#ffffff';
-            break;
-        case '洞穴':
-            backgroundColor = '#8b4513'; // Brown for burrows
-            textColor = '#ffffff';
-            break;
-        default:
-            backgroundColor = '#ffff00'; // Yellow for others
-            textColor = '#000000';
+    if (type.includes('活體')) {
+        backgroundColor = '#ff0000'; // Red for live iguanas
+        textColor = '#ffffff';
+    } else if (type.includes('屍體')) {
+        backgroundColor = '#000000'; // Black for dead iguanas
+        textColor = '#ffffff';
+    } else if (type.includes('洞穴')) {
+        backgroundColor = '#8b4513'; // Brown for burrows
+        textColor = '#ffffff';
+    } else {
+        backgroundColor = '#ffff00'; // Yellow for others
+        textColor = '#000000';
     }
 
     // Determine the radius based on the type length
