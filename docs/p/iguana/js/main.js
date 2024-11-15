@@ -144,7 +144,7 @@ function addMarkersFromCSV() {
                 const town = row[4];
                 const timestamp = row[0];
                 const fileUrl = row[1];
-                const uuid = row[7];
+                const uuid = row[7].trim().replace(/[\u200B-\u200D\uFEFF]/g, '');
                 const hasLocal = (row[8] == 1) ? '1' : '0';
                 let fileId = '';
                 
@@ -182,6 +182,7 @@ function addMarkersFromCSV() {
 }
 function showPoint(pointId) {
     const feature = points[pointId];
+    console.log(points);
     if (feature) {
         const coordinate = feature.getGeometry().getCoordinates();
         map.getView().animate({
