@@ -67,23 +67,27 @@ function setupTopoJSONLayer() {
 function createMarkerStyle(feature) {
     var type = feature.get('type');
     let backgroundColor, textColor;
+    let labelText = '其他';
     
     if (type.includes('活體')) {
-        backgroundColor = '#ff0000'; // Red for live iguanas
+        backgroundColor = '#ff0000';
         textColor = '#ffffff';
+        labelText = '活體';
     } else if (type.includes('屍體')) {
-        backgroundColor = '#000000'; // Black for dead iguanas
+        backgroundColor = '#000000';
         textColor = '#ffffff';
+        labelText = '屍體';
     } else if (type.includes('洞穴')) {
-        backgroundColor = '#8b4513'; // Brown for burrows
+        backgroundColor = '#8b4513';
         textColor = '#ffffff';
+        labelText = '洞穴';
     } else {
-        backgroundColor = '#ffff00'; // Yellow for others
+        backgroundColor = '#ffff00';
         textColor = '#000000';
     }
 
-    // Determine the radius based on the type length
-    var radius = Math.max(30, type.length * 5);
+    // Determine the radius based on the matched label length
+    var radius = Math.max(30, labelText.length * 5);
 
     return new ol.style.Style({
         image: new ol.style.Circle({
@@ -92,7 +96,7 @@ function createMarkerStyle(feature) {
             stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
         }),
         text: new ol.style.Text({
-            text: type,
+            text: labelText,
             font: 'bold 14px Arial,sans-serif',
             fill: new ol.style.Fill({color: textColor}),
             stroke: new ol.style.Stroke({color: backgroundColor, width: 1}),
