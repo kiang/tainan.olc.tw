@@ -125,25 +125,6 @@ function createClusterStyle(feature) {
     });
 }
 
-// Function to filter features
-function filterFeatures(feature) {
-    var filterValue = document.getElementById('filter-input').value.toLowerCase();
-    var name = feature.get('name').toLowerCase();
-    return name.includes(filterValue);
-}
-
-var originalFeatures = [];
-// Function to update the cluster source based on the filter
-function updateFilter() {
-  if(originalFeatures.length === 0){
-    originalFeatures = vectorSource.getFeatures();
-  }
-    var filteredFeatures = originalFeatures.filter(filterFeatures);
-    vectorSource.clear(true);
-    vectorSource.addFeatures(filteredFeatures);
-    clusterSource.refresh();
-}
-
 var points = {};
 
 // Function to fetch CSV data and add markers
@@ -445,9 +426,6 @@ function initMap() {
 
     // Add markers from CSV
     addMarkersFromCSV();
-
-    // Add event listener for the filter input
-    document.getElementById('filter-input').addEventListener('input', updateFilter);
 
     // Add map click event
     map.on('singleclick', function(evt) {
