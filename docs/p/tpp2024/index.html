@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024 台灣民眾黨黨員代表參選人</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .card {
+            transition: transform 0.2s;
+            margin-bottom: 1rem;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .district-title {
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #0d6efd;
+        }
+        .candidate-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #0d6efd;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .experience-text {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .policy-text {
+            white-space: pre-line;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="mb-4">2024 台灣民眾黨黨員代表參選人</h1>
+        <div id="candidates"></div>
+    </div>
+
+    <script>
+        function createCandidateCard(candidate) {
+            const card = document.createElement('div');
+            card.className = 'card h-100 shadow-sm';
+            
+            const specialStatus = candidate.特殊身分 ? `<span class="badge bg-info">${candidate.特殊身分}</span>` : '';
+            const age = new Date().getFullYear() - candidate.出生年 - 1911;
+
+            card.innerHTML = `
+                <div class="row g-0">
+                    <div class="col-md-4 position-relative">
+                        <span class="candidate-number">${candidate.號次}</span>
+                        <img src="${candidate.照片}" class="img-fluid rounded-start" alt="${candidate.姓名}" 
+                            onerror="this.src='https://via.placeholder.com/300x400?text=無照片'">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ${candidate.姓名} ${specialStatus}
+                            </h5>
+                            <div class="mb-2">
+                                <span class="badge bg-secondary">${candidate.性別}</span>
+                                <span class="badge bg-secondary">${age}歲</span>
+                                <span class="badge bg-secondary">${candidate.戶籍城市}${candidate.戶籍地區}</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>學歷：</strong>
+                                <p class="mb-1">${candidate.學歷 || '無'}</p>
+                            </div>
+                            <div class="mb-2">
+                                <strong>經歷：</strong>
+                                <p class="experience-text mb-1">${candidate.經歷 || '無'}</p>
+                            </div>
+                            <div>
+                                <strong>政見：</strong>
+                                <p class="policy-text mb-1">${candidate.政見 || '無'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function groupCandidatesByDistrict(candidates) {
+            return candidates.reduce((acc, candidate) => {
+                const district = candidate.選舉區;
+                if (!acc[district]) {
+                    acc[district] = [];
+                }
+                acc[district].push(candidate);
+                return acc;
+            }, {});
+        }
+
+        // Fetch and display candidates
+        fetch('candidates.json')
+            .then(response => response.json())
+            .then(candidates => {
+                // Sort candidates by sort field and then by number
+                candidates.sort((a, b) => {
+                    // First compare by sort field
+                    const sortCompare = a.sort - b.sort;
+                    if (sortCompare !== 0) {
+                        return sortCompare;
+                    }
+                    // If sort is the same, compare by 號次
+                    return parseInt(a.號次) - parseInt(b.號次);
+                });
+
+                const groupedCandidates = groupCandidatesByDistrict(candidates);
+                const container = document.getElementById('candidates');
+
+                Object.entries(groupedCandidates).forEach(([district, districtCandidates]) => {
+                    const districtTitle = document.createElement('h2');
+                    districtTitle.className = 'district-title';
+                    districtTitle.textContent = district;
+                    container.appendChild(districtTitle);
+
+                    const row = document.createElement('div');
+                    row.className = 'row row-cols-1 row-cols-md-2 g-4';
+                    
+                    // Sort candidates within each district by 號次
+                    districtCandidates.sort((a, b) => parseInt(a.號次) - parseInt(b.號次));
+                    
+                    districtCandidates.forEach(candidate => {
+                        const col = document.createElement('div');
+                        col.className = 'col';
+                        col.appendChild(createCandidateCard(candidate));
+                        row.appendChild(col);
+                    });
+
+                    container.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error loading candidates:', error));
+    </script>
+</body>
+</html>
