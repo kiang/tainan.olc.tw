@@ -21,7 +21,9 @@ foreach(glob($basePath . '/csv/*.csv') as $csvFile) {
         $row[] = $theSort;
         
         if(count($header) === count($row) && $row[0] !== '選舉區') {
-            $data[] = array_combine($header, $row);
+            $item = array_combine($header, $row);
+            $item['照片'] = $item['選舉區'] . '/-' . str_pad($item['號次'], 3, '0', STR_PAD_LEFT) . '.jpg';
+            $data[] = $item;
         }
     }
     fclose($fh);
