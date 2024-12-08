@@ -38,6 +38,27 @@
             max-height: 200px;
             overflow-y: auto;
         }
+        .elected-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid #cc0000;
+            border-radius: 50%;
+            color: #cc0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transform: rotate(-15deg);
+            background-color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            z-index: 1;
+        }
+        .elected-card {
+            border: 2px solid #cc0000;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -58,17 +79,18 @@
     <script>
         function createCandidateCard(candidate) {
             const card = document.createElement('div');
-            card.className = 'card h-100 shadow-sm';
+            card.className = `card h-100 shadow-sm ${candidate.elected ? 'elected-card' : ''}`;
             
             const specialStatus = candidate.特殊身分 ? `<span class="badge bg-info">${candidate.特殊身分}</span>` : '';
             const age = new Date().getFullYear() - candidate.出生年 - 1911;
+            const electedBadge = candidate.elected ? '<span class="elected-badge">當選</span>' : '';
 
             card.innerHTML = `
                 <div class="row g-0">
                     <div class="col-md-4 position-relative">
                         <span class="candidate-number">${candidate.號次}</span>
-                        <img src="photos/${candidate.照片}" class="img-fluid rounded-start" alt="${candidate.姓名}" 
-                            onerror="this.src='https://via.placeholder.com/300x400?text=無照片'">
+                        ${electedBadge}
+                        <img src="photos/${candidate.照片}" class="img-fluid rounded-start" alt="${candidate.姓名}">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
