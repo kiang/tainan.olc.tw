@@ -1,28 +1,38 @@
 <?php
 $basePath = dirname(__DIR__);
 $data = [];
+$c2022 = ['周曉芸', '徐勝凌', '林子丞', '林志學', '葉國文', '莊貽量', '劉家榮', '王如意', '邱于珊', '許瑞宏', '江明宗', '林昭印', '曾姸潔'];
+$pngList = ['陳思妤', '黃浚閣', '簡令紘', '顏靖彬', '黃守仕', '連宗聖', '陳姿樺', '林昭印', '葉國文', '楊瓊瑛', '王博賢', '吳子呈', '賴秋雅', '江明宗', '莊貽量', '宋國清'];
 
-foreach(glob($basePath . '/csv/*.csv') as $csvFile) {
+foreach (glob($basePath . '/csv/*.csv') as $csvFile) {
     $p = pathinfo($csvFile);
     $fh = fopen($csvFile, 'r');
-    $header = array_map(function($field) {
+    $header = array_map(function ($field) {
         // Remove BOM and other hidden characters from header
         return preg_replace('/[\r\n]/', '', trim($field));
     }, fgetcsv($fh));
     $header[] = 'sort';
     $theSort = intval($p['filename']);
-    
-    while($row = fgetcsv($fh)) {
+
+    while ($row = fgetcsv($fh)) {
         // Clean each field in the row
-        $row = array_map(function($field) {
+        $row = array_map(function ($field) {
             // Remove hidden characters and trim whitespace
             return preg_replace('/[\r\n]/', '', trim($field));
         }, $row);
         $row[] = $theSort;
-        
-        if(count($header) === count($row) && $row[0] !== '選舉區') {
+
+        if (count($header) === count($row) && $row[0] !== '選舉區') {
             $item = array_combine($header, $row);
-            $item['照片'] = $item['選舉區'] . '/-' . str_pad($item['號次'], 3, '0', STR_PAD_LEFT) . '.jpg';
+            if (in_array($item['姓名'], $c2022)) {
+                $item['特殊身分'] = '2022議員參選人';
+            }
+            if (in_array($item['姓名'], $pngList)) {
+                $item['照片'] = $item['選舉區'] . '/-' . str_pad($item['號次'], 3, '0', STR_PAD_LEFT) . '.png';
+            } else {
+                $item['照片'] = $item['選舉區'] . '/-' . str_pad($item['號次'], 3, '0', STR_PAD_LEFT) . '.jpg';
+            }
+
             $data[] = $item;
         }
     }
@@ -30,7 +40,7 @@ foreach(glob($basePath . '/csv/*.csv') as $csvFile) {
 }
 
 // Sort the data by 'sort' and then by '號次'
-usort($data, function($a, $b) {
+usort($data, function ($a, $b) {
     // First compare by sort field
     $sortCompare = $a['sort'] - $b['sort'];
     if ($sortCompare !== 0) {
