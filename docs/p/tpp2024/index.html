@@ -59,6 +59,120 @@
         .elected-card {
             border: 2px solid #cc0000;
         }
+        .district-nav {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 10px;
+            border-radius: 10px 0 0 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            width: auto;
+            max-width: 120px;
+        }
+
+        .district-nav-toggle {
+            position: fixed;
+            right: 0;
+            top: 20px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .district-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .district-nav li {
+            margin: 5px 0;
+        }
+
+        .district-nav a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .district-nav a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .district-nav a.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .container {
+            padding-right: calc(130px + 1rem);
+        }
+
+        @media (max-width: 768px) {
+            .district-nav {
+                display: none;
+                right: 0;
+                max-width: 100px;
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            .district-nav.show {
+                display: block;
+            }
+
+            .district-nav-toggle {
+                right: 0;
+            }
+
+            .container {
+                padding-right: 1rem;
+            }
+
+            .district-nav a {
+                font-size: 0.9rem;
+                padding: 3px 8px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .district-nav {
+                top: auto;
+                bottom: 0;
+                transform: none;
+                width: 100%;
+                max-width: 100%;
+                max-height: 40vh;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .district-nav.show {
+                display: flex;
+            }
+
+            .district-nav ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
+                padding: 5px;
+            }
+
+            .district-nav li {
+                margin: 0;
+            }
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -75,6 +189,11 @@
         <h1 class="mb-4">2024 台灣民眾黨黨員代表參選人</h1>
         <div id="candidates"></div>
     </div>
+
+    <button class="district-nav-toggle" id="districtNavToggle">選舉區</button>
+    <nav class="district-nav" id="districtNav">
+        <ul id="districtList"></ul>
+    </nav>
 
     <script>
         function createCandidateCard(candidate) {
@@ -157,6 +276,7 @@
                     const districtTitle = document.createElement('h2');
                     districtTitle.className = 'district-title';
                     districtTitle.textContent = district;
+                    districtTitle.setAttribute('data-district', district);
                     container.appendChild(districtTitle);
 
                     const row = document.createElement('div');
@@ -174,8 +294,66 @@
 
                     container.appendChild(row);
                 });
+
+                // Add toggle functionality
+                document.getElementById('districtNavToggle').addEventListener('click', () => {
+                    const nav = document.getElementById('districtNav');
+                    nav.classList.toggle('show');
+                });
+
+                // Create the district navigation after loading candidates
+                const districts = Object.keys(groupedCandidates);
+                createDistrictNav(districts);
+
+                // Add scroll spy functionality
+                window.addEventListener('scroll', () => {
+                    const districtTitles = document.querySelectorAll('.district-title');
+                    let currentDistrict = '';
+                    
+                    districtTitles.forEach(title => {
+                        const rect = title.getBoundingClientRect();
+                        if (rect.top <= 100) {
+                            currentDistrict = title.getAttribute('data-district');
+                        }
+                    });
+
+                    if (currentDistrict) {
+                        updateActiveDistrict(currentDistrict);
+                    }
+                });
             })
             .catch(error => console.error('Error loading candidates:', error));
+
+        function createDistrictNav(districts) {
+            const districtList = document.getElementById('districtList');
+            districts.forEach(district => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${district}`;
+                a.textContent = district;
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const element = document.querySelector(`h2[data-district="${district}"]`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                        updateActiveDistrict(district);
+                    }
+                });
+                li.appendChild(a);
+                districtList.appendChild(li);
+            });
+        }
+
+        function updateActiveDistrict(activeDistrict) {
+            const links = document.querySelectorAll('#districtList a');
+            links.forEach(link => {
+                if (link.textContent === activeDistrict) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
