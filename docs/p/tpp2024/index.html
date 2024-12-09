@@ -114,6 +114,9 @@
                                 <strong>政見：</strong>
                                 <p class="policy-text mb-1">${candidate.政見 || '無'}</p>
                             </div>
+                            <div class="mb-2">
+                                ${candidate.votes ? `<span class="badge bg-success">得票數：${candidate.votes}</span>` : ''}
+                            </div>
                         </div>
                     </div>
                 </div>
