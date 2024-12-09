@@ -236,6 +236,13 @@
                             <div class="mb-2">
                                 ${candidate.votes ? `<span class="badge bg-success">得票數：${candidate.votes}</span>` : ''}
                             </div>
+                            <div class="mt-2">
+                                ${candidate.fb ? `
+                                    <a href="${candidate.fb}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-facebook"></i> Facebook
+                                    </a>
+                                ` : ''}
+                            </div>
                         </div>
                     </div>
                 </div>

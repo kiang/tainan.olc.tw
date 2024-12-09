@@ -20,6 +20,7 @@ while ($row = fgetcsv($fh)) {
     if (isset($candidateLookup[$key])) {
         $index = $candidateLookup[$key];
         $candidates[$index]['votes'] = intval($row[3]);
+        $candidates[$index]['fb'] = $row[4] ?? '';
     }
 }
 fclose($fh);
