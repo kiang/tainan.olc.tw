@@ -12,10 +12,23 @@ foreach ($candidates as $index => $candidate) {
 }
 
 // Read and process votes.csv
+$fh = fopen($basePath . '/votes_final.csv', 'r');
+$header = fgetcsv($fh);
+
+$pool = [];
+while ($row = fgetcsv($fh)) {
+    $pool[$row[0]] = $row[2];
+}
+fclose($fh);
+
+// Read and process votes.csv
 $fh = fopen($basePath . '/votes.csv', 'r');
 $header = fgetcsv($fh);
 
 while ($row = fgetcsv($fh)) {
+    if (isset($pool[$row[1]])) {
+        $row[3] = $pool[$row[1]];
+    }
     $key = $row[0] . '_' . $row[2];
     if (isset($candidateLookup[$key])) {
         $index = $candidateLookup[$key];
@@ -27,8 +40,8 @@ fclose($fh);
 
 // Save updated candidates data
 file_put_contents(
-    $basePath . '/candidates.json', 
+    $basePath . '/candidates.json',
     json_encode($candidates, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
 );
 
-echo "Votes data merged successfully!\n"; 
+echo "Votes data merged successfully!\n";
