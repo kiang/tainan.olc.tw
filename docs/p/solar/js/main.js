@@ -3,6 +3,7 @@ let vectorSource;
 let clusterSource;
 let overlay;
 let highlightedIndex = null;
+let searchResults = [];
 
 function createMarkerStyle(feature, highlighted = false) {
     return new ol.style.Style({
@@ -69,7 +70,7 @@ function showPopup(feature, coordinate) {
                     施工取得日期: ${feature.get('施工取得日期')}<br>
                     土地面積: ${feature.get('土地面積')} 平方公尺<br>
                     裝置容量: ${feature.get('裝置容量')} <br>
-                    地址: ${feature.get('縣市')}${feature.get('鄉鎮區')}${feature.get('地段')}${feature.get('地號')}
+                    地號: ${feature.get('縣市')}${feature.get('鄉鎮區')}${feature.get('地段')}${feature.get('地號')}
                 </p>
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary btn-sm" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}', '_blank')">
@@ -88,6 +89,98 @@ function showPopup(feature, coordinate) {
     
     document.getElementById('popup-content').innerHTML = content;
     overlay.setPosition(coordinate);
+}
+
+function searchFeatures(query) {
+    if (!query) {
+        document.getElementById('search-results').classList.add('d-none');
+        return;
+    }
+
+    query = query.toLowerCase();
+    searchResults = [];
+    const features = vectorSource.getFeatures();
+    const seen = new Set(); // To prevent duplicate suggestions
+    const suggestions = {
+        exact: [],
+        startsWith: [],
+        contains: []
+    };
+    
+    features.forEach(feature => {
+        const operator = feature.get('業者名稱').toLowerCase();
+        const plantName = feature.get('電廠名稱').toLowerCase();
+        const key = operator + '|' + plantName;
+        
+        if (seen.has(key)) return;
+        seen.add(key);
+
+        if (operator === query || plantName === query) {
+            suggestions.exact.push(feature);
+        } else if (operator.startsWith(query) || plantName.startsWith(query)) {
+            suggestions.startsWith.push(feature);
+        } else if (operator.includes(query) || plantName.includes(query)) {
+            suggestions.contains.push(feature);
+        }
+    });
+
+    // Combine results in priority order
+    searchResults = [
+        ...suggestions.exact,
+        ...suggestions.startsWith,
+        ...suggestions.contains
+    ].slice(0, 10); // Limit to 10 results
+
+    displaySearchResults();
+}
+
+function displaySearchResults() {
+    const resultsDiv = document.getElementById('search-results');
+    
+    if (searchResults.length === 0) {
+        resultsDiv.classList.add('d-none');
+        return;
+    }
+
+    let html = '<div class="list-group list-group-flush">';
+    searchResults.forEach((feature, index) => {
+        const plantName = feature.get('電廠名稱');
+        const operator = feature.get('業者名稱');
+        const location = `${feature.get('縣市')}${feature.get('鄉鎮區')}`;
+        const capacity = feature.get('裝置容量');
+
+        html += `
+            <a href="#" class="list-group-item list-group-item-action py-2" data-index="${index}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold">${plantName}</div>
+                        <small class="text-muted">${operator}</small>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">${location}</small>
+                        <small class="text-muted">${capacity}</small>
+                    </div>
+                </div>
+            </a>
+        `;
+    });
+    html += '</div>';
+
+    resultsDiv.innerHTML = html;
+    resultsDiv.classList.remove('d-none');
+}
+
+function zoomToFeature(feature) {
+    const geometry = feature.getGeometry();
+    const coordinate = geometry.getCoordinates();
+    
+    map.getView().animate({
+        center: coordinate,
+        zoom: 16,
+        duration: 1000
+    });
+
+    showPopup(feature, coordinate);
 }
 
 function initMap() {
@@ -195,6 +288,40 @@ function initMap() {
         }
     });
 
+    // Add search functionality
+    const searchInput = document.getElementById('search-input');
+    const searchClear = document.getElementById('search-clear');
+    const searchResultsDiv = document.getElementById('search-results');
+
+    searchInput.addEventListener('input', debounce((e) => {
+        searchFeatures(e.target.value);
+    }, 300)); // Wait 300ms after typing stops
+
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchFeatures('');
+    });
+
+    searchResultsDiv.addEventListener('click', (e) => {
+        e.preventDefault();
+        const link = e.target.closest('.list-group-item-action');
+        if (link) {
+            const index = parseInt(link.dataset.index);
+            if (index >= 0 && index < searchResults.length) {
+                zoomToFeature(searchResults[index]);
+                searchInput.value = '';
+                searchResultsDiv.classList.add('d-none');
+            }
+        }
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+            searchResultsDiv.classList.add('d-none');
+        }
+    });
+
     // Load data
     fetch('https://kiang.github.io/moeaea.gov.tw/solar_points.csv')
         .then(response => response.text())
@@ -221,6 +348,19 @@ function initMap() {
                 }
             });
         });
+}
+
+// Add debounce function
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 window.onload = initMap;

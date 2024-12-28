@@ -97,10 +97,19 @@
         <div class="container-fluid">
             <div class="row w-100">
                 <div class="col-md-8 mb-2 mb-md-0">
-                    <div class="input-group">
-                        <button class="btn btn-outline-secondary" type="button" id="locate-me">
-                            <i class="bi bi-geo-alt"></i> 定位
-                        </button>
+                    <div class="position-relative">
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" type="button" id="locate-me">
+                                <i class="bi bi-geo-alt"></i> 定位
+                            </button>
+                            <input type="text" class="form-control" id="search-input" placeholder="搜尋業者或電廠名稱...">
+                            <button class="btn btn-outline-secondary" type="button" id="search-clear">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </div>
+                        <div id="search-results" class="position-absolute bg-white rounded shadow-sm mt-1 d-none" 
+                             style="max-height: 300px; overflow-y: auto; z-index: 1000; width: 100%; bottom: 100%; left: 0;">
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4 d-flex justify-content-md-end">
