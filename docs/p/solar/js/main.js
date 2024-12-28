@@ -4,12 +4,9 @@ let clusterSource;
 let overlay;
 
 function createMarkerStyle(feature) {
-    const capacity = parseFloat(feature.get('裝置容量'));
-    let radius = Math.min(40, 10 + Math.sqrt(capacity));
-    
     return new ol.style.Style({
         image: new ol.style.Circle({
-            radius: radius,
+            radius: 12,
             fill: new ol.style.Fill({color: 'rgba(255, 204, 0, 0.8)'}),
             stroke: new ol.style.Stroke({color: '#cc9900', width: 2})
         })
@@ -18,19 +15,21 @@ function createMarkerStyle(feature) {
 
 function createClusterStyle(feature) {
     const size = feature.get('features').length;
-    const totalCapacity = feature.get('features').reduce((sum, f) => sum + parseFloat(f.get('裝置容量')), 0);
-    const radius = Math.min(40, 20 + Math.sqrt(size) * 3);
     
     return new ol.style.Style({
         image: new ol.style.Circle({
-            radius: radius,
+            radius: 20,
             fill: new ol.style.Fill({color: 'rgba(255, 153, 0, 0.8)'}),
             stroke: new ol.style.Stroke({color: '#cc6600', width: 2})
         }),
         text: new ol.style.Text({
             text: size.toString(),
+            font: 'bold 14px Arial',
             fill: new ol.style.Fill({color: '#fff'}),
-            stroke: new ol.style.Stroke({color: '#cc6600', width: 1}),
+            stroke: new ol.style.Stroke({
+                color: '#cc6600',
+                width: 2
+            }),
             offsetY: 1
         })
     });
