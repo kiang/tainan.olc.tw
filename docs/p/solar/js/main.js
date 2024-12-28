@@ -36,6 +36,7 @@ function createClusterStyle(feature) {
 }
 
 function showPopup(feature, coordinate) {
+    const lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     const content = `
         <div class="card">
             <div class="card-body">
@@ -47,6 +48,17 @@ function showPopup(feature, coordinate) {
                     裝置容量: ${feature.get('裝置容量')} <br>
                     地址: ${feature.get('縣市')}${feature.get('鄉鎮區')}${feature.get('地段')}${feature.get('地號')}
                 </p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-sm" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}', '_blank')">
+                        <i class="bi bi-google"></i> Google Maps
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.open('https://www.bing.com/maps/directions?rtp=~pos.${lonLat[1]}_${lonLat[0]}', '_blank')">
+                        <i class="bi bi-map"></i> Bing Maps
+                    </button>
+                    <button class="btn btn-info btn-sm" onclick="window.open('https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}', '_blank')">
+                        <i class="bi bi-signpost-2"></i> HERE Maps
+                    </button>
+                </div>
             </div>
         </div>
     `;
