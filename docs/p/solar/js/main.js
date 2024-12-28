@@ -2,32 +2,46 @@ let map;
 let vectorSource;
 let clusterSource;
 let overlay;
+let highlightedIndex = null;
 
-function createMarkerStyle(feature) {
+function createMarkerStyle(feature, highlighted = false) {
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: 12,
-            fill: new ol.style.Fill({color: 'rgba(255, 204, 0, 0.8)'}),
-            stroke: new ol.style.Stroke({color: '#cc9900', width: 2})
+            fill: new ol.style.Fill({
+                color: highlighted ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 204, 0, 0.8)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: highlighted ? '#cc0000' : '#cc9900',
+                width: 2
+            })
         })
     });
 }
 
 function createClusterStyle(feature) {
     const size = feature.get('features').length;
+    const hasHighlighted = feature.get('features').some(f => 
+        (f.get('申請年度') + f.get('項次')) === highlightedIndex
+    );
     
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: 20,
-            fill: new ol.style.Fill({color: 'rgba(255, 153, 0, 0.8)'}),
-            stroke: new ol.style.Stroke({color: '#cc6600', width: 2})
+            fill: new ol.style.Fill({
+                color: hasHighlighted ? 'rgba(255, 100, 0, 0.8)' : 'rgba(255, 153, 0, 0.8)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: hasHighlighted ? '#cc3300' : '#cc6600',
+                width: 2
+            })
         }),
         text: new ol.style.Text({
             text: size.toString(),
             font: 'bold 14px Arial',
             fill: new ol.style.Fill({color: '#fff'}),
             stroke: new ol.style.Stroke({
-                color: '#cc6600',
+                color: hasHighlighted ? '#cc3300' : '#cc6600',
                 width: 2
             }),
             offsetY: 1
@@ -35,8 +49,17 @@ function createClusterStyle(feature) {
     });
 }
 
+function highlightFeatures(index) {
+    highlightedIndex = index;
+    // Force redraw of the layer
+    clusterSource.refresh();
+}
+
 function showPopup(feature, coordinate) {
     const lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+    const index = feature.get('申請年度') + feature.get('項次');
+    highlightFeatures(index);
+    
     const content = `
         <div class="card">
             <div class="card-body">
@@ -98,7 +121,12 @@ function initMap() {
         source: clusterSource,
         style: function(feature) {
             const features = feature.get('features');
-            return features.length > 1 ? createClusterStyle(feature) : createMarkerStyle(features[0]);
+            if (features.length > 1) {
+                return createClusterStyle(feature);
+            } else {
+                const index = features[0].get('申請年度') + features[0].get('項次');
+                return createMarkerStyle(features[0], index === highlightedIndex);
+            }
         }
     });
 
@@ -148,6 +176,8 @@ function initMap() {
     // Add popup closer handler
     document.getElementById('popup-closer').onclick = function() {
         overlay.setPosition(undefined);
+        highlightedIndex = null;
+        clusterSource.refresh();
         return false;
     };
 
