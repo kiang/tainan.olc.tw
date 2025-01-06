@@ -125,6 +125,9 @@ const ui = {
 // Data Handling
 const data = {
     showData: function(city, year, type = 'all') {
+        if(!type || type.length <= 0) {
+            type = 'all';
+        }
         layers.points.getSource().clear();
         $('#pointCity').val(city);
         $('#pointYear').val(year);
@@ -142,7 +145,11 @@ const data = {
     
     fetchData: function(city, year, type) {
         $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function(csv) {
-            app.dataPool[city][year] = $.csv.toObjects(csv);
+            if(csv.length > 0) {
+                app.dataPool[city][year] = $.csv.toObjects(csv);
+            } else {
+                app.dataPool[city][year] = [];
+            }
             data.processData(app.dataPool[city][year], type);
         });
     },
@@ -150,6 +157,9 @@ const data = {
     processData: function(data, type) {
         const features = [];
         data.forEach(item => {
+            if(item['變異類型'] === '') {
+                item['變異類型'] = '其他';
+            }
             if (type !== 'all' && type !== item['變異類型']) return;
             
             const feature = new ol.Feature({
@@ -168,7 +178,9 @@ const data = {
         
         $('#pointType').html(Object.keys(app.typeOptions).map(k => `<option>${k}</option>`).join('')).val(type);
         layers.points.getSource().addFeatures(features);
-        app.map.getView().fit(layers.points.getSource().getExtent());
+        if(features.length > 0) {
+            app.map.getView().fit(layers.points.getSource().getExtent());
+        }
     }
 };
 
