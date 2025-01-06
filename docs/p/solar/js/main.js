@@ -5,6 +5,7 @@ let overlay;
 let highlightedIndex = null;
 let searchResults = [];
 let currentSpiderFeatures = null;
+let points = {};
 
 // Add spider layout function
 function calculateSpiderPositions(center, count, radius = 40) {
@@ -92,7 +93,11 @@ function highlightFeatures(index) {
 function showPopup(feature, coordinate) {
     const lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     const index = feature.get('申請年度') + feature.get('項次');
+    const uuid = feature.get('uuid');
     highlightFeatures(index);
+    
+    // Update URL without triggering a page reload
+    window.history.replaceState(null, '', `#point/${uuid}`);
     
     const content = `
         <div class="card">
@@ -350,6 +355,7 @@ function initMap() {
         overlay.setPosition(undefined);
         highlightedIndex = null;
         clusterSource.refresh();
+        window.history.replaceState(null, '', window.location.pathname);
         return false;
     };
 
@@ -408,24 +414,38 @@ function initMap() {
             const rows = csv.split('\n').slice(1);
             rows.forEach(row => {
                 const cols = row.split(',');
-                if (cols.length >= 13) {
+                if (cols.length >= 14) { // Updated to account for UUID field
                     const feature = new ol.Feature({
-                        geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(cols[11]), parseFloat(cols[12])])),
-                        '申請年度': cols[0],
-                        '項次': cols[1],
-                        '業者名稱': cols[2],
-                        '電廠名稱': cols[3],
-                        '施工取得日期': cols[4],
-                        '土地面積': cols[5],
-                        '裝置容量': cols[6],
-                        '縣市': cols[7],
-                        '鄉鎮區': cols[8],
-                        '地段': cols[9],
-                        '地號': cols[10]
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(cols[12]), parseFloat(cols[13])])),
+                        'uuid': cols[0],
+                        '申請年度': cols[1],
+                        '項次': cols[2],
+                        '業者名稱': cols[3],
+                        '電廠名稱': cols[4],
+                        '施工取得日期': cols[5],
+                        '土地面積': cols[6],
+                        '裝置容量': cols[7],
+                        '縣市': cols[8],
+                        '鄉鎮區': cols[9],
+                        '地段': cols[10],
+                        '地號': cols[11]
                     });
                     vectorSource.addFeature(feature);
+                    points[cols[0]] = feature; // Store feature by UUID
                 }
             });
+
+            // Set up routing
+            routie({
+                'point/:pointId': showPoint
+            });
+
+            // Check if there's a point ID in the URL
+            const hash = window.location.hash;
+            if (hash.startsWith('#point/')) {
+                const pointId = hash.replace('#point/', '');
+                showPoint(pointId);
+            }
         });
 }
 
@@ -440,6 +460,21 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+// Add this function to handle point selection from URL
+function showPoint(pointId) {
+    const feature = points[pointId];
+    if (feature) {
+        const coordinate = feature.getGeometry().getCoordinates();
+        map.getView().animate({
+            center: coordinate,
+            zoom: 16,
+            duration: 1000
+        }, function() {
+            showPopup(feature, coordinate);
+        });
+    }
 }
 
 window.onload = initMap;
