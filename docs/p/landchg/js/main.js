@@ -15,16 +15,16 @@ const app = {
     typeOptions: { 'all': true },
     selectedCity: CONFIG.defaultCity,
     selectedYear: CONFIG.defaultYear,
-    years: Array.from({length: CONFIG.defaultYear - 92}, (_, i) => CONFIG.defaultYear - i)
+    years: Array.from({ length: CONFIG.defaultYear - 92 }, (_, i) => CONFIG.defaultYear - i)
 };
 
 // Map Style Functions
 const styles = {
-    point: function(feature) {
+    point: function (feature) {
         const p = feature.getProperties().properties;
         const z = app.map.getView().getZoom();
         const imgColor = p['查證結果'] === '合法' ? 'rgba(120, 236, 62, 1)' : 'rgba(236, 120, 62, 1)';
-        
+
         const baseStyle = new ol.style.Style({
             image: new ol.style.RegularShape({
                 radius: 10,
@@ -81,28 +81,28 @@ const layers = {
 
 // UI Functions
 const ui = {
-    initializeSelects: function() {
+    initializeSelects: function () {
         $('#pointCity').html(CONFIG.cities.map(city => `<option>${city}</option>`).join(''));
         $('#pointYear').html(app.years.map(year => `<option>${year}</option>`).join(''));
-        
-        $('.select-filter').change(function() {
+
+        $('.select-filter').change(function () {
             const theCity = $('#pointCity').val();
             const theYear = $('#pointYear').val();
             const theType = $('#pointType').val();
             data.showData(theCity, theYear, theType);
         });
     },
-    
-    updatePopup: function(feature) {
+
+    updatePopup: function (feature) {
         const p = feature.getProperties();
         if (p.properties) {
             const lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
             let message = '<table class="table table-dark"><tbody>';
-            
+
             Object.entries(p.properties).forEach(([key, value]) => {
                 message += `<tr><th scope="row" style="width: 80px;">${key}</th><td>${value}</td></tr>`;
             });
-            
+
             message += `
                 <tr><td colspan="2">
                     <hr /><div class="btn-group-vertical" role="group" style="width: 100%;">
@@ -112,7 +112,7 @@ const ui = {
                     </div>
                 </td></tr>
             </tbody></table>`;
-            
+
             $('#sidebarTitle').text(p.properties['變異類型']);
             $('#sidebarContent').html(message);
             app.sidebar.open('home');
@@ -124,28 +124,28 @@ const ui = {
 
 // Data Handling
 const data = {
-    showData: function(city, year, type = 'all') {
-        if(!type || type.length <= 0) {
+    showData: function (city, year, type = 'all') {
+        if (!type || type.length <= 0) {
             type = 'all';
         }
         layers.points.getSource().clear();
         $('#pointCity').val(city);
         $('#pointYear').val(year);
-        
+
         if (!app.dataPool[city]) {
             app.dataPool[city] = {};
         }
-        
+
         if (!app.dataPool[city][year]) {
             this.fetchData(city, year, type);
         } else {
             this.processData(app.dataPool[city][year], type);
         }
     },
-    
-    fetchData: function(city, year, type) {
-        $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function(csv) {
-            if(csv.length > 0) {
+
+    fetchData: function (city, year, type) {
+        $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function (csv) {
+            if (csv.length > 0) {
                 app.dataPool[city][year] = $.csv.toObjects(csv);
             } else {
                 app.dataPool[city][year] = [];
@@ -153,15 +153,15 @@ const data = {
             data.processData(app.dataPool[city][year], type);
         });
     },
-    
-    processData: function(data, type) {
+
+    processData: function (data, type) {
         const features = [];
         data.forEach(item => {
-            if(item['變異類型'] === '') {
+            if (item['變異類型'] === '') {
                 item['變異類型'] = '其他';
             }
             if (type !== 'all' && type !== item['變異類型']) return;
-            
+
             const feature = new ol.Feature({
                 geometry: new ol.geom.Point(ol.proj.fromLonLat([
                     parseFloat(item.longitude),
@@ -170,15 +170,15 @@ const data = {
                 properties: item
             });
             features.push(feature);
-            
+
             if (!app.typeOptions[item['變異類型']]) {
                 app.typeOptions[item['變異類型']] = true;
             }
         });
-        
+
         $('#pointType').html(Object.keys(app.typeOptions).map(k => `<option>${k}</option>`).join('')).val(type);
         layers.points.getSource().addFeatures(features);
-        if(features.length > 0) {
+        if (features.length > 0) {
             app.map.getView().fit(layers.points.getSource().getExtent());
         }
     }
@@ -188,7 +188,7 @@ const data = {
 function initMap() {
     // Create sidebar
     app.sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
-    
+
     // Create map
     app.map = new ol.Map({
         layers: [layers.base, layers.points],
@@ -198,23 +198,23 @@ function initMap() {
             zoom: 13
         })
     });
-    
+
     // Add controls
     app.map.addControl(app.sidebar);
-    
+
     // Add click handler
-    app.map.on('singleclick', function(evt) {
+    app.map.on('singleclick', function (evt) {
         let pointClicked = false;
-        app.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+        app.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
             if (!pointClicked) {
                 pointClicked = ui.updatePopup(feature);
             }
         });
     });
-    
+
     // Initialize UI
     ui.initializeSelects();
-    
+
     // Load initial data
     data.showData(app.selectedCity, app.selectedYear);
 }
