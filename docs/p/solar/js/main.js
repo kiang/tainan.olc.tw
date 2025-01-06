@@ -6,6 +6,7 @@ let highlightedIndex = null;
 let searchResults = [];
 let currentSpiderFeatures = null;
 let points = {};
+const photoData = {};
 
 // Add spider layout function
 function calculateSpiderPositions(center, count, radius = 40) {
@@ -99,15 +100,33 @@ function showPopup(feature, coordinate) {
     // Update URL without triggering a page reload
     window.history.replaceState(null, '', `#point/${uuid}`);
     
+    // Generate photo gallery HTML if photos exist
+    let photoGallery = '';
+    if(photoData[uuid]) {
+        photoGallery = `
+        <div class="mb-3">
+            <div class="ratio ratio-16x9">
+                <iframe src="https://drive.google.com/file/d/${photoData[uuid]}/preview"
+                        class="rounded"
+                        style="border: none;">
+                </iframe>
+            </div>
+        </div>
+    `;
+    }
+    
     const content = `
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">${feature.get('電廠名稱')}</h5>
-                <div class="d-grid mb-3">
-                    <button class="btn btn-success btn-sm" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeSsT5DdsJ-YscydKqWZ_sS0gY89Kz0T5pnPB1y05oaTPidfw/viewform?usp=pp_url&entry.2072773208=${uuid}', '_blank')">
-                        <i class="bi bi-camera"></i> 協助拍照
-                    </button>
-                </div>
+                ${!photoData[uuid] ? `
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-success btn-sm" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeSsT5DdsJ-YscydKqWZ_sS0gY89Kz0T5pnPB1y05oaTPidfw/viewform?usp=pp_url&entry.2072773208=${uuid}', '_blank')">
+                            <i class="bi bi-camera"></i> 協助拍照
+                        </button>
+                    </div>
+                ` : ''}
+                ${photoGallery}
                 <p class="card-text">
                     業者名稱: ${feature.get('業者名稱')}<br>
                     施工取得日期: ${feature.get('施工取得日期')}<br>
@@ -452,6 +471,9 @@ function initMap() {
                 showPoint(pointId);
             }
         });
+
+    // Fetch photo data
+    fetchPhotoData();
 }
 
 // Add debounce function
@@ -480,6 +502,23 @@ function showPoint(pointId) {
             showPopup(feature, coordinate);
         });
     }
+}
+
+// Add this function to fetch photo data
+function fetchPhotoData() {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRqIu5kNVxq07Snh_1edCIXBSs_jJQ3xdQpX3_bmU82kqTHhaQ9TZ3M1NZ--Kp6zIi1H2AptEYVlB75/pub?output=csv')
+        .then(response => response.text())
+        .then(csv => {
+            const rows = csv.split('\n').slice(1); // Skip header
+            rows.forEach(row => {
+                const [timestamp, fileUrl, uuid] = row.split(',');
+                // Extract file ID from Google Drive URL
+                const fileId = fileUrl.match(/[-\w]{25,}/);
+                if (fileId && fileId[0]) {
+                    photoData[uuid] = fileId[0];
+                }
+            });
+        });
 }
 
 window.onload = initMap;
