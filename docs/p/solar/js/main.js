@@ -4,20 +4,53 @@ let clusterSource;
 let overlay;
 let highlightedIndex = null;
 let searchResults = [];
+let currentSpiderFeatures = null;
 
-function createMarkerStyle(feature, highlighted = false) {
-    return new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 12,
-            fill: new ol.style.Fill({
-                color: highlighted ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 204, 0, 0.8)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: highlighted ? '#cc0000' : '#cc9900',
-                width: 2
+// Add spider layout function
+function calculateSpiderPositions(center, count, radius = 40) {
+    const positions = [];
+    for (let i = 0; i < count; i++) {
+        const angle = (2 * Math.PI * i) / count;
+        const x = center[0] + radius * Math.cos(angle);
+        const y = center[1] + radius * Math.sin(angle);
+        positions.push([x, y]);
+    }
+    return positions;
+}
+
+// Modify createMarkerStyle to handle spider state
+function createMarkerStyle(feature, highlighted = false, isSpider = false) {
+    const color = highlighted ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 204, 0, 0.8)';
+    const strokeColor = highlighted ? '#cc0000' : '#cc9900';
+    
+    const styles = [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 12,
+                fill: new ol.style.Fill({ color: color }),
+                stroke: new ol.style.Stroke({
+                    color: strokeColor,
+                    width: 2
+                })
             })
         })
-    });
+    ];
+
+    if (isSpider) {
+        // Add line to original position
+        const originalPosition = feature.get('originalGeometry').getCoordinates();
+        const currentPosition = feature.getGeometry().getCoordinates();
+        
+        styles.unshift(new ol.style.Style({
+            geometry: new ol.geom.LineString([originalPosition, currentPosition]),
+            stroke: new ol.style.Stroke({
+                color: strokeColor,
+                width: 1
+            })
+        }));
+    }
+
+    return styles;
 }
 
 function createClusterStyle(feature) {
@@ -209,7 +242,17 @@ function initMap() {
         source: vectorSource
     });
 
-    // Create cluster layer
+    // Add spider layer
+    const spiderLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: function(feature) {
+            const index = feature.get('申請年度') + feature.get('項次');
+            return createMarkerStyle(feature, index === highlightedIndex, true);
+        },
+        zIndex: 2
+    });
+
+    // Modify cluster layer initialization
     const clusterLayer = new ol.layer.Vector({
         source: clusterSource,
         style: function(feature) {
@@ -220,13 +263,14 @@ function initMap() {
                 const index = features[0].get('申請年度') + features[0].get('項次');
                 return createMarkerStyle(features[0], index === highlightedIndex);
             }
-        }
+        },
+        zIndex: 1
     });
 
     // Initialize map
     map = new ol.Map({
         target: 'map',
-        layers: [baseLayer, clusterLayer],
+        layers: [baseLayer, clusterLayer, spiderLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.301507, 23.124694]),
             zoom: 8
@@ -251,18 +295,53 @@ function initMap() {
 
         if (feature) {
             const features = feature.get('features');
+            if (!features) {
+                // Clicked on a spider feature
+                showPopup(feature, evt.coordinate);
+                return;
+            }
+
             if (features.length === 1) {
                 showPopup(features[0], evt.coordinate);
+            } else if (features.length <= 8 || map.getView().getZoom() >= 18) {
+                // Spider effect for small clusters or at max zoom
+                if (currentSpiderFeatures) {
+                    spiderLayer.getSource().clear();
+                    currentSpiderFeatures = null;
+                }
+
+                const positions = calculateSpiderPositions(feature.getGeometry().getCoordinates(), features.length);
+                features.forEach((f, i) => {
+                    const spiderFeature = f.clone();
+                    spiderFeature.set('originalGeometry', f.getGeometry());
+                    spiderFeature.setGeometry(new ol.geom.Point(positions[i]));
+                    spiderLayer.getSource().addFeature(spiderFeature);
+                });
+                currentSpiderFeatures = features;
             } else {
+                // Zoom in for large clusters
                 const extent = ol.extent.createEmpty();
                 features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
                 map.getView().fit(extent, {
                     duration: 1000,
-                    padding: [50, 50, 50, 50]
+                    padding: [50, 50, 50, 50],
+                    maxZoom: 18
                 });
             }
         } else {
             overlay.setPosition(undefined);
+            if (currentSpiderFeatures) {
+                spiderLayer.getSource().clear();
+                currentSpiderFeatures = null;
+            }
+        }
+    });
+
+    // Add view change handler to clear spider effect
+    map.getView().on('change:resolution', function() {
+        if (currentSpiderFeatures) {
+            spiderLayer.getSource().clear();
+            currentSpiderFeatures = null;
         }
     });
 
