@@ -103,6 +103,11 @@ function showPopup(feature, coordinate) {
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">${feature.get('電廠名稱')}</h5>
+                <div class="d-grid mb-3">
+                    <button class="btn btn-success btn-sm" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeSsT5DdsJ-YscydKqWZ_sS0gY89Kz0T5pnPB1y05oaTPidfw/viewform?usp=pp_url&entry.2072773208=${uuid}', '_blank')">
+                        <i class="bi bi-camera"></i> 協助拍照
+                    </button>
+                </div>
                 <p class="card-text">
                     業者名稱: ${feature.get('業者名稱')}<br>
                     施工取得日期: ${feature.get('施工取得日期')}<br>
