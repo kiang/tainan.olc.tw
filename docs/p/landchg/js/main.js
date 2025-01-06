@@ -1,270 +1,211 @@
-window.app = {};
-var sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
-
-var projection = ol.proj.get('EPSG:3857');
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(20);
-var matrixIds = new Array(20);
-var clickedCoordinate, populationLayer, gPopulation;
-for (var z = 0; z < 20; ++z) {
-  // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
-}
-
-var selectedCity = '臺南市';
-var selectedYear = new Date().getFullYear() - 1911;
-var cities = ['基隆市', '臺北市', '新北市', '桃園市', '新竹縣', '新竹市', '苗栗縣', '臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義縣', '嘉義市', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '金門縣', '澎湖縣', '連江縣'];
-var years = [];
-for (i = selectedYear; i > 92; i--) {
-  years.push(i);
-}
-var dataPool = {}, textOptions = '';
-for (k in cities) {
-  textOptions += '<option>' + cities[k] + '</option>';
-}
-$('#pointCity').html(textOptions);
-textOptions = '';
-for (k in years) {
-  textOptions += '<option>' + years[k] + '</option>';
-}
-$('#pointYear').html(textOptions);
-var typeOptions = {
-  'all': true
+// Constants and Configuration
+const CONFIG = {
+    defaultCity: '臺南市',
+    defaultYear: new Date().getFullYear() - 1911,
+    cities: ['基隆市', '臺北市', '新北市', '桃園市', '新竹縣', '新竹市', '苗栗縣', '臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義縣', '嘉義市', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '金門縣', '澎湖縣', '連江縣'],
+    baseMapUrl: 'https://wmts.nlsc.gov.tw/wmts',
+    dataUrl: 'https://kiang.github.io/landchg.tcd.gov.tw/csv/points'
 };
 
-var pointsStyle = function (f) {
-  var p = f.getProperties().properties, z = map.getView().getZoom();
-  var imgColor = 'rgba(236, 120, 62, 1)';
-  if (p['查證結果'] === '合法') {
-    imgColor = 'rgba(120, 236, 62, 1)';
-  }
-  if (z > 12) {
-    return new ol.style.Style({
-      image: new ol.style.RegularShape({
-        radius: 10,
-        points: 3,
-        fill: new ol.style.Fill({
-          color: imgColor
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#00f',
-          width: 1
-        })
-      }),
-      text: new ol.style.Text({
-        font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
-        placement: 'point',
-        textAlign: 'left',
-        textBaseline: 'bottom',
-        fill: new ol.style.Fill({
-          color: 'rgba(255, 0, 255, 1)'
-        }),
-        text: p['變異類型']
-      })
-    });
-  } else {
-    return new ol.style.Style({
-      image: new ol.style.RegularShape({
-        radius: 10,
-        points: 3,
-        fill: new ol.style.Fill({
-          color: imgColor
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#00f',
-          width: 1
-        })
-      })
-    });
-  }
+// Global Variables
+const app = {
+    map: null,
+    sidebar: null,
+    dataPool: {},
+    typeOptions: { 'all': true },
+    selectedCity: CONFIG.defaultCity,
+    selectedYear: CONFIG.defaultYear,
+    years: Array.from({length: CONFIG.defaultYear - 92}, (_, i) => CONFIG.defaultYear - i)
+};
 
-}
-
-var points = new ol.layer.Vector({
-  source: new ol.source.Vector(),
-  style: pointsStyle
-});
-
-function showData(city, year, type = 'all') {
-  points.getSource().clear();
-  $('#pointCity').val(city);
-  $('#pointYear').val(year);
-  if (!dataPool[city]) {
-    dataPool[city] = {};
-  }
-  if (!dataPool[city][year]) {
-    $.get('https://kiang.github.io/landchg.tcd.gov.tw/csv/' + year + '/' + city + '.csv', {}, function (c) {
-      dataPool[city][year] = $.csv.toObjects(c);
-      var fc = [];
-      for (i in dataPool[city][year]) {
-        if (type !== 'all' && type !== dataPool[city][year][i]['變異類型']) {
-          continue;
-        }
-        var f = new ol.Feature({
-          geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(dataPool[city][year][i].longitude), parseFloat(dataPool[city][year][i].latitude)])),
-          properties: dataPool[city][year][i],
+// Map Style Functions
+const styles = {
+    point: function(feature) {
+        const p = feature.getProperties().properties;
+        const z = app.map.getView().getZoom();
+        const imgColor = p['查證結果'] === '合法' ? 'rgba(120, 236, 62, 1)' : 'rgba(236, 120, 62, 1)';
+        
+        const baseStyle = new ol.style.Style({
+            image: new ol.style.RegularShape({
+                radius: 10,
+                points: 3,
+                fill: new ol.style.Fill({ color: imgColor }),
+                stroke: new ol.style.Stroke({
+                    color: '#00f',
+                    width: 1
+                })
+            })
         });
-        fc.push(f);
-        if (!typeOptions[dataPool[city][year][i]['變異類型']]) {
-          typeOptions[dataPool[city][year][i]['變異類型']] = true;
+
+        if (z > 12) {
+            baseStyle.setText(new ol.style.Text({
+                font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
+                placement: 'point',
+                textAlign: 'left',
+                textBaseline: 'bottom',
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 255, 1)'
+                }),
+                text: p['變異類型']
+            }));
         }
-      }
-      textOptions = '';
-      for (k in typeOptions) {
-        textOptions += '<option>' + k + '</option>';
-      }
-      $('#pointType').html(textOptions).val(type);
-      points.getSource().addFeatures(fc);
-      map.getView().fit(points.getSource().getExtent());
+
+        return baseStyle;
+    }
+};
+
+// Map Layers
+const layers = {
+    base: new ol.layer.Tile({
+        source: new ol.source.WMTS({
+            matrixSet: 'EPSG:3857',
+            format: 'image/png',
+            url: CONFIG.baseMapUrl,
+            layer: 'EMAP',
+            tileGrid: new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(ol.proj.get('EPSG:3857').getExtent()),
+                resolutions: Array(20).fill().map((_, i) => 156543.03392804097 / Math.pow(2, i)),
+                matrixIds: Array(20).fill().map((_, i) => i.toString())
+            }),
+            style: 'default',
+            wrapX: true,
+            attributions: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+        }),
+        opacity: 0.3
+    }),
+    points: new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: styles.point
     })
-  } else {
-    var fc = [];
-    for (i in dataPool[city][year]) {
-      if (type !== 'all' && type !== dataPool[city][year][i]['變異類型']) {
-        continue;
-      }
-      var f = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(dataPool[city][year][i].longitude), parseFloat(dataPool[city][year][i].latitude)])),
-        properties: dataPool[city][year][i],
-      });
-      fc.push(f);
-      if (!typeOptions[dataPool[city][year][i]['變異類型']]) {
-        typeOptions[dataPool[city][year][i]['變異類型']] = true;
-      }
+};
+
+// UI Functions
+const ui = {
+    initializeSelects: function() {
+        $('#pointCity').html(CONFIG.cities.map(city => `<option>${city}</option>`).join(''));
+        $('#pointYear').html(app.years.map(year => `<option>${year}</option>`).join(''));
+        
+        $('.select-filter').change(function() {
+            const theCity = $('#pointCity').val();
+            const theYear = $('#pointYear').val();
+            const theType = $('#pointType').val();
+            data.showData(theCity, theYear, theType);
+        });
+    },
+    
+    updatePopup: function(feature) {
+        const p = feature.getProperties();
+        if (p.properties) {
+            const lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
+            let message = '<table class="table table-dark"><tbody>';
+            
+            Object.entries(p.properties).forEach(([key, value]) => {
+                message += `<tr><th scope="row" style="width: 80px;">${key}</th><td>${value}</td></tr>`;
+            });
+            
+            message += `
+                <tr><td colspan="2">
+                    <hr /><div class="btn-group-vertical" role="group" style="width: 100%;">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>
+                        <a href="https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>
+                        <a href="https://bing.com/maps/default.aspx?rtp=~pos.${lonLat[1]}_${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>
+                    </div>
+                </td></tr>
+            </tbody></table>`;
+            
+            $('#sidebarTitle').text(p.properties['變異類型']);
+            $('#sidebarContent').html(message);
+            app.sidebar.open('home');
+            return true;
+        }
+        return false;
     }
-    textOptions = '';
-    for (k in typeOptions) {
-      textOptions += '<option>' + k + '</option>';
+};
+
+// Data Handling
+const data = {
+    showData: function(city, year, type = 'all') {
+        layers.points.getSource().clear();
+        $('#pointCity').val(city);
+        $('#pointYear').val(year);
+        
+        if (!app.dataPool[city]) {
+            app.dataPool[city] = {};
+        }
+        
+        if (!app.dataPool[city][year]) {
+            this.fetchData(city, year, type);
+        } else {
+            this.processData(app.dataPool[city][year], type);
+        }
+    },
+    
+    fetchData: function(city, year, type) {
+        $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function(csv) {
+            app.dataPool[city][year] = $.csv.toObjects(csv);
+            data.processData(app.dataPool[city][year], type);
+        });
+    },
+    
+    processData: function(data, type) {
+        const features = [];
+        data.forEach(item => {
+            if (type !== 'all' && type !== item['變異類型']) return;
+            
+            const feature = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.fromLonLat([
+                    parseFloat(item.longitude),
+                    parseFloat(item.latitude)
+                ])),
+                properties: item
+            });
+            features.push(feature);
+            
+            if (!app.typeOptions[item['變異類型']]) {
+                app.typeOptions[item['變異類型']] = true;
+            }
+        });
+        
+        $('#pointType').html(Object.keys(app.typeOptions).map(k => `<option>${k}</option>`).join('')).val(type);
+        layers.points.getSource().addFeatures(features);
+        app.map.getView().fit(layers.points.getSource().getExtent());
     }
-    $('#pointType').html(textOptions).val(type);
-    points.getSource().addFeatures(fc);
-    map.getView().fit(points.getSource().getExtent());
-  }
-  sidebar.close();
+};
+
+// Initialize Map
+function initMap() {
+    // Create sidebar
+    app.sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
+    
+    // Create map
+    app.map = new ol.Map({
+        layers: [layers.base, layers.points],
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.fromLonLat([120.221507, 23.000694]),
+            zoom: 13
+        })
+    });
+    
+    // Add controls
+    app.map.addControl(app.sidebar);
+    
+    // Add click handler
+    app.map.on('singleclick', function(evt) {
+        let pointClicked = false;
+        app.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+            if (!pointClicked) {
+                pointClicked = ui.updatePopup(feature);
+            }
+        });
+    });
+    
+    // Initialize UI
+    ui.initializeSelects();
+    
+    // Load initial data
+    data.showData(app.selectedCity, app.selectedYear);
 }
-showData(selectedCity, selectedYear);
 
-$('.select-filter').change(function () {
-  var theCity = $('#pointCity').val();
-  var theYear = $('#pointYear').val();
-  var theType = $('#pointType').val();
-  showData(theCity, theYear, theType);
-});
-
-var layerYellow = new ol.style.Style({
-  stroke: new ol.style.Stroke({
-    color: 'rgba(0,0,0,1)',
-    width: 1
-  }),
-  fill: new ol.style.Fill({
-    color: 'rgba(255,255,0,0.3)'
-  }),
-  text: new ol.style.Text({
-    font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
-    placement: 'point',
-    fill: new ol.style.Fill({
-      color: 'blue'
-    })
-  })
-});
-
-var baseLayer = new ol.layer.Tile({
-  source: new ol.source.WMTS({
-    matrixSet: 'EPSG:3857',
-    format: 'image/png',
-    url: 'https://wmts.nlsc.gov.tw/wmts',
-    layer: 'EMAP',
-    tileGrid: new ol.tilegrid.WMTS({
-      origin: ol.extent.getTopLeft(projectionExtent),
-      resolutions: resolutions,
-      matrixIds: matrixIds
-    }),
-    style: 'default',
-    wrapX: true,
-    attributions: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-  }),
-  opacity: 0.3
-});
-
-var appView = new ol.View({
-  center: ol.proj.fromLonLat([120.221507, 23.000694]),
-  zoom: 13
-});
-
-var geolocation = new ol.Geolocation({
-  projection: appView.getProjection()
-});
-
-geolocation.setTracking(true);
-
-geolocation.on('error', function (error) {
-  console.log(error.message);
-});
-
-var positionFeature = new ol.Feature();
-
-positionFeature.setStyle(new ol.style.Style({
-  image: new ol.style.Circle({
-    radius: 6,
-    fill: new ol.style.Fill({
-      color: '#3399CC'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    })
-  })
-}));
-
-geolocation.on('change:position', function () {
-  var coordinates = geolocation.getPosition();
-  positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-});
-
-var map = new ol.Map({
-  layers: [baseLayer, points],
-  target: 'map',
-  view: appView
-});
-map.addControl(sidebar);
-
-new ol.layer.Vector({
-  map: map,
-  source: new ol.source.Vector({
-    features: [positionFeature]
-  })
-});
-
-var sidebarTitle = document.getElementById('sidebarTitle');
-var content = document.getElementById('sidebarContent');
-
-map.on('singleclick', function (evt) {
-  content.innerHTML = '';
-  pointClicked = false;
-  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (false === pointClicked) {
-      var p = feature.getProperties();
-      if (p.properties.latitude) {
-        var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-        var message = '<table class="table table-dark">';
-        message += '<tbody>';
-        for (k in p.properties) {
-          message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p.properties[k] + '</td></tr>';
-        }
-        message += '<tr><td colspan="2">';
-        message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-        message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-        message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-        message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-        message += '</div></td></tr>';
-        message += '</tbody></table>';
-        sidebarTitle.innerHTML = p.properties['變異類型'];
-        content.innerHTML = message;
-        sidebar.open('home');
-        pointClicked = true;
-      }
-    }
-  });
-});
+// Start the application
+$(document).ready(initMap);
