@@ -15,11 +15,41 @@ const app = {
     typeOptions: { 'all': true },
     selectedCity: CONFIG.defaultCity,
     selectedYear: CONFIG.defaultYear,
-    years: Array.from({ length: CONFIG.defaultYear - 92 }, (_, i) => CONFIG.defaultYear - i)
+    years: Array.from({ length: CONFIG.defaultYear - 92 }, (_, i) => CONFIG.defaultYear - i),
+    clusterSource: null,
+    vectorSource: null
 };
 
 // Map Style Functions
 const styles = {
+    cluster: function(feature) {
+        const size = feature.get('features').length;
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 20,
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 153, 0, 0.8)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#cc6600',
+                    width: 2
+                })
+            }),
+            text: new ol.style.Text({
+                text: size.toString(),
+                font: 'bold 14px Arial',
+                fill: new ol.style.Fill({
+                    color: '#fff'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#cc6600',
+                    width: 2
+                }),
+                offsetY: 1
+            })
+        });
+    },
+
     point: function (feature) {
         const p = feature.getProperties().properties;
         const z = app.map.getView().getZoom();
@@ -125,10 +155,7 @@ const ui = {
 // Data Handling
 const data = {
     showData: function (city, year, type = 'all') {
-        if (!type || type.length <= 0) {
-            type = 'all';
-        }
-        layers.points.getSource().clear();
+        app.vectorSource.clear();
         $('#pointCity').val(city);
         $('#pointYear').val(year);
 
@@ -177,21 +204,37 @@ const data = {
         });
 
         $('#pointType').html(Object.keys(app.typeOptions).map(k => `<option>${k}</option>`).join('')).val(type);
-        layers.points.getSource().addFeatures(features);
+        app.vectorSource.addFeatures(features);
         if (features.length > 0) {
-            app.map.getView().fit(layers.points.getSource().getExtent());
+            app.map.getView().fit(app.vectorSource.getExtent());
         }
     }
 };
 
 // Initialize Map
 function initMap() {
+    // Create sources
+    app.vectorSource = new ol.source.Vector();
+    app.clusterSource = new ol.source.Cluster({
+        distance: 40,
+        source: app.vectorSource
+    });
+
+    // Create cluster layer
+    const clusterLayer = new ol.layer.Vector({
+        source: app.clusterSource,
+        style: function(feature) {
+            const features = feature.get('features');
+            return features.length > 1 ? styles.cluster(feature) : styles.point(features[0]);
+        }
+    });
+
     // Create sidebar
     app.sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
 
     // Create map
     app.map = new ol.Map({
-        layers: [layers.base, layers.points],
+        layers: [layers.base, clusterLayer],
         target: 'map',
         view: new ol.View({
             center: ol.proj.fromLonLat([120.221507, 23.000694]),
@@ -199,7 +242,6 @@ function initMap() {
         })
     });
 
-    // Add controls
     app.map.addControl(app.sidebar);
 
     // Add click handler
@@ -207,7 +249,20 @@ function initMap() {
         let pointClicked = false;
         app.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
             if (!pointClicked) {
-                pointClicked = ui.updatePopup(feature);
+                const features = feature.get('features');
+                if (features && features.length > 1) {
+                    // Zoom to cluster
+                    const extent = ol.extent.createEmpty();
+                    features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
+                    app.map.getView().fit(extent, {
+                        duration: 1000,
+                        padding: [50, 50, 50, 50],
+                        maxZoom: 18
+                    });
+                } else {
+                    // Show popup for single feature
+                    pointClicked = ui.updatePopup(features ? features[0] : feature);
+                }
             }
         });
     });
