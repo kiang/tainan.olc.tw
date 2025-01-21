@@ -67,7 +67,7 @@ function setupTopoJSONLayer() {
 function createMarkerStyle(feature) {
     // Define fixed colors and styles for earthquake-affected places
     const backgroundColor = 'rgba(255, 69, 0, 0.8)'; // Red-orange color to indicate danger
-    const textColor = '#ffffff'; // White text for contrast
+    const textColor = 'rgba(0, 0, 102,1)';
     const radius = 10; // Fixed radius for markers
 
     return new ol.style.Style({
