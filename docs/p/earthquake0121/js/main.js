@@ -144,10 +144,10 @@ function addMarkersFromCSV() {
                 const town = row[4];
                 const timestamp = row[0];
                 const fileUrl = row[1];
-                const uuid = row[7];
+                const uuid = uuidWithoutHiddenChars(row[7]);
                 const hasLocal = (row[8] == 1) ? '1' : '0';
                 let fileId = '';
-                
+
                 if (fileUrl) {
                     const match = fileUrl.match(/[-\w]{25,}/);
                     if (match) {
@@ -199,7 +199,7 @@ function showPoint(pointId) {
 
 function showPopup(feature, coordinate) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-    
+
     var content = '<div class="card">';
     var fileId = feature.get('fileId');
     var hasLocal = feature.get('hasLocal');
@@ -231,7 +231,7 @@ function showPopup(feature, coordinate) {
 
 function showEmptyPointPopup(coordinate, city, town) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-    
+
     var content = '<div class="card">';
     content += '<div class="card-body">';
     content += '<h5 class="card-title">位置資訊</h5>';
@@ -268,6 +268,9 @@ function uuidv4() {
     });
 }
 
+const uuidWithoutHiddenChars = uuid => {
+    return uuid.replace(/[\u200B-\u200F\uFEFF]/g, '').replace(/[\n\r]/g, '');
+};
 
 // Add this function to parse coordinates
 function parseCoordinates(input) {
@@ -322,7 +325,7 @@ function initCoordinatesModal() {
             // This callback function runs after the animation is complete
             // Trigger a single click event at the specified coordinates
             const pixel = map.getPixelFromCoordinate(coordinates);
-            
+
             // Dispatch the click event on the map's viewport
             map.dispatchEvent({
                 type: 'singleclick',
@@ -462,7 +465,7 @@ function initMap() {
                 }
             }
           }
-            
+
         });
         document.getElementById('readme-popup').style.display = 'none';
     });
@@ -483,6 +486,9 @@ function initMap() {
         window.location.hash = ''; // Clear hash when closing popup
         return false;
     };
+const uuidWithoutHiddenChars = uuid => {
+    return uuid.replace(/[\u200B-\u200F\uFEFF]/g, '');
+};
 
     // Hide popup when zoom changes
     map.getView().on('change:resolution', function() {
