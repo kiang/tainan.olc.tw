@@ -65,23 +65,22 @@ function setupTopoJSONLayer() {
 
 // Function to create style for markers
 function createMarkerStyle(feature) {
-    var name = feature.get('name');
-    let backgroundColor, textColor;
-
-    // Determine the radius based on the name length
-    var radius = Math.max(30, name.length * 5);
+    // Define fixed colors and styles for earthquake-affected places
+    const backgroundColor = 'rgba(255, 69, 0, 0.8)'; // Red-orange color to indicate danger
+    const textColor = '#ffffff'; // White text for contrast
+    const radius = 10; // Fixed radius for markers
 
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: radius,
-            fill: new ol.style.Fill({color: backgroundColor}),
-            stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
+            fill: new ol.style.Fill({ color: backgroundColor }),
+            stroke: new ol.style.Stroke({ color: '#ffffff', width: 2 })
         }),
         text: new ol.style.Text({
-            text: name,
-            font: 'bold 14px Arial,sans-serif',
-            fill: new ol.style.Fill({color: textColor}),
-            stroke: new ol.style.Stroke({color: backgroundColor, width: 1}),
+            text: feature.get('name'),
+            font: 'bold 14px Arial, sans-serif',
+            fill: new ol.style.Fill({ color: textColor }),
+            stroke: new ol.style.Stroke({ color: backgroundColor, width: 1 }),
             offsetY: 1
         })
     });
