@@ -394,8 +394,8 @@ function initMap() {
         target: 'map',
         layers: [emapLayer, topoJSONLayer, clusterLayer, userLocationLayer],
         view: new ol.View({
-            center: ol.proj.fromLonLat([120.221507, 23.000694]), // Centered on Tainan
-            zoom: 12
+            center: ol.proj.fromLonLat([120.570000, 23.230000]), // Centered on Tainan
+            zoom: 11
         })
     });
 
