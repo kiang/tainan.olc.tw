@@ -338,6 +338,27 @@ function initCoordinatesModal() {
     });
 }
 
+// Add a spider layer
+var spiderLayer = new ol.layer.Vector({
+    source: new ol.source.Vector(),
+    style: function(feature) {
+        return createMarkerStyle(feature);
+    },
+    zIndex: 2
+});
+
+// Function to calculate spider positions
+function calculateSpiderPositions(center, count, radius = 40) {
+    const positions = [];
+    for (let i = 0; i < count; i++) {
+        const angle = (2 * Math.PI * i) / count;
+        const x = center[0] + radius * Math.cos(angle);
+        const y = center[1] + radius * Math.sin(angle);
+        positions.push([x, y]);
+    }
+    return positions;
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
@@ -395,7 +416,7 @@ function initMap() {
 
     map = new ol.Map({
         target: 'map',
-        layers: [emapLayer, topoJSONLayer, clusterLayer, userLocationLayer],
+        layers: [emapLayer, topoJSONLayer, clusterLayer, userLocationLayer, spiderLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.570000, 23.230000]), // Centered on Tainan
             zoom: 11
@@ -439,33 +460,44 @@ function initMap() {
     // Add map click event
     map.on('singleclick', function(evt) {
         let featureFound = false;
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-          var p = feature.getProperties();
-          if(p.COUNTYNAME && !featureFound) {
-            showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
-          } else {
-            featureFound = true;
-            var features = feature.get('features');
-            if (features && features.length > 1) {
-                // Cluster clicked
-                var view = map.getView();
-                var zoom = view.getZoom();
-                view.animate({
-                    center: feature.getGeometry().getCoordinates(),
-                    zoom: zoom + 1,
-                    duration: 250
-                });
+        map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+            var p = feature.getProperties();
+            if (p.COUNTYNAME && !featureFound) {
+                showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
             } else {
-                // Single feature clicked
-                var clickedFeature = features ? features[0] : feature;
-                var uuid = clickedFeature.get('uuid');
-                if (uuid) {
-                    // Update the hash and let routie handle it
-                    window.location.hash = 'point/' + uuid;
+                featureFound = true;
+                var features = feature.get('features');
+                if (features && features.length > 1) {
+                    const view = map.getView();
+                    if (view.getZoom() > 13) {
+                        // Spider effect for small clusters
+                        spiderLayer.getSource().clear();
+                        const positions = calculateSpiderPositions(feature.getGeometry().getCoordinates(), features.length);
+                        features.forEach((f, i) => {
+                            const spiderFeature = f.clone();
+                            spiderFeature.setGeometry(new ol.geom.Point(positions[i]));
+                            spiderLayer.getSource().addFeature(spiderFeature);
+                        });
+                    } else {
+                        // Zoom to cluster
+                        const extent = ol.extent.createEmpty();
+                        features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
+                        view.fit(extent, {
+                            duration: 1000,
+                            padding: [50, 50, 50, 50],
+                            maxZoom: 18
+                        });
+                    }
+                } else {
+                    // Single feature clicked
+                    var clickedFeature = features ? features[0] : feature;
+                    var uuid = clickedFeature.get('uuid');
+                    if (uuid) {
+                        // Update the hash and let routie handle it
+                        window.location.hash = 'point/' + uuid;
+                    }
                 }
             }
-          }
-
         });
         document.getElementById('readme-popup').style.display = 'none';
     });
@@ -486,13 +518,11 @@ function initMap() {
         window.location.hash = ''; // Clear hash when closing popup
         return false;
     };
-const uuidWithoutHiddenChars = uuid => {
-    return uuid.replace(/[\u200B-\u200F\uFEFF]/g, '');
-};
 
     // Hide popup when zoom changes
     map.getView().on('change:resolution', function() {
         overlay.setPosition(undefined);
+        spiderLayer.getSource().clear();
     });
 
     // Add click event listener for readme icon
@@ -507,7 +537,6 @@ const uuidWithoutHiddenChars = uuid => {
 
     // Call this function in your initMap function or wherever you initialize your page
     initCoordinatesModal();
-
 }
 
 // Initialize the map when the window loads
