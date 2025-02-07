@@ -289,24 +289,12 @@ function showPopup(feature, coordinate) {
     
     content += '</div>';
 
-    // Add button to open Google Form
-    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfRKV0gaEcV6ln0_pFBOck-GayKQQeBpfdPir9jHyVyEcJufQ/viewform?usp=pp_url&hl=zh_TW';
-    formUrl += '&entry.465818780=' + encodeURIComponent(feature.get('name') || '');
-    formUrl += '&entry.1588782081=' + encodeURIComponent(feature.get('city') || '');
-    formUrl += '&entry.1966779823=' + encodeURIComponent(feature.get('town') || '');
-    formUrl += '&entry.1998738256=' + lonLat[0].toFixed(6);
-    formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
-    formUrl += '&entry.2072773208=' + feature.get('uuid'); // Generate a new UUID for each submission
-
     // Add routing buttons
     content += '<div class="card-footer">';
     content += '<div class="d-grid gap-2">';
     content += '<button class="btn btn-primary btn-sm" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-google"></i> Google Maps</button>';
     content += '<button class="btn btn-secondary btn-sm" onclick="window.open(\'https://www.bing.com/maps/directions?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-map"></i> Bing Maps</button>';
     content += '<button class="btn btn-info btn-sm" onclick="window.open(\'https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '\', \'_blank\')"><i class="bi bi-signpost-2"></i> HERE Maps</button>';
-    content += '</div>';
-    content += '<div class="d-grid">';
-    content += '<button class="btn btn-primary" onclick="window.open(\'' + formUrl + '\', \'_blank\')"><i class="bi bi-plus-circle"></i> 更新</button>';
     content += '</div>';
     content += '</div>';
     content += '</div>';
