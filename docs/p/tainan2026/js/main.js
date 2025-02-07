@@ -150,7 +150,34 @@ function addMarkersFromCSV() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
         .then(response => response.text())
         .then(data => {
-            const rows = data.split('\n').map(row => row.split(','));
+            // Use a CSV parser that handles quoted fields containing newlines
+            const parseCSV = (str) => {
+                const arr = [];
+                let quote = false;
+                let col = '';
+                let row = [];
+
+                for (let char of str) {
+                    if (char === '"') {
+                        quote = !quote;
+                    } else if (char === ',' && !quote) {
+                        row.push(col.trim());
+                        col = '';
+                    } else if (char === '\n' && !quote) {
+                        row.push(col.trim());
+                        arr.push(row);
+                        row = [];
+                        col = '';
+                    } else {
+                        col += char;
+                    }
+                }
+                if (col) row.push(col.trim());
+                if (row.length) arr.push(row);
+                return arr;
+            };
+
+            const rows = parseCSV(data);
             const features = [];
 
             for (let i = 1; i < rows.length; i++) {
@@ -164,6 +191,7 @@ function addMarkersFromCSV() {
                 const fileUrl = row[1];
                 const uuid = row[7];
                 const hasLocal = (row[8] == 1) ? '1' : '0';
+                const reply = row[14];
                 let fileId = '';
                 
                 if (fileUrl) {
@@ -182,7 +210,8 @@ function addMarkersFromCSV() {
                         city: city,
                         town: town,
                         uuid: uuid,
-                        hasLocal: hasLocal
+                        hasLocal: hasLocal,
+                        reply: reply
                     });
                     features.push(feature);
                     points[uuid] = feature;
@@ -245,6 +274,19 @@ function showPopup(feature, coordinate) {
     content += '<p class="card-text">時間: ' + feature.get('timestamp') + '</p>';
     content += '<p class="card-text">縣市: ' + feature.get('city') + '</p>';
     content += '<p class="card-text">鄉鎮市區: ' + feature.get('town') + '</p>';
+    
+    // Add collapsible reply section if reply exists
+    const reply = feature.get('reply');
+    if (reply) {
+        const replyId = 'reply-' + feature.get('uuid');
+        content += '<div class="d-grid gap-2 mt-2">';
+        content += '<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#' + replyId + '" aria-expanded="false">';
+        content += '顯示處理情形</button>';
+        content += '<div class="collapse" id="' + replyId + '">';
+        content += '<div class="card card-body">' + reply.replace(/\n/g, '<br>') + '</div>';
+        content += '</div></div>';
+    }
+    
     content += '</div>';
 
     // Add button to open Google Form
@@ -592,7 +634,7 @@ function initMap() {
         overlay.setPosition(undefined);
     });
 
-    // Add click event listener for readme icon
+    // Add click event listener for the readme icon
     document.getElementById('readme-icon').addEventListener('click', function() {
       document.getElementById('readme-popup').style.display = 'block';
     });
