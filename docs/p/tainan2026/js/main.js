@@ -258,6 +258,46 @@ function showPoint(pointId) {
     }
 }
 
+// Add this function to handle popup expansion
+function expandPopup(button) {
+    const popup = document.getElementById('popup');
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    
+    if (!isExpanded) {
+        // When expanding
+        popup.style.cssText = `
+            position: fixed !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            height: 100vh !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            z-index: 2000 !important;
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            overflow-y: auto !important;
+            padding: 20px !important;
+        `;
+        button.textContent = '收合處理情形';
+
+        // Get the current map center
+        const center = map.getView().getCenter();
+        overlay.setPosition(center);
+    } else {
+        // When collapsing
+        popup.style.cssText = ''; // Reset all inline styles
+        button.textContent = '顯示處理情形';
+
+        // Return to original position
+        const feature = points[window.location.hash.split('/')[1]];
+        if (feature) {
+            overlay.setPosition(feature.getGeometry().getCoordinates());
+        }
+    }
+}
+
+// Modify the showPopup function to add the expand button
 function showPopup(feature, coordinate) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     
@@ -265,7 +305,7 @@ function showPopup(feature, coordinate) {
     var fileId = feature.get('fileId');
     var hasLocal = feature.get('hasLocal');
     if(hasLocal == '1'){
-        content += '<div class="card-img-top"><img src="pic/' + feature.get('uuid') + '.jpg" width="100%" height="300"></iframe></div>';
+        content += '<div class="card-img-top"><img src="pic/' + feature.get('uuid') + '.jpg" width="300"></iframe></div>';
     } else if (fileId) {
         content += '<div class="card-img-top"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></div>';
     }
@@ -283,7 +323,7 @@ function showPopup(feature, coordinate) {
         content += '<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#' + replyId + '" aria-expanded="false">';
         content += '顯示處理情形</button>';
         content += '<div class="collapse" id="' + replyId + '">';
-        content += '<div class="card card-body">' + reply.replace(/\n/g, '<br>') + '</div>';
+        content += '<div class="card card-body text-break" style="white-space: pre-wrap; max-height: calc(100vh - 400px); overflow-y: auto;">' + reply + '</div>';
         content += '</div></div>';
     }
     
@@ -301,6 +341,21 @@ function showPopup(feature, coordinate) {
 
     document.getElementById('popup-content').innerHTML = content;
     overlay.setPosition(coordinate);
+
+    // Add collapse event handlers after content is added
+    if (reply) {
+        const replyId = 'reply-' + feature.get('uuid');
+        const collapseElement = document.getElementById(replyId);
+        const button = collapseElement.previousElementSibling; // Get the button
+
+        collapseElement.addEventListener('show.bs.collapse', () => {
+            expandPopup(button);
+        });
+
+        collapseElement.addEventListener('hide.bs.collapse', () => {
+            expandPopup(button);
+        });
+    }
 }
 
 function showEmptyPointPopup(coordinate, city, town) {
