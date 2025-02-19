@@ -130,6 +130,11 @@ map.on('singleclick', function (evt) {
                     if(candidates[p.id].linktr != '') {
                         c += '<tr><td colspan="2"><a href="' + candidates[p.id].linktr + '" target="_blank" class="btn btn-primary btn-lg btn-block">罷免討論</a></td></tr>';
                     }
+                    c += '<tr><th>得票</th><td>' + candidates[p.id].votes + '</td></tr>';
+                    c += '<tr><th>選舉人數</th><td>' + candidates[p.id].total + '</td></tr>';
+                    c += '<tr><th>階段一</th><td>' + Math.ceil((candidates[p.id].total * 0.01)) + '</td></tr>';
+                    c += '<tr><th>階段二</th><td>' + Math.ceil((candidates[p.id].total * 0.1)) + '</td></tr>';
+                    c += '<tr><th>階段三</th><td>' + Math.ceil((candidates[p.id].total * 0.25)) + '</td></tr>';
                     c += '</table>';
                 } else {
                     sidebarTitle = p.name;
