@@ -37,7 +37,7 @@ foreach($json AS $k => $v) {
 }
 $cunlis = json_decode(file_get_contents('/home/kiang/public_html/db.cec.gov.tw/data/ly/2024_zone_cunli.json'), true);
 foreach($cunlis AS $cunli) {
-    $json[$cunli['zoneCode']]['total'] += $cunli['total'];
+    $json[$cunli['zoneCode']]['total'] += $cunli['votes_all'];
     $candidate = $json[$cunli['zoneCode']]['candidate'];
     $json[$cunli['zoneCode']]['votes'] += $cunli['votes'][$candidate]['votes'];
 }
