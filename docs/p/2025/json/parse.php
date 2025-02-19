@@ -30,7 +30,16 @@ foreach($json AS $k => $v) {
     //file_put_contents(dirname(__DIR__) . '/img/' . $k . '.jpg', file_get_contents($candidates[$v['candidate']]['img']));
     $json[$k]['link'] = $candidates[$v['candidate']]['link'];
     $json[$k]['party'] = $candidates[$v['candidate']]['party'];
-    $json[$k]['linktr'] = '';
+    if(!isset($json[$k]['linktr'])) {
+        $json[$k]['linktr'] = '';
+    }
+    $json[$k]['total'] = $json[$k]['votes'] = 0;
+}
+$cunlis = json_decode(file_get_contents('/home/kiang/public_html/db.cec.gov.tw/data/ly/2024_zone_cunli.json'), true);
+foreach($cunlis AS $cunli) {
+    $json[$cunli['zoneCode']]['total'] += $cunli['total'];
+    $candidate = $json[$cunli['zoneCode']]['candidate'];
+    $json[$cunli['zoneCode']]['votes'] += $cunli['votes'][$candidate]['votes'];
 }
 
 file_put_contents(__DIR__ . '/candidates.json', json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
