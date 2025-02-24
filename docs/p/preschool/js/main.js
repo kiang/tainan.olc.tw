@@ -12,39 +12,42 @@ for (var z = 0; z < 20; ++z) {
   matrixIds[z] = z;
 }
 
-var filter = '';
-var typeFilter = '';
+var activeFilters = {
+  type: '',
+  age: ''
+};
+
 function pointStyleFunction(f) {
   var p = f.getProperties().properties, color, stroke, radius;
   
   // Type filter
-  if(typeFilter && schools[p.key]['類型'] !== typeFilter) {
+  if(activeFilters.type && schools[p.key]['類型'] !== activeFilters.type) {
     return null;
   }
 
   // Age filter
-  switch(filter) {
+  switch(activeFilters.age) {
     case 2:
       if(!schools[p.key]['招生']['2歲'] || schools[p.key]['招生']['2歲'] == 0) {
         return null;
       }
       break;
-      case 3:
-        if(!schools[p.key]['招生']['3歲'] || schools[p.key]['招生']['3歲'] == 0) {
-          return null;
-        }
-        break;
-        case 4:
+    case 3:
+      if(!schools[p.key]['招生']['3歲'] || schools[p.key]['招生']['3歲'] == 0) {
+        return null;
+      }
+      break;
+    case 4:
       if(!schools[p.key]['招生']['4歲'] || schools[p.key]['招生']['4歲'] == 0) {
         return null;
       }
       break;
-      case 5:
+    case 5:
       if(!schools[p.key]['招生']['5歲'] || schools[p.key]['招生']['5歲'] == 0) {
         return null;
       }
       break;
-      case '3-5':
+    case '3-5':
       if(!schools[p.key]['招生']['3-5歲'] || schools[p.key]['招生']['3-5歲'] == 0) {
         return null;
       }
@@ -266,40 +269,52 @@ $('#btn-geolocation').click(function () {
 });
 
 $('#btn-age2').click(function () {
-  filter = 2;
+  activeFilters.age = 2;
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 $('#btn-age3').click(function () {
-  filter = 3;
+  activeFilters.age = 3;
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 $('#btn-age4').click(function () {
-  filter = 4;
+  activeFilters.age = 4;
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 $('#btn-age5').click(function () {
-  filter = 5;
+  activeFilters.age = 5;
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 $('#btn-age-all').click(function () {
-  filter = '';
+  activeFilters.age = '';
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 $('#btn-age3-5').click(function () {
-  filter = '3-5';
+  activeFilters.age = '3-5';
   vectorPoints.getSource().refresh();
+  $('.age-group .btn').removeClass('active');
+  $(this).addClass('active');
 });
 
 // Add floating filter buttons
 var filterButtonsHtml = `
 <div id="type-filter-buttons" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; background: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-  <div class="btn-group" role="group">
-    <button id="btn-type-all" class="btn btn-secondary">全部</button>
+  <div class="btn-group type-group" role="group">
+    <button id="btn-type-all" class="btn btn-secondary active">全部</button>
     <button id="btn-type-public" class="btn btn-secondary">公幼</button>
     <button id="btn-type-semi" class="btn btn-secondary">準公共</button>
     <button id="btn-type-nonprofit" class="btn btn-secondary">非營利</button>
@@ -308,31 +323,31 @@ var filterButtonsHtml = `
 
 $('body').append(filterButtonsHtml);
 
-// Add click handlers for type filter buttons
+// Update type filter click handlers
 $('#btn-type-all').click(function() {
-  typeFilter = '';
+  activeFilters.type = '';
   vectorPoints.getSource().refresh();
-  $('.btn-group .btn').removeClass('active');
+  $('.type-group .btn').removeClass('active');
   $(this).addClass('active');
 });
 
 $('#btn-type-public').click(function() {
-  typeFilter = '公幼';
+  activeFilters.type = '公幼';
   vectorPoints.getSource().refresh();
-  $('.btn-group .btn').removeClass('active');
+  $('.type-group .btn').removeClass('active');
   $(this).addClass('active');
 });
 
 $('#btn-type-semi').click(function() {
-  typeFilter = '準公共';
+  activeFilters.type = '準公共';
   vectorPoints.getSource().refresh();
-  $('.btn-group .btn').removeClass('active');
+  $('.type-group .btn').removeClass('active');
   $(this).addClass('active');
 });
 
 $('#btn-type-nonprofit').click(function() {
-  typeFilter = '非營利';
+  activeFilters.type = '非營利';
   vectorPoints.getSource().refresh();
-  $('.btn-group .btn').removeClass('active');
+  $('.type-group .btn').removeClass('active');
   $(this).addClass('active');
 });
