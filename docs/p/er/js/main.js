@@ -11,6 +11,18 @@ for (var z = 0; z < 20; ++z) {
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
+var currentFeature = null;
+
+// Animation frame for pulsing effect
+var frameState = 0;
+function animate() {
+  frameState = (frameState + 1) % 60;
+  if (currentFeature) {
+    vectorLayer.changed();
+  }
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
 
 var overlay = new ol.Overlay({
   element: container,
@@ -22,6 +34,10 @@ var overlay = new ol.Overlay({
 
 closer.onclick = function() {
   overlay.setPosition(undefined);
+  if (currentFeature) {
+    currentFeature = null;
+    vectorLayer.changed();
+  }
   closer.blur();
   return false;
 };
@@ -44,57 +60,98 @@ var baseLayer = new ol.layer.Tile({
   opacity: 0.8
 });
 
-function pointStyleFunction(feature) {
+function pointStyleFunction(feature, isHover = false) {
   var properties = feature.getProperties();
+  var isSelected = feature === currentFeature;
   
-  // Red for congested (inform = Y)
+  // Determine radius and stroke based on state
+  var radius = isSelected ? 18 : (isHover ? 15 : 12);
+  var strokeWidth = isSelected ? 4 : (isHover ? 3 : 2);
+  var styles = [];
+  
+  // Add outer black border for better contrast
   if (properties.inform === 'Y') {
-    return new ol.style.Style({
+    styles.push(new ol.style.Style({
       image: new ol.style.Circle({
-        radius: 8,
+        radius: radius + 2,
+        fill: new ol.style.Fill({
+          color: '#000000'
+        })
+      })
+    }));
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius,
         fill: new ol.style.Fill({
           color: '#ff0000'
         }),
         stroke: new ol.style.Stroke({
           color: '#000000',
-          width: 1
+          width: strokeWidth
         })
       })
-    });
-  }
-  
-  // Yellow if any waiting count > 0
-  if (properties.wait_see > 0 || 
+    }));
+  } else if (properties.wait_see > 0 || 
       properties.wait_bed > 0 || 
       properties.wait_general > 0 || 
       properties.wait_icu > 0) {
-    return new ol.style.Style({
+    styles.push(new ol.style.Style({
       image: new ol.style.Circle({
-        radius: 8,
+        radius: radius + 2,
+        fill: new ol.style.Fill({
+          color: '#000000'
+        })
+      })
+    }));
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius,
         fill: new ol.style.Fill({
           color: '#ffdd57'
         }),
         stroke: new ol.style.Stroke({
           color: '#000000',
-          width: 1
+          width: strokeWidth
         })
       })
-    });
+    }));
+  } else {
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius + 2,
+        fill: new ol.style.Fill({
+          color: '#000000'
+        })
+      })
+    }));
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius,
+        fill: new ol.style.Fill({
+          color: '#48c774'
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#000000',
+          width: strokeWidth
+        })
+      })
+    }));
+  }
+
+  // Add highlight effect for selected state
+  if (isSelected) {
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius + 6,
+        stroke: new ol.style.Stroke({
+          color: 'rgba(0, 0, 0, 0.4)',
+          width: 3
+        })
+      })
+    }));
   }
   
-  // Green for no waiting patients
-  return new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: 8,
-      fill: new ol.style.Fill({
-        color: '#48c774'
-      }),
-      stroke: new ol.style.Stroke({
-        color: '#000000',
-        width: 1
-      })
-    })
-  });
+  return styles;
 }
 
 var vectorSource = new ol.source.Vector({
@@ -126,6 +183,12 @@ map.on('singleclick', function(evt) {
     var coordinates = feature.getGeometry().getCoordinates();
     var props = feature.getProperties();
     
+    // Update current feature and refresh layer
+    if (currentFeature !== feature) {
+      currentFeature = feature;
+      vectorLayer.changed();
+    }
+    
     // Format the date by replacing 'T' with space before parsing
     var dateStr = props.date ? moment(props.date.replace('T', ' ')).format('YYYY-MM-DD HH:mm:ss') : '';
     
@@ -141,16 +204,20 @@ map.on('singleclick', function(evt) {
     
     content.innerHTML = popupContent;
     overlay.setPosition(coordinates);
+  } else {
+    // Clear selection when clicking outside markers
+    if (currentFeature) {
+      currentFeature = null;
+      vectorLayer.changed();
+    }
   }
 });
 
-// Add hover effect
+// Update hover interaction with new style
 var hoverInteraction = new ol.interaction.Select({
   condition: ol.events.condition.pointerMove,
   style: function(feature) {
-    var style = pointStyleFunction(feature);
-    style.getImage().setRadius(12); // Increase size on hover
-    return style;
+    return pointStyleFunction(feature, true);
   }
 });
 
