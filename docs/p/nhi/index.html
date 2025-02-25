@@ -40,6 +40,49 @@
         .ui-front {
             z-index: 9999;
         }
+
+        .legend {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 2px solid #000;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Enhance marker hover effect */
+        .ol-selectable {
+            cursor: pointer;
+        }
+
+        /* Make popup more visible */
+        .ol-popup {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-radius: 5px;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -127,6 +170,25 @@
     <div id="map" class="sidebar-map"></div>
     <div style="position: fixed; bottom: 0px; left: 0px;">
         <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
+    </div>
+    <div class="legend">
+        <h6 class="font-weight-bold mb-2">掛號費用說明</h6>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ff0000;"></span>
+            <span class="legend-text">200元以上</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ff9900;"></span>
+            <span class="legend-text">150-199元</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ffdd57;"></span>
+            <span class="legend-text">100-149元</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #48c774;"></span>
+            <span class="legend-text">100元以下</span>
+        </div>
     </div>
     <script src="../js/routie.min.js" type="text/javascript"></script>
     <script src="../js/jquery.min.js" type="text/javascript"></script>

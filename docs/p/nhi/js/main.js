@@ -12,41 +12,153 @@ for (var z = 0; z < 20; ++z) {
   matrixIds[z] = z;
 }
 
+function getClusterStyle(feature) {
+  var size = feature.get('features').length;
+  // Calculate min and max fees
+  var minFee = Infinity;
+  var maxFee = 0;
+  feature.get('features').forEach(function(f) {
+    const fee = f.getProperties().normal;
+    minFee = Math.min(minFee, fee);
+    maxFee = Math.max(maxFee, fee);
+  });
+
+  // Determine color based on average fee
+  var avgFee = (minFee + maxFee) / 2;
+  var color;
+  if (avgFee >= 200) {
+    color = '#ff0000';
+  } else if (avgFee >= 150) {
+    color = '#ff9900';
+  } else if (avgFee >= 100) {
+    color = '#ffdd57';
+  } else {
+    color = '#48c774';
+  }
+
+  var radius = Math.min(25 + size, 50);
+
+  var styles = [
+    // Black border style
+    new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius + 2,
+        fill: new ol.style.Fill({
+          color: '#000000'
+        })
+      })
+    }),
+    // Main cluster style with fee range
+    new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius,
+        fill: new ol.style.Fill({
+          color: color
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#ffffff',
+          width: 2
+        })
+      }),
+      text: new ol.style.Text({
+        text: size.toString() + '\n' + minFee + '-' + maxFee + '元',
+        font: 'bold 14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        fill: new ol.style.Fill({
+          color: '#ffffff'
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#000000',
+          width: 3
+        }),
+        textAlign: 'center',
+        textBaseline: 'middle'
+      })
+    })
+  ];
+
+  return styles;
+}
+
 function pointStyleFunction(f) {
   var p = f.getProperties(), color, stroke, radius;
-  if (f === currentFeature) {
+  var isSelected = f === currentFeature;
+  
+  // Determine color based on registration fee
+  if (p.normal >= 200) {
+    color = '#ff0000';
+  } else if (p.normal >= 150) {
+    color = '#ff9900';
+  } else if (p.normal >= 100) {
+    color = '#ffdd57';
+  } else {
+    color = '#48c774';
+  }
+
+  // Determine size and stroke based on selection state
+  if (isSelected) {
     stroke = new ol.style.Stroke({
-      color: '#f00',
-      width: 5
+      color: '#000000',
+      width: 4
     });
-    radius = 30;
+    radius = 25;
   } else {
     stroke = new ol.style.Stroke({
-      color: '#48c774',
+      color: '#ffffff',
       width: 2
     });
-    radius = 20;
+    radius = 18;
   }
-  let pointStyle = new ol.style.Style({
-    image: new ol.style.RegularShape({
-      radius: radius,
-      points: 3,
+
+  var styles = [];
+  
+  // Add outer black border
+  styles.push(new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: radius + 2,
       fill: new ol.style.Fill({
-        color: '#fff'
+        color: '#000000'
+      })
+    })
+  }));
+
+  // Main marker style
+  styles.push(new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: radius,
+      fill: new ol.style.Fill({
+        color: color
       }),
       stroke: stroke
     }),
     text: new ol.style.Text({
-      font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
+      text: p.normal + '元',
+      font: 'bold 14px "Open Sans", "Arial Unicode MS", "sans-serif"',
       fill: new ol.style.Fill({
-        color: 'rgba(0,0,255,0.7)'
-      })
+        color: '#ffffff'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#000000',
+        width: 3
+      }),
+      offsetY: -1
     })
-  });
-  pointStyle.getText().setText(p.normal + '');
+  }));
 
-  return pointStyle;
+  if (isSelected) {
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius + 6,
+        stroke: new ol.style.Stroke({
+          color: 'rgba(0, 0, 0, 0.4)',
+          width: 3
+        })
+      })
+    }));
+  }
+
+  return styles;
 }
+
 var sidebarTitle = document.getElementById('sidebarTitle');
 var content = document.getElementById('sidebarContent');
 
@@ -55,13 +167,24 @@ var appView = new ol.View({
   zoom: 14
 });
 
-var vectorPoints = new ol.layer.Vector({
+var clusterSource = new ol.source.Cluster({
+  distance: 40,
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON({
       featureProjection: appView.getProjection()
     })
-  }),
-  style: pointStyleFunction
+  })
+});
+
+var vectorPoints = new ol.layer.Vector({
+  source: clusterSource,
+  style: function(feature) {
+    var size = feature.get('features').length;
+    if (size > 1) {
+      return getClusterStyle(feature);
+    }
+    return pointStyleFunction(feature.get('features')[0]);
+  }
 });
 
 var baseLayer = new ol.layer.Tile({
@@ -90,19 +213,33 @@ var map = new ol.Map({
 
 map.addControl(sidebar);
 var pointClicked = false;
-map.on('singleclick', function (evt) {
-  content.innerHTML = '';
-  pointClicked = false;
-  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (false === pointClicked) {
-      var p = feature.getProperties();
+map.on('singleclick', function(evt) {
+  var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+    return feature;
+  });
+
+  if (feature) {
+    var features = feature.get('features');
+    if (features.length > 1) {
+      // If cluster clicked, zoom to extent of features
+      var extent = ol.extent.createEmpty();
+      features.forEach(function(f) {
+        ol.extent.extend(extent, f.getGeometry().getExtent());
+      });
+      map.getView().fit(extent, {
+        padding: [50, 50, 50, 50],
+        duration: 500
+      });
+    } else {
+      // Single feature clicked
+      var f = features[0];
+      var p = f.getProperties();
       var targetHash = '#' + p.id;
       if (window.location.hash !== targetHash) {
         window.location.hash = targetHash;
       }
-      pointClicked = true;
     }
-  });
+  }
 });
 
 var previousFeature = false;
@@ -238,9 +375,9 @@ $('#btn-geolocation').click(function () {
 
 var pointsFc;
 var findTerms = [];
-$.getJSON('https://kiang.github.io/info.nhi.gov.tw/geojson/hospitals.json', {}, function (c) {
+$.getJSON('https://kiang.github.io/info.nhi.gov.tw/geojson/hospitals.json', {}, function(c) {
   pointsFc = c;
-  var vSource = vectorPoints.getSource();
+  var vSource = clusterSource.getSource();
   var vFormat = vSource.getFormat();
   vSource.addFeatures(vFormat.readFeatures(pointsFc));
 
@@ -255,7 +392,7 @@ $.getJSON('https://kiang.github.io/info.nhi.gov.tw/geojson/hospitals.json', {}, 
 
   $('#findPoint').autocomplete({
     source: findTerms,
-    select: function (event, ui) {
+    select: function(event, ui) {
       var targetHash = '#' + ui.item.value;
       if (window.location.hash !== targetHash) {
         window.location.hash = targetHash;
