@@ -194,11 +194,11 @@ map.on('singleclick', function(evt) {
     
     var popupContent = '<div class="table-responsive"><table class="table table-sm">';
     popupContent += '<tr><th colspan="2" class="text-center">' + props.name + '</th></tr>';
-    popupContent += '<tr><td>是否已向119通報病床</td><td>' + (props.inform === 'Y' ? '是' : '否') + '</td></tr>';
-    popupContent += '<tr><td>看診</td><td>' + (props.wait_see || '0') + '</td></tr>';
-    popupContent += '<tr><td>推床</td><td>' + (props.wait_bed || '0') + '</td></tr>';
-    popupContent += '<tr><td>住院</td><td>' + (props.wait_general || '0') + '</td></tr>';
-    popupContent += '<tr><td>加護病房</td><td>' + (props.wait_icu || '0') + '</td></tr>';
+    popupContent += '<tr><td>通報滿載</td><td>' + (props.inform === 'Y' ? '是' : '否') + '</td></tr>';
+    popupContent += '<tr><td>等待看診</td><td>' + (props.wait_see || '0') + '</td></tr>';
+    popupContent += '<tr><td>等待推床</td><td>' + (props.wait_bed || '0') + '</td></tr>';
+    popupContent += '<tr><td>等待住院</td><td>' + (props.wait_general || '0') + '</td></tr>';
+    popupContent += '<tr><td>等待加護病房</td><td>' + (props.wait_icu || '0') + '</td></tr>';
     popupContent += '<tr><td>更新時間</td><td>' + dateStr + '</td></tr>';
     popupContent += '</table></div>';
     
