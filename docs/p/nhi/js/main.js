@@ -246,76 +246,89 @@ var previousFeature = false;
 var currentFeature = false;
 function showPoint(pointId) {
   $('#findPoint').val(pointId);
-
+  
   var features = vectorPoints.getSource().getFeatures();
   var pointFound = false;
+  
   for (k in features) {
-    var p = features[k].getProperties();
-    if (p.id === pointId) {
-      currentFeature = features[k];
-      features[k].setStyle(pointStyleFunction(features[k]));
-      if (false !== previousFeature) {
-        previousFeature.setStyle(pointStyleFunction(previousFeature));
-      }
-      previousFeature = currentFeature;
-      appView.setCenter(features[k].getGeometry().getCoordinates());
-      appView.setZoom(17);
-      var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-      var message = '<table class="table table-dark">';
-      message += '<tbody>';
-      message += '<tr><th scope="row" style="width: 100px;">名稱</th><td>';
-      message += '<a href="https://info.nhi.gov.tw/INAE1000/INAE1000S03?id=' + p.id + '" target="_blank" class="sidebar-link">' + p.name + '</a>';
-      message += '</td></tr>';
-      message += '<tr><th scope="row">一般掛號</th><td>' + p.normal + '</td></tr>';
-      if (p.emergency > 0) {
-        message += '<tr><th scope="row">急診掛號</th><td>' + p.emergency + '</td></tr>';
-      }
-      message += '<tr><th scope="row">備註</th><td>' + p.note.replace(/\\n/g, '<br />') + '</td></tr>';
-      message += '<tr><th scope="row">電話</th><td>' + p.phone + '</td></tr>';
-      message += '<tr><th scope="row">住址</th><td>' + p.address + '</td></tr>';
-      message += '<tr><td colspan="2">';
-      if (p.service_periods != '') {
-        var sParts = p.service_periods.split('');
-        message += '<table class="table table-bordered text-center" style="color: black;">';
-        message += '<thead class="table-dark"><tr><th></th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr></thead><tbody>';
-        message += '<tr><td class="table-dark">上</td>';
-        for (i = 0; i < 7; i++) {
-          if (sParts[i] == 'N') {
-            message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
-          } else {
-            message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
-          }
+    var clusterFeatures = features[k].get('features');
+    // Search through cluster features
+    for (var i = 0; i < clusterFeatures.length; i++) {
+      var f = clusterFeatures[i];
+      var p = f.getProperties();
+      if (p.id == pointId) {
+        currentFeature = f;
+        
+        // Update styles for current and previous features
+        if (false !== previousFeature) {
+          previousFeature.setStyle(pointStyleFunction(previousFeature));
         }
-        message += '</tr>';
-        message += '<tr><td class="table-dark">下</td>';
-        for (i = 7; i < 14; i++) {
-          if (sParts[i] == 'N') {
-            message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
-          } else {
-            message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
-          }
+        previousFeature = currentFeature;
+        currentFeature.setStyle(pointStyleFunction(currentFeature));
+        
+        // Center map on the point
+        appView.setCenter(f.getGeometry().getCoordinates());
+        
+        var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
+        var message = '<table class="table table-dark">';
+        message += '<tbody>';
+        message += '<tr><th scope="row" style="width: 100px;">名稱</th><td>';
+        message += '<a href="https://info.nhi.gov.tw/INAE1000/INAE1000S03?id=' + p.id + '" target="_blank" class="sidebar-link">' + p.name + '</a>';
+        message += '</td></tr>';
+        message += '<tr><th scope="row">一般掛號</th><td>' + p.normal + '</td></tr>';
+        if (p.emergency > 0) {
+          message += '<tr><th scope="row">急診掛號</th><td>' + p.emergency + '</td></tr>';
         }
-        message += '</tr>';
-        message += '<tr><td class="table-dark">晚</td>';
-        for (i = 14; i < 21; i++) {
-          if (sParts[i] == 'N') {
-            message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
-          } else {
-            message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
+        message += '<tr><th scope="row">備註</th><td>' + p.note.replace(/\\n/g, '<br />') + '</td></tr>';
+        message += '<tr><th scope="row">電話</th><td>' + p.phone + '</td></tr>';
+        message += '<tr><th scope="row">住址</th><td>' + p.address + '</td></tr>';
+        message += '<tr><td colspan="2">';
+        if (p.service_periods != '') {
+          var sParts = p.service_periods.split('');
+          message += '<table class="table table-bordered text-center" style="color: black;">';
+          message += '<thead class="table-dark"><tr><th></th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr></thead><tbody>';
+          message += '<tr><td class="table-dark">上</td>';
+          for (i = 0; i < 7; i++) {
+            if (sParts[i] == 'N') {
+              message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
+            } else {
+              message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
+            }
           }
+          message += '</tr>';
+          message += '<tr><td class="table-dark">下</td>';
+          for (i = 7; i < 14; i++) {
+            if (sParts[i] == 'N') {
+              message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
+            } else {
+              message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
+            }
+          }
+          message += '</tr>';
+          message += '<tr><td class="table-dark">晚</td>';
+          for (i = 14; i < 21; i++) {
+            if (sParts[i] == 'N') {
+              message += '<td class="table-success"><i class="fa fa-check-circle"></i></td>';
+            } else {
+              message += '<td class="table-danger"><i class="fa fa-times-circle"></i></td>';
+            }
+          }
+          message += '</tr>';
+          message += '</tbody></table>';
         }
-        message += '</tr>';
+        message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
+        message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
+        message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
+        message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
+        message += '</div></td></tr>';
         message += '</tbody></table>';
+        sidebarTitle.innerHTML = p.name;
+        content.innerHTML = message;
+        pointFound = true;
+        break;
       }
-      message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-      message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-      message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-      message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-      message += '</div></td></tr>';
-      message += '</tbody></table>';
-      sidebarTitle.innerHTML = p.name;
-      content.innerHTML = message;
     }
+    if (pointFound) break;
   }
   sidebar.open('home');
 }
