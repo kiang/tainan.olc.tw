@@ -238,7 +238,7 @@ $('#btn-geolocation').click(function () {
 
 var pointsFc;
 var findTerms = [];
-$.getJSON('https://kiang.github.io/info.nhi.gov.tw/geojson/points.json', {}, function (c) {
+$.getJSON('https://kiang.github.io/info.nhi.gov.tw/geojson/hospitals.json', {}, function (c) {
   pointsFc = c;
   var vSource = vectorPoints.getSource();
   var vFormat = vSource.getFormat();
