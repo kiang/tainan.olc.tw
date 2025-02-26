@@ -164,8 +164,79 @@ var vectorLayer = new ol.layer.Vector({
   style: pointStyleFunction
 });
 
+function extraPointStyleFunction(feature, isHover = false) {
+  var properties = feature.getProperties();
+  var isSelected = feature === currentFeature;
+  
+  // Determine radius and stroke based on state
+  var radius = isSelected ? 18 : (isHover ? 15 : 12);
+  var strokeWidth = isSelected ? 4 : (isHover ? 3 : 2);
+  var styles = [];
+  
+  // Add outer black border
+  styles.push(new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: radius + 2,
+      fill: new ol.style.Fill({
+        color: '#000000'
+      })
+    })
+  }));
+
+  // Main marker style (white)
+  styles.push(new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: radius,
+      fill: new ol.style.Fill({
+        color: '#ffffff'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#000000',
+        width: strokeWidth
+      })
+    }),
+    text: new ol.style.Text({
+      text: properties.level,
+      font: 'bold 12px "Open Sans", "Arial Unicode MS", "sans-serif"',
+      fill: new ol.style.Fill({
+        color: '#000000'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#ffffff',
+        width: 3
+      }),
+      offsetY: -1
+    })
+  }));
+
+  // Add highlight effect for selected state
+  if (isSelected) {
+    styles.push(new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: radius + 6,
+        stroke: new ol.style.Stroke({
+          color: 'rgba(0, 0, 0, 0.4)',
+          width: 3
+        })
+      })
+    }));
+  }
+  
+  return styles;
+}
+
+var extraVectorSource = new ol.source.Vector({
+  url: 'https://kiang.github.io/info.nhi.gov.tw/geojson/er_extra.json',
+  format: new ol.format.GeoJSON()
+});
+
+var extraVectorLayer = new ol.layer.Vector({
+  source: extraVectorSource,
+  style: extraPointStyleFunction
+});
+
 var map = new ol.Map({
-  layers: [baseLayer, vectorLayer],
+  layers: [baseLayer, extraVectorLayer, vectorLayer],
   overlays: [overlay],
   target: 'map',
   view: new ol.View({
@@ -183,23 +254,39 @@ map.on('singleclick', function(evt) {
     var coordinates = feature.getGeometry().getCoordinates();
     var props = feature.getProperties();
     
-    // Update current feature and refresh layer
+    // Update current feature and refresh layers
     if (currentFeature !== feature) {
       currentFeature = feature;
       vectorLayer.changed();
+      extraVectorLayer.changed();
     }
     
-    // Format the date by replacing 'T' with space before parsing
-    var dateStr = props.date ? moment(props.date.replace('T', ' ')).format('YYYY-MM-DD HH:mm:ss') : '';
-    
     var popupContent = '<div class="table-responsive"><table class="table table-sm">';
-    popupContent += '<tr><th colspan="2" class="text-center">' + props.name + '</th></tr>';
-    popupContent += '<tr><td>通報滿載</td><td>' + (props.inform === 'Y' ? '是' : '否') + '</td></tr>';
-    popupContent += '<tr><td>等待看診</td><td>' + (props.wait_see || '0') + '</td></tr>';
-    popupContent += '<tr><td>等待推床</td><td>' + (props.wait_bed || '0') + '</td></tr>';
-    popupContent += '<tr><td>等待住院</td><td>' + (props.wait_general || '0') + '</td></tr>';
-    popupContent += '<tr><td>等待加護病房</td><td>' + (props.wait_icu || '0') + '</td></tr>';
-    popupContent += '<tr><td>更新時間</td><td>' + dateStr + '</td></tr>';
+    
+    if (props.hasOwnProperty('inform')) {
+      // Original ER data
+      var dateStr = props.date ? moment(props.date.replace('T', ' ')).format('YYYY-MM-DD HH:mm:ss') : '';
+      popupContent += '<tr><th colspan="2" class="text-center">' + props.name + '</th></tr>';
+      popupContent += '<tr><td>通報滿載</td><td>' + (props.inform === 'Y' ? '是' : '否') + '</td></tr>';
+      popupContent += '<tr><td>等待看診</td><td>' + (props.wait_see || '0') + '</td></tr>';
+      popupContent += '<tr><td>等待推床</td><td>' + (props.wait_bed || '0') + '</td></tr>';
+      popupContent += '<tr><td>等待住院</td><td>' + (props.wait_general || '0') + '</td></tr>';
+      popupContent += '<tr><td>等待加護病房</td><td>' + (props.wait_icu || '0') + '</td></tr>';
+      popupContent += '<tr><td>更新時間</td><td>' + dateStr + '</td></tr>';
+    } else {
+      // Extra ER data
+      popupContent += '<tr><th colspan="2" class="text-center">' + props.醫院全名 + '</th></tr>';
+      popupContent += '<tr><td>區域別</td><td>' + props.區域別 + '</td></tr>';
+      popupContent += '<tr><td>縣市別</td><td>' + props.縣市別 + '</td></tr>';
+      popupContent += '<tr><td>緊急醫療能力分級</td><td>' + props.緊急醫療能力分級 + '</td></tr>';
+      if (props.公告日) {
+        popupContent += '<tr><td>公告日</td><td>' + props.公告日 + '</td></tr>';
+      }
+      if (props.效期) {
+        popupContent += '<tr><td>效期</td><td>' + props.效期 + '</td></tr>';
+      }
+    }
+    
     popupContent += '</table></div>';
     
     content.innerHTML = popupContent;
@@ -209,6 +296,7 @@ map.on('singleclick', function(evt) {
     if (currentFeature) {
       currentFeature = null;
       vectorLayer.changed();
+      extraVectorLayer.changed();
     }
   }
 });
