@@ -14,8 +14,7 @@
     <link rel="stylesheet" href="../css/ol3-sidebar.css" />
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/theme.min.css"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <style>
         body {
             padding: 0;
@@ -37,6 +36,17 @@
 
         .ui-front {
             z-index: 9999;
+        }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 9999 !important;
+        }
+
+        .ui-menu-item div {
+            padding: 5px;
         }
 
         #sidebarTitle {
@@ -116,6 +126,9 @@
             <div class="sidebar-pane" id="settings">
                 <h1 class="sidebar-header"><span id="weekTitle">設定</span><span class="sidebar-close"><i
                             class="fa fa-caret-left"></i></span></h1>
+                <div class="form-group mb-3">
+                    <input type="text" id="schoolSearch" class="form-control" placeholder="搜尋幼兒園 (名稱、電話、地址)">
+                </div>
                 <div id="statContent"></div>
                 <div class="btn-group-vertical" style="width: 100%;">
                     <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-geolocation">回到目前位置</a>
@@ -143,6 +156,7 @@
         <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
     </div>
     <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="../../js/ol.js"></script>
     <script src="../../js/ol5-sidebar.min.js"></script>
     <script src="js/main.js" type="text/javascript"></script>

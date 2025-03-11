@@ -176,6 +176,79 @@ $.getJSON('https://kiang.github.io/kid.tn.edu.tw/result.json', {}, function (c) 
     schools[school['幼兒園名稱']] = school;
   });
 
+  // Setup autocomplete
+  var searchData = [];
+  for (let k in schools) {
+    searchData.push({
+      label: schools[k]['幼兒園名稱'],
+      value: k,
+      phone: schools[k]['幼兒園電話'],
+      address: schools[k]['幼兒園住址']
+    });
+  }
+
+  $('#schoolSearch').autocomplete({
+    source: function(request, response) {
+      var term = request.term.toLowerCase();
+      var matches = searchData.filter(item => 
+        item.label.toLowerCase().includes(term) ||
+        item.phone.toLowerCase().includes(term) ||
+        item.address.toLowerCase().includes(term)
+      );
+      response(matches.slice(0, 10)); // Limit to 10 results
+    },
+    select: function(event, ui) {
+      // Find and highlight the selected school on the map
+      vectorPoints.getSource().getFeatures().forEach(function(feature) {
+        if (feature.get('properties').key === ui.item.value) {
+          currentFeature = feature;
+          currentFeature.setStyle(pointStyleFunction(currentFeature));
+          if (previousFeature && previousFeature !== currentFeature) {
+            previousFeature.setStyle(pointStyleFunction(previousFeature));
+          }
+          previousFeature = currentFeature;
+          
+          // Center map on selected school
+          appView.setCenter(feature.getGeometry().getCoordinates());
+          appView.setZoom(15);
+          
+          // Show school info in sidebar
+          var p = feature.getProperties();
+          var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
+          var downloadLink = (schools[p.properties.key]['簡章下載']) ? '<a href="' + schools[p.properties.key]['簡章下載'] + '" target="_blank">下載</a>' : '';
+          var message = '<table class="table table-dark">';
+          message += '<tbody>';
+          message += '<tr><th scope="row" style="width: 80px;">名稱</th><td>' + schools[p.properties.key]['幼兒園名稱'] + '</td></tr>';
+          message += '<tr><th scope="row">電話</th><td>' + schools[p.properties.key]['幼兒園電話'] + '</td></tr>';
+          message += '<tr><th scope="row">住址</th><td>' + schools[p.properties.key]['幼兒園住址'] + '</td></tr>';
+          message += '<tr><th scope="row">招生簡章</th><td>' + downloadLink + '</td></tr>';
+          for (k in schools[p.properties.key]['招生']) {
+            message += '<tr><th scope="row">' + k + '</th><td>'
+            message += schools[p.properties.key]['招生'][k];
+            message += '</td></tr>';
+          }
+          message += '<tr><td colspan="2">';
+          message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
+          message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
+          message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
+          message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
+          message += '</div></td></tr>';
+          message += '</tbody></table>';
+          sidebarTitle.innerHTML = schools[p.properties.key]['幼兒園名稱'];
+          content.innerHTML = message;
+          sidebar.open('home');
+        }
+      });
+    }
+  }).autocomplete("instance")._renderItem = function(ul, item) {
+    // Custom rendering of autocomplete items
+    return $("<li>")
+      .append("<div><strong>" + item.label + "</strong><br>" +
+              "<small>電話: " + item.phone + "<br>" +
+              "地址: " + item.address + "</small></div>")
+      .appendTo(ul);
+  };
+
   var features = [];
   var stat = {};
   for (k in schools) {
