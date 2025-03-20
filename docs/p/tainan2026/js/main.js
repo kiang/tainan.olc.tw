@@ -355,6 +355,16 @@ function showPopup(feature, coordinate) {
         collapseElement.addEventListener('hide.bs.collapse', () => {
             expandPopup(button);
         });
+
+        // Add event listener for popup closer
+        document.getElementById('popup-closer').addEventListener('click', () => {
+            // If popup is expanded, collapse it first
+            if (button.getAttribute('aria-expanded') === 'true') {
+                button.click(); // This will trigger the collapse event
+            }
+            overlay.setPosition(undefined);
+            window.location.hash = ''; // Clear hash when closing popup
+        });
     }
 }
 
