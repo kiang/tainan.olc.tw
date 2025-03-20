@@ -299,6 +299,10 @@ function expandPopup(button) {
 
 // Modify the showPopup function to add the expand button
 function showPopup(feature, coordinate) {
+    // Reset popup state
+    const popup = document.getElementById('popup');
+    popup.style.cssText = '';
+    
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
     
     var content = '<div class="card">';
@@ -348,22 +352,17 @@ function showPopup(feature, coordinate) {
         const collapseElement = document.getElementById(replyId);
         const button = collapseElement.previousElementSibling; // Get the button
 
+        // Remove any existing event listeners
+        collapseElement.removeEventListener('show.bs.collapse', () => {});
+        collapseElement.removeEventListener('hide.bs.collapse', () => {});
+
+        // Add new event listeners
         collapseElement.addEventListener('show.bs.collapse', () => {
             expandPopup(button);
         });
 
         collapseElement.addEventListener('hide.bs.collapse', () => {
             expandPopup(button);
-        });
-
-        // Add event listener for popup closer
-        document.getElementById('popup-closer').addEventListener('click', () => {
-            // If popup is expanded, collapse it first
-            if (button.getAttribute('aria-expanded') === 'true') {
-                button.click(); // This will trigger the collapse event
-            }
-            overlay.setPosition(undefined);
-            window.location.hash = ''; // Clear hash when closing popup
         });
     }
 }
@@ -638,6 +637,7 @@ function initMap() {
           var p = feature.getProperties();
           if(p.COUNTYNAME && !featureFound) {
             showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
+            window.location.hash = ''; // Clear hash when showing empty point popup
           } else {
             featureFound = true;
             var features = feature.get('features');
@@ -660,7 +660,6 @@ function initMap() {
                 }
             }
           }
-            
         });
         document.getElementById('readme-popup').style.display = 'none';
     });
@@ -677,6 +676,8 @@ function initMap() {
 
     // Add a click handler to hide the popup
     document.getElementById('popup-closer').onclick = function() {
+        const popup = document.getElementById('popup');
+        popup.style.cssText = ''; // Reset popup styles
         overlay.setPosition(undefined);
         window.location.hash = ''; // Clear hash when closing popup
         return false;
