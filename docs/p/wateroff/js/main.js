@@ -245,6 +245,11 @@ function initMap() {
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {
+                // convert item.startDate from utc+00:00 to utc+08:00
+                const startDate = new Date(item.startDate);
+                startDate.setHours(startDate.getHours() + 8);
+                const endDate = new Date(item.endDate);
+                endDate.setHours(endDate.getHours() + 8);
                 if (item.waterOffArea) {
                     const feature = new ol.Feature({
                         geometry: new ol.format.GeoJSON().readGeometry(item.waterOffArea, {
@@ -253,8 +258,8 @@ function initMap() {
                         type: 'waterOff',
                         areaType: 'waterOff',
                         id: item.no,
-                        begin: item.startDate.substring(0, 10) + ' ' + item.startTime,
-                        end: item.endDate.substring(0, 10) + ' ' + item.endTime
+                        begin: startDate.toISOString().substring(0, 10) + ' ' + item.startTime,
+                        end: endDate.toISOString().substring(0, 10) + ' ' + item.endTime
                     });
                     waterOffSource.addFeature(feature);
                 }
@@ -266,8 +271,8 @@ function initMap() {
                         type: 'waterOff',
                         areaType: 'pressureDown',
                         id: item.no,
-                        begin: item.startDate.substring(0, 10) + ' ' + item.startTime,
-                        end: item.endDate.substring(0, 10) + ' ' + item.endTime
+                        begin: startDate.toISOString().substring(0, 10) + ' ' + item.startTime,
+                        end: endDate.toISOString().substring(0, 10) + ' ' + item.endTime
                     });
                     waterOffSource.addFeature(feature);
                 }
