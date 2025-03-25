@@ -169,6 +169,7 @@ function initMap() {
     // Create vector sources
     const waterOffSource = new ol.source.Vector();
     const supplyPointSource = new ol.source.Vector();
+    const userLocationSource = new ol.source.Vector();
 
     // Create vector layers
     const waterOffLayer = new ol.layer.Vector({
@@ -187,13 +188,31 @@ function initMap() {
         style: supplyPointStyle
     });
 
+    const userLocationLayer = new ol.layer.Vector({
+        source: userLocationSource,
+        style: new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#00ff00'  // Bright green color
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ffffff',
+                    width: 3
+                })
+            }),
+            zIndex: 1000
+        })
+    });
+
     // Initialize map
     map = new ol.Map({
         target: 'map',
         layers: [
             setupWMTSLayer(),
             waterOffLayer,
-            supplyPointLayer
+            supplyPointLayer,
+            userLocationLayer
         ],
         overlays: [overlay],
         view: new ol.View({
@@ -272,6 +291,59 @@ function initMap() {
                 }
             });
         });
+
+    // Function to handle geolocation success
+    function handleGeolocationSuccess(position) {
+        const coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]);
+        
+        // Create a marker for user's location
+        const userLocationFeature = new ol.Feature({
+            geometry: new ol.geom.Point(coords)
+        });
+        
+        // Add the marker to the source
+        userLocationSource.clear();
+        userLocationSource.addFeature(userLocationFeature);
+        
+        // Center the map on user's location with zoom level 15
+        map.getView().animate({
+            center: coords,
+            zoom: 15,
+            duration: 1000
+        });
+    }
+
+    // Function to handle geolocation errors
+    function handleGeolocationError(error) {
+        console.warn('Geolocation error:', error.message);
+        // Default to Taiwan center if geolocation fails
+        map.getView().animate({
+            center: ol.proj.fromLonLat([120.9738819, 23.97565]),
+            zoom: 8,
+            duration: 1000
+        });
+    }
+
+    // Get user's location when the map initializes
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            handleGeolocationSuccess,
+            handleGeolocationError,
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            }
+        );
+    } else {
+        console.warn('Geolocation is not supported by this browser');
+        // Default to Taiwan center if geolocation is not supported
+        map.getView().animate({
+            center: ol.proj.fromLonLat([120.9738819, 23.97565]),
+            zoom: 8,
+            duration: 1000
+        });
+    }
 }
 
 // Initialize the map when the window loads
