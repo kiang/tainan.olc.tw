@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="台灣停水地圖">
+    <meta property="og:description" content="即時顯示台灣各地停水、降壓區域資訊及臨時供水站位置，包含停水原因、影響範圍、開始與結束時間等資訊，協助民眾掌握用水情況。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tainan.olc.tw/p/wateroff/og_image.png">
+    <meta name="description" content="即時顯示台灣各地停水、降壓區域資訊及臨時供水站位置，包含停水原因、影響範圍、開始與結束時間等資訊，協助民眾掌握用水情況。">
+    <title>台灣停水地圖 - 即時停水資訊、供水站位置查詢</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        .popup {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+            z-index: 900;
+        }
+
+        .popup:after, .popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .popup-closer:after {
+            content: "✖";
+        }
+
+        .nav-buttons {
+            margin-top: 10px;
+        }
+
+        .nav-btn {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .nav-btn.google {
+            background-color: #4285f4;
+            border-color: #4285f4;
+        }
+
+        .nav-btn.google:hover {
+            background-color: #3367d6;
+        }
+
+        .nav-btn.bing {
+            background-color: #008373;
+            border-color: #008373;
+        }
+
+        .nav-btn.bing:hover {
+            background-color: #006759;
+        }
+
+        .nav-btn.here {
+            background-color: #48dad0;
+            border-color: #48dad0;
+            color: #000;
+        }
+
+        .nav-btn.here:hover {
+            background-color: #3cc7bd;
+        }
+
+        .legend {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+
+        .author-link {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            z-index: 1100;
+            margin: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="author-link">
+        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
+    </div>
+    <div id="map">
+        <div id="popup" class="popup">
+            <a href="#" id="popup-closer" class="popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(255, 0, 0, 0.4);"></div>
+                <span>停水區域</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(255, 165, 0, 0.4);"></div>
+                <span>降壓區域</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(128, 128, 128, 0.4);"></div>
+                <span>已結束</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #3388ff;"></div>
+                <span>供水點</span>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/ol.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
