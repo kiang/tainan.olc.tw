@@ -15,6 +15,29 @@ for (var z = 0; z < 20; ++z) {
     matrixIds[z] = z;
 }
 
+var listLevel2 = ['王鴻薇', '李彥秀', '葉元之', '林沛祥', '牛煦庭', '涂權吉', '魯明哲', '萬美玲', '呂玉玲', '邱若華', '鄭正鈐', '游顥', '馬文君', '顏寬恒', '廖偉翔', '黃健豪', '羅廷瑋', '丁學忠', '黃建賓', '傅崐萁', '林德福', '張智倫', '楊瓊瓔', '洪孟楷', '羅明才', '徐巧芯', '賴士葆', '廖先翔', '徐欣瑩', '林思銘', '江啟臣', '羅智強', '謝衣鳯', '邱鎮軍', '陳超明', '吳思瑤', '吳沛憶', '蘇巧慧', '張宏陸', '蔡其昌', '何欣純', '陳瑩', '伍麗華'];
+
+// Create a pattern with number
+function createNumberPattern(baseColor, number) {
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = 30;
+    canvas.height = 30;
+    
+    // Fill background with the original polygon color
+    context.fillStyle = baseColor;
+    context.fillRect(0, 0, 30, 30);
+    
+    // Draw number
+    context.fillStyle = '#000000';
+    context.font = 'bold 20px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(number, 15, 15);
+    
+    return context.createPattern(canvas, 'repeat');
+}
+
 function areaStyleFunction(f) {
     var color = 'rgba(200,200,200,0.5)',
         stroke, radius;
@@ -29,6 +52,7 @@ function areaStyleFunction(f) {
         case '無':
             color = 'rgba(200,200,200,0.7)';
     }
+
     if (f === currentFeature) {
         color = 'rgba(200,200,0,0.5)';
         stroke = new ol.style.Stroke({
@@ -43,9 +67,28 @@ function areaStyleFunction(f) {
         });
         radius = 15;
     }
+
+
+    // Check if the area name is in listLevel2
+    if (listLevel2.includes(candidates[p.id].candidate)) {
+        return new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: createNumberPattern(color, '2')
+            }),
+            stroke: stroke,
+            text: new ol.style.Text({
+                font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 255, 1)'
+                }),
+                text: p.name
+            })
+        });
+    }
+
     return new ol.style.Style({
         fill: new ol.style.Fill({
-            color: color
+            color: createNumberPattern(color, '1')
         }),
         stroke: stroke,
         text: new ol.style.Text({
@@ -132,9 +175,21 @@ map.on('singleclick', function (evt) {
                     }
                     c += '<tr><th>得票</th><td>' + candidates[p.id].votes + '</td></tr>';
                     c += '<tr><th>選舉人數</th><td>' + candidates[p.id].total + '</td></tr>';
-                    c += '<tr><th>階段一</th><td>' + Math.ceil((candidates[p.id].total * 0.01)) + '</td></tr>';
-                    c += '<tr><th>階段二</th><td>' + Math.ceil((candidates[p.id].total * 0.1)) + '</td></tr>';
-                    c += '<tr><th>階段三</th><td>' + Math.ceil((candidates[p.id].total * 0.25)) + '</td></tr>';
+                    
+                    // Highlight different stages based on listLevel2 membership
+                    var stage1 = Math.ceil((candidates[p.id].total * 0.01));
+                    var stage2 = Math.ceil((candidates[p.id].total * 0.1));
+                    var stage3 = Math.ceil((candidates[p.id].total * 0.25));
+                    
+                    if (listLevel2.includes(candidates[p.id].candidate)) {
+                        c += '<tr><th>階段一</th><td>' + stage1 + '</td></tr>';
+                        c += '<tr><th style="background-color: #ffeb3b; font-weight: bold;">階段二</th><td style="background-color: #ffeb3b; font-weight: bold;">' + stage2 + '</td></tr>';
+                        c += '<tr><th>階段三</th><td>' + stage3 + '</td></tr>';
+                    } else {
+                        c += '<tr><th style="background-color: #ffeb3b; font-weight: bold;">階段一</th><td style="background-color: #ffeb3b; font-weight: bold;">' + stage1 + '</td></tr>';
+                        c += '<tr><th>階段二</th><td>' + stage2 + '</td></tr>';
+                        c += '<tr><th>階段三</th><td>' + stage3 + '</td></tr>';
+                    }
                     c += '</table>';
                 } else {
                     sidebarTitle = p.name;
@@ -144,7 +199,6 @@ map.on('singleclick', function (evt) {
                     c += '</table>';
                 }
             }
-
 
             $('#sidebarTitle').html(sidebarTitle);
             $('#sidebarContent').html(c);
