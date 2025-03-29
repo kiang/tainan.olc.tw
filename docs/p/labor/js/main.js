@@ -61,7 +61,7 @@ function searchCompanies(query) {
     query = query.toLowerCase();
     return companies.filter(company => 
         company.toLowerCase().includes(query)
-    ).slice(0, 10); // Limit to 10 results
+    ).slice(0, 100); // Limit to 100 results
 }
 
 // Load company data
