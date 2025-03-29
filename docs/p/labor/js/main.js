@@ -2,12 +2,29 @@
 let companies = [];
 let dataTable = null;
 
+// Function to select a random company
+function selectRandomCompany() {
+    if (companies.length > 0) {
+        const randomIndex = Math.floor(Math.random() * companies.length);
+        const randomCompany = companies[randomIndex];
+        $('#searchInput').val(randomCompany);
+        loadCompanyData(randomCompany);
+    } else {
+        alert('尚未載入公司列表，請稍後再試。');
+    }
+}
+
 // Load company list
 async function loadCompanies() {
     try {
         const response = await fetch('https://kiang.github.io/announcement.mol.gov.tw/company.csv');
         const text = await response.text();
         companies = text.split('\n').filter(line => line.trim());
+        
+        // Randomly select a company if we have companies loaded
+        if (companies.length > 0) {
+            selectRandomCompany();
+        }
     } catch (error) {
         console.error('Error loading companies:', error);
         alert('無法載入公司列表，請稍後再試。');
@@ -97,6 +114,12 @@ $(document).ready(function() {
     const searchInput = $('#searchInput');
     const searchResults = $('#searchResults');
     const searchButton = $('#searchButton');
+    const randomButton = $('#randomButton');
+
+    // Handle random button click
+    randomButton.on('click', function() {
+        selectRandomCompany();
+    });
 
     // Handle input changes
     searchInput.on('input', function() {
