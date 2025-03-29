@@ -1,6 +1,7 @@
 // Initialize variables
 let companies = [];
 let dataTable = null;
+let currentSelectedIndex = -1;
 
 // Function to select a random company
 function selectRandomCompany() {
@@ -11,6 +12,29 @@ function selectRandomCompany() {
         loadCompanyData(randomCompany);
     } else {
         alert('尚未載入公司列表，請稍後再試。');
+    }
+}
+
+// Function to update selected item in search results
+function updateSelectedItem() {
+    $('.search-result-item').removeClass('selected');
+    if (currentSelectedIndex >= 0) {
+        const selectedItem = $('.search-result-item').eq(currentSelectedIndex);
+        selectedItem.addClass('selected');
+        
+        // Scroll the selected item into view
+        const container = $('#searchResults');
+        const itemTop = selectedItem.position().top;
+        const itemBottom = itemTop + selectedItem.outerHeight();
+        const containerHeight = container.height();
+        
+        if (itemTop < 0) {
+            // Item is above the visible area
+            container.scrollTop(container.scrollTop() + itemTop);
+        } else if (itemBottom > containerHeight) {
+            // Item is below the visible area
+            container.scrollTop(container.scrollTop() + (itemBottom - containerHeight));
+        }
     }
 }
 
@@ -83,7 +107,26 @@ async function loadCompanyData(companyName) {
                 { data: '備註說明' }
             ],
             language: {
-                url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese-traditional.json'
+                "emptyTable": "沒有資料",
+                "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(由 _MAX_ 項結果過濾)",
+                "infoThousands": ",",
+                "lengthMenu": "顯示 _MENU_ 項結果",
+                "loadingRecords": "載入中...",
+                "processing": "處理中...",
+                "search": "搜尋:",
+                "zeroRecords": "沒有符合的結果",
+                "paginate": {
+                    "first": "首頁",
+                    "last": "末頁",
+                    "next": "下頁",
+                    "previous": "上頁"
+                },
+                "aria": {
+                    "sortAscending": ": 升序排列",
+                    "sortDescending": ": 降序排列"
+                }
             },
             order: [[1, 'desc']], // Sort by 公告日期 descending
             pageLength: 10,
@@ -134,6 +177,8 @@ $(document).ready(function() {
                     );
                 });
                 searchResults.show();
+                currentSelectedIndex = -1;
+                updateSelectedItem();
             } else {
                 searchResults.hide();
             }
@@ -142,11 +187,50 @@ $(document).ready(function() {
         }
     });
 
+    // Handle keyboard navigation
+    searchInput.on('keydown', function(e) {
+        const items = $('.search-result-item');
+        if (items.length === 0) return;
+
+        switch(e.keyCode) {
+            case 38: // Up arrow
+                e.preventDefault();
+                if (currentSelectedIndex > 0) {
+                    currentSelectedIndex--;
+                    updateSelectedItem();
+                }
+                break;
+            case 40: // Down arrow
+                e.preventDefault();
+                if (currentSelectedIndex < items.length - 1) {
+                    currentSelectedIndex++;
+                    updateSelectedItem();
+                }
+                break;
+            case 13: // Enter
+                e.preventDefault();
+                if (currentSelectedIndex >= 0) {
+                    const selectedCompany = items.eq(currentSelectedIndex).text();
+                    searchInput.val(selectedCompany);
+                    searchResults.hide();
+                    loadCompanyData(selectedCompany);
+                } else {
+                    searchButton.click();
+                }
+                break;
+            case 27: // Escape
+                searchResults.hide();
+                currentSelectedIndex = -1;
+                break;
+        }
+    });
+
     // Handle result click
     searchResults.on('click', '.search-result-item', function() {
         const companyName = $(this).text();
         searchInput.val(companyName);
         searchResults.hide();
+        currentSelectedIndex = -1;
         loadCompanyData(companyName);
     });
 
@@ -163,17 +247,11 @@ $(document).ready(function() {
         }
     });
 
-    // Handle Enter key
-    searchInput.on('keypress', function(e) {
-        if (e.which === 13) {
-            searchButton.click();
-        }
-    });
-
     // Hide results when clicking outside
     $(document).on('click', function(e) {
         if (!$(e.target).closest('.search-input-group').length) {
             searchResults.hide();
+            currentSelectedIndex = -1;
         }
     });
 });
