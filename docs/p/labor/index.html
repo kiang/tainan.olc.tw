@@ -30,6 +30,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             width: 100%;
+            position: relative;
         }
         .search-input-group {
             position: relative;
@@ -93,7 +94,7 @@
         }
         .search-results {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 5px);
             left: 0;
             right: 0;
             background: white;
@@ -102,8 +103,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-height: 400px;
             overflow-y: auto;
-            z-index: 1000;
-            margin-top: 5px;
+            z-index: 9999;
         }
         .search-result-item {
             padding: 15px 20px;
@@ -129,6 +129,8 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             width: 100%;
             overflow-x: auto;
+            position: relative;
+            z-index: 1;
         }
         .author-link {
             position: fixed;
