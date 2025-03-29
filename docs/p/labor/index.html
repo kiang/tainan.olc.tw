@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="勞動部裁罰公告">
+    <meta property="og:description" content="勞動部勞動條件及就業平等司裁罰公告查詢系統">
+    <meta property="og:type" content="website">
+    <title>勞動部裁罰公告</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.24/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .search-input-group {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .search-results {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+        }
+        .search-result-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .data-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .author-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-container">
+            <div class="search-input-group">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control input-lg" placeholder="搜尋公司名稱...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-lg" type="button" id="searchButton">
+                            <i class="fa fa-search"></i> 搜尋
+                        </button>
+                    </span>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+        <div class="data-container">
+            <table id="dataTable" class="table table-striped table-bordered" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>主管機關</th>
+                        <th>公告日期</th>
+                        <th>處分日期</th>
+                        <th>處分字號</th>
+                        <th>事業單位名稱或負責人</th>
+                        <th>違法法規法條</th>
+                        <th>違反法規內容</th>
+                        <th>罰鍰金額</th>
+                        <th>備註說明</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="author-link">
+        <a href="https://www.facebook.com/kiang" target="_blank" class="btn btn-primary">
+            <i class="fa fa-user"></i> 北中西區台南市議員參選人江明宗 製作
+        </a>
+    </div>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.24/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
