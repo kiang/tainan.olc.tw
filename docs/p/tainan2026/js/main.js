@@ -12,6 +12,9 @@ const latitudeInput = document.getElementById('latitude');
 const longitudeInput = document.getElementById('longitude');
 const zoomToCoordinatesBtn = document.getElementById('zoomToCoordinates');
 
+// Add this at the top with other global variables
+var additionalImages = {};
+
 // Set up the WMTS layer
 function setupWMTSLayer() {
     var projection = ol.proj.get('EPSG:3857');
@@ -297,7 +300,32 @@ function expandPopup(button) {
     }
 }
 
-// Modify the showPopup function to add the expand button
+// Add this function to fetch additional images
+function fetchAdditionalImages() {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS1i3CTbXdGTyTQiTKt5LIFgLXB5mt-RVecYcgiseoND0IZOiVpU4bK9kQ8bXP8NFGIq2OxLF8ITUHC/pub?gid=1036449859&single=true&output=csv')
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n').slice(1); // Skip header row
+            rows.forEach(row => {
+                const [timestamp, fileUrl, name, city, town, lon, lat, id] = row.split(',');
+                if (id && fileUrl) {
+                    if (!additionalImages[id]) {
+                        additionalImages[id] = [];
+                    }
+                    const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
+                    if (fileId) {
+                        additionalImages[id].push({
+                            fileId: fileId,
+                            timestamp: timestamp
+                        });
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching additional images:', error));
+}
+
+// Modify the showPopup function
 function showPopup(feature, coordinate) {
     // Reset popup state
     const popup = document.getElementById('popup');
@@ -308,11 +336,42 @@ function showPopup(feature, coordinate) {
     var content = '<div class="card">';
     var fileId = feature.get('fileId');
     var hasLocal = feature.get('hasLocal');
+    var uuid = feature.get('uuid');
+    
+    // Display original image
     if(hasLocal == '1'){
-        content += '<div class="card-img-top"><img src="pic/' + feature.get('uuid') + '.jpg" width="300"></iframe></div>';
+        content += '<div class="card-img-top"><img src="pic/' + uuid + '.jpg" width="300"></div>';
     } else if (fileId) {
         content += '<div class="card-img-top"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></div>';
     }
+    
+    // Display additional images if they exist
+    if (additionalImages[uuid] && additionalImages[uuid].length > 0) {
+        content += '<div class="card-img-top additional-images">';
+        content += '<h6 class="text-center mt-2">其他圖片</h6>';
+        additionalImages[uuid].forEach((img, index) => {
+            content += '<div class="additional-image-container mb-2">';
+            content += '<iframe src="https://drive.google.com/file/d/' + img.fileId + '/preview" width="100%" height="200" allow="autoplay"></iframe>';
+            content += '<small class="text-muted d-block text-center">' + img.timestamp + '</small>';
+            content += '</div>';
+        });
+        content += '</div>';
+    }
+    
+    // Add button for additional images
+    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfRKV0gaEcV6ln0_pFBOck-GayKQQeBpfdPir9jHyVyEcJufQ/viewform?usp=pp_url';
+    formUrl += '&entry.465818780=' + encodeURIComponent(feature.get('name'));
+    formUrl += '&entry.1588782081=' + encodeURIComponent(feature.get('city'));
+    formUrl += '&entry.1966779823=' + encodeURIComponent(feature.get('town'));
+    formUrl += '&entry.1998738256=' + lonLat[0].toFixed(6);
+    formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
+    formUrl += '&entry.2072773208=' + uuid;
+    
+    content += '<div class="d-grid gap-2 p-2">';
+    content += '<button class="btn btn-outline-primary btn-sm" onclick="window.open(\'' + formUrl + '\', \'_blank\')">';
+    content += '<i class="bi bi-plus-circle"></i> 新增圖片</button>';
+    content += '</div>';
+    
     content += '<div class="card-body">';
     content += '<h5 class="card-title">' + feature.get('name') + '</h5>';
     content += '<p class="card-text">時間: ' + feature.get('timestamp') + '</p>';
@@ -701,6 +760,8 @@ function initMap() {
     // Call this function in your initMap function or wherever you initialize your page
     initCoordinatesModal();
 
+    // Fetch additional images when initializing
+    fetchAdditionalImages();
 }
 
 // Initialize the map when the window loads
