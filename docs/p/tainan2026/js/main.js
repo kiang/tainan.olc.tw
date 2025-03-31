@@ -309,12 +309,13 @@ function fetchAdditionalImages() {
             rows.forEach(row => {
                 const [timestamp, fileUrl, name, city, town, lon, lat, id] = row.split(',');
                 if (id && fileUrl) {
-                    if (!additionalImages[id]) {
-                        additionalImages[id] = [];
+                    const trimmedId = id.trim();
+                    if (!additionalImages[trimmedId]) {
+                        additionalImages[trimmedId] = [];
                     }
                     const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
                     if (fileId) {
-                        additionalImages[id].push({
+                        additionalImages[trimmedId].push({
                             fileId: fileId,
                             timestamp: timestamp
                         });
@@ -347,6 +348,7 @@ function showPopup(feature, coordinate) {
     
     // Display additional images if they exist
     if (additionalImages[uuid] && additionalImages[uuid].length > 0) {
+        
         content += '<div class="card-img-top additional-images">';
         content += '<h6 class="text-center mt-2">其他圖片</h6>';
         additionalImages[uuid].forEach((img, index) => {
