@@ -7,6 +7,7 @@ let searchResults = [];
 let currentSpiderFeatures = null;
 let points = {};
 const photoData = {};
+let fishFarmLayer = null;
 
 // Add spider layout function
 function calculateSpiderPositions(center, count, radius = 40) {
@@ -323,39 +324,42 @@ function initMap() {
         });
 
         if (feature) {
-            const features = feature.get('features');
-            if (!features) {
-                // Clicked on a spider feature
-                showPopup(feature, evt.coordinate);
-                return;
-            }
+            if (feature.get('features')) {
+                // Handle cluster features
+                const features = feature.get('features');
+                if (features.length === 1) {
+                    showPopup(features[0], evt.coordinate);
+                } else if (features.length <= 8 || map.getView().getZoom() >= 18) {
+                    // Spider effect for small clusters or at max zoom
+                    if (currentSpiderFeatures) {
+                        spiderLayer.getSource().clear();
+                        currentSpiderFeatures = null;
+                    }
 
-            if (features.length === 1) {
-                showPopup(features[0], evt.coordinate);
-            } else if (features.length <= 8 || map.getView().getZoom() >= 18) {
-                // Spider effect for small clusters or at max zoom
-                if (currentSpiderFeatures) {
-                    spiderLayer.getSource().clear();
-                    currentSpiderFeatures = null;
+                    const positions = calculateSpiderPositions(feature.getGeometry().getCoordinates(), features.length);
+                    features.forEach((f, i) => {
+                        const spiderFeature = f.clone();
+                        spiderFeature.set('originalGeometry', f.getGeometry());
+                        spiderFeature.setGeometry(new ol.geom.Point(positions[i]));
+                        spiderLayer.getSource().addFeature(spiderFeature);
+                    });
+                    currentSpiderFeatures = features;
+                } else {
+                    // Zoom in for large clusters
+                    const extent = ol.extent.createEmpty();
+                    features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
+                    map.getView().fit(extent, {
+                        duration: 1000,
+                        padding: [50, 50, 50, 50],
+                        maxZoom: 18
+                    });
                 }
-
-                const positions = calculateSpiderPositions(feature.getGeometry().getCoordinates(), features.length);
-                features.forEach((f, i) => {
-                    const spiderFeature = f.clone();
-                    spiderFeature.set('originalGeometry', f.getGeometry());
-                    spiderFeature.setGeometry(new ol.geom.Point(positions[i]));
-                    spiderLayer.getSource().addFeature(spiderFeature);
-                });
-                currentSpiderFeatures = features;
+            } else if (feature.get('fishfarm_id')) {
+                // Handle fish farm features
+                showFishFarmPopup(feature, evt.coordinate);
             } else {
-                // Zoom in for large clusters
-                const extent = ol.extent.createEmpty();
-                features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
-                map.getView().fit(extent, {
-                    duration: 1000,
-                    padding: [50, 50, 50, 50],
-                    maxZoom: 18
-                });
+                // Handle regular solar features
+                showPopup(feature, evt.coordinate);
             }
         } else {
             overlay.setPosition(undefined);
@@ -474,6 +478,13 @@ function initMap() {
 
     // Fetch photo data
     fetchPhotoData();
+
+    // Add fish farm button after the search clear button
+    const fishFarmButton = document.createElement('button');
+    fishFarmButton.className = 'btn btn-outline-secondary btn-sm';
+    fishFarmButton.innerHTML = '<i class="bi bi-water"></i> 漁電共生';
+    fishFarmButton.onclick = loadFishFarmData;
+    searchClear.parentNode.insertBefore(fishFarmButton, searchClear.nextSibling);
 }
 
 // Add debounce function
@@ -519,6 +530,95 @@ function fetchPhotoData() {
                 }
             });
         });
+}
+
+// Add this function to load fish farm data
+function loadFishFarmData() {
+    if (fishFarmLayer) {
+        map.removeLayer(fishFarmLayer);
+    }
+
+    fetch('https://kiang.github.io/www.sfea.org.tw/json/fishfarms.json')
+        .then(response => response.json())
+        .then(data => {
+            // Create features from GeoJSON
+            const features = new ol.format.GeoJSON().readFeatures(data, {
+                featureProjection: 'EPSG:3857'
+            });
+
+            const vectorSource = new ol.source.Vector({
+                features: features
+            });
+
+            fishFarmLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: function(feature) {
+                    const geometry = feature.getGeometry();
+                    const extent = geometry.getExtent();
+                    const bottomCenter = [
+                        (extent[0] + extent[2]) / 2,
+                        extent[1] // Use the bottom (minimum y) coordinate
+                    ];
+
+                    return [
+                        new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 123, 255, 0.2)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#007bff',
+                                width: 2
+                            })
+                        }),
+                        new ol.style.Style({
+                            geometry: new ol.geom.Point(bottomCenter),
+                            text: new ol.style.Text({
+                                text: '🐟',
+                                font: '14px Arial',
+                                offsetY: -5 // Move text up slightly from the bottom
+                            })
+                        })
+                    ];
+                }
+            });
+
+            map.addLayer(fishFarmLayer);
+        })
+        .catch(error => {
+            console.error('Error loading fish farm data:', error);
+        });
+}
+
+// Add this function to show fish farm popup
+function showFishFarmPopup(feature, coordinate) {
+    // Clear URL hash
+    window.history.replaceState(null, '', window.location.pathname);
+    
+    const properties = feature.getProperties();
+    const content = `
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">漁電共生資訊</h5>
+                <p class="card-text">
+                    <strong>漁場編號：</strong> ${properties.fishfarm_id || 'N/A'}<br>
+                    <strong>漁場類型：</strong> ${properties.fishfarm_type || 'N/A'}<br>
+                    <strong>縣市：</strong> ${properties.fishfarm_county || 'N/A'}<br>
+                    <strong>鄉鎮市區：</strong> ${properties.fishfarm_town || 'N/A'}<br>
+                    <strong>地段：</strong> ${properties.fishfarm_daun || 'N/A'}<br>
+                    <strong>地號：</strong> ${properties.fishfarm_parcel || 'N/A'}<br>
+                    <strong>漁場名稱：</strong> ${properties.fishfarm_name || 'N/A'}<br>
+                    <strong>面積：</strong> ${properties.fishfarm_geoarea ? (parseFloat(properties.fishfarm_geoarea).toFixed(2) + ' 平方公尺') : 'N/A'}<br>
+                    <strong>太陽能公司：</strong> ${properties.solar_company || 'N/A'}<br>
+                    <strong>太陽能電廠：</strong> ${properties.solar_name || 'N/A'}<br>
+                    <strong>裝置容量：</strong> ${properties.solar_capacity ? (parseFloat(properties.solar_capacity).toFixed(2) + ' kW') : 'N/A'}<br>
+                    <strong>施工取得日期：</strong> ${properties.solar_date || 'N/A'}
+                </p>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('popup-content').innerHTML = content;
+    overlay.setPosition(coordinate);
 }
 
 window.onload = initMap;
