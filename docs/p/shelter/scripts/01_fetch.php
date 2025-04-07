@@ -62,11 +62,11 @@ while($line = fgetcsv($csvFh, 2048)) {
     $lat = floatval($data['緯度']);
     
     // Skip points outside Taiwan
-    if($lon < $taiwanBounds['minLon'] || $lon > $taiwanBounds['maxLon'] || 
-       $lat < $taiwanBounds['minLat'] || $lat > $taiwanBounds['maxLat']) {
-        $skippedCount++;
-        continue;
-    }
+    // if($lon < $taiwanBounds['minLon'] || $lon > $taiwanBounds['maxLon'] || 
+    //    $lat < $taiwanBounds['minLat'] || $lat > $taiwanBounds['maxLat']) {
+    //     $skippedCount++;
+    //     continue;
+    // }
     
     // Create GeoJSON feature
     $feature = [
