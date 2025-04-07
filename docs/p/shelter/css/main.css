@@ -1,0 +1,294 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans TC', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+.filter-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 300px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.filter-panel h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 0;
+    min-width: 280px;
+    max-width: 350px;
+    z-index: 1000;
+}
+
+/* Remove the arrow */
+.ol-popup:after {
+    display: none;
+}
+
+.popup-content {
+    padding: 15px;
+}
+
+.popup-content h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+}
+
+.popup-content p {
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.google-maps-btn {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+}
+
+.google-maps-btn:hover {
+    background-color: #3367d6;
+    color: white;
+}
+
+.bing-maps-btn {
+    background-color: #00A4EF;
+    color: white;
+    border: none;
+}
+
+.bing-maps-btn:hover {
+    background-color: #0089c9;
+    color: white;
+}
+
+.here-maps-btn {
+    background-color: #00AFAA;
+    color: white;
+    border: none;
+}
+
+.here-maps-btn:hover {
+    background-color: #009690;
+    color: white;
+}
+
+.multiple-shelters .navigation-buttons {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.multiple-shelters .shelter-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.multiple-shelters .shelter-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.multiple-shelters .shelter-item:hover {
+    background-color: #f8f9fa;
+}
+
+.multiple-shelters .shelter-item:last-child {
+    border-bottom: none;
+}
+
+.multiple-shelters .shelter-item p {
+    margin: 5px 0;
+    color: #6c757d;
+}
+
+.multiple-shelters h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Attribution styling */
+.attribution {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.attribution a {
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+.attribution a:hover {
+    color: #0a58ca;
+    text-decoration: underline !important;
+}
+
+/* Responsive adjustments for attribution */
+@media (max-width: 768px) {
+    .filter-panel {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        max-height: 40vh;
+    }
+    
+    .ol-popup {
+        min-width: 250px;
+        max-width: 90%;
+    }
+    
+    .navigation-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .navigation-buttons a {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .attribution {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* Geolocation button styling */
+.geolocation-button {
+    position: fixed;
+    top: 10px;
+    left: 50px;
+    z-index: 1000;
+}
+
+.geolocation-button button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.geolocation-button button:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.geolocation-button button:active {
+    transform: scale(0.95);
+}
+
+.geolocation-button button i {
+    font-size: 16px;
+    color: #0d6efd;
+}
+
+/* Map controls styling */
+.ol-control {
+    background-color: transparent !important;
+    padding: 0 !important;
+    top: 20px !important;
+    left: 20px !important;
+}
+
+.ol-control button {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    background-color: white !important;
+    color: #0d6efd !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s ease !important;
+    margin: 5px 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.ol-control button:hover {
+    background-color: #f8f9fa !important;
+    transform: scale(1.05) !important;
+}
+
+.ol-control button:active {
+    transform: scale(0.95) !important;
+}
+
+.ol-control button:focus {
+    outline: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsive adjustments for buttons */
+@media (max-width: 768px) {
+    .geolocation-button {
+        top: 60px !important;
+        left: 10px !important;
+    }
+    
+    .ol-control {
+        top: 10px !important;
+        left: 10px !important;
+    }
+    
+    .geolocation-button button,
+    .ol-control button {
+        width: 36px !important;
+        height: 36px !important;
+    }
+} 
