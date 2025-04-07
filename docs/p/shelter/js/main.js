@@ -121,6 +121,15 @@ function initMap() {
                 // Single shelter
                 const shelter = features[0];
                 showPopup(shelter, evt.coordinate);
+            } else if (features.length > 10) {
+                // For large clusters, zoom in first
+                const extent = ol.extent.createEmpty();
+                features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
+                map.getView().fit(extent, {
+                    duration: 1000,
+                    padding: [50, 50, 50, 50],
+                    maxZoom: 18
+                });
             } else if (features.length > 1) {
                 // Multiple shelters at the same location
                 showMultipleSheltersPopup(features, evt.coordinate);
