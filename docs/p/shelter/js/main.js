@@ -381,7 +381,7 @@ function showPopup(feature, coordinate) {
     const managerPhone = properties.manager_phone || '未知 | Unknown';
     const indoor = properties.indoor ? '室內 | Indoor ' : '';
     const outdoor = properties.outdoor ? '室外 | Outdoor ' : '';
-    const weakSuitable = properties.weak_suitable ? '適合避難弱者 | Suitable for Vulnerable People' : '';
+    const weakSuitable = properties.weak_suitable ? '適合脆弱族群 | Suitable for Vulnerable People' : '';
     
     const content = `
         <div class="popup-content">
@@ -471,7 +471,7 @@ function showDetailedPopup(feature, coordinate) {
     const managerPhone = properties.manager_phone || '未知 | Unknown';
     const indoor = properties.indoor ? '室內 | Indoor ' : '';
     const outdoor = properties.outdoor ? '室外 | Outdoor ' : '';
-    const weakSuitable = properties.weak_suitable ? '適合避難弱者 | Suitable for Vulnerable People' : '';
+    const weakSuitable = properties.weak_suitable ? '適合脆弱族群 | Suitable for Vulnerable People' : '';
     
     const content = `
         <div class="popup-content">
