@@ -4,56 +4,30 @@ let clusterSource;
 let overlay;
 let highlightedIndex = null;
 let searchResults = [];
-let currentSpiderFeatures = null;
 let points = {};
 const photoData = {};
 let fishFarmLayer = null;
 
-// Add spider layout function
-function calculateSpiderPositions(center, count, radius = 40) {
-    const positions = [];
-    for (let i = 0; i < count; i++) {
-        const angle = (2 * Math.PI * i) / count;
-        const x = center[0] + radius * Math.cos(angle);
-        const y = center[1] + radius * Math.sin(angle);
-        positions.push([x, y]);
-    }
-    return positions;
-}
+// Add a variable to track if we're showing a popup from the list
+let showingFromList = false;
+let lastListFeatures = null;
+let lastListCoordinate = null;
 
 // Modify createMarkerStyle to handle spider state
-function createMarkerStyle(feature, highlighted = false, isSpider = false) {
+function createMarkerStyle(feature, highlighted = false) {
     const color = highlighted ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 204, 0, 0.8)';
     const strokeColor = highlighted ? '#cc0000' : '#cc9900';
     
-    const styles = [
-        new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 12,
-                fill: new ol.style.Fill({ color: color }),
-                stroke: new ol.style.Stroke({
-                    color: strokeColor,
-                    width: 2
-                })
-            })
-        })
-    ];
-
-    if (isSpider) {
-        // Add line to original position
-        const originalPosition = feature.get('originalGeometry').getCoordinates();
-        const currentPosition = feature.getGeometry().getCoordinates();
-        
-        styles.unshift(new ol.style.Style({
-            geometry: new ol.geom.LineString([originalPosition, currentPosition]),
+    return new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 12,
+            fill: new ol.style.Fill({ color: color }),
             stroke: new ol.style.Stroke({
                 color: strokeColor,
-                width: 1
+                width: 2
             })
-        }));
-    }
-
-    return styles;
+        })
+    });
 }
 
 function createClusterStyle(feature) {
@@ -116,10 +90,20 @@ function showPopup(feature, coordinate) {
     `;
     }
     
+    // Add back button if we're showing from list
+    const backButton = showingFromList ? `
+        <div class="d-grid mb-3">
+            <button class="btn btn-outline-secondary btn-sm" onclick="returnToList()">
+                <i class="bi bi-arrow-left"></i> 返回列表 | Back to List
+            </button>
+        </div>
+    ` : '';
+    
     const content = `
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">${feature.get('電廠名稱')}</h5>
+                ${backButton}
                 ${!photoData[uuid] ? `
                     <div class="d-grid mb-3">
                         <button class="btn btn-success btn-sm" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeSsT5DdsJ-YscydKqWZ_sS0gY89Kz0T5pnPB1y05oaTPidfw/viewform?usp=pp_url&entry.2072773208=${uuid}', '_blank')">
@@ -272,16 +256,6 @@ function initMap() {
         source: vectorSource
     });
 
-    // Add spider layer
-    const spiderLayer = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-        style: function(feature) {
-            const index = feature.get('申請年度') + feature.get('項次');
-            return createMarkerStyle(feature, index === highlightedIndex, true);
-        },
-        zIndex: 2
-    });
-
     // Modify cluster layer initialization
     const clusterLayer = new ol.layer.Vector({
         source: clusterSource,
@@ -300,7 +274,7 @@ function initMap() {
     // Initialize map
     map = new ol.Map({
         target: 'map',
-        layers: [baseLayer, clusterLayer, spiderLayer],
+        layers: [baseLayer, clusterLayer],
         view: new ol.View({
             center: ol.proj.fromLonLat([120.301507, 23.124694]),
             zoom: 8
@@ -329,23 +303,8 @@ function initMap() {
                 const features = feature.get('features');
                 if (features.length === 1) {
                     showPopup(features[0], evt.coordinate);
-                } else if (features.length <= 8 || map.getView().getZoom() >= 18) {
-                    // Spider effect for small clusters or at max zoom
-                    if (currentSpiderFeatures) {
-                        spiderLayer.getSource().clear();
-                        currentSpiderFeatures = null;
-                    }
-
-                    const positions = calculateSpiderPositions(feature.getGeometry().getCoordinates(), features.length);
-                    features.forEach((f, i) => {
-                        const spiderFeature = f.clone();
-                        spiderFeature.set('originalGeometry', f.getGeometry());
-                        spiderFeature.setGeometry(new ol.geom.Point(positions[i]));
-                        spiderLayer.getSource().addFeature(spiderFeature);
-                    });
-                    currentSpiderFeatures = features;
-                } else {
-                    // Zoom in for large clusters
+                } else if (features.length > 10) {
+                    // For large clusters, zoom in first
                     const extent = ol.extent.createEmpty();
                     features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
                     map.getView().fit(extent, {
@@ -353,6 +312,8 @@ function initMap() {
                         padding: [50, 50, 50, 50],
                         maxZoom: 18
                     });
+                } else {
+                    showMultipleSheltersPopup(features, evt.coordinate);
                 }
             } else if (feature.get('fishfarm_id')) {
                 // Handle fish farm features
@@ -363,18 +324,6 @@ function initMap() {
             }
         } else {
             overlay.setPosition(undefined);
-            if (currentSpiderFeatures) {
-                spiderLayer.getSource().clear();
-                currentSpiderFeatures = null;
-            }
-        }
-    });
-
-    // Add view change handler to clear spider effect
-    map.getView().on('change:resolution', function() {
-        if (currentSpiderFeatures) {
-            spiderLayer.getSource().clear();
-            currentSpiderFeatures = null;
         }
     });
 
@@ -619,6 +568,64 @@ function showFishFarmPopup(feature, coordinate) {
     
     document.getElementById('popup-content').innerHTML = content;
     overlay.setPosition(coordinate);
+}
+
+// Add showMultipleSheltersPopup function
+function showMultipleSheltersPopup(features, coordinate) {
+    // Reset the showingFromList flag
+    showingFromList = false;
+    lastListFeatures = null;
+    lastListCoordinate = null;
+    
+    const content = `
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">多個太陽光電設施 | Multiple Solar Facilities</h5>
+                <div class="list-group list-group-flush">
+                    ${features.map((feature, index) => {
+                        const lonLat = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
+                        return `
+                            <a href="#" class="list-group-item list-group-item-action py-2" data-index="${index}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="fw-bold">${feature.get('電廠名稱')}</div>
+                                        <small class="text-muted">${feature.get('業者名稱')}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <small class="text-muted d-block">${feature.get('縣市')}${feature.get('鄉鎮區')}</small>
+                                        <small class="text-muted">${feature.get('裝置容量')}</small>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('popup-content').innerHTML = content;
+    overlay.setPosition(coordinate);
+    
+    // Add click handlers to list items
+    const items = document.querySelectorAll('.list-group-item-action');
+    items.forEach((item, index) => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Set the flag to indicate we're showing from list
+            showingFromList = true;
+            lastListFeatures = features;
+            lastListCoordinate = coordinate;
+            showPopup(features[index], coordinate);
+        });
+    });
+}
+
+// Add function to return to list
+function returnToList() {
+    if (lastListFeatures && lastListCoordinate) {
+        showMultipleSheltersPopup(lastListFeatures, lastListCoordinate);
+    }
 }
 
 window.onload = initMap;
