@@ -21,12 +21,12 @@ var listLevel2 = ['王鴻薇', '李彥秀', '葉元之', '林沛祥', '牛煦庭
 function createNumberPattern(baseColor, number) {
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
-    canvas.width = 30;
-    canvas.height = 30;
+    canvas.width = 70;
+    canvas.height = 70;
     
     // Fill background with the original polygon color
     context.fillStyle = baseColor;
-    context.fillRect(0, 0, 30, 30);
+    context.fillRect(0, 0, 70, 70);
     
     // Draw number
     context.fillStyle = '#000000';
@@ -44,13 +44,13 @@ function areaStyleFunction(f) {
     var p = f.getProperties();
     switch(candidates[p.id].party) {
         case '中國國民黨':
-            color = 'rgba(0, 81, 255, 0.7)';
+            color = 'rgba(0, 81, 255, 0.2)';
             break;
         case '民主進步黨':
-            color = 'rgba(34, 255, 0, 0.7)';
+            color = 'rgba(34, 255, 0, 0.2)';
             break;
         case '無':
-            color = 'rgba(200,200,200,0.7)';
+            color = 'rgba(200,200,200,0.2)';
     }
 
     if (f === currentFeature) {
@@ -79,7 +79,7 @@ function areaStyleFunction(f) {
             text: new ol.style.Text({
                 font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
                 fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 255, 1)'
+                    color: 'rgba(255, 0, 255, 0.5)'
                 }),
                 text: p.name
             })
@@ -94,7 +94,7 @@ function areaStyleFunction(f) {
         text: new ol.style.Text({
             font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
             fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 255, 1)'
+                color: 'rgba(255, 0, 255, 0.5)'
             }),
             text: p.name
         })
