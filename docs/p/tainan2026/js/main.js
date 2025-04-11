@@ -274,14 +274,7 @@ function showPoint(pointId) {
     const feature = points[pointId];
     if (feature) {
         const coordinate = feature.getGeometry().getCoordinates();
-        map.getView().animate({
-            center: coordinate,
-            zoom: 16,
-            duration: 500
-        });
-        setTimeout(() => {
-            showPopup(feature, coordinate);
-        }, 1000);
+        showPopup(feature, coordinate);
     }
 }
 
