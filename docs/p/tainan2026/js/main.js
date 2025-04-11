@@ -81,14 +81,21 @@ function createMarkerStyle(feature) {
         textColor = '#000000';
     }
 
-    // Determine the radius based on the name length
-    var radius = Math.max(30, name.length * 5);
+    // Use a fixed radius for all markers
+    var radius = 30;
+
+    // Check if the feature has an ID in additionalImages
+    const featureId = feature.get('uuid');
+    const hasAdditionalImages = featureId && additionalImages[featureId] && additionalImages[featureId].length > 0;
 
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: radius,
             fill: new ol.style.Fill({color: backgroundColor}),
-            stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
+            stroke: new ol.style.Stroke({
+                color: hasAdditionalImages ? '#0000ff' : '#ffffff',
+                width: hasAdditionalImages ? 3 : 2
+            })
         }),
         text: new ol.style.Text({
             text: name,
@@ -104,11 +111,28 @@ function createMarkerStyle(feature) {
 function createClusterStyle(feature) {
     var size = feature.get('features').length;
     var radius = Math.min(40, 20 + Math.sqrt(size) * 3);
+    
+    // Check if any feature in the cluster has additional images
+    var hasAdditionalImages = false;
+    var features = feature.get('features');
+    if (features) {
+        for (var i = 0; i < features.length; i++) {
+            var featureId = features[i].get('uuid');
+            if (featureId && additionalImages[featureId] && additionalImages[featureId].length > 0) {
+                hasAdditionalImages = true;
+                break;
+            }
+        }
+    }
+    
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: radius,
             fill: new ol.style.Fill({color: 'rgba(0, 123, 255, 0.8)'}),
-            stroke: new ol.style.Stroke({color: '#ffffff', width: 2})
+            stroke: new ol.style.Stroke({
+                color: hasAdditionalImages ? '#0000ff' : '#ffffff',
+                width: hasAdditionalImages ? 3 : 2
+            })
         }),
         text: new ol.style.Text({
             text: size.toString(),
@@ -322,8 +346,24 @@ function fetchAdditionalImages() {
                     }
                 }
             });
+            
+            // Refresh the markers to apply the blue border to markers with additional images
+            refreshMarkers();
         })
         .catch(error => console.error('Error fetching additional images:', error));
+}
+
+// Function to refresh markers
+function refreshMarkers() {
+    // Force the cluster source to refresh
+    if (clusterSource) {
+        clusterSource.refresh();
+    }
+    
+    // Force the vector layer to refresh if it exists
+    if (vectorLayer) {
+        vectorLayer.changed();
+    }
 }
 
 // Modify the showPopup function
@@ -762,8 +802,10 @@ function initMap() {
     // Call this function in your initMap function or wherever you initialize your page
     initCoordinatesModal();
 
-    // Fetch additional images when initializing
-    fetchAdditionalImages();
+    // Fetch additional images after all layers are initialized
+    setTimeout(function() {
+        fetchAdditionalImages();
+    }, 1000);
 }
 
 // Initialize the map when the window loads
