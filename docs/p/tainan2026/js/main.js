@@ -530,16 +530,17 @@ function uuidv4() {
     });
 }
 
-// Add this function to create the pie chart
+// Add this function to create the bar chart
 function createNameChart(data) {
     const ctx = document.getElementById('nameChart').getContext('2d');
     const totalCount = Object.values(data).reduce((sum, count) => sum + count, 0);
     
     new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
             labels: Object.keys(data),
             datasets: [{
+                label: '數量',
                 data: Object.values(data),
                 backgroundColor: [
                     '#7f9c73',
@@ -547,11 +548,22 @@ function createNameChart(data) {
                     '#FFCE56',
                     '#0000ff',
                     '#cccccc'
-                ]
+                ],
+                borderColor: [
+                    '#6a8a5e',
+                    '#b03d7a',
+                    '#e6b84d',
+                    '#0000cc',
+                    '#b3b3b3'
+                ],
+                borderWidth: 1
             }]
         },
         options: {
+            indexAxis: 'y', // This makes the bars horizontal
             responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 1.5, // Fixed aspect ratio for consistent size
             plugins: {
                 title: {
                     display: true,
@@ -561,32 +573,35 @@ function createNameChart(data) {
                         weight: 'bold'
                     }
                 },
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        let label = ctx.chart.data.labels[ctx.dataIndex];
-                        return `${label}: ${value}`;
-                    },
-                    color: 'white',
-                    font: {
-                        weight: 'bold',
-                        size: 12
-                    },
-                    textAlign: 'center',
-                    textBaseline: 'middle'
+                legend: {
+                    display: false
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            let label = context.label || '';
                             let value = context.raw || 0;
                             let percentage = ((value / totalCount) * 100).toFixed(2);
-                            return `${label}: ${value} (${percentage}%)`;
+                            return `${value} (${percentage}%)`;
                         }
                     }
                 }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '數量'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: '類型'
+                    }
+                }
             }
-        },
-        plugins: [ChartDataLabels]
+        }
     });
 }
 
