@@ -115,20 +115,50 @@ function createClusterStyle(feature) {
     // Check if any feature in the cluster has additional images
     var hasAdditionalImages = false;
     var features = feature.get('features');
+    
+    // Count the occurrences of each marker type
+    var nameCounts = {
+        '陳亭妃': 0,
+        '林俊憲': 0,
+        'other': 0
+    };
+    
     if (features) {
         for (var i = 0; i < features.length; i++) {
+            var name = features[i].get('name');
+            if (name === '陳亭妃') {
+                nameCounts['陳亭妃']++;
+            } else if (name === '林俊憲') {
+                nameCounts['林俊憲']++;
+            } else {
+                nameCounts['other']++;
+            }
+            
+            // Check for additional images
             var featureId = features[i].get('uuid');
             if (featureId && additionalImages[featureId] && additionalImages[featureId].length > 0) {
                 hasAdditionalImages = true;
-                break;
             }
         }
+    }
+    
+    // Determine the dominant color based on the most common marker type
+    var dominantColor;
+    var textColor = '#ffffff'; // Default text color is white
+    
+    if (nameCounts['陳亭妃'] >= nameCounts['林俊憲'] && nameCounts['陳亭妃'] >= nameCounts['other']) {
+        dominantColor = '#d04f95'; // Pink for 陳亭妃
+    } else if (nameCounts['林俊憲'] >= nameCounts['陳亭妃'] && nameCounts['林俊憲'] >= nameCounts['other']) {
+        dominantColor = '#7f9c73'; // Green for 林俊憲
+    } else {
+        dominantColor = '#ffff00'; // Yellow for others
+        textColor = '#000000'; // Black text for yellow background
     }
     
     return new ol.style.Style({
         image: new ol.style.Circle({
             radius: radius,
-            fill: new ol.style.Fill({color: 'rgba(0, 123, 255, 0.8)'}),
+            fill: new ol.style.Fill({color: dominantColor}),
             stroke: new ol.style.Stroke({
                 color: hasAdditionalImages ? '#0000ff' : '#ffffff',
                 width: hasAdditionalImages ? 3 : 2
@@ -137,8 +167,8 @@ function createClusterStyle(feature) {
         text: new ol.style.Text({
             text: size.toString(),
             font: 'bold 14px Arial,sans-serif',
-            fill: new ol.style.Fill({color: '#ffffff'}),
-            stroke: new ol.style.Stroke({color: 'rgba(0, 123, 255, 0.8)', width: 1}),
+            fill: new ol.style.Fill({color: textColor}),
+            stroke: new ol.style.Stroke({color: dominantColor, width: 1}),
             offsetY: 1
         })
     });
