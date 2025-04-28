@@ -411,7 +411,6 @@ function showPopup(feature, coordinate) {
     
     // Display additional images if they exist
     if (additionalImages[uuid] && additionalImages[uuid].length > 0) {
-        
         content += '<div class="card-img-top additional-images">';
         content += '<h6 class="text-center mt-2">其他圖片</h6>';
         additionalImages[uuid].forEach((img, index) => {
@@ -468,6 +467,9 @@ function showPopup(feature, coordinate) {
     content += '</div>';
 
     document.getElementById('popup-content').innerHTML = content;
+    
+    // Force the popup to be visible
+    popup.style.display = 'block';
     overlay.setPosition(coordinate);
 
     // Add collapse event handlers after content is added
