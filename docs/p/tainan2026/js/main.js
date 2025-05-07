@@ -11,9 +11,15 @@ const coordinatesInput = document.getElementById('coordinatesInput');
 const latitudeInput = document.getElementById('latitude');
 const longitudeInput = document.getElementById('longitude');
 const zoomToCoordinatesBtn = document.getElementById('zoomToCoordinates');
+const checkinModeBtn = document.getElementById('checkin-mode');
 
 // Add this at the top with other global variables
 var additionalImages = {};
+
+// Add check-in mode state variables
+var isCheckinMode = false;
+var checkedMarkers = new Set();
+var checkinStartTime = null;
 
 // Set up the WMTS layer
 function setupWMTSLayer() {
@@ -68,6 +74,44 @@ function setupTopoJSONLayer() {
 
 // Function to create style for markers
 function createMarkerStyle(feature) {
+    if (isCheckinMode) {
+        const isChecked = checkedMarkers.has(feature.get('uuid'));
+        var name = feature.get('name');
+        let backgroundColor, textColor;
+        if (name === '陳亭妃') {
+            backgroundColor = '#d04f95';
+            textColor = '#ffffff';
+        } else if (name === '林俊憲') {
+            backgroundColor = '#7f9c73';
+            textColor = '#ffffff';
+        } else {
+            backgroundColor = '#ffff00';
+            textColor = '#000000';
+        }
+
+        // Check if the feature has an ID in additionalImages
+        const featureId = feature.get('uuid');
+        const hasAdditionalImages = featureId && additionalImages[featureId] && additionalImages[featureId].length > 0;
+
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 30,
+                fill: new ol.style.Fill({color: isChecked ? backgroundColor : '#ffffff'}),
+                stroke: new ol.style.Stroke({
+                    color: isChecked ? (hasAdditionalImages ? '#0000ff' : '#ffffff') : '#000000',
+                    width: isChecked ? (hasAdditionalImages ? 3 : 2) : 2
+                })
+            }),
+            text: new ol.style.Text({
+                text: name,
+                font: 'bold 14px Arial,sans-serif',
+                fill: new ol.style.Fill({color: isChecked ? textColor : '#000000'}),
+                stroke: new ol.style.Stroke({color: isChecked ? backgroundColor : '#ffffff', width: 1}),
+                offsetY: 1
+            })
+        });
+    }
+
     var name = feature.get('name');
     let backgroundColor, textColor;
     if (name === '陳亭妃') {
@@ -109,6 +153,29 @@ function createMarkerStyle(feature) {
 
 // Function to create style for clusters
 function createClusterStyle(feature) {
+    if (isCheckinMode) {
+        var size = feature.get('features').length;
+        var radius = Math.min(40, 20 + Math.sqrt(size) * 3);
+        
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: radius,
+                fill: new ol.style.Fill({color: '#ffffff'}),
+                stroke: new ol.style.Stroke({
+                    color: '#000000',
+                    width: 2
+                })
+            }),
+            text: new ol.style.Text({
+                text: size.toString(),
+                font: 'bold 14px Arial,sans-serif',
+                fill: new ol.style.Fill({color: '#000000'}),
+                stroke: new ol.style.Stroke({color: '#ffffff', width: 1}),
+                offsetY: 1
+            })
+        });
+    }
+
     var size = feature.get('features').length;
     var radius = Math.min(40, 20 + Math.sqrt(size) * 3);
     
@@ -673,6 +740,44 @@ function initCoordinatesModal() {
     });
 }
 
+// Add check-in mode toggle handler
+function toggleCheckinMode() {
+    isCheckinMode = !isCheckinMode;
+    if (isCheckinMode) {
+        checkinModeBtn.classList.remove('btn-outline-primary');
+        checkinModeBtn.classList.add('btn-primary');
+        checkinStartTime = new Date();
+        checkedMarkers.clear();
+    } else {
+        checkinModeBtn.classList.remove('btn-primary');
+        checkinModeBtn.classList.add('btn-outline-primary');
+        showCheckinSummary();
+    }
+    refreshMarkers();
+}
+
+// Add check-in summary popup
+function showCheckinSummary() {
+    const duration = Math.floor((new Date() - checkinStartTime) / 1000); // Duration in seconds
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    const timeStr = `${minutes}分${seconds}秒`;
+    
+    const summaryContent = `
+        <h5>打卡完成！</h5>
+        <p>已打卡 ${checkedMarkers.size} 個看板</p>
+        <p>使用時間：${timeStr}</p>
+    `;
+    
+    const popupElement = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    popupContent.innerHTML = summaryContent;
+    
+    // Position the popup in the center of the map
+    const center = map.getView().getCenter();
+    overlay.setPosition(center);
+}
+
 // Initialize the map
 function initMap() {
     var emapLayer = setupWMTSLayer();
@@ -771,8 +876,39 @@ function initMap() {
     // Add event listener for the filter input
     document.getElementById('filter-input').addEventListener('input', updateFilter);
 
-    // Add map click event
+    // Add click event listener to the map
     map.on('singleclick', function(evt) {
+        if (isCheckinMode) {
+            map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+                const features = feature.get('features');
+                if (features) {
+                    if (features.length > 1) {
+                        // Cluster clicked - zoom in
+                        var view = map.getView();
+                        var zoom = view.getZoom();
+                        view.animate({
+                            center: feature.getGeometry().getCoordinates(),
+                            zoom: zoom + 1,
+                            duration: 250
+                        });
+                    } else if (features.length === 1) {
+                        // Single marker clicked
+                        const clickedFeature = features[0];
+                        const uuid = clickedFeature.get('uuid');
+                        if (checkedMarkers.has(uuid)) {
+                            checkedMarkers.delete(uuid);
+                        } else {
+                            checkedMarkers.add(uuid);
+                        }
+                        refreshMarkers();
+                        // Show popup for the clicked feature
+                        showPopup(clickedFeature, evt.coordinate);
+                    }
+                }
+            });
+            return;
+        }
+
         let featureFound = false;
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
           var p = feature.getProperties();
@@ -838,6 +974,9 @@ function initMap() {
     document.getElementById('readme-closer').addEventListener('click', function() {
         document.getElementById('readme-popup').style.display = 'none';
     });
+
+    // Add click event listener to the check-in mode button
+    checkinModeBtn.addEventListener('click', toggleCheckinMode);
 
     // Call this function in your initMap function or wherever you initialize your page
     initCoordinatesModal();
