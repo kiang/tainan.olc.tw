@@ -269,9 +269,35 @@ const nameCounts = {
     '其他': 0
 };
 
+// Function to fetch additional images
+function fetchAdditionalImages() {
+    return fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS1i3CTbXdGTyTQiTKt5LIFgLXB5mt-RVecYcgiseoND0IZOiVpU4bK9kQ8bXP8NFGIq2OxLF8ITUHC/pub?gid=1036449859&single=true&output=csv')
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n').slice(1); // Skip header row
+            rows.forEach(row => {
+                const [timestamp, fileUrl, name, city, town, lon, lat, id] = row.split(',');
+                if (id && fileUrl) {
+                    const trimmedId = id.trim();
+                    if (!additionalImages[trimmedId]) {
+                        additionalImages[trimmedId] = [];
+                    }
+                    const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
+                    if (fileId) {
+                        additionalImages[trimmedId].push({
+                            fileId: fileId,
+                            timestamp: timestamp
+                        });
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching additional images:', error));
+}
+
 // Function to fetch CSV data and add markers
 function addMarkersFromCSV() {
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
+    return fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
         .then(response => response.text())
         .then(data => {
             // Use a CSV parser that handles quoted fields containing newlines
@@ -412,35 +438,6 @@ function expandPopup(button) {
             overlay.setPosition(feature.getGeometry().getCoordinates());
         }
     }
-}
-
-// Add this function to fetch additional images
-function fetchAdditionalImages() {
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS1i3CTbXdGTyTQiTKt5LIFgLXB5mt-RVecYcgiseoND0IZOiVpU4bK9kQ8bXP8NFGIq2OxLF8ITUHC/pub?gid=1036449859&single=true&output=csv')
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').slice(1); // Skip header row
-            rows.forEach(row => {
-                const [timestamp, fileUrl, name, city, town, lon, lat, id] = row.split(',');
-                if (id && fileUrl) {
-                    const trimmedId = id.trim();
-                    if (!additionalImages[trimmedId]) {
-                        additionalImages[trimmedId] = [];
-                    }
-                    const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
-                    if (fileId) {
-                        additionalImages[trimmedId].push({
-                            fileId: fileId,
-                            timestamp: timestamp
-                        });
-                    }
-                }
-            });
-            
-            // Refresh the markers to apply the blue border to markers with additional images
-            refreshMarkers();
-        })
-        .catch(error => console.error('Error fetching additional images:', error));
 }
 
 // Function to refresh markers
@@ -870,8 +867,14 @@ function initMap() {
         });
     });
 
-    // Add markers from CSV
-    addMarkersFromCSV();
+    // Add markers from CSV and fetch additional images
+    Promise.all([
+        fetchAdditionalImages(),
+        addMarkersFromCSV()
+    ]).then(() => {
+        // Refresh markers after both operations are complete
+        refreshMarkers();
+    });
 
     // Add event listener for the filter input
     document.getElementById('filter-input').addEventListener('input', updateFilter);
@@ -980,11 +983,6 @@ function initMap() {
 
     // Call this function in your initMap function or wherever you initialize your page
     initCoordinatesModal();
-
-    // Fetch additional images after all layers are initialized
-    setTimeout(function() {
-        fetchAdditionalImages();
-    }, 1000);
 }
 
 // Initialize the map when the window loads
