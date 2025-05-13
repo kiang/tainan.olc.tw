@@ -970,12 +970,22 @@ function initMap() {
 
     // Add click event listener for the readme icon
     document.getElementById('readme-icon').addEventListener('click', function() {
-      document.getElementById('readme-popup').style.display = 'block';
+        document.getElementById('readme-popup').style.display = 'block';
     });
 
     // Add click event listener for readme closer
     document.getElementById('readme-closer').addEventListener('click', function() {
         document.getElementById('readme-popup').style.display = 'none';
+    });
+
+    // Add click event listener for the tutorial icon
+    document.getElementById('tutorial-icon').addEventListener('click', function() {
+        document.getElementById('tutorial-popup').style.display = 'block';
+    });
+
+    // Add click event listener for tutorial closer
+    document.getElementById('tutorial-closer').addEventListener('click', function() {
+        document.getElementById('tutorial-popup').style.display = 'none';
     });
 
     // Add click event listener to the check-in mode button
