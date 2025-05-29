@@ -628,6 +628,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializeDatePicker() {
         const datePicker = document.getElementById('datePicker');
 
+        // Calculate the date range (last 60 days)
+        const today = new Date();
+        const sixtyDaysAgo = new Date(today);
+        sixtyDaysAgo.setDate(today.getDate() - 60);
+
+        // Format dates for the date picker
+        const formatDate = (date) => {
+            return date.toISOString().split('T')[0];
+        };
+
+        // Set min and max attributes
+        datePicker.min = formatDate(sixtyDaysAgo);
+        datePicker.max = formatDate(today);
+
         // Set the initial date to the current updateTime
         const [currentDate] = updateTime.split(' ');
         datePicker.value = currentDate;
