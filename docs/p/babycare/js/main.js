@@ -103,22 +103,35 @@ var pointClicked = false;
 map.on('singleclick', function (evt) {
   // Check if the click is on an ad iframe
   const clickedElement = document.elementFromPoint(evt.pixel[0], evt.pixel[1]);
-  if (clickedElement && (clickedElement.tagName === 'IFRAME' || clickedElement.closest('iframe'))) {
-    return; // Ignore clicks on ad iframes
+  const isAdClick = clickedElement && (
+    clickedElement.tagName === 'IFRAME' || 
+    clickedElement.closest('iframe') ||
+    clickedElement.closest('.adsbygoogle')
+  );
+  console.log(clickedElement.tagName);
+
+  if (isAdClick) {
+    return; // Ignore clicks on ad elements
   }
 
-  content.innerHTML = '';
-  pointClicked = false;
+  // Check if we clicked on a feature first
+  let featureClicked = false;
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (false === pointClicked) {
+    if (!featureClicked) {
       var p = feature.getProperties();
       var targetHash = '#' + p.id;
       if (window.location.hash !== targetHash) {
         window.location.hash = targetHash;
       }
-      pointClicked = true;
+      featureClicked = true;
     }
   });
+
+  // Only clear content if we didn't click a feature
+  if (!featureClicked) {
+    content.innerHTML = '';
+    pointClicked = false;
+  }
 });
 
 var previousFeature = false;
