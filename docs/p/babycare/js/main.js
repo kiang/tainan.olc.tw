@@ -101,6 +101,12 @@ var map = new ol.Map({
 map.addControl(sidebar);
 var pointClicked = false;
 map.on('singleclick', function (evt) {
+  // Check if the click is on an ad iframe
+  const clickedElement = document.elementFromPoint(evt.pixel[0], evt.pixel[1]);
+  if (clickedElement && (clickedElement.tagName === 'IFRAME' || clickedElement.closest('iframe'))) {
+    return; // Ignore clicks on ad iframes
+  }
+
   content.innerHTML = '';
   pointClicked = false;
   map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
