@@ -5,52 +5,649 @@
     <title>公共資料專案總覽</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .project-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+        }
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        .project-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            color: #0d6efd;
+        }
+        .category-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
-<body class="p-3">
-    <h1>公共資料專案總覽</h1>
-    <div class="list-group">
-        <a href="1000/" class="list-group-item list-group-item-action">優先改善1000處行人事故熱點</a>
-        <a href="2024/" class="list-group-item list-group-item-action">台灣民眾黨 2024 立法委員選舉</a>
-        <a href="2025/" class="list-group-item list-group-item-action">2025 大罷免</a>
-        <a href="6000/" class="list-group-item list-group-item-action">普發 6000 ATM 地圖</a>
-        <a href="ardata/" class="list-group-item list-group-item-action">政治獻金捐款人索引::營利事業</a>
-        <a href="babycare/" class="list-group-item list-group-item-action">托嬰中心地圖</a>
-        <a href="bike/" class="list-group-item list-group-item-action">全國車友回報單車道積水地點的地圖</a>
-        <a href="community/" class="list-group-item list-group-item-action">台南社區營造地圖</a>
-        <a href="dearnana/" class="list-group-item list-group-item-action">DearNaNa-扛阿北守台灣</a>
-        <a href="dengue/" class="list-group-item list-group-item-action">台灣登革熱本土病例地圖</a>
-        <a href="earthquake0121/" class="list-group-item list-group-item-action">0121 震災地圖</a>
-        <a href="egg/" class="list-group-item list-group-item-action">蛋蛋前線支援地圖</a>
-        <a href="er/" class="list-group-item list-group-item-action">重度級急救責任醫院急診狀態地圖</a>
-        <a href="floor_area/" class="list-group-item list-group-item-action">台南容積研究</a>
-        <a href="gaemi/" class="list-group-item list-group-item-action">凱米颱風淹水地圖</a>
-        <a href="grass/" class="list-group-item list-group-item-action">江明宗的萬眾小草計畫</a>
-        <a href="hengfeng/" class="list-group-item list-group-item-action">桃園市大園區橫峰里會勘地圖</a>
-        <a href="iguana/" class="list-group-item list-group-item-action">綠鬣蜥追蹤地圖</a>
-        <a href="invoice/" class="list-group-item list-group-item-action">發票探索地圖</a>
-        <a href="kanban/" class="list-group-item list-group-item-action">柯文哲看板地圖</a>
-        <a href="kp/" class="list-group-item list-group-item-action">柯文哲政績地圖</a>
-        <a href="kp_routes/" class="list-group-item list-group-item-action">柯文哲 戰車掃街應援地圖</a>
-        <a href="krathon/" class="list-group-item list-group-item-action">山陀兒颱風淹水地圖</a>
-        <a href="labor/" class="list-group-item list-group-item-action">勞動部裁罰公告</a>
-        <a href="laipi/" class="list-group-item list-group-item-action">賴皮寮跟賴皮世界地圖</a>
-        <a href="landchg/" class="list-group-item list-group-item-action">國土利用監測地圖</a>
-        <a href="nhi/" class="list-group-item list-group-item-action">醫院掛號費地圖</a>
-        <a href="odor/" class="list-group-item list-group-item-action">人力臭味儀</a>
-        <a href="preschool/" class="list-group-item list-group-item-action">臺南市公共化幼兒園招生地圖</a>
-        <a href="reip/" class="list-group-item list-group-item-action">台南光電地圖</a>
-        <a href="school/" class="list-group-item list-group-item-action">臺南市國中小學區地圖</a>
-        <a href="shelter/" class="list-group-item list-group-item-action">台灣避難收容處所 | Taiwan Emergency Shelter Map</a>
-        <a href="sidewalk/" class="list-group-item list-group-item-action">台灣人行道地圖</a>
-        <a href="solar/" class="list-group-item list-group-item-action">太陽光電設施地圖</a>
-        <a href="tainan2026/" class="list-group-item list-group-item-action">台南看板地圖</a>
-        <a href="taipower/" class="list-group-item list-group-item-action">台電系統各機組發電量</a>
-        <a href="tpp2024/" class="list-group-item list-group-item-action">2024 台灣民眾黨黨員代表參選人</a>
-        <a href="trails/" class="list-group-item list-group-item-action">台灣步道地圖</a>
-        <a href="unilions/" class="list-group-item list-group-item-action">府城獅子營 在地店家同慶獅子軍奪冠</a>
-        <a href="waddlethon/" class="list-group-item list-group-item-action">Waddlethon, Jinnytty's Taiwan Walking Map</a>
-        <a href="wateroff/" class="list-group-item list-group-item-action">台灣停水地圖 - 即時停水資訊、供水站位置查詢</a>
-        <a href="youbike/" class="list-group-item list-group-item-action">台南 YouBike</a>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-geo-alt-fill"></i>
+                公共資料專案總覽
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/kiang/tainan.olc.tw" target="_blank">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="search-box">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="搜尋專案...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="projectList">
+            <div class="col">
+                <a href="1000/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-signpost-split project-icon"></i>
+                                優先改善1000處行人事故熱點
+                            </h5>
+                            <span class="category-badge">交通</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="2024/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-flag project-icon"></i>
+                                台灣民眾黨 2024 立法委員選舉
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="2025/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-calendar-event project-icon"></i>
+                                2025 大罷免
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="6000/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-cash-stack project-icon"></i>
+                                普發 6000 ATM 地圖
+                            </h5>
+                            <span class="category-badge">金融</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="ardata/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-building project-icon"></i>
+                                政治獻金捐款人索引::營利事業
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="babycare/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people project-icon"></i>
+                                托嬰中心地圖
+                            </h5>
+                            <span class="category-badge">教育</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="bike/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-bicycle project-icon"></i>
+                                全國車友回報單車道積水地點的地圖
+                            </h5>
+                            <span class="category-badge">交通</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="community/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                台南社區營造地圖
+                            </h5>
+                            <span class="category-badge">社區</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="dearnana/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                DearNaNa-扛阿北守台灣
+                            </h5>
+                            <span class="category-badge">社區</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="dengue/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                台灣登革熱本土病例地圖
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="earthquake0121/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                0121 震災地圖
+                            </h5>
+                            <span class="category-badge">災害</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="egg/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-egg-fill project-icon"></i>
+                                蛋蛋前線支援地圖
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="er/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-heart-fill project-icon"></i>
+                                重度級急救責任醫院急診狀態地圖
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="floor_area/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                台南容積研究
+                            </h5>
+                            <span class="category-badge">建築</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="gaemi/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                凱米颱風淹水地圖
+                            </h5>
+                            <span class="category-badge">災害</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="grass/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-flower1 project-icon"></i>
+                                江明宗的萬眾小草計畫
+                            </h5>
+                            <span class="category-badge">環境</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="hengfeng/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                桃園市大園區橫峰里會勘地圖
+                            </h5>
+                            <span class="category-badge">社區</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="iguana/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-flower1 project-icon"></i>
+                                綠鬣蜥追蹤地圖
+                            </h5>
+                            <span class="category-badge">環境</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="invoice/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-cash-stack project-icon"></i>
+                                發票探索地圖
+                            </h5>
+                            <span class="category-badge">金融</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="kanban/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                柯文哲看板地圖
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="kp/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                柯文哲政績地圖
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="kp_routes/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                柯文哲 戰車掃街應援地圖
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="krathon/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                山陀兒颱風淹水地圖
+                            </h5>
+                            <span class="category-badge">災害</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="labor/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                勞動部裁罰公告
+                            </h5>
+                            <span class="category-badge">勞動</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="laipi/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                賴皮寮跟賴皮世界地圖
+                            </h5>
+                            <span class="category-badge">社區</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="landchg/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                國土利用監測地圖
+                            </h5>
+                            <span class="category-badge">環境</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="nhi/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                醫院掛號費地圖
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="odor/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                人力臭味儀
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="preschool/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                臺南市公共化幼兒園招生地圖
+                            </h5>
+                            <span class="category-badge">教育</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="reip/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                台南光電地圖
+                            </h5>
+                            <span class="category-badge">能源</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="school/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                臺南市國中小學區地圖
+                            </h5>
+                            <span class="category-badge">教育</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="shelter/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                台灣避難收容處所 | Taiwan Emergency Shelter Map
+                            </h5>
+                            <span class="category-badge">災害</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="sidewalk/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                台灣人行道地圖
+                            </h5>
+                            <span class="category-badge">交通</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="solar/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                太陽光電設施地圖
+                            </h5>
+                            <span class="category-badge">能源</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="tainan2026/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                台南看板地圖
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="taipower/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                台電系統各機組發電量
+                            </h5>
+                            <span class="category-badge">能源</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="tpp2024/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                2024 台灣民眾黨黨員代表參選人
+                            </h5>
+                            <span class="category-badge">政治</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="trails/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                台灣步道地圖
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="unilions/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                府城獅子營 在地店家同慶獅子軍奪冠
+                            </h5>
+                            <span class="category-badge">社區</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="waddlethon/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-people-fill project-icon"></i>
+                                Waddlethon, Jinnytty's Taiwan Walking Map
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="wateroff/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-house-fill project-icon"></i>
+                                台灣停水地圖 - 即時停水資訊、供水站位置查詢
+                            </h5>
+                            <span class="category-badge">健康</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="youbike/" class="text-decoration-none">
+                    <div class="card project-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-bicycle project-icon"></i>
+                                台南 YouBike
+                            </h5>
+                            <span class="category-badge">交通</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
+
+    <footer class="bg-light mt-5 py-3">
+        <div class="container text-center">
+            <p class="mb-0">© 2024 公共資料專案總覽 | <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const projects = document.querySelectorAll('.col');
+            
+            projects.forEach(project => {
+                const title = project.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(searchText)) {
+                    project.style.display = '';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
