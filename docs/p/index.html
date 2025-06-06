@@ -8,527 +8,703 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 20px auto;
+            padding: 0;
+            max-width: 1400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
         .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: none;
+            border-radius: 20px 20px 0 0;
+            padding: 1rem 2rem;
         }
-        .project-card {
-            transition: transform 0.2s, box-shadow 0.2s;
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 600;
+        }
+        
+        .navbar-brand:hover, .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: -1.5rem -1.5rem 2rem -1.5rem;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-input {
             border: none;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+            outline: none;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            width: 100%;
+            background: transparent;
         }
-        .project-card:hover {
+        
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.3rem;
+        }
+        
+        .stats-section {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+        
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-chip:hover, .filter-chip.active {
+            background: #667eea;
+            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
+        
+        .project-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background: white;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
         .project-icon {
-            font-size: 1.5rem;
-            margin-right: 10px;
-            color: #0d6efd;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
         }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+        
         .category-badge {
             font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            margin-right: 0.5rem;
-            border-radius: 4px;
-            background-color: #e9ecef;
-            color: #495057;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: auto;
         }
-        .search-box {
-            max-width: 500px;
-            margin: 0 auto;
+        
+        /* Category-specific colors */
+        .badge-政治 { background: #e8f4fd; color: #1976d2; }
+        .badge-交通 { background: #f3e5f5; color: #7b1fa2; }
+        .badge-健康 { background: #e8f5e8; color: #388e3c; }
+        .badge-教育 { background: #fff3e0; color: #f57c00; }
+        .badge-環境 { background: #e0f2f1; color: #00695c; }
+        .badge-災害 { background: #ffebee; color: #d32f2f; }
+        .badge-金融 { background: #f1f8e9; color: #689f38; }
+        .badge-社區 { background: #fce4ec; color: #c2185b; }
+        .badge-能源 { background: #fff8e1; color: #ffa000; }
+        .badge-建築 { background: #f3e5f5; color: #512da8; }
+        .badge-勞動 { background: #e1f5fe; color: #0277bd; }
+        
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-top: 3rem;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .stats-section { gap: 1rem; }
+            .main-content { padding: 1rem; }
+        }
+        
+        .loading-animation {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-geo-alt-fill"></i>
-                公共資料專案總覽
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/kiang/tainan.olc.tw" target="_blank">
-                            <i class="bi bi-github"></i> GitHub
-                        </a>
-                    </li>
-                </ul>
+    <div class="content-wrapper">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="bi bi-geo-alt-fill me-2"></i>
+                    公共資料專案總覽
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://github.com/kiang/tainan.olc.tw" target="_blank">
+                                <i class="bi bi-github me-1"></i> GitHub
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="search-box">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="搜尋專案...">
+        <div class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">
+                    <i class="bi bi-database-fill me-2"></i>
+                    公共資料專案總覽
+                </h1>
+                <p class="hero-subtitle">探索台灣公共資料的力量，讓資訊成為改變社會的動力</p>
+                
+                <div class="search-container position-relative">
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜尋專案名稱、類別或關鍵字...">
+                    <i class="bi bi-search search-icon"></i>
+                </div>
+                
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalProjects">42</span>
+                        <span class="stat-label">個專案</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">11</span>
+                        <span class="stat-label">個分類</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">種可能</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="projectList">
-            <div class="col">
-                <a href="1000/" class="text-decoration-none">
-                    <div class="card project-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
+        <div class="main-content">
+            <div class="filter-section">
+                <div class="filter-chips">
+                    <span class="filter-chip active" data-category="all">全部</span>
+                    <span class="filter-chip" data-category="政治">政治</span>
+                    <span class="filter-chip" data-category="交通">交通</span>
+                    <span class="filter-chip" data-category="健康">健康</span>
+                    <span class="filter-chip" data-category="教育">教育</span>
+                    <span class="filter-chip" data-category="環境">環境</span>
+                    <span class="filter-chip" data-category="災害">災害</span>
+                    <span class="filter-chip" data-category="金融">金融</span>
+                    <span class="filter-chip" data-category="社區">社區</span>
+                    <span class="filter-chip" data-category="能源">能源</span>
+                    <span class="filter-chip" data-category="建築">建築</span>
+                    <span class="filter-chip" data-category="勞動">勞動</span>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="projectList">
+                <div class="col loading-animation" data-category="交通">
+                    <a href="1000/" class="text-decoration-none">
+                        <div class="card project-card h-100">
+                            <div class="card-body">
                                 <i class="bi bi-signpost-split project-icon"></i>
-                                優先改善1000處行人事故熱點
-                            </h5>
-                            <span class="category-badge">交通</span>
+                                <h5 class="card-title">優先改善1000處行人事故熱點</h5>
+                                <span class="category-badge badge-交通">交通</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="2024/" class="text-decoration-none">
-                    <div class="card project-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
+                    </a>
+                </div>
+                <div class="col loading-animation" data-category="政治">
+                    <a href="2024/" class="text-decoration-none">
+                        <div class="card project-card h-100">
+                            <div class="card-body">
                                 <i class="bi bi-flag project-icon"></i>
-                                台灣民眾黨 2024 立法委員選舉
-                            </h5>
-                            <span class="category-badge">政治</span>
+                                <h5 class="card-title">台灣民眾黨 2024 立法委員選舉</h5>
+                                <span class="category-badge badge-政治">政治</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="2025/" class="text-decoration-none">
-                    <div class="card project-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
+                    </a>
+                </div>
+                <div class="col loading-animation" data-category="政治">
+                    <a href="2025/" class="text-decoration-none">
+                        <div class="card project-card h-100">
+                            <div class="card-body">
                                 <i class="bi bi-calendar-event project-icon"></i>
-                                2025 大罷免
-                            </h5>
-                            <span class="category-badge">政治</span>
+                                <h5 class="card-title">2025 大罷免</h5>
+                                <span class="category-badge badge-政治">政治</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="6000/" class="text-decoration-none">
-                    <div class="card project-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
+                    </a>
+                </div>
+                <div class="col loading-animation" data-category="金融">
+                    <a href="6000/" class="text-decoration-none">
+                        <div class="card project-card h-100">
+                            <div class="card-body">
                                 <i class="bi bi-cash-stack project-icon"></i>
-                                普發 6000 ATM 地圖
-                            </h5>
-                            <span class="category-badge">金融</span>
+                                <h5 class="card-title">普發 6000 ATM 地圖</h5>
+                                <span class="category-badge badge-金融">金融</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col">
+                    </a>
+                </div>
+            <div class="col loading-animation" data-category="政治">
                 <a href="ardata/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-building project-icon"></i>
-                                政治獻金捐款人索引::營利事業
-                            </h5>
-                            <span class="category-badge">政治</span>
+                            <i class="bi bi-building project-icon"></i>
+                            <h5 class="card-title">政治獻金捐款人索引::營利事業</h5>
+                            <span class="category-badge badge-政治">政治</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="教育">
                 <a href="babycare/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people project-icon"></i>
-                                托嬰中心地圖
-                            </h5>
-                            <span class="category-badge">教育</span>
+                            <i class="bi bi-people project-icon"></i>
+                            <h5 class="card-title">托嬰中心地圖</h5>
+                            <span class="category-badge badge-教育">教育</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="交通">
                 <a href="bike/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-bicycle project-icon"></i>
-                                全國車友回報單車道積水地點的地圖
-                            </h5>
-                            <span class="category-badge">交通</span>
+                            <i class="bi bi-bicycle project-icon"></i>
+                            <h5 class="card-title">全國車友回報單車道積水地點的地圖</h5>
+                            <span class="category-badge badge-交通">交通</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="社區">
                 <a href="community/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                台南社區營造地圖
-                            </h5>
-                            <span class="category-badge">社區</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">台南社區營造地圖</h5>
+                            <span class="category-badge badge-社區">社區</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="社區">
                 <a href="dearnana/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                DearNaNa-扛阿北守台灣
-                            </h5>
-                            <span class="category-badge">社區</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">DearNaNa-扛阿北守台灣</h5>
+                            <span class="category-badge badge-社區">社區</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="健康">
                 <a href="dengue/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                台灣登革熱本土病例地圖
-                            </h5>
-                            <span class="category-badge">健康</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">台灣登革熱本土病例地圖</h5>
+                            <span class="category-badge badge-健康">健康</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="災害">
                 <a href="earthquake0121/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                0121 震災地圖
-                            </h5>
-                            <span class="category-badge">災害</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">0121 震災地圖</h5>
+                            <span class="category-badge badge-災害">災害</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="健康">
                 <a href="egg/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-egg-fill project-icon"></i>
-                                蛋蛋前線支援地圖
-                            </h5>
-                            <span class="category-badge">健康</span>
+                            <i class="bi bi-egg-fill project-icon"></i>
+                            <h5 class="card-title">蛋蛋前線支援地圖</h5>
+                            <span class="category-badge badge-健康">健康</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="健康">
                 <a href="er/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-heart-fill project-icon"></i>
-                                重度級急救責任醫院急診狀態地圖
-                            </h5>
-                            <span class="category-badge">健康</span>
+                            <i class="bi bi-heart-fill project-icon"></i>
+                            <h5 class="card-title">重度級急救責任醫院急診狀態地圖</h5>
+                            <span class="category-badge badge-健康">健康</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="建築">
                 <a href="floor_area/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                台南容積研究
-                            </h5>
-                            <span class="category-badge">建築</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">台南容積研究</h5>
+                            <span class="category-badge badge-建築">建築</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="災害">
                 <a href="gaemi/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                凱米颱風淹水地圖
-                            </h5>
-                            <span class="category-badge">災害</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">凱米颱風淹水地圖</h5>
+                            <span class="category-badge badge-災害">災害</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="環境">
                 <a href="grass/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-flower1 project-icon"></i>
-                                江明宗的萬眾小草計畫
-                            </h5>
-                            <span class="category-badge">環境</span>
+                            <i class="bi bi-flower1 project-icon"></i>
+                            <h5 class="card-title">江明宗的萬眾小草計畫</h5>
+                            <span class="category-badge badge-環境">環境</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="社區">
                 <a href="hengfeng/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                桃園市大園區橫峰里會勘地圖
-                            </h5>
-                            <span class="category-badge">社區</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">桃園市大園區橫峰里會勘地圖</h5>
+                            <span class="category-badge badge-社區">社區</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="環境">
                 <a href="iguana/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-flower1 project-icon"></i>
-                                綠鬣蜥追蹤地圖
-                            </h5>
-                            <span class="category-badge">環境</span>
+                            <i class="bi bi-flower1 project-icon"></i>
+                            <h5 class="card-title">綠鬣蜥追蹤地圖</h5>
+                            <span class="category-badge badge-環境">環境</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="金融">
                 <a href="invoice/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-cash-stack project-icon"></i>
-                                發票探索地圖
-                            </h5>
-                            <span class="category-badge">金融</span>
+                            <i class="bi bi-cash-stack project-icon"></i>
+                            <h5 class="card-title">發票探索地圖</h5>
+                            <span class="category-badge badge-金融">金融</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="政治">
                 <a href="kanban/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                柯文哲看板地圖
-                            </h5>
-                            <span class="category-badge">政治</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">柯文哲看板地圖</h5>
+                            <span class="category-badge badge-政治">政治</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="政治">
                 <a href="kp/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                柯文哲政績地圖
-                            </h5>
-                            <span class="category-badge">政治</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">柯文哲政績地圖</h5>
+                            <span class="category-badge badge-政治">政治</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="政治">
                 <a href="kp_routes/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                柯文哲 戰車掃街應援地圖
-                            </h5>
-                            <span class="category-badge">政治</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">柯文哲 戰車掃街應援地圖</h5>
+                            <span class="category-badge badge-政治">政治</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="災害">
                 <a href="krathon/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                山陀兒颱風淹水地圖
-                            </h5>
-                            <span class="category-badge">災害</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">山陀兒颱風淹水地圖</h5>
+                            <span class="category-badge badge-災害">災害</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="勞動">
                 <a href="labor/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                勞動部裁罰公告
-                            </h5>
-                            <span class="category-badge">勞動</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">勞動部裁罰公告</h5>
+                            <span class="category-badge badge-勞動">勞動</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="社區">
                 <a href="laipi/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                賴皮寮跟賴皮世界地圖
-                            </h5>
-                            <span class="category-badge">社區</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">賴皮寮跟賴皮世界地圖</h5>
+                            <span class="category-badge badge-社區">社區</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="環境">
                 <a href="landchg/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                國土利用監測地圖
-                            </h5>
-                            <span class="category-badge">環境</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">國土利用監測地圖</h5>
+                            <span class="category-badge badge-環境">環境</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="健康">
                 <a href="nhi/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                醫院掛號費地圖
-                            </h5>
-                            <span class="category-badge">健康</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">醫院掛號費地圖</h5>
+                            <span class="category-badge badge-健康">健康</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="健康">
                 <a href="odor/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                人力臭味儀
-                            </h5>
-                            <span class="category-badge">健康</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">人力臭味儀</h5>
+                            <span class="category-badge badge-健康">健康</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="教育">
                 <a href="preschool/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                臺南市公共化幼兒園招生地圖
-                            </h5>
-                            <span class="category-badge">教育</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">臺南市公共化幼兒園招生地圖</h5>
+                            <span class="category-badge badge-教育">教育</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="能源">
                 <a href="reip/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                台南光電地圖
-                            </h5>
-                            <span class="category-badge">能源</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">台南光電地圖</h5>
+                            <span class="category-badge badge-能源">能源</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="教育">
                 <a href="school/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                臺南市國中小學區地圖
-                            </h5>
-                            <span class="category-badge">教育</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">臺南市國中小學區地圖</h5>
+                            <span class="category-badge badge-教育">教育</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="災害">
                 <a href="shelter/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                台灣避難收容處所 | Taiwan Emergency Shelter Map
-                            </h5>
-                            <span class="category-badge">災害</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">台灣避難收容處所 | Taiwan Emergency Shelter Map</h5>
+                            <span class="category-badge badge-災害">災害</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="交通">
                 <a href="sidewalk/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                台灣人行道地圖
-                            </h5>
-                            <span class="category-badge">交通</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">台灣人行道地圖</h5>
+                            <span class="category-badge badge-交通">交通</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="能源">
                 <a href="solar/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-house-fill project-icon"></i>
-                                太陽光電設施地圖
-                            </h5>
-                            <span class="category-badge">能源</span>
+                            <i class="bi bi-house-fill project-icon"></i>
+                            <h5 class="card-title">太陽光電設施地圖</h5>
+                            <span class="category-badge badge-能源">能源</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col">
+            <div class="col loading-animation" data-category="政治">
                 <a href="tainan2026/" class="text-decoration-none">
                     <div class="card project-card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-people-fill project-icon"></i>
-                                台南看板地圖
-                            </h5>
-                            <span class="category-badge">政治</span>
+                            <i class="bi bi-people-fill project-icon"></i>
+                            <h5 class="card-title">台南看板地圖</h5>
+                            <span class="category-badge badge-政治">政治</span>
                         </div>
                     </div>
                 </a>
