@@ -800,28 +800,115 @@
                     </div>
                 </a>
             </div>
+            </div>
         </div>
-    </div>
 
-    <footer class="bg-light mt-5 py-3">
-        <div class="container text-center">
-            <p class="mb-0">© 2024 公共資料專案總覽 | <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a></p>
-        </div>
-    </footer>
+        <footer class="footer">
+            <div class="container text-center">
+                <p class="mb-0">© 2024 公共資料專案總覽 | <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a></p>
+                <p class="mt-2 mb-0">
+                    <small>讓公共資料成為改變社會的力量 | Powered by Open Data</small>
+                </p>
+            </div>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Search functionality
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchText = e.target.value.toLowerCase();
-            const projects = document.querySelectorAll('.col');
+            const projects = document.querySelectorAll('.col[data-category]');
+            let visibleCount = 0;
             
             projects.forEach(project => {
                 const title = project.querySelector('.card-title').textContent.toLowerCase();
                 if (title.includes(searchText)) {
                     project.style.display = '';
+                    visibleCount++;
                 } else {
                     project.style.display = 'none';
                 }
+            });
+            
+            updateStats(visibleCount);
+        });
+
+        // Category filter functionality
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                // Remove active class from all chips
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                // Add active class to clicked chip
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                const projects = document.querySelectorAll('.col[data-category]');
+                let visibleCount = 0;
+                
+                projects.forEach(project => {
+                    if (category === 'all' || project.dataset.category === category) {
+                        project.style.display = '';
+                        visibleCount++;
+                    } else {
+                        project.style.display = 'none';
+                    }
+                });
+                
+                updateStats(visibleCount);
+                
+                // Clear search input when using category filter
+                document.getElementById('searchInput').value = '';
+            });
+        });
+
+        // Update project count
+        function updateStats(count) {
+            const totalElement = document.getElementById('totalProjects');
+            if (totalElement) {
+                totalElement.textContent = count || document.querySelectorAll('.col[data-category]').length;
+            }
+        }
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.loading-animation');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = Math.random() * 0.5 + 's';
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => observer.observe(card));
+        }
+
+        // Initialize animations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set correct project count
+            updateStats();
+            
+            // Start scroll animations
+            animateOnScroll();
+            
+            // Add stagger animation to cards
+            const cards = document.querySelectorAll('.loading-animation');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.03)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
             });
         });
     </script>
