@@ -47,6 +47,8 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       text-align: center;
       margin-bottom: 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .map-container h4 {
@@ -57,16 +59,23 @@
     #Map {
       position: relative;
       display: inline-block;
-      max-width: 100%;
+      width: 885px !important;
+      height: 797px !important;
+      min-width: 885px !important;
+      min-height: 797px !important;
       line-height: 0;
       text-align: left;
     }
 
     #Map img {
-      max-width: 100%;
-      height: auto;
+      width: 885px !important;
+      height: 797px !important;
+      max-width: none !important;
+      min-width: 885px !important;
+      min-height: 797px !important;
       display: block;
       border: 0;
+      object-fit: none !important;
     }
 
     #Map a {
@@ -231,6 +240,32 @@
 
       #item {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+    }
+
+    /* Ensure image map never gets resized on any device */
+    @media screen {
+      #Map, #Map img {
+        width: 885px !important;
+        height: 797px !important;
+        max-width: none !important;
+        min-width: 885px !important;
+        min-height: 797px !important;
+      }
+    }
+
+    /* Mobile instruction for scrolling */
+    @media (max-width: 945px) {
+      .map-container::after {
+        content: "👆 可左右滑動查看完整地圖";
+        display: block;
+        text-align: center;
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 10px;
+        padding: 5px;
+        background: #e3f2fd;
+        border-radius: 4px;
       }
     }
   </style>
