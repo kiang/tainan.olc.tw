@@ -3,16 +3,16 @@
 
 <head>
   <meta charset="utf-8">
-  <title>台南市南區殯儀館平面圖</title>
+  <title>台南市南區殯儀館公祭資訊</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- OpenGraph Meta Tags -->
-  <meta property="og:title" content="台南市南區殯儀館平面圖">
+  <meta property="og:title" content="台南市南區殯儀館公祭資訊">
   <meta property="og:description" content="台南市南區殯儀館設施平面圖，包含各奠儀廳、停車場、服務設施等詳細位置資訊">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tainan.olc.tw/p/mort/">
   <meta property="og:image" content="https://tainan.olc.tw/p/mort/og_image.png">
-  <meta property="og:site_name" content="台南市南區殯儀館平面圖">
+  <meta property="og:site_name" content="台南市南區殯儀館公祭資訊">
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -249,12 +249,11 @@
 <body>
   <div class="container-fluid">
     <div class="header">
-      <h1>台南市南區殯儀館平面圖</h1>
+      <h1>台南市南區殯儀館公祭資訊</h1>
       <p>中華南路一段186巷 國民路268號</p>
     </div>
 
     <div class="map-container">
-      <h4 class="mb-3">設施平面圖</h4>
       <div id="Map">
         
         
@@ -321,180 +320,18 @@
       </div>
     </div>
 
-    <div class="info-panel">
-      <h5>設施資訊</h5>
-      <p>點擊平面圖上的設施或下方清單以查看詳細資訊</p>
-      
-      <!-- 設施詳細資訊 -->
-      <div id="info-S01" class="facility-info">
-        <h5>景行廳 (甲級奠儀廳)</h5>
-        <p><strong>容量：</strong>400人</p>
-        <p><strong>等級：</strong>甲級</p>
-        <p><strong>位置：</strong>主建築中央位置</p>
-        <p><strong>設備：</strong>大型音響設備、冷氣空調、完整禮儀設施</p>
+    <!-- Fixed section for memorial data -->
+    <div class="info-panel" id="memorial-section">
+      <div class="memorial-header-row">
+        <h5 id="memorial-title">今日告別式</h5>
+        <div class="date-selector">
+          <input type="date" id="date-picker" class="form-control form-control-sm">
+          <button id="today-btn" class="btn btn-sm btn-outline-primary ml-1">今日</button>
+        </div>
       </div>
-
-      <div id="info-S02" class="facility-info">
-        <h5>明德廳 (乙級奠儀廳)</h5>
-        <p><strong>等級：</strong>乙級</p>
-        <p><strong>位置：</strong>主建築西南側</p>
-        <p><strong>設備：</strong>音響設備、冷氣空調、基本禮儀設施</p>
+      <div id="memorial-content">
+        <p class="loading-message">載入中...</p>
       </div>
-
-      <div id="info-S03" class="facility-info">
-        <h5>至德廳 (乙級奠儀廳)</h5>
-        <p><strong>等級：</strong>乙級</p>
-        <p><strong>位置：</strong>主建築西側</p>
-        <p><strong>設備：</strong>音響設備、冷氣空調、基本禮儀設施</p>
-      </div>
-
-      <div id="info-S04" class="facility-info">
-        <h5>崇德廳 (乙級奠儀廳)</h5>
-        <p><strong>等級：</strong>乙級</p>
-        <p><strong>位置：</strong>主建築東南側</p>
-        <p><strong>設備：</strong>音響設備、冷氣空調、基本禮儀設施</p>
-      </div>
-
-      <div id="info-S12" class="facility-info">
-        <h5>光德廳 (乙級奠儀廳)</h5>
-        <p><strong>等級：</strong>乙級</p>
-        <p><strong>位置：</strong>主建築東側</p>
-        <p><strong>設備：</strong>音響設備、冷氣空調、基本禮儀設施</p>
-      </div>
-
-      <div id="info-S05" class="facility-info">
-        <h5>懷悌廳 (丁級奠儀廳)</h5>
-        <p><strong>等級：</strong>丁級</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>設備：</strong>基本音響設備、冷氣空調</p>
-      </div>
-
-      <div id="info-S06" class="facility-info">
-        <h5>懷澤廳 (丁級奠儀廳)</h5>
-        <p><strong>等級：</strong>丁級</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>設備：</strong>基本音響設備、冷氣空調</p>
-      </div>
-
-      <div id="info-S07" class="facility-info">
-        <h5>懷慈廳 (丁級奠儀廳)</h5>
-        <p><strong>等級：</strong>丁級</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>設備：</strong>基本音響設備、冷氣空調</p>
-      </div>
-
-      <div id="info-S08" class="facility-info">
-        <h5>懷親廳 (丁級奠儀廳)</h5>
-        <p><strong>等級：</strong>丁級</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>設備：</strong>基本音響設備、冷氣空調</p>
-      </div>
-
-      <div id="info-S09" class="facility-info">
-        <h5>懷恩廳 (丁級奠儀廳)</h5>
-        <p><strong>等級：</strong>丁級</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>設備：</strong>基本音響設備、冷氣空調</p>
-      </div>
-
-      <div id="info-S10" class="facility-info">
-        <h5>永安堂</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築中央北側</p>
-        <p><strong>功能：</strong>提供安放服務</p>
-      </div>
-
-
-      <div id="info-S15" class="facility-info">
-        <h5>和平堂1-29</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築東側</p>
-        <p><strong>櫃位：</strong>1-29號</p>
-      </div>
-
-      <div id="info-S16" class="facility-info">
-        <h5>和平堂30-35</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築東北側</p>
-        <p><strong>櫃位：</strong>30-35號</p>
-      </div>
-
-      <div id="info-S17" class="facility-info">
-        <h5>和平堂36-42</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築東北側</p>
-        <p><strong>櫃位：</strong>36-42號</p>
-      </div>
-
-      <div id="info-S18" class="facility-info">
-        <h5>和平堂43-50</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築北側</p>
-        <p><strong>櫃位：</strong>43-50號</p>
-      </div>
-
-      <div id="info-S19" class="facility-info">
-        <h5>和平堂51-53</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築西北側</p>
-        <p><strong>櫃位：</strong>51-53號</p>
-      </div>
-
-      <div id="info-S20" class="facility-info">
-        <h5>和平堂53-1-58</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築西側</p>
-        <p><strong>櫃位：</strong>53-1-58號</p>
-      </div>
-
-
-      <div id="info-S22" class="facility-info">
-        <h5>無煙豎靈區</h5>
-        <p><strong>位置：</strong>主建築西北側</p>
-        <p><strong>功能：</strong>環保無煙豎靈服務</p>
-        <p><strong>特色：</strong>無煙環保設計</p>
-      </div>
-
-      <div id="info-S23" class="facility-info">
-        <h5>和平堂59</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築中央南側</p>
-        <p><strong>櫃位：</strong>59號</p>
-      </div>
-
-      <div id="info-S24" class="facility-info">
-        <h5>和平堂60</h5>
-        <p><strong>類型：</strong>和平堂設施</p>
-        <p><strong>位置：</strong>主建築中央南側</p>
-        <p><strong>櫃位：</strong>60號</p>
-      </div>
-    </div>
-
-    <!-- 設施清單 -->
-    <div class="info-panel">
-      <h5>設施清單</h5>
-      <ul id="item">
-        <li class="S01"><a href="#" data-facility="S01">景行廳</a></li>
-        <li class="S02"><a href="#" data-facility="S02">明德廳</a></li>
-        <li class="S03"><a href="#" data-facility="S03">至德廳</a></li>
-        <li class="S04"><a href="#" data-facility="S04">崇德廳</a></li>
-        <li class="S05"><a href="#" data-facility="S05">懷悌廳</a></li>
-        <li class="S06"><a href="#" data-facility="S06">懷澤廳</a></li>
-        <li class="S07"><a href="#" data-facility="S07">懷慈廳</a></li>
-        <li class="S08"><a href="#" data-facility="S08">懷親廳</a></li>
-        <li class="S09"><a href="#" data-facility="S09">懷恩廳</a></li>
-        <li class="S10"><a href="#" data-facility="S10">永安堂</a></li>
-        <li class="S12"><a href="#" data-facility="S12">光德廳</a></li>
-        <li class="S15"><a href="#" data-facility="S15">和平堂1-29</a></li>
-        <li class="S16"><a href="#" data-facility="S16">和平堂30-35</a></li>
-        <li class="S17"><a href="#" data-facility="S17">和平堂36-42</a></li>
-        <li class="S18"><a href="#" data-facility="S18">和平堂43-50</a></li>
-        <li class="S19"><a href="#" data-facility="S19">和平堂51-53</a></li>
-        <li class="S20"><a href="#" data-facility="S20">和平堂53-1-58</a></li>
-        <li class="S23"><a href="#" data-facility="S23">和平堂59</a></li>
-        <li class="S24"><a href="#" data-facility="S24">和平堂60</a></li>
-        <li class="S22"><a href="#" data-facility="S22">無煙豎靈區</a></li>
-      </ul>
     </div>
 
     <div class="legend">
