@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台南市119緊急救護案件即時監控</title>
+    <meta property="og:title" content="台南市119緊急救護案件即時監控">
+    <meta property="og:description" content="即時監控台南市119緊急救護案件狀態，提供案件歷史追蹤功能">
+    <meta property="og:image" content="https://tainan.olc.tw/p/119dts/og_image.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/119dts/">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        .case-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border-left: 4px solid #6c757d;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .case-card.status-dispatched { border-left-color: #ffc107; }
+        .case-card.status-arrived { border-left-color: #198754; }
+        .case-card.status-transport { border-left-color: #0dcaf0; }
+        .case-card.status-completed { border-left-color: #6c757d; }
+        
+        .status-badge {
+            font-size: 0.75rem;
+        }
+        
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        
+        .case-detail-modal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .timeline-item {
+            border-left: 2px solid #dee2e6;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 8px;
+            height: 8px;
+            background: #6c757d;
+            border-radius: 50%;
+        }
+        
+        .timeline-item.active::before {
+            background: #198754;
+        }
+        
+        @media (max-width: 768px) {
+            .case-card {
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5571465503362954" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">
+                    <i class="fas fa-ambulance"></i> 
+                    台南市119緊急救護案件即時監控
+                </h1>
+                
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">總案件數</h5>
+                                <h2 class="mb-0" id="totalCases">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">進行中</h5>
+                                <h2 class="mb-0" id="activeCases">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">已完成</h5>
+                                <h2 class="mb-0" id="completedCases">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">最後更新</h5>
+                                <p class="mb-0" id="lastUpdate">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="mb-2">
+                                <button class="btn btn-primary btn-sm me-2" id="refreshBtn">
+                                    <i class="fas fa-sync-alt"></i> 重新整理
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm me-2" id="autoRefreshBtn">
+                                    <i class="fas fa-play"></i> 自動更新
+                                </button>
+                            </div>
+                            <div class="mb-2">
+                                <select class="form-select form-select-sm me-2" id="statusFilter" style="width: auto; display: inline-block;">
+                                    <option value="">所有狀態</option>
+                                    <option value="已派遣">已派遣</option>
+                                    <option value="已到達">已到達</option>
+                                    <option value="送醫中">送醫中</option>
+                                    <option value="已完成">已完成</option>
+                                    <option value="已返隊">已返隊</option>
+                                    <option value="出動">出動</option>
+                                    <option value="出動中">出動中</option>
+                                </select>
+                                <a href="https://119dts.tncfd.gov.tw/DTS/caselist/html" target="_blank" class="btn btn-outline-secondary btn-sm me-2">資料來源</a>
+                                <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-outline-info btn-sm">北中西區台南市議員參選人江明宗 製作</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">最新案件</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="latestCases">
+                            <div class="loading-spinner">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">載入中...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">所有案件列表</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="casesTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>案件編號</th>
+                                        <th>受理時間</th>
+                                        <th>案件類型</th>
+                                        <th>發生地點</th>
+                                        <th>派遣分隊</th>
+                                        <th>執行狀況</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <div class="loading-spinner">
+                                                <div class="spinner-border" role="status">
+                                                    <span class="visually-hidden">載入中...</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Case Detail Modal -->
+    <div class="modal fade" id="caseDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">案件詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="caseDetailContent">
+                        <div class="loading-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">載入中...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
