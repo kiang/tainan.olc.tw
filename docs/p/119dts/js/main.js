@@ -118,13 +118,13 @@ class EmergencyDashboard {
         }
         
         container.innerHTML = latest.map(caseData => `
-            <div class="case-card card mb-3 status-${this.getStatusClass(caseData.status)}" 
+            <div class="case-card card mb-3 status-${this.getStatusClass(caseData.status)}${this.isFireCase(caseData.case_type) ? ' fire-case' : ''}" 
                  data-case-id="${caseData.case_number}">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div class="flex-grow-1">
                             <h6 class="card-title mb-1">#${caseData.case_number}</h6>
-                            <p class="card-text mb-1">${caseData.case_type}</p>
+                            <p class="card-text mb-1${this.isFireCase(caseData.case_type) ? ' fire-indicator' : ''}">${this.isFireCase(caseData.case_type) ? '🔥 ' : ''}${caseData.case_type}</p>
                             <p class="card-text small mb-1">${caseData.location}</p>
                             <small class="text-muted">${caseData.datetime_display}</small>
                         </div>
@@ -162,10 +162,10 @@ class EmergencyDashboard {
         tbody.innerHTML = this.cases
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
             .map(caseData => `
-                <tr>
+                <tr${this.isFireCase(caseData.case_type) ? ' class="fire-row"' : ''}>
                     <td>#${caseData.case_number}</td>
                     <td>${caseData.datetime_display}</td>
-                    <td>${caseData.case_type}</td>
+                    <td${this.isFireCase(caseData.case_type) ? ' class="fire-indicator"' : ''}>${this.isFireCase(caseData.case_type) ? '🔥 ' : ''}${caseData.case_type}</td>
                     <td>${caseData.location}</td>
                     <td>${caseData.dispatched_unit}</td>
                     <td>
@@ -251,7 +251,7 @@ class EmergencyDashboard {
                     <table class="table table-borderless table-sm">
                         <tr><td><strong>案件編號:</strong></td><td>#${caseData.case_number}</td></tr>
                         <tr><td><strong>受理時間:</strong></td><td>${caseData.datetime_display}</td></tr>
-                        <tr><td><strong>案件類型:</strong></td><td><span class="badge bg-primary">${caseData.case_type}</span></td></tr>
+                        <tr><td><strong>案件類型:</strong></td><td><span class="badge ${this.isFireCase(caseData.case_type) ? 'bg-danger' : 'bg-primary'}">${this.isFireCase(caseData.case_type) ? '🔥 ' : ''}${caseData.case_type}</span></td></tr>
                         <tr><td><strong>發生地點:</strong></td><td>${caseData.location}</td></tr>
                         <tr><td><strong>派遣分隊:</strong></td><td><span class="badge bg-info">${caseData.dispatched_unit}</span></td></tr>
                         <tr><td><strong>目前狀態:</strong></td><td>
@@ -309,7 +309,7 @@ class EmergencyDashboard {
                     <table class="table table-borderless table-sm">
                         <tr><td><strong>案件編號:</strong></td><td>#${caseData.case_number}</td></tr>
                         <tr><td><strong>受理時間:</strong></td><td>${caseData.datetime_display}</td></tr>
-                        <tr><td><strong>案件類型:</strong></td><td><span class="badge bg-primary">${caseData.case_type}</span></td></tr>
+                        <tr><td><strong>案件類型:</strong></td><td><span class="badge ${this.isFireCase(caseData.case_type) ? 'bg-danger' : 'bg-primary'}">${this.isFireCase(caseData.case_type) ? '🔥 ' : ''}${caseData.case_type}</span></td></tr>
                         <tr><td><strong>發生地點:</strong></td><td>${caseData.location}</td></tr>
                         <tr><td><strong>派遣分隊:</strong></td><td><span class="badge bg-info">${caseData.dispatched_unit}</span></td></tr>
                         <tr><td><strong>目前狀態:</strong></td><td>
@@ -327,6 +327,10 @@ class EmergencyDashboard {
         const [year, month, day] = datePart.split('/');
         const [hour, minute, second] = timePart.split(':');
         return new Date(year, month - 1, day, hour, minute, second).toISOString();
+    }
+    
+    isFireCase(caseType) {
+        return caseType === '火災';
     }
     
     getStatusClass(status) {
