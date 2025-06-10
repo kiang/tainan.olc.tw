@@ -272,7 +272,7 @@ class EmergencyDashboard {
                                 <div class="timeline-item ${index === detailData.history.length - 1 ? 'active' : ''}">
                                     <div class="d-flex justify-content-between">
                                         <strong>${item.status}</strong>
-                                        <small class="text-muted">${item.datetime}</small>
+                                        <small class="text-muted">${item.updated}</small>
                                     </div>
                                     ${item.location ? `<p class="mb-0 small text-muted">${item.location}</p>` : ''}
                                 </div>
