@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let emergencyTimelineChart = null;
     let currentEmergencyData = null;
     let emergencyDatesCache = new Set(); // Cache for emergency dates
+    let emergencyMonthsData = null; // Cache for monthly index
+    let loadedMonths = new Set(); // Track which months have been loaded
 
     fetch(jsonUrl)
         .then(response => response.json())
@@ -690,39 +692,71 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`${emergencyApiBase}/monthly_index.json`)
             .then(response => response.json())
             .then(data => {
-                // Process all emergency dates and store them
+                // Store monthly index data for on-demand loading
+                emergencyMonthsData = data;
                 emergencyDatesCache.clear();
+                loadedMonths.clear();
                 
+                console.log(`Emergency data available for ${data.months?.length || 0} months`);
+                
+                // Only load the current month initially to reduce startup time
+                const currentMonth = getCurrentMonth();
                 if (data.months && data.months.length > 0) {
-                    // For each month, fetch the detailed data to get exact dates
-                    const promises = data.months.map(month => 
-                        fetch(`${emergencyApiBase}/2025/${month.year_month}.json`)
-                            .then(response => response.json())
-                            .then(monthData => {
-                                if (monthData.dates && monthData.dates.length > 0) {
-                                    monthData.dates.forEach(dateInfo => {
-                                        emergencyDatesCache.add(dateInfo.formatted_date);
-                                    });
-                                }
-                            })
-                            .catch(error => console.warn(`Failed to load ${month.year_month}:`, error))
-                    );
-                    
-                    Promise.all(promises).then(() => {
-                        console.log(`Loaded ${emergencyDatesCache.size} emergency dates`);
+                    const currentMonthData = data.months.find(m => m.year_month === currentMonth);
+                    if (currentMonthData) {
+                        loadEmergencyDatesFromMonthly([currentMonthData]);
+                    } else {
+                        // Current month has no emergency data, just setup highlights
                         setupDatePickerHighlights();
-                    });
+                    }
+                } else {
+                    setupDatePickerHighlights();
                 }
             })
             .catch(error => {
                 console.error('Error loading emergency dates:', error);
+                setupDatePickerHighlights(); // Setup even if loading fails
             });
+    }
+    
+    function getCurrentMonth() {
+        const now = new Date();
+        return `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+    }
+    
+    function loadEmergencyDatesFromMonthly(months) {
+        // Load specified months and mark them as loaded
+        const promises = months.map(month => 
+            fetch(`${emergencyApiBase}/2025/${month.year_month}.json`)
+                .then(response => response.json())
+                .then(monthData => {
+                    if (monthData.dates && monthData.dates.length > 0) {
+                        monthData.dates.forEach(dateInfo => {
+                            emergencyDatesCache.add(dateInfo.formatted_date);
+                        });
+                    }
+                    loadedMonths.add(month.year_month);
+                })
+                .catch(error => console.warn(`Failed to load ${month.year_month}:`, error))
+        );
+        
+        return Promise.all(promises).then(() => {
+            console.log(`Loaded ${emergencyDatesCache.size} emergency dates from ${months.length} months`);
+            if (!document.getElementById('datePicker').hasAttribute('data-highlights-setup')) {
+                setupDatePickerHighlights();
+            }
+        });
     }
     
     function setupDatePickerHighlights() {
         const datePicker = document.getElementById('datePicker');
-        const overlay = document.getElementById('emergencyCalendarOverlay');
-        const datesList = document.getElementById('emergencyDatesList');
+        
+        // Check if already setup to prevent duplicate listeners
+        if (datePicker.hasAttribute('data-highlights-setup')) {
+            return;
+        }
+        
+        datePicker.setAttribute('data-highlights-setup', 'true');
         
         // Show emergency dates when date picker is focused
         datePicker.addEventListener('focus', () => {
@@ -747,6 +781,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             hideEmergencyDatesOverlay();
         });
+        
+        console.log('Emergency date picker highlights setup completed');
     }
     
     function showEmergencyDatesOverlay() {
@@ -760,23 +796,69 @@ document.addEventListener('DOMContentLoaded', function() {
         const endDate = new Date(currentDate);
         endDate.setDate(endDate.getDate() + 30); // 30 days after
         
-        // Filter emergency dates within range
-        const relevantDates = Array.from(emergencyDatesCache).filter(dateStr => {
-            const date = new Date(dateStr);
-            return date >= startDate && date <= endDate;
-        }).sort();
-        
-        if (relevantDates.length > 0) {
-            datesList.innerHTML = '<div style="margin-top: 8px;"><strong>近期緊急發電機啟動日期:</strong></div>' +
-                relevantDates.map(date => 
-                    `<div style="cursor: pointer; padding: 2px 5px; margin: 2px 0; background: #fff3cd; border-radius: 3px; font-size: 12px;" 
-                     onclick="selectEmergencyDate('${date}')">${date} 🚨</div>`
-                ).join('');
-        } else {
-            datesList.innerHTML = '<div style="margin-top: 8px; font-size: 12px; color: #666;">此時間範圍內無緊急發電機啟動記錄</div>';
+        // Load emergency dates for the required months if not already loaded
+        loadEmergencyDatesForRange(startDate, endDate).then(() => {
+            // Filter emergency dates within range
+            const relevantDates = Array.from(emergencyDatesCache).filter(dateStr => {
+                const date = new Date(dateStr);
+                return date >= startDate && date <= endDate;
+            }).sort();
+            
+            if (relevantDates.length > 0) {
+                datesList.innerHTML = '<div style="margin-top: 8px;"><strong>近期緊急發電機啟動日期:</strong></div>' +
+                    relevantDates.map(date => 
+                        `<div style="cursor: pointer; padding: 2px 5px; margin: 2px 0; background: #fff3cd; border-radius: 3px; font-size: 12px;" 
+                         onclick="selectEmergencyDate('${date}')">${date} 🚨</div>`
+                    ).join('');
+            } else {
+                datesList.innerHTML = '<div style="margin-top: 8px; font-size: 12px; color: #666;">此時間範圍內無緊急發電機啟動記錄</div>';
+            }
+            
+            overlay.style.display = 'block';
+        });
+    }
+    
+    function loadEmergencyDatesForRange(startDate, endDate) {
+        if (!emergencyMonthsData) {
+            return Promise.resolve(); // No monthly data available
         }
         
-        overlay.style.display = 'block';
+        // Determine which months we need for this date range
+        const requiredMonths = new Set();
+        const current = new Date(startDate);
+        while (current <= endDate) {
+            const yearMonth = `${current.getFullYear()}${(current.getMonth() + 1).toString().padStart(2, '0')}`;
+            requiredMonths.add(yearMonth);
+            current.setMonth(current.getMonth() + 1);
+        }
+        
+        // Load only the months we haven't loaded yet
+        const monthsToLoad = Array.from(requiredMonths).filter(month => !loadedMonths.has(month));
+        
+        if (monthsToLoad.length === 0) {
+            return Promise.resolve(); // All required months already loaded
+        }
+        
+        const promises = monthsToLoad.map(yearMonth => {
+            const monthData = emergencyMonthsData.months.find(m => m.year_month === yearMonth);
+            if (!monthData) {
+                return Promise.resolve(); // Month not in emergency data
+            }
+            
+            return fetch(`${emergencyApiBase}/2025/${yearMonth}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.dates && data.dates.length > 0) {
+                        data.dates.forEach(dateInfo => {
+                            emergencyDatesCache.add(dateInfo.formatted_date);
+                        });
+                    }
+                    loadedMonths.add(yearMonth);
+                })
+                .catch(error => console.warn(`Failed to load ${yearMonth}:`, error));
+        });
+        
+        return Promise.all(promises);
     }
     
     function hideEmergencyDatesOverlay() {
@@ -798,16 +880,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const [year, month, day] = date.split('-');
         const Ymd = year + month + day;
         
-        // Check for current emergency data
-        const currentTimeKey = getCurrentTimeKey();
-        const emergencyUrl = `${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`;
+        // First check if this date has any emergency data using daily index
+        const dailyIndexUrl = `${emergencyApiBase}/${year}/${Ymd}/index.json`;
         
-        fetch(emergencyUrl)
+        fetch(dailyIndexUrl)
             .then(response => {
                 if (response.ok) {
                     return response.json();
                 }
-                throw new Error('No emergency data found');
+                throw new Error('No emergency data for this date');
+            })
+            .then(dailyIndex => {
+                // Daily index exists, now check for current time slot
+                const currentTimeKey = getCurrentTimeKey();
+                const timeEntry = dailyIndex.find(entry => entry.time === currentTimeKey);
+                
+                if (timeEntry && timeEntry.generators.length > 0) {
+                    // Found emergency data for current time, load detailed data
+                    const emergencyUrl = `${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`;
+                    return fetch(emergencyUrl).then(response => response.json());
+                } else {
+                    // No emergency data for current time
+                    throw new Error('No emergency data for current time');
+                }
             })
             .then(data => {
                 currentEmergencyData = data;
