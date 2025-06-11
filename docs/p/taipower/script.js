@@ -909,6 +909,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('無法載入該月份的詳細資料');
             });
     }
+    
+    window.navigateToEmergencyDate = function(date) {
+        // Close the emergency modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('emergencyModal'));
+        if (modal) {
+            modal.hide();
+        }
+        
+        // Set the date picker to the selected date
+        const datePicker = document.getElementById('datePicker');
+        if (datePicker && date && date !== 'N/A') {
+            datePicker.value = date;
+            
+            // Trigger the date change event to load data for the selected date
+            fetchDataForDate(date);
+            
+            // Update emergency highlighting for the new date
+            setTimeout(() => {
+                if (emergencyDatesCache.has(date)) {
+                    datePicker.classList.add('emergency-date-indicator');
+                } else {
+                    datePicker.classList.remove('emergency-date-indicator');
+                }
+                
+                // Check for emergency data on the new date
+                checkEmergencyGenerators();
+            }, 100);
+        }
+    }
 
     // Emergency Generator Functions
     function checkEmergencyGenerators() {
@@ -1206,7 +1235,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 detailsHtml += `
                     <tr>
-                        <td>${dateInfo.formatted_date || 'N/A'}</td>
+                        <td>
+                            <span class="emergency-date-clickable" onclick="navigateToEmergencyDate('${dateInfo.formatted_date || 'N/A'}')" title="點擊切換到此日期">
+                                ${dateInfo.formatted_date || 'N/A'}
+                            </span>
+                        </td>
                         <td colspan="2">${generatorsText}</td>
                         <td>${eventsCount}次</td>
                         <td>${timesCount}個時段</td>
