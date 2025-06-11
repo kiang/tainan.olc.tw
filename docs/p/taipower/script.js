@@ -916,7 +916,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const [year, month, day] = date.split('-');
         const Ymd = year + month + day;
         
-        // First check if this date has any emergency data using daily index
+        // Check if this date has any emergency data using daily index
         const dailyIndexUrl = `${emergencyApiBase}/${year}/${Ymd}/index.json`;
         
         fetch(dailyIndexUrl)
@@ -927,33 +927,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('No emergency data for this date');
             })
             .then(dailyIndex => {
-                // Daily index exists, now check for current time slot
-                const currentTimeKey = getCurrentTimeKey();
-                
                 // Safely handle dailyIndex which might not be an array
                 if (!Array.isArray(dailyIndex)) {
                     throw new Error('Invalid daily index format');
                 }
                 
-                const timeEntry = dailyIndex.find(entry => 
-                    entry && entry.time === currentTimeKey
-                );
-                
-                if (timeEntry && timeEntry.generators && Array.isArray(timeEntry.generators) && timeEntry.generators.length > 0) {
-                    // Found emergency data for current time, load detailed data
-                    const emergencyUrl = `${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`;
-                    return fetch(emergencyUrl).then(response => response.json());
+                // Check if there's ANY emergency activity during the entire date
+                if (dailyIndex.length > 0) {
+                    // Collect all unique generators from the entire day
+                    const allGenerators = new Set();
+                    let totalEvents = 0;
+                    
+                    dailyIndex.forEach(entry => {
+                        if (entry && entry.generators && Array.isArray(entry.generators)) {
+                            entry.generators.forEach(gen => allGenerators.add(gen));
+                            totalEvents += entry.count || 0;
+                        }
+                    });
+                    
+                    if (allGenerators.size > 0) {
+                        // Show emergency alert with daily summary
+                        const dailySummary = {
+                            date: date,
+                            total_events: totalEvents,
+                            time_slots: dailyIndex.length,
+                            generators: Array.from(allGenerators),
+                            daily_index: dailyIndex
+                        };
+                        
+                        showEmergencyAlertForDate(dailySummary);
+                        
+                        // Also try to load current time slot data if available
+                        const currentTimeKey = getCurrentTimeKey();
+                        const currentTimeEntry = dailyIndex.find(entry => entry && entry.time === currentTimeKey);
+                        
+                        if (currentTimeEntry) {
+                            fetch(`${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    currentEmergencyData = data;
+                                    // Update alert with current time specifics
+                                    showEmergencyAlertForDate(dailySummary, data);
+                                })
+                                .catch(error => {
+                                    console.warn('Could not load current time emergency data:', error);
+                                });
+                        }
+                    } else {
+                        throw new Error('No emergency generators found in daily index');
+                    }
                 } else {
-                    // No emergency data for current time
-                    throw new Error('No emergency data for current time');
+                    throw new Error('Empty daily index');
                 }
             })
-            .then(data => {
-                currentEmergencyData = data;
-                showEmergencyAlert(data.active_emergency_generators);
-            })
             .catch(error => {
-                // No emergency data found, hide alert
+                // No emergency data found for this date, hide alert
                 hideEmergencyAlert();
             });
     }
@@ -981,6 +1009,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.innerHTML = `${gen.name}: ${gen.output}MW <small>(${gen.status || 'Unknown'})</small>`;
                 container.appendChild(item);
             });
+            
+            alert.classList.remove('d-none');
+            alert.addEventListener('click', openEmergencyModal);
+        } else {
+            hideEmergencyAlert();
+        }
+    }
+    
+    function showEmergencyAlertForDate(dailySummary, currentTimeData = null) {
+        const alert = document.getElementById('emergencyAlert');
+        const container = document.getElementById('emergencyGenerators');
+        
+        if (dailySummary && dailySummary.generators && dailySummary.generators.length > 0) {
+            container.innerHTML = '';
+            
+            // If we have current time data, show it prominently
+            if (currentTimeData && currentTimeData.active_emergency_generators && currentTimeData.active_emergency_generators.length > 0) {
+                const currentTitle = document.createElement('div');
+                currentTitle.innerHTML = '<strong>當前時段:</strong>';
+                currentTitle.style.marginBottom = '4px';
+                container.appendChild(currentTitle);
+                
+                currentTimeData.active_emergency_generators.forEach(gen => {
+                    const item = document.createElement('span');
+                    item.className = 'emergency-generator-item';
+                    item.style.backgroundColor = 'rgba(255, 193, 7, 0.3)'; // Highlighted for current
+                    item.innerHTML = `${gen.name}: ${gen.output}MW <small>(${gen.status || 'Active'})</small>`;
+                    container.appendChild(item);
+                });
+                
+                const separator = document.createElement('div');
+                separator.innerHTML = '<small><strong>今日所有啟動:</strong></small>';
+                separator.style.margin = '8px 0 4px 0';
+                container.appendChild(separator);
+            }
+            
+            // Show daily summary
+            dailySummary.generators.forEach(genName => {
+                const item = document.createElement('span');
+                item.className = 'emergency-generator-item';
+                item.innerHTML = `${genName}`;
+                container.appendChild(item);
+            });
+            
+            // Add summary info
+            const summaryInfo = document.createElement('div');
+            summaryInfo.style.marginTop = '8px';
+            summaryInfo.innerHTML = `<small>共${dailySummary.total_events}次啟動，${dailySummary.time_slots}個時段</small>`;
+            container.appendChild(summaryInfo);
             
             alert.classList.remove('d-none');
             alert.addEventListener('click', openEmergencyModal);
@@ -1107,12 +1184,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (monthData.dates && monthData.dates.length > 0) {
             monthData.dates.forEach(dateInfo => {
-                // Safely handle unique_generators which might not be an array
+                // Safely handle unique_generators which can be array, object, or other formats
                 let generatorsText = 'N/A';
                 if (dateInfo.unique_generators) {
                     if (Array.isArray(dateInfo.unique_generators)) {
+                        // Handle as array
                         generatorsText = dateInfo.unique_generators.join(', ');
+                    } else if (typeof dateInfo.unique_generators === 'object') {
+                        // Handle as object - extract values and join them
+                        const generators = Object.values(dateInfo.unique_generators);
+                        generatorsText = generators.join(', ');
                     } else {
+                        // Handle as string or other primitive
                         generatorsText = String(dateInfo.unique_generators);
                     }
                 }
