@@ -870,12 +870,44 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.style.display = 'none';
     }
     
-    // Global function for selecting emergency date from overlay
+    // Global functions for emergency functionality
     window.selectEmergencyDate = function(date) {
         const datePicker = document.getElementById('datePicker');
         datePicker.value = date;
         datePicker.dispatchEvent(new Event('change'));
         hideEmergencyDatesOverlay();
+    }
+    
+    window.loadEmergencyHistory = function() {
+        const days = document.getElementById('emergencyDateRange').value;
+        const emergencyUrl = `${emergencyApiBase}/monthly_index.json`;
+        
+        fetch(emergencyUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Process the emergency history data
+                displayEmergencyHistory(data);
+                setupEmergencyFilters();
+            })
+            .catch(error => {
+                console.error('Error loading emergency history:', error);
+                document.getElementById('emergencyHistoryBody').innerHTML = 
+                    '<tr><td colspan="5" class="text-center text-danger">載入緊急發電機歷史資料時發生錯誤</td></tr>';
+            });
+    }
+    
+    window.loadMonthDetails = function(yearMonth) {
+        const monthUrl = `${emergencyApiBase}/2025/${yearMonth}.json`;
+        
+        fetch(monthUrl)
+            .then(response => response.json())
+            .then(data => {
+                displayMonthDetails(data);
+            })
+            .catch(error => {
+                console.error('Error loading month details:', error);
+                alert('無法載入該月份的詳細資料');
+            });
     }
 
     // Emergency Generator Functions
@@ -969,23 +1001,6 @@ document.addEventListener('DOMContentLoaded', function() {
         loadEmergencyHistory();
     }
     
-    function loadEmergencyHistory() {
-        const days = document.getElementById('emergencyDateRange').value;
-        const emergencyUrl = `${emergencyApiBase}/monthly_index.json`;
-        
-        fetch(emergencyUrl)
-            .then(response => response.json())
-            .then(data => {
-                // Process the emergency history data
-                displayEmergencyHistory(data);
-                setupEmergencyFilters();
-            })
-            .catch(error => {
-                console.error('Error loading emergency history:', error);
-                document.getElementById('emergencyHistoryBody').innerHTML = 
-                    '<tr><td colspan="5" class="text-center text-danger">載入緊急發電機歷史資料時發生錯誤</td></tr>';
-            });
-    }
     
     function displayEmergencyHistory(monthlyData) {
         const tbody = document.getElementById('emergencyHistoryBody');
@@ -1076,20 +1091,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Global function for loading month details
-    window.loadMonthDetails = function(yearMonth) {
-        const monthUrl = `${emergencyApiBase}/2025/${yearMonth}.json`;
-        
-        fetch(monthUrl)
-            .then(response => response.json())
-            .then(data => {
-                displayMonthDetails(data);
-            })
-            .catch(error => {
-                console.error('Error loading month details:', error);
-                alert('無法載入該月份的詳細資料');
-            });
-    }
     
     function displayMonthDetails(monthData) {
         const tbody = document.getElementById('emergencyHistoryBody');
