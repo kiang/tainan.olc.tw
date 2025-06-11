@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const jsonUrl = 'https://kiang.github.io/taipower_data/genary.json';
+    const emergencyApiBase = 'https://kiang.github.io/taipower_data/emergency';
     let updateTime;
     const dataCache = {};
     let dataOptions = [];
+    
+    // Emergency data variables
+    let emergencyTimelineChart = null;
+    let currentEmergencyData = null;
+    let emergencyDatesCache = new Set(); // Cache for emergency dates
 
     fetch(jsonUrl)
         .then(response => response.json())
@@ -10,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTime = data[''];
             updatePage(data);
             fetchAndPopulateSlider();
-            initializeDatePicker(); // Call this function after fetching initial data
+            loadEmergencyDates(); // Load emergency dates for calendar
+            initializeDatePicker();
+            checkEmergencyGenerators(); // Check for emergency generators
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -47,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 slider.addEventListener('change', function() {
                     loadDataForIndex(this.value);
+                    checkEmergencyGenerators(); // Check emergency data when time changes
                 });
 
                 autoUpdateButton.addEventListener('click', toggleAutoUpdate);
@@ -93,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.value = nextValue;
         updateSliderValue(nextValue);
         loadDataForIndex(nextValue, true); // Add a parameter to indicate it's an auto update
+        checkEmergencyGenerators(); // Check emergency data during auto-update
     }
 
     function updateSliderLabels() {
@@ -645,6 +655,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set the initial date to the current updateTime
         const [currentDate] = updateTime.split(' ');
         datePicker.value = currentDate;
+        
+        // Check if current date has emergency data and add indicator
+        if (emergencyDatesCache.has(currentDate)) {
+            datePicker.classList.add('emergency-date-indicator');
+        }
 
         datePicker.addEventListener('change', function() {
             const selectedDate = this.value;
@@ -668,6 +683,358 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error fetching data for selected date:', error);
                 alert('無法取得所選日期的資料。請選擇其他日期。');
             });
+    }
+
+    // Emergency Date Loading and Calendar Functions
+    function loadEmergencyDates() {
+        fetch(`${emergencyApiBase}/monthly_index.json`)
+            .then(response => response.json())
+            .then(data => {
+                // Process all emergency dates and store them
+                emergencyDatesCache.clear();
+                
+                if (data.months && data.months.length > 0) {
+                    // For each month, fetch the detailed data to get exact dates
+                    const promises = data.months.map(month => 
+                        fetch(`${emergencyApiBase}/2025/${month.year_month}.json`)
+                            .then(response => response.json())
+                            .then(monthData => {
+                                if (monthData.dates && monthData.dates.length > 0) {
+                                    monthData.dates.forEach(dateInfo => {
+                                        emergencyDatesCache.add(dateInfo.formatted_date);
+                                    });
+                                }
+                            })
+                            .catch(error => console.warn(`Failed to load ${month.year_month}:`, error))
+                    );
+                    
+                    Promise.all(promises).then(() => {
+                        console.log(`Loaded ${emergencyDatesCache.size} emergency dates`);
+                        setupDatePickerHighlights();
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading emergency dates:', error);
+            });
+    }
+    
+    function setupDatePickerHighlights() {
+        const datePicker = document.getElementById('datePicker');
+        const overlay = document.getElementById('emergencyCalendarOverlay');
+        const datesList = document.getElementById('emergencyDatesList');
+        
+        // Show emergency dates when date picker is focused
+        datePicker.addEventListener('focus', () => {
+            showEmergencyDatesOverlay();
+        });
+        
+        // Hide overlay when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.date-picker-container')) {
+                hideEmergencyDatesOverlay();
+            }
+        });
+        
+        // Add change event to highlight selected emergency date
+        datePicker.addEventListener('change', (e) => {
+            const selectedDate = e.target.value;
+            if (emergencyDatesCache.has(selectedDate)) {
+                // Add visual indicator that this date has emergency data
+                datePicker.classList.add('emergency-date-indicator');
+            } else {
+                datePicker.classList.remove('emergency-date-indicator');
+            }
+            hideEmergencyDatesOverlay();
+        });
+    }
+    
+    function showEmergencyDatesOverlay() {
+        const overlay = document.getElementById('emergencyCalendarOverlay');
+        const datesList = document.getElementById('emergencyDatesList');
+        
+        // Get date range around current date
+        const currentDate = new Date(document.getElementById('datePicker').value || updateTime.split(' ')[0]);
+        const startDate = new Date(currentDate);
+        startDate.setDate(startDate.getDate() - 30); // 30 days before
+        const endDate = new Date(currentDate);
+        endDate.setDate(endDate.getDate() + 30); // 30 days after
+        
+        // Filter emergency dates within range
+        const relevantDates = Array.from(emergencyDatesCache).filter(dateStr => {
+            const date = new Date(dateStr);
+            return date >= startDate && date <= endDate;
+        }).sort();
+        
+        if (relevantDates.length > 0) {
+            datesList.innerHTML = '<div style="margin-top: 8px;"><strong>近期緊急發電機啟動日期:</strong></div>' +
+                relevantDates.map(date => 
+                    `<div style="cursor: pointer; padding: 2px 5px; margin: 2px 0; background: #fff3cd; border-radius: 3px; font-size: 12px;" 
+                     onclick="selectEmergencyDate('${date}')">${date} 🚨</div>`
+                ).join('');
+        } else {
+            datesList.innerHTML = '<div style="margin-top: 8px; font-size: 12px; color: #666;">此時間範圍內無緊急發電機啟動記錄</div>';
+        }
+        
+        overlay.style.display = 'block';
+    }
+    
+    function hideEmergencyDatesOverlay() {
+        const overlay = document.getElementById('emergencyCalendarOverlay');
+        overlay.style.display = 'none';
+    }
+    
+    // Global function for selecting emergency date from overlay
+    window.selectEmergencyDate = function(date) {
+        const datePicker = document.getElementById('datePicker');
+        datePicker.value = date;
+        datePicker.dispatchEvent(new Event('change'));
+        hideEmergencyDatesOverlay();
+    }
+
+    // Emergency Generator Functions
+    function checkEmergencyGenerators() {
+        const [date] = updateTime.split(' ');
+        const [year, month, day] = date.split('-');
+        const Ymd = year + month + day;
+        
+        // Check for current emergency data
+        const currentTimeKey = getCurrentTimeKey();
+        const emergencyUrl = `${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`;
+        
+        fetch(emergencyUrl)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('No emergency data found');
+            })
+            .then(data => {
+                currentEmergencyData = data;
+                showEmergencyAlert(data.active_emergency_generators);
+            })
+            .catch(error => {
+                // No emergency data found, hide alert
+                hideEmergencyAlert();
+            });
+    }
+    
+    function getCurrentTimeKey() {
+        // Get current slider position time or use latest time
+        const slider = document.getElementById('timeSlider');
+        if (slider && dataOptions.length > 0) {
+            const selectedIndex = slider.value || slider.max;
+            const selectedTime = dataOptions[selectedIndex];
+            return selectedTime.replace('.json', '');
+        }
+        return '235900'; // fallback
+    }
+    
+    function showEmergencyAlert(generators) {
+        const alert = document.getElementById('emergencyAlert');
+        const container = document.getElementById('emergencyGenerators');
+        
+        if (generators && generators.length > 0) {
+            container.innerHTML = '';
+            generators.forEach(gen => {
+                const item = document.createElement('span');
+                item.className = 'emergency-generator-item';
+                item.innerHTML = `${gen.name}: ${gen.output}MW <small>(${gen.status || 'Unknown'})</small>`;
+                container.appendChild(item);
+            });
+            
+            alert.classList.remove('d-none');
+            alert.addEventListener('click', openEmergencyModal);
+        } else {
+            hideEmergencyAlert();
+        }
+    }
+    
+    function hideEmergencyAlert() {
+        const alert = document.getElementById('emergencyAlert');
+        alert.classList.add('d-none');
+        alert.removeEventListener('click', openEmergencyModal);
+    }
+    
+    function openEmergencyModal() {
+        const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
+        modal.show();
+        loadEmergencyHistory();
+    }
+    
+    function loadEmergencyHistory() {
+        const days = document.getElementById('emergencyDateRange').value;
+        const emergencyUrl = `${emergencyApiBase}/monthly_index.json`;
+        
+        fetch(emergencyUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Process the emergency history data
+                displayEmergencyHistory(data);
+                setupEmergencyFilters();
+            })
+            .catch(error => {
+                console.error('Error loading emergency history:', error);
+                document.getElementById('emergencyHistoryBody').innerHTML = 
+                    '<tr><td colspan="5" class="text-center text-danger">載入緊急發電機歷史資料時發生錯誤</td></tr>';
+            });
+    }
+    
+    function displayEmergencyHistory(monthlyData) {
+        const tbody = document.getElementById('emergencyHistoryBody');
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center">處理資料中...</td></tr>';
+        
+        // Create timeline chart data
+        const timelineData = [];
+        const timelineLabels = [];
+        
+        // For now, show a summary of recent months and prepare chart data
+        let historyHtml = '';
+        if (monthlyData.months && monthlyData.months.length > 0) {
+            monthlyData.months.slice(-3).forEach(month => {
+                timelineLabels.push(`${month.year}-${month.month}`);
+                timelineData.push(month.total_days);
+                
+                historyHtml += `
+                    <tr class="table-info">
+                        <td colspan="5">
+                            <strong>${month.year}年${month.month}月</strong> - 
+                            共${month.total_days}天有緊急發電機啟動記錄
+                            <button class="btn btn-sm btn-outline-primary ms-2" onclick="loadMonthDetails('${month.year_month}')">
+                                查看詳細
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        if (historyHtml === '') {
+            historyHtml = '<tr><td colspan="5" class="text-center">近期無緊急發電機啟動記錄</td></tr>';
+        }
+        
+        tbody.innerHTML = historyHtml;
+        
+        // Create timeline chart
+        createEmergencyTimelineChart(timelineLabels, timelineData);
+    }
+    
+    function createEmergencyTimelineChart(labels, data) {
+        const ctx = document.getElementById('emergencyTimelineChart').getContext('2d');
+        
+        if (emergencyTimelineChart) {
+            emergencyTimelineChart.destroy();
+        }
+        
+        emergencyTimelineChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '緊急發電機啟動天數',
+                    data: data,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '啟動天數'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '月份'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '緊急發電機月度啟動統計'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    // Global function for loading month details
+    window.loadMonthDetails = function(yearMonth) {
+        const monthUrl = `${emergencyApiBase}/2025/${yearMonth}.json`;
+        
+        fetch(monthUrl)
+            .then(response => response.json())
+            .then(data => {
+                displayMonthDetails(data);
+            })
+            .catch(error => {
+                console.error('Error loading month details:', error);
+                alert('無法載入該月份的詳細資料');
+            });
+    }
+    
+    function displayMonthDetails(monthData) {
+        const tbody = document.getElementById('emergencyHistoryBody');
+        let detailsHtml = `
+            <tr class="table-secondary">
+                <td colspan="5">
+                    <strong>${monthData.year}年${monthData.month}月詳細記錄</strong>
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="loadEmergencyHistory()">
+                        返回摘要
+                    </button>
+                </td>
+            </tr>
+        `;
+        
+        if (monthData.dates && monthData.dates.length > 0) {
+            monthData.dates.forEach(dateInfo => {
+                detailsHtml += `
+                    <tr>
+                        <td>${dateInfo.formatted_date}</td>
+                        <td colspan="2">${dateInfo.unique_generators.join(', ')}</td>
+                        <td>${dateInfo.events}次</td>
+                        <td>${dateInfo.times.length}個時段</td>
+                    </tr>
+                `;
+            });
+        }
+        
+        tbody.innerHTML = detailsHtml;
+    }
+    
+    function setupEmergencyFilters() {
+        const filterSelect = document.getElementById('emergencyGeneratorFilter');
+        const dateRangeSelect = document.getElementById('emergencyDateRange');
+        
+        // Add common emergency generators to filter
+        const commonGenerators = [
+            '核二Gas1', '核二Gas2', '核三Gas1', '核三Gas2',
+            '台中Gas1&2', '台中Gas3&4', '大林#5',
+            '興達#1', '興達#2', '興達#3', '興達#4'
+        ];
+        
+        filterSelect.innerHTML = '<option value="all">全部緊急發電機</option>';
+        commonGenerators.forEach(gen => {
+            const option = document.createElement('option');
+            option.value = gen;
+            option.textContent = gen;
+            filterSelect.appendChild(option);
+        });
+        
+        // Add event listeners
+        dateRangeSelect.addEventListener('change', loadEmergencyHistory);
+        filterSelect.addEventListener('change', loadEmergencyHistory);
     }
 
 });

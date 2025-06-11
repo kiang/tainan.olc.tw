@@ -8,6 +8,7 @@
     <meta property="og:image" content="https://tainan.olc.tw/p/taipower/og_image.png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -96,6 +97,63 @@
                 margin: 0 2px 5px;
             }
         }
+        #emergencyAlert {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #emergencyAlert:hover {
+            background-color: #ffecb3;
+        }
+        .emergency-generator-item {
+            display: inline-block;
+            margin: 2px 8px;
+            padding: 4px 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        /* Emergency date highlighting */
+        .emergency-date-indicator {
+            position: relative;
+        }
+        .emergency-date-indicator::after {
+            content: "🚨";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            z-index: 10;
+        }
+        
+        /* Style for date picker with emergency data */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+        }
+        
+        .date-picker-container {
+            position: relative;
+        }
+        
+        .emergency-calendar-overlay {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .emergency-date-legend {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -117,7 +175,15 @@
             <div class="col-12">
                 <div class="button-container">
                     <button id="autoUpdateButton" class="btn btn-primary btn-sm">自動更新</button>
-                    <input type="date" id="datePicker" class="form-control form-control-sm" style="width: auto;">
+                    <div class="date-picker-container" style="display: inline-block; position: relative;">
+                        <input type="date" id="datePicker" class="form-control form-control-sm" style="width: auto;">
+                        <div id="emergencyCalendarOverlay" class="emergency-calendar-overlay">
+                            <div class="emergency-date-legend">
+                                🚨 = 緊急發電機啟動日期
+                            </div>
+                            <div id="emergencyDatesList"></div>
+                        </div>
+                    </div>
                     <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-outline-secondary btn-sm">資料來源</a>
                     <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-outline-info btn-sm">北中西區台南市議員參選人江明宗 製作</a>
                 </div>
@@ -149,6 +215,13 @@
             </div>
         </div>
 
+        <!-- Emergency Generators Alert Section -->
+        <div id="emergencyAlert" class="alert alert-warning d-none mb-3" role="alert">
+            <h5><i class="fas fa-exclamation-triangle"></i> 緊急備載發電機啟動中</h5>
+            <div id="emergencyGenerators"></div>
+            <small class="text-muted">點擊查看緊急發電機歷史記錄</small>
+        </div>
+
         <h2 class="mt-4">各能源別即時發電量小計(每10分鐘更新)：</h2>
         <p id="totalPower" class="lead">總計： - MW</p>
 
@@ -173,6 +246,57 @@
         </div>
 
         <div id="notes" class="mt-4"></div>
+
+        <!-- Emergency Generators Modal -->
+        <div class="modal fade" id="emergencyModal" tabindex="-1" aria-labelledby="emergencyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="emergencyModalLabel">緊急備載發電機啟動歷史</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="emergencyDateRange" class="form-label">查看時間範圍:</label>
+                                <select id="emergencyDateRange" class="form-select">
+                                    <option value="7">近7天</option>
+                                    <option value="30">近30天</option>
+                                    <option value="90">近90天</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emergencyGeneratorFilter" class="form-label">發電機篩選:</label>
+                                <select id="emergencyGeneratorFilter" class="form-select">
+                                    <option value="all">全部緊急發電機</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="emergencyTimeline" class="mb-4" style="height: 300px;">
+                            <canvas id="emergencyTimelineChart"></canvas>
+                        </div>
+                        <div id="emergencyHistory" class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>時間</th>
+                                        <th>發電機名稱</th>
+                                        <th>發電量(MW)</th>
+                                        <th>負載率(%)</th>
+                                        <th>狀態</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emergencyHistoryBody">
+                                    <tr>
+                                        <td colspan="5" class="text-center">載入中...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Add this after the slider container -->
         <div class="row mb-3">
