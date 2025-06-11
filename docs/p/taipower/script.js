@@ -730,9 +730,11 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(`${emergencyApiBase}/2025/${month.year_month}.json`)
                 .then(response => response.json())
                 .then(monthData => {
-                    if (monthData.dates && monthData.dates.length > 0) {
+                    if (monthData && monthData.dates && Array.isArray(monthData.dates) && monthData.dates.length > 0) {
                         monthData.dates.forEach(dateInfo => {
-                            emergencyDatesCache.add(dateInfo.formatted_date);
+                            if (dateInfo && dateInfo.formatted_date) {
+                                emergencyDatesCache.add(dateInfo.formatted_date);
+                            }
                         });
                     }
                     loadedMonths.add(month.year_month);
@@ -848,9 +850,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return fetch(`${emergencyApiBase}/2025/${yearMonth}.json`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.dates && data.dates.length > 0) {
+                    if (data && data.dates && Array.isArray(data.dates) && data.dates.length > 0) {
                         data.dates.forEach(dateInfo => {
-                            emergencyDatesCache.add(dateInfo.formatted_date);
+                            if (dateInfo && dateInfo.formatted_date) {
+                                emergencyDatesCache.add(dateInfo.formatted_date);
+                            }
                         });
                     }
                     loadedMonths.add(yearMonth);
@@ -893,9 +897,17 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(dailyIndex => {
                 // Daily index exists, now check for current time slot
                 const currentTimeKey = getCurrentTimeKey();
-                const timeEntry = dailyIndex.find(entry => entry.time === currentTimeKey);
                 
-                if (timeEntry && timeEntry.generators.length > 0) {
+                // Safely handle dailyIndex which might not be an array
+                if (!Array.isArray(dailyIndex)) {
+                    throw new Error('Invalid daily index format');
+                }
+                
+                const timeEntry = dailyIndex.find(entry => 
+                    entry && entry.time === currentTimeKey
+                );
+                
+                if (timeEntry && timeEntry.generators && Array.isArray(timeEntry.generators) && timeEntry.generators.length > 0) {
                     // Found emergency data for current time, load detailed data
                     const emergencyUrl = `${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`;
                     return fetch(emergencyUrl).then(response => response.json());
@@ -1094,15 +1106,35 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (monthData.dates && monthData.dates.length > 0) {
             monthData.dates.forEach(dateInfo => {
+                // Safely handle unique_generators which might not be an array
+                let generatorsText = 'N/A';
+                if (dateInfo.unique_generators) {
+                    if (Array.isArray(dateInfo.unique_generators)) {
+                        generatorsText = dateInfo.unique_generators.join(', ');
+                    } else {
+                        generatorsText = String(dateInfo.unique_generators);
+                    }
+                }
+                
+                // Safely handle times array
+                const timesCount = (dateInfo.times && Array.isArray(dateInfo.times)) ? dateInfo.times.length : 0;
+                const eventsCount = dateInfo.events || 0;
+                
                 detailsHtml += `
                     <tr>
-                        <td>${dateInfo.formatted_date}</td>
-                        <td colspan="2">${dateInfo.unique_generators.join(', ')}</td>
-                        <td>${dateInfo.events}次</td>
-                        <td>${dateInfo.times.length}個時段</td>
+                        <td>${dateInfo.formatted_date || 'N/A'}</td>
+                        <td colspan="2">${generatorsText}</td>
+                        <td>${eventsCount}次</td>
+                        <td>${timesCount}個時段</td>
                     </tr>
                 `;
             });
+        } else {
+            detailsHtml += `
+                <tr>
+                    <td colspan="5" class="text-center text-muted">此月份無緊急發電機啟動記錄</td>
+                </tr>
+            `;
         }
         
         tbody.innerHTML = detailsHtml;
