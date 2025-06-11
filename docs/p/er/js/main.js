@@ -341,3 +341,112 @@ locationButton.addEventListener('click', function() {
 });
 
 document.body.appendChild(locationButton);
+
+// Function to calculate and display wait status statistics
+function calculateWaitStats() {
+  const features = vectorSource.getFeatures();
+  
+  let waitSeeTotal = 0;
+  let waitBedTotal = 0;
+  let waitGeneralTotal = 0;
+  let waitIcuTotal = 0;
+  let hospitalCount = 0;
+  
+  features.forEach(function(feature) {
+    const props = feature.getProperties();
+    if (props.hasOwnProperty('inform')) {
+      hospitalCount++;
+      waitSeeTotal += parseInt(props.wait_see) || 0;
+      waitBedTotal += parseInt(props.wait_bed) || 0;
+      waitGeneralTotal += parseInt(props.wait_general) || 0;
+      waitIcuTotal += parseInt(props.wait_icu) || 0;
+    }
+  });
+  
+  return {
+    waitSeeTotal,
+    waitBedTotal,
+    waitGeneralTotal,
+    waitIcuTotal,
+    hospitalCount
+  };
+}
+
+// Function to display statistics in modal
+function displayStats() {
+  const stats = calculateWaitStats();
+  
+  // Update modal content with stats
+  document.getElementById('hospitalCount').textContent = stats.hospitalCount;
+  document.getElementById('waitSeeTotal').textContent = stats.waitSeeTotal;
+  document.getElementById('waitBedTotal').textContent = stats.waitBedTotal;
+  document.getElementById('waitGeneralTotal').textContent = stats.waitGeneralTotal;
+  document.getElementById('waitIcuTotal').textContent = stats.waitIcuTotal;
+  
+  // Update timestamp
+  const updateTime = document.getElementById('updateTime');
+  updateTime.textContent = `資料更新時間：${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+  
+  // Show modal
+  const modal = document.getElementById('statsModal');
+  modal.style.display = 'flex';
+  
+  // Add animation class for highlight effect
+  setTimeout(() => {
+    const statsItems = document.querySelectorAll('.stats-item');
+    statsItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.style.animation = 'pulse 0.6s ease-in-out';
+      }, index * 100);
+    });
+  }, 300);
+}
+
+// Function to hide statistics modal
+function hideStats() {
+  const modal = document.getElementById('statsModal');
+  modal.style.display = 'none';
+}
+
+// Add event listeners for modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const showStatsBtn = document.getElementById('showStatsBtn');
+  const statsModal = document.getElementById('statsModal');
+  const statsClose = document.getElementById('statsClose');
+  
+  if (showStatsBtn) {
+    showStatsBtn.addEventListener('click', function() {
+      // Wait for data to load if not already loaded
+      if (vectorSource.getFeatures().length === 0) {
+        vectorSource.once('change', function() {
+          if (vectorSource.getState() === 'ready') {
+            displayStats();
+          }
+        });
+      } else {
+        displayStats();
+      }
+    });
+  }
+  
+  // Close modal when clicking close button
+  if (statsClose) {
+    statsClose.addEventListener('click', hideStats);
+  }
+  
+  // Close modal when clicking outside content area
+  if (statsModal) {
+    statsModal.addEventListener('click', function(e) {
+      if (e.target === statsModal) {
+        hideStats();
+      }
+    });
+  }
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && statsModal.style.display === 'flex') {
+      hideStats();
+    }
+  });
+});

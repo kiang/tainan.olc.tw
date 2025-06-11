@@ -100,6 +100,173 @@
       margin-right: 5px;
       border: 1px solid #000;
     }
+
+    .stats-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .stats-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: modalAppear 0.3s ease-out;
+    }
+
+    @keyframes modalAppear {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .stats-header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #007bff;
+    }
+
+    .stats-header h3 {
+      color: #007bff;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stats-item {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border: 2px solid #dee2e6;
+      transition: all 0.3s ease;
+    }
+
+    .stats-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stats-item.hospital-count {
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      border-color: #28a745;
+    }
+
+    .stats-item.wait-see {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      border-color: #ffc107;
+    }
+
+    .stats-item.wait-bed {
+      background: linear-gradient(135deg, #f8d7da 0%, #f1c2c7 100%);
+      border-color: #dc3545;
+    }
+
+    .stats-item.wait-general {
+      background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+      border-color: #17a2b8;
+    }
+
+    .stats-item.wait-icu {
+      background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%);
+      border-color: #6c757d;
+    }
+
+    .stats-label {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .stats-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #495057;
+      margin: 5px 0;
+    }
+
+    .stats-unit {
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .stats-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6c757d;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .stats-close:hover {
+      background: #f8f9fa;
+      color: #dc3545;
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-content {
+        padding: 20px;
+        margin: 10px;
+      }
+      
+      .stats-value {
+        font-size: 24px;
+      }
+    }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -139,11 +306,52 @@
       <span>中度或一般急診</span>
     </div>
     <div style="margin-top: 10px; text-align: center;">
+      <button id="showStatsBtn" class="btn btn-sm btn-success" style="margin-bottom: 5px;">
+        顯示統計數據
+      </button>
       <a href="https://info.nhi.gov.tw/INAE4000/INAE4001S01" target="_blank" class="btn btn-sm btn-info">
         資料來源：健保署
       </a>
     </div>
   </div>
+  <!-- Statistics Modal -->
+  <div id="statsModal" class="stats-modal">
+    <div class="stats-content">
+      <button class="stats-close" id="statsClose">&times;</button>
+      <div class="stats-header">
+        <h3>🏥 全台急診等待統計</h3>
+        <small id="updateTime" class="text-muted"></small>
+      </div>
+      <div class="stats-grid">
+        <div class="stats-item hospital-count">
+          <div class="stats-label">重度急救醫院</div>
+          <div class="stats-value" id="hospitalCount">-</div>
+          <div class="stats-unit">間</div>
+        </div>
+        <div class="stats-item wait-see">
+          <div class="stats-label">等待看診</div>
+          <div class="stats-value" id="waitSeeTotal">-</div>
+          <div class="stats-unit">人</div>
+        </div>
+        <div class="stats-item wait-bed">
+          <div class="stats-label">等待推床</div>
+          <div class="stats-value" id="waitBedTotal">-</div>
+          <div class="stats-unit">人</div>
+        </div>
+        <div class="stats-item wait-general">
+          <div class="stats-label">等待住院</div>
+          <div class="stats-value" id="waitGeneralTotal">-</div>
+          <div class="stats-unit">人</div>
+        </div>
+        <div class="stats-item wait-icu">
+          <div class="stats-label">等待加護病房</div>
+          <div class="stats-value" id="waitIcuTotal">-</div>
+          <div class="stats-unit">人</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div style="position: fixed; bottom: 0px; left: 0px;">
     <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
   </div>
