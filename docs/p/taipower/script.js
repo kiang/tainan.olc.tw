@@ -637,53 +637,130 @@ document.addEventListener('DOMContentLoaded', function() {
         '總發電量': 'rgb(75, 192, 192)'
     };
 
+    // Custom calendar variables
+    let currentCalendarDate = new Date();
+    let selectedDate = null;
+    let calendarVisible = false;
+    
     function initializeDatePicker() {
-        const datePicker = document.getElementById('datePicker');
-
-        // Calculate the date range (last 60 days)
-        const today = new Date();
-        const sixtyDaysAgo = new Date(today);
-        sixtyDaysAgo.setDate(today.getDate() - 60);
-
-        // Format dates for the date picker
-        const formatDate = (date) => {
-            return date.toISOString().split('T')[0];
-        };
-
-        // Set min and max attributes
-        datePicker.min = formatDate(sixtyDaysAgo);
-        datePicker.max = formatDate(today);
-
         // Set the initial date to the current updateTime
         const [currentDate] = updateTime.split(' ');
-        datePicker.value = currentDate;
+        selectedDate = currentDate;
+        currentCalendarDate = new Date(currentDate);
+        
+        // Initialize custom calendar
+        initializeCustomCalendar();
+        updateDateDisplay();
         
         // Check if current date has emergency data and add indicator
         if (emergencyDatesCache.has(currentDate)) {
-            datePicker.classList.add('emergency-date-indicator');
+            document.getElementById('datePickerDisplay').classList.add('has-emergency');
         }
-
-        datePicker.addEventListener('change', function() {
-            const selectedDate = this.value;
-            fetchDataForDate(selectedDate);
+    }
+    
+    function initializeCustomCalendar() {
+        const dateDisplay = document.getElementById('datePickerDisplay');
+        const calendar = document.getElementById('customCalendar');
+        const prevBtn = document.getElementById('prevMonth');
+        const nextBtn = document.getElementById('nextMonth');
+        
+        // Toggle calendar visibility
+        dateDisplay.addEventListener('click', () => {
+            calendarVisible = !calendarVisible;
+            calendar.style.display = calendarVisible ? 'block' : 'none';
+            if (calendarVisible) {
+                renderCalendar();
+            }
+        });
+        
+        // Navigation buttons
+        prevBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            ensureEmergencyDataForMonth(currentCalendarDate); // This one can stay as Date object since it's for navigation
+            renderCalendar();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            ensureEmergencyDataForMonth(currentCalendarDate); // This one can stay as Date object since it's for navigation
+            renderCalendar();
+        });
+        
+        // Close calendar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-date-picker')) {
+                calendar.style.display = 'none';
+                calendarVisible = false;
+            }
         });
     }
 
     function fetchDataForDate(date) {
-        const [year, month, day] = date.split('-');
-        const Ymd = year + month + day;
+        // Validate the selected date using string comparison to avoid timezone issues
+        const [year, month, day] = date.split('-').map(Number);
+        const selectedDate = new Date(year, month - 1, day); // Create date in local timezone
+        const today = new Date();
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(today.getFullYear() - 1);
+        
+        // Check if date is too far in the past or future
+        if (selectedDate < oneYearAgo) {
+            alert('所選日期太久遠，資料可能不存在。請選擇近一年內的日期。');
+            return;
+        }
+        
+        if (selectedDate > today) {
+            alert('無法選擇未來的日期。請選擇今天或之前的日期。');
+            return;
+        }
+        
+        const Ymd = year.toString() + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
         const jsonUrl = `https://kiang.github.io/taipower_data/genary/${year}/${Ymd}/list.json`;
 
         fetch(jsonUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: 此日期的資料不存在`);
+                }
+                return response.json();
+            })
             .then(data => {
                 updateTime = `${date} 00:00`; // Set updateTime to the start of the selected date
                 dataOptions = data.sort((a, b) => a.localeCompare(b));
                 fetchAndPopulateSlider();
+                
+                // Check for emergency data on the new date
+                setTimeout(() => {
+                    // Ensure emergency data for this month is loaded first
+                    ensureEmergencyDataForMonth(date).then(() => {
+                        // Then check for daily emergency data
+                        checkEmergencyGeneratorsForDate(date);
+                    });
+                }, 100);
             })
             .catch(error => {
                 console.error('Error fetching data for selected date:', error);
-                alert('無法取得所選日期的資料。請選擇其他日期。');
+                
+                // Provide more specific error messages
+                let errorMessage = '無法取得所選日期的資料。';
+                if (error.message.includes('HTTP 404')) {
+                    errorMessage = '所選日期的資料尚未提供，請選擇較近的日期。';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage = '網路連線異常，請檢查網路連線後重試。';
+                }
+                
+                alert(errorMessage + '\n請選擇其他日期。');
+                
+                // Reset to today's date if available
+                const now = new Date();
+                const today = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+                
+                // Reset to today's date in our custom calendar
+                if (selectedDate !== today) {
+                    selectedDate = today;
+                    currentCalendarDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    updateDateDisplay();
+                }
             });
     }
 
@@ -699,14 +776,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 console.log(`Emergency data available for ${data.months?.length || 0} months`);
                 
-                // Only load the current month initially to reduce startup time
-                const currentMonth = getCurrentMonth();
+                // Load the recent 3 months for calendar highlighting
+                const recentMonths = getRecentMonths(3);
                 if (data.months && data.months.length > 0) {
-                    const currentMonthData = data.months.find(m => m.year_month === currentMonth);
-                    if (currentMonthData) {
-                        loadEmergencyDatesFromMonthly([currentMonthData]);
+                    const recentMonthsData = data.months.filter(m => recentMonths.includes(m.year_month));
+                    if (recentMonthsData.length > 0) {
+                        loadEmergencyDatesFromMonthly(recentMonthsData);
                     } else {
-                        // Current month has no emergency data, just setup highlights
+                        // No emergency data for recent months, just setup highlights
                         setupDatePickerHighlights();
                     }
                 } else {
@@ -722,6 +799,42 @@ document.addEventListener('DOMContentLoaded', function() {
     function getCurrentMonth() {
         const now = new Date();
         return `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+    }
+    
+    function getRecentMonths(count) {
+        const months = [];
+        const now = new Date();
+        
+        for (let i = 0; i < count; i++) {
+            const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const yearMonth = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+            months.push(yearMonth);
+        }
+        
+        return months;
+    }
+    
+    function ensureEmergencyDataForMonth(dateStr) {
+        // Parse date string manually to avoid timezone issues
+        let yearMonth;
+        if (typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [year, month] = dateStr.split('-');
+            yearMonth = `${year}${month}`;
+        } else {
+            // Fallback to Date object if not a standard date string
+            const date = (dateStr instanceof Date) ? dateStr : new Date(dateStr);
+            yearMonth = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+        }
+        
+        if (!loadedMonths.has(yearMonth) && emergencyMonthsData) {
+            const monthData = emergencyMonthsData.months?.find(m => m.year_month === yearMonth);
+            if (monthData) {
+                return loadEmergencyDatesFromMonthly([monthData]);
+            }
+        }
+        
+        // Return resolved promise if data already loaded or no data available
+        return Promise.resolve();
     }
     
     function loadEmergencyDatesFromMonthly(months) {
@@ -744,81 +857,173 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return Promise.all(promises).then(() => {
             console.log(`Loaded ${emergencyDatesCache.size} emergency dates from ${months.length} months`);
-            if (!document.getElementById('datePicker').hasAttribute('data-highlights-setup')) {
-                setupDatePickerHighlights();
+            setupDatePickerHighlights();
+        });
+    }
+    
+    function updateDateDisplay() {
+        const dateDisplay = document.getElementById('datePickerDisplay');
+        if (selectedDate) {
+            dateDisplay.textContent = selectedDate;
+            
+            // Update emergency highlighting
+            if (emergencyDatesCache.has(selectedDate)) {
+                dateDisplay.classList.add('has-emergency');
+                dateDisplay.title = `${selectedDate} - 此日期有緊急發電機啟動記錄`;
+            } else {
+                dateDisplay.classList.remove('has-emergency');
+                dateDisplay.title = '選擇日期查看歷史資料';
+            }
+        }
+    }
+    
+    function renderCalendar() {
+        const monthYearDisplay = document.getElementById('monthYearDisplay');
+        const calendarGrid = document.getElementById('calendarGrid');
+        
+        // Clear existing content
+        calendarGrid.innerHTML = '';
+        
+        // Ensure emergency data is loaded for the displayed month
+        const displayedMonth = `${currentCalendarDate.getFullYear()}${(currentCalendarDate.getMonth() + 1).toString().padStart(2, '0')}`;
+        if (!loadedMonths.has(displayedMonth) && emergencyMonthsData) {
+            const monthData = emergencyMonthsData.months?.find(m => m.year_month === displayedMonth);
+            if (monthData) {
+                loadEmergencyDatesFromMonthly([monthData]).then(() => {
+                    // Re-render calendar after loading emergency data
+                    renderCalendarContent();
+                });
+                return; // Exit early, will re-render after data loads
+            }
+        }
+        
+        renderCalendarContent();
+    }
+    
+    function renderCalendarContent() {
+        const monthYearDisplay = document.getElementById('monthYearDisplay');
+        const calendarGrid = document.getElementById('calendarGrid');
+        
+        // Clear existing content
+        calendarGrid.innerHTML = '';
+        
+        // Set month/year display
+        const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月',
+                           '七月', '八月', '九月', '十月', '十一月', '十二月'];
+        monthYearDisplay.textContent = `${currentCalendarDate.getFullYear()}年 ${monthNames[currentCalendarDate.getMonth()]}`;
+        
+        // Add day headers
+        const dayHeaders = ['日', '一', '二', '三', '四', '五', '六'];
+        dayHeaders.forEach(day => {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day-header';
+            dayElement.textContent = day;
+            calendarGrid.appendChild(dayElement);
+        });
+        
+        // Get first day of month and days in month
+        const firstDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1);
+        const lastDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = firstDay.getDay();
+        
+        // Add days from previous month
+        const prevMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, 0);
+        for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+            const day = prevMonth.getDate() - i;
+            const dayElement = createDayElement(day, true, new Date(prevMonth.getFullYear(), prevMonth.getMonth(), day));
+            calendarGrid.appendChild(dayElement);
+        }
+        
+        // Add days of current month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), day);
+            const dayElement = createDayElement(day, false, dayDate);
+            calendarGrid.appendChild(dayElement);
+        }
+        
+        // Add days from next month
+        const totalCells = calendarGrid.children.length - 7; // Subtract header row
+        const remainingCells = 42 - totalCells; // 6 rows * 7 days
+        for (let day = 1; day <= remainingCells; day++) {
+            const nextMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, day);
+            const dayElement = createDayElement(day, true, nextMonth);
+            calendarGrid.appendChild(dayElement);
+        }
+    }
+    
+    function createDayElement(day, isOtherMonth, fullDate) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day;
+        
+        // Format date manually to avoid timezone issues
+        const dateStr = `${fullDate.getFullYear()}-${(fullDate.getMonth() + 1).toString().padStart(2, '0')}-${fullDate.getDate().toString().padStart(2, '0')}`;
+        const now = new Date();
+        const today = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+        
+        if (isOtherMonth) {
+            dayElement.classList.add('other-month');
+        }
+        
+        if (dateStr === today && !isOtherMonth) {
+            dayElement.classList.add('today');
+        }
+        
+        if (dateStr === selectedDate) {
+            dayElement.classList.add('selected');
+        }
+        
+        // Check if this date has emergency data
+        if (emergencyDatesCache.has(dateStr)) {
+            dayElement.classList.add('emergency');
+        }
+        
+        // Add click handler
+        dayElement.addEventListener('click', () => {
+            if (!isOtherMonth) {
+                selectDate(dateStr);
+            } else {
+                // Navigate to the other month and select the date
+                if (fullDate < new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1)) {
+                    currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+                } else {
+                    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+                }
+                selectDate(dateStr);
+                renderCalendar();
             }
         });
+        
+        return dayElement;
+    }
+    
+    function selectDate(dateStr) {
+        selectedDate = dateStr;
+        updateDateDisplay();
+        
+        // Close calendar
+        document.getElementById('customCalendar').style.display = 'none';
+        calendarVisible = false;
+        
+        // Fetch data for selected date
+        fetchDataForDate(dateStr);
+        
+        // Check for emergency data on the selected date
+        setTimeout(() => {
+            // Ensure emergency data for this month is loaded first
+            ensureEmergencyDataForMonth(dateStr).then(() => {
+                // Then check for daily emergency data
+                checkEmergencyGeneratorsForDate(dateStr);
+            });
+        }, 500); // Give some time for the main data to load first
     }
     
     function setupDatePickerHighlights() {
-        const datePicker = document.getElementById('datePicker');
-        
-        // Check if already setup to prevent duplicate listeners
-        if (datePicker.hasAttribute('data-highlights-setup')) {
-            return;
-        }
-        
-        datePicker.setAttribute('data-highlights-setup', 'true');
-        
-        // Show emergency dates when date picker is focused
-        datePicker.addEventListener('focus', () => {
-            showEmergencyDatesOverlay();
-        });
-        
-        // Hide overlay when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.date-picker-container')) {
-                hideEmergencyDatesOverlay();
-            }
-        });
-        
-        // Add change event to highlight selected emergency date
-        datePicker.addEventListener('change', (e) => {
-            const selectedDate = e.target.value;
-            if (emergencyDatesCache.has(selectedDate)) {
-                // Add visual indicator that this date has emergency data
-                datePicker.classList.add('emergency-date-indicator');
-            } else {
-                datePicker.classList.remove('emergency-date-indicator');
-            }
-            hideEmergencyDatesOverlay();
-        });
-        
-        console.log('Emergency date picker highlights setup completed');
+        // This function is now handled by the custom calendar
+        console.log('Custom calendar initialized with emergency date highlighting');
     }
     
-    function showEmergencyDatesOverlay() {
-        const overlay = document.getElementById('emergencyCalendarOverlay');
-        const datesList = document.getElementById('emergencyDatesList');
-        
-        // Get date range around current date
-        const currentDate = new Date(document.getElementById('datePicker').value || updateTime.split(' ')[0]);
-        const startDate = new Date(currentDate);
-        startDate.setDate(startDate.getDate() - 30); // 30 days before
-        const endDate = new Date(currentDate);
-        endDate.setDate(endDate.getDate() + 30); // 30 days after
-        
-        // Load emergency dates for the required months if not already loaded
-        loadEmergencyDatesForRange(startDate, endDate).then(() => {
-            // Filter emergency dates within range
-            const relevantDates = Array.from(emergencyDatesCache).filter(dateStr => {
-                const date = new Date(dateStr);
-                return date >= startDate && date <= endDate;
-            }).sort();
-            
-            if (relevantDates.length > 0) {
-                datesList.innerHTML = '<div style="margin-top: 8px;"><strong>近期緊急發電機啟動日期:</strong></div>' +
-                    relevantDates.map(date => 
-                        `<div style="cursor: pointer; padding: 2px 5px; margin: 2px 0; background: #fff3cd; border-radius: 3px; font-size: 12px;" 
-                         onclick="selectEmergencyDate('${date}')">${date} 🚨</div>`
-                    ).join('');
-            } else {
-                datesList.innerHTML = '<div style="margin-top: 8px; font-size: 12px; color: #666;">此時間範圍內無緊急發電機啟動記錄</div>';
-            }
-            
-            overlay.style.display = 'block';
-        });
-    }
     
     function loadEmergencyDatesForRange(startDate, endDate) {
         if (!emergencyMonthsData) {
@@ -865,18 +1070,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return Promise.all(promises);
     }
     
-    function hideEmergencyDatesOverlay() {
-        const overlay = document.getElementById('emergencyCalendarOverlay');
-        overlay.style.display = 'none';
-    }
-    
     // Global functions for emergency functionality
-    window.selectEmergencyDate = function(date) {
-        const datePicker = document.getElementById('datePicker');
-        datePicker.value = date;
-        datePicker.dispatchEvent(new Event('change'));
-        hideEmergencyDatesOverlay();
-    }
     
     window.loadEmergencyHistory = function() {
         const days = document.getElementById('emergencyDateRange').value;
@@ -917,23 +1111,21 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.hide();
         }
         
-        // Set the date picker to the selected date
-        const datePicker = document.getElementById('datePicker');
-        if (datePicker && date && date !== 'N/A') {
-            datePicker.value = date;
+        // Set the custom date picker to the selected date
+        if (date && date !== 'N/A') {
+            selectedDate = date;
+            // Parse date string manually to avoid timezone issues
+            const [year, month, day] = date.split('-');
+            currentCalendarDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            
+            // Update the display
+            updateDateDisplay();
             
             // Trigger the date change event to load data for the selected date
             fetchDataForDate(date);
             
-            // Update emergency highlighting for the new date
+            // Check for emergency data on the new date
             setTimeout(() => {
-                if (emergencyDatesCache.has(date)) {
-                    datePicker.classList.add('emergency-date-indicator');
-                } else {
-                    datePicker.classList.remove('emergency-date-indicator');
-                }
-                
-                // Check for emergency data on the new date
                 checkEmergencyGenerators();
             }, 100);
         }
@@ -942,6 +1134,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Emergency Generator Functions
     function checkEmergencyGenerators() {
         const [date] = updateTime.split(' ');
+        checkEmergencyGeneratorsForDate(date);
+    }
+    
+    function checkEmergencyGeneratorsForDate(date) {
+        // First check if this date is in our emergency dates cache
+        if (!emergencyDatesCache.has(date)) {
+            // No emergency data for this date, hide alert and return
+            hideEmergencyAlert();
+            return;
+        }
+        
         const [year, month, day] = date.split('-');
         const Ymd = year + month + day;
         
