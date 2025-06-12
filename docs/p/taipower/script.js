@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const slider = document.getElementById('timeSlider');
             totalPowerData.push(totalPower);
             nuclearData.push(groupedData['核能']);
-            thermalData.push(groupedData['火力發電']);
+            thermalData.push((groupedData['燃煤'] || 0) + (groupedData['燃氣'] || 0) + (groupedData['其他火力'] || 0));
             renewableData.push(groupedData['再生能源']);
             totalPowerTimes.push(formatTime(dataOptions[slider.value]));
             
@@ -227,15 +227,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function groupPowerSources(powerSources) {
         const groups = {
             '核能': 0,
-            '火力發電': 0,
+            '燃煤': 0,
+            '燃氣': 0,
+            '其他火力': 0,
             '再生能源': 0
         };
 
         for (const [name, data] of Object.entries(powerSources)) {
             if (name.includes('核能')) {
                 groups['核能'] += data.output;
-            } else if (['燃煤', '汽電共生', '民營電廠-燃煤', '燃氣', '民營電廠-燃氣', '燃油', '輕油'].some(fuel => name.includes(fuel))) {
-                groups['火力發電'] += data.output;
+            } else if (['燃煤', '汽電共生', '民營電廠-燃煤'].some(fuel => name.includes(fuel))) {
+                groups['燃煤'] += data.output;
+            } else if (['燃氣', '民營電廠-燃氣'].some(fuel => name.includes(fuel))) {
+                groups['燃氣'] += data.output;
+            } else if (['燃油', '輕油'].some(fuel => name.includes(fuel))) {
+                groups['其他火力'] += data.output;
             } else {
                 groups['再生能源'] += data.output;
             }
@@ -632,9 +638,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const colorMapping = {
         '核能': 'rgb(255, 99, 132)',
-        '火力發電': 'rgb(255, 205, 86)',
+        '燃煤': 'rgb(139, 69, 19)',
+        '燃氣': 'rgb(255, 165, 0)',
+        '其他火力': 'rgb(255, 205, 86)',
         '再生能源': 'rgb(54, 162, 235)',
-        '總發電量': 'rgb(75, 192, 192)'
+        '總發電量': 'rgb(75, 192, 192)',
+        '火力發電': 'rgb(255, 205, 86)'
     };
 
     // Custom calendar variables
