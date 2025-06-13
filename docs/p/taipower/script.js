@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update emergency highlighting
             if (emergencyDatesCache.has(selectedDate)) {
                 dateDisplay.classList.add('has-emergency');
-                dateDisplay.title = `${selectedDate} - 此日期有緊急發電機啟動記錄`;
+                dateDisplay.title = `${selectedDate} - 此日期有緊急備用電力設施啟動記錄`;
             } else {
                 dateDisplay.classList.remove('has-emergency');
                 dateDisplay.title = '選擇日期查看歷史資料';
@@ -1079,23 +1079,41 @@ document.addEventListener('DOMContentLoaded', function() {
         return Promise.all(promises);
     }
     
+    // Helper function to convert time slots to hours and minutes
+    function formatTimeSlots(timeSlotCount) {
+        if (!timeSlotCount || timeSlotCount === 0) return '0分鐘';
+        
+        const totalMinutes = timeSlotCount * 10; // Each slot is 10 minutes
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        
+        if (hours === 0) {
+            return `${minutes}分鐘`;
+        } else if (minutes === 0) {
+            return `${hours}小時`;
+        } else {
+            return `${hours}小時${minutes}分鐘`;
+        }
+    }
+    
     // Global functions for emergency functionality
     
     window.loadEmergencyHistory = function() {
         const days = document.getElementById('emergencyDateRange').value;
+        const generatorFilter = document.getElementById('emergencyGeneratorFilter').value;
         const emergencyUrl = `${emergencyApiBase}/monthly_index.json`;
         
         fetch(emergencyUrl)
             .then(response => response.json())
             .then(data => {
                 // Process the emergency history data
-                displayEmergencyHistory(data);
-                setupEmergencyFilters();
+                displayEmergencyHistory(data, generatorFilter);
+                setupEmergencyFilters(generatorFilter); // Pass current filter to preserve selection
             })
             .catch(error => {
                 console.error('Error loading emergency history:', error);
                 document.getElementById('emergencyHistoryBody').innerHTML = 
-                    '<tr><td colspan="5" class="text-center text-danger">載入緊急發電機歷史資料時發生錯誤</td></tr>';
+                    '<tr><td colspan="5" class="text-center text-danger">載入緊急備用電力設施歷史資料時發生錯誤</td></tr>';
             });
     }
     
@@ -1297,7 +1315,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add summary info
             const summaryInfo = document.createElement('div');
             summaryInfo.style.marginTop = '8px';
-            summaryInfo.innerHTML = `<small>共${dailySummary.total_events}次啟動，${dailySummary.time_slots}個時段</small>`;
+            summaryInfo.innerHTML = `<small>共${dailySummary.total_events}次啟動，持續${formatTimeSlots(dailySummary.time_slots)}</small>`;
             container.appendChild(summaryInfo);
             
             alert.classList.remove('d-none');
@@ -1320,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     
-    function displayEmergencyHistory(monthlyData) {
+    function displayEmergencyHistory(monthlyData, generatorFilter = 'all') {
         const tbody = document.getElementById('emergencyHistoryBody');
         tbody.innerHTML = '<tr><td colspan="5" class="text-center">處理資料中...</td></tr>';
         
@@ -1331,7 +1349,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // For now, show a summary of recent months and prepare chart data
         let historyHtml = '';
         if (monthlyData.months && monthlyData.months.length > 0) {
-            monthlyData.months.slice(-3).forEach(month => {
+            const months = monthlyData.months.slice(-3);
+            
+            // If filter is applied, we need to fetch monthly details to check generators
+            if (generatorFilter !== 'all') {
+                historyHtml += `
+                    <tr class="table-warning">
+                        <td colspan="5" class="text-center">
+                            <strong>篩選條件：${generatorFilter}</strong><br>
+                            <small>正在載入篩選結果...</small>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML = historyHtml;
+                
+                // Load filtered results
+                loadFilteredEmergencyHistory(months, generatorFilter);
+                return;
+            }
+            
+            months.forEach(month => {
                 timelineLabels.push(`${month.year}-${month.month}`);
                 timelineData.push(month.total_days);
                 
@@ -1339,7 +1376,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr class="table-info">
                         <td colspan="5">
                             <strong>${month.year}年${month.month}月</strong> - 
-                            共${month.total_days}天有緊急發電機啟動記錄
+                            共${month.total_days}天有緊急備用電力設施啟動記錄
                             <button class="btn btn-sm btn-outline-primary ms-2" onclick="loadMonthDetails('${month.year_month}')">
                                 查看詳細
                             </button>
@@ -1350,13 +1387,127 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (historyHtml === '') {
-            historyHtml = '<tr><td colspan="5" class="text-center">近期無緊急發電機啟動記錄</td></tr>';
+            historyHtml = '<tr><td colspan="5" class="text-center">近期無緊急備用電力設施啟動記錄</td></tr>';
         }
         
         tbody.innerHTML = historyHtml;
         
         // Create timeline chart
         createEmergencyTimelineChart(timelineLabels, timelineData);
+    }
+    
+    function loadFilteredEmergencyHistory(months, generatorFilter) {
+        const tbody = document.getElementById('emergencyHistoryBody');
+        
+        // Load each month's details and filter by generator
+        const promises = months.map(month => 
+            fetch(`${emergencyApiBase}/2025/${month.year_month}.json`)
+                .then(response => response.json())
+                .then(monthData => {
+                    if (monthData && monthData.dates && Array.isArray(monthData.dates)) {
+                        // Filter dates that contain the specified generator
+                        const filteredDates = monthData.dates.filter(dateInfo => {
+                            if (!dateInfo.unique_generators) return false;
+                            
+                            let generators = [];
+                            if (Array.isArray(dateInfo.unique_generators)) {
+                                generators = dateInfo.unique_generators;
+                            } else if (typeof dateInfo.unique_generators === 'object') {
+                                generators = Object.values(dateInfo.unique_generators);
+                            } else {
+                                generators = [String(dateInfo.unique_generators)];
+                            }
+                            
+                            return generators.some(gen => 
+                                gen.toString().toLowerCase().includes(generatorFilter.toLowerCase())
+                            );
+                        });
+                        
+                        return {
+                            ...monthData,
+                            dates: filteredDates,
+                            original_total: monthData.dates.length,
+                            filtered_total: filteredDates.length
+                        };
+                    }
+                    return null;
+                })
+                .catch(error => {
+                    console.warn(`Failed to load ${month.year_month}:`, error);
+                    return null;
+                })
+        );
+        
+        Promise.all(promises).then(results => {
+            let filteredHtml = '';
+            let totalFilteredDays = 0;
+            
+            results.forEach(monthData => {
+                if (monthData && monthData.dates.length > 0) {
+                    totalFilteredDays += monthData.dates.length;
+                    
+                    filteredHtml += `
+                        <tr class="table-info">
+                            <td colspan="5">
+                                <strong>${monthData.year}年${monthData.month}月</strong> - 
+                                找到${monthData.dates.length}天包含「${generatorFilter}」的記錄
+                                (總共${monthData.original_total}天)
+                            </td>
+                        </tr>
+                    `;
+                    
+                    // Show filtered dates
+                    monthData.dates.forEach(dateInfo => {
+                        let generatorsText = 'N/A';
+                        if (dateInfo.unique_generators) {
+                            if (Array.isArray(dateInfo.unique_generators)) {
+                                generatorsText = dateInfo.unique_generators.join(', ');
+                            } else if (typeof dateInfo.unique_generators === 'object') {
+                                generatorsText = Object.values(dateInfo.unique_generators).join(', ');
+                            } else {
+                                generatorsText = String(dateInfo.unique_generators);
+                            }
+                        }
+                        
+                        const timesCount = (dateInfo.times && Array.isArray(dateInfo.times)) ? dateInfo.times.length : 0;
+                        const eventsCount = dateInfo.events || 0;
+                        
+                        filteredHtml += `
+                            <tr>
+                                <td>
+                                    <span class="emergency-date-clickable" onclick="navigateToEmergencyDate('${dateInfo.formatted_date || 'N/A'}')" title="點擊切換到此日期">
+                                        ${dateInfo.formatted_date || 'N/A'}
+                                    </span>
+                                </td>
+                                <td colspan="2">${generatorsText}</td>
+                                <td>${eventsCount}次</td>
+                                <td>${formatTimeSlots(timesCount)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+            
+            if (filteredHtml === '') {
+                filteredHtml = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            沒有找到包含「${generatorFilter}」的緊急備用電力設施記錄
+                        </td>
+                    </tr>
+                `;
+            } else {
+                filteredHtml = `
+                    <tr class="table-success">
+                        <td colspan="5" class="text-center">
+                            <strong>篩選結果：共找到${totalFilteredDays}天包含「${generatorFilter}」的記錄</strong>
+                        </td>
+                    </tr>
+                ` + filteredHtml;
+            }
+            
+            tbody.innerHTML = filteredHtml;
+        });
     }
     
     function createEmergencyTimelineChart(labels, data) {
@@ -1371,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: '緊急發電機啟動天數',
+                    label: '緊急備用電力設施啟動天數',
                     data: data,
                     backgroundColor: 'rgba(255, 99, 132, 0.6)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -1399,7 +1550,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: '緊急發電機月度啟動統計'
+                        text: '緊急備用電力設施月度啟動統計'
                     },
                     legend: {
                         display: false
@@ -1454,14 +1605,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         </td>
                         <td colspan="2">${generatorsText}</td>
                         <td>${eventsCount}次</td>
-                        <td>${timesCount}個時段</td>
+                        <td>${formatTimeSlots(timesCount)}</td>
                     </tr>
                 `;
             });
         } else {
             detailsHtml += `
                 <tr>
-                    <td colspan="5" class="text-center text-muted">此月份無緊急發電機啟動記錄</td>
+                    <td colspan="5" class="text-center text-muted">此月份無緊急備用電力設施啟動記錄</td>
                 </tr>
             `;
         }
@@ -1469,28 +1620,41 @@ document.addEventListener('DOMContentLoaded', function() {
         tbody.innerHTML = detailsHtml;
     }
     
-    function setupEmergencyFilters() {
+    function setupEmergencyFilters(currentFilter = 'all') {
         const filterSelect = document.getElementById('emergencyGeneratorFilter');
         const dateRangeSelect = document.getElementById('emergencyDateRange');
         
-        // Add common emergency generators to filter
-        const commonGenerators = [
-            '核二Gas1', '核二Gas2', '核三Gas1', '核三Gas2',
-            '台中Gas1&2', '台中Gas3&4', '大林#5',
-            '興達#1', '興達#2', '興達#3', '興達#4'
-        ];
+        // Store current selection before rebuilding
+        const previousValue = currentFilter || filterSelect.value || 'all';
         
-        filterSelect.innerHTML = '<option value="all">全部緊急發電機</option>';
-        commonGenerators.forEach(gen => {
-            const option = document.createElement('option');
-            option.value = gen;
-            option.textContent = gen;
-            filterSelect.appendChild(option);
-        });
+        // Check if filters are already set up
+        if (!filterSelect.hasAttribute('data-setup')) {
+            // Add common emergency power facilities to filter
+            const commonGenerators = [
+                '核二Gas1', '核二Gas2', '核三Gas1', '核三Gas2',
+                '台中Gas1&2', '台中Gas3&4', '大林#5',
+                '興達#1', '興達#2', '興達#3', '興達#4'
+            ];
+            
+            // Clear and rebuild options
+            filterSelect.innerHTML = '<option value="all">全部緊急備用電力設施</option>';
+            commonGenerators.forEach(gen => {
+                const option = document.createElement('option');
+                option.value = gen;
+                option.textContent = gen;
+                filterSelect.appendChild(option);
+            });
+            
+            // Add event listeners only once
+            dateRangeSelect.addEventListener('change', loadEmergencyHistory);
+            filterSelect.addEventListener('change', loadEmergencyHistory);
+            
+            // Mark as set up
+            filterSelect.setAttribute('data-setup', 'true');
+        }
         
-        // Add event listeners
-        dateRangeSelect.addEventListener('change', loadEmergencyHistory);
-        filterSelect.addEventListener('change', loadEmergencyHistory);
+        // Always restore the selection
+        filterSelect.value = previousValue;
     }
 
 });

@@ -297,7 +297,7 @@
                             <div class="calendar-grid" id="calendarGrid"></div>
                         </div>
                     </div>
-                    <small class="text-muted ms-2">🚨 表示緊急發電機啟動日</small>
+                    <small class="text-muted ms-2">🚨 表示緊急備用電力設施啟動日</small>
                     <a href="https://www.taipower.com.tw/d006/loadGraph/loadGraph/genshx_.html" target="_blank" class="btn btn-outline-secondary btn-sm">資料來源</a>
                     <a href="https://www.facebook.com/k.olc.tw/" target="_blank" class="btn btn-outline-info btn-sm">北中西區台南市議員參選人江明宗 製作</a>
                 </div>
@@ -333,7 +333,7 @@
         <div id="emergencyAlert" class="alert alert-warning d-none mb-3" role="alert">
             <h5><i class="fas fa-exclamation-triangle"></i> 今日緊急備用電力設施有開啟</h5>
             <div id="emergencyGenerators"></div>
-            <small class="text-muted">點擊查看緊急發電機歷史記錄</small>
+            <small class="text-muted">點擊查看緊急備用電力設施歷史記錄</small>
         </div>
 
         <h2 class="mt-4">各能源別即時發電量小計(每10分鐘更新)：</h2>
@@ -366,7 +366,7 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="emergencyModalLabel">緊急備載發電機啟動歷史</h5>
+                        <h5 class="modal-title" id="emergencyModalLabel">緊急備用電力設施啟動歷史</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -380,9 +380,9 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="emergencyGeneratorFilter" class="form-label">發電機篩選:</label>
+                                <label for="emergencyGeneratorFilter" class="form-label">設施篩選:</label>
                                 <select id="emergencyGeneratorFilter" class="form-select">
-                                    <option value="all">全部緊急發電機</option>
+                                    <option value="all">全部緊急備用電力設施</option>
                                 </select>
                             </div>
                         </div>
@@ -394,10 +394,10 @@
                                 <thead>
                                     <tr>
                                         <th>時間</th>
-                                        <th>發電機名稱</th>
+                                        <th>設施名稱</th>
                                         <th>發電量(MW)</th>
-                                        <th>負載率(%)</th>
-                                        <th>狀態</th>
+                                        <th>啟動次數</th>
+                                        <th>持續時間</th>
                                     </tr>
                                 </thead>
                                 <tbody id="emergencyHistoryBody">
