@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             totalPowerData.length = 0;
             nuclearData.length = 0;
-            thermalData.length = 0;
+            coalData.length = 0;
+            gasData.length = 0;
+            otherThermalData.length = 0;
             renewableData.length = 0;
             totalPowerTimes.length = 0;
             autoUpdateInterval = setInterval(autoUpdate, autoUpdateDelay);
@@ -97,7 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clear the cached data when looping back
             totalPowerData.length = 0;
             nuclearData.length = 0;
-            thermalData.length = 0;
+            coalData.length = 0;
+            gasData.length = 0;
+            otherThermalData.length = 0;
             renewableData.length = 0;
             totalPowerTimes.length = 0;
         }
@@ -179,14 +183,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const slider = document.getElementById('timeSlider');
             totalPowerData.push(totalPower);
             nuclearData.push(groupedData['核能']);
-            thermalData.push((groupedData['燃煤'] || 0) + (groupedData['燃氣'] || 0) + (groupedData['其他火力'] || 0));
+            coalData.push(groupedData['燃煤'] || 0);
+            gasData.push(groupedData['燃氣'] || 0);
+            otherThermalData.push(groupedData['其他火力'] || 0);
             renewableData.push(groupedData['再生能源']);
             totalPowerTimes.push(formatTime(dataOptions[slider.value]));
             
             if (totalPowerData.length > maxDataPoints) {
                 totalPowerData.shift();
                 nuclearData.shift();
-                thermalData.shift();
+                coalData.shift();
+                gasData.shift();
+                otherThermalData.shift();
                 renewableData.shift();
                 totalPowerTimes.shift();
             }
@@ -258,7 +266,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxDataPoints = 144; // 24 hours * 6 (10-minute intervals)
     const totalPowerTimes = [];
     const nuclearData = [];
-    const thermalData = [];
+    const coalData = [];
+    const gasData = [];
+    const otherThermalData = [];
     const renewableData = [];
 
     function displayPowerSources(powerSources) {
@@ -338,42 +348,36 @@ document.addEventListener('DOMContentLoaded', function() {
         powerSourcesContainer.appendChild(chartsContainer);
         powerSourcesContainer.appendChild(cardsContainer);
 
-        // Update or create the bar chart
-        updateBarChart(labels, data, backgroundColors);
+        // Update or create the bar chart with grouped data
+        const groupedData = groupPowerSources(powerSources);
+        updateBarChart(groupedData, backgroundColors);
 
         // Update or create the pie chart
-        const groupedData = groupPowerSources(powerSources);
         updatePieChart(groupedData, backgroundColors);
     }
 
-    function updateBarChart(labels, data, backgroundColors) {
+    function updateBarChart(groupedData, backgroundColors) {
         const ctx = document.getElementById('powerSourcesBarChart').getContext('2d');
         
-        // Function to remove HTML tags
-        const stripHtml = (html) => {
-            let tmp = document.createElement("DIV");
-            tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || "";
-        };
-
-        // Clean labels
-        const cleanLabels = labels.map(stripHtml);
+        const labels = Object.keys(groupedData);
+        const data = Object.values(groupedData);
+        const colors = labels.map(label => colorMapping[label]);
         
         if (barChart) {
-            barChart.data.labels = cleanLabels;
+            barChart.data.labels = labels;
             barChart.data.datasets[0].data = data;
-            barChart.data.datasets[0].backgroundColor = backgroundColors;
+            barChart.data.datasets[0].backgroundColor = colors;
             barChart.update();
         } else {
             barChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: cleanLabels,
+                    labels: labels,
                     datasets: [{
                         label: '發電量 (MW)',
                         data: data,
-                        backgroundColor: backgroundColors,
-                        borderColor: backgroundColors,
+                        backgroundColor: colors,
+                        borderColor: colors,
                         borderWidth: 1
                     }]
                 },
@@ -605,9 +609,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 fill: false
             },
             {
-                label: '火力發電 (MW)',
-                data: thermalData,
-                borderColor: colorMapping['火力發電'],
+                label: '燃煤 (MW)',
+                data: coalData,
+                borderColor: colorMapping['燃煤'],
+                tension: 0.1,
+                fill: false
+            },
+            {
+                label: '燃氣 (MW)',
+                data: gasData,
+                borderColor: colorMapping['燃氣'],
+                tension: 0.1,
+                fill: false
+            },
+            {
+                label: '其他火力 (MW)',
+                data: otherThermalData,
+                borderColor: colorMapping['其他火力'],
                 tension: 0.1,
                 fill: false
             },
