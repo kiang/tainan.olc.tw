@@ -1474,7 +1474,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <tr>
                                     <th>時間</th>
                                     <th>啟動設施</th>
-                                    <th>啟動次數</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1492,7 +1491,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <tr>
                     <td><strong>${timeStr}</strong></td>
                     <td>${generators}</td>
-                    <td><span class="badge bg-warning">${count}</span></td>
                 </tr>
             `;
         });
