@@ -1117,6 +1117,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Global functions for emergency functionality
     
+    window.openMonthlyEmergencyModal = openMonthlyEmergencyModal;
+    
     window.loadEmergencyHistory = function() {
         const days = document.getElementById('emergencyDateRange').value;
         const generatorFilter = document.getElementById('emergencyGeneratorFilter').value;
@@ -1289,7 +1291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             alert.classList.remove('d-none');
-            alert.addEventListener('click', openEmergencyModal);
+            alert.addEventListener('click', openDailyEmergencyModal);
         } else {
             hideEmergencyAlert();
         }
@@ -1338,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(summaryInfo);
             
             alert.classList.remove('d-none');
-            alert.addEventListener('click', openEmergencyModal);
+            alert.addEventListener('click', openDailyEmergencyModal);
         } else {
             hideEmergencyAlert();
         }
@@ -1347,13 +1349,163 @@ document.addEventListener('DOMContentLoaded', function() {
     function hideEmergencyAlert() {
         const alert = document.getElementById('emergencyAlert');
         alert.classList.add('d-none');
-        alert.removeEventListener('click', openEmergencyModal);
+        alert.removeEventListener('click', openDailyEmergencyModal);
+    }
+    
+    function openDailyEmergencyModal() {
+        const modal = new bootstrap.Modal(document.getElementById('dailyEmergencyModal'));
+        modal.show();
+        loadDailyEmergencyDetails();
     }
     
     function openEmergencyModal() {
         const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
         modal.show();
         loadEmergencyHistory();
+    }
+    
+    function openMonthlyEmergencyModal() {
+        // Close daily modal first
+        const dailyModal = bootstrap.Modal.getInstance(document.getElementById('dailyEmergencyModal'));
+        if (dailyModal) {
+            dailyModal.hide();
+        }
+        
+        // Wait a bit then open monthly modal
+        setTimeout(() => {
+            openEmergencyModal();
+        }, 300);
+    }
+    
+    function loadDailyEmergencyDetails() {
+        const [date] = updateTime.split(' ');
+        const [year, month, day] = date.split('-');
+        const Ymd = year + month + day;
+        
+        const contentDiv = document.getElementById('dailyEmergencyContent');
+        const modalTitle = document.getElementById('dailyEmergencyModalLabel');
+        
+        modalTitle.textContent = `${date} 緊急備用電力設施詳情`;
+        contentDiv.innerHTML = '<div class="text-center">載入中...</div>';
+        
+        // Load daily index first
+        const dailyIndexUrl = `${emergencyApiBase}/${year}/${Ymd}/index.json`;
+        
+        fetch(dailyIndexUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`No data for ${date}`);
+                }
+                return response.json();
+            })
+            .then(dailyIndex => {
+                if (!Array.isArray(dailyIndex) || dailyIndex.length === 0) {
+                    throw new Error('No emergency data');
+                }
+                
+                // Display daily summary
+                displayDailyEmergencyDetails(date, dailyIndex);
+            })
+            .catch(error => {
+                contentDiv.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <h5><i class="fas fa-info-circle"></i> 本日無緊急備用電力設施啟動</h5>
+                        <p>選定的日期 (${date}) 沒有緊急備用電力設施啟動記錄。</p>
+                    </div>
+                `;
+            });
+    }
+    
+    function displayDailyEmergencyDetails(date, dailyIndex) {
+        const contentDiv = document.getElementById('dailyEmergencyContent');
+        
+        // Collect all generators and statistics
+        const allGenerators = new Set();
+        let totalEvents = 0;
+        let timeSlots = dailyIndex.length;
+        
+        dailyIndex.forEach(entry => {
+            if (entry && entry.generators && Array.isArray(entry.generators)) {
+                entry.generators.forEach(gen => allGenerators.add(gen));
+                totalEvents += entry.count || 0;
+            }
+        });
+        
+        // Create daily summary
+        let content = `
+            <div class="card mb-3">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> 當日摘要</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>啟動設施數量:</strong><br>
+                            <span class="fs-4 text-primary">${allGenerators.size}</span> 個
+                        </div>
+                        <div class="col-md-4">
+                            <strong>總啟動次數:</strong><br>
+                            <span class="fs-4 text-warning">${totalEvents}</span> 次
+                        </div>
+                        <div class="col-md-4">
+                            <strong>持續時間:</strong><br>
+                            <span class="fs-4 text-danger">${formatTimeSlots(timeSlots)}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <strong>啟動設施清單:</strong><br>
+                        ${Array.from(allGenerators).map(gen => `<span class="badge bg-secondary me-1 mb-1">${gen}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Create timeline view
+        content += `
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-clock"></i> 時間軸詳情</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>時間</th>
+                                    <th>啟動設施</th>
+                                    <th>啟動次數</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+        `;
+        
+        // Sort daily index by time
+        const sortedIndex = dailyIndex.sort((a, b) => a.time.localeCompare(b.time));
+        
+        sortedIndex.forEach(entry => {
+            const timeStr = `${entry.time.substring(0,2)}:${entry.time.substring(2,4)}:${entry.time.substring(4,6)}`;
+            const generators = entry.generators ? entry.generators.join(', ') : '無';
+            const count = entry.count || 0;
+            
+            content += `
+                <tr>
+                    <td><strong>${timeStr}</strong></td>
+                    <td>${generators}</td>
+                    <td><span class="badge bg-warning">${count}</span></td>
+                </tr>
+            `;
+        });
+        
+        content += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        contentDiv.innerHTML = content;
     }
     
     

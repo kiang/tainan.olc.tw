@@ -361,7 +361,28 @@
 
         <div id="notes" class="mt-4"></div>
 
-        <!-- Emergency Generators Modal -->
+        <!-- Daily Emergency Details Modal -->
+        <div class="modal fade" id="dailyEmergencyModal" tabindex="-1" aria-labelledby="dailyEmergencyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dailyEmergencyModalLabel">當日緊急備用電力設施詳情</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="dailyEmergencyContent">
+                            <div class="text-center">載入中...</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-primary" onclick="openMonthlyEmergencyModal()">查看月度摘要</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Generators Modal (Monthly Summary) -->
         <div class="modal fade" id="emergencyModal" tabindex="-1" aria-labelledby="emergencyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
