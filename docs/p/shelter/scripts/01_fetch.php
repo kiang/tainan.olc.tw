@@ -36,15 +36,11 @@ $totalCount = 0;
 
 while($line = fgetcsv($csvFh, 2048)) {
     $totalCount++;
-    
-    // Convert from Big5 to UTF-8
-    foreach($line as $key => $value) {
-        $line[$key] = mb_convert_encoding($value, 'UTF-8', 'big5');
-    }
-    
+        
     // First line is header
     if($header === null) {
         $header = $line;
+        $header[0] = '序號';
         continue;
     }
     
