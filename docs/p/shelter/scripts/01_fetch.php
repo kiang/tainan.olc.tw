@@ -13,6 +13,35 @@ $arrContextOptions = [
     ]
 ];
 
+// Load reference CSV for coordinate updates
+$referenceData = [];
+$refCsvUrl = 'https://github.com/kiang/rvis.mohw.gov.tw/raw/refs/heads/master/rvis_all_data.csv';
+$refCsvFh = fopen($refCsvUrl, 'r', false, stream_context_create($arrContextOptions));
+
+if ($refCsvFh) {
+    $refHeader = null;
+    while ($refLine = fgetcsv($refCsvFh, 2048)) {
+        if ($refHeader === null) {
+            $refHeader = $refLine;
+            continue;
+        }
+        
+        $refData = array_combine($refHeader, $refLine);
+        
+        // Create lookup key using name + phone
+        if (!empty($refData['name']) && !empty($refData['phone']) && 
+            !empty($refData['lat']) && !empty($refData['lng'])) {
+            $key = trim($refData['name']) . '|' . trim($refData['phone']);
+            $referenceData[$key] = [
+                'lat' => floatval($refData['lat']),
+                'lng' => floatval($refData['lng'])
+            ];
+        }
+    }
+    fclose($refCsvFh);
+    echo "Loaded " . count($referenceData) . " reference records\n";
+}
+
 $csvFh = fopen($json['result']['distribution'][0]['resourceDownloadUrl'], 'r', false, stream_context_create($arrContextOptions));
 
 // Initialize GeoJSON structure
@@ -33,6 +62,7 @@ $taiwanBounds = [
 $header = null;
 $skippedCount = 0;
 $totalCount = 0;
+$updatedCount = 0;
 
 while($line = fgetcsv($csvFh, 2048)) {
     $totalCount++;
@@ -47,15 +77,25 @@ while($line = fgetcsv($csvFh, 2048)) {
     // Combine header with values
     $data = array_combine($header, $line);
     
-    // Skip if no coordinates
-    if(empty($data['經度']) || empty($data['緯度'])) {
-        $skippedCount++;
-        continue;
-    }
-    
     // Convert coordinates to float
     $lon = floatval($data['經度']);
     $lat = floatval($data['緯度']);
+    
+    // Check for coordinate updates from reference data
+    if (!empty($data['避難收容處所名稱']) && !empty($data['管理人電話'])) {
+        $lookupKey = trim($data['避難收容處所名稱']) . '|' . trim($data['管理人電話']);
+        if (isset($referenceData[$lookupKey])) {
+            $lon = $referenceData[$lookupKey]['lng'];
+            $lat = $referenceData[$lookupKey]['lat'];
+            $updatedCount++;
+        }
+    }
+    
+    // Skip if no coordinates after lookup
+    if(empty($lon) || empty($lat)) {
+        $skippedCount++;
+        continue;
+    }
     
     // Skip points outside Taiwan
     // if($lon < $taiwanBounds['minLon'] || $lon > $taiwanBounds['maxLon'] || 
@@ -110,3 +150,4 @@ echo "GeoJSON data saved to " . $outputDir . "/points.json\n";
 echo "Total records: " . $totalCount . "\n";
 echo "Skipped records: " . $skippedCount . "\n";
 echo "Included records: " . count($geojson['features']) . "\n";
+echo "Updated coordinates: " . $updatedCount . "\n";
