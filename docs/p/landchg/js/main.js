@@ -133,9 +133,14 @@ const ui = {
                 message += `<tr><th scope="row" style="width: 80px;">${key}</th><td>${value}</td></tr>`;
             });
 
+            const caseId = p.properties['變異點編號'] || '';
+            const currentCity = $('#pointCity').val();
+            const currentYear = $('#pointYear').val();
+            
             message += `
                 <tr><td colspan="2">
                     <hr /><div class="btn-group-vertical" role="group" style="width: 100%;">
+                        ${caseId ? `<a href="https://landchg.olc.tw/#detail/${caseId}?city=${encodeURIComponent(currentCity)}&year=${currentYear}" target="_blank" class="btn btn-primary btn-lg btn-block">查看詳細資料</a>` : ''}
                         <a href="https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>
                         <a href="https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>
                         <a href="https://bing.com/maps/default.aspx?rtp=~pos.${lonLat[1]}_${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>
