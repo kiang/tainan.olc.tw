@@ -214,12 +214,12 @@ class EmergencyDashboard {
         modal.show();
         
         try {
-            // Parse year and month from datetime
+            // Parse year, month, and day from datetime
             const [datePart] = caseData.datetime_display.split(' ');
-            const [year, month] = datePart.split('/');
+            const [year, month, day] = datePart.split('/');
             
-            // Fetch detailed case data
-            const detailUrl = `https://kiang.github.io/119dts.tncfd.gov.tw/${year}/${month}/${caseData.case_number}.json`;
+            // Fetch detailed case data using new structure: {year}/{month}{day}/{case_id}.json
+            const detailUrl = `https://kiang.github.io/119dts.tncfd.gov.tw/${year}/${month}${day}/${caseData.case_number}.json`;
             const response = await fetch(detailUrl);
             
             if (!response.ok) {
