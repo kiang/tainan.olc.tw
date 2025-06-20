@@ -127,28 +127,73 @@ const ui = {
         const p = feature.getProperties();
         if (p.properties) {
             const lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-            let message = '<table class="table table-dark"><tbody>';
-
-            Object.entries(p.properties).forEach(([key, value]) => {
-                message += `<tr><th scope="row" style="width: 80px;">${key}</th><td>${value}</td></tr>`;
-            });
-
+            
+            // Organize data by importance
+            const importantFields = ['變異點編號', '變異類型', '查證結果', '變異點位置', '通報機關'];
+            const regularFields = Object.keys(p.properties).filter(key => !importantFields.includes(key));
+            
+            let message = '<div class="popup-content">';
+            
+            // Important information section
+            if (importantFields.some(field => p.properties[field])) {
+                message += '<div class="info-highlight">';
+                importantFields.forEach(field => {
+                    if (p.properties[field]) {
+                        const value = p.properties[field];
+                        const isLegal = field === '查證結果' && value === '合法';
+                        const statusClass = field === '查證結果' ? (isLegal ? 'status-legal' : 'status-illegal') : '';
+                        message += `<div class="info-item ${statusClass}">
+                            <span class="info-label">${field}</span>
+                            <span class="info-value">${value}</span>
+                        </div>`;
+                    }
+                });
+                message += '</div>';
+            }
+            
+            // Other information
+            if (regularFields.length > 0) {
+                message += '<div class="info-details">';
+                message += '<h6 class="details-title"><i class="fa fa-list"></i> 詳細資訊</h6>';
+                message += '<table class="table table-dark table-sm"><tbody>';
+                regularFields.forEach(key => {
+                    if (p.properties[key]) {
+                        message += `<tr><th scope="row">${key}</th><td>${p.properties[key]}</td></tr>`;
+                    }
+                });
+                message += '</tbody></table>';
+                message += '</div>';
+            }
+            
+            // Action buttons
             const caseId = p.properties['變異點編號'] || '';
             const currentCity = $('#pointCity').val();
             const currentYear = $('#pointYear').val();
             
+            message += '<div class="action-buttons">';
+            message += '<div class="btn-group-vertical" role="group">';
+            
+            if (caseId) {
+                message += `<a href="https://landchg.olc.tw/#detail/${caseId}?city=${encodeURIComponent(currentCity)}&year=${currentYear}" target="_blank" class="btn btn-primary btn-lg btn-block">
+                    <i class="fa fa-search"></i> 查看詳細資料
+                </a>`;
+            }
+            
             message += `
-                <tr><td colspan="2">
-                    <hr /><div class="btn-group-vertical" role="group" style="width: 100%;">
-                        ${caseId ? `<a href="https://landchg.olc.tw/#detail/${caseId}?city=${encodeURIComponent(currentCity)}&year=${currentYear}" target="_blank" class="btn btn-primary btn-lg btn-block">查看詳細資料</a>` : ''}
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>
-                        <a href="https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>
-                        <a href="https://bing.com/maps/default.aspx?rtp=~pos.${lonLat[1]}_${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>
-                    </div>
-                </td></tr>
-            </tbody></table>`;
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">
+                    <i class="fa fa-map-marker"></i> Google 導航
+                </a>
+                <a href="https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">
+                    <i class="fa fa-location-arrow"></i> Here WeGo 導航
+                </a>
+                <a href="https://bing.com/maps/default.aspx?rtp=~pos.${lonLat[1]}_${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">
+                    <i class="fa fa-globe"></i> Bing 導航
+                </a>
+            `;
+            
+            message += '</div></div></div>';
 
-            $('#sidebarTitle').text(p.properties['變異類型']);
+            $('#sidebarTitle').text(p.properties['變異類型'] || '變異點資訊');
             $('#sidebarContent').html(message);
             app.sidebar.open('home');
             return true;
@@ -176,6 +221,9 @@ const data = {
     },
 
     fetchData: function (city, year, type) {
+        // Show loading state
+        $('#sidebarContent').html('<div class="text-center"><div class="loading"></div><p style="margin-top: 10px;">載入資料中...</p></div>');
+        
         $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function (csv) {
             if (csv.length > 0) {
                 app.dataPool[city][year] = $.csv.toObjects(csv);
@@ -183,6 +231,15 @@ const data = {
                 app.dataPool[city][year] = [];
             }
             data.processData(app.dataPool[city][year], type);
+            
+            // Clear loading state
+            if (app.dataPool[city][year].length === 0) {
+                $('#sidebarContent').html('<div class="text-center text-muted"><i class="fa fa-info-circle"></i><p>此地區年份無資料</p></div>');
+            } else {
+                $('#sidebarContent').html('');
+            }
+        }).fail(function() {
+            $('#sidebarContent').html('<div class="text-center text-warning"><i class="fa fa-exclamation-triangle"></i><p>資料載入失敗</p></div>');
         });
     },
 
