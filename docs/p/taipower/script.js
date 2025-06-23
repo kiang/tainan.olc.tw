@@ -1416,6 +1416,91 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
+    function compactContinuousTimeSlots(sortedIndex) {
+        if (!sortedIndex || sortedIndex.length === 0) return [];
+        
+        const compacted = [];
+        let currentGroup = null;
+        
+        for (let i = 0; i < sortedIndex.length; i++) {
+            const entry = sortedIndex[i];
+            const currentTime = entry.time;
+            const currentGenerators = entry.generators ? entry.generators.sort().join(',') : '';
+            
+            // Check if this is continuous with previous entry
+            const isContinuous = currentGroup && 
+                                 isConsecutiveTimeSlot(currentGroup.endTime, currentTime) &&
+                                 currentGroup.generatorsKey === currentGenerators;
+            
+            if (isContinuous) {
+                // Extend current group
+                currentGroup.endTime = currentTime;
+                currentGroup.endTimeDisplay = formatTimeString(currentTime);
+            } else {
+                // Start new group
+                if (currentGroup) {
+                    compacted.push(createTimelineEntry(currentGroup));
+                }
+                
+                currentGroup = {
+                    startTime: currentTime,
+                    endTime: currentTime,
+                    startTimeDisplay: formatTimeString(currentTime),
+                    endTimeDisplay: formatTimeString(currentTime),
+                    generators: entry.generators || [],
+                    generatorsKey: currentGenerators
+                };
+            }
+        }
+        
+        // Add final group
+        if (currentGroup) {
+            compacted.push(createTimelineEntry(currentGroup));
+        }
+        
+        return compacted;
+    }
+    
+    function isConsecutiveTimeSlot(time1, time2) {
+        // Parse time strings (format: HHMMSS)
+        const hour1 = parseInt(time1.substring(0, 2));
+        const minute1 = parseInt(time1.substring(2, 4));
+        const second1 = parseInt(time1.substring(4, 6));
+        
+        const hour2 = parseInt(time2.substring(0, 2));
+        const minute2 = parseInt(time2.substring(2, 4));
+        const second2 = parseInt(time2.substring(4, 6));
+        
+        // Convert to total seconds for easier comparison
+        const totalSeconds1 = hour1 * 3600 + minute1 * 60 + second1;
+        const totalSeconds2 = hour2 * 3600 + minute2 * 60 + second2;
+        
+        // Check if time2 is exactly 10 minutes (600 seconds) after time1
+        return (totalSeconds2 - totalSeconds1) === 600;
+    }
+    
+    function formatTimeString(timeStr) {
+        return `${timeStr.substring(0,2)}:${timeStr.substring(2,4)}:${timeStr.substring(4,6)}`;
+    }
+    
+    function createTimelineEntry(group) {
+        let timeDisplay;
+        if (group.startTime === group.endTime) {
+            // Single time slot
+            timeDisplay = group.startTimeDisplay;
+        } else {
+            // Time range
+            timeDisplay = `${group.startTimeDisplay} - ${group.endTimeDisplay}`;
+        }
+        
+        return {
+            timeDisplay: timeDisplay,
+            generators: group.generators,
+            startTime: group.startTime,
+            endTime: group.endTime
+        };
+    }
+
     function displayDailyEmergencyDetails(date, dailyIndex) {
         const contentDiv = document.getElementById('dailyEmergencyContent');
         
@@ -1482,14 +1567,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Sort daily index by time
         const sortedIndex = dailyIndex.sort((a, b) => a.time.localeCompare(b.time));
         
-        sortedIndex.forEach(entry => {
-            const timeStr = `${entry.time.substring(0,2)}:${entry.time.substring(2,4)}:${entry.time.substring(4,6)}`;
+        // Group continuous time periods with same generators
+        const compactedTimeline = compactContinuousTimeSlots(sortedIndex);
+        
+        compactedTimeline.forEach(entry => {
             const generators = entry.generators ? entry.generators.join(', ') : '無';
-            const count = entry.count || 0;
             
             content += `
                 <tr>
-                    <td><strong>${timeStr}</strong></td>
+                    <td><strong>${entry.timeDisplay}</strong></td>
                     <td>${generators}</td>
                 </tr>
             `;
