@@ -377,34 +377,90 @@ let allMarkers = {};
 // Global variable to store all cases data
 let allCasesData = [];
 
+// Global variable to track navigation attempts
+let navigationAttempts = 0;
+
 // Function to handle URL hash navigation
 function handleHashNavigation() {
     const hash = window.location.hash.substring(1); // Remove # symbol
     if (hash && allMarkers[hash]) {
         const marker = allMarkers[hash];
+        navigationAttempts = 0; // Reset counter
         
-        // Zoom to marker and open popup
-        map.setView(marker.getLatLng(), 15);
-        
-        // If marker is in a cluster, need to spiderfy first
-        if (markerClusterGroup.hasLayer(marker)) {
-            // Find the cluster containing this marker
-            const zoom = map.getZoom();
-            const clusters = markerClusterGroup.getLayers();
-            
-            // Force spiderfy by zooming to bounds that contain only this marker
-            const bounds = L.latLngBounds([marker.getLatLng()]);
-            bounds.extend([marker.getLatLng().lat + 0.001, marker.getLatLng().lng + 0.001]);
-            bounds.extend([marker.getLatLng().lat - 0.001, marker.getLatLng().lng - 0.001]);
-            
-            // Wait a moment then open popup
-            setTimeout(() => {
-                marker.openPopup();
-            }, 500);
+        // Use markerClusterGroup's zoomToShowLayer method if available
+        if (markerClusterGroup.zoomToShowLayer) {
+            markerClusterGroup.zoomToShowLayer(marker, function() {
+                // After zooming, open the popup
+                setTimeout(() => {
+                    marker.openPopup();
+                }, 100);
+            });
         } else {
-            marker.openPopup();
+            // Fallback method if zoomToShowLayer is not available
+            navigateToMarkerFallback(marker, hash);
         }
+    } else if (hash) {
+        console.warn('Marker not found for hash:', hash);
     }
+}
+
+// Fallback navigation method
+function navigateToMarkerFallback(marker, hash) {
+    navigationAttempts++;
+    
+    // Prevent infinite loops
+    if (navigationAttempts > 5) {
+        console.warn('Max navigation attempts reached for marker', hash);
+        navigationAttempts = 0;
+        // Try one last time with max zoom
+        map.setView(marker.getLatLng(), map.getMaxZoom());
+        setTimeout(() => {
+            marker.openPopup();
+        }, 500);
+        return;
+    }
+    
+    // Calculate zoom level
+    const targetZoom = Math.min(15 + navigationAttempts, map.getMaxZoom());
+    map.setView(marker.getLatLng(), targetZoom);
+    
+    // Wait for map to update
+    setTimeout(() => {
+        // Try to open popup
+        marker.openPopup();
+        
+        // Check if popup opened
+        setTimeout(() => {
+            const popup = marker.getPopup();
+            if (!popup || !popup.isOpen()) {
+                // If not at max zoom, try again with higher zoom
+                if (targetZoom < map.getMaxZoom()) {
+                    navigateToMarkerFallback(marker, hash);
+                } else {
+                    // At max zoom, try to find and click parent cluster
+                    let parentCluster = null;
+                    markerClusterGroup.eachLayer(layer => {
+                        if (layer instanceof L.MarkerCluster && layer.getAllChildMarkers().includes(marker)) {
+                            parentCluster = layer;
+                        }
+                    });
+                    
+                    if (parentCluster && parentCluster._icon) {
+                        parentCluster.fire('click');
+                        setTimeout(() => {
+                            marker.fire('click');
+                            navigationAttempts = 0;
+                        }, 800);
+                    } else {
+                        navigationAttempts = 0;
+                    }
+                }
+            } else {
+                // Success
+                navigationAttempts = 0;
+            }
+        }, 200);
+    }, 400);
 }
 
 // Function to update URL hash when marker is clicked
@@ -519,7 +575,10 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
     });
 
 // Listen for hash changes (browser back/forward navigation)
-window.addEventListener('hashchange', handleHashNavigation);
+window.addEventListener('hashchange', function() {
+    navigationAttempts = 0; // Reset attempts on hash change
+    handleHashNavigation();
+});
 
 // Handle initial page load with hash
 window.addEventListener('load', function() {
