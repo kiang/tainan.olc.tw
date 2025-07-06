@@ -1,0 +1,180 @@
+/* EMIC Disaster Map Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Popup Styles */
+.case-popup {
+    max-width: 300px;
+}
+
+.case-popup h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.case-popup .info-row {
+    margin: 5px 0;
+}
+
+.case-popup .label {
+    font-weight: bold;
+    color: #666;
+}
+
+.case-popup .value {
+    color: #333;
+}
+
+.case-popup .timeline {
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.case-popup .timeline h4 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.case-popup .log-entry {
+    margin: 8px 0;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.case-popup .log-entry .timestamp {
+    color: #666;
+    font-weight: bold;
+}
+
+.case-popup .log-entry .field {
+    color: #4682B4;
+    font-weight: bold;
+}
+
+.case-popup .log-entry .old-value {
+    color: #DC143C;
+    text-decoration: line-through;
+}
+
+.case-popup .log-entry .new-value {
+    color: #228B22;
+}
+
+/* Loading Indicator */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* Legend Styles */
+.legend {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    line-height: 18px;
+    color: #555;
+}
+
+.legend h4 {
+    margin: 0 0 5px;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+    border-radius: 50%;
+}
+
+/* Custom Marker Styles */
+.custom-div-icon {
+    background: none !important;
+    border: none !important;
+}
+
+.custom-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.custom-marker:hover {
+    transform: scale(1.1);
+}
+
+.custom-marker.serious {
+    border-color: #ff0000;
+    border-width: 3px;
+    box-shadow: 0 2px 6px rgba(255,0,0,0.5);
+}
+
+.custom-marker.traffic {
+    border-style: dashed;
+}
+
+.marker-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.serious-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff0000;
+    color: white;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.traffic-indicator {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: #ffcc00;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
