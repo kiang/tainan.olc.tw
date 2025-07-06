@@ -178,3 +178,82 @@ body {
     justify-content: center;
     line-height: 1;
 }
+
+/* Cluster Marker Styles */
+.custom-cluster-icon {
+    background: none !important;
+    border: none !important;
+}
+
+.cluster-marker {
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.cluster-marker:hover {
+    transform: scale(1.05);
+}
+
+.cluster-icon {
+    font-size: 18px;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.cluster-count {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    border-radius: 8px;
+    padding: 1px 4px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Override default cluster styles */
+.marker-cluster-small {
+    background: none !important;
+}
+
+.marker-cluster-small div {
+    background: none !important;
+}
+
+.marker-cluster-medium {
+    background: none !important;
+}
+
+.marker-cluster-medium div {
+    background: none !important;
+}
+
+.marker-cluster-large {
+    background: none !important;
+}
+
+.marker-cluster-large div {
+    background: none !important;
+}
+
+/* Spiderfy lines styling */
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
+    transition: transform 0.25s ease-out, opacity 0.25s ease-in;
+}
+
+/* Polygon coverage styling */
+.marker-cluster-cover-polygon {
+    fill: rgba(181, 226, 140, 0.6);
+    stroke: rgba(181, 226, 140, 1);
+    stroke-width: 2;
+}

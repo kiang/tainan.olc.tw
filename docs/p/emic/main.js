@@ -157,13 +157,58 @@ function createPopupContent(properties, details) {
     return content;
 }
 
+// Create marker cluster group with custom options
+const markerClusterGroup = L.markerClusterGroup({
+    // Custom cluster icon creation
+    iconCreateFunction: function(cluster) {
+        const markers = cluster.getAllChildMarkers();
+        const counts = {};
+        
+        // Count markers by disaster type
+        markers.forEach(marker => {
+            const disasterType = marker.feature.properties.DISASTER_MAIN_TYPE;
+            counts[disasterType] = (counts[disasterType] || 0) + 1;
+        });
+        
+        // Find the most common disaster type
+        let maxType = '';
+        let maxCount = 0;
+        for (const [type, count] of Object.entries(counts)) {
+            if (count > maxCount) {
+                maxCount = count;
+                maxType = type;
+            }
+        }
+        
+        const config = disasterTypes[maxType] || { color: '#808080', icon: '⚠️' };
+        const size = Math.min(40 + (cluster.getChildCount() / 10), 60);
+        
+        return L.divIcon({
+            html: `<div class="cluster-marker" style="background-color: ${config.color}; width: ${size}px; height: ${size}px;">
+                     <div class="cluster-icon">${config.icon}</div>
+                     <div class="cluster-count">${cluster.getChildCount()}</div>
+                   </div>`,
+            className: 'custom-cluster-icon',
+            iconSize: [size, size],
+            iconAnchor: [size/2, size/2]
+        });
+    },
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    maxClusterRadius: 50
+});
+
 // Load GeoJSON data
 fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
     .then(response => response.json())
     .then(data => {
-        L.geoJSON(data, {
+        const geoJsonLayer = L.geoJSON(data, {
             pointToLayer: function (feature, latlng) {
-                return createCustomMarker(feature, latlng);
+                const marker = createCustomMarker(feature, latlng);
+                // Store feature data on marker for clustering
+                marker.feature = feature;
+                return marker;
             },
             onEachFeature: function (feature, layer) {
                 // Initial popup with basic info
@@ -177,7 +222,13 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                     }
                 });
             }
-        }).addTo(map);
+        });
+        
+        // Add markers to cluster group
+        markerClusterGroup.addLayer(geoJsonLayer);
+        
+        // Add cluster group to map
+        map.addLayer(markerClusterGroup);
         
         // Hide loading indicator
         document.getElementById('loading').style.display = 'none';
