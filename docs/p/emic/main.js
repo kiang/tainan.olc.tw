@@ -157,6 +157,47 @@ function createPopupContent(properties, details) {
     return content;
 }
 
+// Global variable to store all markers for case lookup
+let allMarkers = {};
+
+// Function to handle URL hash navigation
+function handleHashNavigation() {
+    const hash = window.location.hash.substring(1); // Remove # symbol
+    if (hash && allMarkers[hash]) {
+        const marker = allMarkers[hash];
+        
+        // Zoom to marker and open popup
+        map.setView(marker.getLatLng(), 15);
+        
+        // If marker is in a cluster, need to spiderfy first
+        if (markerClusterGroup.hasLayer(marker)) {
+            // Find the cluster containing this marker
+            const zoom = map.getZoom();
+            const clusters = markerClusterGroup.getLayers();
+            
+            // Force spiderfy by zooming to bounds that contain only this marker
+            const bounds = L.latLngBounds([marker.getLatLng()]);
+            bounds.extend([marker.getLatLng().lat + 0.001, marker.getLatLng().lng + 0.001]);
+            bounds.extend([marker.getLatLng().lat - 0.001, marker.getLatLng().lng - 0.001]);
+            
+            // Wait a moment then open popup
+            setTimeout(() => {
+                marker.openPopup();
+            }, 500);
+        } else {
+            marker.openPopup();
+        }
+    }
+}
+
+// Function to update URL hash when marker is clicked
+function updateHashForCase(caseId) {
+    const newHash = `#${caseId}`;
+    if (window.location.hash !== newHash) {
+        window.location.hash = newHash;
+    }
+}
+
 // Create marker cluster group with custom options
 const markerClusterGroup = L.markerClusterGroup({
     // Custom cluster icon creation
@@ -208,15 +249,27 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                 const marker = createCustomMarker(feature, latlng);
                 // Store feature data on marker for clustering
                 marker.feature = feature;
+                
+                // Store marker in global lookup table using case ID
+                const caseId = feature.properties.CASE_ID;
+                allMarkers[caseId] = marker;
+                
                 return marker;
             },
             onEachFeature: function (feature, layer) {
+                const caseId = feature.properties.CASE_ID;
+                
                 // Initial popup with basic info
                 layer.bindPopup(createPopupContent(feature.properties, null));
                 
+                // Add click handler to update URL hash
+                layer.on('click', function() {
+                    updateHashForCase(caseId);
+                });
+                
                 // Fetch detailed info when popup opens
                 layer.on('popupopen', async function() {
-                    const details = await fetchCaseDetails(feature.properties.CASE_ID);
+                    const details = await fetchCaseDetails(caseId);
                     if (details) {
                         layer.setPopupContent(createPopupContent(feature.properties, details));
                     }
@@ -232,8 +285,22 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
         
         // Hide loading indicator
         document.getElementById('loading').style.display = 'none';
+        
+        // Handle initial hash navigation after data is loaded
+        setTimeout(() => {
+            handleHashNavigation();
+        }, 100);
     })
     .catch(error => {
         console.error('Error loading GeoJSON:', error);
         document.getElementById('loading').innerText = '載入失敗';
     });
+
+// Listen for hash changes (browser back/forward navigation)
+window.addEventListener('hashchange', handleHashNavigation);
+
+// Handle initial page load with hash
+window.addEventListener('load', function() {
+    // Give a moment for map to initialize
+    setTimeout(handleHashNavigation, 200);
+});
