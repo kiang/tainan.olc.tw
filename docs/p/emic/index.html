@@ -40,6 +40,39 @@
         </div>
     </div>
     
+    <!-- Location input button -->
+    <button class="location-input-btn" id="locationInputBtn" title="輸入座標定位">
+        📍 定位
+    </button>
+    
+    <!-- Location input popup -->
+    <div class="location-input-popup" id="locationInputPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>輸入座標定位</h3>
+                <button class="popup-close" id="locationPopupClose">&times;</button>
+            </div>
+            <div class="popup-body">
+                <form id="locationForm">
+                    <div class="form-group">
+                        <label for="coordinates">座標 (緯度, 經度):</label>
+                        <div class="input-group">
+                            <input type="text" id="coordinates" placeholder="例如: 23.5, 121.0" required>
+                            <button type="button" class="btn-geolocation" id="getCurrentLocation" title="取得目前位置">
+                                🌐
+                            </button>
+                        </div>
+                        <div class="form-help">請輸入格式：緯度, 經度 (例如: 23.5, 121.0)</div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">定位</button>
+                        <button type="button" class="btn-secondary" id="cancelLocation">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>

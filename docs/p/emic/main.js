@@ -665,4 +665,192 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && majorDisastersPopup.style.display === 'block') {
         majorDisastersPopup.style.display = 'none';
     }
+    if (e.key === 'Escape' && locationInputPopup.style.display === 'block') {
+        locationInputPopup.style.display = 'none';
+    }
 });
+
+// Location input functionality
+const locationInputBtn = document.getElementById('locationInputBtn');
+const locationInputPopup = document.getElementById('locationInputPopup');
+const locationPopupClose = document.getElementById('locationPopupClose');
+const locationForm = document.getElementById('locationForm');
+const cancelLocationBtn = document.getElementById('cancelLocation');
+const coordinatesInput = document.getElementById('coordinates');
+const getCurrentLocationBtn = document.getElementById('getCurrentLocation');
+
+// Current location marker
+let currentLocationMarker = null;
+
+// Show location input popup
+locationInputBtn.addEventListener('click', function() {
+    locationInputPopup.style.display = 'block';
+    coordinatesInput.focus();
+});
+
+// Close location popup
+locationPopupClose.addEventListener('click', function() {
+    locationInputPopup.style.display = 'none';
+});
+
+cancelLocationBtn.addEventListener('click', function() {
+    locationInputPopup.style.display = 'none';
+});
+
+// Close popup when clicking outside
+locationInputPopup.addEventListener('click', function(e) {
+    if (e.target === locationInputPopup) {
+        locationInputPopup.style.display = 'none';
+    }
+});
+
+// Get current location using geolocation API
+getCurrentLocationBtn.addEventListener('click', function() {
+    if (!navigator.geolocation) {
+        alert('您的瀏覽器不支援地理定位功能');
+        return;
+    }
+    
+    // Show loading state
+    getCurrentLocationBtn.classList.add('loading');
+    getCurrentLocationBtn.disabled = true;
+    getCurrentLocationBtn.textContent = '⏳';
+    
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+    };
+    
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            // Format coordinates to 6 decimal places
+            const formattedCoords = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            coordinatesInput.value = formattedCoords;
+            
+            // Reset button state
+            resetGeolocationButton();
+            
+            // Show success message
+            showTemporaryMessage('已取得目前位置！', 'success');
+        },
+        function(error) {
+            let errorMessage = '無法取得位置資訊';
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = '位置存取被拒絕，請允許瀏覽器存取位置資訊';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = '無法取得位置資訊';
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = '取得位置資訊逾時，請重新嘗試';
+                    break;
+            }
+            
+            alert(errorMessage);
+            
+            // Reset button state
+            resetGeolocationButton();
+        },
+        options
+    );
+});
+
+// Reset geolocation button to normal state
+function resetGeolocationButton() {
+    getCurrentLocationBtn.classList.remove('loading');
+    getCurrentLocationBtn.disabled = false;
+    getCurrentLocationBtn.textContent = '🌐';
+}
+
+// Show temporary message
+function showTemporaryMessage(message, type = 'info') {
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `temp-message temp-message-${type}`;
+    messageDiv.textContent = message;
+    
+    // Add to popup body
+    const popupBody = locationInputPopup.querySelector('.popup-body');
+    popupBody.appendChild(messageDiv);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.parentNode.removeChild(messageDiv);
+        }
+    }, 3000);
+}
+
+// Handle form submission
+locationForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const coordinates = coordinatesInput.value.trim();
+    
+    // Parse coordinates
+    const coords = parseCoordinates(coordinates);
+    
+    if (coords) {
+        // Remove existing location marker
+        if (currentLocationMarker) {
+            map.removeLayer(currentLocationMarker);
+        }
+        
+        // Create new location marker
+        const locationIcon = L.divIcon({
+            html: '<div style="background-color: #ff0000; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;"><span style="color: white; font-size: 12px; font-weight: bold;">📍</span></div>',
+            className: 'custom-location-marker',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+        
+        currentLocationMarker = L.marker([coords.lat, coords.lng], { icon: locationIcon })
+            .addTo(map)
+            .bindPopup(`<b>自訂位置</b><br>緯度: ${coords.lat}<br>經度: ${coords.lng}`);
+        
+        // Zoom to location
+        map.setView([coords.lat, coords.lng], 15);
+        
+        // Close popup
+        locationInputPopup.style.display = 'none';
+        
+        // Clear input
+        coordinatesInput.value = '';
+        
+        // Show success message
+        currentLocationMarker.openPopup();
+    } else {
+        alert('座標格式錯誤，請輸入正確的緯度、經度格式 (例如: 23.5, 121.0)');
+    }
+});
+
+// Function to parse coordinates
+function parseCoordinates(input) {
+    // Remove extra whitespace and split by comma
+    const parts = input.split(',').map(part => part.trim());
+    
+    if (parts.length !== 2) {
+        return null;
+    }
+    
+    const lat = parseFloat(parts[0]);
+    const lng = parseFloat(parts[1]);
+    
+    // Check if valid numbers
+    if (isNaN(lat) || isNaN(lng)) {
+        return null;
+    }
+    
+    // Check if coordinates are within reasonable bounds
+    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        return null;
+    }
+    
+    return { lat, lng };
+}
