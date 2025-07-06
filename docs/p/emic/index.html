@@ -94,6 +94,68 @@
             opacity: 0.7;
             border-radius: 50%;
         }
+        .custom-div-icon {
+            background: none !important;
+            border: none !important;
+        }
+        .custom-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .custom-marker:hover {
+            transform: scale(1.1);
+        }
+        .custom-marker.serious {
+            border-color: #ff0000;
+            border-width: 3px;
+            box-shadow: 0 2px 6px rgba(255,0,0,0.5);
+        }
+        .custom-marker.traffic {
+            border-style: dashed;
+        }
+        .marker-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+        .serious-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff0000;
+            color: white;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .traffic-indicator {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: #ffcc00;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -111,18 +173,18 @@
             maxZoom: 18
         }).addTo(map);
         
-        // Define colors for different disaster types
-        const disasterColors = {
-            '路樹災情': '#228B22',
-            '民生、基礎設施災情': '#FF6347',
-            '橋梁災情': '#8B4513',
-            '積淹水災情': '#4682B4',
-            '土石災情': '#8B7355',
-            '其他災情': '#708090',
-            '建物毀損災情': '#DC143C',
-            '廣告招牌災情': '#FF8C00',
-            '交通號誌災情': '#FFD700',
-            '道路災情': '#696969'
+        // Define colors and icons for different disaster types
+        const disasterTypes = {
+            '路樹災情': { color: '#228B22', icon: '🌳' },
+            '民生、基礎設施災情': { color: '#FF6347', icon: '🏗️' },
+            '橋梁災情': { color: '#8B4513', icon: '🌉' },
+            '積淹水災情': { color: '#4682B4', icon: '💧' },
+            '土石災情': { color: '#8B7355', icon: '⛰️' },
+            '其他災情': { color: '#708090', icon: '⚠️' },
+            '建物毀損災情': { color: '#DC143C', icon: '🏠' },
+            '廣告招牌災情': { color: '#FF8C00', icon: '🪧' },
+            '交通號誌災情': { color: '#FFD700', icon: '🚦' },
+            '道路災情': { color: '#696969', icon: '🛣️' }
         };
         
         // Create legend
@@ -131,28 +193,41 @@
             const div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<h4>災情類別</h4>';
             
-            for (const [type, color] of Object.entries(disasterColors)) {
+            for (const [type, config] of Object.entries(disasterTypes)) {
                 div.innerHTML += 
-                    '<i style="background:' + color + '"></i> ' + type + '<br>';
+                    '<i style="background:' + config.color + '"></i> ' + config.icon + ' ' + type + '<br>';
             }
             
             return div;
         };
         legend.addTo(map);
         
-        // Function to create marker style
-        function getMarkerOptions(feature) {
+        // Function to create custom marker
+        function createCustomMarker(feature, latlng) {
             const disasterType = feature.properties.DISASTER_MAIN_TYPE;
-            const color = disasterColors[disasterType] || '#808080';
+            const config = disasterTypes[disasterType] || { color: '#808080', icon: '❓' };
+            const isSerious = feature.properties.IS_SERIOUS;
+            const isTraffic = feature.properties.IS_TRAFFIC;
             
-            return {
-                radius: 8,
-                fillColor: color,
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            };
+            // Create custom HTML marker
+            const markerHtml = `
+                <div class="custom-marker ${isSerious ? 'serious' : ''} ${isTraffic ? 'traffic' : ''}" 
+                     style="background-color: ${config.color};">
+                    <div class="marker-icon">${config.icon}</div>
+                    ${isSerious ? '<div class="serious-indicator">!</div>' : ''}
+                    ${isTraffic ? '<div class="traffic-indicator">🚧</div>' : ''}
+                </div>
+            `;
+            
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: markerHtml,
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15],
+                    popupAnchor: [0, -15]
+                })
+            });
         }
         
         // Function to format date
@@ -252,7 +327,7 @@
             .then(data => {
                 L.geoJSON(data, {
                     pointToLayer: function (feature, latlng) {
-                        return L.circleMarker(latlng, getMarkerOptions(feature));
+                        return createCustomMarker(feature, latlng);
                     },
                     onEachFeature: function (feature, layer) {
                         // Initial popup with basic info
