@@ -623,16 +623,16 @@ body {
 @media (max-width: 768px) {
     .major-disasters-btn {
         top: 10px;
-        left: 10px;
-        transform: none;
+        left: 50%;
+        transform: translateX(-50%);
         font-size: 12px;
         padding: 8px 16px;
     }
     
     .location-input-btn {
-        top: 10px;
-        left: 120px;
-        transform: none;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
         font-size: 11px;
         padding: 6px 12px;
     }
