@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMIC 災情地圖</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+        .case-popup {
+            max-width: 300px;
+        }
+        .case-popup h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .case-popup .info-row {
+            margin: 5px 0;
+        }
+        .case-popup .label {
+            font-weight: bold;
+            color: #666;
+        }
+        .case-popup .value {
+            color: #333;
+        }
+        .case-popup .timeline {
+            margin-top: 15px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .case-popup .timeline h4 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .case-popup .log-entry {
+            margin: 8px 0;
+            padding: 8px;
+            background: #f5f5f5;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .case-popup .log-entry .timestamp {
+            color: #666;
+            font-weight: bold;
+        }
+        .case-popup .log-entry .field {
+            color: #4682B4;
+            font-weight: bold;
+        }
+        .case-popup .log-entry .old-value {
+            color: #DC143C;
+            text-decoration: line-through;
+        }
+        .case-popup .log-entry .new-value {
+            color: #228B22;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            line-height: 18px;
+            color: #555;
+        }
+        .legend h4 {
+            margin: 0 0 5px;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="loading" id="loading">載入中...</div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Taiwan
+        const map = L.map('map').setView([23.5, 121], 8);
+        
+        // Add NLSC map tiles
+        L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+            attribution: '&copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+            maxZoom: 18
+        }).addTo(map);
+        
+        // Define colors for different disaster types
+        const disasterColors = {
+            '路樹災情': '#228B22',
+            '民生、基礎設施災情': '#FF6347',
+            '橋梁災情': '#8B4513',
+            '積淹水災情': '#4682B4',
+            '土石災情': '#8B7355',
+            '其他災情': '#708090',
+            '建物毀損災情': '#DC143C',
+            '廣告招牌災情': '#FF8C00',
+            '交通號誌災情': '#FFD700',
+            '道路災情': '#696969'
+        };
+        
+        // Create legend
+        const legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<h4>災情類別</h4>';
+            
+            for (const [type, color] of Object.entries(disasterColors)) {
+                div.innerHTML += 
+                    '<i style="background:' + color + '"></i> ' + type + '<br>';
+            }
+            
+            return div;
+        };
+        legend.addTo(map);
+        
+        // Function to create marker style
+        function getMarkerOptions(feature) {
+            const disasterType = feature.properties.DISASTER_MAIN_TYPE;
+            const color = disasterColors[disasterType] || '#808080';
+            
+            return {
+                radius: 8,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            };
+        }
+        
+        // Function to format date
+        function formatDate(dateStr) {
+            // Handle format like "2025/7/6 下午 05:18:00"
+            // Replace Chinese AM/PM indicators
+            let normalizedDate = dateStr
+                .replace('上午', 'AM')
+                .replace('下午', 'PM');
+            
+            // Parse the date
+            const date = new Date(normalizedDate);
+            
+            // If still invalid, try direct parsing
+            if (isNaN(date.getTime())) {
+                return dateStr; // Return original string if parsing fails
+            }
+            
+            return date.toLocaleString('zh-TW');
+        }
+        
+        // Function to fetch case details
+        async function fetchCaseDetails(caseId) {
+            try {
+                const response = await fetch(`https://kiang.github.io/portal2.emic.gov.tw/case/${caseId}.json`);
+                if (!response.ok) throw new Error('Failed to fetch case details');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching case details:', error);
+                return null;
+            }
+        }
+        
+        // Function to create popup content
+        function createPopupContent(properties, details) {
+            let content = `<div class="case-popup">`;
+            content += `<h3>案件編號: ${properties.CASE_ID}</h3>`;
+            content += `<div class="info-row"><span class="label">發生時間:</span> <span class="value">${formatDate(properties.CASE_DT)}</span></div>`;
+            content += `<div class="info-row"><span class="label">災情類別:</span> <span class="value">${properties.DISASTER_MAIN_TYPE}</span></div>`;
+            content += `<div class="info-row"><span class="label">處理狀態:</span> <span class="value">${properties.CASE_STATUS}</span></div>`;
+            
+            if (details) {
+                content += `<div class="info-row"><span class="label">縣市:</span> <span class="value">${details.COUNTY_N}</span></div>`;
+                content += `<div class="info-row"><span class="label">鄉鎮市區:</span> <span class="value">${details.TOWN_N}</span></div>`;
+                content += `<div class="info-row"><span class="label">發生地點:</span> <span class="value">${details.CASE_LOC}</span></div>`;
+                content += `<div class="info-row"><span class="label">災情細項:</span> <span class="value">${details.DISASTER_SUB_TYPE}</span></div>`;
+                if (details.CASE_DESCRIPTION) {
+                    content += `<div class="info-row"><span class="label">災情描述:</span> <span class="value">${details.CASE_DESCRIPTION}</span></div>`;
+                }
+                if (details.PERSON_ID) {
+                    content += `<div class="info-row"><span class="label">上傳單位:</span> <span class="value">${details.PERSON_ID}</span></div>`;
+                }
+            }
+            
+            content += `<div class="info-row"><span class="label">交通障礙:</span> <span class="value">${properties.IS_TRAFFIC ? '是' : '否'}</span></div>`;
+            content += `<div class="info-row"><span class="label">重大災情:</span> <span class="value">${properties.IS_SERIOUS ? '是' : '否'}</span></div>`;
+            
+            // Add timeline if logs exist
+            if (details && details.logs && details.logs.length > 0) {
+                content += `<div class="timeline">`;
+                content += `<h4>變更記錄 (${details.logs.length} 筆)</h4>`;
+                
+                // Show last 5 changes
+                const recentLogs = details.logs.slice(-5).reverse();
+                recentLogs.forEach(log => {
+                    content += `<div class="log-entry">`;
+                    content += `<div class="timestamp">${log.timestamp}</div>`;
+                    content += `<div>欄位 <span class="field">${log.field}</span>: `;
+                    
+                    // Format old and new values
+                    const oldVal = log.old_value === null ? '(空值)' : 
+                                  log.old_value === true ? '是' : 
+                                  log.old_value === false ? '否' : log.old_value;
+                    const newVal = log.new_value === true ? '是' : 
+                                  log.new_value === false ? '否' : log.new_value;
+                    
+                    content += `<span class="old-value">${oldVal}</span> → `;
+                    content += `<span class="new-value">${newVal}</span>`;
+                    content += `</div></div>`;
+                });
+                
+                if (details.logs.length > 5) {
+                    content += `<div style="text-align: center; color: #666; font-size: 12px; margin-top: 5px;">...還有 ${details.logs.length - 5} 筆較早的變更</div>`;
+                }
+                
+                content += `</div>`;
+            }
+            
+            content += `</div>`;
+            
+            return content;
+        }
+        
+        // Load GeoJSON data
+        fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, getMarkerOptions(feature));
+                    },
+                    onEachFeature: function (feature, layer) {
+                        // Initial popup with basic info
+                        layer.bindPopup(createPopupContent(feature.properties, null));
+                        
+                        // Fetch detailed info when popup opens
+                        layer.on('popupopen', async function() {
+                            const details = await fetchCaseDetails(feature.properties.CASE_ID);
+                            if (details) {
+                                layer.setPopupContent(createPopupContent(feature.properties, details));
+                            }
+                        });
+                    }
+                }).addTo(map);
+                
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error loading GeoJSON:', error);
+                document.getElementById('loading').innerText = '載入失敗';
+            });
+    </script>
+</body>
+</html>
