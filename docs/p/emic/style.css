@@ -72,6 +72,67 @@ body {
     color: #228B22;
 }
 
+/* Share URL Styles */
+.share-url-container {
+    margin: 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.share-url-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.share-url-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    background: white;
+    color: #555;
+    font-family: monospace;
+}
+
+.share-url-input:focus {
+    outline: none;
+    border-color: #4682B4;
+}
+
+.copy-url-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.copy-url-btn:hover {
+    background: #5a6268;
+}
+
+.copy-notice {
+    font-size: 11px;
+    color: #28a745;
+    font-weight: bold;
+    padding: 4px 0;
+    animation: fadeInOut 0.3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* Loading Indicator */
 .loading {
     position: absolute;

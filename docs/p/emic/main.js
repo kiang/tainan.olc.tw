@@ -315,6 +315,17 @@ async function fetchCaseDetails(caseId) {
 function createPopupContent(properties, details) {
     let content = `<div class="case-popup">`;
     content += `<h3>案件編號: ${properties.CASE_ID}</h3>`;
+    
+    // Add URL sharing field
+    const shareUrl = `${window.location.origin}${window.location.pathname}#${properties.CASE_ID}`;
+    content += `<div class="share-url-container">
+        <div class="share-url-group">
+            <input type="text" class="share-url-input" value="${shareUrl}" readonly>
+            <button class="copy-url-btn" onclick="copyShareUrl(this, '${shareUrl}')" title="複製連結">📋</button>
+        </div>
+        <div class="copy-notice" style="display: none;">已複製連結，可以分享給其他人！</div>
+    </div>`;
+    
     content += `<div class="info-row"><span class="label">發生時間:</span> <span class="value">${formatDate(properties.CASE_DT)}</span></div>`;
     content += `<div class="info-row"><span class="label">災情類別:</span> <span class="value">${properties.DISASTER_MAIN_TYPE}</span></div>`;
     content += `<div class="info-row"><span class="label">處理狀態:</span> <span class="value">${properties.CASE_STATUS}</span></div>`;
@@ -544,6 +555,12 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                 
                 // Fetch detailed info when popup opens
                 layer.on('popupopen', async function() {
+                    // Check if popup already has detailed content to avoid flickering
+                    const currentContent = layer.getPopup().getContent();
+                    if (currentContent.includes('縣市:') || currentContent.includes('鄉鎮市區:')) {
+                        return; // Already has detailed content
+                    }
+                    
                     const details = await fetchCaseDetails(caseId);
                     if (details) {
                         layer.setPopupContent(createPopupContent(feature.properties, details));
@@ -854,3 +871,44 @@ function parseCoordinates(input) {
     
     return { lat, lng };
 }
+
+// Function to copy share URL to clipboard
+function copyShareUrl(button, url) {
+    navigator.clipboard.writeText(url).then(function() {
+        // Show success notice
+        const container = button.closest('.share-url-container');
+        const notice = container.querySelector('.copy-notice');
+        notice.style.display = 'block';
+        
+        // Hide notice after 3 seconds
+        setTimeout(() => {
+            notice.style.display = 'none';
+        }, 3000);
+        
+        // Briefly change button appearance
+        const originalText = button.textContent;
+        button.textContent = '✓';
+        button.style.backgroundColor = '#28a745';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+        }, 1000);
+    }).catch(function(err) {
+        // Fallback for older browsers
+        const input = button.parentElement.querySelector('.share-url-input');
+        input.select();
+        input.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        
+        // Show success notice
+        const container = button.closest('.share-url-container');
+        const notice = container.querySelector('.copy-notice');
+        notice.style.display = 'block';
+        
+        setTimeout(() => {
+            notice.style.display = 'none';
+        }, 3000);
+    });
+}
+
