@@ -9,6 +9,201 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
     maxZoom: 18
 }).addTo(map);
 
+// Add typhoon KMZ layer
+let typhoonLayer = null;
+
+// Function to fetch and parse KMZ/KML data
+async function loadTyphoonData() {
+    try {
+        // First, let's try fetching as binary data
+        const response = await fetch('https://kiang.github.io/alerts.ncdr.nat.gov.tw/typhoon.kmz');
+        const arrayBuffer = await response.arrayBuffer();
+        
+        let kmlContent = null;
+        
+        // Try to parse as KMZ first
+        try {
+            const zip = new JSZip();
+            const zipContent = await zip.loadAsync(arrayBuffer);
+            
+            // Find KML file in the ZIP
+            for (const filename in zipContent.files) {
+                if (filename.endsWith('.kml')) {
+                    kmlContent = await zipContent.files[filename].async('string');
+                    break;
+                }
+            }
+        } catch (zipError) {
+            // If ZIP parsing fails, try as KML text
+            const decoder = new TextDecoder('utf-8');
+            const text = decoder.decode(arrayBuffer);
+            
+            if (text.includes('<kml') || text.includes('<?xml')) {
+                kmlContent = text;
+            } else {
+                throw new Error('File is neither valid KMZ nor KML');
+            }
+        }
+        
+        if (kmlContent) {
+            // Parse KML using DOMParser
+            const parser = new DOMParser();
+            const kmlDoc = parser.parseFromString(kmlContent, 'application/xml');
+            
+            // Check for parsing errors
+            const parserError = kmlDoc.querySelector('parsererror');
+            if (parserError) {
+                console.error('KML parsing error:', parserError.textContent);
+                // Try with text/xml instead
+                const kmlDoc2 = parser.parseFromString(kmlContent, 'text/xml');
+                if (!kmlDoc2.querySelector('parsererror')) {
+                    // Use the successfully parsed document
+                    const features = parseKMLFeatures(kmlDoc2);
+                    displayTyphoonFeatures(features);
+                    return;
+                }
+            } else {
+                // Convert KML to GeoJSON-like format for Leaflet
+                const features = parseKMLFeatures(kmlDoc);
+                displayTyphoonFeatures(features);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading typhoon data:', error);
+        // Try alternative approach - load as KML directly
+        try {
+            const kmlUrl = 'https://kiang.github.io/alerts.ncdr.nat.gov.tw/typhoon.kml';
+            const response = await fetch(kmlUrl);
+            const kmlText = await response.text();
+            
+            const parser = new DOMParser();
+            const kmlDoc = parser.parseFromString(kmlText, 'application/xml');
+            
+            const features = parseKMLFeatures(kmlDoc);
+            displayTyphoonFeatures(features);
+        } catch (altError) {
+            console.error('Alternative KML loading also failed:', altError);
+        }
+    }
+}
+
+// Function to display typhoon features on the map
+function displayTyphoonFeatures(features) {
+    if (features.length === 0) {
+        console.warn('No features found in KML file');
+        return;
+    }
+    
+    // Create typhoon layer
+    typhoonLayer = L.layerGroup();
+    
+    features.forEach(feature => {
+        if (feature.geometry.type === 'Point') {
+            L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
+                icon: L.divIcon({
+                    html: '<div style="background: #ff0000; border-radius: 50%; width: 10px; height: 10px; border: 2px solid #fff;"></div>',
+                    className: 'typhoon-marker',
+                    iconSize: [14, 14],
+                    iconAnchor: [7, 7]
+                })
+            }).bindPopup(`<strong>颱風資料</strong><br>${feature.properties.name || '颱風路徑點'}<br>${feature.properties.description || ''}`).addTo(typhoonLayer);
+        } else if (feature.geometry.type === 'LineString') {
+            L.polyline(feature.geometry.coordinates.map(coord => [coord[1], coord[0]]), {
+                color: '#ff0000',
+                weight: 3,
+                opacity: 0.7
+            }).bindPopup(`<strong>颱風路徑</strong><br>${feature.properties.name || '颱風路徑線'}<br>${feature.properties.description || ''}`).addTo(typhoonLayer);
+        } else if (feature.geometry.type === 'Polygon') {
+            L.polygon(feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]), {
+                color: '#ff0000',
+                weight: 2,
+                opacity: 0.7,
+                fillColor: '#ff0000',
+                fillOpacity: 0.2
+            }).bindPopup(`<strong>颱風警戒區域</strong><br>${feature.properties.name || '警戒範圍'}<br>${feature.properties.description || ''}`).addTo(typhoonLayer);
+        }
+    });
+    
+    // Add typhoon layer to layer control
+    overlayLayers["颱風資料"] = typhoonLayer;
+    layerControl.addOverlay(typhoonLayer, "颱風資料");
+    
+    // Add typhoon layer to map by default
+    typhoonLayer.addTo(map);
+    
+    console.log(`Loaded ${features.length} typhoon features`);
+}
+
+// Function to parse KML features
+function parseKMLFeatures(kmlDoc) {
+    const features = [];
+    
+    // Parse Placemarks
+    const placemarks = kmlDoc.querySelectorAll('Placemark');
+    placemarks.forEach(placemark => {
+        const name = placemark.querySelector('name')?.textContent || '';
+        const description = placemark.querySelector('description')?.textContent || '';
+        
+        // Parse Point
+        const point = placemark.querySelector('Point coordinates');
+        if (point) {
+            const coords = point.textContent.trim().split(',');
+            features.push({
+                type: 'Feature',
+                properties: { name, description },
+                geometry: {
+                    type: 'Point',
+                    coordinates: [parseFloat(coords[0]), parseFloat(coords[1])]
+                }
+            });
+        }
+        
+        // Parse LineString
+        const lineString = placemark.querySelector('LineString coordinates');
+        if (lineString) {
+            const coordsText = lineString.textContent.trim();
+            const coordinates = coordsText.split(/\s+/).map(coord => {
+                const [lng, lat] = coord.split(',');
+                return [parseFloat(lng), parseFloat(lat)];
+            });
+            features.push({
+                type: 'Feature',
+                properties: { name, description },
+                geometry: {
+                    type: 'LineString',
+                    coordinates: coordinates
+                }
+            });
+        }
+        
+        // Parse Polygon
+        const polygon = placemark.querySelector('Polygon outerBoundaryIs LinearRing coordinates');
+        if (polygon) {
+            const coordsText = polygon.textContent.trim();
+            const coordinates = coordsText.split(/\s+/).map(coord => {
+                const parts = coord.split(',');
+                if (parts.length >= 2) {
+                    return [parseFloat(parts[0]), parseFloat(parts[1])];
+                }
+                return null;
+            }).filter(coord => coord !== null);
+            
+            if (coordinates.length > 0) {
+                features.push({
+                    type: 'Feature',
+                    properties: { name, description },
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: [coordinates]
+                    }
+                });
+            }
+        }
+    });
+    
+    return features;
+}
+
 // Define colors and icons for different disaster types
 const disasterTypes = {
     '路樹災情': { color: '#228B22', icon: '🌳' },
@@ -34,9 +229,28 @@ legend.onAdd = function (map) {
             '<i style="background:' + config.color + '"></i> ' + config.icon + ' ' + type + '<br>';
     }
     
+    // Add typhoon layer legend
+    div.innerHTML += '<hr><h4>颱風資料</h4>';
+    div.innerHTML += '<i style="background:#ff0000; border-radius: 50%;"></i> 🌀 颱風路徑<br>';
+    
     return div;
 };
 legend.addTo(map);
+
+// Create layer control
+const baseLayers = {
+    "國土測繪中心": L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+        attribution: '&copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+        maxZoom: 18
+    })
+};
+
+const overlayLayers = {};
+
+const layerControl = L.control.layers(baseLayers, overlayLayers, {
+    position: 'topright'
+});
+layerControl.addTo(map);
 
 // Function to create custom marker
 function createCustomMarker(feature, latlng) {
@@ -290,6 +504,9 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
         setTimeout(() => {
             handleHashNavigation();
         }, 100);
+        
+        // Load typhoon data
+        loadTyphoonData();
     })
     .catch(error => {
         console.error('Error loading GeoJSON:', error);
