@@ -13,6 +13,24 @@
     <div id="map"></div>
     <div class="loading" id="loading">載入中...</div>
     
+    <!-- Button to open major disasters popup -->
+    <button class="major-disasters-btn" id="majorDisastersBtn" title="查看重大災情">
+        🚨 重大災情
+    </button>
+    
+    <!-- Major disasters popup -->
+    <div class="major-disasters-popup" id="majorDisastersPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>重大災情列表</h3>
+                <button class="popup-close" id="popupClose">&times;</button>
+            </div>
+            <div class="popup-body" id="popupBody">
+                <!-- Cases will be populated here -->
+            </div>
+        </div>
+    </div>
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>

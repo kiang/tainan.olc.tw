@@ -374,6 +374,9 @@ function createPopupContent(properties, details) {
 // Global variable to store all markers for case lookup
 let allMarkers = {};
 
+// Global variable to store all cases data
+let allCasesData = [];
+
 // Function to handle URL hash navigation
 function handleHashNavigation() {
     const hash = window.location.hash.substring(1); // Remove # symbol
@@ -458,6 +461,8 @@ const markerClusterGroup = L.markerClusterGroup({
 fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
     .then(response => response.json())
     .then(data => {
+        // Store all cases data
+        allCasesData = data.features;
         const geoJsonLayer = L.geoJSON(data, {
             pointToLayer: function (feature, latlng) {
                 const marker = createCustomMarker(feature, latlng);
@@ -520,4 +525,85 @@ window.addEventListener('hashchange', handleHashNavigation);
 window.addEventListener('load', function() {
     // Give a moment for map to initialize
     setTimeout(handleHashNavigation, 200);
+});
+
+// Major Disasters Popup Functionality
+const majorDisastersBtn = document.getElementById('majorDisastersBtn');
+const majorDisastersPopup = document.getElementById('majorDisastersPopup');
+const popupClose = document.getElementById('popupClose');
+const popupBody = document.getElementById('popupBody');
+
+// Function to show major disasters popup
+function showMajorDisastersPopup() {
+    // Filter cases where IS_SERIOUS is true
+    const seriousCases = allCasesData.filter(feature => 
+        feature.properties.IS_SERIOUS === true || feature.properties.IS_SERIOUS === '是'
+    );
+    
+    // Clear popup body
+    popupBody.innerHTML = '';
+    
+    if (seriousCases.length === 0) {
+        popupBody.innerHTML = '<div class="empty-state">目前沒有重大災情</div>';
+    } else {
+        // Sort by date (most recent first)
+        seriousCases.sort((a, b) => {
+            const dateA = new Date(a.properties.CASE_DT.replace('上午', 'AM').replace('下午', 'PM'));
+            const dateB = new Date(b.properties.CASE_DT.replace('上午', 'AM').replace('下午', 'PM'));
+            return dateB - dateA;
+        });
+        
+        // Create list items
+        seriousCases.forEach(feature => {
+            const caseItem = document.createElement('div');
+            caseItem.className = 'case-item';
+            caseItem.dataset.caseId = feature.properties.CASE_ID;
+            
+            const disasterConfig = disasterTypes[feature.properties.DISASTER_MAIN_TYPE] || { icon: '⚠️' };
+            
+            caseItem.innerHTML = `
+                <div class="case-item-header">
+                    <div class="case-type">
+                        ${disasterConfig.icon} ${feature.properties.DISASTER_MAIN_TYPE}
+                    </div>
+                    <div class="case-id">#${feature.properties.CASE_ID}</div>
+                </div>
+                <div class="case-time">發生時間: ${formatDate(feature.properties.CASE_DT)}</div>
+            `;
+            
+            // Add click handler
+            caseItem.addEventListener('click', function() {
+                // Update URL hash
+                window.location.hash = feature.properties.CASE_ID;
+                // Close popup
+                majorDisastersPopup.style.display = 'none';
+            });
+            
+            popupBody.appendChild(caseItem);
+        });
+    }
+    
+    // Show popup
+    majorDisastersPopup.style.display = 'block';
+}
+
+// Event listeners
+majorDisastersBtn.addEventListener('click', showMajorDisastersPopup);
+
+popupClose.addEventListener('click', function() {
+    majorDisastersPopup.style.display = 'none';
+});
+
+// Close popup when clicking outside
+majorDisastersPopup.addEventListener('click', function(e) {
+    if (e.target === majorDisastersPopup) {
+        majorDisastersPopup.style.display = 'none';
+    }
+});
+
+// Close popup with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && majorDisastersPopup.style.display === 'block') {
+        majorDisastersPopup.style.display = 'none';
+    }
 });
