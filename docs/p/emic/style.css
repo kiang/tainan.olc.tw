@@ -257,3 +257,26 @@ body {
     stroke: rgba(181, 226, 140, 1);
     stroke-width: 2;
 }
+
+/* Author Credit */
+.author-credit {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    font-size: 12px;
+    z-index: 1000;
+}
+
+.author-credit a {
+    color: #333;
+    text-decoration: none;
+}
+
+.author-credit a:hover {
+    color: #4682B4;
+    text-decoration: underline;
+}
