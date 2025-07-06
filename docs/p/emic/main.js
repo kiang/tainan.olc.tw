@@ -546,7 +546,10 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                 const caseId = feature.properties.CASE_ID;
                 
                 // Initial popup with basic info
-                layer.bindPopup(createPopupContent(feature.properties, null));
+                layer.bindPopup(createPopupContent(feature.properties, null), {
+                    maxHeight: 400,
+                    className: 'custom-popup'
+                });
                 
                 // Add click handler to update URL hash
                 layer.on('click', function() {

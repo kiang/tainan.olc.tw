@@ -13,6 +13,34 @@ body {
 /* Popup Styles */
 .case-popup {
     max-width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for popup */
+.case-popup::-webkit-scrollbar {
+    width: 6px;
+}
+
+.case-popup::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.case-popup::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.case-popup::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Ensure Leaflet popup content wrapper allows scrolling */
+.leaflet-popup-content {
+    overflow: visible !important;
 }
 
 .case-popup h3 {
