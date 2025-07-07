@@ -312,7 +312,7 @@ async function fetchCaseDetails(caseId) {
 }
 
 // Function to create popup content
-function createPopupContent(properties, details) {
+function createPopupContent(properties, details, geometry) {
     let content = `<div class="case-popup">`;
     content += `<h3>案件編號: ${properties.CASE_ID}</h3>`;
     
@@ -377,9 +377,155 @@ function createPopupContent(properties, details) {
         content += `</div>`;
     }
     
+    // Add photo submission button
+    const county = details ? details.COUNTY_N : '';
+    const town = details ? details.TOWN_N : '';
+    // Get coordinates from geometry
+    let longitude = '';
+    let latitude = '';
+    if (geometry && geometry.coordinates) {
+        longitude = geometry.coordinates[0];
+        latitude = geometry.coordinates[1];
+    }
+    const caseId = properties.CASE_ID;
+    
+    const photoSubmitUrl = `https://docs.google.com/forms/d/e/1FAIpQLSco8W8CeiWIXrJje_HmiWYJRiS_pjJBT1AFqrbGkra9pS0XAA/viewform?usp=pp_url&entry.1588782081=${encodeURIComponent(county)}&entry.1966779823=${encodeURIComponent(town)}&entry.1998738256=${longitude}&entry.1387778236=${latitude}&entry.2072773208=${encodeURIComponent(caseId)}`;
+    
+    content += `<div class="photo-submit-container">`;
+    content += `<a href="${photoSubmitUrl}" target="_blank" class="photo-submit-btn">📷 提供照片</a>`;
+    content += `</div>`;
+    
+    // Add photo display section
+    content += `<div class="case-photos" id="photos-${caseId}" data-case-id="${caseId}">`;
+    content += `<div class="photos-loading">載入照片中...</div>`;
+    content += `</div>`;
+    
     content += `</div>`;
     
     return content;
+}
+
+// Function to fetch and display photos for a case
+async function loadCasePhotos(caseId) {
+    try {
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS6S645uoSKsgkXT8TIOF2SkXB8QJRQ2oEZYUgwmtCbIkTuzUT4V1qASaPmRa0AndnabEs28onKzhG_/pub?gid=1352548907&single=true&output=csv');
+        const text = await response.text();
+        
+        // Parse CSV
+        const rows = text.split('\n').map(row => {
+            // Handle CSV parsing with proper quote handling
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            if (current) {
+                result.push(current.trim());
+            }
+            
+            return result;
+        });
+        
+        // Skip header row and filter for this case ID
+        const headers = rows[0];
+        
+        // Map the actual column names
+        const caseIdIndex = headers.indexOf('地點編號(系統自動填入，不用理會或調整)');
+        const urlIndex = headers.indexOf('照片(<10MB)');
+        const timestampIndex = headers.indexOf('Timestamp');
+        
+        if (caseIdIndex === -1 || urlIndex === -1) {
+            console.error('Required columns not found in CSV');
+            console.error('Looking for: 地點編號(系統自動填入，不用理會或調整), 照片(<10MB)');
+            console.error('Available headers:', headers);
+            
+            // Try to update the photos container with error message
+            const photosContainer = document.getElementById(`photos-${caseId}`);
+            if (photosContainer) {
+                photosContainer.innerHTML = '<div class="no-photos">尚無照片</div>';
+            }
+            return;
+        }
+        
+        const casePhotos = rows.slice(1)
+            .filter(row => row[caseIdIndex] === caseId && row[urlIndex])
+            .map(row => ({
+                url: row[urlIndex],
+                timestamp: row[timestampIndex] || ''
+            }));
+        
+        // Update the photos section
+        const photosContainer = document.getElementById(`photos-${caseId}`);
+        if (!photosContainer) return;
+        
+        if (casePhotos.length === 0) {
+            photosContainer.innerHTML = '<div class="no-photos">尚無照片</div>';
+        } else {
+            let photosHtml = '<div class="photos-grid">';
+            
+            casePhotos.forEach((photo, index) => {
+                // Extract Google Drive file ID from various URL formats
+                let fileId = null;
+                
+                // Handle different Google Drive URL formats
+                if (photo.url.includes('drive.google.com/open?id=')) {
+                    // Format: https://drive.google.com/open?id=FILE_ID
+                    const match = photo.url.match(/id=([a-zA-Z0-9_-]+)/);
+                    if (match) {
+                        fileId = match[1];
+                    }
+                } else if (photo.url.includes('drive.google.com/file/d/')) {
+                    // Format: https://drive.google.com/file/d/FILE_ID/view
+                    const match = photo.url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                    if (match) {
+                        fileId = match[1];
+                    }
+                } else {
+                    // Try generic pattern for file IDs
+                    const match = photo.url.match(/[-\w]{25,}(?!.*[-\w]{25,})/);
+                    if (match) {
+                        fileId = match[0];
+                    }
+                }
+                
+                if (fileId) {
+                    photosHtml += `
+                        <div class="photo-item">
+                            <iframe src="https://drive.google.com/file/d/${fileId}/preview" 
+                                    width="100%" 
+                                    height="100%" 
+                                    allow="autoplay"
+                                    frameborder="0"
+                                    style="display: block;">
+                            </iframe>
+                            ${photo.timestamp ? `<div class="photo-timestamp">${formatDate(photo.timestamp)}</div>` : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            photosHtml += '</div>';
+            photosContainer.innerHTML = photosHtml;
+        }
+    } catch (error) {
+        console.error('Error loading photos:', error);
+        const photosContainer = document.getElementById(`photos-${caseId}`);
+        if (photosContainer) {
+            photosContainer.innerHTML = '<div class="photos-error">載入照片失敗</div>';
+        }
+    }
 }
 
 // Global variable to store all markers for case lookup
@@ -546,7 +692,7 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                 const caseId = feature.properties.CASE_ID;
                 
                 // Initial popup with basic info
-                layer.bindPopup(createPopupContent(feature.properties, null), {
+                layer.bindPopup(createPopupContent(feature.properties, null, feature.geometry), {
                     maxHeight: 400,
                     className: 'custom-popup'
                 });
@@ -561,12 +707,16 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
                     // Check if popup already has detailed content to avoid flickering
                     const currentContent = layer.getPopup().getContent();
                     if (currentContent.includes('縣市:') || currentContent.includes('鄉鎮市區:')) {
-                        return; // Already has detailed content
+                        // If already has detailed content, just load photos
+                        loadCasePhotos(caseId);
+                        return;
                     }
                     
                     const details = await fetchCaseDetails(caseId);
                     if (details) {
-                        layer.setPopupContent(createPopupContent(feature.properties, details));
+                        layer.setPopupContent(createPopupContent(feature.properties, details, feature.geometry));
+                        // Load photos after setting content
+                        loadCasePhotos(caseId);
                     }
                 });
             }
