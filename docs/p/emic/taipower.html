@@ -113,6 +113,25 @@
             background: rgba(255, 255, 255, 1);
         }
         
+        .toggle-labels-btn {
+            position: fixed;
+            top: 130px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-labels-btn:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+        
         .village-label {
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid #333;
@@ -271,6 +290,10 @@
         📊 顯示歷史資料
     </button>
     
+    <button class="toggle-labels-btn" id="toggleLabelsBtn" title="隱藏數字標籤">
+        🏷️ 隱藏標籤
+    </button>
+    
     <div class="summary-panel" id="summaryPanel">
         <h4 id="summaryTitle">停電統計</h4>
         <div class="summary-item">
@@ -301,6 +324,7 @@
         let villageFeatures = [];
         let showHistorical = false;
         let highlightedLayer = null;
+        let showLabels = true;
         
         // Color scale for power shortage
         function getColor(count) {
@@ -415,6 +439,11 @@
         function createVillageLabels(features) {
             if (labelLayer) {
                 map.removeLayer(labelLayer);
+            }
+            
+            // Don't create labels if they're disabled
+            if (!showLabels) {
+                return;
             }
             
             labelLayer = L.layerGroup();
@@ -611,9 +640,33 @@
             updateSummary();
         }
         
-        // Add event listener for toggle button
+        // Toggle label visibility
+        function toggleLabels() {
+            showLabels = !showLabels;
+            
+            const toggleBtn = document.getElementById('toggleLabelsBtn');
+            
+            if (showLabels) {
+                toggleBtn.textContent = '🏷️ 隱藏標籤';
+                toggleBtn.title = '隱藏數字標籤';
+                // Recreate labels
+                if (villageFeatures.length > 0) {
+                    createVillageLabels(villageFeatures);
+                }
+            } else {
+                toggleBtn.textContent = '🏷️ 顯示標籤';
+                toggleBtn.title = '顯示數字標籤';
+                // Remove labels
+                if (labelLayer) {
+                    map.removeLayer(labelLayer);
+                }
+            }
+        }
+        
+        // Add event listeners for toggle buttons
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('toggleDataBtn').addEventListener('click', toggleDataDisplay);
+            document.getElementById('toggleLabelsBtn').addEventListener('click', toggleLabels);
         });
         
         // Add map click event to clear highlights
