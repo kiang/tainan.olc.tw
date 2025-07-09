@@ -60,6 +60,32 @@
         .legend h4 {
             margin: 0 0 10px 0;
             font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .legend h4:hover {
+            color: #007cba;
+        }
+        
+        .legend .collapse-icon {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .legend.collapsed .collapse-icon {
+            transform: rotate(180deg);
+        }
+        
+        .legend.collapsed .legend-content {
+            display: none;
+        }
+        
+        .legend.collapsed {
+            min-width: auto;
         }
         
         .legend-item {
@@ -202,26 +228,6 @@
             border-radius: 3px;
         }
         
-        .summary-panel {
-            position: fixed;
-            top: 240px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            min-width: 200px;
-            border: 1px solid #ddd;
-        }
-        
-        .summary-panel h4 {
-            margin: 0 0 10px 0;
-            color: #333;
-            font-size: 14px;
-            border-bottom: 2px solid #007cba;
-            padding-bottom: 5px;
-        }
         
         .summary-item {
             display: flex;
@@ -259,31 +265,45 @@
     <div id="map"></div>
     <div class="loading" id="loading">載入中...</div>
     
-    <div class="legend">
-        <h4 id="legendTitle">目前停電戶數</h4>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: transparent; border: 1px solid #ccc;"></div>
-            <span>0戶</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: #fcbba1;"></div>
-            <span>1-10戶</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: #fc9272;"></div>
-            <span>11-50戶</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: #fb6a4a;"></div>
-            <span>51-100戶</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: #ef3b2c;"></div>
-            <span>101-200戶</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: #cb181d;"></div>
-            <span>201戶以上</span>
+    <div class="legend" id="legend">
+        <h4 id="legendTitle">目前停電戶數 <span class="collapse-icon">▼</span></h4>
+        <div class="legend-content">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: transparent; border: 1px solid #ccc;"></div>
+                <span>0戶</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fcbba1;"></div>
+                <span>1-10戶</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fc9272;"></div>
+                <span>11-50戶</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fb6a4a;"></div>
+                <span>51-100戶</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ef3b2c;"></div>
+                <span>101-200戶</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #cb181d;"></div>
+                <span>201戶以上</span>
+            </div>
+            <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+            <div class="summary-section">
+                <h5 id="summaryTitle" style="margin: 0 0 8px 0; font-size: 14px; color: #333;">停電統計</h5>
+                <div class="summary-item">
+                    <span class="summary-label">停電戶數:</span>
+                    <span class="summary-value" id="totalHouses">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">停電村里:</span>
+                    <span class="summary-value secondary" id="totalVillages">-</span>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -294,18 +314,6 @@
     <button class="toggle-labels-btn" id="toggleLabelsBtn" title="隱藏數字標籤">
         🏷️ 隱藏標籤
     </button>
-    
-    <div class="summary-panel" id="summaryPanel">
-        <h4 id="summaryTitle">停電統計</h4>
-        <div class="summary-item">
-            <span class="summary-label">停電戶數:</span>
-            <span class="summary-value" id="totalHouses">-</span>
-        </div>
-        <div class="summary-item">
-            <span class="summary-label">停電村里:</span>
-            <span class="summary-value secondary" id="totalVillages">-</span>
-        </div>
-    </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
@@ -614,11 +622,11 @@
             if (showHistorical) {
                 toggleBtn.textContent = '📊 顯示目前資料';
                 toggleBtn.title = '切換顯示目前資料';
-                legendTitle.textContent = '歷史停電戶數';
+                legendTitle.innerHTML = '歷史停電戶數 <span class="collapse-icon">▼</span>';
             } else {
                 toggleBtn.textContent = '📊 顯示歷史資料';
                 toggleBtn.title = '切換顯示歷史資料';
-                legendTitle.textContent = '目前停電戶數';
+                legendTitle.innerHTML = '目前停電戶數 <span class="collapse-icon">▼</span>';
             }
             
             // Update village layer styling
@@ -664,10 +672,19 @@
             }
         }
         
+        // Toggle legend collapse
+        function toggleLegendCollapse() {
+            const legend = document.getElementById('legend');
+            legend.classList.toggle('collapsed');
+        }
+        
         // Add event listeners for toggle buttons
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('toggleDataBtn').addEventListener('click', toggleDataDisplay);
             document.getElementById('toggleLabelsBtn').addEventListener('click', toggleLabels);
+            
+            // Add click event to legend title
+            document.getElementById('legendTitle').addEventListener('click', toggleLegendCollapse);
         });
         
         // Add map click event to clear highlights
