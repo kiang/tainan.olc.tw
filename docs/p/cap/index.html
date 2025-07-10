@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>災害警報即時資訊 - 國家災害防救科技中心CAP資料</title>
+    <meta property="og:title" content="災害警報即時資訊">
+    <meta property="og:description" content="即時顯示國家災害防救科技中心發布的災害警報資訊，包含颱風、地震、豪雨等各類警報">
+    <meta property="og:image" content="https://tainan.olc.tw/docs/p/cap/og_image.png">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-sidebar-v2@3.2.3/css/leaflet-sidebar.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .map {
+            width: 100%;
+            height: 100vh;
+        }
+        .alert-group {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .alert-group:hover {
+            background-color: #f0f0f0;
+        }
+        .alert-group h4 {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        .alert-group .count {
+            font-size: 12px;
+            color: #666;
+            margin: 3px 0;
+        }
+        .alert-group .last-update {
+            font-size: 12px;
+            color: #888;
+        }
+        .alert-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            margin-left: 10px;
+        }
+        .alert-item:hover {
+            background-color: #f8f8f8;
+        }
+        .alert-item h5 {
+            margin: 3px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .alert-item .sender {
+            font-size: 11px;
+            color: #666;
+            margin: 2px 0;
+        }
+        .alert-item .effective {
+            font-size: 11px;
+            color: #888;
+        }
+        .alert-severity-Extreme {
+            border-left: 5px solid #d73027;
+        }
+        .alert-severity-Severe {
+            border-left: 5px solid #fc8d59;
+        }
+        .alert-severity-Moderate {
+            border-left: 5px solid #fee08b;
+        }
+        .alert-severity-Minor {
+            border-left: 5px solid #d9ef8b;
+        }
+        .alert-severity-Unknown {
+            border-left: 5px solid #999;
+        }
+        .alert-details {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .alert-details h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .alert-details p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .alert-details .description {
+            white-space: pre-wrap;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+        #sidebar-content {
+            padding: 10px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            color: #d73027;
+            padding: 10px;
+            text-align: center;
+        }
+        .last-update {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            padding: 5px;
+            background-color: #f0f0f0;
+        }
+        .back-button {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #5a6fd8;
+        }
+        .expanded {
+            background-color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar" class="leaflet-sidebar collapsed">
+        <div class="leaflet-sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#alerts" role="tab"><i class="fa fa-exclamation-triangle"></i></a></li>
+            </ul>
+        </div>
+        <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="alerts">
+                <h1 class="leaflet-sidebar-header">
+                    災害警報資訊
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div id="sidebar-content">
+                    <div class="loading">載入中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-sidebar-v2@3.2.3/js/leaflet-sidebar.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
