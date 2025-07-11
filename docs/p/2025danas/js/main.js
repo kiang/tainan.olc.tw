@@ -243,38 +243,42 @@ async function loadReports() {
                             <tbody>
                                 <tr>
                                     <td>時間</td>
-                                    <td>${timestamp}</td>
+                                    <td>${timestamp || '(無資料)'}</td>
                                 </tr>
                                 <tr>
                                     <td>縣市</td>
-                                    <td>${county}</td>
+                                    <td>${county || '(無資料)'}</td>
                                 </tr>
                                 <tr>
                                     <td>鄉鎮區</td>
-                                    <td>${town}</td>
+                                    <td>${town || '(無資料)'}</td>
                                 </tr>
                                 <tr>
-                                    <td>座標</td>
-                                    <td>${lat.toFixed(6)}, ${lng.toFixed(6)}</td>
+                                    <td>經度</td>
+                                    <td>${lng.toFixed(6)}</td>
                                 </tr>
-                                ${description ? `<tr>
+                                <tr>
+                                    <td>緯度</td>
+                                    <td>${lat.toFixed(6)}</td>
+                                </tr>
+                                <tr>
                                     <td>災情簡述</td>
-                                    <td>${description}</td>
-                                </tr>` : ''}
-                                ${needHelp ? `<tr>
+                                    <td>${description || '(無資料)'}</td>
+                                </tr>
+                                <tr>
                                     <td>需要協助</td>
-                                    <td>${needHelp}</td>
-                                </tr>` : ''}
-                                ${contact ? `<tr>
+                                    <td>${needHelp || '(無資料)'}</td>
+                                </tr>
+                                <tr>
                                     <td>聯絡窗口</td>
-                                    <td>${contact}</td>
-                                </tr>` : ''}
-                                ${locationId ? `<tr>
+                                    <td>${contact || '(無資料)'}</td>
+                                </tr>
+                                <tr>
                                     <td>地點編號</td>
-                                    <td>${locationId}</td>
-                                </tr>` : ''}
+                                    <td>${locationId || '(無資料)'}</td>
+                                </tr>
                                 ${photo && !photoEmbed ? `<tr>
-                                    <td>照片</td>
+                                    <td>照片連結</td>
                                     <td><a href="${photo}" target="_blank" class="btn btn-sm btn-primary">查看照片</a></td>
                                 </tr>` : ''}
                             </tbody>
