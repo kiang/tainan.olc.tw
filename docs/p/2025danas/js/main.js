@@ -1,7 +1,8 @@
 const map = L.map('map').setView([23.000694, 120.221507], 12);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+    attribution: '地圖資料 © 國土測繪中心',
+    maxZoom: 19
 }).addTo(map);
 
 let townLayer = null;
