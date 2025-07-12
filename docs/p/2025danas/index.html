@@ -92,7 +92,35 @@
 </head>
 <body>
     <div id="map"></div>
-    <button id="locationBtn" class="location-button" title="取得我的位置">📍</button>
+    <button id="locationBtn" class="location-button" title="取得我的位置" style="right: 60px;">📍</button>
+    <button id="searchCoordsBtn" class="location-button" title="搜尋經緯度">🔍</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="searchCoordsModal" tabindex="-1" aria-labelledby="searchCoordsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchCoordsModalLabel">搜尋經緯度</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="latitudeInput" class="form-label">緯度 (Latitude)</label>
+                        <input type="number" class="form-control" id="latitudeInput" placeholder="例如: 23.000694">
+                    </div>
+                    <div class="mb-3">
+                        <label for="longitudeInput" class="form-label">經度 (Longitude)</label>
+                        <input type="number" class="form-control" id="longitudeInput" placeholder="例如: 120.221507">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-info" id="useCurrentLocationModalBtn">取得目前位置</button>
+                    <button type="button" class="btn btn-primary" id="locateCoordsBtn">定位</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
