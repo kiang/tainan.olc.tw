@@ -320,6 +320,103 @@ document.head.appendChild(topoScript);
 
 const locationBtn = document.getElementById('locationBtn');
 let userLocationMarker = null;
+let searchCoordsMarker = null; // For marker from modal search
+
+// Modal elements
+const searchCoordsBtn = document.getElementById('searchCoordsBtn');
+const searchCoordsModal = new bootstrap.Modal(document.getElementById('searchCoordsModal'));
+const latitudeInput = document.getElementById('latitudeInput');
+const longitudeInput = document.getElementById('longitudeInput');
+const locateCoordsBtn = document.getElementById('locateCoordsBtn');
+const useCurrentLocationModalBtn = document.getElementById('useCurrentLocationModalBtn');
+
+// Event listener for the main search button to open modal
+searchCoordsBtn.addEventListener('click', function() {
+    searchCoordsModal.show();
+});
+
+// Event listener for "Locate" button in modal
+locateCoordsBtn.addEventListener('click', function() {
+    const lat = parseFloat(latitudeInput.value);
+    const lng = parseFloat(longitudeInput.value);
+
+    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        alert('請輸入有效的經緯度值。\n緯度範圍: -90 到 90\n經度範圍: -180 到 180');
+        return;
+    }
+
+    const latlng = L.latLng(lat, lng);
+    map.setView(latlng, 16);
+
+    if (searchCoordsMarker) {
+        map.removeLayer(searchCoordsMarker);
+    }
+    searchCoordsMarker = L.marker(latlng, {
+        icon: L.divIcon({
+            html: '<div style="background-color: #FFD700; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>',
+            className: 'search-coords-marker',
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
+        })
+    }).addTo(map);
+
+    // Simulate a click on the map to open the reporting popup
+    setTimeout(() => {
+        map.fire('click', {
+            latlng: latlng,
+            layerPoint: map.latLngToLayerPoint(latlng),
+            containerPoint: map.latLngToContainerPoint(latlng)
+        });
+    }, 100);
+
+
+    searchCoordsModal.hide();
+});
+
+// Event listener for "Use My Current Location" button in modal
+useCurrentLocationModalBtn.addEventListener('click', function() {
+    if (!navigator.geolocation) {
+        alert('您的瀏覽器不支援地理位置功能');
+        return;
+    }
+
+    useCurrentLocationModalBtn.disabled = true;
+    useCurrentLocationModalBtn.textContent = '取得中...';
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            latitudeInput.value = position.coords.latitude.toFixed(6);
+            longitudeInput.value = position.coords.longitude.toFixed(6);
+            useCurrentLocationModalBtn.disabled = false;
+            useCurrentLocationModalBtn.textContent = '取得目前位置';
+        },
+        function(error) {
+            let errorMsg = '無法取得您的位置：';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg += '您拒絕了位置存取權限';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg += '無法取得位置資訊';
+                    break;
+                case error.TIMEOUT:
+                    errorMsg += '請求超時';
+                    break;
+                default:
+                    errorMsg += '未知錯誤';
+            }
+            alert(errorMsg);
+            useCurrentLocationModalBtn.disabled = false;
+            useCurrentLocationModalBtn.textContent = '取得目前位置';
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        }
+    );
+});
+
 
 locationBtn.addEventListener('click', function() {
     if (!navigator.geolocation) {
