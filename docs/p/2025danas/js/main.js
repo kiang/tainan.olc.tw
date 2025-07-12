@@ -212,8 +212,8 @@ async function loadReports() {
                 const marker = L.marker([lat, lng], {
                     icon: L.divIcon({
                         className: 'report-marker',
-                        iconSize: [12, 12],
-                        iconAnchor: [6, 6]
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12]
                     })
                 });
                 
@@ -325,8 +325,7 @@ let searchCoordsMarker = null; // For marker from modal search
 // Modal elements
 const searchCoordsBtn = document.getElementById('searchCoordsBtn');
 const searchCoordsModal = new bootstrap.Modal(document.getElementById('searchCoordsModal'));
-const latitudeInput = document.getElementById('latitudeInput');
-const longitudeInput = document.getElementById('longitudeInput');
+const coordinatesInput = document.getElementById('coordinatesInput');
 const locateCoordsBtn = document.getElementById('locateCoordsBtn');
 const useCurrentLocationModalBtn = document.getElementById('useCurrentLocationModalBtn');
 
@@ -337,8 +336,16 @@ searchCoordsBtn.addEventListener('click', function() {
 
 // Event listener for "Locate" button in modal
 locateCoordsBtn.addEventListener('click', function() {
-    const lat = parseFloat(latitudeInput.value);
-    const lng = parseFloat(longitudeInput.value);
+    const coordsValue = coordinatesInput.value.trim();
+    const coordsParts = coordsValue.split(',');
+    
+    if (coordsParts.length !== 2) {
+        alert('請輸入正確格式：緯度,經度\n例如：23.000694,120.221507');
+        return;
+    }
+    
+    const lat = parseFloat(coordsParts[0].trim());
+    const lng = parseFloat(coordsParts[1].trim());
 
     if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
         alert('請輸入有效的經緯度值。\n緯度範圍: -90 到 90\n經度範圍: -180 到 180');
@@ -385,8 +392,9 @@ useCurrentLocationModalBtn.addEventListener('click', function() {
 
     navigator.geolocation.getCurrentPosition(
         function(position) {
-            latitudeInput.value = position.coords.latitude.toFixed(6);
-            longitudeInput.value = position.coords.longitude.toFixed(6);
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            coordinatesInput.value = `${lat},${lng}`;
             useCurrentLocationModalBtn.disabled = false;
             useCurrentLocationModalBtn.textContent = '取得目前位置';
         },
