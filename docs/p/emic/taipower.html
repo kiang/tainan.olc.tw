@@ -322,6 +322,10 @@
                     <span class="summary-label">停電村里:</span>
                     <span class="summary-value secondary" id="totalVillages">-</span>
                 </div>
+                <hr style="margin: 8px 0; border: none; border-top: 1px solid #eee;">
+                <div id="countyStats" style="max-height: 200px; overflow-y: auto;">
+                    <!-- County statistics will be inserted here -->
+                </div>
             </div>
         </div>
     </div>
@@ -428,20 +432,59 @@
         function updateSummary() {
             let totalHouses = 0;
             let affectedVillages = 0;
+            const countyStats = {};
             
-            Object.values(taipowerData).forEach(data => {
-                const count = showHistorical ? data.c1 : data.c0;
+            // Calculate totals and county statistics
+            villageFeatures.forEach(feature => {
+                const villcode = feature.properties.VILLCODE;
+                const data = taipowerData[villcode];
+                const count = showHistorical ? (data ? data.c1 : 0) : (data ? data.c0 : 0);
+                
                 if (count > 0) {
                     totalHouses += count;
                     affectedVillages += 1;
+                    
+                    const countyName = feature.properties.COUNTYNAME || '未知縣市';
+                    if (!countyStats[countyName]) {
+                        countyStats[countyName] = {
+                            houses: 0,
+                            villages: 0
+                        };
+                    }
+                    countyStats[countyName].houses += count;
+                    countyStats[countyName].villages += 1;
                 }
             });
             
+            // Update total statistics
             document.getElementById('totalHouses').textContent = totalHouses.toLocaleString() + ' 戶';
             document.getElementById('totalVillages').textContent = affectedVillages + ' 個';
             
             const summaryTitle = document.getElementById('summaryTitle');
             summaryTitle.textContent = showHistorical ? '歷史停電統計' : '目前停電統計';
+            
+            // Update county statistics
+            const countyStatsDiv = document.getElementById('countyStats');
+            countyStatsDiv.innerHTML = '';
+            
+            // Sort counties by power outage count
+            const sortedCounties = Object.entries(countyStats)
+                .sort((a, b) => b[1].houses - a[1].houses);
+            
+            if (sortedCounties.length > 0) {
+                sortedCounties.forEach(([county, stats]) => {
+                    const countyItem = document.createElement('div');
+                    countyItem.className = 'summary-item';
+                    countyItem.style.fontSize = '12px';
+                    countyItem.innerHTML = `
+                        <span class="summary-label">${county}:</span>
+                        <span class="summary-value" style="font-size: 12px;">${stats.houses.toLocaleString()}戶/${stats.villages}村里</span>
+                    `;
+                    countyStatsDiv.appendChild(countyItem);
+                });
+            } else {
+                countyStatsDiv.innerHTML = '<div style="text-align: center; color: #999; font-size: 12px;">無停電資料</div>';
+            }
         }
         
         // Load Taipower data
@@ -620,6 +663,9 @@
                     
                     // Create labels for villages
                     createVillageLabels(filteredFeatures);
+                    
+                    // Update summary after villages are loaded
+                    updateSummary();
                 }
                 
                 console.log('Villages loaded:', filteredFeatures.length, 'with power shortage data');
