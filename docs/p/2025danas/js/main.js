@@ -99,6 +99,12 @@ function createPopupContent(latlng, countyName, townName) {
             <button class="btn btn-primary btn-sm report-btn" onclick="openGoogleForm('${countyName}', '${townName}', '${lng}', '${lat}', '${Date.now()}')">
                 回報
             </button>
+            <div class="navigation-buttons">
+                <small style="color: #666; display: block; margin-bottom: 5px;">導航到此位置:</small>
+                <a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="nav-btn google">Google地圖</a>
+                <a href="https://www.bing.com/maps?cp=${lat}~${lng}&lvl=16" target="_blank" class="nav-btn bing">Bing地圖</a>
+                <a href="https://wego.here.com/?map=${lat},${lng},16" target="_blank" class="nav-btn here">HERE地圖</a>
+            </div>
         </div>
     `;
     
@@ -284,6 +290,12 @@ async function loadReports() {
                                 </tr>` : ''}
                             </tbody>
                         </table>
+                        <div class="navigation-buttons">
+                            <small style="color: #666; display: block; margin-bottom: 5px;">導航到此位置:</small>
+                            <a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="nav-btn google">Google地圖</a>
+                            <a href="https://www.bing.com/maps?cp=${lat}~${lng}&lvl=16" target="_blank" class="nav-btn bing">Bing地圖</a>
+                            <a href="https://wego.here.com/?map=${lat},${lng},16" target="_blank" class="nav-btn here">HERE地圖</a>
+                        </div>
                     </div>
                 `;
                 
