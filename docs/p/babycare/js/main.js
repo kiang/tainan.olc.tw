@@ -1,285 +1,227 @@
-var sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
-var jsonFiles, filesLength, fileKey = 0;
+// Initialize map
+var map = L.map('map').setView([23.000694, 120.221507], 14);
 
-var projection = ol.proj.get('EPSG:3857');
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(20);
-var matrixIds = new Array(20);
-for (var z = 0; z < 20; ++z) {
-  // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
-}
+// Add base tile layer
+L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+    attribution: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+    opacity: 0.8
+}).addTo(map);
 
-function pointStyleFunction(f) {
-  var p = f.getProperties(), color, stroke, radius, fPoints = 3;
-  if (f === currentFeature) {
-    stroke = new ol.style.Stroke({
-      color: 'rgba(255,0,255,0.5)',
-      width: 10
-    });
-    radius = 35;
-    fPoints = 5;
-  } else {
-    stroke = new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    });
+// Variables
+var currentFeature = null;
+var markers = {};
+var markersLayer = L.layerGroup().addTo(map);
+var userLocationMarker = null;
 
-    radius = 20;
-  }
-  if(p.is_active != true){
-    color = '#cccccc';
-  } else if (p.capacity > p.status) {
-    color = '#48c774';
-  } else {
-    color = '#ffdd57';
-  }
-  let pointStyle = new ol.style.Style({
-    image: new ol.style.RegularShape({
-      radius: radius,
-      points: fPoints,
-      fill: new ol.style.Fill({
-        color: color
-      }),
-      stroke: stroke
-    }),
-    text: new ol.style.Text({
-      font: '14px "Open Sans", "Arial Unicode MS", "sans-serif"',
-      fill: new ol.style.Fill({
-        color: 'rgba(0,0,255,0.7)'
-      })
-    })
-  });
-  pointStyle.getText().setText(p.status.toString() + '/' + p.capacity.toString());
-  return pointStyle;
-}
-var sidebarTitle = document.getElementById('sidebarTitle');
-var content = document.getElementById('infoBox');
-
-var appView = new ol.View({
-  center: ol.proj.fromLonLat([120.221507, 23.000694]),
-  zoom: 14
-});
-
-var vectorSource = new ol.source.Vector({
-  format: new ol.format.GeoJSON({
-    featureProjection: appView.getProjection()
-  })
-});
-
-var vectorPoints = new ol.layer.Vector({
-  source: vectorSource,
-  style: pointStyleFunction
-});
-
-var baseLayer = new ol.layer.Tile({
-  source: new ol.source.WMTS({
-    matrixSet: 'EPSG:3857',
-    format: 'image/png',
-    url: 'https://wmts.nlsc.gov.tw/wmts',
-    layer: 'EMAP',
-    tileGrid: new ol.tilegrid.WMTS({
-      origin: ol.extent.getTopLeft(projectionExtent),
-      resolutions: resolutions,
-      matrixIds: matrixIds
-    }),
-    style: 'default',
-    wrapX: true,
-    attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-  }),
-  opacity: 0.8
-});
-
-var map = new ol.Map({
-  layers: [baseLayer, vectorPoints],
-  target: 'map',
-  view: appView
-});
-
-map.addControl(sidebar);
-var pointClicked = false;
-map.on('singleclick', function (evt) {
-  // Check if we clicked on a feature first
-  let featureClicked = false;
-  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (!featureClicked) {
-      var p = feature.getProperties();
-      var targetHash = '#' + p.id;
-      if (window.location.hash !== targetHash) {
-        window.location.hash = targetHash;
-      }
-      featureClicked = true;
+// Create custom icon for markers
+function createIcon(properties) {
+    var color, isActive = properties.is_active !== false;
+    
+    if (!isActive) {
+        color = '#cccccc';
+    } else if (properties.capacity > properties.status) {
+        color = '#48c774';
+    } else {
+        color = '#ffdd57';
     }
-  });
+    
+    var size = currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? 40 : 30;
+    
+    return L.divIcon({
+        html: `<div style="
+            width: ${size}px;
+            height: ${size}px;
+            position: relative;
+            transform: translate(-50%, -50%);
+        ">
+            <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                <polygon points="${size/2},2 ${size-2},${size-2} 2,${size-2}" 
+                    fill="${color}" 
+                    stroke="${currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? '#ff00ff' : '#fff'}" 
+                    stroke-width="${currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? '3' : '2'}"/>
+            </svg>
+            <div style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #0000ff;
+                font-size: 12px;
+                font-weight: bold;
+                text-shadow: 1px 1px 1px white, -1px -1px 1px white, 1px -1px 1px white, -1px 1px 1px white;
+            ">${properties.status}/${properties.capacity}</div>
+        </div>`,
+        className: '',
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2]
+    });
+}
 
-  // Only clear content if we didn't click a feature
-  if (!featureClicked) {
-    content.innerHTML = '';
-    pointClicked = false;
-  }
-});
+// Create popup content
+function createPopupContent(feature, detailData) {
+    if (!detailData) {
+        return '<div style="text-align: center; padding: 20px;">載入中...</div>';
+    }
+    
+    var lonLat = [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
+    
+    var content = '<div style="max-width: 400px; max-height: 500px; overflow-y: auto;">';
+    content += '<h4 style="margin-top: 0;">' + detailData['機構名稱'] + '</h4>';
+    content += '<table class="table table-sm">';
+    content += '<tr><td><strong>負責人</strong></td><td>' + detailData['負責人姓名'] + '</td></tr>';
+    content += '<tr><td><strong>電話</strong></td><td>' + detailData['聯絡電話'] + '</td></tr>';
+    content += '<tr><td><strong>地址</strong></td><td>' + detailData['所在地'] + '</td></tr>';
+    content += '<tr><td><strong>核定收托</strong></td><td>' + detailData['核定收托'] + '</td></tr>';
+    content += '<tr><td><strong>實際收托</strong></td><td>' + detailData['實際收托'] + '</td></tr>';
+    content += '</table>';
+    
+    content += '<div class="btn-group-vertical" role="group" style="width: 100%; margin-top: 10px;">';
+    content += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">Google 導航</a>';
+    content += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">Here WeGo 導航</a>';
+    content += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">Bing 導航</a>';
+    content += '<a href="https://babycare.olc.tw/babycare/view/' + detailData['id'] + '/" target="_blank" class="btn btn-success btn-sm">查看詳細資料</a>';
+    content += '</div>';
+    content += '</div>';
+    
+    return content;
+}
 
-var previousFeature = false;
-var currentFeature = false;
+// Show point information
+function showPoint(currentPointId) {
+    if (!currentPointId || !markers[currentPointId]) {
+        return;
+    }
+    
+    var feature = markers[currentPointId];
+    currentFeature = feature;
+    updateAllMarkers();
+    
+    var marker = feature._leafletMarker;
+    if (marker) {
+        // Don't change zoom, just pan to the marker
+        map.panTo(marker.getLatLng());
+        marker.openPopup();
+    }
+}
 
-var geolocation = new ol.Geolocation({
-  projection: appView.getProjection()
-});
+// Update all markers when selection changes
+function updateAllMarkers() {
+    markersLayer.clearLayers();
+    
+    for (var id in markers) {
+        var feature = markers[id];
+        var marker = L.marker(
+            [feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 
+            { icon: createIcon(feature.properties) }
+        );
+        
+        // Store reference to marker in feature
+        feature._leafletMarker = marker;
+        
+        // Bind popup with loading content
+        marker.bindPopup(createPopupContent(feature, null), {
+            maxWidth: 450,
+            maxHeight: 550,
+            offset: L.point(0, -20) // Offset popup to appear above the triangle marker
+        });
+        
+        // Load detailed data when popup opens
+        marker.on('popupopen', (function(feature) {
+            return function(e) {
+                var popup = e.popup;
+                
+                // Update URL hash
+                if (window.location.hash !== '#' + feature.properties.id) {
+                    window.location.hash = '#' + feature.properties.id;
+                }
+                
+                // Load detailed data
+                $.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/data/' + feature.properties.city + '/' + feature.properties.id + '.json', {}, function(detailData) {
+                    popup.setContent(createPopupContent(feature, detailData));
+                });
+            };
+        })(feature));
+        
+        markersLayer.addLayer(marker);
+    }
+}
 
-geolocation.setTracking(true);
-
-geolocation.on('error', function (error) {
-  console.log(error.message);
-});
-
-var positionFeature = new ol.Feature();
-
-positionFeature.setStyle(new ol.style.Style({
-  image: new ol.style.Circle({
-    radius: 6,
-    fill: new ol.style.Fill({
-      color: '#3399CC'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    })
-  })
-}));
-
-var firstPosDone = false;
-geolocation.on('change:position', function () {
-  var coordinates = geolocation.getPosition();
-  positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-  if (false === firstPosDone) {
-    appView.setCenter(coordinates);
-    firstPosDone = true;
-  }
-});
-
-new ol.layer.Vector({
-  map: map,
-  source: new ol.source.Vector({
-    features: [positionFeature]
-  })
-});
-
-$('#btn-geolocation').click(function () {
-  var coordinates = geolocation.getPosition();
-  if (coordinates) {
-    appView.setCenter(coordinates);
-  } else {
-    alert('目前使用的設備無法提供地理資訊');
-  }
-  return false;
-});
-
+// Show position
 function showPos(lng, lat) {
-  firstPosDone = true;
-  appView.setCenter(ol.proj.fromLonLat([parseFloat(lng), parseFloat(lat)]));
+    map.setView([lat, lng], 16);
 }
 
-var previousFeature = false;
-var currentFeature = false;
-
-function showPoint(pointId) {
-  firstPosDone = true;
-  $('#findPoint').val('');
-  var features = vectorPoints.getSource().getFeatures();
-  for (k in features) {
-    var p = features[k].getProperties();
-    if (p.id === pointId) {
-      currentFeature = features[k];
-      features[k].setStyle(pointStyleFunction(features[k]));
-      if (false !== previousFeature) {
-        previousFeature.setStyle(pointStyleFunction(previousFeature));
-      }
-      previousFeature = currentFeature;
-      appView.setCenter(features[k].getGeometry().getCoordinates());
-      appView.setZoom(15);
-      var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-
-      $.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/data/' + p.city + '/' + p.id + '.json', {}, function (c) {
-        console.log(c);
-        var message = '<table class="table table-dark">';
-        message += '<tbody>';
-        message += '<tr><th scope="row" style="width: 100px;">機構名稱</th><td><a href="https://ncwisweb.sfaa.gov.tw/home/childcare-center/detail/' + c['id'] + '" target="_blank">' + c['機構名稱'] + '</a></td></tr>';
-        message += '<tr><th scope="row">負責人姓名</th><td>' + c['負責人姓名'] + '</td></tr>';
-        message += '<tr><th scope="row">聯絡電話</th><td>' + c['聯絡電話'] + '</td></tr>';
-        message += '<tr><th scope="row">所在地</th><td>' + c['所在地'] + '</td></tr>';
-        message += '<tr><th scope="row">核定收托</th><td>' + c['核定收托'] + '</td></tr>';
-        message += '<tr><th scope="row">實際收托</th><td>' + c['實際收托'] + '</td></tr>';
-        message += '<tr><th scope="row">最近一次評鑑年度</th><td>' + c['最近一次評鑑年度'] + '</td></tr>';
-        message += '<tr><th scope="row">評鑑等級</th><td>' + c['評鑑等級'] + '</td></tr>';
-        message += '<tr><th scope="row">總面積</th><td>' + c['總面積'] + '</td></tr>';
-        message += '<tr><th scope="row">室內面積</th><td>' + c['室內面積'] + '</td></tr>';
-        message += '<tr><th scope="row">室外面積</th><td>' + c['室外面積'] + '</td></tr>';
-        message += '<tr><th scope="row">公共安全說明</th><td>' + c['公共安全說明'] + '</td></tr>';
-        message += '<tr><th scope="row">消防安全說明</th><td>' + c['消防安全說明'] + '</td></tr>';
-        message += '<tr><th scope="row">準公共化資格</th><td>' + c['準公共化資格'] + '</td></tr>';
-        message += '<tr><th scope="row">核備工作人員數</th><td>';
-        for (k in c['核備工作人員數']) {
-          message += k + ' ' + c['核備工作人員數'][k] + '人<br />';
-        }
-        message += '</td></tr>';
-        message += '<tr><th scope="row" colspan="2">收費情形</th></tr><tr><td colspan="2">';
-        for (k1 in c['收費情形']) {
-          message += k1 + '<ul>';
-          for (k2 in c['收費情形'][k1]) {
-            message += '<li>' + c['收費情形'][k1][k2]['費用名稱'] + ': ' + c['收費情形'][k1][k2]['費用金額'];
-            if (c['收費情形'][k1][k2]['費用說明'] != '') {
-              message += ' (' + c['收費情形'][k1][k2]['費用說明'] + ')';
-            }
-            message += '</li>';
-          }
-
-          message += '</ul>';
-        }
-        message += '</td></tr>';
-        message += '<tr><th scope="row" colspan="2">退費說明</th></tr><tr><td colspan="2"><p style="white-space: pre-line">' + c['退費說明'] + '</p></td></tr>';
-        message += '<tr><td colspan="2">';
-        message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-        message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-        message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-        message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-        message += '</div></td></tr>';
-        message += '</tbody></table>';
-        sidebarTitle.innerHTML = c['機構名稱'];
-        content.innerHTML = message;
-      });
-    }
-  }
-  sidebar.open('home');
-}
-
-var pointsFc;
-var adminTree = {};
+// Load data
 var findTerms = [];
-$.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/babycare.json', {}, function (c) {
-  pointsFc = c;
-  var vFormat = vectorSource.getFormat();
-  vectorSource.addFeatures(vFormat.readFeatures(pointsFc));
-
-  for (k in pointsFc.features) {
-    var p = pointsFc.features[k].properties;
-    findTerms.push({
-      value: p.id,
-      label: p.name + ' ' + p.address
+$.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/babycare.json', {}, function (data) {
+    // Process features
+    data.features.forEach(function(feature) {
+        markers[feature.properties.id] = feature;
+        findTerms.push({
+            value: feature.properties.id,
+            label: feature.properties.name + ' ' + feature.properties.address
+        });
     });
-  }
+    
+    // Add all markers to map
+    updateAllMarkers();
+    
+    // Set up routing
+    routie(':pointId', showPoint);
+    routie('pos/:lng/:lat', showPos);
+    
+    // Set up autocomplete
+    $('#findPoint').autocomplete({
+        source: findTerms,
+        select: function (event, ui) {
+            window.location.hash = '#' + ui.item.value;
+            return false;
+        }
+    });
+    
+    // Handle initial route
+    setTimeout(function() {
+        var currentHash = window.location.hash;
+        if (currentHash && currentHash !== '#') {
+            var pointId = currentHash.substring(1);
+            showPoint(pointId);
+        }
+    }, 500);
+});
 
-  routie(':pointId', showPoint);
-  routie('pos/:lng/:lat', showPos);
-
-  $('#findPoint').autocomplete({
-    source: findTerms,
-    select: function (event, ui) {
-      var targetHash = '#' + ui.item.value;
-      if (window.location.hash !== targetHash) {
-        window.location.hash = targetHash;
-      }
+// Geolocation button
+document.getElementById('btn-geolocation').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    if (!navigator.geolocation) {
+        alert('您的瀏覽器不支援地理定位功能');
+        return;
     }
-  });
+    
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            
+            map.setView([lat, lng], 16);
+            
+            // Remove existing user location marker
+            if (userLocationMarker) {
+                map.removeLayer(userLocationMarker);
+            }
+            
+            // Add user location marker
+            userLocationMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: '<div style="background-color: #4285F4; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>',
+                    className: 'user-location-marker',
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11]
+                })
+            }).addTo(map);
+        },
+        function(error) {
+            alert('無法取得您的位置');
+        }
+    );
 });

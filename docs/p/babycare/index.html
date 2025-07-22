@@ -10,8 +10,7 @@
     <title>托嬰中心地圖</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol3-sidebar.css" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/jquery-ui.min.css"
@@ -19,26 +18,205 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/theme.min.css"
         crossorigin="anonymous">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
         body {
             padding: 0;
             margin: 0;
             overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+            background: #f8f9fa;
         }
 
         html,
         body,
         #map {
             height: 100%;
-            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
-        }
-
-        .lorem {
-            font-style: italic;
-            color: #AAA;
         }
 
         .ui-front {
             z-index: 9999;
+        }
+        
+        /* Floating controls with soft baby theme */
+        .floating-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #ffeaa7;
+        }
+        
+        .floating-search {
+            position: absolute;
+            top: 15px;
+            left: 60px;
+            z-index: 1000;
+            background: white;
+            border-radius: 25px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 320px;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .floating-search input {
+            border-radius: 20px;
+            border: 2px solid #ffeaa7;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .floating-search input:focus {
+            border-color: #fdcb6e;
+            box-shadow: 0 0 0 0.2rem rgba(253, 203, 110, 0.25);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 350px;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .info-panel h6 {
+            color: #2d3436;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .info-panel ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+        
+        .info-panel li {
+            margin: 5px 0;
+            color: #636e72;
+        }
+        
+        .info-panel small {
+            color: #74b9ff;
+        }
+        
+        .info-panel a {
+            color: #74b9ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .info-panel a:hover {
+            color: #0984e3;
+            text-decoration: underline;
+        }
+        
+        /* Soft button styles */
+        #btn-geolocation {
+            background-color: #74b9ff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        #btn-geolocation:hover {
+            background-color: #0984e3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Leaflet popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 20px;
+            padding: 5px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .leaflet-popup-content {
+            margin: 13px 19px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        .leaflet-popup-content h4 {
+            color: #2d3436;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #ffeaa7;
+            padding-bottom: 8px;
+        }
+        
+        .leaflet-popup-content table {
+            font-size: 14px;
+        }
+        
+        .leaflet-popup-content td {
+            padding: 8px 4px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .leaflet-popup-content td strong {
+            color: #636e72;
+            font-weight: 500;
+        }
+        
+        /* Button styles in popups */
+        .leaflet-popup-content .btn {
+            color: white !important;
+            text-decoration: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .leaflet-popup-content .btn-primary {
+            background-color: #74b9ff;
+        }
+        
+        .leaflet-popup-content .btn-primary:hover {
+            background-color: #0984e3;
+            transform: translateY(-1px);
+        }
+        
+        .leaflet-popup-content .btn-success {
+            background-color: #55efc4;
+            color: #2d3436 !important;
+        }
+        
+        .leaflet-popup-content .btn-success:hover {
+            background-color: #00b894;
+            color: white !important;
+        }
+        
+        /* Map tile filter for softer appearance */
+        .leaflet-tile-pane {
+            filter: brightness(1.05) saturate(0.9);
+        }
+        
+        /* Triangle marker enhancement */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .user-location-marker {
+            animation: bounce 2s infinite;
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -53,103 +231,35 @@
 </head>
 
 <body>
-    <div id="fb-root"></div>
-    <script>
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.12&appId=1393405437614114&autoLogAppEvents=1';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#book" role="tab"><i class="fa fa-book"></i></a></li>
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-                <li><a href="https://github.com/kiang/tainan.olc.tw" role="tab" target="_blank"><i
-                            class="fa fa-github"></i></a></li>
-                <li><a href="#fb" role="tab"><i class="fa fa-facebook"></i></a></li>
-            </ul>
-        </div>
-
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="home">
-                <h1 class="sidebar-header"><span id="sidebarTitle">請點選地圖中的點</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div id="sidebarContent">
-                    <div class="accordion" id="accordionMain">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading1">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
-                                    基本資料
-                                </button>
-                            </h2>
-                            <div id="collapseInfo" class="accordion-collapse collapse show" aria-labelledby="heading1"
-                                data-bs-parent="#accordionMain">
-                                <div class="accordion-body" id="infoBox"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="links" class="btn-group-vertical" role="group" style="width: 100%;">
-                    <a id="linkPreschool" class="btn btn-primary btn-lg btn-block"></a>
-                    <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank"
-                        class="btn btn-primary btn-lg btn-block">網站問題反應</a>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="book">
-                <h1 class="sidebar-header"><span id="weekTitle">說明</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div>
-                    <p>每個三角形代表一間托嬰中心，跟著三角形的數字是該托嬰中心的核定收托與實際收托人數，三角形的顏色可以參考下面說明：
-                    </p>
-                    <ul>
-                        <li><span style="color:#48c774">▲</span>：核定收托大於實際收托人數，表示還可以接受新的送托</li>
-                        <li><span style="color:#ffdd57">▲</span>：核定收托等於或小於收托人數，表示已經沒有名額</li>
-                        <li>藍色圓點：你目前所在位置（需要同意網站授權）</li>
-                    </ul>
-                    注意事項：
-                    <ul>
-                        <li>地圖位置由程式自動產生，可能會跟實際位置有差異，僅供參考</li>
-                        <li><a href="https://ncwisweb.sfaa.gov.tw/home/childcare-center" target="_blank">資料來源</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header"><span id="weekTitle">設定</span><span class="sidebar-close"><i
-                            class="fa fa-caret-left"></i></span></h1>
-                <div>
-                    <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-geolocation">回到目前位置</a>
-                </div>
-                <hr />
-                <div class="card">
-                    <h5 class="card-title">搜尋</h5>
-                    <div class="form-group">
-                        <label for="findPoint">名稱或住址</label>
-                        <input type="text" id="findPoint" name="findPoint" class="form-control"></input>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="fb">
-                <div class="fb-page" data-href="https://www.facebook.com/k.olc.tw/" data-tabs="timeline"
-                    data-width="380" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                    data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/k.olc.tw/" class="fb-xfbml-parse-ignore"><a
-                            href="https://www.facebook.com/k.olc.tw/">江明宗</a></blockquote>
-                </div>
-            </div>
-        </div>
+    <div id="map"></div>
+    
+    <!-- Search control -->
+    <div class="floating-search">
+        <input type="text" id="findPoint" name="findPoint" class="form-control" placeholder="搜尋托嬰中心名稱或地址">
     </div>
-
-    <div id="map" class="sidebar-map"></div>
-    <div style="position: fixed; bottom: 0px; left: 0px;">
-        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">北中西區台南市議員參選人江明宗 製作</a>
+    
+    <!-- Floating controls -->
+    <div class="floating-controls">
+        <button class="btn btn-primary btn-sm" id="btn-geolocation" title="定位目前位置">
+            <i class="fa fa-location-arrow"></i> 我的位置
+        </button>
+    </div>
+    
+    <!-- Info panel -->
+    <div class="info-panel">
+        <h6>🍼 托嬰中心地圖</h6>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li><span style="color:#48c774; font-size: 18px;">▲</span> 尚有名額</li>
+            <li><span style="color:#ffdd57; font-size: 18px;">▲</span> 目前額滿</li>
+            <li><span style="color:#cccccc; font-size: 18px;">▲</span> 暫停收托</li>
+        </ul>
+        <p style="margin: 10px 0 5px 0; font-size: 12px; color: #636e72;">
+            點擊地圖上的標記查看詳細資訊
+        </p>
+        <small>
+            <a href="https://ncwisweb.sfaa.gov.tw/home/childcare-center" target="_blank">資料來源</a> | 
+            <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">問題回報</a>
+        </small>
     </div>
     <script src="../js/jquery.min.js" type="text/javascript"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
@@ -157,8 +267,7 @@
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
         crossorigin="anonymous"></script>
     <script src="../js/routie.min.js" type="text/javascript"></script>
-    <script src="../js/ol.js" type="text/javascript"></script>
-    <script src="../js/ol5-sidebar.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/main.js" type="text/javascript"></script>
 </body>
 
