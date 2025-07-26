@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年罷免案投票結果地圖</title>
+    <meta property="og:title" content="2025年罷免案投票結果地圖">
+    <meta property="og:description" content="2025年罷免案各村里投票結果視覺化地圖">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://kiang.github.io/tainan.olc.tw/p/recall-2025/og_image.png">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Project CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="map"></div>
+    <div id="loading" class="loading">載入中...</div>
+    
+    <!-- Credit button -->
+    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="credit-button">
+        北中西區台南市議員參選人江明宗 製作
+    </a>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- TopoJSON -->
+    <script src="https://unpkg.com/topojson@3"></script>
+    
+    <!-- Project JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
