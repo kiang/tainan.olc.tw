@@ -19,6 +19,45 @@
     <div id="map"></div>
     <div id="loading" class="loading">載入中...</div>
     
+    <!-- Controls -->
+    <div class="controls">
+        <select id="recall-case-selector" class="recall-selector">
+            <option value="">所有罷免案</option>
+        </select>
+        <button id="chart-button" class="chart-button">
+            📊 總體結果
+        </button>
+    </div>
+    
+    <!-- Chart popup -->
+    <div id="chart-popup" class="chart-popup">
+        <div class="chart-content">
+            <span class="chart-closer" id="chart-closer">&times;</span>
+            <h3 style="text-align: center; margin-bottom: 30px; color: #333;">2025年罷免案總體投票結果分析</h3>
+            
+            <div id="chart-stats" class="chart-stats"></div>
+            
+            <div class="chart-container">
+                <div class="chart-item">
+                    <h5>投票結果比例</h5>
+                    <canvas id="resultsChart"></canvas>
+                </div>
+                <div class="chart-item">
+                    <h5>投票率分布</h5>
+                    <canvas id="turnoutChart"></canvas>
+                </div>
+                <div class="chart-item">
+                    <h5>各縣市同意比例</h5>
+                    <canvas id="countyChart"></canvas>
+                </div>
+                <div class="chart-item">
+                    <h5>投票參與度</h5>
+                    <canvas id="participationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Credit button -->
     <a href="https://facebook.com/k.olc.tw/" target="_blank" class="credit-button">
         北中西區台南市議員參選人江明宗 製作
@@ -28,6 +67,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- TopoJSON -->
     <script src="https://unpkg.com/topojson@3"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Project JS -->
     <script src="js/main.js"></script>
