@@ -136,21 +136,39 @@ const legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
     const div = L.DomUtil.create('div', 'info legend');
     
-    div.innerHTML = '<h4>投票結果</h4>';
+    // Create header with toggle button
+    const header = L.DomUtil.create('div', 'legend-header', div);
+    header.innerHTML = '<h4>投票結果 <span class="legend-toggle">▼</span></h4>';
+    
+    // Create content div
+    const content = L.DomUtil.create('div', 'legend-content', div);
     
     // Green shades for agree majority
-    div.innerHTML += '<i style="background:#006400"></i> 同意多數 (>80%)<br>';
-    div.innerHTML += '<i style="background:#228B22"></i> 同意多數 (70-80%)<br>';
-    div.innerHTML += '<i style="background:#32CD32"></i> 同意多數 (60-70%)<br>';
-    div.innerHTML += '<i style="background:#90EE90"></i> 同意多數 (50-60%)<br>';
+    content.innerHTML = '<i style="background:#006400"></i> 同意多數 (>80%)<br>';
+    content.innerHTML += '<i style="background:#228B22"></i> 同意多數 (70-80%)<br>';
+    content.innerHTML += '<i style="background:#32CD32"></i> 同意多數 (60-70%)<br>';
+    content.innerHTML += '<i style="background:#90EE90"></i> 同意多數 (50-60%)<br>';
     
-    div.innerHTML += '<br>';
+    content.innerHTML += '<br>';
     
     // Blue shades for disagree majority
-    div.innerHTML += '<i style="background:#87CEEB"></i> 不同意多數 (50-60%)<br>';
-    div.innerHTML += '<i style="background:#4169E1"></i> 不同意多數 (60-70%)<br>';
-    div.innerHTML += '<i style="background:#0000CD"></i> 不同意多數 (70-80%)<br>';
-    div.innerHTML += '<i style="background:#000080"></i> 不同意多數 (>80%)<br>';
+    content.innerHTML += '<i style="background:#87CEEB"></i> 不同意多數 (50-60%)<br>';
+    content.innerHTML += '<i style="background:#4169E1"></i> 不同意多數 (60-70%)<br>';
+    content.innerHTML += '<i style="background:#0000CD"></i> 不同意多數 (70-80%)<br>';
+    content.innerHTML += '<i style="background:#000080"></i> 不同意多數 (>80%)<br>';
+    
+    // Add click handler for toggle
+    header.onclick = function() {
+        const isCollapsed = content.style.display === 'none';
+        content.style.display = isCollapsed ? 'block' : 'none';
+        header.querySelector('.legend-toggle').innerHTML = isCollapsed ? '▼' : '▲';
+    };
+    
+    // Start collapsed on mobile
+    if (window.innerWidth <= 768) {
+        content.style.display = 'none';
+        header.querySelector('.legend-toggle').innerHTML = '▲';
+    }
     
     return div;
 };

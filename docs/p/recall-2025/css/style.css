@@ -36,6 +36,28 @@ body {
     opacity: 0.7;
 }
 
+.legend-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+.legend-header h4 {
+    margin: 0 0 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.legend-toggle {
+    font-size: 12px;
+    margin-left: 10px;
+    transition: transform 0.2s ease;
+}
+
+.legend-content {
+    transition: all 0.3s ease;
+}
+
 .loading {
     position: absolute;
     top: 50%;
@@ -219,6 +241,7 @@ body {
     .chart-content {
         width: 95vw;
         padding: 20px;
+        padding-top: 50px;
     }
     
     .controls {
@@ -265,6 +288,29 @@ body {
     
     .stats div {
         font-size: 11px;
+    }
+    
+    .chart-closer {
+        top: 10px;
+        right: 10px;
+        font-size: 28px;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .legend {
+        font-size: 12px;
+    }
+    
+    .legend i {
+        width: 14px;
+        height: 14px;
     }
 }
 
