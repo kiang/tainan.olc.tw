@@ -195,6 +195,8 @@ body {
     z-index: 2000;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .chart-content {
@@ -241,7 +243,9 @@ body {
     .chart-content {
         width: 95vw;
         padding: 20px;
-        padding-top: 50px;
+        padding-top: 60px;
+        margin-top: 20px;
+        max-height: calc(100vh - 40px);
     }
     
     .controls {
