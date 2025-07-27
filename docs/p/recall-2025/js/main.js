@@ -178,6 +178,7 @@ legend.addTo(map);
 // Global variables
 let villageData = {};
 let geojson;
+let labelLayer;
 let allRecallCases = new Set();
 let currentRecallCase = '';
 let allVillageData = {};
@@ -457,6 +458,11 @@ function updateMapDisplay() {
             }
         });
     }
+    
+    // Update labels if they exist
+    if (labelLayer) {
+        updateLabels();
+    }
 }
 
 // Fit map bounds to currently visible data
@@ -501,6 +507,12 @@ async function initializeMap() {
             onEachFeature: onEachFeature
         }).addTo(map);
         
+        // Create label layer for village names
+        createLabelLayer(geoData);
+        
+        // Add zoom event listener to show/hide labels
+        map.on('zoomend', updateLabels);
+        
         // Initial map display
         updateMapDisplay();
         fitMapBounds();
@@ -511,6 +523,63 @@ async function initializeMap() {
     } catch (error) {
         console.error('Error loading GeoJSON:', error);
         document.getElementById('loading').innerHTML = '載入失敗';
+    }
+}
+
+// Create label layer for village names
+function createLabelLayer(geoData) {
+    labelLayer = L.layerGroup();
+    
+    geoData.features.forEach(feature => {
+        const props = feature.properties;
+        const villname = props.VILLNAME;
+        
+        // Calculate centroid for label placement
+        const bounds = L.geoJSON(feature).getBounds();
+        const center = bounds.getCenter();
+        
+        // Create label marker
+        const label = L.marker(center, {
+            icon: L.divIcon({
+                className: 'village-label',
+                html: `<span>${villname}</span>`,
+                iconSize: [60, 20],
+                iconAnchor: [30, 10]
+            }),
+            interactive: false
+        });
+        
+        // Store village code for filtering
+        label.villcode = props.VILLCODE;
+        labelLayer.addLayer(label);
+    });
+}
+
+// Update labels based on zoom level and current filter
+function updateLabels() {
+    const zoom = map.getZoom();
+    
+    if (zoom > 15) {
+        // Show labels for villages with data
+        labelLayer.eachLayer(layer => {
+            const hasData = villageData[layer.villcode];
+            if (hasData) {
+                if (!map.hasLayer(layer)) {
+                    map.addLayer(layer);
+                }
+            } else {
+                if (map.hasLayer(layer)) {
+                    map.removeLayer(layer);
+                }
+            }
+        });
+    } else {
+        // Hide all labels
+        labelLayer.eachLayer(layer => {
+            if (map.hasLayer(layer)) {
+                map.removeLayer(layer);
+            }
+        });
     }
 }
 
