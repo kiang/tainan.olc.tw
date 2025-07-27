@@ -220,6 +220,52 @@ body {
         width: 95vw;
         padding: 20px;
     }
+    
+    .controls {
+        flex-direction: column;
+        top: 10px;
+        gap: 10px;
+    }
+    
+    .recall-selector {
+        min-width: unset;
+        width: 90vw;
+        max-width: 300px;
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+    
+    .chart-button {
+        width: 90vw;
+        max-width: 300px;
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+    
+    .credit-button {
+        bottom: 10px;
+        left: 10px;
+        font-size: 11px;
+        padding: 8px 12px;
+        max-width: calc(100vw - 40px);
+    }
+    
+    .info {
+        position: fixed !important;
+        bottom: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+        max-width: unset !important;
+        font-size: 12px;
+    }
+    
+    .info h4 {
+        font-size: 14px;
+    }
+    
+    .stats div {
+        font-size: 11px;
+    }
 }
 
 .chart-closer {

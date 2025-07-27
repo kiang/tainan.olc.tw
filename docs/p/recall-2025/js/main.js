@@ -53,34 +53,9 @@ function style(feature) {
     };
 }
 
-// Highlight feature on hover
-function highlightFeature(e) {
-    const layer = e.target;
-    
-    layer.setStyle({
-        weight: 3,
-        color: '#666',
-        fillOpacity: 0.9
-    });
-    
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-    
-    info.update(layer.feature.properties);
-}
-
-// Reset highlight
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-    info.update();
-}
-
 // Show popup on click
 function onEachFeature(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
         click: async function(e) {
             const props = feature.properties;
             const villcode = props.VILLCODE;
@@ -149,41 +124,8 @@ info.onAdd = function (map) {
     return this._div;
 };
 
-info.update = function (props) {
-    if (!props) {
-        this._div.innerHTML = '<h4>2025年罷免案投票結果</h4>將滑鼠移至村里查看資料';
-        return;
-    }
-    
-    const villcode = props.VILLCODE;
-    const data = villageData[villcode];
-    
-    // Check if data exists for this village (might be filtered out)
-    if (!data || !data.sum_fields) {
-        this._div.innerHTML = `
-            <h4>${props.COUNTYNAME} ${props.TOWNNAME} ${props.VILLNAME}</h4>
-            <div class="stats">
-                <div><b style="color: #999;">此村里無此罷免案資料</b></div>
-            </div>
-        `;
-        return;
-    }
-    
-    const agreeVotes = data.sum_fields.agree_votes;
-    const disagreeVotes = data.sum_fields.disagree_votes;
-    const majority = agreeVotes > disagreeVotes ? '同意多數' : '不同意多數';
-    const majorityColor = agreeVotes > disagreeVotes ? 'green' : 'blue';
-    
-    this._div.innerHTML = `
-        <h4>${props.COUNTYNAME} ${props.TOWNNAME} ${props.VILLNAME}</h4>
-        <div class="stats">
-            <div><b style="color: ${majorityColor};">${majority}</b></div>
-            <div><b>同意票:</b> ${agreeVotes.toLocaleString()}</div>
-            <div><b>不同意票:</b> ${disagreeVotes.toLocaleString()}</div>
-            <div><b>平均投票率:</b> ${data.sum_fields.average_turnout_rate}%</div>
-            <div><b>選舉人數:</b> ${data.sum_fields.eligible_voters.toLocaleString()}</div>
-        </div>
-    `;
+info.update = function () {
+    this._div.innerHTML = '<h4>2025年罷免案投票結果</h4>點擊村里查看詳細資料';
 };
 
 info.addTo(map);
