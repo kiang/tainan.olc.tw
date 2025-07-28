@@ -737,7 +737,7 @@ fetch('https://kiang.github.io/portal2.emic.gov.tw/cases.json')
         }, 100);
         
         // Load typhoon data
-        loadTyphoonData();
+        //loadTyphoonData();
     })
     .catch(error => {
         console.error('Error loading GeoJSON:', error);
