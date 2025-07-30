@@ -300,6 +300,17 @@ async function loadReports() {
                 `;
                 
                 marker.bindPopup(popupContent);
+                
+                // Store location ID on marker for hash navigation
+                marker.locationId = locationId;
+                
+                // Add click handler to update URL hash
+                marker.on('click', function() {
+                    if (locationId) {
+                        window.history.replaceState(null, null, '#' + locationId);
+                    }
+                });
+                
                 markersLayer.addLayer(marker);
             } else if (index < 5) {
                 console.log(`Invalid coordinates for row ${index}:`, report);
@@ -310,6 +321,11 @@ async function loadReports() {
         
         if (validReports > 0) {
             map.addLayer(markersLayer);
+            
+            // Check for URL hash and trigger marker click after markers are loaded
+            setTimeout(function() {
+                checkHashAndTriggerClick();
+            }, 100);
         }
         
     } catch (error) {
@@ -505,3 +521,76 @@ locationBtn.addEventListener('click', function() {
         }
     );
 });
+
+// Hash-based navigation to trigger marker clicks
+function checkHashAndTriggerClick() {
+    const hash = window.location.hash;
+    if (hash && hash.length > 1) {
+        const locationId = hash.substring(1); // Remove # from hash
+        triggerMarkerClick(locationId);
+    }
+}
+
+// Function to trigger click on a marker by location ID
+function triggerMarkerClick(locationId) {
+    // Wait for markers layer to be loaded
+    if (!markersLayer || !markersLayer.getLayers || markersLayer.getLayers().length === 0) {
+        // Try again after a short delay if markers not ready
+        setTimeout(function() {
+            triggerMarkerClick(locationId);
+        }, 100);
+        return;
+    }
+    
+    // Find the marker with matching location ID
+    let targetMarker = null;
+    markersLayer.eachLayer(function(layer) {
+        if (layer.locationId === locationId) {
+            targetMarker = layer;
+            return false; // Break out of eachLayer
+        }
+    });
+    
+    if (targetMarker) {
+        // Check if marker is currently visible (not clustered)
+        const visibleLayers = markersLayer.getVisibleParent(targetMarker);
+        
+        if (visibleLayers === targetMarker) {
+            // Marker is visible, can click directly
+            const markerLatLng = targetMarker.getLatLng();
+            map.setView(markerLatLng, 16, {
+                animate: true,
+                duration: 1.0
+            });
+            
+            setTimeout(function() {
+                targetMarker.openPopup();
+                // Update hash
+                window.history.replaceState(null, null, '#' + locationId);
+            }, 500);
+        } else {
+            // Marker is clustered, need to zoom to show it
+            markersLayer.zoomToShowLayer(targetMarker, function() {
+                // After zooming to show the layer, center on it and open popup
+                const markerLatLng = targetMarker.getLatLng();
+                map.setView(markerLatLng, map.getZoom(), {
+                    animate: true,
+                    duration: 0.5
+                });
+                
+                setTimeout(function() {
+                    targetMarker.openPopup();
+                    // Update hash
+                    window.history.replaceState(null, null, '#' + locationId);
+                }, 200);
+            });
+        }
+    } else {
+        console.log('Marker with location ID not found:', locationId);
+    }
+}
+
+// Listen for hash changes
+window.addEventListener('hashchange', checkHashAndTriggerClick);
+
+// No need for separate initialization - hash checking is now done directly in loadReports
