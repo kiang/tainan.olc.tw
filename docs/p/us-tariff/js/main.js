@@ -12,11 +12,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Function to get color based on tariff rate
 function getTariffColor(rate) {
-    if (rate >= 40) return '#2c5234';      // Dark green for very high
-    if (rate >= 20) return '#d73527';      // Red for medium-high  
-    if (rate >= 15) return '#fd6a02';      // Orange for medium
-    if (rate >= 10) return '#fecc5c';      // Yellow for low-medium
-    return '#ffffb2';                      // Light yellow for low
+    if (rate >= 40) return '#8B0000';      // Dark red for very high (40%+)
+    if (rate >= 30) return '#DC143C';      // Crimson for high (30-39%)
+    if (rate >= 20) return '#FF4500';      // Orange red for medium-high (20-29%)
+    if (rate >= 15) return '#FFA500';      // Orange for medium (15-19%)
+    if (rate >= 10) return '#FFD700';      // Gold for low-medium (10-14%)
+    return '#90EE90';                      // Light green for low (0-9%)
 }
 
 // Function to create custom marker
