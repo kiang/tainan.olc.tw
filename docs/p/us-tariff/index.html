@@ -181,6 +181,27 @@
         .source-link a:hover {
             text-decoration: underline;
         }
+        .credit-button {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 11px;
+            color: #666;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+        }
+        .credit-button:hover {
+            background: rgba(255, 255, 255, 1);
+            color: #333;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -228,6 +249,10 @@
             </a>
         </div>
     </div>
+
+    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="credit-button">
+        北中西區台南市議員參選人江明宗 製作
+    </a>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/main.js"></script>
