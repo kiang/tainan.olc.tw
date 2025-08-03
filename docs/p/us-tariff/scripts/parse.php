@@ -2,10 +2,77 @@
 /**
  * US Reciprocal Tariff Rates Data Parser
  * Extracts and processes tariff data from White House Executive Order ANNEX I
- * Source: https://www.whitehouse.gov/presidential-actions/2025/07/further-modifying-the-reciprocal-tariff-rates/
+ * 
+ * Chronological Sources:
+ * - Original (April 2025): https://www.whitehouse.gov/wp-content/uploads/2025/04/Annex-I.pdf
+ *   ✅ PDF content extracted using pdftotext
+ * - June 2025 News: White House official explains 55% = 10% reciprocal + 20% fentanyl + 25% pre-existing
+ *   Source: The Guardian, June 11, 2025
+ * - Current (July 2025): https://www.whitehouse.gov/presidential-actions/2025/07/further-modifying-the-reciprocal-tariff-rates/
  */
 
-// Complete tariff data from ANNEX I
+// Original tariff data from April 2025 ANNEX I (extracted from official PDF)
+$previousTariffData = [
+    'Algeria' => 30,
+    'Angola' => 32,
+    'Bangladesh' => 37,
+    'Bosnia and Herzegovina' => 35,
+    'Botswana' => 37,
+    'Brunei' => 24,
+    'Cambodia' => 49,
+    'Cameroon' => 11,
+    'Chad' => 13,
+    'China' => 34,
+    'Côte d\'Ivoire' => 21,
+    'Democratic Republic of the Congo' => 11,
+    'Equatorial Guinea' => 13,
+    'European Union' => 20,
+    'Falkland Islands' => 41,
+    'Fiji' => 32,
+    'Guyana' => 38,
+    'India' => 26,
+    'Indonesia' => 32,
+    'Iraq' => 39,
+    'Israel' => 17,
+    'Japan' => 24,
+    'Jordan' => 20,
+    'Kazakhstan' => 27,
+    'Laos' => 48,
+    'Lesotho' => 50,
+    'Libya' => 31,
+    'Liechtenstein' => 37,
+    'Madagascar' => 47,
+    'Malawi' => 17,
+    'Malaysia' => 24,
+    'Mauritius' => 40,
+    'Moldova' => 31,
+    'Mozambique' => 16,
+    'Myanmar' => 44, // Burma
+    'Namibia' => 21,
+    'Nauru' => 30,
+    'Nicaragua' => 18,
+    'Nigeria' => 14,
+    'North Macedonia' => 33,
+    'Norway' => 15,
+    'Pakistan' => 29,
+    'Philippines' => 17,
+    'Serbia' => 37,
+    'South Africa' => 30,
+    'South Korea' => 25,
+    'Sri Lanka' => 44,
+    'Switzerland' => 31,
+    'Syria' => 41,
+    'Taiwan' => 32,
+    'Thailand' => 36,
+    'Tunisia' => 28,
+    'Vanuatu' => 22,
+    'Venezuela' => 15,
+    'Vietnam' => 46,
+    'Zambia' => 17,
+    'Zimbabwe' => 18
+];
+
+// Current tariff data from July 2025 ANNEX I
 $tariffData = [
     'Afghanistan' => 15,
     'Algeria' => 30,
@@ -19,6 +86,7 @@ $tariffData = [
     'Cambodia' => 19,
     'Cameroon' => 15,
     'Chad' => 15,
+    'China' => 55, // 10% reciprocal + 20% fentanyl + 25% pre-existing
     'Costa Rica' => 15,
     'Côte d\'Ivoire' => 15,
     'Democratic Republic of the Congo' => 15,
@@ -88,6 +156,7 @@ $specialCases = [
 
 // Country coordinates (approximate geographic centers)
 $countryCoordinates = [
+    'China' => [35.0, 105.0],
     'Afghanistan' => [33.0, 65.0],
     'Algeria' => [28.0, 3.0],
     'Angola' => [-12.5, 18.5],
@@ -163,14 +232,18 @@ $countryCoordinates = [
  * Generate JSON output for JavaScript consumption
  */
 function generateJSON() {
-    global $tariffData, $specialCases, $countryCoordinates;
+    global $tariffData, $specialCases, $countryCoordinates, $previousTariffData;
     
     $output = [
         'countries' => [],
         'metadata' => [
             'source' => 'White House Executive Order: Further Modifying the Reciprocal Tariff Rates',
             'url' => 'https://www.whitehouse.gov/presidential-actions/2025/07/further-modifying-the-reciprocal-tariff-rates/',
+            'original_source' => 'https://www.whitehouse.gov/wp-content/uploads/2025/04/Annex-I.pdf',
+            'china_explanation' => 'https://www.theguardian.com/business/2025/jun/11/trump-says-china-will-face-55-percent-tariffs-us-trade-deal-rare-earth-minerals',
+            'extraction_method' => 'PDF extracted using pdftotext from official White House document',
             'date' => 'July 2025',
+            'chronology' => 'April 2025 (Original) → June 2025 (China 55% explained) → July 2025 (Current)',
             'total_countries' => count($tariffData) + count($specialCases),
             'generated' => date('Y-m-d H:i:s')
         ]
@@ -179,24 +252,66 @@ function generateJSON() {
     // Add regular countries
     foreach ($tariffData as $country => $rate) {
         $coords = isset($countryCoordinates[$country]) ? $countryCoordinates[$country] : null;
-        $output['countries'][] = [
-            'name' => $country,
-            'tariff_rate' => $rate,
-            'coordinates' => $coords,
-            'type' => 'fixed'
-        ];
+        $previousRate = isset($previousTariffData[$country]) ? $previousTariffData[$country] : null;
+        $change = ($previousRate !== null) ? $rate - $previousRate : null;
+        
+        // Special handling for China's complex timeline
+        if ($country === 'China') {
+            $output['countries'][] = [
+                'name' => $country,
+                'tariff_rate' => $rate,
+                'previous_rate' => $previousRate,
+                'interim_rate' => 10, // May 2025 modification
+                'change' => $change,
+                'coordinates' => $coords,
+                'type' => 'special',
+                'timeline' => 'April: 34% → May: 10% (90-day conditional) → July: 55%',
+                'description' => 'China\'s tariff evolved through diplomatic negotiations: 34% initial rate, reduced to 10% in May 2025 under conditional 90-day suspension, then set to 55% in July 2025. White House official explained the 55% breakdown in June 2025.',
+                'rate_breakdown' => '55% = 10% reciprocal + 20% fentanyl trafficking levy + 25% pre-existing tariff',
+                'news_source' => 'The Guardian, June 11, 2025: White House official confirmation of rate structure',
+                'news_url' => 'https://www.theguardian.com/business/2025/jun/11/trump-says-china-will-face-55-percent-tariffs-us-trade-deal-rare-earth-minerals'
+            ];
+        } else {
+            $output['countries'][] = [
+                'name' => $country,
+                'tariff_rate' => $rate,
+                'previous_rate' => $previousRate,
+                'change' => $change,
+                'coordinates' => $coords,
+                'type' => 'fixed'
+            ];
+        }
     }
     
     // Add special cases
     foreach ($specialCases as $country => $data) {
         $coords = isset($countryCoordinates[$country]) ? $countryCoordinates[$country] : null;
+        $previousRate = isset($previousTariffData[$country]) ? $previousTariffData[$country] : null;
+        
         $output['countries'][] = [
             'name' => $country,
             'tariff_rate' => $data['display_rate'],
+            'previous_rate' => $previousRate,
+            'change' => 'Variable', // Can't calculate numeric change for variable rates
             'coordinates' => $coords,
             'type' => 'variable',
             'description' => $data['description']
         ];
+    }
+    
+    // Add countries that were in previous list but not in current (removed)
+    foreach ($previousTariffData as $country => $previousRate) {
+        if (!isset($tariffData[$country]) && !isset($specialCases[$country])) {
+            $coords = isset($countryCoordinates[$country]) ? $countryCoordinates[$country] : null;
+            $output['countries'][] = [
+                'name' => $country,
+                'tariff_rate' => 0, // Removed from list
+                'previous_rate' => $previousRate,
+                'change' => -$previousRate,
+                'coordinates' => $coords,
+                'type' => 'removed'
+            ];
+        }
     }
     
     return json_encode($output, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

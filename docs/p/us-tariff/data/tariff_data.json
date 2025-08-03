@@ -3,6 +3,8 @@
         {
             "name": "Afghanistan",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 33,
                 65
@@ -12,6 +14,8 @@
         {
             "name": "Algeria",
             "tariff_rate": 30,
+            "previous_rate": 30,
+            "change": 0,
             "coordinates": [
                 28,
                 3
@@ -21,6 +25,8 @@
         {
             "name": "Angola",
             "tariff_rate": 15,
+            "previous_rate": 32,
+            "change": -17,
             "coordinates": [
                 -12.5,
                 18.5
@@ -30,6 +36,8 @@
         {
             "name": "Bangladesh",
             "tariff_rate": 20,
+            "previous_rate": 37,
+            "change": -17,
             "coordinates": [
                 24,
                 90
@@ -39,6 +47,8 @@
         {
             "name": "Bolivia",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 -16.5,
                 -68
@@ -48,6 +58,8 @@
         {
             "name": "Bosnia and Herzegovina",
             "tariff_rate": 30,
+            "previous_rate": 35,
+            "change": -5,
             "coordinates": [
                 44,
                 18
@@ -57,6 +69,8 @@
         {
             "name": "Botswana",
             "tariff_rate": 15,
+            "previous_rate": 37,
+            "change": -22,
             "coordinates": [
                 -22,
                 24
@@ -66,6 +80,8 @@
         {
             "name": "Brazil",
             "tariff_rate": 10,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 -14,
                 -51
@@ -75,6 +91,8 @@
         {
             "name": "Brunei",
             "tariff_rate": 25,
+            "previous_rate": 24,
+            "change": 1,
             "coordinates": [
                 4.5,
                 114.7
@@ -84,6 +102,8 @@
         {
             "name": "Cambodia",
             "tariff_rate": 19,
+            "previous_rate": 49,
+            "change": -30,
             "coordinates": [
                 12.5,
                 105
@@ -93,6 +113,8 @@
         {
             "name": "Cameroon",
             "tariff_rate": 15,
+            "previous_rate": 11,
+            "change": 4,
             "coordinates": [
                 7,
                 12
@@ -102,6 +124,8 @@
         {
             "name": "Chad",
             "tariff_rate": 15,
+            "previous_rate": 13,
+            "change": 2,
             "coordinates": [
                 15,
                 19
@@ -109,8 +133,27 @@
             "type": "fixed"
         },
         {
+            "name": "China",
+            "tariff_rate": 55,
+            "previous_rate": 34,
+            "interim_rate": 10,
+            "change": 21,
+            "coordinates": [
+                35,
+                105
+            ],
+            "type": "special",
+            "timeline": "April: 34% → May: 10% (90-day conditional) → July: 55%",
+            "description": "China's tariff evolved through diplomatic negotiations: 34% initial rate, reduced to 10% in May 2025 under conditional 90-day suspension, then set to 55% in July 2025. White House official explained the 55% breakdown in June 2025.",
+            "rate_breakdown": "55% = 10% reciprocal + 20% fentanyl trafficking levy + 25% pre-existing tariff",
+            "news_source": "The Guardian, June 11, 2025: White House official confirmation of rate structure",
+            "news_url": "https:\/\/www.theguardian.com\/business\/2025\/jun\/11\/trump-says-china-will-face-55-percent-tariffs-us-trade-deal-rare-earth-minerals"
+        },
+        {
             "name": "Costa Rica",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 10,
                 -84
@@ -120,6 +163,8 @@
         {
             "name": "Côte d'Ivoire",
             "tariff_rate": 15,
+            "previous_rate": 21,
+            "change": -6,
             "coordinates": [
                 8,
                 -5
@@ -129,6 +174,8 @@
         {
             "name": "Democratic Republic of the Congo",
             "tariff_rate": 15,
+            "previous_rate": 11,
+            "change": 4,
             "coordinates": [
                 -4,
                 21
@@ -138,6 +185,8 @@
         {
             "name": "Ecuador",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 -1.8,
                 -78.2
@@ -147,6 +196,8 @@
         {
             "name": "Equatorial Guinea",
             "tariff_rate": 15,
+            "previous_rate": 13,
+            "change": 2,
             "coordinates": [
                 2,
                 10
@@ -156,6 +207,8 @@
         {
             "name": "Falkland Islands",
             "tariff_rate": 10,
+            "previous_rate": 41,
+            "change": -31,
             "coordinates": [
                 -51.8,
                 -59
@@ -165,6 +218,8 @@
         {
             "name": "Fiji",
             "tariff_rate": 15,
+            "previous_rate": 32,
+            "change": -17,
             "coordinates": [
                 -16.5,
                 179.4
@@ -174,6 +229,8 @@
         {
             "name": "Ghana",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 7.9,
                 -1
@@ -183,6 +240,8 @@
         {
             "name": "Guyana",
             "tariff_rate": 15,
+            "previous_rate": 38,
+            "change": -23,
             "coordinates": [
                 5,
                 -59
@@ -192,6 +251,8 @@
         {
             "name": "Iceland",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 64.1,
                 -21.9
@@ -201,6 +262,8 @@
         {
             "name": "India",
             "tariff_rate": 25,
+            "previous_rate": 26,
+            "change": -1,
             "coordinates": [
                 20.6,
                 78.9
@@ -210,6 +273,8 @@
         {
             "name": "Indonesia",
             "tariff_rate": 19,
+            "previous_rate": 32,
+            "change": -13,
             "coordinates": [
                 -0.8,
                 113.9
@@ -219,6 +284,8 @@
         {
             "name": "Iraq",
             "tariff_rate": 35,
+            "previous_rate": 39,
+            "change": -4,
             "coordinates": [
                 33.2,
                 43.7
@@ -228,6 +295,8 @@
         {
             "name": "Israel",
             "tariff_rate": 15,
+            "previous_rate": 17,
+            "change": -2,
             "coordinates": [
                 31,
                 35
@@ -237,6 +306,8 @@
         {
             "name": "Japan",
             "tariff_rate": 15,
+            "previous_rate": 24,
+            "change": -9,
             "coordinates": [
                 36.2,
                 138.3
@@ -246,6 +317,8 @@
         {
             "name": "Jordan",
             "tariff_rate": 15,
+            "previous_rate": 20,
+            "change": -5,
             "coordinates": [
                 30.6,
                 36.2
@@ -255,6 +328,8 @@
         {
             "name": "Kazakhstan",
             "tariff_rate": 25,
+            "previous_rate": 27,
+            "change": -2,
             "coordinates": [
                 48,
                 66.9
@@ -264,6 +339,8 @@
         {
             "name": "Laos",
             "tariff_rate": 40,
+            "previous_rate": 48,
+            "change": -8,
             "coordinates": [
                 19.9,
                 102.5
@@ -273,6 +350,8 @@
         {
             "name": "Lesotho",
             "tariff_rate": 15,
+            "previous_rate": 50,
+            "change": -35,
             "coordinates": [
                 -29.6,
                 28.2
@@ -282,6 +361,8 @@
         {
             "name": "Libya",
             "tariff_rate": 30,
+            "previous_rate": 31,
+            "change": -1,
             "coordinates": [
                 26.3,
                 17.2
@@ -291,6 +372,8 @@
         {
             "name": "Liechtenstein",
             "tariff_rate": 15,
+            "previous_rate": 37,
+            "change": -22,
             "coordinates": [
                 47.1,
                 9.5
@@ -300,6 +383,8 @@
         {
             "name": "Madagascar",
             "tariff_rate": 15,
+            "previous_rate": 47,
+            "change": -32,
             "coordinates": [
                 -18.8,
                 47
@@ -309,6 +394,8 @@
         {
             "name": "Malawi",
             "tariff_rate": 15,
+            "previous_rate": 17,
+            "change": -2,
             "coordinates": [
                 -13.3,
                 34.3
@@ -318,6 +405,8 @@
         {
             "name": "Malaysia",
             "tariff_rate": 19,
+            "previous_rate": 24,
+            "change": -5,
             "coordinates": [
                 4.2,
                 101.9
@@ -327,6 +416,8 @@
         {
             "name": "Mauritius",
             "tariff_rate": 15,
+            "previous_rate": 40,
+            "change": -25,
             "coordinates": [
                 -20.3,
                 57.6
@@ -336,6 +427,8 @@
         {
             "name": "Moldova",
             "tariff_rate": 25,
+            "previous_rate": 31,
+            "change": -6,
             "coordinates": [
                 47.4,
                 28.4
@@ -345,6 +438,8 @@
         {
             "name": "Mozambique",
             "tariff_rate": 15,
+            "previous_rate": 16,
+            "change": -1,
             "coordinates": [
                 -18.7,
                 35.5
@@ -354,6 +449,8 @@
         {
             "name": "Myanmar",
             "tariff_rate": 40,
+            "previous_rate": 44,
+            "change": -4,
             "coordinates": [
                 21.9,
                 95.9
@@ -363,6 +460,8 @@
         {
             "name": "Namibia",
             "tariff_rate": 15,
+            "previous_rate": 21,
+            "change": -6,
             "coordinates": [
                 -22.6,
                 17.1
@@ -372,6 +471,8 @@
         {
             "name": "Nauru",
             "tariff_rate": 15,
+            "previous_rate": 30,
+            "change": -15,
             "coordinates": [
                 -0.5,
                 166.9
@@ -381,6 +482,8 @@
         {
             "name": "New Zealand",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 -40.9,
                 174.9
@@ -390,6 +493,8 @@
         {
             "name": "Nicaragua",
             "tariff_rate": 18,
+            "previous_rate": 18,
+            "change": 0,
             "coordinates": [
                 12.9,
                 -85.2
@@ -399,6 +504,8 @@
         {
             "name": "Nigeria",
             "tariff_rate": 15,
+            "previous_rate": 14,
+            "change": 1,
             "coordinates": [
                 9.1,
                 8.7
@@ -408,6 +515,8 @@
         {
             "name": "North Macedonia",
             "tariff_rate": 15,
+            "previous_rate": 33,
+            "change": -18,
             "coordinates": [
                 41.6,
                 21.7
@@ -417,6 +526,8 @@
         {
             "name": "Norway",
             "tariff_rate": 15,
+            "previous_rate": 15,
+            "change": 0,
             "coordinates": [
                 60.5,
                 8.5
@@ -426,6 +537,8 @@
         {
             "name": "Pakistan",
             "tariff_rate": 19,
+            "previous_rate": 29,
+            "change": -10,
             "coordinates": [
                 30.4,
                 69.3
@@ -435,6 +548,8 @@
         {
             "name": "Papua New Guinea",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 -6.3,
                 143.9
@@ -444,6 +559,8 @@
         {
             "name": "Philippines",
             "tariff_rate": 19,
+            "previous_rate": 17,
+            "change": 2,
             "coordinates": [
                 12.9,
                 121.8
@@ -453,6 +570,8 @@
         {
             "name": "Serbia",
             "tariff_rate": 35,
+            "previous_rate": 37,
+            "change": -2,
             "coordinates": [
                 44,
                 21
@@ -462,6 +581,8 @@
         {
             "name": "South Africa",
             "tariff_rate": 30,
+            "previous_rate": 30,
+            "change": 0,
             "coordinates": [
                 -30.6,
                 22.9
@@ -471,6 +592,8 @@
         {
             "name": "South Korea",
             "tariff_rate": 15,
+            "previous_rate": 25,
+            "change": -10,
             "coordinates": [
                 35.9,
                 127.8
@@ -480,6 +603,8 @@
         {
             "name": "Sri Lanka",
             "tariff_rate": 20,
+            "previous_rate": 44,
+            "change": -24,
             "coordinates": [
                 7.9,
                 80.8
@@ -489,6 +614,8 @@
         {
             "name": "Switzerland",
             "tariff_rate": 39,
+            "previous_rate": 31,
+            "change": 8,
             "coordinates": [
                 46.8,
                 8.2
@@ -498,6 +625,8 @@
         {
             "name": "Syria",
             "tariff_rate": 41,
+            "previous_rate": 41,
+            "change": 0,
             "coordinates": [
                 34.8,
                 38.9
@@ -507,6 +636,8 @@
         {
             "name": "Taiwan",
             "tariff_rate": 20,
+            "previous_rate": 32,
+            "change": -12,
             "coordinates": [
                 23.7,
                 120.9
@@ -516,6 +647,8 @@
         {
             "name": "Thailand",
             "tariff_rate": 19,
+            "previous_rate": 36,
+            "change": -17,
             "coordinates": [
                 15.9,
                 100.9
@@ -525,6 +658,8 @@
         {
             "name": "Trinidad and Tobago",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 10.7,
                 -61.2
@@ -534,6 +669,8 @@
         {
             "name": "Tunisia",
             "tariff_rate": 25,
+            "previous_rate": 28,
+            "change": -3,
             "coordinates": [
                 33.9,
                 9.6
@@ -543,6 +680,8 @@
         {
             "name": "Turkey",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 38.96,
                 35.24
@@ -552,6 +691,8 @@
         {
             "name": "Uganda",
             "tariff_rate": 15,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 1.4,
                 32.3
@@ -561,6 +702,8 @@
         {
             "name": "United Kingdom",
             "tariff_rate": 10,
+            "previous_rate": null,
+            "change": null,
             "coordinates": [
                 55.4,
                 -3.4
@@ -570,6 +713,8 @@
         {
             "name": "Vanuatu",
             "tariff_rate": 15,
+            "previous_rate": 22,
+            "change": -7,
             "coordinates": [
                 -15.4,
                 166.9
@@ -579,6 +724,8 @@
         {
             "name": "Venezuela",
             "tariff_rate": 15,
+            "previous_rate": 15,
+            "change": 0,
             "coordinates": [
                 6.4,
                 -66.6
@@ -588,6 +735,8 @@
         {
             "name": "Vietnam",
             "tariff_rate": 20,
+            "previous_rate": 46,
+            "change": -26,
             "coordinates": [
                 14.1,
                 108.3
@@ -597,6 +746,8 @@
         {
             "name": "Zambia",
             "tariff_rate": 15,
+            "previous_rate": 17,
+            "change": -2,
             "coordinates": [
                 -13.1,
                 27.8
@@ -606,6 +757,8 @@
         {
             "name": "Zimbabwe",
             "tariff_rate": 15,
+            "previous_rate": 18,
+            "change": -3,
             "coordinates": [
                 -19,
                 29.2
@@ -615,6 +768,8 @@
         {
             "name": "European Union",
             "tariff_rate": "Variable (0-15%)",
+            "previous_rate": 20,
+            "change": "Variable",
             "coordinates": [
                 54.5,
                 15.2
@@ -626,8 +781,12 @@
     "metadata": {
         "source": "White House Executive Order: Further Modifying the Reciprocal Tariff Rates",
         "url": "https:\/\/www.whitehouse.gov\/presidential-actions\/2025\/07\/further-modifying-the-reciprocal-tariff-rates\/",
+        "original_source": "https:\/\/www.whitehouse.gov\/wp-content\/uploads\/2025\/04\/Annex-I.pdf",
+        "china_explanation": "https:\/\/www.theguardian.com\/business\/2025\/jun\/11\/trump-says-china-will-face-55-percent-tariffs-us-trade-deal-rare-earth-minerals",
+        "extraction_method": "PDF extracted using pdftotext from official White House document",
         "date": "July 2025",
-        "total_countries": 69,
-        "generated": "2025-08-01 01:08:05"
+        "chronology": "April 2025 (Original) → June 2025 (China 55% explained) → July 2025 (Current)",
+        "total_countries": 70,
+        "generated": "2025-08-03 01:49:39"
     }
 }
