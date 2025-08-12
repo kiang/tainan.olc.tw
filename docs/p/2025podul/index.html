@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 楊柳颱風報告地圖</title>
+    <meta property="og:title" content="2025 楊柳颱風報告地圖">
+    <meta property="og:description" content="點擊地圖任意位置即可回報相關資訊">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://kiang.github.io/tainan.olc.tw/p/2025podul/og_image.png">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .leaflet-popup-content {
+            margin: 10px 15px;
+            line-height: 1.5;
+        }
+        .report-btn {
+            margin-top: 10px;
+        }
+        .info-row {
+            margin: 5px 0;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .report-marker {
+            background-color: #ff4444;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .report-marker:hover {
+            background-color: #ff6666;
+            transform: scale(1.2);
+        }
+        .location-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: white;
+            border: 2px solid rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        }
+        .location-button:hover {
+            background: #f4f4f4;
+        }
+        .location-button.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .photo-container {
+            margin-bottom: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .leaflet-popup-content {
+            max-width: 400px;
+        }
+        .report-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .report-table td {
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        .report-table td:first-child {
+            font-weight: bold;
+            color: #333;
+            width: 35%;
+            background-color: #f8f9fa;
+        }
+        .report-table td:last-child {
+            word-break: break-word;
+        }
+        .report-table tr:last-child td {
+            border-bottom: none;
+        }
+        .navigation-buttons {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .nav-btn {
+            margin: 2px;
+            padding: 5px 10px;
+            font-size: 12px;
+            text-decoration: none;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .nav-btn.google {
+            background-color: #4285f4;
+            color: white;
+        }
+        .nav-btn.bing {
+            background-color: #00bcf2;
+            color: white;
+        }
+        .nav-btn.here {
+            background-color: #48dad0;
+            color: white;
+        }
+        .nav-btn:hover {
+            opacity: 0.8;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <button id="locationBtn" class="location-button" title="取得我的位置" style="right: 60px;">📍</button>
+    <button id="searchCoordsBtn" class="location-button" title="搜尋經緯度">🔍</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="searchCoordsModal" tabindex="-1" aria-labelledby="searchCoordsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchCoordsModalLabel">搜尋經緯度</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="coordinatesInput" class="form-label">座標 (緯度,經度)</label>
+                        <input type="text" class="form-control" id="coordinatesInput" placeholder="例如: 23.000694,120.221507">
+                        <small class="form-text text-muted">請輸入格式：緯度,經度</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-info" id="useCurrentLocationModalBtn">取得目前位置</button>
+                    <button type="button" class="btn btn-primary" id="locateCoordsBtn">定位</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
