@@ -18,10 +18,13 @@ async function loadData() {
     try {
         console.log('Loading referendum data...');
         const referendumResponse = await fetch('https://kiang.github.io/vote2025/referendum_cunli_data.json');
-        const referendumArray = await referendumResponse.json();
+        const referendumDataFull = await referendumResponse.json();
         
-        // Convert array to object for faster lookup
-        referendumArray.forEach(item => {
+        // Store verified totals for statistics
+        window.verifiedTotals = referendumDataFull.verified_totals;
+        
+        // Convert villages array to object for faster lookup
+        referendumDataFull.villages.forEach(item => {
             if (item.villcode) {
                 referendumData[item.villcode] = item;
             }
@@ -307,62 +310,100 @@ function updateStats() {
     const selectedCounty = document.getElementById('countyFilter').value;
     const statsContent = document.getElementById('statsContent');
     
-    // Get all referendum data (including those without VILLCODE)
-    const referendumResponse = fetch('https://kiang.github.io/vote2025/referendum_cunli_data.json')
-        .then(response => response.json())
-        .then(referendumArray => {
-            let filteredData = referendumArray;
-            if (selectedCounty) {
-                filteredData = referendumArray.filter(item => item.county === selectedCounty);
-            }
-            
-            const totalVillages = filteredData.length;
-            const totalAgree = filteredData.reduce((sum, item) => sum + item.total_votes.agree, 0);
-            const totalDisagree = filteredData.reduce((sum, item) => sum + item.total_votes.disagree, 0);
-            const totalValid = filteredData.reduce((sum, item) => sum + item.total_votes.valid, 0);
-            const totalVotes = filteredData.reduce((sum, item) => sum + item.total_votes.total, 0);
-            const totalEligible = filteredData.reduce((sum, item) => sum + item.total_eligible_voters, 0);
-            const totalStations = filteredData.reduce((sum, item) => sum + item.station_count, 0);
-            
-            const agreeRate = totalValid > 0 ? (totalAgree / totalValid * 100).toFixed(1) : '0.0';
-            const disagreeRate = totalValid > 0 ? (totalDisagree / totalValid * 100).toFixed(1) : '0.0';
-            const turnoutRate = totalEligible > 0 ? (totalVotes / totalEligible * 100).toFixed(1) : '0.0';
-            
-            statsContent.innerHTML = `
-                <div class="stat-item">
-                    <span>村里數量:</span>
-                    <span>${totalVillages.toLocaleString()}</span>
-                </div>
-                <div class="stat-item">
-                    <span>投票所數量:</span>
-                    <span>${totalStations.toLocaleString()}</span>
-                </div>
-                <div class="stat-item">
-                    <span>同意票:</span>
-                    <span>${totalAgree.toLocaleString()} (${agreeRate}%)</span>
-                </div>
-                <div class="stat-item">
-                    <span>不同意票:</span>
-                    <span>${totalDisagree.toLocaleString()} (${disagreeRate}%)</span>
-                </div>
-                <div class="stat-item">
-                    <span>有效票:</span>
-                    <span>${totalValid.toLocaleString()}</span>
-                </div>
-                <div class="stat-item">
-                    <span>總投票數:</span>
-                    <span>${totalVotes.toLocaleString()}</span>
-                </div>
-                <div class="stat-item">
-                    <span>投票權人數:</span>
-                    <span>${totalEligible.toLocaleString()}</span>
-                </div>
-                <div class="stat-item">
-                    <span>投票率:</span>
-                    <span>${turnoutRate}%</span>
-                </div>
-            `;
-        });
+    if (selectedCounty) {
+        // For county filtering, calculate from filtered data
+        let filteredData = Object.values(referendumData).filter(item => item.county === selectedCounty);
+        
+        const totalVillages = filteredData.length;
+        const totalAgree = filteredData.reduce((sum, item) => sum + item.total_votes.agree, 0);
+        const totalDisagree = filteredData.reduce((sum, item) => sum + item.total_votes.disagree, 0);
+        const totalValid = filteredData.reduce((sum, item) => sum + item.total_votes.valid, 0);
+        const totalVotes = filteredData.reduce((sum, item) => sum + item.total_votes.total, 0);
+        const totalEligible = filteredData.reduce((sum, item) => sum + item.total_eligible_voters, 0);
+        const totalStations = filteredData.reduce((sum, item) => sum + item.station_count, 0);
+        
+        const agreeRate = totalValid > 0 ? (totalAgree / totalValid * 100).toFixed(1) : '0.0';
+        const disagreeRate = totalValid > 0 ? (totalDisagree / totalValid * 100).toFixed(1) : '0.0';
+        const turnoutRate = totalEligible > 0 ? (totalVotes / totalEligible * 100).toFixed(1) : '0.0';
+        
+        statsContent.innerHTML = `
+            <div class="stat-item">
+                <span>村里數量 (顯示於地圖):</span>
+                <span>${totalVillages.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票所數量:</span>
+                <span>${Math.round(totalStations).toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>同意票:</span>
+                <span>${totalAgree.toLocaleString()} (${agreeRate}%)</span>
+            </div>
+            <div class="stat-item">
+                <span>不同意票:</span>
+                <span>${totalDisagree.toLocaleString()} (${disagreeRate}%)</span>
+            </div>
+            <div class="stat-item">
+                <span>有效票:</span>
+                <span>${totalValid.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>總投票數:</span>
+                <span>${totalVotes.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票權人數:</span>
+                <span>${totalEligible.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票率:</span>
+                <span>${turnoutRate}%</span>
+            </div>
+        `;
+    } else {
+        // For all Taiwan, use verified totals from raw files
+        const verifiedTotals = window.verifiedTotals;
+        const totalVillages = Object.keys(referendumData).length;
+        
+        statsContent.innerHTML = `
+            <div class="stat-item">
+                <span>村里數量 (顯示於地圖):</span>
+                <span>${totalVillages.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>村里數量 (全臺):</span>
+                <span>${verifiedTotals['村里數量'].toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票所數量:</span>
+                <span>${verifiedTotals['投票所數量'].toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>同意票 (官方總計):</span>
+                <span>${verifiedTotals.agree.toLocaleString()} (${verifiedTotals.agree_rate.toFixed(1)}%)</span>
+            </div>
+            <div class="stat-item">
+                <span>不同意票 (官方總計):</span>
+                <span>${verifiedTotals.disagree.toLocaleString()} (${verifiedTotals.disagree_rate.toFixed(1)}%)</span>
+            </div>
+            <div class="stat-item">
+                <span>有效票:</span>
+                <span>${verifiedTotals['有效票'].toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>總投票數:</span>
+                <span>${verifiedTotals['總投票數'].toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票權人數:</span>
+                <span>${verifiedTotals['投票權人數'].toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+                <span>投票率:</span>
+                <span>${verifiedTotals['投票率']}%</span>
+            </div>
+        `;
+    }
 }
 
 // Event listeners
