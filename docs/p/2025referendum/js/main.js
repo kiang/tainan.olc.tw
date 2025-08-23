@@ -6,7 +6,7 @@ let currentMode = 'agree_rate';
 
 // Initialize map
 function initMap() {
-    map = L.map('map').setView([23.8, 120.9], 7);
+    map = L.map('map').setView([23.8, 120.9], 9);
     
     L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
         attribution: '© 國土測繪中心 NLSC'
@@ -241,6 +241,10 @@ function visualizeData() {
     // Fit map to filtered data bounds
     if (filteredFeatures.length > 0) {
         map.fitBounds(geoLayer.getBounds());
+        // Ensure zoom level is not smaller than 9
+        if (map.getZoom() < 9) {
+            map.setZoom(9);
+        }
     }
     
     updateLegend();
@@ -367,23 +371,11 @@ function updateStats() {
         
         statsContent.innerHTML = `
             <div class="stat-item">
-                <span>村里數量 (顯示於地圖):</span>
-                <span>${totalVillages.toLocaleString()}</span>
-            </div>
-            <div class="stat-item">
-                <span>村里數量 (全臺):</span>
-                <span>${verifiedTotals['村里數量'].toLocaleString()}</span>
-            </div>
-            <div class="stat-item">
-                <span>投票所數量:</span>
-                <span>${verifiedTotals['投票所數量'].toLocaleString()}</span>
-            </div>
-            <div class="stat-item">
-                <span>同意票 (官方總計):</span>
+                <span>同意票:</span>
                 <span>${verifiedTotals.agree.toLocaleString()} (${verifiedTotals.agree_rate.toFixed(1)}%)</span>
             </div>
             <div class="stat-item">
-                <span>不同意票 (官方總計):</span>
+                <span>不同意票:</span>
                 <span>${verifiedTotals.disagree.toLocaleString()} (${verifiedTotals.disagree_rate.toFixed(1)}%)</span>
             </div>
             <div class="stat-item">
@@ -415,6 +407,143 @@ document.getElementById('visualMode').addEventListener('change', function(e) {
 document.getElementById('countyFilter').addEventListener('change', function(e) {
     visualizeData();
     updateStats();
+});
+
+// User location functionality
+function findMatchingCunli(lat, lng) {
+    if (!geoData) return null;
+    
+    // Check each cunli to see if the coordinates fall within its boundaries
+    for (const feature of geoData.features) {
+        if (feature.geometry && feature.geometry.type === 'Polygon') {
+            const coords = feature.geometry.coordinates[0];
+            if (isPointInPolygon([lng, lat], coords)) {
+                return feature;
+            }
+        } else if (feature.geometry && feature.geometry.type === 'MultiPolygon') {
+            for (const polygon of feature.geometry.coordinates) {
+                const coords = polygon[0];
+                if (isPointInPolygon([lng, lat], coords)) {
+                    return feature;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+// Simple point-in-polygon algorithm
+function isPointInPolygon(point, polygon) {
+    const x = point[0], y = point[1];
+    let inside = false;
+    
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i][0], yi = polygon[i][1];
+        const xj = polygon[j][0], yj = polygon[j][1];
+        
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+// Location button event handler
+document.getElementById('locationBtn').addEventListener('click', function() {
+    const button = this;
+    
+    if (!navigator.geolocation) {
+        alert('您的瀏覽器不支援地理位置功能');
+        return;
+    }
+    
+    button.disabled = true;
+    button.textContent = '定位中...';
+    
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            // Find matching cunli
+            const matchingCunli = findMatchingCunli(lat, lng);
+            
+            if (matchingCunli) {
+                // Create a temporary layer to get bounds
+                const tempLayer = L.geoJSON(matchingCunli);
+                const bounds = tempLayer.getBounds();
+                
+                // Fit map to the cunli bounds
+                map.fitBounds(bounds, { padding: [20, 20] });
+                // Ensure zoom level is not smaller than 9
+                if (map.getZoom() < 9) {
+                    map.setZoom(9);
+                }
+                
+                // Highlight the cunli
+                setTimeout(() => {
+                    if (geoLayer) {
+                        geoLayer.eachLayer(layer => {
+                            if (layer.feature.properties.VILLCODE === matchingCunli.properties.VILLCODE) {
+                                layer.openPopup();
+                                layer.setStyle({
+                                    weight: 3,
+                                    color: '#e74c3c',
+                                    fillOpacity: 0.9
+                                });
+                                setTimeout(() => {
+                                    geoLayer.resetStyle(layer);
+                                }, 3000);
+                            }
+                        });
+                    }
+                }, 500);
+            } else {
+                alert('無法找到對應的村里，可能您不在台灣境內或資料不完整');
+            }
+            
+            button.disabled = false;
+            button.textContent = '📍 定位到我的村里';
+        },
+        function(error) {
+            let errorMsg = '無法取得您的位置：';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg += '您拒絕了位置存取權限';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg += '無法取得位置資訊';
+                    break;
+                case error.TIMEOUT:
+                    errorMsg += '請求超時';
+                    break;
+                default:
+                    errorMsg += '未知錯誤';
+            }
+            alert(errorMsg);
+            button.disabled = false;
+            button.textContent = '📍 定位到我的村里';
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
+        }
+    );
+});
+
+// Sidebar toggle functionality for mobile
+document.getElementById('sidebarToggle').addEventListener('click', function() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('open');
+});
+
+// Close sidebar when clicking on map (mobile only)
+document.getElementById('map').addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.remove('open');
+    }
 });
 
 // Initialize everything
