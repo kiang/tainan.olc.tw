@@ -77,44 +77,44 @@ function getColor(value, mode) {
     
     let ranges;
     if (mode === 'agree_rate') {
-        // Light blue for agree rates
+        // Red-orange gradient for all modes
         ranges = [
-            { min: 80, color: '#08519c' },
-            { min: 70, color: '#2171b5' },
-            { min: 60, color: '#4292c6' },
-            { min: 50, color: '#6baed6' },
-            { min: 40, color: '#9ecae1' },
-            { min: 0, color: '#deebf7' }
+            { min: 80, color: '#7f0000' },
+            { min: 70, color: '#b30000' },
+            { min: 60, color: '#d7301f' },
+            { min: 50, color: '#ef6548' },
+            { min: 40, color: '#fc8d59' },
+            { min: 0, color: '#fdd49e' }
         ];
     } else if (mode === 'disagree_rate') {
-        // Green for disagree rates
+        // Red-orange gradient for all modes
         ranges = [
-            { min: 80, color: '#00441b' },
-            { min: 70, color: '#238b45' },
-            { min: 60, color: '#41ab5d' },
-            { min: 50, color: '#74c476' },
-            { min: 40, color: '#a1d99b' },
-            { min: 0, color: '#e5f5e0' }
+            { min: 80, color: '#7f0000' },
+            { min: 70, color: '#b30000' },
+            { min: 60, color: '#d7301f' },
+            { min: 50, color: '#ef6548' },
+            { min: 40, color: '#fc8d59' },
+            { min: 0, color: '#fdd49e' }
         ];
     } else if (mode === 'turnout_rate') {
-        // Red for turnout rates
+        // Red-orange gradient for all modes
         ranges = [
-            { min: 50, color: '#67000d' },
-            { min: 40, color: '#a50f15' },
-            { min: 30, color: '#cb181d' },
-            { min: 20, color: '#fb6a4a' },
-            { min: 10, color: '#fc9272' },
-            { min: 0, color: '#fee0d2' }
+            { min: 50, color: '#7f0000' },
+            { min: 40, color: '#b30000' },
+            { min: 30, color: '#d7301f' },
+            { min: 20, color: '#ef6548' },
+            { min: 10, color: '#fc8d59' },
+            { min: 0, color: '#fdd49e' }
         ];
     } else {
-        // Red gradient for total votes
+        // Red-orange gradient for all modes
         ranges = [
-            { min: 1000, color: '#67000d' },
-            { min: 500, color: '#a50f15' },
-            { min: 200, color: '#cb181d' },
-            { min: 100, color: '#fb6a4a' },
-            { min: 50, color: '#fc9272' },
-            { min: 0, color: '#fee0d2' }
+            { min: 1000, color: '#7f0000' },
+            { min: 500, color: '#b30000' },
+            { min: 200, color: '#d7301f' },
+            { min: 100, color: '#ef6548' },
+            { min: 50, color: '#fc8d59' },
+            { min: 0, color: '#fdd49e' }
         ];
     }
     
@@ -272,42 +272,42 @@ function updateLegend() {
     if (mode === 'agree_rate') {
         unit = '%';
         legendItems = [
-            { color: '#08519c', label: '80% 以上' },
-            { color: '#2171b5', label: '70-80%' },
-            { color: '#4292c6', label: '60-70%' },
-            { color: '#6baed6', label: '50-60%' },
-            { color: '#9ecae1', label: '40-50%' },
-            { color: '#deebf7', label: '40% 以下' }
+            { color: '#7f0000', label: '80% 以上' },
+            { color: '#b30000', label: '70-80%' },
+            { color: '#d7301f', label: '60-70%' },
+            { color: '#ef6548', label: '50-60%' },
+            { color: '#fc8d59', label: '40-50%' },
+            { color: '#fdd49e', label: '40% 以下' }
         ];
     } else if (mode === 'disagree_rate') {
         unit = '%';
         legendItems = [
-            { color: '#00441b', label: '80% 以上' },
-            { color: '#238b45', label: '70-80%' },
-            { color: '#41ab5d', label: '60-70%' },
-            { color: '#74c476', label: '50-60%' },
-            { color: '#a1d99b', label: '40-50%' },
-            { color: '#e5f5e0', label: '40% 以下' }
+            { color: '#7f0000', label: '80% 以上' },
+            { color: '#b30000', label: '70-80%' },
+            { color: '#d7301f', label: '60-70%' },
+            { color: '#ef6548', label: '50-60%' },
+            { color: '#fc8d59', label: '40-50%' },
+            { color: '#fdd49e', label: '40% 以下' }
         ];
     } else if (mode === 'turnout_rate') {
         unit = '%';
         legendItems = [
-            { color: '#67000d', label: '50% 以上' },
-            { color: '#a50f15', label: '40-50%' },
-            { color: '#cb181d', label: '30-40%' },
-            { color: '#fb6a4a', label: '20-30%' },
-            { color: '#fc9272', label: '10-20%' },
-            { color: '#fee0d2', label: '10% 以下' }
+            { color: '#7f0000', label: '50% 以上' },
+            { color: '#b30000', label: '40-50%' },
+            { color: '#d7301f', label: '30-40%' },
+            { color: '#ef6548', label: '20-30%' },
+            { color: '#fc8d59', label: '10-20%' },
+            { color: '#fdd49e', label: '10% 以下' }
         ];
     } else {
         unit = '票';
         legendItems = [
-            { color: '#67000d', label: '1000+ 票' },
-            { color: '#a50f15', label: '500-1000 票' },
-            { color: '#cb181d', label: '200-500 票' },
-            { color: '#fb6a4a', label: '100-200 票' },
-            { color: '#fc9272', label: '50-100 票' },
-            { color: '#fee0d2', label: '50 票以下' }
+            { color: '#7f0000', label: '1000+ 票' },
+            { color: '#b30000', label: '500-1000 票' },
+            { color: '#d7301f', label: '200-500 票' },
+            { color: '#ef6548', label: '100-200 票' },
+            { color: '#fc8d59', label: '50-100 票' },
+            { color: '#fdd49e', label: '50 票以下' }
         ];
     }
     
