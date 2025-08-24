@@ -11,6 +11,15 @@ function initMap() {
     L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
         attribution: '© 國土測繪中心 NLSC'
     }).addTo(map);
+    
+    // Update layer styles when zoom changes
+    map.on('zoomend', function() {
+        if (geoLayer) {
+            geoLayer.eachLayer(function(layer) {
+                layer.setStyle(style(layer.feature));
+            });
+        }
+    });
 }
 
 // Load data from URLs
@@ -142,11 +151,12 @@ function style(feature) {
     const villcode = feature.properties.VILLCODE;
     const data = referendumData[villcode];
     const value = getValue(data, currentMode);
+    const currentZoom = map ? map.getZoom() : 9;
     
     return {
         fillColor: getColor(value, currentMode),
-        weight: 0.5,
-        opacity: 1,
+        weight: currentZoom > 9 ? 0.5 : 0,
+        opacity: currentZoom > 9 ? 1 : 0,
         color: '#666',
         fillOpacity: 0.7
     };
