@@ -106,8 +106,18 @@ function getColor(value, mode) {
             { min: 10, color: '#fc8d59' },
             { min: 0, color: '#fdd49e' }
         ];
+    } else if (mode === 'invalid_votes') {
+        // Red-orange gradient for invalid votes
+        ranges = [
+            { min: 50, color: '#7f0000' },
+            { min: 30, color: '#b30000' },
+            { min: 20, color: '#d7301f' },
+            { min: 10, color: '#ef6548' },
+            { min: 5, color: '#fc8d59' },
+            { min: 0, color: '#fdd49e' }
+        ];
     } else {
-        // Red-orange gradient for all modes
+        // Red-orange gradient for all modes (total_votes)
         ranges = [
             { min: 1000, color: '#7f0000' },
             { min: 500, color: '#b30000' },
@@ -141,6 +151,8 @@ function getValue(data, mode) {
             return data.turnout_rate || 0;
         case 'total_votes':
             return data.total_votes.total || 0;
+        case 'invalid_votes':
+            return data.total_votes.invalid || 0;
         default:
             return 0;
     }
@@ -298,6 +310,16 @@ function updateLegend() {
             { color: '#ef6548', label: '20-30%' },
             { color: '#fc8d59', label: '10-20%' },
             { color: '#fdd49e', label: '10% 以下' }
+        ];
+    } else if (mode === 'invalid_votes') {
+        unit = '票';
+        legendItems = [
+            { color: '#7f0000', label: '50+ 票' },
+            { color: '#b30000', label: '30-50 票' },
+            { color: '#d7301f', label: '20-30 票' },
+            { color: '#ef6548', label: '10-20 票' },
+            { color: '#fc8d59', label: '5-10 票' },
+            { color: '#fdd49e', label: '5 票以下' }
         ];
     } else {
         unit = '票';
