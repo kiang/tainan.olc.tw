@@ -128,19 +128,38 @@ var LegendControl = L.Control.extend({
         var div = L.DomUtil.create('div', 'leaflet-control legend p-2');
         div.style.background = 'rgba(255,255,255,0.9)';
         div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
-        var html = '<div><strong>圖例</strong></div><table class="table table-sm table-striped mb-2">';
+        div.style.cursor = 'pointer';
+        
+        var header = '<div style="display: flex; justify-content: space-between; align-items: center;"><strong>圖例</strong><span id="legend-toggle" style="font-size: 12px;">▼</span></div>';
+        var content = '<div id="legend-content"><table class="table table-sm table-striped mb-2">';
         for (var i = 0; i < colorTable[mapStyle].length; i++) {
             var entry = colorTable[mapStyle][i];
-            html += '<tr><td style="background:' + entry[1] + ';width:22px"></td>' +
+            content += '<tr><td style="background:' + entry[1] + ';width:22px"></td>' +
                 '<td class="pl-2">&gt; ' + entry[0] + '</td></tr>';
         }
-        html += '</table>';
-        html += '<div><small>資料來源：' +
+        content += '</table>';
+        content += '<div><small>資料來源：' +
             '<ul class="mb-0 pl-3">' +
             '<li><a href="https://data.gov.tw/dataset/21025" target="_blank">登革熱1998年起每日確定病例統計</a></li>' +
             '<li><a href="https://data.gov.tw/dataset/7438" target="_blank">村里界圖(TWD97經緯度)</a></li>' +
-            '</ul></small></div>';
-        div.innerHTML = html;
+            '</ul></small></div></div>';
+        
+        div.innerHTML = header + content;
+        
+        L.DomEvent.on(div, 'click', function(e) {
+            var content = div.querySelector('#legend-content');
+            var toggle = div.querySelector('#legend-toggle');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggle.innerHTML = '▼';
+            } else {
+                content.style.display = 'none';
+                toggle.innerHTML = '▶';
+            }
+            L.DomEvent.stopPropagation(e);
+        });
+        
+        L.DomEvent.disableClickPropagation(div);
         return div;
     }
 });
@@ -153,13 +172,32 @@ var LinksControl = L.Control.extend({
         var div = L.DomUtil.create('div', 'leaflet-control p-2');
         div.style.background = 'rgba(255,255,255,0.9)';
         div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
-        div.innerHTML = '' +
-            '<div class="mb-2"><strong>請點選地圖中的區塊</strong></div>' +
+        div.style.cursor = 'pointer';
+        
+        var header = '<div style="display: flex; justify-content: space-between; align-items: center;"><strong>選單</strong><span id="links-toggle" style="font-size: 12px;">▼</span></div>';
+        var content = '<div id="links-content">' +
+            '<div class="mb-2">請點選地圖中的區塊</div>' +
             '<div class="btn-group-vertical" style="width:220px">' +
             '<a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank" class="btn btn-sm" style="background-color: #0056b3; color: white; border: 1px solid #004085; font-weight: 500;">網站問題反應</a>' +
             '<a href="https://kiang.github.io/ovitrap/" target="_blank" class="btn btn-sm" style="background-color: #5a6268; color: white; border: 1px solid #4e555b; font-weight: 500;">病媒蚊監控採樣數據地圖</a>' +
             '<a href="https://github.com/kiang/tainan.olc.tw" target="_blank" class="btn btn-sm" style="background-color: #212529; color: white; border: 1px solid #1a1d20; font-weight: 500;"><i class="fa fa-github"></i> 原始碼</a>' +
-            '</div>';
+            '</div></div>';
+        
+        div.innerHTML = header + content;
+        
+        L.DomEvent.on(div, 'click', function(e) {
+            var content = div.querySelector('#links-content');
+            var toggle = div.querySelector('#links-toggle');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggle.innerHTML = '▼';
+            } else {
+                content.style.display = 'none';
+                toggle.innerHTML = '▶';
+            }
+            L.DomEvent.stopPropagation(e);
+        });
+        
         L.DomEvent.disableClickPropagation(div);
         return div;
     }
