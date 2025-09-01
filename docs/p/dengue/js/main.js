@@ -20,9 +20,10 @@ var colorTable = {
 function getFillColor(villCode) {
     var color = 'rgba(200,200,200,0.5)';
     if (villCode && dengue[villCode] !== undefined) {
+        var count = dengue[villCode].count || dengue[villCode]; // Support both old and new format
         for (var i = 0; i < colorTable[mapStyle].length; i++) {
             var entry = colorTable[mapStyle][i];
-            if (color === 'rgba(200,200,200,0.5)' && dengue[villCode] > entry[0]) {
+            if (color === 'rgba(200,200,200,0.5)' && count > entry[0]) {
                 color = entry[1];
             }
         }
@@ -46,21 +47,10 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
 var dengue = {};
 var areasLayer = null;
 
-function normalizeCode(k) {
-    var prefix = k.substr(0, 1);
-    if (prefix === '6') {
-        k = k.replace('-', '');
-        k = k.substr(0, 3) + '00' + k.substr(3, 3) + k.substr(7, 3);
-    } else {
-        k = k.replace('-', '0');
-    }
-    return k;
-}
-
 function styleFeature(feature) {
     var p = feature.properties || {};
     var villCode = p.VILLCODE;
-    var hasData = dengue[villCode] !== undefined && dengue[villCode] > 0;
+    var hasData = dengue[villCode] !== undefined && (dengue[villCode].count > 0 || dengue[villCode] > 0);
     return {
         color: hasData ? '#000' : 'transparent',
         weight: hasData ? 1 : 0,
@@ -73,21 +63,56 @@ function onEachArea(feature, layer) {
     layer.on('click', function () {
         var p = feature.properties || {};
         var villCode = p.VILLCODE;
-        var count = dengue[villCode];
+        var data = dengue[villCode];
         var html = '<table class="table table-striped mb-0">' +
-            '<tr><th>村里</th><td>' + (p.COUNTYNAME || '') + (p.TOWNNAME || '') + (p.VILLNAME || '') + '</td></tr>' +
-            (count !== undefined ? ('<tr><th>確診數</th><td>' + count + '</td></tr>') : '') +
-            '</table>';
+            '<tr><th>村里</th><td>' + (p.COUNTYNAME || '') + (p.TOWNNAME || '') + (p.VILLNAME || '') + '</td></tr>';
+        if (data !== undefined) {
+            if (typeof data === 'object') {
+                html += '<tr><th>確診數</th><td>' + data.count + '</td></tr>';
+                html += '<tr><th>最後發病日</th><td>' + data.latest_sick_date + '</td></tr>';
+            } else {
+                html += '<tr><th>確診數</th><td>' + data + '</td></tr>';
+            }
+        }
+        html += '</table>';
         layer.bindPopup(html, { maxWidth: 260 }).openPopup();
     });
 
     layer.on('mouseover', function () { 
-        var hasData = dengue[feature.properties.VILLCODE] !== undefined && dengue[feature.properties.VILLCODE] > 0;
+        var data = dengue[feature.properties.VILLCODE];
+        var hasData = data !== undefined && (data.count > 0 || data > 0);
         if (hasData) {
             layer.setStyle({ weight: 2 });
         }
     });
     layer.on('mouseout', function () { layer.setStyle(styleFeature(feature)); });
+    
+    // Add label if this area has data
+    var villCode = feature.properties.VILLCODE;
+    var data = dengue[villCode];
+    if (data && (data.count > 0 || data > 0)) {
+        var count = data.count || data;
+        var center = layer.getBounds().getCenter();
+        console.log('Adding label for', villCode, 'count:', count);
+        
+        var labelMarker = L.circleMarker(center, {
+            radius: 12,
+            fillColor: '#000',
+            color: '#fff',
+            weight: 1,
+            fillOpacity: 0.9,
+            interactive: false
+        });
+        
+        labelMarker.bindTooltip(count.toString(), {
+            permanent: true,
+            direction: 'center',
+            className: 'count-tooltip',
+            offset: [0, 0]
+        });
+        
+        labelMarker.addTo(map);
+    }
 }
 
 function refreshAreaStyles() {
@@ -173,20 +198,39 @@ map.on('locationfound', function (e) {
 });
 map.on('locationerror', function () { alert('目前使用的設備無法提供地理資訊'); });
 
-// Load boundaries (GeoJSON version)
-fetch('https://kiang.github.io/taiwan_basecode/cunli/s_geo/20250620.json')
-    .then(function (r) { return r.json(); })
-    .then(function (geojson) {
-        areasLayer = L.geoJSON(geojson, {
-            style: styleFeature,
-            onEachFeature: onEachArea
-        }).addTo(map);
-    });
+// Function to fit map to areas with data
+function fitMapToDataBounds() {
+    if (areasLayer && Object.keys(dengue).length > 0) {
+        var bounds = null;
+        areasLayer.eachLayer(function(layer) {
+            var villCode = layer.feature.properties.VILLCODE;
+            if (dengue[villCode] && (dengue[villCode].count > 0 || dengue[villCode] > 0)) {
+                if (!bounds) {
+                    bounds = L.latLngBounds(layer.getBounds());
+                } else {
+                    bounds.extend(layer.getBounds());
+                }
+            }
+        });
+        if (bounds) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+    }
+}
 
-// Load dengue counts then refresh styles
+// Load dengue data first
 $.getJSON('https://kiang.github.io/dengue/daily/2025/cunli.json', {}, function (data) {
-    $.each(data, function (k, v) {
-        dengue[normalizeCode(k)] = v;
-    });
-    refreshAreaStyles();
+    dengue = data;
+    
+    // Then load boundaries with labels included
+    fetch('https://kiang.github.io/taiwan_basecode/cunli/s_geo/20250620.json')
+        .then(function (r) { return r.json(); })
+        .then(function (geojson) {
+            areasLayer = L.geoJSON(geojson, {
+                style: styleFeature,
+                onEachFeature: onEachArea
+            }).addTo(map);
+            
+            fitMapToDataBounds();
+        });
 });
