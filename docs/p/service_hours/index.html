@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台南市服務學習機構查詢系統 - 互動式查詢平台</title>
+    <meta name="description" content="台南市服務學習機構查詢系統，提供完整的服務學習機構資訊，包含機構類型、服務時間、服務內容、聯絡方式等詳細資料。支援區域篩選、機構類型篩選和關鍵字搜尋功能。">
+    <meta name="keywords" content="台南市,服務學習,機構查詢,社區服務,志工服務,公益服務,服務時間,機構資訊,台南志工,學生服務">
+    <meta name="author" content="江明宗 (Finjon Kiang)">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tainan.olc.tw/p/service_hours/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/service_hours/">
+    <meta property="og:title" content="台南市服務學習機構查詢系統 - 互動式查詢平台">
+    <meta property="og:description" content="台南市服務學習機構查詢系統，提供完整的服務學習機構資訊，包含機構類型、服務時間、服務內容、聯絡方式等詳細資料。支援區域篩選、機構類型篩選和關鍵字搜尋功能。">
+    <meta property="og:image" content="https://tainan.olc.tw/p/service_hours/og_image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:site_name" content="台南開放資料地圖">
+    <meta property="og:locale" content="zh_TW">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tainan.olc.tw/p/service_hours/">
+    <meta property="twitter:title" content="台南市服務學習機構查詢系統 - 互動式查詢平台">
+    <meta property="twitter:description" content="台南市服務學習機構查詢系統，提供完整的服務學習機構資訊，包含機構類型、服務時間、服務內容、聯絡方式等詳細資料。">
+    <meta property="twitter:image" content="https://tainan.olc.tw/p/service_hours/og_image.png">
+    
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "台南市服務學習機構查詢系統",
+        "description": "台南市服務學習機構查詢系統，提供完整的服務學習機構資訊，包含機構類型、服務時間、服務內容、聯絡方式等詳細資料。支援區域篩選、機構類型篩選和關鍵字搜尋功能。",
+        "url": "https://tainan.olc.tw/p/service_hours/",
+        "image": "https://tainan.olc.tw/p/service_hours/og_image.png",
+        "author": {
+            "@type": "Person",
+            "name": "江明宗",
+            "alternateName": "Finjon Kiang",
+            "url": "https://facebook.com/k.olc.tw/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "台南開放資料地圖",
+            "url": "https://tainan.olc.tw/"
+        },
+        "applicationCategory": "教育工具",
+        "operatingSystem": "Web Browser",
+        "browserRequirements": "現代瀏覽器支援 JavaScript",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TWD"
+        },
+        "datePublished": "2025-01-01",
+        "dateModified": "2025-09-07",
+        "inLanguage": "zh-TW",
+        "isAccessibleForFree": true,
+        "keywords": ["台南市", "服務學習", "機構查詢", "社區服務", "志工服務", "公益服務", "服務時間", "機構資訊"],
+        "about": {
+            "@type": "EducationalOrganization",
+            "name": "台南市服務學習機構",
+            "description": "台南市各區域提供服務學習機會的機構組織",
+            "location": {
+                "@type": "City",
+                "name": "台南市",
+                "addressCountry": "TW"
+            }
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "學生、教師、志工、社區工作者、公益組織"
+        },
+        "features": [
+            "區域篩選功能",
+            "機構類型篩選",
+            "服務時段篩選",
+            "關鍵字搜尋",
+            "詳細機構資訊",
+            "聯絡方式查詢",
+            "服務內容說明",
+            "響應式設計"
+        ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>台南市服務學習機構查詢系統</h1>
+            <p class="subtitle">Community Service Learning Organizations in Tainan</p>
+        </header>
+
+        <div class="filters">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜尋關鍵字...">
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="areaFilter">區域</label>
+                    <select id="areaFilter">
+                        <option value="">所有區域</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="typeFilter">機構類型</label>
+                    <select id="typeFilter">
+                        <option value="">所有類型</option>
+                        <option value="公家機關">公家機關</option>
+                        <option value="人民團體">人民團體</option>
+                        <option value="財團法人">財團法人</option>
+                        <option value="社團法人">社團法人</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="timeFilter">服務時段</label>
+                    <select id="timeFilter">
+                        <option value="">所有時段</option>
+                        <option value="寒暑假">寒暑假</option>
+                        <option value="週六">週六</option>
+                        <option value="週日">週日</option>
+                        <option value="平日">平日</option>
+                    </select>
+                </div>
+
+                <button id="clearFilters" class="btn-clear">清除篩選</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <span>顯示 <strong id="visibleCount">0</strong> 筆資料，共 <strong id="totalCount">0</strong> 筆</span>
+        </div>
+
+        <div class="results">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>區域</th>
+                        <th>機關/單位</th>
+                        <th>服務時間及員額</th>
+                        <th>服務內容</th>
+                        <th>聯絡方式</th>
+                        <th>備註</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr id="loadingRow">
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <div class="loading-spinner"></div>
+                            <div style="margin-top: 10px;">載入資料中...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="noResults" class="no-results" style="display: none;">
+                找不到符合條件的資料
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit button -->
+    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="credit-button">
+        江明宗 製作
+    </a>
+
+    <script src="app.js"></script>
+</body>
+</html>
