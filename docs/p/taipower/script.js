@@ -503,20 +503,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayTableData(aaData) {
+        // Define emergency generators list
+        const emergencyGenerators = [
+            '核二Gas1', '核二Gas2', '核三Gas1', '核三Gas2',
+            '台中Gas1&2', '台中Gas3&4', '大林#5',
+            '興達#1', '興達#2', '興達#3', '興達#4'
+        ];
+        
         const tableBody = document.querySelector('#powerTable tbody');
         tableBody.innerHTML = '';
         aaData.forEach(row => {
             const tr = document.createElement('tr');
-            const isSubtotal = row[2].includes('小計');
+            const generatorName = row[2];
+            const isSubtotal = generatorName.includes('小計');
+            const isEmergencyGenerator = emergencyGenerators.some(eg => generatorName.includes(eg));
+            
+            // Parse the power output value (淨發電量 is in column index 4)
+            let powerOutput = 0;
+            if (row[4] && row[4] !== 'N/A') {
+                // Extract numeric value from string like "123.4" or "123.4(some text)"
+                const match = row[4].match(/^[\d.]+/);
+                if (match) {
+                    powerOutput = parseFloat(match[0]);
+                }
+            }
             
             if (isSubtotal) {
                 tr.classList.add('subtotal-row');
+            }
+            
+            if (isEmergencyGenerator) {
+                tr.classList.add('emergency-generator-row');
+                // Add 'active' class if power output is greater than 0
+                if (powerOutput > 0) {
+                    tr.classList.add('active');
+                }
+            }
+            
+            // Add emergency indicator to the generator name if it's an emergency generator
+            let displayName = row[2];
+            if (isEmergencyGenerator) {
+                const activeText = powerOutput > 0 ? '運轉中' : '緊急備用';
+                displayName = row[2] + `<span class="emergency-indicator">${activeText}</span>`;
             }
 
             tr.innerHTML = `
                 <td>${row[0]}</td>
                 <td>${row[1]}</td>
-                <td>${row[2]}</td>
+                <td>${displayName}</td>
                 <td>${row[3]}</td>
                 <td>${row[4]}</td>
                 <td>${row[5]}</td>
