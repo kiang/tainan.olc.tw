@@ -18,9 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTime = data[''];
             updatePage(data);
             fetchAndPopulateSlider();
-            loadEmergencyDates(); // Load emergency dates for calendar
+            // Load emergency dates first, then check for emergency generators
+            loadEmergencyDates().then(() => {
+                checkEmergencyGenerators(); // Check for emergency generators after dates are loaded
+            });
             initializeDatePicker();
-            checkEmergencyGenerators(); // Check for emergency generators
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -794,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Emergency Date Loading and Calendar Functions
     function loadEmergencyDates() {
-        fetch(`${emergencyApiBase}/monthly_index.json`)
+        return fetch(`${emergencyApiBase}/monthly_index.json`)
             .then(response => response.json())
             .then(data => {
                 // Store monthly index data for on-demand loading
@@ -809,18 +811,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.months && data.months.length > 0) {
                     const recentMonthsData = data.months.filter(m => recentMonths.includes(m.year_month));
                     if (recentMonthsData.length > 0) {
-                        loadEmergencyDatesFromMonthly(recentMonthsData);
+                        return loadEmergencyDatesFromMonthly(recentMonthsData);
                     } else {
                         // No emergency data for recent months, just setup highlights
                         setupDatePickerHighlights();
+                        return Promise.resolve();
                     }
                 } else {
                     setupDatePickerHighlights();
+                    return Promise.resolve();
                 }
             })
             .catch(error => {
                 console.error('Error loading emergency dates:', error);
                 setupDatePickerHighlights(); // Setup even if loading fails
+                return Promise.resolve();
             });
     }
     
@@ -1217,31 +1222,47 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Collect all unique generators from the entire day
                     const allGenerators = new Set();
                     let totalEvents = 0;
+                    let maxOutput = 0;
+                    let activeGeneratorsData = [];
                     
                     dailyIndex.forEach(entry => {
                         if (entry && entry.generators && Array.isArray(entry.generators)) {
                             entry.generators.forEach(gen => allGenerators.add(gen));
                             totalEvents += entry.count || 0;
+                            // Track max output if available
+                            if (entry.total_output) {
+                                maxOutput = Math.max(maxOutput, entry.total_output);
+                            }
                         }
                     });
                     
                     if (allGenerators.size > 0) {
+                        // Prepare generator data with placeholder values when no current time data
+                        const generatorsList = Array.from(allGenerators).map(genName => ({
+                            name: genName,
+                            output: 0, // Will be updated if current time data exists
+                            status: 'Day Total' // Indicates this is for the whole day
+                        }));
+                        
                         // Show emergency alert with daily summary
                         const dailySummary = {
                             date: date,
                             total_events: totalEvents,
                             time_slots: dailyIndex.length,
-                            generators: Array.from(allGenerators),
-                            daily_index: dailyIndex
+                            generators: generatorsList,
+                            daily_index: dailyIndex,
+                            max_output: maxOutput
                         };
                         
+                        // Always show the alert if there's any emergency data for the day
                         showEmergencyAlertForDate(dailySummary);
                         
                         // Also try to load current time slot data if available
                         const currentTimeKey = getCurrentTimeKey();
                         const currentTimeEntry = dailyIndex.find(entry => entry && entry.time === currentTimeKey);
                         
-                        if (currentTimeEntry) {
+                        if (currentTimeEntry && currentTimeEntry.generators && currentTimeEntry.generators.length > 0) {
+                            // We have emergency data for the current time slot
                             fetch(`${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`)
                                 .then(response => response.json())
                                 .then(data => {
@@ -1251,8 +1272,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 })
                                 .catch(error => {
                                     console.warn('Could not load current time emergency data:', error);
+                                    // Even if we can't load current time data, keep showing the daily summary
                                 });
                         }
+                        // If no current time entry, the alert still shows with daily summary
                     } else {
                         throw new Error('No emergency generators found in daily index');
                     }
@@ -1323,20 +1346,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 separator.innerHTML = '<small><strong>今日所有啟動:</strong></small>';
                 separator.style.margin = '8px 0 4px 0';
                 container.appendChild(separator);
+            } else {
+                // No current time data, but there's emergency data for the day
+                const dayTitle = document.createElement('div');
+                dayTitle.innerHTML = '<strong>今日緊急備用電力設施:</strong>';
+                dayTitle.style.marginBottom = '4px';
+                container.appendChild(dayTitle);
             }
             
-            // Show daily summary
-            dailySummary.generators.forEach(genName => {
+            // Show daily summary - improved display
+            dailySummary.generators.forEach(gen => {
                 const item = document.createElement('span');
                 item.className = 'emergency-generator-item';
-                item.innerHTML = `${genName}`;
+                // If it's an object with name property, use that; otherwise treat as string
+                const genName = typeof gen === 'object' ? gen.name : gen;
+                const genOutput = typeof gen === 'object' && gen.output > 0 ? `: ${gen.output}MW` : '';
+                const genStatus = typeof gen === 'object' && gen.status && gen.status !== 'Day Total' ? ` (${gen.status})` : '';
+                item.innerHTML = `${genName}${genOutput}${genStatus}`;
                 container.appendChild(item);
             });
             
             // Add summary info
             const summaryInfo = document.createElement('div');
             summaryInfo.style.marginTop = '8px';
-            summaryInfo.innerHTML = `<small>共${dailySummary.total_events}次啟動，持續${formatTimeSlots(dailySummary.time_slots)}</small>`;
+            const maxOutputText = dailySummary.max_output > 0 ? `，最大輸出${dailySummary.max_output}MW` : '';
+            summaryInfo.innerHTML = `<small>共${dailySummary.total_events || 0}次啟動，持續${formatTimeSlots(dailySummary.time_slots)}${maxOutputText}</small>`;
             container.appendChild(summaryInfo);
             
             alert.classList.remove('d-none');
