@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let autoUpdateInterval = null;
     const autoUpdateDelay = 1000; // 1 second delay
+    let sliderInitialized = false; // prevent duplicate listeners on date change
 
     function fetchAndPopulateSlider() {
         const [date, time] = updateTime.split(' ');
@@ -53,16 +54,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateSliderValue(slider.max);
                 updateSliderLabels();
 
-                slider.addEventListener('input', function() {
-                    updateSliderValue(this.value);
-                });
+                if (!sliderInitialized) {
+                    slider.addEventListener('input', function() {
+                        updateSliderValue(this.value);
+                    });
 
-                slider.addEventListener('change', function() {
-                    loadDataForIndex(this.value);
-                    checkEmergencyGenerators(); // Check emergency data when time changes
-                });
+                    slider.addEventListener('change', function() {
+                        loadDataForIndex(this.value);
+                        checkEmergencyGenerators(); // Check emergency data when time changes
+                    });
 
-                autoUpdateButton.addEventListener('click', toggleAutoUpdate);
+                    autoUpdateButton.addEventListener('click', toggleAutoUpdate);
+                    sliderInitialized = true;
+                }
 
                 // Load the latest data
                 loadDataForIndex(slider.max);
@@ -1085,14 +1089,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fetch data for selected date
         fetchDataForDate(dateStr);
         
-        // Check for emergency data on the selected date
-        setTimeout(() => {
-            // Ensure emergency data for this month is loaded first
-            ensureEmergencyDataForMonth(dateStr).then(() => {
-                // Then check for daily emergency data
-                checkEmergencyGeneratorsForDate(dateStr);
-            });
-        }, 500); // Give some time for the main data to load first
+        // Do not duplicate emergency checks here; fetchDataForDate handles it
     }
     
     function setupDatePickerHighlights() {
@@ -1220,10 +1217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Trigger the date change event to load data for the selected date
             fetchDataForDate(date);
             
-            // Check for emergency data on the new date
-            setTimeout(() => {
-                checkEmergencyGenerators();
-            }, 100);
+            // No extra emergency check here; fetchDataForDate handles it.
         }
     }
 
