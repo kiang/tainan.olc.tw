@@ -33,45 +33,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoUpdateDelay = 1000; // 1 second delay
     let sliderInitialized = false; // prevent duplicate listeners on date change
 
-    function fetchAndPopulateSlider() {
+    function fetchAndPopulateSlider(preloadedList = null) {
         const [date, time] = updateTime.split(' ');
         const [year, month, day] = date.split('-');
         const Y = year;
         const Ymd = year + month + day;
 
-        fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
-            .then(response => response.json())
-            .then(data => {
-                // Sort the data in ascending order
-                dataOptions = data.sort((a, b) => a.localeCompare(b));
+        const handleList = (list) => {
+            // Sort the data in ascending order
+            dataOptions = list.sort((a, b) => a.localeCompare(b));
 
-                const slider = document.getElementById('timeSlider');
-                const autoUpdateButton = document.getElementById('autoUpdateButton');
-                
-                slider.max = dataOptions.length - 1;
-                slider.value = slider.max; // Set to the last (latest) option
+            const slider = document.getElementById('timeSlider');
+            const autoUpdateButton = document.getElementById('autoUpdateButton');
+            
+            slider.max = dataOptions.length - 1;
+            slider.value = slider.max; // Set to the last (latest) option
 
-                updateSliderValue(slider.max);
-                updateSliderLabels();
+            updateSliderValue(slider.max);
+            updateSliderLabels();
 
-                if (!sliderInitialized) {
-                    slider.addEventListener('input', function() {
-                        updateSliderValue(this.value);
-                    });
+            if (!sliderInitialized) {
+                slider.addEventListener('input', function() {
+                    updateSliderValue(this.value);
+                });
 
-                    slider.addEventListener('change', function() {
-                        loadDataForIndex(this.value);
-                        checkEmergencyGenerators(); // Check emergency data when time changes
-                    });
+                slider.addEventListener('change', function() {
+                    loadDataForIndex(this.value);
+                    checkEmergencyGenerators(); // Check emergency data when time changes
+                });
 
-                    autoUpdateButton.addEventListener('click', toggleAutoUpdate);
-                    sliderInitialized = true;
-                }
+                autoUpdateButton.addEventListener('click', toggleAutoUpdate);
+                sliderInitialized = true;
+            }
 
-                // Load the latest data
-                loadDataForIndex(slider.max);
-            })
-            .catch(error => console.error('Error fetching list.json:', error));
+            // Load the latest data
+            loadDataForIndex(slider.max);
+        };
+
+        if (Array.isArray(preloadedList)) {
+            handleList(preloadedList);
+        } else {
+            fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
+                .then(response => response.json())
+                .then(list => handleList(list))
+                .catch(error => console.error('Error fetching list.json:', error));
+        }
     }
 
     function toggleAutoUpdate() {
@@ -803,8 +809,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 updateTime = `${date} 00:00`; // Set updateTime to the start of the selected date
-                dataOptions = data.sort((a, b) => a.localeCompare(b));
-                fetchAndPopulateSlider();
+                // Avoid refetching list.json by passing the loaded list to the slider
+                fetchAndPopulateSlider(data);
                 
                 // Check for emergency data on the new date
                 setTimeout(() => {
