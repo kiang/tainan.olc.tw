@@ -144,14 +144,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const Y = year;
         const Ymd = year + month + day;
         const newDataSource = `https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/${selectedHis}.json`;
+        // Include the date in the cache key to avoid collisions across days
+        const cacheKey = `${Ymd}_${selectedHis}`;
         
-        if (dataCache[selectedHis]) {
-            updatePage(dataCache[selectedHis], isAutoUpdate);
+        if (dataCache[cacheKey]) {
+            updatePage(dataCache[cacheKey], isAutoUpdate);
         } else {
             fetch(newDataSource)
                 .then(response => response.json())
                 .then(data => {
-                    dataCache[selectedHis] = data;
+                    dataCache[cacheKey] = data;
                     updatePage(data, isAutoUpdate);
                 })
                 .catch(error => console.error('Error fetching new data:', error));
@@ -780,6 +782,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const Ymd = year.toString() + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
         const jsonUrl = `https://kiang.github.io/taipower_data/genary/${year}/${Ymd}/list.json`;
+
+        // Clear previous day's cached times to prevent memory growth and stale hits
+        try {
+            Object.keys(dataCache).forEach(k => delete dataCache[k]);
+        } catch (e) {
+            // no-op
+        }
 
         fetch(jsonUrl)
             .then(response => {
