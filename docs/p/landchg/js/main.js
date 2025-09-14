@@ -3,209 +3,226 @@ const CONFIG = {
     defaultCity: '臺南市',
     defaultYear: new Date().getFullYear() - 1911,
     cities: ['基隆市', '臺北市', '新北市', '桃園市', '新竹縣', '新竹市', '苗栗縣', '臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義縣', '嘉義市', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '金門縣', '澎湖縣', '連江縣'],
-    baseMapUrl: 'https://wmts.nlsc.gov.tw/wmts',
     dataUrl: 'https://kiang.github.io/landchg.tcd.gov.tw/csv/points'
 };
 
 // Global Variables
 const app = {
     map: null,
-    sidebar: null,
     dataPool: {},
     typeOptions: { 'all': true },
     selectedCity: CONFIG.defaultCity,
     selectedYear: CONFIG.defaultYear,
     years: Array.from({ length: CONFIG.defaultYear - 92 }, (_, i) => CONFIG.defaultYear - i),
-    clusterSource: null,
-    vectorSource: null
+    markerClusterGroup: null,
+    currentMarkers: [],
+    legendControl: null,
+    currentPopup: null
 };
 
-// Map Style Functions
-const styles = {
-    cluster: function(feature) {
-        const size = feature.get('features').length;
-        return new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 20,
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 153, 0, 0.8)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#cc6600',
-                    width: 2
-                })
-            }),
-            text: new ol.style.Text({
-                text: size.toString(),
-                font: 'bold 14px Arial',
-                fill: new ol.style.Fill({
-                    color: '#fff'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#cc6600',
-                    width: 2
-                }),
-                offsetY: 1
-            })
-        });
-    },
-
-    point: function (feature) {
-        const p = feature.getProperties().properties;
-        const z = app.map.getView().getZoom();
-        const imgColor = p['查證結果'] === '合法' ? 'rgba(120, 236, 62, 1)' : 'rgba(236, 120, 62, 1)';
-
-        const baseStyle = new ol.style.Style({
-            image: new ol.style.RegularShape({
-                radius: 10,
-                points: 3,
-                fill: new ol.style.Fill({ color: imgColor }),
-                stroke: new ol.style.Stroke({
-                    color: '#00f',
-                    width: 1
-                })
-            })
-        });
-
-        if (z > 12) {
-            baseStyle.setText(new ol.style.Text({
-                font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
-                placement: 'point',
-                textAlign: 'left',
-                textBaseline: 'bottom',
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 255, 1)'
-                }),
-                text: p['變異類型']
-            }));
-        }
-
-        return baseStyle;
-    }
-};
-
-// Map Layers
-const layers = {
-    base: new ol.layer.Tile({
-        source: new ol.source.WMTS({
-            matrixSet: 'EPSG:3857',
-            format: 'image/png',
-            url: CONFIG.baseMapUrl,
-            layer: 'EMAP',
-            tileGrid: new ol.tilegrid.WMTS({
-                origin: ol.extent.getTopLeft(ol.proj.get('EPSG:3857').getExtent()),
-                resolutions: Array(20).fill().map((_, i) => 156543.03392804097 / Math.pow(2, i)),
-                matrixIds: Array(20).fill().map((_, i) => i.toString())
-            }),
-            style: 'default',
-            wrapX: true,
-            attributions: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-        }),
-        opacity: 0.3
+// Custom marker icons
+const icons = {
+    legal: L.divIcon({
+        className: 'legal-marker',
+        iconSize: [20, 20],
+        iconAnchor: [10, 20],
+        popupAnchor: [0, -20]
     }),
-    points: new ol.layer.Vector({
-        source: new ol.source.Vector(),
-        style: styles.point
+    illegal: L.divIcon({
+        className: 'illegal-marker',
+        iconSize: [20, 20],
+        iconAnchor: [10, 20],
+        popupAnchor: [0, -20]
     })
 };
+
+// Custom Legend Control
+L.Control.Legend = L.Control.extend({
+    options: {
+        position: 'topright'
+    },
+
+    onAdd: function(map) {
+        const container = L.DomUtil.create('div', 'legend-control leaflet-bar');
+        
+        // Prevent map clicks/drags on the control
+        L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.disableScrollPropagation(container);
+
+        // Create legend HTML
+        container.innerHTML = `
+            <div class="legend-header">
+                <span class="legend-title">
+                    <i class="fa fa-filter"></i> 篩選與圖例
+                </span>
+                <i class="fa fa-chevron-down legend-toggle" id="legendToggle"></i>
+            </div>
+            <div class="legend-content" id="legendContent">
+                <div class="filter-section">
+                    <div class="filter-label"><i class="fa fa-map-marker"></i> 選擇縣市</div>
+                    <select id="pointCity" class="select-filter"></select>
+                    
+                    <div class="filter-label"><i class="fa fa-calendar"></i> 選擇年份</div>
+                    <select id="pointYear" class="select-filter"></select>
+                    
+                    <div class="filter-label"><i class="fa fa-filter"></i> 變異類型</div>
+                    <select id="pointType" class="select-filter"></select>
+                </div>
+                
+                <hr style="margin: 10px 0; border: none; border-top: 1px solid #e0e6ed;">
+                
+                <div style="margin-top: 10px;">
+                    <div class="legend-item">
+                        <span class="legend-icon legal"></span>
+                        <span>合法變異</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-icon illegal"></span>
+                        <span>非法變異</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 12px; padding-top: 10px; padding-bottom: 5px; border-top: 1px solid #e0e6ed;">
+                    <a href="https://landchg.tcd.gov.tw/Module/RWD/Web/Default.aspx" target="_blank" style="font-size: 12px; color: #667eea; text-decoration: none; display: inline-block; white-space: nowrap;">
+                        <i class="fa fa-external-link"></i> 資料來源：國土利用監測整合資訊網
+                    </a>
+                </div>
+            </div>
+        `;
+
+        // Set up toggle functionality
+        setTimeout(() => {
+            const toggle = document.getElementById('legendToggle');
+            const content = document.getElementById('legendContent');
+            
+            toggle.addEventListener('click', function() {
+                toggle.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+                
+                // Store collapsed state for max-height calculation
+                if (!content.classList.contains('collapsed')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                } else {
+                    content.style.maxHeight = '0';
+                }
+            });
+            
+            // Set initial max-height for animation
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }, 0);
+
+        return container;
+    }
+});
 
 // UI Functions
 const ui = {
     initializeSelects: function () {
-        $('#pointCity').html(CONFIG.cities.map(city => `<option>${city}</option>`).join(''));
-        $('#pointYear').html(app.years.map(year => `<option>${year}</option>`).join(''));
+        setTimeout(() => {
+            $('#pointCity').html(CONFIG.cities.map(city => `<option>${city}</option>`).join('')).val(app.selectedCity);
+            $('#pointYear').html(app.years.map(year => `<option>${year}</option>`).join('')).val(app.selectedYear);
 
-        $('.select-filter').change(function () {
-            const theCity = $('#pointCity').val();
-            const theYear = $('#pointYear').val();
-            const theType = $('#pointType').val();
-            data.showData(theCity, theYear, theType);
-        });
+            $('.select-filter').change(function () {
+                const theCity = $('#pointCity').val();
+                const theYear = $('#pointYear').val();
+                const theType = $('#pointType').val();
+                data.showData(theCity, theYear, theType);
+            });
+        }, 100);
     },
 
-    updatePopup: function (feature) {
-        const p = feature.getProperties();
-        if (p.properties) {
-            const lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-            
-            // Organize data by importance
-            const importantFields = ['變異點編號', '變異類型', '查證結果', '變異點位置', '通報機關'];
-            const regularFields = Object.keys(p.properties).filter(key => !importantFields.includes(key));
-            
-            let message = '<div class="popup-content">';
-            
-            // Important information section
-            if (importantFields.some(field => p.properties[field])) {
-                message += '<div class="info-highlight">';
-                importantFields.forEach(field => {
-                    if (p.properties[field]) {
-                        const value = p.properties[field];
-                        const isLegal = field === '查證結果' && value === '合法';
-                        const statusClass = field === '查證結果' ? (isLegal ? 'status-legal' : 'status-illegal') : '';
-                        message += `<div class="info-item ${statusClass}">
-                            <span class="info-label">${field}</span>
-                            <span class="info-value">${value}</span>
-                        </div>`;
-                    }
-                });
-                message += '</div>';
-            }
-            
-            // Other information
-            if (regularFields.length > 0) {
-                message += '<div class="info-details">';
-                message += '<h6 class="details-title"><i class="fa fa-list"></i> 詳細資訊</h6>';
-                message += '<table class="table table-dark table-sm"><tbody>';
-                regularFields.forEach(key => {
-                    if (p.properties[key]) {
-                        message += `<tr><th scope="row">${key}</th><td>${p.properties[key]}</td></tr>`;
-                    }
-                });
-                message += '</tbody></table>';
-                message += '</div>';
-            }
-            
-            // Action buttons
-            const caseId = p.properties['變異點編號'] || '';
-            const currentCity = $('#pointCity').val();
-            const currentYear = $('#pointYear').val();
-            
-            message += '<div class="action-buttons">';
-            message += '<div class="btn-group-vertical" role="group">';
-            
-            if (caseId) {
-                message += `<a href="https://landchg.olc.tw/#detail/${caseId}?city=${encodeURIComponent(currentCity)}&year=${currentYear}" target="_blank" class="btn btn-primary btn-lg btn-block">
-                    <i class="fa fa-search"></i> 查看詳細資料
-                </a>`;
-            }
-            
-            message += `
-                <a href="https://www.google.com/maps/dir/?api=1&destination=${lonLat[1]},${lonLat[0]}&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">
-                    <i class="fa fa-map-marker"></i> Google 導航
-                </a>
-                <a href="https://wego.here.com/directions/drive/mylocation/${lonLat[1]},${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">
-                    <i class="fa fa-location-arrow"></i> Here WeGo 導航
-                </a>
-                <a href="https://bing.com/maps/default.aspx?rtp=~pos.${lonLat[1]}_${lonLat[0]}" target="_blank" class="btn btn-info btn-lg btn-block">
-                    <i class="fa fa-globe"></i> Bing 導航
-                </a>
-            `;
-            
-            message += '</div></div></div>';
-
-            $('#sidebarTitle').text(p.properties['變異類型'] || '變異點資訊');
-            $('#sidebarContent').html(message);
-            app.sidebar.open('home');
-            return true;
+    createPopupContent: function (properties) {
+        if (!properties) return '';
+        
+        // Organize data by importance
+        const importantFields = ['變異點編號', '變異類型', '查證結果', '變異點位置', '通報機關'];
+        const regularFields = Object.keys(properties).filter(key => 
+            !importantFields.includes(key) && key !== 'latitude' && key !== 'longitude'
+        );
+        
+        let html = `<div class="popup-header">${properties['變異類型'] || '變異點資訊'}</div>`;
+        html += '<div class="popup-content">';
+        
+        // Important information section
+        if (importantFields.some(field => properties[field])) {
+            html += '<div class="info-section">';
+            importantFields.forEach(field => {
+                if (properties[field]) {
+                    const value = properties[field];
+                    const isLegal = field === '查證結果' && value === '合法';
+                    const statusClass = field === '查證結果' ? (isLegal ? 'status-legal' : 'status-illegal') : '';
+                    html += `<div class="info-item ${statusClass}">
+                        <span class="info-label">${field}</span>
+                        <span class="info-value">${value}</span>
+                    </div>`;
+                }
+            });
+            html += '</div>';
         }
-        return false;
+        
+        // Other information (if exists)
+        if (regularFields.length > 0) {
+            html += '<div class="info-section">';
+            html += '<div style="font-weight: 600; margin-bottom: 8px; font-size: 13px;">其他資訊</div>';
+            regularFields.forEach(key => {
+                if (properties[key]) {
+                    html += `<div class="info-item">
+                        <span class="info-label">${key}</span>
+                        <span class="info-value">${properties[key]}</span>
+                    </div>`;
+                }
+            });
+            html += '</div>';
+        }
+        
+        // Action buttons
+        const caseId = properties['變異點編號'] || '';
+        const currentCity = $('#pointCity').val();
+        const currentYear = $('#pointYear').val();
+        const lat = parseFloat(properties.latitude);
+        const lng = parseFloat(properties.longitude);
+        
+        html += '<div class="action-buttons">';
+        
+        if (caseId) {
+            html += `<a href="https://landchg.olc.tw/#detail/${caseId}?city=${encodeURIComponent(currentCity)}&year=${currentYear}" target="_blank" class="btn-action btn-primary-action">
+                <i class="fa fa-search"></i> 查看詳細資料
+            </a>`;
+        }
+        
+        html += `
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving" target="_blank" class="btn-action btn-secondary-action">
+                <i class="fa fa-map-marker"></i> Google 導航
+            </a>
+            <a href="https://wego.here.com/directions/drive/mylocation/${lat},${lng}" target="_blank" class="btn-action btn-secondary-action">
+                <i class="fa fa-location-arrow"></i> Here WeGo
+            </a>
+        `;
+        
+        html += '</div></div>';
+        
+        return html;
     }
 };
 
 // Data Handling
 const data = {
     showData: function (city, year, type = 'all') {
-        app.vectorSource.clear();
+        // Clear existing markers
+        if (app.markerClusterGroup) {
+            app.markerClusterGroup.clearLayers();
+        }
+        
+        // Close current popup if exists
+        if (app.currentPopup) {
+            app.map.closePopup(app.currentPopup);
+            app.currentPopup = null;
+        }
+        
+        // Update selected values
+        app.selectedCity = city;
+        app.selectedYear = year;
+        
         $('#pointCity').val(city);
         $('#pointYear').val(year);
 
@@ -221,8 +238,14 @@ const data = {
     },
 
     fetchData: function (city, year, type) {
-        // Show loading state
-        $('#sidebarContent').html('<div class="text-center"><div class="loading"></div><p style="margin-top: 10px;">載入資料中...</p></div>');
+        // Show loading state in legend
+        const legendContent = document.getElementById('legendContent');
+        if (legendContent) {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.innerHTML = '<div class="text-center" style="padding: 10px;"><div class="loading"></div><p style="margin-top: 10px; font-size: 12px;">載入資料中...</p></div>';
+            loadingDiv.id = 'loadingIndicator';
+            legendContent.appendChild(loadingDiv);
+        }
         
         $.get(`${CONFIG.dataUrl}/${year}/${city}.csv`, {}, function (csv) {
             if (csv.length > 0) {
@@ -232,33 +255,68 @@ const data = {
             }
             data.processData(app.dataPool[city][year], type);
             
-            // Clear loading state
+            // Remove loading indicator
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+            
             if (app.dataPool[city][year].length === 0) {
-                $('#sidebarContent').html('<div class="text-center text-muted"><i class="fa fa-info-circle"></i><p>此地區年份無資料</p></div>');
-            } else {
-                $('#sidebarContent').html('');
+                // Show no data message as popup
+                L.popup()
+                    .setLatLng(app.map.getCenter())
+                    .setContent('<div style="padding: 10px; text-align: center;"><i class="fa fa-info-circle"></i> 此地區年份無資料</div>')
+                    .openOn(app.map);
             }
         }).fail(function() {
-            $('#sidebarContent').html('<div class="text-center text-warning"><i class="fa fa-exclamation-triangle"></i><p>資料載入失敗</p></div>');
+            // Remove loading indicator
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+            
+            L.popup()
+                .setLatLng(app.map.getCenter())
+                .setContent('<div style="padding: 10px; text-align: center; color: #e74c3c;"><i class="fa fa-exclamation-triangle"></i> 資料載入失敗</div>')
+                .openOn(app.map);
         });
     },
 
     processData: function (data, type) {
-        const features = [];
+        const markers = [];
+        const bounds = L.latLngBounds();
+        
         data.forEach(item => {
             if (item['變異類型'] === '') {
                 item['變異類型'] = '其他';
             }
             if (type !== 'all' && type !== item['變異類型']) return;
 
-            const feature = new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([
-                    parseFloat(item.longitude),
-                    parseFloat(item.latitude)
-                ])),
-                properties: item
-            });
-            features.push(feature);
+            const lat = parseFloat(item.latitude);
+            const lng = parseFloat(item.longitude);
+            
+            if (!isNaN(lat) && !isNaN(lng)) {
+                const isLegal = item['查證結果'] === '合法';
+                const marker = L.marker([lat, lng], {
+                    icon: isLegal ? icons.legal : icons.illegal,
+                    isIllegal: !isLegal
+                });
+                
+                // Bind popup
+                const popupContent = ui.createPopupContent(item);
+                marker.bindPopup(popupContent, {
+                    maxWidth: 400,
+                    className: 'custom-popup'
+                });
+                
+                // Store reference to popup
+                marker.on('popupopen', function(e) {
+                    app.currentPopup = e.popup;
+                });
+                
+                markers.push(marker);
+                bounds.extend([lat, lng]);
+            }
 
             if (!app.typeOptions[item['變異類型']]) {
                 app.typeOptions[item['變異類型']] = true;
@@ -266,68 +324,67 @@ const data = {
         });
 
         $('#pointType').html(Object.keys(app.typeOptions).map(k => `<option>${k}</option>`).join('')).val(type);
-        app.vectorSource.addFeatures(features);
-        if (features.length > 0) {
-            app.map.getView().fit(app.vectorSource.getExtent());
+        
+        // Add markers to cluster group
+        if (markers.length > 0) {
+            app.markerClusterGroup.addLayers(markers);
+            app.map.fitBounds(bounds, { padding: [50, 50] });
         }
     }
 };
 
 // Initialize Map
 function initMap() {
-    // Create sources
-    app.vectorSource = new ol.source.Vector();
-    app.clusterSource = new ol.source.Cluster({
-        distance: 40,
-        source: app.vectorSource
-    });
-
-    // Create cluster layer
-    const clusterLayer = new ol.layer.Vector({
-        source: app.clusterSource,
-        style: function(feature) {
-            const features = feature.get('features');
-            return features.length > 1 ? styles.cluster(feature) : styles.point(features[0]);
-        }
-    });
-
-    // Create sidebar
-    app.sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
-
     // Create map
-    app.map = new ol.Map({
-        layers: [layers.base, clusterLayer],
-        target: 'map',
-        view: new ol.View({
-            center: ol.proj.fromLonLat([120.221507, 23.000694]),
-            zoom: 13
-        })
+    app.map = L.map('map', {
+        center: [23.000694, 120.221507],
+        zoom: 13
     });
 
-    app.map.addControl(app.sidebar);
+    // Add WMTS base layer (NLSC EMAP)
+    const wmtsUrl = 'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}';
+    L.tileLayer(wmtsUrl, {
+        attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+        opacity: 0.3,
+        maxZoom: 19
+    }).addTo(app.map);
 
-    // Add click handler
-    app.map.on('singleclick', function (evt) {
-        let pointClicked = false;
-        app.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-            if (!pointClicked) {
-                const features = feature.get('features');
-                if (features && features.length > 1) {
-                    // Zoom to cluster
-                    const extent = ol.extent.createEmpty();
-                    features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
-                    app.map.getView().fit(extent, {
-                        duration: 1000,
-                        padding: [50, 50, 50, 50],
-                        maxZoom: 18
-                    });
-                } else {
-                    // Show popup for single feature
-                    pointClicked = ui.updatePopup(features ? features[0] : feature);
+    // Create marker cluster group
+    app.markerClusterGroup = L.markerClusterGroup({
+        chunkedLoading: true,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+        maxClusterRadius: 40,
+        iconCreateFunction: function(cluster) {
+            const count = cluster.getChildCount();
+            const markers = cluster.getAllChildMarkers();
+            
+            // Check if any marker in the cluster is illegal (red)
+            let hasIllegal = false;
+            for (let marker of markers) {
+                if (marker.options.isIllegal) {
+                    hasIllegal = true;
+                    break;
                 }
             }
-        });
+            
+            // Use red color if any illegal marker exists, otherwise use orange
+            const bgColor = hasIllegal ? 'rgba(236, 120, 62, 0.8)' : 'rgba(120, 236, 62, 0.8)';
+            const borderColor = hasIllegal ? '#cc3333' : '#66cc33';
+            
+            return L.divIcon({
+                html: '<div style="background: ' + bgColor + '; color: white; border: 2px solid ' + borderColor + '; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">' + count + '</div>',
+                className: 'marker-cluster-custom',
+                iconSize: L.point(40, 40)
+            });
+        }
     });
+    app.map.addLayer(app.markerClusterGroup);
+
+    // Add legend control
+    app.legendControl = new L.Control.Legend();
+    app.map.addControl(app.legendControl);
 
     // Initialize UI
     ui.initializeSelects();
