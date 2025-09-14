@@ -191,11 +191,11 @@ const ui = {
         }
         
         html += `
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving" target="_blank" class="btn-action btn-secondary-action">
-                <i class="fa fa-map-marker"></i> Google 導航
+            <a href="https://www.google.com/maps/@${lat},${lng},18z/data=!3m1!1e3" target="_blank" class="btn-action btn-secondary-action">
+                <i class="fa fa-satellite"></i> Google 衛星
             </a>
-            <a href="https://wego.here.com/directions/drive/mylocation/${lat},${lng}" target="_blank" class="btn-action btn-secondary-action">
-                <i class="fa fa-location-arrow"></i> Here WeGo
+            <a href="https://www.bing.com/maps?cp=${lat}~${lng}&lvl=18&style=h" target="_blank" class="btn-action btn-secondary-action">
+                <i class="fa fa-globe"></i> Bing 衛星
             </a>
         `;
         
