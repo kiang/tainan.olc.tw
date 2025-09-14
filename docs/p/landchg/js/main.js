@@ -191,10 +191,10 @@ const ui = {
         }
         
         html += `
-            <a href="https://www.google.com/maps/@${lat},${lng},18z/data=!3m1!1e3" target="_blank" class="btn-action btn-secondary-action">
+            <a href="https://www.google.com/maps/place/${lat},${lng}/@${lat},${lng},18z/data=!3m1!1e3" target="_blank" class="btn-action btn-secondary-action">
                 <i class="fa fa-satellite"></i> Google 衛星
             </a>
-            <a href="https://www.bing.com/maps?cp=${lat}~${lng}&lvl=18&style=h" target="_blank" class="btn-action btn-secondary-action">
+            <a href="https://www.bing.com/maps?cp=${lat}~${lng}&lvl=18&style=h&sp=point.${lat}_${lng}_${encodeURIComponent(properties['變異類型'] || '變異點')}" target="_blank" class="btn-action btn-secondary-action">
                 <i class="fa fa-globe"></i> Bing 衛星
             </a>
         `;
