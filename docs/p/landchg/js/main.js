@@ -177,8 +177,8 @@ const ui = {
         
         // Action buttons
         const caseId = properties['變異點編號'] || '';
-        const currentCity = $('#pointCity').val();
-        const currentYear = $('#pointYear').val();
+        const currentCity = $('#pointCity').val() || app.selectedCity;
+        const currentYear = $('#pointYear').val() || app.selectedYear;
         const lat = parseFloat(properties.latitude);
         const lng = parseFloat(properties.longitude);
         
