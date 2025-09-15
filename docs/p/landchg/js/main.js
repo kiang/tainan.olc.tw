@@ -369,9 +369,9 @@ function initMap() {
                 }
             }
             
-            // Use red color if any illegal marker exists, otherwise use orange
-            const bgColor = hasIllegal ? 'rgba(236, 120, 62, 0.8)' : 'rgba(120, 236, 62, 0.8)';
-            const borderColor = hasIllegal ? '#cc3333' : '#66cc33';
+            // Use red color if any illegal marker exists, otherwise use blue
+            const bgColor = hasIllegal ? 'rgba(231, 76, 60, 0.9)' : 'rgba(41, 128, 185, 0.9)';
+            const borderColor = hasIllegal ? '#a93226' : '#1e5a7a';
             
             return L.divIcon({
                 html: '<div style="background: ' + bgColor + '; color: white; border: 2px solid ' + borderColor + '; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">' + count + '</div>',
