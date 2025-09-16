@@ -82,6 +82,23 @@ L.Control.Legend = L.Control.extend({
                     </div>
                 </div>
                 
+                <hr style="margin: 10px 0; border: none; border-top: 1px solid #e0e6ed;">
+                
+                <div style="margin-bottom: 10px;">
+                    <div class="filter-label"><i class="fa fa-crosshairs"></i> 跳至座標</div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="coordinateInput" placeholder="緯度,經度 (如: 23.0,120.2)" 
+                               style="flex: 1; padding: 6px 10px; border: 1px solid #e0e6ed; border-radius: 6px; font-size: 13px;">
+                        <button id="goToCoordinate" style="padding: 6px 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                color: white; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; white-space: nowrap;
+                                transition: all 0.3s ease;"
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)';"
+                                onmouseout="this.style.transform=''; this.style.boxShadow='';">
+                            <i class="fa fa-search"></i> 前往
+                        </button>
+                    </div>
+                </div>
+                
                 <div style="margin-top: 12px; padding-top: 10px; padding-bottom: 5px; border-top: 1px solid #e0e6ed;">
                     <a href="https://landchg.tcd.gov.tw/Module/RWD/Web/Default.aspx" target="_blank" style="font-size: 12px; color: #667eea; text-decoration: none; display: inline-block; white-space: nowrap;">
                         <i class="fa fa-external-link"></i> 資料來源：國土利用監測整合資訊網
@@ -109,6 +126,56 @@ L.Control.Legend = L.Control.extend({
             
             // Set initial max-height for animation
             content.style.maxHeight = content.scrollHeight + 'px';
+            
+            // Set up coordinate input functionality
+            const coordInput = document.getElementById('coordinateInput');
+            const goButton = document.getElementById('goToCoordinate');
+            
+            const goToCoordinate = () => {
+                const value = coordInput.value.trim();
+                const parts = value.split(',');
+                
+                if (parts.length === 2) {
+                    const lat = parseFloat(parts[0].trim());
+                    const lng = parseFloat(parts[1].trim());
+                    
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        // Check valid coordinate ranges
+                        if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                            // Pan and zoom to the coordinate
+                            map.setView([lat, lng], 18);
+                            
+                            // Add a temporary marker at the location
+                            const tempMarker = L.marker([lat, lng]).addTo(map);
+                            tempMarker.bindPopup(`<div style="text-align: center;">
+                                <strong>自訂座標</strong><br>
+                                緯度: ${lat}<br>
+                                經度: ${lng}
+                            </div>`).openPopup();
+                            
+                            // Remove the marker after 10 seconds
+                            setTimeout(() => {
+                                map.removeLayer(tempMarker);
+                            }, 10000);
+                        } else {
+                            alert('座標超出有效範圍！\n緯度: -90 到 90\n經度: -180 到 180');
+                        }
+                    } else {
+                        alert('請輸入有效的座標格式！\n例如: 23.0,120.2');
+                    }
+                } else {
+                    alert('請輸入正確格式：緯度,經度\n例如: 23.0,120.2');
+                }
+            };
+            
+            goButton.addEventListener('click', goToCoordinate);
+            
+            // Allow Enter key to trigger the search
+            coordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    goToCoordinate();
+                }
+            });
         }, 0);
 
         return container;
