@@ -17,7 +17,8 @@ const app = {
     markerClusterGroup: null,
     currentMarkers: [],
     legendControl: null,
-    currentPopup: null
+    currentPopup: null,
+    isFirstLoad: true
 };
 
 // Custom marker icons
@@ -395,7 +396,12 @@ const data = {
         // Add markers to cluster group
         if (markers.length > 0) {
             app.markerClusterGroup.addLayers(markers);
-            app.map.fitBounds(bounds, { padding: [50, 50] });
+            
+            // Only fit bounds on first load
+            if (app.isFirstLoad) {
+                app.map.fitBounds(bounds, { padding: [50, 50] });
+                app.isFirstLoad = false;
+            }
         }
     }
 };
