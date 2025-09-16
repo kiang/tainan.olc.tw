@@ -18,7 +18,9 @@ const app = {
     currentMarkers: [],
     legendControl: null,
     currentPopup: null,
-    isFirstLoad: true
+    isFirstLoad: true,
+    customMarker: null,
+    customMarkerTimeout: null
 };
 
 // Custom marker icons
@@ -146,18 +148,44 @@ L.Control.Legend = L.Control.extend({
                             // Pan and zoom to the coordinate
                             map.setView([lat, lng], 18);
                             
-                            // Add a temporary marker at the location
-                            const tempMarker = L.marker([lat, lng]).addTo(map);
-                            tempMarker.bindPopup(`<div style="text-align: center;">
+                            // Remove existing custom marker if any
+                            if (app.customMarker) {
+                                map.removeLayer(app.customMarker);
+                                clearTimeout(app.customMarkerTimeout);
+                            }
+                            
+                            // Add a persistent marker at the location
+                            app.customMarker = L.marker([lat, lng], {
+                                icon: L.divIcon({
+                                    className: 'custom-coordinate-marker',
+                                    html: '<div style="background: rgba(255, 165, 0, 0.9); border: 2px solid #ff8c00; border-radius: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px;"></div>',
+                                    iconSize: [12, 12],
+                                    iconAnchor: [6, 6]
+                                })
+                            }).addTo(map);
+                            
+                            app.customMarker.bindPopup(`<div style="text-align: center;">
                                 <strong>自訂座標</strong><br>
                                 緯度: ${lat}<br>
-                                經度: ${lng}
+                                經度: ${lng}<br>
+                                <button onclick="
+                                    if(app.customMarker) {
+                                        app.map.removeLayer(app.customMarker);
+                                        app.customMarker = null;
+                                        clearTimeout(app.customMarkerTimeout);
+                                    }
+                                " style="margin-top: 8px; padding: 4px 8px; background: #ff6b6b; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    移除標記
+                                </button>
                             </div>`).openPopup();
                             
-                            // Remove the marker after 10 seconds
-                            setTimeout(() => {
-                                map.removeLayer(tempMarker);
-                            }, 10000);
+                            // Auto-remove after 5 minutes instead of 10 seconds
+                            app.customMarkerTimeout = setTimeout(() => {
+                                if (app.customMarker) {
+                                    map.removeLayer(app.customMarker);
+                                    app.customMarker = null;
+                                }
+                            }, 300000);
                         } else {
                             alert('座標超出有效範圍！\n緯度: -90 到 90\n經度: -180 到 180');
                         }
@@ -276,13 +304,13 @@ const ui = {
 // Data Handling
 const data = {
     showData: function (city, year, type = 'all') {
-        // Clear existing markers
+        // Clear existing markers (but preserve custom marker)
         if (app.markerClusterGroup) {
             app.markerClusterGroup.clearLayers();
         }
         
-        // Close current popup if exists
-        if (app.currentPopup) {
+        // Close current popup if exists (unless it's the custom marker popup)
+        if (app.currentPopup && (!app.customMarker || app.currentPopup !== app.customMarker.getPopup())) {
             app.map.closePopup(app.currentPopup);
             app.currentPopup = null;
         }
@@ -402,6 +430,11 @@ const data = {
                 app.map.fitBounds(bounds, { padding: [50, 50] });
                 app.isFirstLoad = false;
             }
+        }
+        
+        // Re-add custom marker if it exists (in case it was accidentally removed)
+        if (app.customMarker && !app.map.hasLayer(app.customMarker)) {
+            app.customMarker.addTo(app.map);
         }
     }
 };
