@@ -3,7 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const emergencyApiBase = 'https://kiang.github.io/taipower_data/emergency';
     let updateTime;
     const dataCache = {};
+    const pumpDataCache = {};
     let dataOptions = [];
+    let currentPumpData = null;
+    let yesterdayPumpData = null;
+    let isCalculatingRemainingTime = false;
     
     // Emergency data variables
     let emergencyTimelineChart = null;
@@ -13,7 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let loadedMonths = new Set(); // Track which months have been loaded
 
     fetch(jsonUrl)
-        .then(response => response.json())
+        .then(response => {
+            return response.json();
+        })
         .then(data => {
             updateTime = data[''];
             updatePage(data);
@@ -23,6 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkEmergencyGenerators(); // Check for emergency generators after dates are loaded
             });
             initializeDatePicker();
+            
+            // Load pump data for initial view
+            const [date] = updateTime.split(' ');
+            const [year, month, day] = date.split('-');
+            const Y = year;
+            const Ymd = year + month + day;
+            loadPumpData(Y, Ymd, 'latest');
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -159,14 +172,337 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (dataCache[cacheKey]) {
             updatePage(dataCache[cacheKey], isAutoUpdate);
+            loadPumpData(Y, Ymd, selectedHis);
         } else {
             fetch(newDataSource)
                 .then(response => response.json())
                 .then(data => {
                     dataCache[cacheKey] = data;
                     updatePage(data, isAutoUpdate);
+                    loadPumpData(Y, Ymd, selectedHis);
                 })
                 .catch(error => console.error('Error fetching new data:', error));
+        }
+    }
+
+    function loadPumpData(year, ymd, selectedHis) {
+        const todayPumpUrl = `https://kiang.github.io/taipower_data/genary/${year}/${ymd}/pump.json`;
+        
+        // Calculate yesterday's date
+        const currentDate = new Date(ymd.slice(0,4), ymd.slice(4,6)-1, ymd.slice(6,8));
+        const yesterday = new Date(currentDate);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayY = yesterday.getFullYear();
+        const yesterdayM = String(yesterday.getMonth() + 1).padStart(2, '0');
+        const yesterdayD = String(yesterday.getDate()).padStart(2, '0');
+        const yesterdayYmd = `${yesterdayY}${yesterdayM}${yesterdayD}`;
+        const yesterdayPumpUrl = `https://kiang.github.io/taipower_data/genary/${yesterdayY}/${yesterdayYmd}/pump.json`;
+        
+        const pumpCacheKey = `${ymd}_pump`;
+        const yesterdayPumpCacheKey = `${yesterdayYmd}_pump`;
+        
+        // Load today's pump data
+        if (pumpDataCache[pumpCacheKey]) {
+            currentPumpData = pumpDataCache[pumpCacheKey];
+            loadYesterdayPumpData(yesterdayPumpUrl, yesterdayPumpCacheKey);
+        } else {
+            fetch(todayPumpUrl)
+                .then(response => response.json())
+                .then(data => {
+                    pumpDataCache[pumpCacheKey] = data;
+                    currentPumpData = data;
+                    loadYesterdayPumpData(yesterdayPumpUrl, yesterdayPumpCacheKey);
+                })
+                .catch(error => {
+                    console.warn('Error fetching today pump data:', error);
+                    currentPumpData = null;
+                    loadYesterdayPumpData(yesterdayPumpUrl, yesterdayPumpCacheKey);
+                });
+        }
+    }
+
+    function loadYesterdayPumpData(yesterdayPumpUrl, yesterdayPumpCacheKey) {
+        if (pumpDataCache[yesterdayPumpCacheKey]) {
+            yesterdayPumpData = pumpDataCache[yesterdayPumpCacheKey];
+            calculateRemainingTime();
+        } else {
+            fetch(yesterdayPumpUrl)
+                .then(response => response.json())
+                .then(data => {
+                    pumpDataCache[yesterdayPumpCacheKey] = data;
+                    yesterdayPumpData = data;
+                    calculateRemainingTime();
+                })
+                .catch(error => {
+                    console.warn('Error fetching yesterday pump data:', error);
+                    yesterdayPumpData = null;
+                    calculateRemainingTime();
+                });
+        }
+    }
+
+    function calculateRemainingTime() {
+        
+        // Prevent infinite loop
+        if (isCalculatingRemainingTime) {
+            return;
+        }
+        
+        if (!currentPumpData || !yesterdayPumpData) {
+            return;
+        }
+        
+        isCalculatingRemainingTime = true;
+        
+        // Add a small delay to ensure the table has been rendered
+        setTimeout(() => {
+            
+            // Find Energy Storage System and Energy Storage Load units in the main table
+            const tableRows = document.querySelectorAll('#powerTable tbody tr');
+            
+            let storageUnitsProcessed = 0;
+            
+            tableRows.forEach((row, index) => {
+                const fuelTypeCell = row.cells[0]; // 燃料別
+                const unitNameCell = row.cells[2]; // 機組名稱
+                
+                if (!fuelTypeCell || !unitNameCell) {
+                    return;
+                }
+                
+                const fuelType = fuelTypeCell.textContent || fuelTypeCell.innerText;
+                const unitName = unitNameCell.textContent || unitNameCell.innerText;
+                
+                // Log first few fuel types to see what we have
+                if (index < 10) {
+                }
+                
+                // Check if this is a storage unit and find corresponding pump.json data
+                if (fuelType.includes('儲能') || fuelType.includes('EnergyStorage')) {
+                    
+                    // Use the exact unit name from column 3 as the key for pump.json
+                    const cleanUnitName = unitName.trim();
+                    
+                    if (currentPumpData[cleanUnitName] && yesterdayPumpData[cleanUnitName]) {
+                        const todayData = currentPumpData[cleanUnitName];
+                        const yesterdayData = yesterdayPumpData[cleanUnitName];
+                        
+                        
+                        if (todayData && yesterdayData) {
+                            let remainingMinutes = 0;
+                            let mode = '';
+                            
+                            // For 儲能 (Energy Storage System) - use energy_storage_count
+                            if (fuelType.includes('儲能') && !fuelType.includes('負載')) {
+                                const countDifference = yesterdayData.energy_storage_count - todayData.energy_storage_count;
+                                remainingMinutes = countDifference * 10;
+                                mode = 'discharge';
+                            }
+                            // For 儲能負載 (Energy Storage Load) - use energy_storage_load_count
+                            else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                                const countDifference = yesterdayData.energy_storage_load_count - todayData.energy_storage_load_count;
+                                remainingMinutes = countDifference * 10;
+                                mode = 'charge';
+                            }
+                            
+                            const remainingHours = remainingMinutes / 60;
+                            const success = addRemainingTimeToUnit(cleanUnitName, remainingHours, mode, row);
+                            if (success) {
+                                storageUnitsProcessed++;
+                                const formattedTime = formatRemainingTime(remainingHours);
+                            }
+                        }
+                    } else {
+                    }
+                }
+            });
+            
+            
+            // Reset the flag
+            isCalculatingRemainingTime = false;
+        }, 500);
+    }
+
+
+    function calculateDischargeTime(unitName, currentOutput) {
+        const estimatedCapacityMWh = getEstimatedCapacity(unitName);
+        if (!estimatedCapacityMWh || currentOutput <= 0) return null;
+        
+        // Individual unit type determination
+        let assumedCurrentLevel;
+        if (unitName === '大觀二#1' || unitName === '大觀二#2' || 
+            unitName === '大觀二#3' || unitName === '大觀二#4' ||
+            unitName === '明潭#1' || unitName === '明潭#2' || 
+            unitName === '明潭#3' || unitName === '明潭#4' || 
+            unitName === '明潭#5' || unitName === '明潭#6') {
+            // Pumped storage: assume 80% efficient cycle, start at ~70% capacity
+            assumedCurrentLevel = 0.7;
+        } else if (unitName === '電池(註16)') {
+            // Battery: assume 90% efficient cycle, start at ~80% capacity
+            assumedCurrentLevel = 0.8;
+        } else {
+            // Default for unknown units
+            assumedCurrentLevel = 0.6;
+        }
+        
+        const availableCapacity = estimatedCapacityMWh * assumedCurrentLevel;
+        const remainingHours = availableCapacity / currentOutput;
+        return Math.max(0, Math.min(remainingHours, 24)); // Cap at 24 hours for safety
+    }
+
+    function calculateChargeTime(unitName, chargingPower) {
+        const estimatedCapacityMWh = getEstimatedCapacity(unitName);
+        if (!estimatedCapacityMWh || chargingPower <= 0) return null;
+        
+        // Individual unit type determination
+        let currentLevel;
+        const targetLevel = 0.95;
+        
+        if (unitName === '大觀二#1' || unitName === '大觀二#2' || 
+            unitName === '大觀二#3' || unitName === '大觀二#4' ||
+            unitName === '明潭#1' || unitName === '明潭#2' || 
+            unitName === '明潭#3' || unitName === '明潭#4' || 
+            unitName === '明潭#5' || unitName === '明潭#6') {
+            // Pumped storage: assume currently at ~30% capacity, charge to 95%
+            currentLevel = 0.3;
+        } else if (unitName === '電池(註16)') {
+            // Battery: assume currently at ~20% capacity, charge to 95%
+            currentLevel = 0.2;
+        } else {
+            // Default for unknown units
+            currentLevel = 0.3;
+        }
+        
+        const remainingCapacity = estimatedCapacityMWh * (targetLevel - currentLevel);
+        const remainingHours = remainingCapacity / chargingPower;
+        return Math.max(0, Math.min(remainingHours, 24)); // Cap at 24 hours for safety
+    }
+
+    function getEstimatedCapacity(unitName) {
+        // Real capacities for pumped-storage and battery systems (in MWh)
+        // Based on Taiwan Power Company specifications
+        const capacities = {
+            // 大觀二 (Daguan No.2) - Each unit: 260 MW, 6 hours = 1560 MWh
+            '大觀二#1': 1560,
+            '大觀二#2': 1560,
+            '大觀二#3': 1560,
+            '大觀二#4': 1560,
+            
+            // 明潭 (Mingtan) - Each unit: 300 MW, 5.5 hours = 1650 MWh
+            '明潭#1': 1650,
+            '明潭#2': 1650,
+            '明潭#3': 1650,
+            '明潭#4': 1650,
+            '明潭#5': 1650,
+            '明潭#6': 1650,
+            
+            // Battery storage systems - varies by installation
+            '電池': 100,  // Default for battery systems
+            '儲能': 50,   // General storage systems
+        };
+        
+        // Direct match first
+        if (capacities[unitName]) {
+            return capacities[unitName];
+        }
+        
+        // Partial match for unit names
+        for (const [key, capacity] of Object.entries(capacities)) {
+            if (unitName.includes(key)) {
+                return capacity;
+            }
+        }
+        
+        // Default capacity for unknown units
+        return 100;
+    }
+
+    function addRemainingTimeToUnit(unitName, remainingTime, mode, targetRow) {
+        // Use the specific row passed to avoid searching through all rows
+        const nameCell = targetRow.cells[2];  // 機組名稱
+        const remarksCell = targetRow.cells[6]; // 備註 (last cell)
+        
+        if (nameCell && remarksCell) {
+            const cellText = nameCell.textContent || nameCell.innerText;
+            const cleanUnitName = unitName.trim();
+            const cleanCellText = cellText.trim();
+            
+            // Exact match only
+            if (cleanCellText === cleanUnitName) {
+                const timeText = formatRemainingTime(remainingTime);
+                let newText;
+                if (remainingTime < 0) {
+                    // For negative time, use mode without "剩餘"
+                    const modeText = mode === 'charge' ? '充電' : '放電';
+                    newText = `${modeText}${timeText}`;
+                } else {
+                    // For positive time, use mode with "剩餘"
+                    const modeText = mode === 'charge' ? '充電剩餘' : '放電剩餘';
+                    newText = `${modeText}${timeText}`;
+                }
+                
+                // Check if this exact remaining time info already exists
+                const existingInfo = remarksCell.querySelector('.remaining-time');
+                if (existingInfo && existingInfo.textContent === newText) {
+                    return;
+                }
+                
+                // Clear any existing remaining time info
+                if (existingInfo) {
+                    existingInfo.remove();
+                }
+                
+                // Store original content (excluding remaining time)
+                const originalContent = remarksCell.textContent.replace(/^.*剩餘.*$/m, '').trim();
+                
+                // Add remaining time to the remarks cell
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'remaining-time';
+                timeSpan.style.color = mode === 'charge' ? '#28a745' : '#dc3545';
+                timeSpan.style.fontSize = '0.9rem';
+                timeSpan.style.fontWeight = 'bold';
+                timeSpan.style.display = 'block';
+                timeSpan.textContent = newText;
+                
+                // Rebuild cell content
+                remarksCell.innerHTML = '';
+                if (originalContent) {
+                    remarksCell.appendChild(document.createTextNode(originalContent));
+                    remarksCell.appendChild(document.createElement('br'));
+                }
+                remarksCell.appendChild(timeSpan);
+                
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    function formatRemainingTime(hours) {
+        if (hours < 0) {
+            const absHours = Math.abs(hours);
+            if (absHours < 1) {
+                return `比昨天多${Math.round(absHours * 60)}分鐘`;
+            } else if (absHours < 24) {
+                const h = Math.floor(absHours);
+                const m = Math.round((absHours - h) * 60);
+                return m > 0 ? `比昨天多${h}小時${m}分鐘` : `比昨天多${h}小時`;
+            } else {
+                const days = Math.floor(absHours / 24);
+                const h = Math.round(absHours % 24);
+                return h > 0 ? `比昨天多${days}天${h}小時` : `比昨天多${days}天`;
+            }
+        } else if (hours < 1) {
+            return `${Math.round(hours * 60)}分鐘`;
+        } else if (hours < 24) {
+            const h = Math.floor(hours);
+            const m = Math.round((hours - h) * 60);
+            return m > 0 ? `${h}小時${m}分鐘` : `${h}小時`;
+        } else {
+            const days = Math.floor(hours / 24);
+            const h = Math.round(hours % 24);
+            return h > 0 ? `${days}天${h}小時` : `${days}天`;
         }
     }
 
@@ -220,6 +556,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Display table data
         displayTableData(aaData);
+
+        // Calculate remaining time for storage units
+        try {
+            calculateRemainingTime();
+        } catch (error) {
+            console.error('Error in calculateRemainingTime:', error);
+        }
 
         // Display notes
         displayNotes();
