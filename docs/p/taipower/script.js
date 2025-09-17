@@ -272,6 +272,26 @@ document.addEventListener('DOMContentLoaded', function() {
         return groups;
     }
 
+    function groupPowerSourcesForPie(powerSources) {
+        const groups = {
+            '核能': 0,
+            '火力': 0,
+            '再生能源': 0
+        };
+
+        for (const [name, data] of Object.entries(powerSources)) {
+            if (name.includes('核能')) {
+                groups['核能'] += data.output;
+            } else if (['燃煤', '汽電共生', '民營電廠-燃煤', '燃氣', '民營電廠-燃氣', '燃油', '輕油'].some(fuel => name.includes(fuel))) {
+                groups['火力'] += data.output;
+            } else {
+                groups['再生能源'] += data.output;
+            }
+        }
+
+        return groups;
+    }
+
     // Add these variables at the top of your script, outside any function
     let barChart = null;
     let pieChart = null;
@@ -362,12 +382,13 @@ document.addEventListener('DOMContentLoaded', function() {
         powerSourcesContainer.appendChild(chartsContainer);
         powerSourcesContainer.appendChild(cardsContainer);
 
-        // Update or create the bar chart with grouped data
+        // Update or create the bar chart with original grouped data
         const groupedData = groupPowerSources(powerSources);
         updateBarChart(groupedData, backgroundColors);
 
-        // Update or create the pie chart
-        updatePieChart(groupedData, backgroundColors);
+        // Update or create the pie chart with combined thermal
+        const pieGroupedData = groupPowerSourcesForPie(powerSources);
+        updatePieChart(pieGroupedData, backgroundColors);
     }
 
     function updateBarChart(groupedData, backgroundColors) {
@@ -427,6 +448,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         title: {
                             display: true,
                             text: '各能源別即時發電量'
+                        },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            },
+                            formatter: (value, ctx) => {
+                                const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return percentage + '%';
+                            },
+                            display: function(context) {
+                                return context.dataset.data[context.dataIndex] > 0;
+                            }
                         }
                     },
                     layout: {
@@ -435,7 +473,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             right: 0
                         }
                     }
-                }
+                },
+                plugins: [ChartDataLabels]
             });
         }
     }
@@ -708,9 +747,9 @@ document.addEventListener('DOMContentLoaded', function() {
         '燃煤': 'rgb(139, 69, 19)',
         '燃氣': 'rgb(255, 165, 0)',
         '其他火力': 'rgb(255, 205, 86)',
+        '火力': 'rgb(255, 140, 0)',
         '再生能源': 'rgb(54, 162, 235)',
-        '總發電量': 'rgb(75, 192, 192)',
-        '火力發電': 'rgb(255, 205, 86)'
+        '總發電量': 'rgb(75, 192, 192)'
     };
 
     // Custom calendar variables
