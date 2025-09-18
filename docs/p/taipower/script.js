@@ -261,17 +261,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add a small delay to ensure the table has been rendered
         setTimeout(() => {
             
+            // Remove existing summary rows first
+            const existingSummaryRows = document.querySelectorAll('#powerTable tbody tr.storage-summary');
+            existingSummaryRows.forEach(row => row.remove());
+            
             // Find Energy Storage System and Energy Storage Load units in the main table
             const tableRows = document.querySelectorAll('#powerTable tbody tr');
+            const processedGroups = new Set();
+            const groupsToInsert = [];
             
-            let storageUnitsProcessed = 0;
-            
-            tableRows.forEach((row, index) => {
+            for (let i = 0; i < tableRows.length; i++) {
+                const row = tableRows[i];
                 const fuelTypeCell = row.cells[0]; // 燃料別
                 const unitNameCell = row.cells[2]; // 機組名稱
                 
                 if (!fuelTypeCell || !unitNameCell) {
-                    return;
+                    continue;
                 }
                 
                 const fuelType = fuelTypeCell.textContent || fuelTypeCell.innerText;
@@ -285,52 +290,133 @@ document.addEventListener('DOMContentLoaded', function() {
                     const groupKey = cleanUnitName.includes('#') ? 
                         cleanUnitName.split('#')[0] : cleanUnitName;
                     
-                    if (groupedToday[groupKey] && groupedYesterday[groupKey]) {
+                    // Process each group only once
+                    if (!processedGroups.has(groupKey) && groupedToday[groupKey] && groupedYesterday[groupKey]) {
+                        processedGroups.add(groupKey);
+                        
                         const todayData = groupedToday[groupKey];
                         const yesterdayData = groupedYesterday[groupKey];
                         
                         if (todayData && yesterdayData) {
-                            let remainingHours = 0;
-                            let mode = '';
+                            // Find the last row of this group
+                            const lastRowIndex = findLastRowOfGroup(groupKey, i);
                             
-                            // Get sum of current output for this group
-                            const currentOutputSum = getCurrentOutputSumForGroup(groupKey);
-                            
-                            // For 儲能 (Energy Storage System) - discharge mode
-                            if (fuelType.includes('儲能') && !fuelType.includes('負載')) {
-                                mode = 'discharge';
-                                // Formula: (sum(yesterday.energy_storage_sum) - sum(today.energy_storage_sum)) / sum(current output) * 10 = remaining minutes
-                                const sumDifference = yesterdayData.energy_storage_sum - todayData.energy_storage_sum;
-                                
-                                if (currentOutputSum > 0) {
-                                    const remainingMinutes = (sumDifference / currentOutputSum) * 10;
-                                    remainingHours = remainingMinutes / 60;
-                                }
-                            }
-                            // For 儲能負載 (Energy Storage Load) - charge mode
-                            else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
-                                mode = 'charge';
-                                // Formula: (sum(yesterday.energy_storage_load_sum) - sum(today.energy_storage_load_sum)) / sum(current output) * 10 = remaining minutes
-                                const sumDifference = yesterdayData.energy_storage_load_sum - todayData.energy_storage_load_sum;
-                                
-                                if (currentOutputSum > 0) {
-                                    const remainingMinutes = (sumDifference / currentOutputSum) * 10;
-                                    remainingHours = remainingMinutes / 60;
-                                }
-                            }
-                            
-                            const success = addRemainingTimeToUnit(cleanUnitName, remainingHours, mode, row);
-                            if (success) {
-                                storageUnitsProcessed++;
-                            }
+                            // Store the information for later insertion
+                            groupsToInsert.push({
+                                afterIndex: lastRowIndex,
+                                groupKey: groupKey,
+                                fuelType: fuelType,
+                                todayData: todayData,
+                                yesterdayData: yesterdayData
+                            });
                         }
                     }
                 }
+            }
+            
+            // Insert summary rows from bottom to top to avoid index shifting issues
+            groupsToInsert.sort((a, b) => b.afterIndex - a.afterIndex);
+            groupsToInsert.forEach(group => {
+                insertGroupSummaryRow(group.afterIndex, group.groupKey, group.fuelType, group.todayData, group.yesterdayData);
             });
             
             // Reset the flag
             isCalculatingRemainingTime = false;
         }, 500);
+    }
+
+    function findLastRowOfGroup(groupKey, startIndex) {
+        const tableRows = document.querySelectorAll('#powerTable tbody tr');
+        let lastIndex = startIndex;
+        
+        // Start from the current row (not +1) to include single-unit groups
+        for (let i = startIndex; i < tableRows.length; i++) {
+            const row = tableRows[i];
+            const unitNameCell = row.cells[2];
+            
+            if (unitNameCell) {
+                const unitName = unitNameCell.textContent || unitNameCell.innerText;
+                const cleanUnitName = unitName.trim();
+                const currentGroupKey = cleanUnitName.includes('#') ? 
+                    cleanUnitName.split('#')[0] : cleanUnitName;
+                
+                if (currentGroupKey === groupKey) {
+                    lastIndex = i;
+                } else if (i > startIndex) {
+                    // We've moved past this group
+                    break;
+                }
+            }
+        }
+        
+        return lastIndex;
+    }
+
+    function insertGroupSummaryRow(afterIndex, groupKey, fuelType, todayData, yesterdayData) {
+        const table = document.querySelector('#powerTable tbody');
+        const rows = table.rows;
+        
+        // Get sum of current output for this group
+        const currentOutputSum = getCurrentOutputSumForGroup(groupKey);
+        
+        let mode = '';
+        let yesterdayValue = 0;
+        let todayValue = 0;
+        let remainingHours = 0;
+        
+        // Determine mode and values based on fuel type
+        if (fuelType.includes('儲能') && !fuelType.includes('負載')) {
+            mode = '放電';
+            yesterdayValue = yesterdayData.energy_storage_sum;
+            todayValue = todayData.energy_storage_sum;
+            
+            // Formula: (sum(yesterday.energy_storage_sum) - sum(today.energy_storage_sum)) / sum(current output) * 10 = remaining minutes
+            const sumDifference = yesterdayValue - todayValue;
+            if (currentOutputSum > 0) {
+                const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+                remainingHours = remainingMinutes / 60;
+            }
+        } else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+            mode = '充電';
+            yesterdayValue = yesterdayData.energy_storage_load_sum;
+            todayValue = todayData.energy_storage_load_sum;
+            
+            // Formula: (sum(yesterday.energy_storage_load_sum) - sum(today.energy_storage_load_sum)) / sum(current output) * 10 = remaining minutes
+            const sumDifference = yesterdayValue - todayValue;
+            if (currentOutputSum > 0) {
+                const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+                remainingHours = remainingMinutes / 60;
+            }
+        }
+        
+        // Create summary row
+        const summaryRow = table.insertRow(afterIndex + 1);
+        summaryRow.className = 'storage-summary';
+        summaryRow.style.backgroundColor = '#f8f9fa';
+        summaryRow.style.borderTop = '2px solid #dee2e6';
+        summaryRow.style.fontStyle = 'italic';
+        
+        // Create cells
+        const cell1 = summaryRow.insertCell(0); // 燃料別
+        const cell2 = summaryRow.insertCell(1); // 機組狀態
+        const cell3 = summaryRow.insertCell(2); // 機組名稱
+        const cell4 = summaryRow.insertCell(3); // 機組輸出
+        const cell5 = summaryRow.insertCell(4); // 機組容量 (will span 3 columns)
+        
+        // Fill summary information
+        cell1.textContent = '';
+        cell2.textContent = '';
+        cell3.textContent = `${groupKey} 統計`;
+        cell3.style.fontWeight = 'bold';
+        cell4.textContent = currentOutputSum.toFixed(1);
+        
+        // Set colspan for cell5 to cover columns 4, 5, 6 (機組容量, 占比, 備註)
+        cell5.colSpan = 3;
+        
+        const formattedTime = formatRemainingTime(remainingHours);
+        cell5.innerHTML = `昨天${mode} ${yesterdayValue.toFixed(1)} MW, 今日已${mode} ${todayValue.toFixed(1)} MW, 估計剩餘 ${formattedTime}`;
+        cell5.style.color = mode === '充電' ? '#28a745' : '#dc3545';
+        cell5.style.fontWeight = 'bold';
     }
 
     function groupPumpDataByPrefix(pumpData) {
@@ -495,67 +581,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return 100;
     }
 
-    function addRemainingTimeToUnit(unitName, remainingTime, mode, targetRow) {
-        // Use the specific row passed to avoid searching through all rows
-        const nameCell = targetRow.cells[2];  // 機組名稱
-        const remarksCell = targetRow.cells[6]; // 備註 (last cell)
-        
-        if (nameCell && remarksCell) {
-            const cellText = nameCell.textContent || nameCell.innerText;
-            const cleanUnitName = unitName.trim();
-            const cleanCellText = cellText.trim();
-            
-            // Exact match only
-            if (cleanCellText === cleanUnitName) {
-                const timeText = formatRemainingTime(remainingTime);
-                let newText;
-                if (remainingTime < 0) {
-                    // For negative time, use mode without "剩餘"
-                    const modeText = mode === 'charge' ? '充電' : '放電';
-                    newText = `${modeText}${timeText}`;
-                } else {
-                    // For positive time, use mode with "剩餘"
-                    const modeText = mode === 'charge' ? '充電剩餘' : '放電剩餘';
-                    newText = `${modeText}${timeText}`;
-                }
-                
-                // Check if this exact remaining time info already exists
-                const existingInfo = remarksCell.querySelector('.remaining-time');
-                if (existingInfo && existingInfo.textContent === newText) {
-                    return;
-                }
-                
-                // Clear any existing remaining time info
-                if (existingInfo) {
-                    existingInfo.remove();
-                }
-                
-                // Store original content (excluding remaining time)
-                const originalContent = remarksCell.textContent.replace(/^.*剩餘.*$/m, '').trim();
-                
-                // Add remaining time to the remarks cell
-                const timeSpan = document.createElement('span');
-                timeSpan.className = 'remaining-time';
-                timeSpan.style.color = mode === 'charge' ? '#28a745' : '#dc3545';
-                timeSpan.style.fontSize = '0.9rem';
-                timeSpan.style.fontWeight = 'bold';
-                timeSpan.style.display = 'block';
-                timeSpan.textContent = newText;
-                
-                // Rebuild cell content
-                remarksCell.innerHTML = '';
-                if (originalContent) {
-                    remarksCell.appendChild(document.createTextNode(originalContent));
-                    remarksCell.appendChild(document.createElement('br'));
-                }
-                remarksCell.appendChild(timeSpan);
-                
-                return true;
-            }
-        }
-        
-        return false;
-    }
 
     function formatRemainingTime(hours) {
         if (hours < 0) {
