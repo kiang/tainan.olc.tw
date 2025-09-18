@@ -254,6 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         isCalculatingRemainingTime = true;
         
+        // Group pump data by unit prefix (before # character)
+        const groupedToday = groupPumpDataByPrefix(currentPumpData);
+        const groupedYesterday = groupPumpDataByPrefix(yesterdayPumpData);
+        
         // Add a small delay to ensure the table has been rendered
         setTimeout(() => {
             
@@ -273,54 +277,128 @@ document.addEventListener('DOMContentLoaded', function() {
                 const fuelType = fuelTypeCell.textContent || fuelTypeCell.innerText;
                 const unitName = unitNameCell.textContent || unitNameCell.innerText;
                 
-                // Log first few fuel types to see what we have
-                if (index < 10) {
-                }
-                
                 // Check if this is a storage unit and find corresponding pump.json data
                 if (fuelType.includes('儲能') || fuelType.includes('EnergyStorage')) {
                     
-                    // Use the exact unit name from column 3 as the key for pump.json
+                    // Get the group key (prefix before #)
                     const cleanUnitName = unitName.trim();
+                    const groupKey = cleanUnitName.includes('#') ? 
+                        cleanUnitName.split('#')[0] : cleanUnitName;
                     
-                    if (currentPumpData[cleanUnitName] && yesterdayPumpData[cleanUnitName]) {
-                        const todayData = currentPumpData[cleanUnitName];
-                        const yesterdayData = yesterdayPumpData[cleanUnitName];
-                        
+                    if (groupedToday[groupKey] && groupedYesterday[groupKey]) {
+                        const todayData = groupedToday[groupKey];
+                        const yesterdayData = groupedYesterday[groupKey];
                         
                         if (todayData && yesterdayData) {
-                            let remainingMinutes = 0;
+                            let remainingHours = 0;
                             let mode = '';
                             
-                            // For 儲能 (Energy Storage System) - use energy_storage_count
+                            // Get sum of current output for this group
+                            const currentOutputSum = getCurrentOutputSumForGroup(groupKey);
+                            
+                            // For 儲能 (Energy Storage System) - discharge mode
                             if (fuelType.includes('儲能') && !fuelType.includes('負載')) {
-                                const countDifference = yesterdayData.energy_storage_count - todayData.energy_storage_count;
-                                remainingMinutes = countDifference * 10;
                                 mode = 'discharge';
+                                // Formula: (sum(yesterday.energy_storage_sum) - sum(today.energy_storage_sum)) / sum(current output) * 10 = remaining minutes
+                                const sumDifference = yesterdayData.energy_storage_sum - todayData.energy_storage_sum;
+                                
+                                if (currentOutputSum > 0) {
+                                    const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+                                    remainingHours = remainingMinutes / 60;
+                                }
                             }
-                            // For 儲能負載 (Energy Storage Load) - use energy_storage_load_count
+                            // For 儲能負載 (Energy Storage Load) - charge mode
                             else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
-                                const countDifference = yesterdayData.energy_storage_load_count - todayData.energy_storage_load_count;
-                                remainingMinutes = countDifference * 10;
                                 mode = 'charge';
+                                // Formula: (sum(yesterday.energy_storage_load_sum) - sum(today.energy_storage_load_sum)) / sum(current output) * 10 = remaining minutes
+                                const sumDifference = yesterdayData.energy_storage_load_sum - todayData.energy_storage_load_sum;
+                                
+                                if (currentOutputSum > 0) {
+                                    const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+                                    remainingHours = remainingMinutes / 60;
+                                }
                             }
                             
-                            const remainingHours = remainingMinutes / 60;
                             const success = addRemainingTimeToUnit(cleanUnitName, remainingHours, mode, row);
                             if (success) {
                                 storageUnitsProcessed++;
-                                const formattedTime = formatRemainingTime(remainingHours);
                             }
                         }
-                    } else {
                     }
                 }
             });
             
-            
             // Reset the flag
             isCalculatingRemainingTime = false;
         }, 500);
+    }
+
+    function groupPumpDataByPrefix(pumpData) {
+        const grouped = {};
+        
+        for (const [unitName, data] of Object.entries(pumpData)) {
+            // Split by # and use first part as group key
+            const groupKey = unitName.includes('#') ? unitName.split('#')[0] : unitName;
+            
+            if (!grouped[groupKey]) {
+                grouped[groupKey] = {
+                    energy_storage_sum: 0,
+                    energy_storage_count: 0,
+                    energy_storage_load_sum: 0,
+                    energy_storage_load_count: 0
+                };
+            }
+            
+            // Sum all relevant fields for each group
+            if (data.energy_storage_sum !== undefined) {
+                grouped[groupKey].energy_storage_sum += data.energy_storage_sum;
+            }
+            if (data.energy_storage_count !== undefined) {
+                grouped[groupKey].energy_storage_count += data.energy_storage_count;
+            }
+            if (data.energy_storage_load_sum !== undefined) {
+                grouped[groupKey].energy_storage_load_sum += data.energy_storage_load_sum;
+            }
+            if (data.energy_storage_load_count !== undefined) {
+                grouped[groupKey].energy_storage_load_count += data.energy_storage_load_count;
+            }
+        }
+        
+        return grouped;
+    }
+
+    function getCurrentOutput(unitName, row) {
+        // Get current output from the table row (column 4: 機組輸出)
+        const outputCell = row.cells[3];
+        if (outputCell) {
+            const outputText = outputCell.textContent || outputCell.innerText;
+            const outputValue = parseFloat(outputText.replace(/[^\d.-]/g, ''));
+            return isNaN(outputValue) ? 0 : Math.abs(outputValue);
+        }
+        return 0;
+    }
+
+    function getCurrentOutputSumForGroup(groupKey) {
+        // Sum current output for all units in the same group
+        const tableRows = document.querySelectorAll('#powerTable tbody tr');
+        let outputSum = 0;
+        
+        tableRows.forEach(row => {
+            const unitNameCell = row.cells[2]; // 機組名稱
+            if (unitNameCell) {
+                const unitName = unitNameCell.textContent || unitNameCell.innerText;
+                const cleanUnitName = unitName.trim();
+                const unitGroupKey = cleanUnitName.includes('#') ? 
+                    cleanUnitName.split('#')[0] : cleanUnitName;
+                
+                if (unitGroupKey === groupKey) {
+                    const currentOutput = getCurrentOutput(cleanUnitName, row);
+                    outputSum += currentOutput;
+                }
+            }
+        });
+        
+        return outputSum;
     }
 
 
