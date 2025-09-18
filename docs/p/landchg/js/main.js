@@ -77,11 +77,11 @@ L.Control.Legend = L.Control.extend({
                 <div style="margin-top: 10px;">
                     <div class="legend-item">
                         <span class="legend-icon legal"></span>
-                        <span>合法變異</span>
+                        <span>合法或其他</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-icon illegal"></span>
-                        <span>非法變異</span>
+                        <span>違規變異</span>
                     </div>
                 </div>
                 
@@ -245,8 +245,8 @@ const ui = {
             importantFields.forEach(field => {
                 if (properties[field]) {
                     const value = properties[field];
-                    const isLegal = field === '查證結果' && value === '合法';
-                    const statusClass = field === '查證結果' ? (isLegal ? 'status-legal' : 'status-illegal') : '';
+                    const isIllegal = field === '查證結果' && value === '違規';
+                    const statusClass = field === '查證結果' ? (isIllegal ? 'status-illegal' : 'status-legal') : '';
                     html += `<div class="info-item ${statusClass}">
                         <span class="info-label">${field}</span>
                         <span class="info-value">${value}</span>
@@ -392,10 +392,10 @@ const data = {
             const lng = parseFloat(item.longitude);
             
             if (!isNaN(lat) && !isNaN(lng)) {
-                const isLegal = item['查證結果'] === '合法';
+                const isIllegal = item['查證結果'] === '違規';
                 const marker = L.marker([lat, lng], {
-                    icon: isLegal ? icons.legal : icons.illegal,
-                    isIllegal: !isLegal
+                    icon: isIllegal ? icons.illegal : icons.legal,
+                    isIllegal: isIllegal
                 });
                 
                 // Bind popup
