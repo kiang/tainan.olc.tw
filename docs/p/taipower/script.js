@@ -261,6 +261,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add a small delay to ensure the table has been rendered
         setTimeout(() => {
             
+            // Debug: log available pump data groups
+            console.log('Available pump data groups:', {
+                today: Object.keys(groupedToday),
+                yesterday: Object.keys(groupedYesterday)
+            });
+            
             // Remove existing summary rows first
             const existingSummaryRows = document.querySelectorAll('#powerTable tbody tr.storage-summary');
             existingSummaryRows.forEach(row => row.remove());
@@ -284,31 +290,72 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Check if this is a storage unit and find corresponding pump.json data
                 if (fuelType.includes('儲能') || fuelType.includes('EnergyStorage')) {
+                    // Debug: log all storage units we find
+                    console.log(`Found storage unit: "${fuelType}" - "${unitName}"`);
+                    if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                        console.log('  -> This is Energy Storage Load');
+                    }
                     
                     // Get the group key (prefix before #)
                     const cleanUnitName = unitName.trim();
                     const groupKey = cleanUnitName.includes('#') ? 
                         cleanUnitName.split('#')[0] : cleanUnitName;
                     
-                    // Process each group only once
-                    if (!processedGroups.has(groupKey) && groupedToday[groupKey] && groupedYesterday[groupKey]) {
-                        processedGroups.add(groupKey);
-                        
-                        const todayData = groupedToday[groupKey];
-                        const yesterdayData = groupedYesterday[groupKey];
-                        
-                        if (todayData && yesterdayData) {
-                            // Find the last row of this group
-                            const lastRowIndex = findLastRowOfGroup(groupKey, i);
+                    // Process each group + fuel type combination only once
+                    const groupFuelKey = `${groupKey}_${fuelType.includes('儲能負載') ? 'load' : 'storage'}`;
+                    if (!processedGroups.has(groupFuelKey)) {
+                        if (groupedToday[groupKey] && groupedYesterday[groupKey]) {
+                            processedGroups.add(groupFuelKey);
                             
-                            // Store the information for later insertion
-                            groupsToInsert.push({
-                                afterIndex: lastRowIndex,
-                                groupKey: groupKey,
-                                fuelType: fuelType,
-                                todayData: todayData,
-                                yesterdayData: yesterdayData
-                            });
+                            const todayData = groupedToday[groupKey];
+                            const yesterdayData = groupedYesterday[groupKey];
+                            
+                            // Debug logging for Energy Storage Load
+                            if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                                console.log(`Processing Energy Storage Load group: ${groupKey}`, {
+                                    fuelType,
+                                    todayData,
+                                    yesterdayData,
+                                    hasLoadSum: todayData.energy_storage_load_sum !== undefined
+                                });
+                            }
+                            
+                            // Check if we have relevant data for this type of storage
+                            let hasData = false;
+                            if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                                // For Energy Storage Load, check if we have load_sum data (can be 0 or greater)
+                                hasData = (todayData.energy_storage_load_sum !== undefined && yesterdayData.energy_storage_load_sum !== undefined);
+                                console.log(`Energy Storage Load data check for ${groupKey}:`, {
+                                    hasData,
+                                    todaySum: todayData.energy_storage_load_sum,
+                                    yesterdaySum: yesterdayData.energy_storage_load_sum
+                                });
+                            } else {
+                                // For Energy Storage System, check if we have storage_sum data (should be > 0)
+                                hasData = (todayData.energy_storage_sum > 0 || yesterdayData.energy_storage_sum > 0);
+                            }
+                            
+                            if (hasData) {
+                                // Find the last row of this group
+                                const lastRowIndex = findLastRowOfGroup(groupKey, i);
+                                
+                                // Store the information for later insertion
+                                groupsToInsert.push({
+                                    afterIndex: lastRowIndex,
+                                    groupKey: groupKey,
+                                    fuelType: fuelType,
+                                    todayData: todayData,
+                                    yesterdayData: yesterdayData
+                                });
+                            }
+                        } else {
+                            // Debug: log if data is missing
+                            if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                                console.log(`No pump data for Energy Storage Load group: ${groupKey}`, {
+                                    hasToday: !!groupedToday[groupKey],
+                                    hasYesterday: !!groupedYesterday[groupKey]
+                                });
+                            }
                         }
                     }
                 }
@@ -366,6 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Determine mode and values based on fuel type
         if (fuelType.includes('儲能') && !fuelType.includes('負載')) {
+            // Energy Storage System - discharge mode
             mode = '放電';
             yesterdayValue = yesterdayData.energy_storage_sum;
             todayValue = todayData.energy_storage_sum;
@@ -377,15 +425,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 remainingHours = remainingMinutes / 60;
             }
         } else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+            // Energy Storage Load - charge mode (shows as negative values)
             mode = '充電';
             yesterdayValue = yesterdayData.energy_storage_load_sum;
             todayValue = todayData.energy_storage_load_sum;
             
             // Formula: (sum(yesterday.energy_storage_load_sum) - sum(today.energy_storage_load_sum)) / sum(current output) * 10 = remaining minutes
             const sumDifference = yesterdayValue - todayValue;
-            if (currentOutputSum > 0) {
-                const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+            if (Math.abs(currentOutputSum) > 0) {  // Check if there's any current output
+                const remainingMinutes = (sumDifference / Math.abs(currentOutputSum)) * 10;
                 remainingHours = remainingMinutes / 60;
+            } else {
+                // If no current output, still show the summary with 0 remaining time
+                remainingHours = 0;
             }
         }
         
@@ -400,23 +452,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const cell1 = summaryRow.insertCell(0); // 燃料別
         const cell2 = summaryRow.insertCell(1); // 機組狀態
         const cell3 = summaryRow.insertCell(2); // 機組名稱
-        const cell4 = summaryRow.insertCell(3); // 機組輸出
-        const cell5 = summaryRow.insertCell(4); // 機組容量 (will span 3 columns)
+        const cell4 = summaryRow.insertCell(3); // 機組輸出 (will span 4 columns)
         
         // Fill summary information
         cell1.textContent = '';
         cell2.textContent = '';
         cell3.textContent = `${groupKey} 統計`;
         cell3.style.fontWeight = 'bold';
-        cell4.textContent = currentOutputSum.toFixed(1);
         
-        // Set colspan for cell5 to cover columns 4, 5, 6 (機組容量, 占比, 備註)
-        cell5.colSpan = 3;
+        // Set colspan for cell4 to cover columns 4, 5, 6, 7 (機組輸出, 機組容量, 占比, 備註)
+        cell4.colSpan = 4;
         
-        const formattedTime = formatRemainingTime(remainingHours);
-        cell5.innerHTML = `昨天${mode} ${yesterdayValue.toFixed(1)} MW, 今日已${mode} ${todayValue.toFixed(1)} MW, 估計剩餘 ${formattedTime}`;
-        cell5.style.color = mode === '充電' ? '#28a745' : '#dc3545';
-        cell5.style.fontWeight = 'bold';
+        // Use absolute values for display
+        const yesterdayDisplay = Math.abs(yesterdayValue).toFixed(1);
+        const todayDisplay = Math.abs(todayValue).toFixed(1);
+        
+        if (mode === '充電') {
+            // For Energy Storage Load, show only consumption text
+            cell4.innerHTML = `昨天充電消耗 ${yesterdayDisplay} MW, 今日充電消耗 ${todayDisplay} MW`;
+        } else {
+            // For Energy Storage System, show full text with remaining time
+            const formattedTime = formatRemainingTime(remainingHours);
+            cell4.innerHTML = `昨天${mode} ${yesterdayDisplay} MW, 今日已${mode} ${todayDisplay} MW, 估計剩餘 ${formattedTime}`;
+        }
+        
+        cell4.style.color = mode === '充電' ? '#28a745' : '#dc3545';
+        cell4.style.fontWeight = 'bold';
     }
 
     function groupPumpDataByPrefix(pumpData) {
@@ -459,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (outputCell) {
             const outputText = outputCell.textContent || outputCell.innerText;
             const outputValue = parseFloat(outputText.replace(/[^\d.-]/g, ''));
-            return isNaN(outputValue) ? 0 : Math.abs(outputValue);
+            return isNaN(outputValue) ? 0 : outputValue; // Keep the sign for negative values
         }
         return 0;
     }
@@ -468,23 +529,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // Sum current output for all units in the same group
         const tableRows = document.querySelectorAll('#powerTable tbody tr');
         let outputSum = 0;
+        let isEnergyStorageLoad = false;
         
         tableRows.forEach(row => {
             const unitNameCell = row.cells[2]; // 機組名稱
-            if (unitNameCell) {
+            const fuelTypeCell = row.cells[0]; // 燃料別
+            if (unitNameCell && fuelTypeCell) {
                 const unitName = unitNameCell.textContent || unitNameCell.innerText;
+                const fuelType = fuelTypeCell.textContent || fuelTypeCell.innerText;
                 const cleanUnitName = unitName.trim();
                 const unitGroupKey = cleanUnitName.includes('#') ? 
                     cleanUnitName.split('#')[0] : cleanUnitName;
                 
                 if (unitGroupKey === groupKey) {
                     const currentOutput = getCurrentOutput(cleanUnitName, row);
-                    outputSum += currentOutput;
+                    
+                    // Check if this is Energy Storage Load
+                    if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
+                        isEnergyStorageLoad = true;
+                        // For Energy Storage Load (negative values), use absolute value for sum
+                        outputSum += Math.abs(currentOutput);
+                    } else {
+                        outputSum += currentOutput;
+                    }
                 }
             }
         });
         
-        return outputSum;
+        // Return negative sum for Energy Storage Load to match the table display
+        return isEnergyStorageLoad ? -outputSum : outputSum;
     }
 
 
