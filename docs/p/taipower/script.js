@@ -418,11 +418,23 @@ document.addEventListener('DOMContentLoaded', function() {
             yesterdayValue = yesterdayData.energy_storage_sum;
             todayValue = todayData.energy_storage_sum;
             
+            // Debug logging for Energy Storage System
+            console.log(`Energy Storage System calculation for ${groupKey}:`, {
+                yesterdayValue,
+                todayValue,
+                currentOutputSum,
+                sumDifference: yesterdayValue - todayValue
+            });
+            
             // Formula: (sum(yesterday.energy_storage_sum) - sum(today.energy_storage_sum)) / sum(current output) * 10 = remaining minutes
             const sumDifference = yesterdayValue - todayValue;
-            if (currentOutputSum > 0) {
-                const remainingMinutes = (sumDifference / currentOutputSum) * 10;
+            if (Math.abs(currentOutputSum) > 0) {  // Use absolute value to handle any non-zero output
+                const remainingMinutes = (sumDifference / Math.abs(currentOutputSum)) * 10;
                 remainingHours = remainingMinutes / 60;
+                console.log(`Calculated remaining time: ${remainingMinutes} minutes = ${remainingHours} hours`);
+            } else {
+                console.log('No current output for Energy Storage System, setting remaining time to 0');
+                remainingHours = 0;
             }
         } else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
             // Energy Storage Load - charge mode (shows as negative values)
