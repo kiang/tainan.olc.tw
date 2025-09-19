@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let updateTime;
     const dataCache = {};
     const pumpDataCache = {};
+    const reserveDataCache = {};
     let dataOptions = [];
     let currentPumpData = null;
     let yesterdayPumpData = null;
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const Y = year;
             const Ymd = year + month + day;
             loadPumpData(Y, Ymd, 'latest');
+            loadReserveData(Y, Ymd);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -173,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dataCache[cacheKey]) {
             updatePage(dataCache[cacheKey], isAutoUpdate);
             loadPumpData(Y, Ymd, selectedHis);
+            loadReserveData(Y, Ymd);
         } else {
             fetch(newDataSource)
                 .then(response => response.json())
@@ -180,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     dataCache[cacheKey] = data;
                     updatePage(data, isAutoUpdate);
                     loadPumpData(Y, Ymd, selectedHis);
+                    loadReserveData(Y, Ymd);
                 })
                 .catch(error => console.error('Error fetching new data:', error));
         }
@@ -241,6 +245,186 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function loadReserveData(year, ymd) {
+        const reserveUrl = `https://kiang.github.io/taipower_data/genary/${year}/reserve.json`;
+        const cacheKey = `${year}_reserve`;
+        
+        // Format date for matching (YYYY-MM-DD)
+        const formattedDate = `${ymd.slice(0,4)}-${ymd.slice(4,6)}-${ymd.slice(6,8)}`;
+        
+        if (reserveDataCache[cacheKey]) {
+            displayReserveData(reserveDataCache[cacheKey], formattedDate);
+        } else {
+            fetch(reserveUrl)
+                .then(response => response.json())
+                .then(data => {
+                    reserveDataCache[cacheKey] = data;
+                    displayReserveData(data, formattedDate);
+                })
+                .catch(error => {
+                    console.warn('Error fetching reserve data:', error);
+                    document.getElementById('reserveCapacity').textContent = '';
+                });
+        }
+    }
+    
+    function displayReserveData(reserveData, targetDate) {
+        const reserveElement = document.getElementById('reserveCapacity');
+        
+        if (reserveData && Array.isArray(reserveData)) {
+            // Find the data for the target date
+            const dayData = reserveData.find(item => item.date === targetDate);
+            
+            if (dayData) {
+                // Store the day data for the detailed view
+                window.currentReserveData = dayData;
+                
+                // Check if we have prediction data (supply_predict and load_high)
+                if (dayData.supply_predict && dayData.load_high) {
+                    const supplyPredict = parseFloat(dayData.supply_predict);
+                    const loadHigh = parseFloat(dayData.load_high);
+                    
+                    if (!isNaN(supplyPredict) && !isNaN(loadHigh) && loadHigh > 0) {
+                        const reserveRate = ((supplyPredict - loadHigh) / loadHigh * 100).toFixed(2);
+                        reserveElement.innerHTML = `預估尖峰備轉容量率: <span style="color: ${reserveRate >= 10 ? '#28a745' : reserveRate >= 6 ? '#ffc107' : '#dc3545'};">${reserveRate}%</span>`;
+                        
+                        // Add click handler if not already added
+                        if (!reserveElement.hasAttribute('data-click-added')) {
+                            reserveElement.addEventListener('click', showReserveDetails);
+                            reserveElement.setAttribute('data-click-added', 'true');
+                        }
+                    } else {
+                        reserveElement.textContent = '';
+                    }
+                }
+                // Check if we have real data (real_supply and real_load)
+                else if (dayData.real_supply && dayData.real_load) {
+                    const realSupply = parseFloat(dayData.real_supply);
+                    const realLoad = parseFloat(dayData.real_load);
+                    const realReserveCap = parseFloat(dayData.real_reserve_cap);
+                    
+                    if (!isNaN(realReserveCap)) {
+                        // If real_reserve_cap is directly available, use it
+                        reserveElement.innerHTML = `實際尖峰備轉容量率: <span style="color: ${realReserveCap >= 10 ? '#28a745' : realReserveCap >= 6 ? '#ffc107' : '#dc3545'};">${realReserveCap.toFixed(2)}%</span>`;
+                        
+                        // Add click handler if not already added
+                        if (!reserveElement.hasAttribute('data-click-added')) {
+                            reserveElement.addEventListener('click', showReserveDetails);
+                            reserveElement.setAttribute('data-click-added', 'true');
+                        }
+                    } else if (!isNaN(realSupply) && !isNaN(realLoad) && realSupply > 0) {
+                        // Calculate from real values
+                        const reserveRate = ((realSupply - realLoad) / realSupply * 100).toFixed(2);
+                        reserveElement.innerHTML = `實際尖峰備轉容量率: <span style="color: ${reserveRate >= 10 ? '#28a745' : reserveRate >= 6 ? '#ffc107' : '#dc3545'};">${reserveRate}%</span>`;
+                        
+                        // Add click handler if not already added
+                        if (!reserveElement.hasAttribute('data-click-added')) {
+                            reserveElement.addEventListener('click', showReserveDetails);
+                            reserveElement.setAttribute('data-click-added', 'true');
+                        }
+                    } else {
+                        reserveElement.textContent = '';
+                    }
+                } else {
+                    reserveElement.textContent = '';
+                }
+                
+                // Update the detailed section
+                updateReserveDetailsSection(dayData);
+            } else {
+                reserveElement.textContent = '';
+                window.currentReserveData = null;
+            }
+        } else {
+            reserveElement.textContent = '';
+            window.currentReserveData = null;
+        }
+    }
+    
+    function showReserveDetails() {
+        const detailsSection = document.getElementById('reserveDetails');
+        if (detailsSection) {
+            detailsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    function updateReserveDetailsSection(dayData) {
+        if (!dayData) return;
+        
+        // Update predicted values
+        const supplyPredictSpan = document.querySelector('#supplyPredict span');
+        const loadHighSpan = document.querySelector('#loadHigh span');
+        const loadLowSpan = document.querySelector('#loadLow span');
+        const calculatedReserveSpan = document.querySelector('#calculatedReserveRate span');
+        
+        if (dayData.supply_predict) {
+            supplyPredictSpan.textContent = parseFloat(dayData.supply_predict).toLocaleString();
+        } else {
+            supplyPredictSpan.textContent = '-';
+        }
+        
+        if (dayData.load_high) {
+            loadHighSpan.textContent = parseFloat(dayData.load_high).toLocaleString();
+        } else {
+            loadHighSpan.textContent = '-';
+        }
+        
+        if (dayData.load_low) {
+            loadLowSpan.textContent = parseFloat(dayData.load_low).toLocaleString();
+        } else {
+            loadLowSpan.textContent = '-';
+        }
+        
+        // Calculate and display predicted reserve rate
+        if (dayData.supply_predict && dayData.load_high) {
+            const supplyPredict = parseFloat(dayData.supply_predict);
+            const loadHigh = parseFloat(dayData.load_high);
+            if (!isNaN(supplyPredict) && !isNaN(loadHigh) && loadHigh > 0) {
+                const reserveRate = ((supplyPredict - loadHigh) / loadHigh * 100).toFixed(2);
+                calculatedReserveSpan.innerHTML = `<span style="color: ${reserveRate >= 10 ? '#28a745' : reserveRate >= 6 ? '#ffc107' : '#dc3545'};">${reserveRate}%</span>`;
+            } else {
+                calculatedReserveSpan.textContent = '-';
+            }
+        } else {
+            calculatedReserveSpan.textContent = '-';
+        }
+        
+        // Update actual values
+        const realSupplySpan = document.querySelector('#realSupply span');
+        const realLoadSpan = document.querySelector('#realLoad span');
+        const realReserveSpan = document.querySelector('#realReserveCap span');
+        
+        if (dayData.real_supply) {
+            realSupplySpan.textContent = parseFloat(dayData.real_supply).toLocaleString();
+        } else {
+            realSupplySpan.textContent = '-';
+        }
+        
+        if (dayData.real_load) {
+            realLoadSpan.textContent = parseFloat(dayData.real_load).toLocaleString();
+        } else {
+            realLoadSpan.textContent = '-';
+        }
+        
+        if (dayData.real_reserve_cap) {
+            const realReserveCap = parseFloat(dayData.real_reserve_cap);
+            realReserveSpan.innerHTML = `<span style="color: ${realReserveCap >= 10 ? '#28a745' : realReserveCap >= 6 ? '#ffc107' : '#dc3545'};">${realReserveCap.toFixed(2)}%</span>`;
+        } else {
+            realReserveSpan.textContent = '-';
+        }
+        
+        // Update comment section
+        const commentRow = document.getElementById('commentRow');
+        const commentElement = document.getElementById('reserveComment');
+        
+        if (dayData.comment && dayData.comment.trim()) {
+            commentElement.textContent = dayData.comment;
+            commentRow.style.display = 'block';
+        } else {
+            commentRow.style.display = 'none';
+        }
+    }
+
     function calculateRemainingTime() {
         
         // Prevent infinite loop
@@ -261,11 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add a small delay to ensure the table has been rendered
         setTimeout(() => {
             
-            // Debug: log available pump data groups
-            console.log('Available pump data groups:', {
-                today: Object.keys(groupedToday),
-                yesterday: Object.keys(groupedYesterday)
-            });
             
             // Remove existing summary rows first
             const existingSummaryRows = document.querySelectorAll('#powerTable tbody tr.storage-summary');
@@ -290,11 +469,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Check if this is a storage unit and find corresponding pump.json data
                 if (fuelType.includes('儲能') || fuelType.includes('EnergyStorage')) {
-                    // Debug: log all storage units we find
-                    console.log(`Found storage unit: "${fuelType}" - "${unitName}"`);
-                    if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
-                        console.log('  -> This is Energy Storage Load');
-                    }
                     
                     // Get the group key (prefix before #)
                     const cleanUnitName = unitName.trim();
@@ -310,26 +484,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             const todayData = groupedToday[groupKey];
                             const yesterdayData = groupedYesterday[groupKey];
                             
-                            // Debug logging for Energy Storage Load
-                            if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
-                                console.log(`Processing Energy Storage Load group: ${groupKey}`, {
-                                    fuelType,
-                                    todayData,
-                                    yesterdayData,
-                                    hasLoadSum: todayData.energy_storage_load_sum !== undefined
-                                });
-                            }
-                            
                             // Check if we have relevant data for this type of storage
                             let hasData = false;
                             if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
                                 // For Energy Storage Load, check if we have load_sum data (can be 0 or greater)
                                 hasData = (todayData.energy_storage_load_sum !== undefined && yesterdayData.energy_storage_load_sum !== undefined);
-                                console.log(`Energy Storage Load data check for ${groupKey}:`, {
-                                    hasData,
-                                    todaySum: todayData.energy_storage_load_sum,
-                                    yesterdaySum: yesterdayData.energy_storage_load_sum
-                                });
                             } else {
                                 // For Energy Storage System, check if we have storage_sum data (should be > 0)
                                 hasData = (todayData.energy_storage_sum > 0 || yesterdayData.energy_storage_sum > 0);
@@ -346,14 +505,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                     fuelType: fuelType,
                                     todayData: todayData,
                                     yesterdayData: yesterdayData
-                                });
-                            }
-                        } else {
-                            // Debug: log if data is missing
-                            if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
-                                console.log(`No pump data for Energy Storage Load group: ${groupKey}`, {
-                                    hasToday: !!groupedToday[groupKey],
-                                    hasYesterday: !!groupedYesterday[groupKey]
                                 });
                             }
                         }
@@ -418,22 +569,12 @@ document.addEventListener('DOMContentLoaded', function() {
             yesterdayValue = yesterdayData.energy_storage_sum;
             todayValue = todayData.energy_storage_sum;
             
-            // Debug logging for Energy Storage System
-            console.log(`Energy Storage System calculation for ${groupKey}:`, {
-                yesterdayValue,
-                todayValue,
-                currentOutputSum,
-                sumDifference: yesterdayValue - todayValue
-            });
-            
             // Formula: (sum(yesterday.energy_storage_sum) - sum(today.energy_storage_sum)) / sum(current output) * 10 = remaining minutes
             const sumDifference = yesterdayValue - todayValue;
             if (Math.abs(currentOutputSum) > 0) {  // Use absolute value to handle any non-zero output
                 const remainingMinutes = (sumDifference / Math.abs(currentOutputSum)) * 10;
                 remainingHours = remainingMinutes / 60;
-                console.log(`Calculated remaining time: ${remainingMinutes} minutes = ${remainingHours} hours`);
             } else {
-                console.log('No current output for Energy Storage System, setting remaining time to 0');
                 remainingHours = 0;
             }
         } else if (fuelType.includes('儲能負載') || fuelType.includes('EnergyStorageLoad')) {
