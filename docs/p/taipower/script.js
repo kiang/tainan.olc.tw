@@ -389,6 +389,23 @@ document.addEventListener('DOMContentLoaded', function() {
             calculatedReserveSpan.textContent = '-';
         }
         
+        // Calculate and display predicted reserve rate excluding emergency power
+        const calculatedReserveExcludingEmergencySpan = document.querySelector('#calculatedReserveRateExcludingEmergency span');
+        if (dayData.supply_predict && dayData.load_high) {
+            const supplyPredict = parseFloat(dayData.supply_predict);
+            const loadHigh = parseFloat(dayData.load_high);
+            if (!isNaN(supplyPredict) && !isNaN(loadHigh) && loadHigh > 0) {
+                // Calculate sum of emergency power supply
+                const emergencySupplySum = calculateEmergencySupplySum();
+                const reserveRateExcludingEmergency = ((supplyPredict - loadHigh - emergencySupplySum) / loadHigh * 100).toFixed(2);
+                calculatedReserveExcludingEmergencySpan.innerHTML = `<span style="color: ${reserveRateExcludingEmergency >= 10 ? '#28a745' : reserveRateExcludingEmergency >= 6 ? '#ffc107' : '#dc3545'};">${reserveRateExcludingEmergency}%</span>`;
+            } else {
+                calculatedReserveExcludingEmergencySpan.textContent = '-';
+            }
+        } else {
+            calculatedReserveExcludingEmergencySpan.textContent = '-';
+        }
+        
         // Update actual values
         const realSupplySpan = document.querySelector('#realSupply span');
         const realLoadSpan = document.querySelector('#realLoad span');
@@ -423,6 +440,38 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             commentRow.style.display = 'none';
         }
+    }
+
+    function calculateEmergencySupplySum() {
+        // Define emergency generators list (same as in displayTableData)
+        const emergencyGenerators = [
+            '核二Gas1', '核二Gas2', '核三Gas1', '核三Gas2',
+            '台中Gas1&2', '台中Gas3&4', '大林#5',
+            '興達#1', '興達#2', '興達#3', '興達#4'
+        ];
+        
+        let emergencySupplySum = 0;
+        
+        // Get current table data
+        const tableBody = document.querySelector('#powerTable tbody');
+        if (!tableBody) return 0;
+        
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 5) {
+                const generatorName = cells[2].textContent.trim();
+                const powerOutput = parseFloat(cells[4].textContent.replace(',', '')) || 0;
+                
+                // Check if this is an emergency generator
+                const isEmergencyGenerator = emergencyGenerators.some(eg => generatorName.includes(eg));
+                if (isEmergencyGenerator && powerOutput > 0) {
+                    emergencySupplySum += powerOutput;
+                }
+            }
+        });
+        
+        return emergencySupplySum;
     }
 
     function calculateRemainingTime() {
@@ -885,6 +934,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Display table data
         displayTableData(aaData);
+
+        // Update reserve details section if we have current reserve data
+        // This ensures emergency power calculations are updated after table is displayed
+        if (window.currentReserveData) {
+            updateReserveDetailsSection(window.currentReserveData);
+        }
 
         // Calculate remaining time for storage units
         try {
