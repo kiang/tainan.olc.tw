@@ -7,6 +7,8 @@ let searchResults = [];
 let points = {};
 const photoData = {};
 let fishFarmLayer = null;
+let fishFarmData = null; // Cache for fish farm data
+let fishFarmVisible = false; // Track visibility state
 
 // Add a variable to track if we're showing a popup from the list
 let showingFromList = false;
@@ -432,7 +434,7 @@ function initMap() {
     const fishFarmButton = document.createElement('button');
     fishFarmButton.className = 'btn btn-outline-secondary btn-sm';
     fishFarmButton.innerHTML = '<i class="bi bi-water"></i> 漁電共生';
-    fishFarmButton.onclick = loadFishFarmData;
+    fishFarmButton.onclick = function() { toggleFishFarmData(this); };
     searchClear.parentNode.insertBefore(fishFarmButton, searchClear.nextSibling);
 }
 
@@ -481,62 +483,96 @@ function fetchPhotoData() {
         });
 }
 
-// Add this function to load fish farm data
-function loadFishFarmData() {
-    if (fishFarmLayer) {
-        map.removeLayer(fishFarmLayer);
+// Add this function to toggle fish farm data
+function toggleFishFarmData(button) {
+    if (fishFarmVisible) {
+        // Hide the layer
+        if (fishFarmLayer) {
+            map.removeLayer(fishFarmLayer);
+        }
+        fishFarmVisible = false;
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-outline-secondary');
+        button.innerHTML = '<i class="bi bi-water"></i> 漁電共生';
+    } else {
+        // Show the layer
+        if (fishFarmData) {
+            // Data is already cached, just add the layer
+            if (fishFarmLayer) {
+                map.addLayer(fishFarmLayer);
+            }
+            fishFarmVisible = true;
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-primary');
+            button.innerHTML = '<i class="bi bi-water"></i> 漁電共生 ✓';
+        } else {
+            // First time loading, fetch the data
+            button.disabled = true;
+            button.innerHTML = '<i class="bi bi-hourglass-split"></i> 載入中...';
+            
+            fetch('https://kiang.github.io/www.sfea.org.tw/json/fishfarms.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Cache the data
+                    fishFarmData = data;
+                    
+                    // Create features from GeoJSON
+                    const features = new ol.format.GeoJSON().readFeatures(data, {
+                        featureProjection: 'EPSG:3857'
+                    });
+
+                    const vectorSource = new ol.source.Vector({
+                        features: features
+                    });
+
+                    fishFarmLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        style: function(feature) {
+                            const geometry = feature.getGeometry();
+                            const extent = geometry.getExtent();
+                            const bottomCenter = [
+                                (extent[0] + extent[2]) / 2,
+                                extent[1] // Use the bottom (minimum y) coordinate
+                            ];
+
+                            return [
+                                new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: 'rgba(0, 123, 255, 0.2)'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#007bff',
+                                        width: 2
+                                    })
+                                }),
+                                new ol.style.Style({
+                                    geometry: new ol.geom.Point(bottomCenter),
+                                    text: new ol.style.Text({
+                                        text: '🐟',
+                                        font: '14px Arial',
+                                        offsetY: -5 // Move text up slightly from the bottom
+                                    })
+                                })
+                            ];
+                        },
+                        zIndex: 2  // Set higher z-index to appear above cluster layer
+                    });
+
+                    map.addLayer(fishFarmLayer);
+                    fishFarmVisible = true;
+                    button.disabled = false;
+                    button.classList.remove('btn-outline-secondary');
+                    button.classList.add('btn-primary');
+                    button.innerHTML = '<i class="bi bi-water"></i> 漁電共生 ✓';
+                })
+                .catch(error => {
+                    console.error('Error loading fish farm data:', error);
+                    button.disabled = false;
+                    button.innerHTML = '<i class="bi bi-water"></i> 漁電共生';
+                    alert('載入漁電共生資料時發生錯誤');
+                });
+        }
     }
-
-    fetch('https://kiang.github.io/www.sfea.org.tw/json/fishfarms.json')
-        .then(response => response.json())
-        .then(data => {
-            // Create features from GeoJSON
-            const features = new ol.format.GeoJSON().readFeatures(data, {
-                featureProjection: 'EPSG:3857'
-            });
-
-            const vectorSource = new ol.source.Vector({
-                features: features
-            });
-
-            fishFarmLayer = new ol.layer.Vector({
-                source: vectorSource,
-                style: function(feature) {
-                    const geometry = feature.getGeometry();
-                    const extent = geometry.getExtent();
-                    const bottomCenter = [
-                        (extent[0] + extent[2]) / 2,
-                        extent[1] // Use the bottom (minimum y) coordinate
-                    ];
-
-                    return [
-                        new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 123, 255, 0.2)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#007bff',
-                                width: 2
-                            })
-                        }),
-                        new ol.style.Style({
-                            geometry: new ol.geom.Point(bottomCenter),
-                            text: new ol.style.Text({
-                                text: '🐟',
-                                font: '14px Arial',
-                                offsetY: -5 // Move text up slightly from the bottom
-                            })
-                        })
-                    ];
-                },
-                zIndex: 2  // Set higher z-index to appear above cluster layer
-            });
-
-            map.addLayer(fishFarmLayer);
-        })
-        .catch(error => {
-            console.error('Error loading fish farm data:', error);
-        });
 }
 
 // Add this function to show fish farm popup
