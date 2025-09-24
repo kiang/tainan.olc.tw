@@ -528,7 +528,8 @@ function loadFishFarmData() {
                             })
                         })
                     ];
-                }
+                },
+                zIndex: 2  // Set higher z-index to appear above cluster layer
             });
 
             map.addLayer(fishFarmLayer);
