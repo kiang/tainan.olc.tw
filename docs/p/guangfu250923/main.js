@@ -852,73 +852,29 @@ function createSubmissionMarker(submission, lat, lng) {
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
     `;
     
-    // Function to get cleaner field labels
-    function getDisplayLabel(fieldName) {
-        const field = fieldName.toLowerCase();
-        
-        // Time/timestamp fields
-        if (field.includes('時間') || field.includes('timestamp') || field.includes('time')) {
-            return '通報時間';
-        }
-        // Content fields
-        if (field.includes('內容') || field.includes('content') || field.includes('report')) {
-            return '通報內容';
-        }
-        // Contact/description fields
-        if (field.includes('聯繫') || field.includes('聯絡') || field.includes('contact') || 
-            field.includes('說明') || field.includes('備註') || field.includes('description') || 
-            field.includes('note') || field.includes('電話') || field.includes('phone')) {
-            return '聯絡資訊與說明';
-        }
-        // City/district fields
-        if (field.includes('鄉鎮') || field.includes('市區') || field.includes('city') || 
-            field.includes('district') || field.includes('縣市')) {
-            return '鄉鎮市區';
-        }
-        // Village fields
-        if (field.includes('村里') || field.includes('village') || field.includes('里')) {
-            return '村里';
-        }
-        
-        // Return original field name if no match
-        return fieldName;
-    }
+    // Define which columns to show and their labels based on typical Google Form structure
+    const columnLabels = [
+        '通報時間',        // Column 0: timestamp
+        '通報內容',        // Column 1: content
+        '聯絡資訊與說明',   // Column 2: contact/description
+        '鄉鎮市區',        // Column 3: city/district
+        '村里'            // Column 4: village
+        // Skip other columns like coordinates, UUID, photos
+    ];
 
-    Object.entries(submission).forEach(([key, value]) => {
-        if (value && value.trim() !== '') {
-            // Skip coordinates, photo fields, and UUID fields in table display
-            const isCoordinate = key.toLowerCase().includes('lat') || 
-                                key.toLowerCase().includes('lng') || 
-                                key.toLowerCase().includes('lon') ||
-                                key.includes('緯') || 
-                                key.includes('經');
-            
-            const isPhotoField = key.includes('照片') || key.includes('圖片') || 
-                               key.includes('photo') || key.includes('image') || 
-                               key.toLowerCase().includes('upload') || 
-                               value.includes('drive.google.com');
-            
-            const isUuidField = key.toLowerCase().includes('uuid') || 
-                              key.toLowerCase().includes('id') ||
-                              key.includes('地點編號') || 
-                              key.includes('系統自動填入') ||
-                              key.includes('不用理會');
-            
-            if (!isCoordinate && !isPhotoField && !isUuidField) {
-                // Get cleaner display label
-                const displayLabel = getDisplayLabel(key);
-                
-                popupContent += `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                            ${displayLabel}
-                        </td>
-                        <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
-                            ${value}
-                        </td>
-                    </tr>
-                `;
-            }
+    const submissionEntries = Object.entries(submission);
+    submissionEntries.forEach(([key, value], index) => {
+        if (value && value.trim() !== '' && index < columnLabels.length) {
+            popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                        ${columnLabels[index]}
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${value}
+                    </td>
+                </tr>
+            `;
         }
     });
     
