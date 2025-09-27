@@ -8,6 +8,7 @@ let cunliLayer;
 let submissionsLayer;
 let stayLayer;
 let washPointsLayer;
+let myMapsLayer;
 let villageLabels = L.layerGroup();
 
 // Generate UUID v4
@@ -51,6 +52,9 @@ function initMap() {
     // Initialize wash points layer group
     washPointsLayer = L.layerGroup().addTo(map);
 
+    // Initialize Google My Maps layer group
+    myMapsLayer = L.layerGroup().addTo(map);
+
     // Initialize village labels layer
     map.addLayer(villageLabels);
 
@@ -68,6 +72,9 @@ function initMap() {
     
     // Load wash points
     loadWashPoints();
+    
+    // Load Google My Maps data
+    loadMyMapsData();
 }
 
 // Load Hualien cunli basemap
@@ -457,6 +464,113 @@ function loadWashPoints() {
         .catch(error => {
             console.error('Error loading wash points:', error);
         });
+}
+
+// Load Google My Maps data from converted GeoJSON
+function loadMyMapsData() {
+    fetch('data/demands.json')
+        .then(response => response.json())
+        .then(geojsonData => {
+            // Clear existing My Maps markers
+            myMapsLayer.clearLayers();
+            
+            geojsonData.features.forEach(feature => {
+                if (feature.geometry && feature.geometry.type === 'Point') {
+                    const coordinates = feature.geometry.coordinates;
+                    const lng = coordinates[0];
+                    const lat = coordinates[1];
+                    const properties = feature.properties || {};
+                    
+                    const name = properties.name || '';
+                    const description = properties.description || '';
+                    const demandType = properties.demand_type || 'mixed';
+                    const demandTypeZh = properties.demand_type_zh || '綜合需求';
+                    
+                    createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading My Maps data:', error);
+        });
+}
+
+// Create marker for Google My Maps data
+function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh) {
+    // Get icon info based on demand type
+    let iconInfo = getMyMapsIconType(demandType);
+    
+    // Create marker icon
+    const myMapsIcon = L.divIcon({
+        html: `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`,
+        className: '',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+    });
+    
+    const marker = L.marker([lat, lng], { icon: myMapsIcon });
+    
+    // Create popup content
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                ${iconInfo.icon} ${demandTypeZh || iconInfo.label}
+            </h6>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                        地點名稱
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${name}
+                    </td>
+                </tr>
+    `;
+    
+    if (description && description.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        詳細說明
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${description}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        位置
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top;">
+                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    `;
+    
+    marker.bindPopup(popupContent);
+    myMapsLayer.addLayer(marker);
+}
+
+// Get icon type for My Maps markers based on demand type
+function getMyMapsIconType(demandType) {
+    // Based on the My Maps legend: Labor (red), Supplies (blue), Equipment (yellow), Mixed
+    switch (demandType) {
+        case 'labor':
+            return { icon: '👷', color: '#dc3545', label: '需要人力' }; // Red for labor
+        case 'supplies':
+            return { icon: '📦', color: '#007bff', label: '需要物資' }; // Blue for supplies
+        case 'equipment':
+            return { icon: '🔧', color: '#ffc107', label: '需要機具' }; // Yellow for equipment
+        default:
+            return { icon: '📍', color: '#6c757d', label: '救災需求' }; // Gray for mixed/other
+    }
 }
 
 // Parse CSV line handling quoted fields
