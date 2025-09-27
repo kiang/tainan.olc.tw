@@ -6,6 +6,15 @@ let filterInput = document.getElementById('filter-input');
 let coordinatesModal;
 let cunliLayer;
 
+// Generate UUID v4
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 // Initialize map
 function initMap() {
     // Set default view to Hualien Guangfu area
@@ -52,18 +61,43 @@ function loadCunliBasemap() {
                     fillOpacity: 0.2
                 },
                 onEachFeature: function(feature, layer) {
-                    // Add popup with all cunli properties
+                    // Add popup with specific cunli information
                     if (feature.properties) {
+                        const props = feature.properties;
+                        const townName = props.TOWNNAME || '';
+                        const villName = props.VILLNAME || '';
+                        
+                        // Get coordinates from the feature geometry (centroid)
+                        let lat = '';
+                        let lng = '';
+                        if (feature.geometry && feature.geometry.type === 'Polygon') {
+                            // Calculate centroid for polygon
+                            const bounds = L.geoJSON(feature).getBounds();
+                            lat = bounds.getCenter().lat.toFixed(6);
+                            lng = bounds.getCenter().lng.toFixed(6);
+                        }
+                        
                         let popupContent = '<div style="max-width: 300px;">';
                         
-                        // Display all properties
-                        Object.entries(feature.properties).forEach(([key, value]) => {
-                            if (value !== null && value !== undefined && value !== '') {
-                                popupContent += `<p><strong>${key}:</strong> ${value}</p>`;
-                            }
-                        });
+                        if (townName) {
+                            popupContent += `<p><strong>鄉鎮:</strong> ${townName}</p>`;
+                        }
+                        if (villName) {
+                            popupContent += `<p><strong>村里:</strong> ${villName}</p>`;
+                        }
+                        if (lat && lng) {
+                            popupContent += `<p><strong>座標:</strong> ${lat}, ${lng}</p>`;
+                        }
                         
+                        // Generate UUID for the entry
+                        const uuid = generateUUID();
+                        
+                        // Google Form URL with parameters
+                        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLScjTrlW1dFTY3nDKe1SjtHwhqZluC1wn6IaMaXhDPF_2jyiEw/viewform?usp=pp_url&entry.1588782081=${encodeURIComponent(townName)}&entry.1966779823=${encodeURIComponent(villName)}&entry.1998738256=${encodeURIComponent(lng)}&entry.1387778236=${encodeURIComponent(lat)}&entry.2072773208=${encodeURIComponent(uuid)}`;
+                        
+                        popupContent += `<br><button onclick="window.open('${formUrl}', '_blank')" class="btn btn-primary btn-sm">填寫救災資訊表單</button>`;
                         popupContent += '</div>';
+                        
                         layer.bindPopup(popupContent);
                     }
                     
