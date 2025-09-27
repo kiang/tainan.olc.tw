@@ -114,6 +114,13 @@
             font-size: 14px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
+        .village-label {
+            width: auto !important;
+            height: auto !important;
+        }
+        .village-label div {
+            transform: translate(-50%, -50%);
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -144,34 +151,47 @@
                     <small class="text-muted me-2">
                         <a href="https://facebook.com/k.olc.tw/" target="_blank" class="text-decoration-none">江明宗 製作</a>
                     </small>
-                    <button id="tutorial-icon" class="btn btn-outline-info me-2">
+                    <button id="tutorial-icon" class="btn btn-outline-info">
                         <i class="bi bi-play-circle"></i>
-                    </button>
-                    <button id="readme-icon" class="btn btn-outline-info">
-                        <i class="bi bi-question-circle"></i>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
-    <div id="readme-popup" class="readme-popup">
-        <span class="readme-closer" id="readme-closer">&times;</span>
-        <div id="readme-content">
-            <h5>花蓮光復救災資訊地圖</h5>
-            <p>此地圖展示花蓮光復地區救災相關資訊，包含避難收容處所、物資發放點、醫療站等重要位置。</p>
-            <canvas id="nameChart" width="400" height="400"></canvas>
-        </div>
-    </div>
     <div id="tutorial-popup" class="tutorial-popup">
         <span class="tutorial-closer" id="tutorial-closer">&times;</span>
         <div id="tutorial-content">
-            <h5 class="mb-3">使用教學</h5>
-            <p>地圖操作說明：</p>
-            <ul>
-                <li>點擊標記查看詳細資訊</li>
-                <li>使用定位功能找到您的位置</li>
-                <li>使用座標輸入功能跳轉到特定位置</li>
-            </ul>
+            <h5 class="mb-3">花蓮光復救災資訊地圖使用教學</h5>
+            <div class="mb-4">
+                <h6>地圖功能說明：</h6>
+                <ul>
+                    <li><strong>行政區域</strong>：點擊村里區域可查看行政資訊並填寫救災表單</li>
+                    <li><strong>救災標記</strong>：地圖上的彩色標記代表不同類型的救災資訊</li>
+                    <li><strong>村里名稱</strong>：放大地圖至13倍以上可看到村里名稱標籤</li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h6>救災標記圖例：</h6>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><span style="color: #007bff;">🙋</span> <strong>需要志工</strong> - 志工支援需求</li>
+                    <li><span style="color: #fd7e14;">📦</span> <strong>需要物資</strong> - 物資補給需求</li>
+                    <li><span style="color: #20c997;">🚿</span> <strong>提供洗澡點</strong> - 盥洗設施</li>
+                    <li><span style="color: #6f42c1;">🏠</span> <strong>提供住宿點</strong> - 臨時住宿</li>
+                    <li><span style="color: #6c757d;">❓</span> <strong>其他</strong> - 其他救災資訊</li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h6>操作說明：</h6>
+                <ul>
+                    <li><strong>定位</strong>：點擊「定位」按鈕找到您的當前位置</li>
+                    <li><strong>座標跳轉</strong>：點擊「座標」按鈕輸入經緯度跳轉到特定位置</li>
+                    <li><strong>搜尋過濾</strong>：在搜尋框輸入關鍵字過濾標記</li>
+                    <li><strong>填寫表單</strong>：點擊村里區域後可填寫救災資訊表單</li>
+                </ul>
+            </div>
+            <div class="alert alert-info">
+                <strong>提醒：</strong>此地圖即時顯示透過表單提交的救災資訊，協助災區資源協調與需求媒合。
+            </div>
         </div>
     </div>
     <div class="modal fade" id="coordinatesModal" tabindex="-1" aria-labelledby="coordinatesModalLabel" aria-hidden="true">
