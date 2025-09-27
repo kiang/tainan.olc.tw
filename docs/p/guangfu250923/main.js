@@ -1157,6 +1157,27 @@ function updateDataList(layerName, filterText = '') {
         // Format the display based on layer type
         let title = item.name;
         let details = '';
+        let address = '';
+        
+        // Extract address from properties
+        if (item.properties) {
+            // Common address field names
+            address = item.properties['地址'] || 
+                     item.properties['地點'] || 
+                     item.properties['address'] || 
+                     item.properties['location'] ||
+                     item.properties['Address'] ||
+                     item.properties['Location'] ||
+                     '';
+                     
+            // For demands layer, sometimes address is in the name field
+            if (!address && layerName === 'demands' && item.name) {
+                // Check if name contains address patterns
+                if (item.name.includes('路') || item.name.includes('街') || item.name.includes('巷') || item.name.includes('號')) {
+                    address = item.name;
+                }
+            }
+        }
         
         if (layerName === 'government') {
             const iconInfo = getGovernmentIconType(item.type);
@@ -1164,7 +1185,12 @@ function updateDataList(layerName, filterText = '') {
             details = item.description || '';
         } else if (layerName === 'demands') {
             const iconInfo = getMyMapsIconType(item.type);
-            title = `${iconInfo.icon} ${item.name}`;
+            // If address is in the name, use a generic title
+            if (address === item.name) {
+                title = `${iconInfo.icon} ${item.typeZh || '救災需求'}`;
+            } else {
+                title = `${iconInfo.icon} ${item.name}`;
+            }
             details = item.typeZh || '';
             if (item.properties && item.properties['聯繫方式']) {
                 details += details ? ' | ' : '';
@@ -1173,22 +1199,37 @@ function updateDataList(layerName, filterText = '') {
         } else if (layerName === 'stay') {
             title = `🏠 ${item.name}`;
             if (item.properties) {
-                details = item.properties['聯繫方式'] || item.properties['contact'] || '';
+                const contact = item.properties['聯繫方式'] || item.properties['contact'] || '';
+                if (contact) {
+                    details = contact;
+                }
             }
         } else if (layerName === 'wash') {
             title = `🚿 ${item.name}`;
             if (item.properties) {
-                details = item.properties['聯繫方式'] || item.properties['contact'] || '';
+                const contact = item.properties['聯繫方式'] || item.properties['contact'] || '';
+                if (contact) {
+                    details = contact;
+                }
             }
         } else if (layerName === 'submissions') {
             const reportContent = item.properties['通報內容'] || '';
             const iconInfo = getIconForReportType(reportContent);
             title = `${iconInfo.icon} ${item.name || '通報資訊'}`;
-            details = item.properties['鄉鎮市區村里'] || '';
+            // For submissions, try to get village info
+            const village = item.properties['鄉鎮市區村里'] || '';
+            if (village) {
+                details = village;
+            }
+            // Also check for address in submission properties
+            if (!address && item.properties) {
+                address = item.properties['詳細地址'] || item.properties['地址'] || '';
+            }
         }
         
         li.innerHTML = `
             <div class="data-list-item-title">${title}</div>
+            ${address ? `<div class="data-list-item-address">📍 ${address}</div>` : ''}
             ${details ? `<div class="data-list-item-details">${details}</div>` : ''}
         `;
         
