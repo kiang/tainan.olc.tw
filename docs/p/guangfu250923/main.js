@@ -852,23 +852,23 @@ function createSubmissionMarker(submission, lat, lng) {
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
     `;
     
-    // Define which columns to show and their labels based on typical Google Form structure
-    const columnLabels = [
-        '通報時間',        // Column 0: timestamp
-        '通報內容',        // Column 1: content
-        '聯絡資訊與說明',   // Column 2: contact/description
-        '鄉鎮市區',        // Column 3: city/district
-        '村里'            // Column 4: village
-        // Skip other columns like coordinates, UUID, photos
-    ];
+    // Define which columns to show and their labels based on actual Google Sheets structure
+    const columnMapping = {
+        0: '通報時間',        // Column 0: timestamp
+        // 1: skip photo column (already shown as preview)
+        2: '通報內容',        // Column 2: content
+        3: '聯絡資訊與說明',   // Column 3: contact/description
+        4: '鄉鎮市區',        // Column 4: city/district
+        5: '村里'            // Column 5: village
+    };
 
     const submissionEntries = Object.entries(submission);
     submissionEntries.forEach(([key, value], index) => {
-        if (value && value.trim() !== '' && index < columnLabels.length) {
+        if (value && value.trim() !== '' && columnMapping[index]) {
             popupContent += `
                 <tr style="border-bottom: 1px solid #eee;">
                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                        ${columnLabels[index]}
+                        ${columnMapping[index]}
                     </td>
                     <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
                         ${value}
