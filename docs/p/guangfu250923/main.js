@@ -339,46 +339,8 @@ function createSubmissionMarker(submission, lat, lng) {
 
 // Load markers from data source
 function loadMarkers() {
-    // Load data from CSV file
-    fetch('data/base.csv')
-        .then(response => response.text())
-        .then(csvText => {
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',');
-            
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const data = {
-                    id: values[0],
-                    name: values[1],
-                    lat: parseFloat(values[2]),
-                    lng: parseFloat(values[3]),
-                    description: values[4],
-                    image: values[5] || null
-                };
-                
-                if (!isNaN(data.lat) && !isNaN(data.lng)) {
-                    createMarker(data);
-                }
-            }
-            
-            updateChart();
-        })
-        .catch(error => {
-            console.error('Error loading CSV:', error);
-            // Fallback to sample data
-            const sampleData = [
-                { id: '1', name: '光復鄉公所', lat: 23.6656, lng: 121.4233, description: '光復鄉災害應變中心', image: null },
-                { id: '2', name: '光復國中', lat: 23.6533, lng: 121.4207, description: '避難收容處所', image: null },
-                { id: '3', name: '光復車站', lat: 23.6665, lng: 121.4204, description: '交通樞紐與物資集散地', image: null }
-            ];
-            
-            sampleData.forEach(data => {
-                createMarker(data);
-            });
-            
-            updateChart();
-        });
+    // No static markers - all data comes from form submissions
+    updateChart();
 }
 
 // Create a marker
