@@ -9,6 +9,7 @@ let submissionsLayer;
 let stayLayer;
 let washPointsLayer;
 let myMapsLayer;
+let governmentLayer;
 let villageLabels = L.layerGroup();
 
 // Generate UUID v4
@@ -67,6 +68,13 @@ function initMap() {
         maxClusterRadius: 80
     }).addTo(map);
 
+    // Initialize government points layer cluster group
+    governmentLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
+
     // Initialize village labels layer
     map.addLayer(villageLabels);
 
@@ -87,6 +95,9 @@ function initMap() {
     
     // Load Google My Maps data
     loadMyMapsData();
+    
+    // Load government points
+    loadGovernmentPoints();
 }
 
 // Load Hualien cunli basemap
@@ -582,6 +593,113 @@ function getMyMapsIconType(demandType) {
             return { icon: '🔧', color: '#ffc107', label: '需要機具' }; // Yellow for equipment
         default:
             return { icon: '📍', color: '#6c757d', label: '救災需求' }; // Gray for mixed/other
+    }
+}
+
+// Load government points from GeoJSON
+function loadGovernmentPoints() {
+    fetch('data/government_points.json')
+        .then(response => response.json())
+        .then(geojsonData => {
+            // Clear existing government markers
+            governmentLayer.clearLayers();
+            
+            geojsonData.features.forEach(feature => {
+                if (feature.geometry && feature.geometry.type === 'Point') {
+                    const coordinates = feature.geometry.coordinates;
+                    const lng = coordinates[0];
+                    const lat = coordinates[1];
+                    const properties = feature.properties || {};
+                    
+                    const name = properties.name || '';
+                    const type = properties.type || 'general';
+                    const description = properties.description || '';
+                    
+                    createGovernmentMarker(name, description, lat, lng, type);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading government points:', error);
+        });
+}
+
+// Create marker for government points
+function createGovernmentMarker(name, description, lat, lng, type) {
+    // Get icon info based on government point type
+    let iconInfo = getGovernmentIconType(type);
+    
+    // Create marker icon
+    const govIcon = L.divIcon({
+        html: `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`,
+        className: '',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+    });
+    
+    const marker = L.marker([lat, lng], { icon: govIcon });
+    
+    // Create popup content
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                ${iconInfo.icon} ${iconInfo.label}
+            </h6>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                        設施名稱
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${name}
+                    </td>
+                </tr>
+    `;
+    
+    if (description && description.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        說明
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${description}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        位置
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top;">
+                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    `;
+    
+    marker.bindPopup(popupContent);
+    governmentLayer.addLayer(marker);
+}
+
+// Get icon type for government markers based on facility type
+function getGovernmentIconType(type) {
+    switch (type) {
+        case 'medical':
+            return { icon: '🚑', color: '#e74c3c', label: '政府救護站' }; // Red for medical
+        case 'volunteer':
+            return { icon: '👥', color: '#2ecc71', label: '政府志工站' }; // Green for volunteers
+        case 'mud_storage':
+            return { icon: '🏗️', color: '#8b4513', label: '政府污泥暫置場' }; // Brown for mud storage
+        case 'waste_storage':
+            return { icon: '🗑️', color: '#34495e', label: '政府垃圾暫置場' }; // Dark gray for waste storage
+        default:
+            return { icon: '🏛️', color: '#3498db', label: '政府設施' }; // Blue for general government
     }
 }
 

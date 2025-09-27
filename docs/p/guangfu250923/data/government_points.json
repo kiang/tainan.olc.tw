@@ -1,0 +1,65 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.42045, 23.65731]
+            },
+            "properties": {
+                "name": "救護站",
+                "type": "medical",
+                "description": "緊急醫療救護站"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.42144, 23.66652]
+            },
+            "properties": {
+                "name": "志工救災地點分配站(光復火車站)",
+                "type": "volunteer",
+                "description": "志工救災地點分配站，位於光復火車站"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.418204, 23.654110]
+            },
+            "properties": {
+                "name": "污泥暫置場",
+                "type": "mud_storage",
+                "description": "污泥暫時堆置場所"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.418750, 23.656357]
+            },
+            "properties": {
+                "name": "垃圾暫置場",
+                "type": "waste_storage",
+                "description": "垃圾暫時堆置場所"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.414344, 23.637174]
+            },
+            "properties": {
+                "name": "污泥暫置場",
+                "type": "mud_storage",
+                "description": "污泥暫時堆置場所"
+            }
+        }
+    ]
+}
