@@ -46,14 +46,26 @@ function initMap() {
     // Initialize submissions layer group
     submissionsLayer = L.layerGroup().addTo(map);
 
-    // Initialize stay layer group  
-    stayLayer = L.layerGroup().addTo(map);
+    // Initialize stay layer cluster group  
+    stayLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
 
-    // Initialize wash points layer group
-    washPointsLayer = L.layerGroup().addTo(map);
+    // Initialize wash points layer cluster group
+    washPointsLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
 
-    // Initialize Google My Maps layer group
-    myMapsLayer = L.layerGroup().addTo(map);
+    // Initialize Google My Maps layer cluster group
+    myMapsLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
 
     // Initialize village labels layer
     map.addLayer(villageLabels);
