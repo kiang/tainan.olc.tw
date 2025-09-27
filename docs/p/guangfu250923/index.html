@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>花蓮光復救災資訊地圖</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+        }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(248, 249, 250, 0.9);
+            z-index: 1000;
+        }
+        .readme-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            min-width: 90%;
+            max-height: 70%;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+        .readme-closer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .tutorial-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            min-width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+        .tutorial-closer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .leaflet-popup-content {
+            min-width: 250px;
+            max-width: 350px;
+        }
+        .popup-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .custom-marker {
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .checked-marker {
+            background-color: #28a745 !important;
+            color: white;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-8 mb-2 mb-md-0">
+                    <div class="input-group">
+                        <input type="text" id="filter-input" class="form-control" placeholder="輸入名稱過濾...">
+                        <button class="btn btn-outline-secondary" type="button" id="locate-me">
+                            <i class="bi bi-geo-alt"></i> 定位
+                        </button>
+                        <button class="btn btn-outline-secondary" type="button" id="input-coordinates">
+                            <i class="bi bi-geo"></i> 座標
+                        </button>
+                        <button class="btn btn-outline-primary" type="button" id="checkin-mode">
+                            <i class="bi bi-check-circle"></i> 打卡模式
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                    <small class="text-muted me-2">
+                        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="text-decoration-none">江明宗 製作</a>
+                    </small>
+                    <button id="tutorial-icon" class="btn btn-outline-info me-2">
+                        <i class="bi bi-play-circle"></i>
+                    </button>
+                    <button id="readme-icon" class="btn btn-outline-info">
+                        <i class="bi bi-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="readme-popup" class="readme-popup">
+        <span class="readme-closer" id="readme-closer">&times;</span>
+        <div id="readme-content">
+            <h5>花蓮光復救災資訊地圖</h5>
+            <p>此地圖展示花蓮光復地區救災相關資訊，包含避難收容處所、物資發放點、醫療站等重要位置。</p>
+            <canvas id="nameChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div id="tutorial-popup" class="tutorial-popup">
+        <span class="tutorial-closer" id="tutorial-closer">&times;</span>
+        <div id="tutorial-content">
+            <h5 class="mb-3">使用教學</h5>
+            <p>地圖操作說明：</p>
+            <ul>
+                <li>點擊標記查看詳細資訊</li>
+                <li>使用定位功能找到您的位置</li>
+                <li>使用座標輸入功能跳轉到特定位置</li>
+                <li>使用打卡模式記錄訪問過的地點</li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal fade" id="coordinatesModal" tabindex="-1" aria-labelledby="coordinatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coordinatesModalLabel">輸入座標</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="coordinatesInput" class="form-label">座標 (緯度,經度)</label>
+                        <input type="text" class="form-control" id="coordinatesInput" placeholder="例如: 23.123456,120.123456">
+                    </div>
+                    <div class="mb-3">
+                        <label for="latitude" class="form-label">緯度</label>
+                        <input type="number" class="form-control" id="latitude" step="any" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="longitude" class="form-label">經度</label>
+                        <input type="number" class="form-control" id="longitude" step="any" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="zoomToCoordinates">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
