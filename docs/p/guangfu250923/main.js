@@ -202,7 +202,6 @@ function loadCunliBasemap() {
                         
                         popupContent += `
                                 </table>
-                                ${lat && lng ? getMapServiceButtons(lat, lng) : ''}
                                 <div style="text-align: center; margin-top: 10px;">
                                     <button onclick="window.open('${formUrl}', '_blank')" class="btn btn-primary btn-sm" style="background-color: #319FD3; border-color: #319FD3; padding: 8px 16px; font-size: 12px; border-radius: 4px; color: white; border: none; cursor: pointer; text-decoration: none; display: inline-block;">
                                         📝 填寫救災資訊表單
