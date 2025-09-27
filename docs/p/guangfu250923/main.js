@@ -1235,14 +1235,29 @@ function updateDataList(layerName, filterText = '') {
             const reportContent = item.properties['通報內容'] || '';
             const iconInfo = getIconForReportType(reportContent);
             title = `${iconInfo.icon} ${item.name || '通報資訊'}`;
-            // For submissions, try to get village info
-            const village = item.properties['鄉鎮市區村里'] || '';
-            if (village) {
-                details = village;
+            
+            // Get contact info for details if available
+            const contact = item.properties['聯絡資訊與說明'] || item.properties['聯繫方式'] || '';
+            if (contact) {
+                details = contact;
             }
-            // Also check for address in submission properties
-            if (!address && item.properties) {
-                address = item.properties['詳細地址'] || item.properties['地址'] || '';
+            
+            // Combine town and village for address display
+            const submissionEntries = Object.entries(item.properties);
+            let town = '';
+            let village = '';
+            
+            // Get town (column 4) and village (column 5) based on column mapping
+            if (submissionEntries.length > 4 && submissionEntries[4][1]) {
+                town = submissionEntries[4][1].trim();
+            }
+            if (submissionEntries.length > 5 && submissionEntries[5][1]) {
+                village = submissionEntries[5][1].trim();
+            }
+            
+            // Combine town and village for address
+            if (town || village) {
+                address = [town, village].filter(Boolean).join('');
             }
         }
         
