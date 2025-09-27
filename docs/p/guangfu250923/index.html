@@ -136,6 +136,46 @@
             color: #6c757d;
             margin-top: 5px;
         }
+        .filter-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .filter-input {
+            width: 100%;
+            padding: 8px 35px 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .filter-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .filter-clear {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 4px;
+            display: none;
+        }
+        .filter-clear:hover {
+            color: #dc3545;
+        }
+        .filter-input:not(:placeholder-shown) + .filter-clear {
+            display: block;
+        }
+        .no-results {
+            text-align: center;
+            color: #6c757d;
+            padding: 20px;
+            font-size: 14px;
+        }
         .navbar {
             position: fixed;
             bottom: 0;
@@ -276,22 +316,52 @@
         </div>
         <div class="sidebar-content">
             <div id="government-pane" class="tab-pane active">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="government-filter" placeholder="搜尋政府設施..." onkeyup="filterDataList('government')">
+                    <button class="filter-clear" onclick="clearFilter('government')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="government-list"></ul>
             </div>
             <div id="demands-pane" class="tab-pane">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="demands-filter" placeholder="搜尋救災需求..." onkeyup="filterDataList('demands')">
+                    <button class="filter-clear" onclick="clearFilter('demands')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="demands-list"></ul>
             </div>
             <div id="stay-pane" class="tab-pane">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="stay-filter" placeholder="搜尋住宿點..." onkeyup="filterDataList('stay')">
+                    <button class="filter-clear" onclick="clearFilter('stay')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="stay-list"></ul>
             </div>
             <div id="wash-pane" class="tab-pane">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="wash-filter" placeholder="搜尋洗澡點..." onkeyup="filterDataList('wash')">
+                    <button class="filter-clear" onclick="clearFilter('wash')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="wash-list"></ul>
             </div>
             <div id="submissions-pane" class="tab-pane">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="submissions-filter" placeholder="搜尋回報資訊..." onkeyup="filterDataList('submissions')">
+                    <button class="filter-clear" onclick="clearFilter('submissions')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="submissions-list"></ul>
             </div>

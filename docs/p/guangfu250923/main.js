@@ -1104,9 +1104,15 @@ function switchTab(tabName) {
         pane.classList.remove('active');
     });
     document.getElementById(`${tabName}-pane`).classList.add('active');
+    
+    // Reapply filter if exists
+    const filterInput = document.getElementById(`${tabName}-filter`);
+    if (filterInput && filterInput.value) {
+        filterDataList(tabName);
+    }
 }
 
-function updateDataList(layerName) {
+function updateDataList(layerName, filterText = '') {
     const listElement = document.getElementById(`${layerName}-list`);
     const counterElement = listElement.previousElementSibling;
     const data = layerData[layerName];
@@ -1114,11 +1120,36 @@ function updateDataList(layerName) {
     // Clear existing list
     listElement.innerHTML = '';
     
+    // Filter data based on search text
+    const filteredData = filterText ? 
+        data.filter(item => {
+            const searchStr = filterText.toLowerCase();
+            const nameMatch = item.name && item.name.toLowerCase().includes(searchStr);
+            const descMatch = item.description && item.description.toLowerCase().includes(searchStr);
+            
+            // Check properties for additional fields
+            let propsMatch = false;
+            if (item.properties) {
+                propsMatch = Object.values(item.properties).some(val => 
+                    val && val.toString().toLowerCase().includes(searchStr)
+                );
+            }
+            
+            return nameMatch || descMatch || propsMatch;
+        }) : data;
+    
     // Update counter
-    counterElement.textContent = `共 ${data.length} 筆資料`;
+    const filterStatus = filterText ? ` (顯示 ${filteredData.length} / ${data.length} 筆)` : '';
+    counterElement.textContent = `共 ${data.length} 筆資料${filterStatus}`;
+    
+    // Show no results message if needed
+    if (filteredData.length === 0) {
+        listElement.innerHTML = '<li class="no-results">沒有符合的搜尋結果</li>';
+        return;
+    }
     
     // Create list items
-    data.forEach(item => {
+    filteredData.forEach(item => {
         const li = document.createElement('li');
         li.className = 'data-list-item';
         li.id = `list-item-${item.id}`;
@@ -1168,6 +1199,26 @@ function updateDataList(layerName) {
         
         listElement.appendChild(li);
     });
+}
+
+function filterDataList(layerName) {
+    const filterInput = document.getElementById(`${layerName}-filter`);
+    const filterText = filterInput ? filterInput.value : '';
+    updateDataList(layerName, filterText);
+    
+    // Show/hide clear button based on input
+    const clearButton = filterInput ? filterInput.nextElementSibling : null;
+    if (clearButton) {
+        clearButton.style.display = filterText ? 'block' : 'none';
+    }
+}
+
+function clearFilter(layerName) {
+    const filterInput = document.getElementById(`${layerName}-filter`);
+    if (filterInput) {
+        filterInput.value = '';
+        filterDataList(layerName);
+    }
 }
 
 function navigateToItem(item, layerName) {
