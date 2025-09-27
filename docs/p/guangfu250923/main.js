@@ -7,6 +7,7 @@ let coordinatesModal;
 let cunliLayer;
 let submissionsLayer;
 let stayLayer;
+let washPointsLayer;
 let villageLabels = L.layerGroup();
 
 // Generate UUID v4
@@ -47,6 +48,9 @@ function initMap() {
     // Initialize stay layer group  
     stayLayer = L.layerGroup().addTo(map);
 
+    // Initialize wash points layer group
+    washPointsLayer = L.layerGroup().addTo(map);
+
     // Initialize village labels layer
     map.addLayer(villageLabels);
 
@@ -61,6 +65,9 @@ function initMap() {
     
     // Load stay locations
     loadStayLocations();
+    
+    // Load wash points
+    loadWashPoints();
 }
 
 // Load Hualien cunli basemap
@@ -374,6 +381,81 @@ function loadStayLocations() {
         })
         .catch(error => {
             console.error('Error loading stay locations:', error);
+        });
+}
+
+// Load wash points from GeoJSON
+function loadWashPoints() {
+    fetch('data/wash_points.json')
+        .then(response => response.json())
+        .then(geojsonData => {
+            // Clear existing wash point markers
+            washPointsLayer.clearLayers();
+            
+            geojsonData.features.forEach(feature => {
+                if (feature.geometry && feature.geometry.type === 'Point') {
+                    const coordinates = feature.geometry.coordinates;
+                    const lng = coordinates[0];
+                    const lat = coordinates[1];
+                    const properties = feature.properties || {};
+                    
+                    // Create wash point marker using the same icon style as form submissions
+                    const washIcon = L.divIcon({
+                        html: `<div style="background-color: #20c997; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🚿</div>`,
+                        className: '',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12],
+                        popupAnchor: [0, -12]
+                    });
+                    
+                    const marker = L.marker([lat, lng], { icon: washIcon });
+                    
+                    // Create popup content with styled table
+                    let popupContent = `
+                        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #20c997; color: white; border-radius: 4px; text-align: center;">
+                                🚿 提供洗澡點
+                            </h6>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    `;
+                    
+                    // Add all properties to the table
+                    Object.entries(properties).forEach(([key, value]) => {
+                        if (value && value.toString().trim() !== '') {
+                            popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                                        ${key}
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                        ${value}
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    });
+                    
+                    // Add coordinates
+                    popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                        位置
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top;">
+                                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+                    
+                    marker.bindPopup(popupContent);
+                    washPointsLayer.addLayer(marker);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading wash points:', error);
         });
 }
 
