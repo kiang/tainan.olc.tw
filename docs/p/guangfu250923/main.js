@@ -20,6 +20,23 @@ let layerData = {
 };
 let activeMarkers = {};
 
+// Generate map service buttons
+function getMapServiceButtons(lat, lng) {
+    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    const bingMapsUrl = `https://www.bing.com/maps?cp=${lat}~${lng}&lvl=16&sp=point.${lat}_${lng}_Location`;
+    
+    return `
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <a href="${googleMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+                <i class="bi bi-geo-alt"></i> Google Maps
+            </a>
+            <a href="${bingMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #00897b; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+                <i class="bi bi-map"></i> Bing Maps
+            </a>
+        </div>
+    `;
+}
+
 // Generate UUID v4
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -183,22 +200,10 @@ function loadCunliBasemap() {
                             `;
                         }
                         
-                        if (lat && lng) {
-                            popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                                        座標
-                                    </td>
-                                    <td style="padding: 6px 8px; vertical-align: top;">
-                                        ${lat}, ${lng}
-                                    </td>
-                                </tr>
-                            `;
-                        }
-                        
                         popupContent += `
                                 </table>
-                                <div style="text-align: center;">
+                                ${lat && lng ? getMapServiceButtons(lat, lng) : ''}
+                                <div style="text-align: center; margin-top: 10px;">
                                     <button onclick="window.open('${formUrl}', '_blank')" class="btn btn-primary btn-sm" style="background-color: #319FD3; border-color: #319FD3; padding: 8px 16px; font-size: 12px; border-radius: 4px; color: white; border: none; cursor: pointer; text-decoration: none; display: inline-block;">
                                         📝 填寫救災資訊表單
                                     </button>
@@ -399,17 +404,9 @@ function loadStayLocations() {
                         }
                     });
                     
-                    // Add coordinates
                     popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                                        位置
-                                    </td>
-                                    <td style="padding: 6px 8px; vertical-align: top;">
-                                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                                    </td>
-                                </tr>
                             </table>
+                            ${getMapServiceButtons(lat, lng)}
                         </div>
                     `;
                     
@@ -486,17 +483,9 @@ function loadWashPoints() {
                         }
                     });
                     
-                    // Add coordinates
                     popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                                        位置
-                                    </td>
-                                    <td style="padding: 6px 8px; vertical-align: top;">
-                                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                                    </td>
-                                </tr>
                             </table>
+                            ${getMapServiceButtons(lat, lng)}
                         </div>
                     `;
                     
@@ -610,15 +599,8 @@ function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZ
     }
     
     popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                        位置
-                    </td>
-                    <td style="padding: 6px 8px; vertical-align: top;">
-                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                    </td>
-                </tr>
             </table>
+            ${getMapServiceButtons(lat, lng)}
         </div>
     `;
     
@@ -728,15 +710,8 @@ function createGovernmentMarker(name, description, lat, lng, type) {
     }
     
     popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                        位置
-                    </td>
-                    <td style="padding: 6px 8px; vertical-align: top;">
-                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                    </td>
-                </tr>
             </table>
+            ${getMapServiceButtons(lat, lng)}
         </div>
     `;
     
@@ -853,15 +828,8 @@ function createSubmissionMarker(submission, lat, lng) {
     });
     
     popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                        位置
-                    </td>
-                    <td style="padding: 6px 8px; vertical-align: top;">
-                        ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                    </td>
-                </tr>
             </table>
+            ${getMapServiceButtons(lat, lng)}
         </div>
     `;
     
