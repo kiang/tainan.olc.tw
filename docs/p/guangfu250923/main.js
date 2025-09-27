@@ -2,9 +2,6 @@
 let map;
 let markersLayer;
 let markers = [];
-let checkedMarkers = new Set();
-let isCheckinMode = false;
-let checkinStartTime = null;
 let filterInput = document.getElementById('filter-input');
 let coordinatesModal;
 
@@ -102,58 +99,19 @@ function createMarker(data) {
 
     marker.bindPopup(popupContent);
     
-    marker.on('click', function() {
-        if (isCheckinMode) {
-            toggleMarkerCheck(data.id, marker);
-        }
-    });
-
     markers.push(marker);
     markersLayer.addLayer(marker);
 }
 
 // Create custom icon for marker
 function createCustomIcon(data) {
-    const isChecked = checkedMarkers.has(data.id);
-    const className = isChecked ? 'custom-marker checked-marker' : 'custom-marker';
-    
     return L.divIcon({
-        html: `<div class="${className}">${data.name ? data.name.substring(0, 2) : 'M'}</div>`,
+        html: `<div class="custom-marker">${data.name ? data.name.substring(0, 2) : 'M'}</div>`,
         className: '',
         iconSize: [40, 40],
         iconAnchor: [20, 20],
         popupAnchor: [0, -20]
     });
-}
-
-// Toggle marker check status
-function toggleMarkerCheck(id, marker) {
-    if (checkedMarkers.has(id)) {
-        checkedMarkers.delete(id);
-    } else {
-        checkedMarkers.add(id);
-    }
-    
-    // Update marker icon
-    marker.setIcon(createCustomIcon(marker.data));
-    
-    // Update check-in status display
-    updateCheckinStatus();
-}
-
-// Update check-in status
-function updateCheckinStatus() {
-    const totalMarkers = markers.length;
-    const checkedCount = checkedMarkers.size;
-    const percentage = totalMarkers > 0 ? (checkedCount / totalMarkers * 100).toFixed(1) : 0;
-    
-    if (isCheckinMode) {
-        const elapsed = checkinStartTime ? Math.floor((Date.now() - checkinStartTime) / 1000) : 0;
-        const minutes = Math.floor(elapsed / 60);
-        const seconds = elapsed % 60;
-        
-        console.log(`打卡進度: ${checkedCount}/${totalMarkers} (${percentage}%) - 時間: ${minutes}:${seconds.toString().padStart(2, '0')}`);
-    }
 }
 
 // Filter markers
@@ -284,42 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('longitude').value = '';
         } else {
             alert('請輸入有效的座標');
-        }
-    });
-
-    // Check-in mode button
-    document.getElementById('checkin-mode').addEventListener('click', function() {
-        isCheckinMode = !isCheckinMode;
-        
-        if (isCheckinMode) {
-            this.classList.remove('btn-outline-primary');
-            this.classList.add('btn-primary');
-            checkinStartTime = Date.now();
-            alert('打卡模式已啟動！點擊標記進行打卡。');
-        } else {
-            this.classList.remove('btn-primary');
-            this.classList.add('btn-outline-primary');
-            
-            const totalMarkers = markers.length;
-            const checkedCount = checkedMarkers.size;
-            const percentage = totalMarkers > 0 ? (checkedCount / totalMarkers * 100).toFixed(1) : 0;
-            
-            if (checkinStartTime) {
-                const elapsed = Math.floor((Date.now() - checkinStartTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                
-                alert(`打卡模式結束！\n完成: ${checkedCount}/${totalMarkers} (${percentage}%)\n用時: ${minutes}分${seconds}秒`);
-            }
-            
-            // Reset
-            checkedMarkers.clear();
-            checkinStartTime = null;
-            
-            // Update all markers
-            markers.forEach(marker => {
-                marker.setIcon(createCustomIcon(marker.data));
-            });
         }
     });
 
