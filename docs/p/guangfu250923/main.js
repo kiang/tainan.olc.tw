@@ -4,6 +4,7 @@ let markersLayer;
 let markers = [];
 let filterInput = document.getElementById('filter-input');
 let coordinatesModal;
+let cunliLayer;
 
 // Initialize map
 function initMap() {
@@ -16,6 +17,9 @@ function initMap() {
         maxZoom: 19
     }).addTo(map);
 
+    // Load and add Hualien cunli basemap
+    loadCunliBasemap();
+
     // Initialize marker cluster group
     markersLayer = L.markerClusterGroup({
         chunkedLoading: true,
@@ -27,6 +31,65 @@ function initMap() {
 
     // Load markers data
     loadMarkers();
+}
+
+// Load Hualien cunli basemap
+function loadCunliBasemap() {
+    fetch('data/hualien.json')
+        .then(response => response.json())
+        .then(topoData => {
+            // Convert TopoJSON to GeoJSON
+            // Find the correct object key (it might be named after the file or contain the geometries)
+            const objectKey = Object.keys(topoData.objects)[0];
+            const geojsonData = topojson.feature(topoData, topoData.objects[objectKey]);
+            
+            // Create and add the layer
+            cunliLayer = L.geoJSON(geojsonData, {
+                style: {
+                    color: '#319FD3',
+                    weight: 1,
+                    fillColor: 'rgba(255, 255, 255, 0.2)',
+                    fillOpacity: 0.2
+                },
+                onEachFeature: function(feature, layer) {
+                    // Add popup with all cunli properties
+                    if (feature.properties) {
+                        let popupContent = '<div style="max-width: 300px;">';
+                        
+                        // Display all properties
+                        Object.entries(feature.properties).forEach(([key, value]) => {
+                            if (value !== null && value !== undefined && value !== '') {
+                                popupContent += `<p><strong>${key}:</strong> ${value}</p>`;
+                            }
+                        });
+                        
+                        popupContent += '</div>';
+                        layer.bindPopup(popupContent);
+                    }
+                    
+                    // Highlight on hover
+                    layer.on({
+                        mouseover: function(e) {
+                            const layer = e.target;
+                            layer.setStyle({
+                                weight: 2,
+                                color: '#666',
+                                fillOpacity: 0.4
+                            });
+                        },
+                        mouseout: function(e) {
+                            cunliLayer.resetStyle(e.target);
+                        }
+                    });
+                }
+            }).addTo(map);
+            
+            // Fit map to Hualien bounds
+            map.fitBounds(cunliLayer.getBounds());
+        })
+        .catch(error => {
+            console.error('Error loading cunli basemap:', error);
+        });
 }
 
 // Load markers from data source
