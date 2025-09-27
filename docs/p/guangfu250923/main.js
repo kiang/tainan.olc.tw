@@ -778,6 +778,27 @@ function getIconForReportType(reportContent) {
     }
 }
 
+// Extract Google Drive file ID from various URL formats
+function extractGoogleDriveFileId(url) {
+    if (!url) return null;
+    
+    // Match various Google Drive URL patterns
+    const patterns = [
+        /\/file\/d\/([a-zA-Z0-9-_]+)/,  // /file/d/FILE_ID/
+        /id=([a-zA-Z0-9-_]+)/,         // ?id=FILE_ID
+        /\/([a-zA-Z0-9-_]{25,})/       // Generic long ID pattern
+    ];
+    
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) {
+            return match[1];
+        }
+    }
+    
+    return null;
+}
+
 // Create marker for form submission
 function createSubmissionMarker(submission, lat, lng) {
     // Get report content type and determine icon
@@ -801,17 +822,51 @@ function createSubmissionMarker(submission, lat, lng) {
             <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
                 ${iconInfo.icon} 救災資訊回報
             </h6>
+    `;
+    
+    // Check for photo uploads in submission
+    let photoUrl = null;
+    Object.entries(submission).forEach(([key, value]) => {
+        if (value && typeof value === 'string') {
+            // Look for fields that might contain Google Drive photo URLs
+            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') || 
+                key.toLowerCase().includes('upload') || value.includes('drive.google.com')) {
+                const fileId = extractGoogleDriveFileId(value);
+                if (fileId) {
+                    photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                }
+            }
+        }
+    });
+    
+    // Add photo preview if available
+    if (photoUrl) {
+        popupContent += `
+            <div style="margin-bottom: 10px;">
+                <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+            </div>
+        `;
+    }
+    
+    popupContent += `
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
     `;
     
     Object.entries(submission).forEach(([key, value]) => {
         if (value && value.trim() !== '') {
-            // Skip coordinates in display as they're already shown in location
-            if (!key.toLowerCase().includes('lat') && 
-                !key.toLowerCase().includes('lng') && 
-                !key.toLowerCase().includes('lon') &&
-                !key.includes('緯') && 
-                !key.includes('經')) {
+            // Skip coordinates and photo fields in table display
+            const isCoordinate = key.toLowerCase().includes('lat') || 
+                                key.toLowerCase().includes('lng') || 
+                                key.toLowerCase().includes('lon') ||
+                                key.includes('緯') || 
+                                key.includes('經');
+            
+            const isPhotoField = key.includes('照片') || key.includes('圖片') || 
+                               key.includes('photo') || key.includes('image') || 
+                               key.toLowerCase().includes('upload') || 
+                               value.includes('drive.google.com');
+            
+            if (!isCoordinate && !isPhotoField) {
                 
                 popupContent += `
                     <tr style="border-bottom: 1px solid #eee;">
