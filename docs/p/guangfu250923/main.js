@@ -11,6 +11,14 @@ let washPointsLayer;
 let myMapsLayer;
 let governmentLayer;
 let villageLabels = L.layerGroup();
+let layerData = {
+    government: [],
+    demands: [],
+    stay: [],
+    wash: [],
+    submissions: []
+};
+let activeMarkers = {};
 
 // Generate UUID v4
 function generateUUID() {
@@ -346,8 +354,9 @@ function loadStayLocations() {
         .then(geojsonData => {
             // Clear existing stay markers
             stayLayer.clearLayers();
+            layerData.stay = [];
             
-            geojsonData.features.forEach(feature => {
+            geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
                     const coordinates = feature.geometry.coordinates;
                     const lng = coordinates[0];
@@ -406,8 +415,19 @@ function loadStayLocations() {
                     
                     marker.bindPopup(popupContent);
                     stayLayer.addLayer(marker);
+                    
+                    layerData.stay.push({
+                        id: `stay-${index}`,
+                        name: properties.name || properties['地點'] || '住宿點',
+                        description: properties.description || properties['聯絡方式'] || '',
+                        lat: lat,
+                        lng: lng,
+                        marker: marker,
+                        properties: properties
+                    });
                 }
             });
+            updateDataList('stay');
         })
         .catch(error => {
             console.error('Error loading stay locations:', error);
@@ -421,8 +441,9 @@ function loadWashPoints() {
         .then(geojsonData => {
             // Clear existing wash point markers
             washPointsLayer.clearLayers();
+            layerData.wash = [];
             
-            geojsonData.features.forEach(feature => {
+            geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
                     const coordinates = feature.geometry.coordinates;
                     const lng = coordinates[0];
@@ -481,8 +502,19 @@ function loadWashPoints() {
                     
                     marker.bindPopup(popupContent);
                     washPointsLayer.addLayer(marker);
+                    
+                    layerData.wash.push({
+                        id: `wash-${index}`,
+                        name: properties.name || properties['地點'] || '洗澡點',
+                        description: properties.description || properties['聯絡方式'] || '',
+                        lat: lat,
+                        lng: lng,
+                        marker: marker,
+                        properties: properties
+                    });
                 }
             });
+            updateDataList('wash');
         })
         .catch(error => {
             console.error('Error loading wash points:', error);
@@ -496,8 +528,9 @@ function loadMyMapsData() {
         .then(geojsonData => {
             // Clear existing My Maps markers
             myMapsLayer.clearLayers();
+            layerData.demands = [];
             
-            geojsonData.features.forEach(feature => {
+            geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
                     const coordinates = feature.geometry.coordinates;
                     const lng = coordinates[0];
@@ -509,9 +542,21 @@ function loadMyMapsData() {
                     const demandType = properties.demand_type || 'mixed';
                     const demandTypeZh = properties.demand_type_zh || '綜合需求';
                     
-                    createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh);
+                    const marker = createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh);
+                    layerData.demands.push({
+                        id: `demand-${index}`,
+                        name: name || '救災需求',
+                        description: description,
+                        lat: lat,
+                        lng: lng,
+                        type: demandType,
+                        typeZh: demandTypeZh,
+                        marker: marker,
+                        properties: properties
+                    });
                 }
             });
+            updateDataList('demands');
         })
         .catch(error => {
             console.error('Error loading My Maps data:', error);
@@ -579,6 +624,7 @@ function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZ
     
     marker.bindPopup(popupContent);
     myMapsLayer.addLayer(marker);
+    return marker;
 }
 
 // Get icon type for My Maps markers based on demand type
@@ -603,8 +649,9 @@ function loadGovernmentPoints() {
         .then(geojsonData => {
             // Clear existing government markers
             governmentLayer.clearLayers();
+            layerData.government = [];
             
-            geojsonData.features.forEach(feature => {
+            geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
                     const coordinates = feature.geometry.coordinates;
                     const lng = coordinates[0];
@@ -615,9 +662,19 @@ function loadGovernmentPoints() {
                     const type = properties.type || 'general';
                     const description = properties.description || '';
                     
-                    createGovernmentMarker(name, description, lat, lng, type);
+                    const marker = createGovernmentMarker(name, description, lat, lng, type);
+                    layerData.government.push({
+                        id: `gov-${index}`,
+                        name: name,
+                        description: description,
+                        lat: lat,
+                        lng: lng,
+                        type: type,
+                        marker: marker
+                    });
                 }
             });
+            updateDataList('government');
         })
         .catch(error => {
             console.error('Error loading government points:', error);
@@ -685,6 +742,7 @@ function createGovernmentMarker(name, description, lat, lng, type) {
     
     marker.bindPopup(popupContent);
     governmentLayer.addLayer(marker);
+    return marker;
 }
 
 // Get icon type for government markers based on facility type
@@ -809,6 +867,7 @@ function createSubmissionMarker(submission, lat, lng) {
     
     marker.bindPopup(popupContent);
     submissionsLayer.addLayer(marker);
+    return marker;
 }
 
 // Load markers from data source
@@ -1013,3 +1072,238 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// Sidebar control functions
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    
+    if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        toggleBtn.classList.remove('sidebar-open');
+        toggleBtn.innerHTML = '<i class="bi bi-list"></i> 圖層列表';
+    } else {
+        sidebar.classList.add('active');
+        toggleBtn.classList.add('sidebar-open');
+        toggleBtn.innerHTML = '<i class="bi bi-x"></i> 關閉';
+    }
+}
+
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.sidebar-tab').forEach(tab => {
+        if (tab.getAttribute('data-tab') === tabName) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // Update tab panes
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+    });
+    document.getElementById(`${tabName}-pane`).classList.add('active');
+}
+
+function updateDataList(layerName) {
+    const listElement = document.getElementById(`${layerName}-list`);
+    const counterElement = listElement.previousElementSibling;
+    const data = layerData[layerName];
+    
+    // Clear existing list
+    listElement.innerHTML = '';
+    
+    // Update counter
+    counterElement.textContent = `共 ${data.length} 筆資料`;
+    
+    // Create list items
+    data.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'data-list-item';
+        li.id = `list-item-${item.id}`;
+        
+        // Format the display based on layer type
+        let title = item.name;
+        let details = '';
+        
+        if (layerName === 'government') {
+            const iconInfo = getGovernmentIconType(item.type);
+            title = `${iconInfo.icon} ${item.name}`;
+            details = item.description || '';
+        } else if (layerName === 'demands') {
+            const iconInfo = getMyMapsIconType(item.type);
+            title = `${iconInfo.icon} ${item.name}`;
+            details = item.typeZh || '';
+            if (item.properties && item.properties['聯繫方式']) {
+                details += details ? ' | ' : '';
+                details += item.properties['聯繫方式'];
+            }
+        } else if (layerName === 'stay') {
+            title = `🏠 ${item.name}`;
+            if (item.properties) {
+                details = item.properties['聯繫方式'] || item.properties['contact'] || '';
+            }
+        } else if (layerName === 'wash') {
+            title = `🚿 ${item.name}`;
+            if (item.properties) {
+                details = item.properties['聯繫方式'] || item.properties['contact'] || '';
+            }
+        } else if (layerName === 'submissions') {
+            const reportContent = item.properties['通報內容'] || '';
+            const iconInfo = getIconForReportType(reportContent);
+            title = `${iconInfo.icon} ${item.name || '通報資訊'}`;
+            details = item.properties['鄉鎮市區村里'] || '';
+        }
+        
+        li.innerHTML = `
+            <div class="data-list-item-title">${title}</div>
+            ${details ? `<div class="data-list-item-details">${details}</div>` : ''}
+        `;
+        
+        // Add click handler
+        li.addEventListener('click', () => {
+            navigateToItem(item, layerName);
+        });
+        
+        listElement.appendChild(li);
+    });
+}
+
+function navigateToItem(item, layerName) {
+    // Remove previous active states
+    document.querySelectorAll('.data-list-item').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Add active state to clicked item
+    const listItem = document.getElementById(`list-item-${item.id}`);
+    if (listItem) {
+        listItem.classList.add('active');
+    }
+    
+    // Clear previous highlighted markers
+    Object.values(activeMarkers).forEach(marker => {
+        if (marker && marker.setIcon) {
+            // Reset to original icon (we need to recreate it)
+            recreateOriginalIcon(marker, layerName);
+        }
+    });
+    activeMarkers = {};
+    
+    // Navigate to the location
+    if (item.lat && item.lng) {
+        map.setView([item.lat, item.lng], 16);
+        
+        // Open the popup
+        if (item.marker) {
+            item.marker.openPopup();
+            
+            // Highlight the marker
+            highlightMarker(item.marker, layerName);
+            activeMarkers[item.id] = item.marker;
+        }
+    }
+}
+
+function highlightMarker(marker, layerName) {
+    // Create a highlighted version of the icon
+    let iconHtml = '';
+    
+    if (layerName === 'government') {
+        const iconInfo = getGovernmentIconType(marker.itemType || 'general');
+        iconHtml = `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
+    } else {
+        // Get the current icon HTML and add highlight
+        const currentIcon = marker.options.icon;
+        if (currentIcon && currentIcon.options && currentIcon.options.html) {
+            const originalHtml = currentIcon.options.html;
+            iconHtml = originalHtml.replace('width: 24px; height: 24px;', 'width: 32px; height: 32px;')
+                                   .replace('border: 2px solid white;', 'border: 4px solid #ffff00;')
+                                   .replace('box-shadow: 0 2px 5px rgba(0,0,0,0.3);', 'box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3);');
+        }
+    }
+    
+    if (iconHtml) {
+        const highlightedIcon = L.divIcon({
+            html: iconHtml,
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+        marker.setIcon(highlightedIcon);
+    }
+}
+
+function recreateOriginalIcon(marker, layerName) {
+    // Recreate the original icon based on layer type
+    // This is a simplified version - you might need to store original icon info
+    const normalIcon = L.divIcon({
+        html: marker.originalIconHtml || '<div style="background-color: #007bff; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">📍</div>',
+        className: '',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+    });
+    marker.setIcon(normalIcon);
+}
+
+// Update form submissions loading to track data
+const originalLoadFormSubmissions = loadFormSubmissions;
+loadFormSubmissions = function() {
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSJH_nQEBtvPNRvFS4EYo-deJ6WqnLb8vII1D2atzeHeGObimmfgE11wA_gveSWYt9uAhD7kYsUlH0m/pub?gid=1425282360&single=true&output=csv';
+    
+    fetch(csvUrl)
+        .then(response => response.text())
+        .then(csvText => {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) return;
+            
+            const headers = parseCSVLine(lines[0]);
+            
+            submissionsLayer.clearLayers();
+            layerData.submissions = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                const submission = {};
+                
+                headers.forEach((header, index) => {
+                    submission[header] = values[index] || '';
+                });
+                
+                let lat = parseFloat(submission['緯度'] || submission['latitude'] || submission['Latitude']);
+                let lng = parseFloat(submission['經度'] || submission['longitude'] || submission['Longitude']);
+                
+                if (isNaN(lat) || isNaN(lng)) {
+                    Object.entries(submission).forEach(([key, value]) => {
+                        const numValue = parseFloat(value);
+                        if (!isNaN(numValue)) {
+                            if (key.toLowerCase().includes('lat') || key.includes('緯')) {
+                                lat = numValue;
+                            } else if (key.toLowerCase().includes('lng') || key.toLowerCase().includes('lon') || key.includes('經')) {
+                                lng = numValue;
+                            }
+                        }
+                    });
+                }
+                
+                if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+                    const marker = createSubmissionMarker(submission, lat, lng);
+                    layerData.submissions.push({
+                        id: `submission-${i}`,
+                        name: submission['鄉鎮市區村里'] || submission['通報內容'] || '通報資訊',
+                        lat: lat,
+                        lng: lng,
+                        marker: marker,
+                        properties: submission
+                    });
+                }
+            }
+            updateDataList('submissions');
+        })
+        .catch(error => {
+            console.error('Error loading form submissions:', error);
+        });
+};

@@ -23,6 +23,119 @@
             left: 0;
             right: 0;
         }
+        #sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 350px;
+            max-height: calc(100% - 80px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+        #sidebar.active {
+            display: block;
+        }
+        #sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+            background: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        #sidebar-toggle.sidebar-open {
+            right: 370px;
+        }
+        .sidebar-header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .sidebar-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #dee2e6;
+            background: #f8f9fa;
+        }
+        .sidebar-tab {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+        .sidebar-tab:hover {
+            background: #e9ecef;
+        }
+        .sidebar-tab.active {
+            background: white;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: -2px;
+        }
+        .sidebar-content {
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .data-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .data-list-item {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .data-list-item:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+        .data-list-item.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .data-list-item-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .data-list-item-details {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .data-list-item.active .data-list-item-details {
+            color: #e0e0e0;
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        .list-counter {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
         .navbar {
             position: fixed;
             bottom: 0;
@@ -133,6 +246,57 @@
 </head>
 <body>
     <div id="map"></div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i> 圖層列表
+    </button>
+    
+    <!-- Sidebar Panel -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h5 style="margin: 0;">救災資訊列表</h5>
+        </div>
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" onclick="switchTab('government')" data-tab="government">
+                🏛️ 政府設施
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('demands')" data-tab="demands">
+                📍 救災需求
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('stay')" data-tab="stay">
+                🏠 住宿點
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('wash')" data-tab="wash">
+                🚿 洗澡點
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('submissions')" data-tab="submissions">
+                📋 回報
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div id="government-pane" class="tab-pane active">
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="government-list"></ul>
+            </div>
+            <div id="demands-pane" class="tab-pane">
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="demands-list"></ul>
+            </div>
+            <div id="stay-pane" class="tab-pane">
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="stay-list"></ul>
+            </div>
+            <div id="wash-pane" class="tab-pane">
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="wash-list"></ul>
+            </div>
+            <div id="submissions-pane" class="tab-pane">
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="submissions-list"></ul>
+            </div>
+        </div>
+    </div>
     <nav class="navbar navbar-light">
         <div class="container-fluid">
             <div class="row w-100">
