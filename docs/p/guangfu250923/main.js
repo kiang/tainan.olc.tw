@@ -5,15 +5,9 @@ let markers = [];
 let coordinatesModal;
 let cunliLayer;
 let submissionsLayer;
-let stayLayer;
-let washPointsLayer;
-let myMapsLayer;
 let governmentLayer;
 let layerData = {
     government: [],
-    demands: [],
-    stay: [],
-    wash: [],
     submissions: []
 };
 let activeMarkers = {};
@@ -71,26 +65,6 @@ function initMap() {
     // Initialize submissions layer group
     submissionsLayer = L.layerGroup().addTo(map);
 
-    // Initialize stay layer cluster group  
-    stayLayer = L.markerClusterGroup({
-        chunkedLoading: true,
-        showCoverageOnHover: false,
-        maxClusterRadius: 80
-    }).addTo(map);
-
-    // Initialize wash points layer cluster group
-    washPointsLayer = L.markerClusterGroup({
-        chunkedLoading: true,
-        showCoverageOnHover: false,
-        maxClusterRadius: 80
-    }).addTo(map);
-
-    // Initialize Google My Maps layer cluster group
-    myMapsLayer = L.markerClusterGroup({
-        chunkedLoading: true,
-        showCoverageOnHover: false,
-        maxClusterRadius: 80
-    }).addTo(map);
 
     // Initialize government points layer cluster group
     governmentLayer = L.markerClusterGroup({
@@ -106,14 +80,6 @@ function initMap() {
     // Load form submissions
     loadFormSubmissions();
     
-    // Load stay locations
-    loadStayLocations();
-    
-    // Load wash points
-    loadWashPoints();
-    
-    // Load Google My Maps data
-    loadMyMapsData();
     
     // Load government points
     loadGovernmentPoints();
@@ -287,307 +253,10 @@ function loadFormSubmissions() {
         });
 }
 
-// Load stay locations from GeoJSON
-function loadStayLocations() {
-    fetch('data/stay.json')
-        .then(response => response.json())
-        .then(geojsonData => {
-            // Clear existing stay markers
-            stayLayer.clearLayers();
-            layerData.stay = [];
-            
-            geojsonData.features.forEach((feature, index) => {
-                if (feature.geometry && feature.geometry.type === 'Point') {
-                    const coordinates = feature.geometry.coordinates;
-                    const lng = coordinates[0];
-                    const lat = coordinates[1];
-                    const properties = feature.properties || {};
-                    
-                    // Create accommodation marker using the same icon style as form submissions
-                    const stayIcon = L.divIcon({
-                        html: `<div style="background-color: #6f42c1; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🏠</div>`,
-                        className: '',
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12],
-                        popupAnchor: [0, -12]
-                    });
-                    
-                    const marker = L.marker([lat, lng], { icon: stayIcon });
-                    
-                    // Create popup content with styled table
-                    let popupContent = `
-                        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #6f42c1; color: white; border-radius: 4px; text-align: center;">
-                                🏠 提供住宿點
-                            </h6>
-                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                    `;
-                    
-                    // Add all properties to the table
-                    Object.entries(properties).forEach(([key, value]) => {
-                        if (value && value.toString().trim() !== '') {
-                            popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                                        ${key}
-                                    </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
-                                        ${value}
-                                    </td>
-                                </tr>
-                            `;
-                        }
-                    });
-                    
-                    popupContent += `
-                            </table>
-                            ${getMapServiceButtons(lat, lng)}
-                        </div>
-                    `;
-                    
-                    marker.bindPopup(popupContent, {
-                        maxWidth: 400,
-                        autoPan: false,
-                        keepInView: true
-                    });
-                    
-                    // Add click event to update URL hash with coordinates
-                    marker.on('click', function() {
-                        history.replaceState(null, null, `#${lat}/${lng}`);
-                    });
-                    
-                    stayLayer.addLayer(marker);
-                    
-                    layerData.stay.push({
-                        id: `stay-${index}`,
-                        name: properties.name || properties['地點'] || '住宿點',
-                        description: properties.description || properties['聯絡方式'] || '',
-                        lat: lat,
-                        lng: lng,
-                        marker: marker,
-                        properties: properties
-                    });
-                }
-            });
-            updateDataList('stay');
-        })
-        .catch(error => {
-            console.error('Error loading stay locations:', error);
-        });
-}
 
-// Load wash points from GeoJSON
-function loadWashPoints() {
-    fetch('data/wash_points.json')
-        .then(response => response.json())
-        .then(geojsonData => {
-            // Clear existing wash point markers
-            washPointsLayer.clearLayers();
-            layerData.wash = [];
-            
-            geojsonData.features.forEach((feature, index) => {
-                if (feature.geometry && feature.geometry.type === 'Point') {
-                    const coordinates = feature.geometry.coordinates;
-                    const lng = coordinates[0];
-                    const lat = coordinates[1];
-                    const properties = feature.properties || {};
-                    
-                    // Create wash point marker using the same icon style as form submissions
-                    const washIcon = L.divIcon({
-                        html: `<div style="background-color: #20c997; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🚿</div>`,
-                        className: '',
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12],
-                        popupAnchor: [0, -12]
-                    });
-                    
-                    const marker = L.marker([lat, lng], { icon: washIcon });
-                    
-                    // Create popup content with styled table
-                    let popupContent = `
-                        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #20c997; color: white; border-radius: 4px; text-align: center;">
-                                🚿 提供洗澡點
-                            </h6>
-                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                    `;
-                    
-                    // Add all properties to the table
-                    Object.entries(properties).forEach(([key, value]) => {
-                        if (value && value.toString().trim() !== '') {
-                            popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                                        ${key}
-                                    </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
-                                        ${value}
-                                    </td>
-                                </tr>
-                            `;
-                        }
-                    });
-                    
-                    popupContent += `
-                            </table>
-                            ${getMapServiceButtons(lat, lng)}
-                        </div>
-                    `;
-                    
-                    marker.bindPopup(popupContent, {
-                        maxWidth: 400,
-                        autoPan: false,
-                        keepInView: true
-                    });
-                    
-                    // Add click event to update URL hash with coordinates
-                    marker.on('click', function() {
-                        history.replaceState(null, null, `#${lat}/${lng}`);
-                    });
-                    
-                    washPointsLayer.addLayer(marker);
-                    
-                    layerData.wash.push({
-                        id: `wash-${index}`,
-                        name: properties.name || properties['地點'] || '洗澡點',
-                        description: properties.description || properties['聯絡方式'] || '',
-                        lat: lat,
-                        lng: lng,
-                        marker: marker,
-                        properties: properties
-                    });
-                }
-            });
-            updateDataList('wash');
-        })
-        .catch(error => {
-            console.error('Error loading wash points:', error);
-        });
-}
 
-// Load Google My Maps data from converted GeoJSON
-function loadMyMapsData() {
-    fetch('data/demands.json')
-        .then(response => response.json())
-        .then(geojsonData => {
-            // Clear existing My Maps markers
-            myMapsLayer.clearLayers();
-            layerData.demands = [];
-            
-            geojsonData.features.forEach((feature, index) => {
-                if (feature.geometry && feature.geometry.type === 'Point') {
-                    const coordinates = feature.geometry.coordinates;
-                    const lng = coordinates[0];
-                    const lat = coordinates[1];
-                    const properties = feature.properties || {};
-                    
-                    const name = properties.name || '';
-                    const description = properties.description || '';
-                    const demandType = properties.demand_type || 'mixed';
-                    const demandTypeZh = properties.demand_type_zh || '綜合需求';
-                    
-                    const marker = createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh);
-                    layerData.demands.push({
-                        id: `demand-${index}`,
-                        name: name || '救災需求',
-                        description: description,
-                        lat: lat,
-                        lng: lng,
-                        type: demandType,
-                        typeZh: demandTypeZh,
-                        marker: marker,
-                        properties: properties
-                    });
-                }
-            });
-            updateDataList('demands');
-        })
-        .catch(error => {
-            console.error('Error loading My Maps data:', error);
-        });
-}
 
-// Create marker for Google My Maps data
-function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZh) {
-    // Get icon info based on demand type
-    let iconInfo = getMyMapsIconType(demandType);
-    
-    // Create marker icon
-    const myMapsIcon = L.divIcon({
-        html: `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`,
-        className: '',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12]
-    });
-    
-    const marker = L.marker([lat, lng], { icon: myMapsIcon });
-    
-    // Create popup content
-    let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
-                ${iconInfo.icon} ${demandTypeZh || iconInfo.label}
-            </h6>
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
-                        地點名稱
-                    </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
-                        ${name}
-                    </td>
-                </tr>
-    `;
-    
-    if (description && description.trim() !== '') {
-        popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
-                        詳細說明
-                    </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
-                        ${description}
-                    </td>
-                </tr>
-        `;
-    }
-    
-    popupContent += `
-            </table>
-            ${getMapServiceButtons(lat, lng)}
-        </div>
-    `;
-    
-    marker.bindPopup(popupContent, {
-        maxWidth: 400,
-        autoPan: false,
-        keepInView: true
-    });
-    
-    // Add click event to update URL hash with coordinates
-    marker.on('click', function() {
-        history.replaceState(null, null, `#${lat}/${lng}`);
-    });
-    
-    myMapsLayer.addLayer(marker);
-    return marker;
-}
 
-// Get icon type for My Maps markers based on demand type
-function getMyMapsIconType(demandType) {
-    // Based on the My Maps legend: Labor (red), Supplies (blue), Equipment (yellow), Mixed
-    switch (demandType) {
-        case 'labor':
-            return { icon: '👷', color: '#dc3545', label: '需要人力' }; // Red for labor
-        case 'supplies':
-            return { icon: '📦', color: '#007bff', label: '需要物資' }; // Blue for supplies
-        case 'equipment':
-            return { icon: '🔧', color: '#ffc107', label: '需要機具' }; // Yellow for equipment
-        default:
-            return { icon: '📍', color: '#6c757d', label: '救災需求' }; // Gray for mixed/other
-    }
-}
 
 // Load government points from GeoJSON
 function loadGovernmentPoints() {
@@ -1267,48 +936,12 @@ function updateDataList(layerName, filterText = '') {
                      item.properties['Location'] ||
                      '';
                      
-            // For demands layer, sometimes address is in the name field
-            if (!address && layerName === 'demands' && item.name) {
-                // Check if name contains address patterns
-                if (item.name.includes('路') || item.name.includes('街') || item.name.includes('巷') || item.name.includes('號')) {
-                    address = item.name;
-                }
-            }
         }
         
         if (layerName === 'government') {
             const iconInfo = getGovernmentIconType(item.type);
             title = `${iconInfo.icon} ${item.name}`;
             details = item.description || '';
-        } else if (layerName === 'demands') {
-            const iconInfo = getMyMapsIconType(item.type);
-            // If address is in the name, use a generic title
-            if (address === item.name) {
-                title = `${iconInfo.icon} ${item.typeZh || '救災需求'}`;
-            } else {
-                title = `${iconInfo.icon} ${item.name}`;
-            }
-            details = item.typeZh || '';
-            if (item.properties && item.properties['聯繫方式']) {
-                details += details ? ' | ' : '';
-                details += item.properties['聯繫方式'];
-            }
-        } else if (layerName === 'stay') {
-            title = `🏠 ${item.name}`;
-            if (item.properties) {
-                const contact = item.properties['聯繫方式'] || item.properties['contact'] || '';
-                if (contact) {
-                    details = contact;
-                }
-            }
-        } else if (layerName === 'wash') {
-            title = `🚿 ${item.name}`;
-            if (item.properties) {
-                const contact = item.properties['聯繫方式'] || item.properties['contact'] || '';
-                if (contact) {
-                    details = contact;
-                }
-            }
         } else if (layerName === 'submissions') {
             const reportContent = item.properties['通報內容'] || '';
             const iconInfo = getIconForReportType(reportContent);

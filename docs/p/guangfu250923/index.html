@@ -360,15 +360,6 @@
             <button class="sidebar-tab" onclick="switchTab('government')" data-tab="government">
                 🏛️ 政府設施
             </button>
-            <button class="sidebar-tab" onclick="switchTab('demands')" data-tab="demands">
-                📍 救災需求
-            </button>
-            <button class="sidebar-tab" onclick="switchTab('stay')" data-tab="stay">
-                🏠 住宿點
-            </button>
-            <button class="sidebar-tab" onclick="switchTab('wash')" data-tab="wash">
-                🚿 洗澡點
-            </button>
         </div>
         <div class="sidebar-content">
             <div id="submissions-pane" class="tab-pane active">
@@ -390,36 +381,6 @@
                 </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="government-list"></ul>
-            </div>
-            <div id="demands-pane" class="tab-pane">
-                <div class="filter-container">
-                    <input type="text" class="filter-input" id="demands-filter" placeholder="搜尋救災需求..." onkeyup="filterDataList('demands')">
-                    <button class="filter-clear" onclick="clearFilter('demands')" title="清除搜尋">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-                <div class="list-counter">載入中...</div>
-                <ul class="data-list" id="demands-list"></ul>
-            </div>
-            <div id="stay-pane" class="tab-pane">
-                <div class="filter-container">
-                    <input type="text" class="filter-input" id="stay-filter" placeholder="搜尋住宿點..." onkeyup="filterDataList('stay')">
-                    <button class="filter-clear" onclick="clearFilter('stay')" title="清除搜尋">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-                <div class="list-counter">載入中...</div>
-                <ul class="data-list" id="stay-list"></ul>
-            </div>
-            <div id="wash-pane" class="tab-pane">
-                <div class="filter-container">
-                    <input type="text" class="filter-input" id="wash-filter" placeholder="搜尋洗澡點..." onkeyup="filterDataList('wash')">
-                    <button class="filter-clear" onclick="clearFilter('wash')" title="清除搜尋">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-                <div class="list-counter">載入中...</div>
-                <ul class="data-list" id="wash-list"></ul>
             </div>
         </div>
     </div>
