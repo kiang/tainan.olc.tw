@@ -60,6 +60,54 @@
                 "type": "mud_storage",
                 "description": "污泥暫時堆置場所"
             }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.426364, 23.672742]
+            },
+            "properties": {
+                "name": "王梓安村長便當發放點",
+                "type": "meal_distribution",
+                "description": "花蓮縣光復鄉武昌街173號 - 中午12:30提供400個便當，晚間18:00提供150個便當",
+                "address": "花蓮縣光復鄉武昌街173號",
+                "contact": "王梓安村長",
+                "lunch": "12:30 - 400個便當",
+                "dinner": "18:00 - 150個便當"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.425187, 23.671001]
+            },
+            "properties": {
+                "name": "光復國中便當發放點",
+                "type": "meal_distribution",
+                "description": "花蓮縣光復鄉林森路200號 - 中午12:30提供350個便當，晚間18:00提供150個便當",
+                "address": "花蓮縣光復鄉林森路200號",
+                "location": "光復國中",
+                "lunch": "12:30 - 350個便當",
+                "dinner": "18:00 - 150個便當"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.427173, 23.667348]
+            },
+            "properties": {
+                "name": "光復商工便當發放點",
+                "type": "meal_distribution",
+                "description": "花蓮縣光復鄉林森路100號 - 中午12:30提供350個便當，晚間18:00提供150個便當",
+                "address": "花蓮縣光復鄉林森路100號",
+                "location": "光復商工",
+                "lunch": "12:30 - 350個便當",
+                "dinner": "18:00 - 150個便當"
+            }
         }
     ]
 }

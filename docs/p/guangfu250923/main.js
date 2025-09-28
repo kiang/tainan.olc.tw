@@ -441,6 +441,8 @@ function getGovernmentIconType(type) {
             return { icon: '🏗️', color: '#8b4513', label: '政府污泥暫置場' }; // Brown for mud storage
         case 'waste_storage':
             return { icon: '🗑️', color: '#34495e', label: '政府垃圾暫置場' }; // Dark gray for waste storage
+        case 'meal_distribution':
+            return { icon: '🍱', color: '#ff6b35', label: '便當發放點' }; // Orange for meal distribution
         default:
             return { icon: '🏛️', color: '#3498db', label: '政府設施' }; // Blue for general government
     }
