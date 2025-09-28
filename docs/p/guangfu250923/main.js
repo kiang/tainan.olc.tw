@@ -884,12 +884,22 @@ window.addEventListener('hashchange', function() {
 // Sidebar control functions
 function openSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('sidebar-toggle');
     sidebar.classList.add('active');
+    // Hide toggle button when sidebar is open
+    if (toggleButton) {
+        toggleButton.style.display = 'none';
+    }
 }
 
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('sidebar-toggle');
     sidebar.classList.remove('active');
+    // Show toggle button when sidebar is closed
+    if (toggleButton) {
+        toggleButton.style.display = 'block';
+    }
 }
 
 // Keep toggleSidebar for backward compatibility if needed
