@@ -10,7 +10,6 @@ let stayLayer;
 let washPointsLayer;
 let myMapsLayer;
 let governmentLayer;
-let villageLabels = L.layerGroup();
 let layerData = {
     government: [],
     demands: [],
@@ -101,27 +100,6 @@ function initMap() {
         maxClusterRadius: 80
     }).addTo(map);
 
-    // Initialize village labels layer
-    map.addLayer(villageLabels);
-
-    // Add zoom event listener to show/hide village names
-    map.on('zoomend', updateVillageLabels);
-    
-    // Hide village labels when popup opens, show when popup closes
-    map.on('popupopen', function() {
-        if (map.hasLayer(villageLabels)) {
-            map.removeLayer(villageLabels);
-        }
-    });
-    
-    map.on('popupclose', function() {
-        // Check if village labels should be shown based on zoom level
-        const zoomLevel = map.getZoom();
-        const showLabels = zoomLevel > 12;
-        if (showLabels && !map.hasLayer(villageLabels)) {
-            map.addLayer(villageLabels);
-        }
-    });
 
     // Load markers data
     loadMarkers();
@@ -249,70 +227,12 @@ function loadCunliBasemap() {
             
             // Fit map to Hualien bounds
             map.fitBounds(cunliLayer.getBounds());
-            
-            // Create village labels
-            createVillageLabels(geojsonData);
-            
-            // Initial update of village labels based on current zoom
-            updateVillageLabels();
         })
         .catch(error => {
             console.error('Error loading cunli basemap:', error);
         });
 }
 
-// Create village name labels
-function createVillageLabels(geojsonData) {
-    geojsonData.features.forEach(feature => {
-        if (feature.properties && feature.properties.VILLNAME) {
-            const villName = feature.properties.VILLNAME;
-            
-            // Calculate centroid for label placement
-            const bounds = L.geoJSON(feature).getBounds();
-            const center = bounds.getCenter();
-            
-            // Create label marker
-            const labelIcon = L.divIcon({
-                html: `<div style="
-                    background-color: rgba(255, 255, 255, 0.95);
-                    border: 2px solid #2c3e50;
-                    border-radius: 4px;
-                    padding: 3px 8px;
-                    font-size: 12px;
-                    font-weight: bold;
-                    color: #2c3e50;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-                    white-space: nowrap;
-                    text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
-                    display: inline-block;
-                ">${villName}</div>`,
-                className: 'village-label',
-                iconSize: null, // Let the content determine the size
-                iconAnchor: [0, 0]
-            });
-            
-            const labelMarker = L.marker(center, { 
-                icon: labelIcon,
-                interactive: false // Labels shouldn't interfere with clicks
-            });
-            
-            villageLabels.addLayer(labelMarker);
-        }
-    });
-}
-
-// Update village labels visibility based on zoom level
-function updateVillageLabels() {
-    const zoomLevel = map.getZoom();
-    const showLabels = zoomLevel > 12; // Show labels when zoom is higher than 12
-    
-    if (showLabels && !map.hasLayer(villageLabels)) {
-        map.addLayer(villageLabels);
-    } else if (!showLabels && map.hasLayer(villageLabels)) {
-        map.removeLayer(villageLabels);
-    }
-}
 
 // Load form submissions from Google Sheets
 function loadFormSubmissions() {
