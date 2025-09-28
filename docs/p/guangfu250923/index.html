@@ -58,6 +58,29 @@
             padding: 15px;
             background: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
+            position: relative;
+        }
+        .sidebar-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .sidebar-close:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #000;
         }
         .sidebar-tabs {
             display: flex;
@@ -303,7 +326,10 @@
     <!-- Sidebar Panel -->
     <div id="sidebar">
         <div class="sidebar-header">
-            <h5 style="margin: 0;">救災資訊列表</h5>
+            <h5 style="margin: 0; padding-right: 35px;">救災資訊列表</h5>
+            <button class="sidebar-close" onclick="toggleSidebar()" aria-label="關閉">
+                <i class="bi bi-x"></i>
+            </button>
         </div>
         <div class="sidebar-tabs">
             <button class="sidebar-tab active" onclick="switchTab('government')" data-tab="government">
