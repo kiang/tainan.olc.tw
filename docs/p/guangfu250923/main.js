@@ -62,8 +62,12 @@ function initMap() {
 
     map.addLayer(markersLayer);
 
-    // Initialize submissions layer group
-    submissionsLayer = L.layerGroup().addTo(map);
+    // Initialize submissions layer cluster group
+    submissionsLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
 
 
     // Initialize government points layer cluster group
@@ -213,6 +217,7 @@ function loadFormSubmissions() {
             
             // Clear existing submissions
             submissionsLayer.clearLayers();
+            layerData.submissions = [];
             
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
@@ -244,9 +249,23 @@ function loadFormSubmissions() {
                 }
                 
                 if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
-                    createSubmissionMarker(submission, lat, lng);
+                    const marker = createSubmissionMarker(submission, lat, lng);
+                    
+                    // Add to layer data for data list
+                    layerData.submissions.push({
+                        id: `submission-${i}`,
+                        name: submission['通報內容'] || '救災資訊',
+                        description: submission['聯絡資訊與說明'] || '',
+                        lat: lat,
+                        lng: lng,
+                        marker: marker,
+                        properties: submission
+                    });
                 }
             }
+            
+            // Update the data list for submissions
+            updateDataList('submissions');
         })
         .catch(error => {
             console.error('Error loading form submissions:', error);
