@@ -106,6 +106,22 @@ function initMap() {
 
     // Add zoom event listener to show/hide village names
     map.on('zoomend', updateVillageLabels);
+    
+    // Hide village labels when popup opens, show when popup closes
+    map.on('popupopen', function() {
+        if (map.hasLayer(villageLabels)) {
+            map.removeLayer(villageLabels);
+        }
+    });
+    
+    map.on('popupclose', function() {
+        // Check if village labels should be shown based on zoom level
+        const zoomLevel = map.getZoom();
+        const showLabels = zoomLevel > 12;
+        if (showLabels && !map.hasLayer(villageLabels)) {
+            map.addLayer(villageLabels);
+        }
+    });
 
     // Load markers data
     loadMarkers();
