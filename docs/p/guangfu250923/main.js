@@ -2,7 +2,6 @@
 let map;
 let markersLayer;
 let markers = [];
-let filterInput = document.getElementById('filter-input');
 let coordinatesModal;
 let cunliLayer;
 let submissionsLayer;
@@ -1029,10 +1028,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Bootstrap modal
     coordinatesModal = new bootstrap.Modal(document.getElementById('coordinatesModal'));
 
-    // Filter input
-    filterInput.addEventListener('input', function() {
-        filterMarkers(this.value);
-    });
+    // Filter input (removed - now handled in sidebar)
+    // filterInput.addEventListener('input', function() {
+    //     filterMarkers(this.value);
+    // });
 
     // Locate me button
     document.getElementById('locate-me').addEventListener('click', locateMe);
