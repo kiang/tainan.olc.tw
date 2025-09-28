@@ -142,10 +142,26 @@
             color: white;
             border-color: #007bff;
         }
+        .data-list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
         .data-list-item-title {
             font-weight: bold;
             font-size: 14px;
-            margin-bottom: 4px;
+            flex: 1;
+        }
+        .data-list-item-timestamp {
+            font-size: 10px;
+            color: #6c757d;
+            white-space: nowrap;
+            margin-left: 8px;
+            line-height: 1.2;
+        }
+        .data-list-item.active .data-list-item-timestamp {
+            color: #e0e0e0 !important;
         }
         .data-list-item-details {
             font-size: 12px;

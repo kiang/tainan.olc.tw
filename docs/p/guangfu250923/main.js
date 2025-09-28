@@ -431,6 +431,12 @@ function loadStayLocations() {
                         autoPan: false,
                         keepInView: true
                     });
+                    
+                    // Add click event to update URL hash with coordinates
+                    marker.on('click', function() {
+                        history.replaceState(null, null, `#${lat}/${lng}`);
+                    });
+                    
                     stayLayer.addLayer(marker);
                     
                     layerData.stay.push({
@@ -514,6 +520,12 @@ function loadWashPoints() {
                         autoPan: false,
                         keepInView: true
                     });
+                    
+                    // Add click event to update URL hash with coordinates
+                    marker.on('click', function() {
+                        history.replaceState(null, null, `#${lat}/${lng}`);
+                    });
+                    
                     washPointsLayer.addLayer(marker);
                     
                     layerData.wash.push({
@@ -633,6 +645,12 @@ function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZ
         autoPan: false,
         keepInView: true
     });
+    
+    // Add click event to update URL hash with coordinates
+    marker.on('click', function() {
+        history.replaceState(null, null, `#${lat}/${lng}`);
+    });
+    
     myMapsLayer.addLayer(marker);
     return marker;
 }
@@ -748,6 +766,12 @@ function createGovernmentMarker(name, description, lat, lng, type) {
         autoPan: false,
         keepInView: true
     });
+    
+    // Add click event to update URL hash with coordinates
+    marker.on('click', function() {
+        history.replaceState(null, null, `#${lat}/${lng}`);
+    });
+    
     governmentLayer.addLayer(marker);
     return marker;
 }
@@ -1250,7 +1274,7 @@ function updateDataList(layerName, filterText = '') {
     listElement.innerHTML = '';
     
     // Filter data based on search text
-    const filteredData = filterText ? 
+    let filteredData = filterText ? 
         data.filter(item => {
             const searchStr = filterText.toLowerCase();
             const nameMatch = item.name && item.name.toLowerCase().includes(searchStr);
@@ -1266,6 +1290,31 @@ function updateDataList(layerName, filterText = '') {
             
             return nameMatch || descMatch || propsMatch;
         }) : data;
+    
+    // Sort submissions by reported time in descending order (newest first)
+    if (layerName === 'submissions') {
+        console.log('Before sorting, first few items:', filteredData.slice(0, 3).map(item => ({
+            name: item.name,
+            properties: item.properties,
+            firstValue: item.properties ? Object.values(item.properties)[0] : 'no props'
+        })));
+        
+        filteredData = filteredData.sort((a, b) => {
+            // Get the first column value (index 0) which should be the timestamp
+            const timeA = a.properties ? Object.values(a.properties)[0] || '' : '';
+            const timeB = b.properties ? Object.values(b.properties)[0] || '' : '';
+            
+            // Sort in descending order (newest first) using simple string comparison
+            const result = timeB.localeCompare(timeA);
+            
+            return result;
+        });
+        
+        console.log('After sorting, first few items:', filteredData.slice(0, 3).map(item => ({
+            name: item.name,
+            firstValue: item.properties ? Object.values(item.properties)[0] : 'no props'
+        })));
+    }
     
     // Update counter
     const filterStatus = filterText ? ` (顯示 ${filteredData.length} / ${data.length} 筆)` : '';
@@ -1371,8 +1420,22 @@ function updateDataList(layerName, filterText = '') {
             }
         }
         
+        // Add timestamp for submissions (reports)
+        let timestampHtml = '';
+        if (layerName === 'submissions' && item.properties) {
+            const timestamp = Object.values(item.properties)[0] || '';
+            if (timestamp) {
+                // Format timestamp for display
+                const displayTime = timestamp.replace('2025/', '').replace(' ', ' '); // Remove year, keep as is
+                timestampHtml = `<div class="data-list-item-timestamp">${displayTime}</div>`;
+            }
+        }
+        
         li.innerHTML = `
-            <div class="data-list-item-title">${title}</div>
+            <div class="data-list-item-header">
+                <div class="data-list-item-title">${title}</div>
+                ${timestampHtml}
+            </div>
             ${address ? `<div class="data-list-item-address">📍 ${address}</div>` : ''}
             ${details ? `<div class="data-list-item-details">${details}</div>` : ''}
         `;
@@ -1407,6 +1470,9 @@ function clearFilter(layerName) {
 }
 
 function navigateToItem(item, layerName) {
+    // Close sidebar to show the marker clearly
+    closeSidebar();
+    
     // Remove previous active states
     document.querySelectorAll('.data-list-item').forEach(el => {
         el.classList.remove('active');
@@ -1430,6 +1496,15 @@ function navigateToItem(item, layerName) {
     // Navigate to the location
     if (item.lat && item.lng) {
         map.setView([item.lat, item.lng], 16);
+        
+        // Update URL hash 
+        if (item.uuid && layerName === 'submissions') {
+            // Use UUID for submissions
+            history.replaceState(null, null, `#${item.uuid}`);
+        } else {
+            // Use coordinates for other layer types
+            history.replaceState(null, null, `#${item.lat}/${item.lng}`);
+        }
         
         // Open the popup
         if (item.marker) {
