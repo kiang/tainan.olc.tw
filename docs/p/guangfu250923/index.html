@@ -51,9 +51,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             cursor: pointer;
         }
-        #sidebar-toggle.sidebar-open {
-            right: 370px;
-        }
         .sidebar-header {
             padding: 15px;
             background: #f8f9fa;
@@ -319,7 +316,7 @@
     <div id="map"></div>
     
     <!-- Sidebar Toggle Button -->
-    <button id="sidebar-toggle" onclick="toggleSidebar()">
+    <button id="sidebar-toggle" onclick="openSidebar()">
         <i class="bi bi-list"></i> 圖層列表
     </button>
     
@@ -327,7 +324,7 @@
     <div id="sidebar">
         <div class="sidebar-header">
             <h5 style="margin: 0; padding-right: 35px;">救災資訊列表</h5>
-            <button class="sidebar-close" onclick="toggleSidebar()" aria-label="關閉">
+            <button class="sidebar-close" onclick="closeSidebar()" aria-label="關閉">
                 <i class="bi bi-x"></i>
             </button>
         </div>

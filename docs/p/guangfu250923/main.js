@@ -1116,18 +1116,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Sidebar control functions
+function openSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.add('active');
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.remove('active');
+}
+
+// Keep toggleSidebar for backward compatibility if needed
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebar-toggle');
-    
     if (sidebar.classList.contains('active')) {
-        sidebar.classList.remove('active');
-        toggleBtn.classList.remove('sidebar-open');
-        toggleBtn.innerHTML = '<i class="bi bi-list"></i> 圖層列表';
+        closeSidebar();
     } else {
-        sidebar.classList.add('active');
-        toggleBtn.classList.add('sidebar-open');
-        toggleBtn.innerHTML = '<i class="bi bi-x"></i> 關閉';
+        openSidebar();
     }
 }
 
