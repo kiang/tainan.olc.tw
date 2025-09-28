@@ -39,6 +39,43 @@ function generateUUID() {
     });
 }
 
+// Helper function to show a marker in cluster group
+function showMarkerInCluster(marker, clusterGroup) {
+    if (!marker || !clusterGroup) return false;
+    
+    // Use zoomToShowLayer if available (most reliable method)
+    if (clusterGroup.zoomToShowLayer) {
+        clusterGroup.zoomToShowLayer(marker, function() {
+            // Marker is now visible, open popup after a short delay
+            setTimeout(() => {
+                marker.openPopup();
+            }, 100);
+        });
+        return true;
+    }
+    
+    // Fallback: try to get the visible parent and spiderfy
+    try {
+        const visibleOne = clusterGroup.getVisibleParent(marker);
+        
+        if (visibleOne && visibleOne !== marker) {
+            // The marker is inside a cluster
+            if (visibleOne.spiderfy) {
+                visibleOne.spiderfy();
+                // Open popup after spiderfying
+                setTimeout(() => {
+                    marker.openPopup();
+                }, 200);
+                return true;
+            }
+        }
+    } catch (e) {
+        console.log('Cluster navigation fallback failed:', e);
+    }
+    
+    return false;
+}
+
 // Initialize map
 function initMap() {
     // Set default view to Hualien Guangfu area
@@ -249,11 +286,21 @@ function loadFormSubmissions() {
                 }
                 
                 if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+                    // Extract UUID from submission data
+                    let uuid = null;
+                    Object.entries(submission).forEach(([key, value]) => {
+                        if (key.includes('地點編號') || key.toLowerCase().includes('uuid') || 
+                            (key.includes('編號') && value && value.length >= 8)) {
+                            uuid = value;
+                        }
+                    });
+                    
                     const marker = createSubmissionMarker(submission, lat, lng);
                     
                     // Add to layer data for data list
                     layerData.submissions.push({
                         id: `submission-${i}`,
+                        uuid: uuid,
                         name: submission['通報內容'] || '救災資訊',
                         description: submission['聯絡資訊與說明'] || '',
                         lat: lat,
@@ -794,8 +841,14 @@ function navigateToReport(uuid) {
         // Center map on marker and zoom in
         map.setView(latLng, 16);
         
-        // Open the marker popup
+        // Handle clustered marker - try to spiderfy or zoom to show
         setTimeout(() => {
+            if (showMarkerInCluster(marker, submissionsLayer)) {
+                // Cluster navigation handled the popup
+                return;
+            }
+            
+            // Marker is not in cluster or cluster handling failed, open popup directly
             marker.openPopup();
         }, 500);
         
@@ -1079,11 +1132,29 @@ function navigateToItem(item, layerName) {
         
         // Open the popup
         if (item.marker) {
-            item.marker.openPopup();
+            // Handle clustered markers
+            let clusterGroup = null;
+            if (layerName === 'submissions') {
+                clusterGroup = submissionsLayer;
+            } else if (layerName === 'government') {
+                clusterGroup = governmentLayer;
+            }
             
-            // Highlight the marker
-            highlightMarker(item.marker, layerName);
-            activeMarkers[item.id] = item.marker;
+            // Try to show marker in cluster first
+            if (clusterGroup && showMarkerInCluster(item.marker, clusterGroup)) {
+                // Cluster navigation handled the popup, but we still need to highlight
+                setTimeout(() => {
+                    highlightMarker(item.marker, layerName);
+                    activeMarkers[item.id] = item.marker;
+                }, 300);
+            } else {
+                // Marker is not clustered or cluster handling failed
+                item.marker.openPopup();
+                
+                // Highlight the marker
+                highlightMarker(item.marker, layerName);
+                activeMarkers[item.id] = item.marker;
+            }
         }
     }
 }
