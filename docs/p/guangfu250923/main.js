@@ -19,6 +19,7 @@ let layerData = {
     submissions: []
 };
 let activeMarkers = {};
+let submissionMarkers = {}; // Store submission markers by UUID
 
 // Generate map service buttons
 function getMapServiceButtons(lat, lng) {
@@ -904,6 +905,24 @@ function createSubmissionMarker(submission, lat, lng) {
         autoPan: false,
         keepInView: true
     });
+    
+    // Extract UUID from submission data (it could be in various field names)
+    let uuid = null;
+    Object.entries(submission).forEach(([key, value]) => {
+        if (key.includes('地點編號') || key.toLowerCase().includes('uuid') || 
+            (key.includes('編號') && value && value.length >= 8)) {
+            uuid = value;
+        }
+    });
+    
+    // Add click event to set URL hash and update hash when popup opens
+    if (uuid) {
+        submissionMarkers[uuid] = marker;
+        marker.on('click', function() {
+            history.replaceState(null, null, `#${uuid}`);
+        });
+    }
+    
     submissionsLayer.addLayer(marker);
     return marker;
 }
@@ -1104,6 +1123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const hash = window.location.hash.substring(1);
         const coords = hash.split('/');
         if (coords.length === 2) {
+            // Handle coordinate-based hash (lat/lng format)
             const lat = parseFloat(coords[0]);
             const lng = parseFloat(coords[1]);
             if (!isNaN(lat) && !isNaN(lng)) {
@@ -1111,7 +1131,53 @@ document.addEventListener('DOMContentLoaded', function() {
                     map.setView([lat, lng], 16);
                 }, 500);
             }
+        } else {
+            // Handle UUID-based hash for reports
+            handleUrlHash();
         }
+    }
+});
+
+// Handle URL hash navigation to specific reports
+function navigateToReport(uuid) {
+    if (submissionMarkers[uuid]) {
+        const marker = submissionMarkers[uuid];
+        const latLng = marker.getLatLng();
+        
+        // Center map on marker and zoom in
+        map.setView(latLng, 16);
+        
+        // Open the marker popup
+        setTimeout(() => {
+            marker.openPopup();
+        }, 500);
+        
+        return true;
+    }
+    return false;
+}
+
+// Check URL hash on page load and handle navigation
+function handleUrlHash() {
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (hash) {
+        // Wait for submissions to be loaded before trying to navigate
+        const checkAndNavigate = () => {
+            if (navigateToReport(hash)) {
+                return; // Successfully navigated
+            }
+            // If marker not found yet, try again in 500ms
+            setTimeout(checkAndNavigate, 500);
+        };
+        checkAndNavigate();
+    }
+}
+
+// Listen for hash changes
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+        navigateToReport(hash);
     }
 });
 
@@ -1444,9 +1510,19 @@ loadFormSubmissions = function() {
                 }
                 
                 if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+                    // Extract UUID from submission data
+                    let uuid = null;
+                    Object.entries(submission).forEach(([key, value]) => {
+                        if (key.includes('地點編號') || key.toLowerCase().includes('uuid') || 
+                            (key.includes('編號') && value && value.length >= 8)) {
+                            uuid = value;
+                        }
+                    });
+                    
                     const marker = createSubmissionMarker(submission, lat, lng);
                     layerData.submissions.push({
                         id: `submission-${i}`,
+                        uuid: uuid,
                         name: submission['鄉鎮市區村里'] || submission['通報內容'] || '通報資訊',
                         lat: lat,
                         lng: lng,
