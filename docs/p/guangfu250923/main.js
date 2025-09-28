@@ -409,7 +409,11 @@ function loadStayLocations() {
                         </div>
                     `;
                     
-                    marker.bindPopup(popupContent);
+                    marker.bindPopup(popupContent, {
+                        maxWidth: 400,
+                        autoPan: false,
+                        keepInView: true
+                    });
                     stayLayer.addLayer(marker);
                     
                     layerData.stay.push({
@@ -488,7 +492,11 @@ function loadWashPoints() {
                         </div>
                     `;
                     
-                    marker.bindPopup(popupContent);
+                    marker.bindPopup(popupContent, {
+                        maxWidth: 400,
+                        autoPan: false,
+                        keepInView: true
+                    });
                     washPointsLayer.addLayer(marker);
                     
                     layerData.wash.push({
@@ -603,7 +611,11 @@ function createMyMapsMarker(name, description, lat, lng, demandType, demandTypeZ
         </div>
     `;
     
-    marker.bindPopup(popupContent);
+    marker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
     myMapsLayer.addLayer(marker);
     return marker;
 }
@@ -714,7 +726,11 @@ function createGovernmentMarker(name, description, lat, lng, type) {
         </div>
     `;
     
-    marker.bindPopup(popupContent);
+    marker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
     governmentLayer.addLayer(marker);
     return marker;
 }
@@ -883,7 +899,11 @@ function createSubmissionMarker(submission, lat, lng) {
         </div>
     `;
     
-    marker.bindPopup(popupContent);
+    marker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
     submissionsLayer.addLayer(marker);
     return marker;
 }
@@ -918,7 +938,11 @@ function createMarker(data) {
     }
     popupContent += '</div>';
 
-    marker.bindPopup(popupContent);
+    marker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
     
     markers.push(marker);
     markersLayer.addLayer(marker);
