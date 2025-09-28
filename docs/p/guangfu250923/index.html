@@ -354,7 +354,10 @@
             </button>
         </div>
         <div class="sidebar-tabs">
-            <button class="sidebar-tab active" onclick="switchTab('government')" data-tab="government">
+            <button class="sidebar-tab active" onclick="switchTab('submissions')" data-tab="submissions">
+                📋 回報
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('government')" data-tab="government">
                 🏛️ 政府設施
             </button>
             <button class="sidebar-tab" onclick="switchTab('demands')" data-tab="demands">
@@ -366,12 +369,19 @@
             <button class="sidebar-tab" onclick="switchTab('wash')" data-tab="wash">
                 🚿 洗澡點
             </button>
-            <button class="sidebar-tab" onclick="switchTab('submissions')" data-tab="submissions">
-                📋 回報
-            </button>
         </div>
         <div class="sidebar-content">
-            <div id="government-pane" class="tab-pane active">
+            <div id="submissions-pane" class="tab-pane active">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="submissions-filter" placeholder="搜尋回報資訊..." onkeyup="filterDataList('submissions')">
+                    <button class="filter-clear" onclick="clearFilter('submissions')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="submissions-list"></ul>
+            </div>
+            <div id="government-pane" class="tab-pane">
                 <div class="filter-container">
                     <input type="text" class="filter-input" id="government-filter" placeholder="搜尋政府設施..." onkeyup="filterDataList('government')">
                     <button class="filter-clear" onclick="clearFilter('government')" title="清除搜尋">
@@ -410,16 +420,6 @@
                 </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="wash-list"></ul>
-            </div>
-            <div id="submissions-pane" class="tab-pane">
-                <div class="filter-container">
-                    <input type="text" class="filter-input" id="submissions-filter" placeholder="搜尋回報資訊..." onkeyup="filterDataList('submissions')">
-                    <button class="filter-clear" onclick="clearFilter('submissions')" title="清除搜尋">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-                <div class="list-counter">載入中...</div>
-                <ul class="data-list" id="submissions-list"></ul>
             </div>
         </div>
     </div>
