@@ -307,7 +307,13 @@ function loadFormSubmissions() {
                     
                     // Determine which layer based on report content
                     const reportContent = submission['通報內容'] || '';
-                    const isUrgent = reportContent.includes('需要志工') || reportContent.includes('需要物資');
+                    // Debug: Check what values we're getting
+                    if (i <= 10) {
+                        console.log(`Row ${i} - 通報內容: "${reportContent}"`);
+                    }
+                    // Check if it's an urgent need (needs volunteers or supplies) vs provided resource
+                    const isUrgent = reportContent === '需要志工' || reportContent === '需要物資' ||
+                                   reportContent.includes('需要志工') || reportContent.includes('需要物資');
                     
                     const marker = createSubmissionMarker(submission, lat, lng, isUrgent);
                     
@@ -332,6 +338,8 @@ function loadFormSubmissions() {
             }
             
             // Update the data lists for both submission layers
+            console.log('Layer 1 (緊急需求) count:', layerData.submissions.length);
+            console.log('Layer 2 (提供資源) count:', layerData.submissions2.length);
             updateDataList('submissions');
             updateDataList('submissions2');
         })
@@ -1022,7 +1030,7 @@ function updateDataList(layerName, filterText = '') {
         }) : data;
     
     // Sort submissions by reported time in descending order (newest first)
-    if (layerName === 'submissions') {
+    if (layerName === 'submissions' || layerName === 'submissions2') {
         console.log('Before sorting, first few items:', filteredData.slice(0, 3).map(item => ({
             name: item.name,
             properties: item.properties,
@@ -1084,7 +1092,7 @@ function updateDataList(layerName, filterText = '') {
             const iconInfo = getGovernmentIconType(item.type);
             title = `${iconInfo.icon} ${item.name}`;
             details = item.description || '';
-        } else if (layerName === 'submissions') {
+        } else if (layerName === 'submissions' || layerName === 'submissions2') {
             const reportContent = item.properties['通報內容'] || '';
             const iconInfo = getIconForReportType(reportContent);
             title = `${iconInfo.icon} ${item.name || '通報資訊'}`;
