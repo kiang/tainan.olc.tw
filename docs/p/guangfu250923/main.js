@@ -309,16 +309,26 @@ function loadFormSubmissions() {
                     const reportContent = (submission['通報內容'] || '').trim();
                     
                     // Debug first few rows to see actual values
-                    if (i <= 5) {
-                        console.log(`Row ${i}: 通報內容 = "${reportContent}"`);
+                    if (i <= 10) {
+                        console.log(`Row ${i}: 通報內容 = "${reportContent}" (length: ${reportContent.length})`);
                     }
                     
                     // Layer 2 (Resources): 提供洗澡點, 提供住宿點, 其他
                     // Layer 1 (Urgent needs): 需要志工, 需要物資
-                    const isResource = reportContent === '提供洗澡點' || 
+                    // Be more flexible with matching - check if content contains these keywords
+                    const isResource = reportContent.includes('提供洗澡點') || 
+                                      reportContent.includes('提供住宿點') || 
+                                      reportContent.includes('其他') ||
+                                      reportContent === '提供洗澡點' || 
                                       reportContent === '提供住宿點' || 
                                       reportContent === '其他';
+                    
                     const isUrgent = !isResource;  // If not a resource, it's an urgent need
+                    
+                    // Debug the classification
+                    if (i <= 10) {
+                        console.log(`  -> Classified as: ${isUrgent ? 'Layer 1 (Urgent)' : 'Layer 2 (Resource)'}`);
+                    }
                     
                     const marker = createSubmissionMarker(submission, lat, lng, isUrgent);
                     
