@@ -5,10 +5,12 @@ let markers = [];
 let coordinatesModal;
 let cunliLayer;
 let submissionsLayer;
+let submissionsLayer2;
 let governmentLayer;
 let layerData = {
     government: [],
-    submissions: []
+    submissions: [],
+    submissions2: []
 };
 let activeMarkers = {};
 let submissionMarkers = {}; // Store submission markers by UUID
@@ -99,13 +101,19 @@ function initMap() {
 
     map.addLayer(markersLayer);
 
-    // Initialize submissions layer cluster group
+    // Initialize submissions layer cluster group (layer 1: urgent needs)
     submissionsLayer = L.markerClusterGroup({
         chunkedLoading: true,
         showCoverageOnHover: false,
         maxClusterRadius: 80
     }).addTo(map);
 
+    // Initialize submissions layer 2 cluster group (other reports)
+    submissionsLayer2 = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    });  // Not added to map by default
 
     // Initialize government points layer cluster group
     governmentLayer = L.markerClusterGroup({
@@ -254,7 +262,9 @@ function loadFormSubmissions() {
             
             // Clear existing submissions
             submissionsLayer.clearLayers();
+            submissionsLayer2.clearLayers();
             layerData.submissions = [];
+            layerData.submissions2 = [];
             
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
@@ -295,10 +305,14 @@ function loadFormSubmissions() {
                         }
                     });
                     
-                    const marker = createSubmissionMarker(submission, lat, lng);
+                    // Determine which layer based on report content
+                    const reportContent = submission['通報內容'] || '';
+                    const isUrgent = reportContent.includes('需要志工') || reportContent.includes('需要物資');
                     
-                    // Add to layer data for data list
-                    layerData.submissions.push({
+                    const marker = createSubmissionMarker(submission, lat, lng, isUrgent);
+                    
+                    // Add to appropriate layer data
+                    const dataEntry = {
                         id: `submission-${i}`,
                         uuid: uuid,
                         name: submission['通報內容'] || '救災資訊',
@@ -307,12 +321,19 @@ function loadFormSubmissions() {
                         lng: lng,
                         marker: marker,
                         properties: submission
-                    });
+                    };
+                    
+                    if (isUrgent) {
+                        layerData.submissions.push(dataEntry);
+                    } else {
+                        layerData.submissions2.push(dataEntry);
+                    }
                 }
             }
             
-            // Update the data list for submissions
+            // Update the data lists for both submission layers
             updateDataList('submissions');
+            updateDataList('submissions2');
         })
         .catch(error => {
             console.error('Error loading form submissions:', error);
@@ -512,7 +533,7 @@ function extractGoogleDriveFileId(url) {
 }
 
 // Create marker for form submission
-function createSubmissionMarker(submission, lat, lng) {
+function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     // Get report content type and determine icon
     const reportContent = submission['通報內容'] || submission['Report Content'] || '';
     let iconInfo = getIconForReportType(reportContent);
@@ -619,7 +640,12 @@ function createSubmissionMarker(submission, lat, lng) {
         });
     }
     
-    submissionsLayer.addLayer(marker);
+    // Add marker to appropriate layer
+    if (isUrgent) {
+        submissionsLayer.addLayer(marker);
+    } else {
+        submissionsLayer2.addLayer(marker);
+    }
     return marker;
 }
 
@@ -843,9 +869,21 @@ function navigateToReport(uuid) {
         // Center map on marker and zoom in
         map.setView(latLng, 16);
         
+        // Determine which layer the marker belongs to
+        let targetLayer = null;
+        if (submissionsLayer.hasLayer(marker)) {
+            targetLayer = submissionsLayer;
+        } else if (submissionsLayer2.hasLayer(marker)) {
+            targetLayer = submissionsLayer2;
+            // Make sure layer 2 is visible
+            if (!map.hasLayer(submissionsLayer2)) {
+                map.addLayer(submissionsLayer2);
+            }
+        }
+        
         // Handle clustered marker - try to spiderfy or zoom to show
         setTimeout(() => {
-            if (showMarkerInCluster(marker, submissionsLayer)) {
+            if (targetLayer && showMarkerInCluster(marker, targetLayer)) {
                 // Cluster navigation handled the popup
                 return;
             }
@@ -929,6 +967,26 @@ function switchTab(tabName) {
         pane.classList.remove('active');
     });
     document.getElementById(`${tabName}-pane`).classList.add('active');
+    
+    // Toggle layer visibility based on tab
+    if (tabName === 'submissions') {
+        // Show urgent needs layer, hide others
+        if (!map.hasLayer(submissionsLayer)) {
+            map.addLayer(submissionsLayer);
+        }
+        if (map.hasLayer(submissionsLayer2)) {
+            map.removeLayer(submissionsLayer2);
+        }
+    } else if (tabName === 'submissions2') {
+        // Show resources layer, hide urgent needs
+        if (map.hasLayer(submissionsLayer)) {
+            map.removeLayer(submissionsLayer);
+        }
+        if (!map.hasLayer(submissionsLayer2)) {
+            map.addLayer(submissionsLayer2);
+        }
+    }
+    // Government layer stays visible regardless
     
     // Reapply filter if exists
     const filterInput = document.getElementById(`${tabName}-filter`);
@@ -1134,7 +1192,7 @@ function navigateToItem(item, layerName) {
         map.setView([item.lat, item.lng], 16);
         
         // Update URL hash 
-        if (item.uuid && layerName === 'submissions') {
+        if (item.uuid && (layerName === 'submissions' || layerName === 'submissions2')) {
             // Use UUID for submissions
             history.replaceState(null, null, `#${item.uuid}`);
         } else {
@@ -1148,6 +1206,8 @@ function navigateToItem(item, layerName) {
             let clusterGroup = null;
             if (layerName === 'submissions') {
                 clusterGroup = submissionsLayer;
+            } else if (layerName === 'submissions2') {
+                clusterGroup = submissionsLayer2;
             } else if (layerName === 'government') {
                 clusterGroup = governmentLayer;
             }
