@@ -306,14 +306,19 @@ function loadFormSubmissions() {
                     });
                     
                     // Determine which layer based on report content
-                    const reportContent = submission['通報內容'] || '';
-                    // Debug: Check what values we're getting
-                    if (i <= 10) {
-                        console.log(`Row ${i} - 通報內容: "${reportContent}"`);
+                    const reportContent = (submission['通報內容'] || '').trim();
+                    
+                    // Debug first few rows to see actual values
+                    if (i <= 5) {
+                        console.log(`Row ${i}: 通報內容 = "${reportContent}"`);
                     }
-                    // Check if it's an urgent need (needs volunteers or supplies) vs provided resource
-                    const isUrgent = reportContent === '需要志工' || reportContent === '需要物資' ||
-                                   reportContent.includes('需要志工') || reportContent.includes('需要物資');
+                    
+                    // Layer 2 (Resources): 提供洗澡點, 提供住宿點, 其他
+                    // Layer 1 (Urgent needs): 需要志工, 需要物資
+                    const isResource = reportContent === '提供洗澡點' || 
+                                      reportContent === '提供住宿點' || 
+                                      reportContent === '其他';
+                    const isUrgent = !isResource;  // If not a resource, it's an urgent need
                     
                     const marker = createSubmissionMarker(submission, lat, lng, isUrgent);
                     
@@ -338,8 +343,8 @@ function loadFormSubmissions() {
             }
             
             // Update the data lists for both submission layers
-            console.log('Layer 1 (緊急需求) count:', layerData.submissions.length);
-            console.log('Layer 2 (提供資源) count:', layerData.submissions2.length);
+            console.log(`Layer 1 (緊急需求): ${layerData.submissions.length} items`);
+            console.log(`Layer 2 (提供資源): ${layerData.submissions2.length} items`);
             updateDataList('submissions');
             updateDataList('submissions2');
         })
@@ -1031,12 +1036,6 @@ function updateDataList(layerName, filterText = '') {
     
     // Sort submissions by reported time in descending order (newest first)
     if (layerName === 'submissions' || layerName === 'submissions2') {
-        console.log('Before sorting, first few items:', filteredData.slice(0, 3).map(item => ({
-            name: item.name,
-            properties: item.properties,
-            firstValue: item.properties ? Object.values(item.properties)[0] : 'no props'
-        })));
-        
         filteredData = filteredData.sort((a, b) => {
             // Get the first column value (index 0) which should be the timestamp
             const timeA = a.properties ? Object.values(a.properties)[0] || '' : '';
