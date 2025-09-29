@@ -18,6 +18,13 @@ let activeMarkers = {};
 let submissionMarkers = {}; // Store submission markers by UUID
 let uuidToLayer = {}; // Map UUID to layer (1 or 2)
 
+// Comprehensive feature cache for instant access
+let featureCache = {
+    submissions: {}, // UUID -> full feature data
+    government: {}, // ID -> full feature data  
+    targets: {}     // ID -> full feature data
+};
+
 // Generate map service buttons
 function getMapServiceButtons(lat, lng) {
     const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
@@ -44,11 +51,11 @@ function generateUUID() {
     });
 }
 
-// Helper function to show a marker in cluster group
+// Helper function to show a marker in cluster group with multiple strategies
 function showMarkerInCluster(marker, clusterGroup) {
     if (!marker || !clusterGroup) return false;
     
-    // Use zoomToShowLayer if available (most reliable method)
+    // Strategy 1: Use zoomToShowLayer if available (most reliable method)
     if (clusterGroup.zoomToShowLayer) {
         clusterGroup.zoomToShowLayer(marker, function() {
             // Marker is now visible, open popup after a short delay
@@ -59,26 +66,407 @@ function showMarkerInCluster(marker, clusterGroup) {
         return true;
     }
     
-    // Fallback: try to get the visible parent and spiderfy
+    // Strategy 2: Try zoom-based approach first
+    const currentZoom = map.getZoom();
+    const maxZoom = map.getMaxZoom();
+    
+    if (currentZoom < maxZoom) {
+        // Zoom in to potentially break up clusters
+        map.setView(marker.getLatLng(), Math.min(currentZoom + 3, maxZoom));
+        
+        setTimeout(() => {
+            // Check if marker is now visible after zoom
+            const visibleParent = clusterGroup.getVisibleParent(marker);
+            if (!visibleParent || visibleParent === marker) {
+                marker.openPopup();
+            } else {
+                // Still clustered, try recursive expansion
+                expandClusterRecursively(marker, clusterGroup, 0);
+            }
+        }, 500);
+        return true;
+    }
+    
+    // Strategy 3: Enhanced fallback with recursive cluster expansion
+    return expandClusterRecursively(marker, clusterGroup, 0);
+}
+
+// Recursively expand clusters until the target marker is visible
+function expandClusterRecursively(marker, clusterGroup, depth) {
+    if (depth > 10) {
+        console.warn('Maximum cluster expansion depth reached');
+        return false;
+    }
+    
+    if (depth === 0) console.log('Starting cluster expansion for marker');
+    
     try {
         const visibleOne = clusterGroup.getVisibleParent(marker);
         
-        if (visibleOne && visibleOne !== marker) {
-            // The marker is inside a cluster
-            if (visibleOne.spiderfy) {
-                visibleOne.spiderfy();
-                // Open popup after spiderfying
-                setTimeout(() => {
-                    marker.openPopup();
-                }, 200);
-                return true;
+        if (!visibleOne || visibleOne === marker) {
+            // Marker is already visible, open popup
+            console.log('Target marker is now visible, opening popup');
+            setTimeout(() => {
+                marker.openPopup();
+            }, 50);
+            return true;
+        }
+        
+        if (depth < 3) console.log(`Target marker still clustered, attempting expansion (depth ${depth})`);
+        
+        // The marker is inside a cluster, expand it
+        if (visibleOne.spiderfy) {
+            if (depth < 2) console.log('Using spiderfy to expand cluster');
+            visibleOne.spiderfy();
+            
+            // Wait for spiderfy animation to complete, then check again
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 300);
+            return true;
+        } else if (visibleOne.fire) {
+            // Try firing click event directly on the cluster
+            if (depth < 2) console.log('Firing click event on cluster');
+            visibleOne.fire('click');
+            
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 300);
+            return true;
+        } else {
+            // Try simulating click on the cluster using lower-level approach
+            if (depth < 2) console.log('Attempting manual cluster expansion');
+            
+            // Get cluster bounds and zoom to it
+            const bounds = visibleOne.getBounds ? visibleOne.getBounds() : null;
+            if (bounds) {
+                map.fitBounds(bounds, { maxZoom: map.getZoom() + 2 });
             }
+            
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 400);
+            return true;
         }
     } catch (e) {
-        console.log('Cluster navigation fallback failed:', e);
+        console.log('Cluster expansion failed at depth', depth, ':', e);
+        return false;
+    }
+}
+
+// Show feature popup instantly using cached data (bypasses cluster expansion)
+function showFeaturePopupInstantly(featureId, layerName) {
+    let featureData = null;
+    
+    // Get feature data from cache
+    if (layerName === 'submissions' || layerName === 'submissions2') {
+        featureData = featureCache.submissions[featureId];
+    } else if (layerName === 'government') {
+        featureData = featureCache.government[featureId];
+    } else if (layerName === 'targets') {
+        featureData = featureCache.targets[featureId];
     }
     
-    return false;
+    if (!featureData) {
+        console.warn('Feature data not found in cache for:', featureId);
+        return false;
+    }
+    
+    // Create and show popup instantly without needing the marker
+    const popup = L.popup({
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
+    
+    let popupContent = '';
+    
+    // Generate popup content based on layer type
+    if (layerName === 'submissions' || layerName === 'submissions2') {
+        popupContent = createSubmissionPopupContent(featureData);
+    } else if (layerName === 'government') {
+        popupContent = createGovernmentPopupContent(featureData);
+    } else if (layerName === 'targets') {
+        popupContent = createTargetPopupContent(featureData);
+    }
+    
+    // Show popup at the feature location
+    popup.setLatLng([featureData.lat, featureData.lng])
+         .setContent(popupContent)
+         .openOn(map);
+    
+    // Center map on the feature
+    map.setView([featureData.lat, featureData.lng], 16);
+    
+    // Create and place a temporary highlighted marker at the exact location
+    // This ensures users can see exactly which point the popup refers to
+    createAndPlaceTemporaryMarker(featureData, layerName, featureId);
+    
+    return true;
+}
+
+// Create and place a temporary highlighted marker for instant popups
+function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
+    // Create a highlighted marker based on layer type
+    let markerIcon;
+    
+    if (layerName === 'government') {
+        const iconInfo = getGovernmentIconType(featureData.type || 'general');
+        markerIcon = L.divIcon({
+            html: `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">${iconInfo.icon}</div>`,
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+    } else if (layerName === 'targets') {
+        const priorityInfo = getTargetPriorityInfo(featureData.priorityLevel || '6級');
+        markerIcon = L.divIcon({
+            html: `<div style="background-color: ${priorityInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">${priorityInfo.level}</div>`,
+            className: '',
+            iconSize: [34, 34],
+            iconAnchor: [17, 17],
+            popupAnchor: [0, -17]
+        });
+    } else if (layerName === 'submissions' || layerName === 'submissions2') {
+        const reportContent = featureData.properties['通報內容'] || '其他';
+        const iconInfo = getIconForReportType(reportContent);
+        markerIcon = L.divIcon({
+            html: `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">${iconInfo.icon}</div>`,
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+    } else {
+        // Default highlighted marker
+        markerIcon = L.divIcon({
+            html: '<div style="background-color: #007bff; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">📍</div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+    }
+    
+    // Create temporary marker
+    const tempMarker = L.marker([featureData.lat, featureData.lng], { 
+        icon: markerIcon,
+        zIndexOffset: 1000  // Ensure it appears above clusters
+    }).addTo(map);
+    
+    // Store the temporary marker for cleanup
+    activeMarkers[featureId] = tempMarker;
+    
+    // Also try to highlight the original marker if it's accessible
+    setTimeout(() => {
+        if (featureData.marker && featureData.marker.setIcon) {
+            try {
+                highlightMarker(featureData.marker, layerName);
+            } catch (e) {
+                console.log('Could not highlight original marker (likely clustered):', e);
+            }
+        }
+    }, 100);
+}
+
+// Create popup content for submissions
+function createSubmissionPopupContent(featureData) {
+    const reportContent = featureData.properties['通報內容'] || '';
+    const iconInfo = getIconForReportType(reportContent);
+    
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                ${iconInfo.icon} 救災資訊回報
+            </h6>
+    `;
+    
+    // Check for photo uploads in submission
+    let photoUrl = null;
+    Object.entries(featureData.properties).forEach(([key, value]) => {
+        if (value && typeof value === 'string') {
+            // Look for fields that might contain Google Drive photo URLs
+            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') || 
+                key.toLowerCase().includes('upload') || value.includes('drive.google.com')) {
+                const fileId = extractGoogleDriveFileId(value);
+                if (fileId) {
+                    photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                }
+            }
+        }
+    });
+    
+    // Add photo preview if available
+    if (photoUrl) {
+        popupContent += `
+            <div style="margin-bottom: 10px;">
+                <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+            </div>
+        `;
+    }
+    
+    popupContent += `
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+    `;
+    
+    // Use the same column mapping as original markers
+    const columnMapping = {
+        0: '通報時間',        // Column 0: timestamp
+        // 1: skip photo column (already shown as preview)
+        2: '通報內容',        // Column 2: content
+        3: '聯絡資訊與說明',   // Column 3: contact/description
+        4: '鄉鎮市區',        // Column 4: city/district
+        5: '村里'            // Column 5: village
+    };
+    
+    const submissionEntries = Object.entries(featureData.properties);
+    submissionEntries.forEach(([key, value], index) => {
+        if (value && value.trim() !== '' && columnMapping[index]) {
+            popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                        ${columnMapping[index]}
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${value}
+                    </td>
+                </tr>
+            `;
+        }
+    });
+    
+    popupContent += `
+            </table>
+            ${getMapServiceButtons(featureData.lat, featureData.lng)}
+        </div>
+    `;
+    
+    return popupContent;
+}
+
+// Create popup content for government facilities
+function createGovernmentPopupContent(featureData) {
+    const iconInfo = getGovernmentIconType(featureData.type);
+    
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                ${iconInfo.icon} ${iconInfo.label}
+            </h6>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                        設施名稱
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.name}
+                    </td>
+                </tr>
+    `;
+    
+    if (featureData.description && featureData.description.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        說明
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.description}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    popupContent += `
+            </table>
+            ${getMapServiceButtons(featureData.lat, featureData.lng)}
+        </div>
+    `;
+    
+    return popupContent;
+}
+
+// Create popup content for targets
+function createTargetPopupContent(featureData) {
+    const priorityInfo = getTargetPriorityInfo(featureData.priorityLevel);
+    
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${priorityInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                🏠 救災目標 (${featureData.priorityLevel})
+            </h6>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 35%; border-right: 1px solid #dee2e6;">
+                        地址
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.address}
+                    </td>
+                </tr>
+    `;
+    
+    if (featureData.sedimentLevel && featureData.sedimentLevel.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        泥沙淤積程度
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.sedimentLevel}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (featureData.furnitureRemoved && featureData.furnitureRemoved.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        大型廢棄家具已移除
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.furnitureRemoved}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (featureData.cleaningStage && featureData.cleaningStage.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        進入一般清潔階段
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${featureData.cleaningStage}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (featureData.lastUpdateDate && featureData.lastUpdateDate.trim() !== '') {
+        const updateInfo = featureData.lastUpdateTime && featureData.lastUpdateTime.trim() !== '' ? `${featureData.lastUpdateDate} ${featureData.lastUpdateTime}` : featureData.lastUpdateDate;
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        最後更新
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${updateInfo}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    popupContent += `
+            </table>
+            ${getMapServiceButtons(featureData.lat, featureData.lng)}
+        </div>
+    `;
+    
+    return popupContent;
 }
 
 // Initialize map
@@ -278,6 +666,7 @@ function loadFormSubmissions() {
             layerData.submissions = [];
             layerData.submissions2 = [];
             uuidToLayer = {}; // Clear UUID to layer mapping
+            featureCache.submissions = {}; // Clear submissions feature cache
             
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
@@ -348,15 +737,17 @@ function loadFormSubmissions() {
                     
                     if (isUrgent) {
                         layerData.submissions.push(dataEntry);
-                        // Map UUID to layer 1
+                        // Map UUID to layer 1 and cache feature data
                         if (uuid) {
                             uuidToLayer[uuid] = 1;
+                            featureCache.submissions[uuid] = dataEntry;
                         }
                     } else {
                         layerData.submissions2.push(dataEntry);
-                        // Map UUID to layer 2
+                        // Map UUID to layer 2 and cache feature data
                         if (uuid) {
                             uuidToLayer[uuid] = 2;
+                            featureCache.submissions[uuid] = dataEntry;
                         }
                     }
                 }
@@ -381,9 +772,10 @@ function loadGovernmentPoints() {
     fetch('data/government_points.json')
         .then(response => response.json())
         .then(geojsonData => {
-            // Clear existing government markers
+            // Clear existing government markers and cache
             governmentLayer.clearLayers();
             layerData.government = [];
+            featureCache.government = {};
             
             geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
@@ -397,7 +789,7 @@ function loadGovernmentPoints() {
                     const description = properties.description || '';
                     
                     const marker = createGovernmentMarker(name, description, lat, lng, type);
-                    layerData.government.push({
+                    const featureData = {
                         id: `gov-${index}`,
                         name: name,
                         description: description,
@@ -405,7 +797,11 @@ function loadGovernmentPoints() {
                         lng: lng,
                         type: type,
                         marker: marker
-                    });
+                    };
+                    
+                    layerData.government.push(featureData);
+                    // Cache the feature data for instant access
+                    featureCache.government[`gov-${index}`] = featureData;
                 }
             });
             updateDataList('government');
@@ -430,6 +826,9 @@ function createGovernmentMarker(name, description, lat, lng, type) {
     });
     
     const marker = L.marker([lat, lng], { icon: govIcon });
+    
+    // Store type info on marker for icon recreation
+    marker.itemType = type;
     
     // Create popup content
     let popupContent = `
@@ -505,9 +904,10 @@ function loadTargets() {
     fetch('data/targets.json')
         .then(response => response.json())
         .then(geojsonData => {
-            // Clear existing targets markers
+            // Clear existing targets markers and cache
             targetsLayer.clearLayers();
             layerData.targets = [];
+            featureCache.targets = {};
             
             geojsonData.features.forEach((feature, index) => {
                 if (feature.geometry && feature.geometry.type === 'Point') {
@@ -525,7 +925,7 @@ function loadTargets() {
                     const lastUpdateTime = properties['最後更新時間'] || '';
                     
                     const marker = createTargetMarker(address, sedimentLevel, furnitureRemoved, cleaningStage, priorityLevel, lastUpdateDate, lastUpdateTime, lat, lng);
-                    layerData.targets.push({
+                    const featureData = {
                         id: `target-${index}`,
                         address: address,
                         sedimentLevel: sedimentLevel,
@@ -537,7 +937,11 @@ function loadTargets() {
                         lat: lat,
                         lng: lng,
                         marker: marker
-                    });
+                    };
+                    
+                    layerData.targets.push(featureData);
+                    // Cache the feature data for instant access
+                    featureCache.targets[`target-${index}`] = featureData;
                 }
             });
             updateDataList('targets');
@@ -758,6 +1162,9 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     });
     
     const marker = L.marker([lat, lng], { icon: submissionIcon });
+    
+    // Store report content for icon recreation
+    marker.reportContent = reportContent;
     
     // Create popup content with styled table
     let popupContent = `
@@ -1117,16 +1524,25 @@ function navigateToReport(uuid) {
         // Center map on marker and zoom in
         map.setView(latLng, 16);
         
-        // Handle clustered marker - try to spiderfy or zoom to show
+        // Use instant popup system for hash navigation (much faster)
         setTimeout(() => {
-            if (targetLayer && showMarkerInCluster(marker, targetLayer)) {
-                // Cluster navigation handled the popup
-                return;
-            }
+            const layerName = targetLayerNum === 2 ? 'submissions2' : 'submissions';
             
-            // Marker is not in cluster or cluster handling failed, open popup directly
-            marker.openPopup();
-        }, 500);
+            if (showFeaturePopupInstantly(uuid, layerName)) {
+                console.log('Hash navigation: Showed popup instantly using cached data');
+                return;
+            } else {
+                // Fallback to cluster expansion if instant popup fails
+                console.log('Hash navigation: Falling back to cluster expansion');
+                if (targetLayer && showMarkerInCluster(marker, targetLayer)) {
+                    // Cluster navigation handled the popup
+                    return;
+                }
+                
+                // Marker is not in cluster or cluster handling failed, open popup directly
+                marker.openPopup();
+            }
+        }, 300);
         
         return true;
     }
@@ -1477,6 +1893,9 @@ function navigateToItem(item, layerName) {
     // Close sidebar to show the marker clearly
     closeSidebar();
     
+    // Close any currently open popups
+    map.closePopup();
+    
     // Remove previous active states
     document.querySelectorAll('.data-list-item').forEach(el => {
         el.classList.remove('active');
@@ -1488,11 +1907,35 @@ function navigateToItem(item, layerName) {
         listItem.classList.add('active');
     }
     
-    // Clear previous highlighted markers
-    Object.values(activeMarkers).forEach(marker => {
-        if (marker && marker.setIcon) {
-            // Reset to original icon (we need to recreate it)
-            recreateOriginalIcon(marker, layerName);
+    // Clear previous highlighted markers with proper layer context
+    Object.entries(activeMarkers).forEach(([markerId, marker]) => {
+        if (marker) {
+            if (marker.setIcon) {
+                // This is an original marker that was highlighted
+                // Determine the layer type for proper icon recreation
+                let markerLayerName = layerName; // default to current layer
+                if (markerId.startsWith('target-')) {
+                    markerLayerName = 'targets';
+                } else if (markerId.startsWith('gov-')) {
+                    markerLayerName = 'government';
+                } else if (markerId.includes('submissions')) {
+                    markerLayerName = markerId.includes('2') ? 'submissions2' : 'submissions';
+                }
+                
+                // Reset to original icon
+                recreateOriginalIcon(marker, markerLayerName);
+            } else if (marker.remove || marker.removeFrom) {
+                // This is a temporary marker created by instant popup system
+                try {
+                    if (marker.remove) {
+                        marker.remove();
+                    } else if (marker.removeFrom && map) {
+                        marker.removeFrom(map);
+                    }
+                } catch (e) {
+                    console.log('Error removing temporary marker:', e);
+                }
+            }
         }
     });
     activeMarkers = {};
@@ -1510,36 +1953,49 @@ function navigateToItem(item, layerName) {
             history.replaceState(null, null, `#${item.lat}/${item.lng}`);
         }
         
-        // Open the popup
-        if (item.marker) {
-            // Handle clustered markers
-            let clusterGroup = null;
-            if (layerName === 'submissions') {
-                clusterGroup = submissionsLayer;
-            } else if (layerName === 'submissions2') {
-                clusterGroup = submissionsLayer2;
-            } else if (layerName === 'government') {
-                clusterGroup = governmentLayer;
-            } else if (layerName === 'targets') {
-                clusterGroup = targetsLayer;
-            }
+        // Use instant popup system for much faster response
+        setTimeout(() => {
+            // Try instant popup first (much faster than cluster expansion)
+            const featureId = layerName === 'submissions' || layerName === 'submissions2' ? 
+                              item.uuid : item.id;
             
-            // Try to show marker in cluster first
-            if (clusterGroup && showMarkerInCluster(item.marker, clusterGroup)) {
-                // Cluster navigation handled the popup, but we still need to highlight
-                setTimeout(() => {
-                    highlightMarker(item.marker, layerName);
-                    activeMarkers[item.id] = item.marker;
-                }, 300);
+            if (featureId && showFeaturePopupInstantly(featureId, layerName)) {
+                console.log('Showed popup instantly using cached data');
+                // Instant popup system handles everything including highlighting
             } else {
-                // Marker is not clustered or cluster handling failed
-                item.marker.openPopup();
-                
-                // Highlight the marker
-                highlightMarker(item.marker, layerName);
-                activeMarkers[item.id] = item.marker;
+                // Fallback to original cluster expansion method if needed
+                console.log('Falling back to cluster expansion method');
+                if (item.marker) {
+                    // Handle clustered markers
+                    let clusterGroup = null;
+                    if (layerName === 'submissions') {
+                        clusterGroup = submissionsLayer;
+                    } else if (layerName === 'submissions2') {
+                        clusterGroup = submissionsLayer2;
+                    } else if (layerName === 'government') {
+                        clusterGroup = governmentLayer;
+                    } else if (layerName === 'targets') {
+                        clusterGroup = targetsLayer;
+                    }
+                    
+                    // Try to show marker in cluster first
+                    if (clusterGroup && showMarkerInCluster(item.marker, clusterGroup)) {
+                        // Cluster navigation handled the popup, but we still need to highlight
+                        setTimeout(() => {
+                            highlightMarker(item.marker, layerName);
+                            activeMarkers[item.id] = item.marker;
+                        }, 800);
+                    } else {
+                        // Marker is not clustered or cluster handling failed
+                        item.marker.openPopup();
+                        
+                        // Highlight the marker
+                        highlightMarker(item.marker, layerName);
+                        activeMarkers[item.id] = item.marker;
+                    }
+                }
             }
-        }
+        }, 100);
     }
 }
 
@@ -1577,15 +2033,38 @@ function highlightMarker(marker, layerName) {
 }
 
 function recreateOriginalIcon(marker, layerName) {
-    // Recreate the original icon based on layer type
-    // This is a simplified version - you might need to store original icon info
+    let iconHtml = '';
+    let iconSize = [24, 24];
+    let iconAnchor = [12, 12];
+    let popupAnchor = [0, -12];
+    
+    if (layerName === 'government') {
+        const iconInfo = getGovernmentIconType(marker.itemType || 'general');
+        iconHtml = `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
+    } else if (layerName === 'targets') {
+        const priorityInfo = getTargetPriorityInfo(marker.itemPriority || '6級');
+        iconSize = [28, 28];
+        iconAnchor = [14, 14];
+        popupAnchor = [0, -14];
+        iconHtml = `<div style="background-color: ${priorityInfo.color}; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${priorityInfo.level}</div>`;
+    } else if (layerName === 'submissions' || layerName === 'submissions2') {
+        // For submissions, try to get the report content from marker properties
+        const reportContent = marker.reportContent || '其他';
+        const iconInfo = getIconForReportType(reportContent);
+        iconHtml = `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
+    } else {
+        // Default icon
+        iconHtml = '<div style="background-color: #007bff; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">📍</div>';
+    }
+    
     const normalIcon = L.divIcon({
-        html: marker.originalIconHtml || '<div style="background-color: #007bff; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">📍</div>',
+        html: iconHtml,
         className: '',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12]
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+        popupAnchor: popupAnchor
     });
+    
     marker.setIcon(normalIcon);
 }
 
