@@ -7,10 +7,12 @@ let cunliLayer;
 let submissionsLayer;
 let submissionsLayer2;
 let governmentLayer;
+let targetsLayer;
 let layerData = {
     government: [],
     submissions: [],
-    submissions2: []
+    submissions2: [],
+    targets: []
 };
 let activeMarkers = {};
 let submissionMarkers = {}; // Store submission markers by UUID
@@ -123,6 +125,12 @@ function initMap() {
         maxClusterRadius: 80
     }).addTo(map);
 
+    // Initialize targets layer cluster group
+    targetsLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    });  // Not added to map by default
 
     // Load markers data
     loadMarkers();
@@ -133,6 +141,9 @@ function initMap() {
     
     // Load government points
     loadGovernmentPoints();
+    
+    // Load targets data
+    loadTargets();
 }
 
 // Load Hualien cunli basemap
@@ -486,6 +497,185 @@ function getGovernmentIconType(type) {
             return { icon: '🍱', color: '#ff6b35', label: '便當發放點' }; // Orange for meal distribution
         default:
             return { icon: '🏛️', color: '#3498db', label: '政府設施' }; // Blue for general government
+    }
+}
+
+// Load targets data
+function loadTargets() {
+    fetch('data/targets.json')
+        .then(response => response.json())
+        .then(geojsonData => {
+            // Clear existing targets markers
+            targetsLayer.clearLayers();
+            layerData.targets = [];
+            
+            geojsonData.features.forEach((feature, index) => {
+                if (feature.geometry && feature.geometry.type === 'Point') {
+                    const coordinates = feature.geometry.coordinates;
+                    const lng = coordinates[0];
+                    const lat = coordinates[1];
+                    const properties = feature.properties || {};
+                    
+                    const address = properties['地址'] || '';
+                    const sedimentLevel = properties['家戶內泥沙淤積程度現況（公分）'] || '';
+                    const furnitureRemoved = properties['屋內大型廢棄家具是否已移除'] || '';
+                    const cleaningStage = properties['是否進入一般清潔階段'] || '';
+                    const priorityLevel = properties['需求參考的分級與顏色'] || '';
+                    const lastUpdateDate = properties['最後更新日期'] || '';
+                    const lastUpdateTime = properties['最後更新時間'] || '';
+                    
+                    const marker = createTargetMarker(address, sedimentLevel, furnitureRemoved, cleaningStage, priorityLevel, lastUpdateDate, lastUpdateTime, lat, lng);
+                    layerData.targets.push({
+                        id: `target-${index}`,
+                        address: address,
+                        sedimentLevel: sedimentLevel,
+                        furnitureRemoved: furnitureRemoved,
+                        cleaningStage: cleaningStage,
+                        priorityLevel: priorityLevel,
+                        lastUpdateDate: lastUpdateDate,
+                        lastUpdateTime: lastUpdateTime,
+                        lat: lat,
+                        lng: lng,
+                        marker: marker
+                    });
+                }
+            });
+            updateDataList('targets');
+        })
+        .catch(error => {
+            console.error('Error loading targets:', error);
+        });
+}
+
+// Create marker for targets with priority-based color coding
+function createTargetMarker(address, sedimentLevel, furnitureRemoved, cleaningStage, priorityLevel, lastUpdateDate, lastUpdateTime, lat, lng) {
+    // Get color based on priority level - smaller level means needs more help
+    const priorityInfo = getTargetPriorityInfo(priorityLevel);
+    
+    // Create marker icon
+    const targetIcon = L.divIcon({
+        html: `<div style="background-color: ${priorityInfo.color}; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${priorityInfo.level}</div>`,
+        className: '',
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -14]
+    });
+    
+    const marker = L.marker([lat, lng], { icon: targetIcon });
+    
+    // Store priority info on marker for highlighting
+    marker.itemPriority = priorityLevel;
+    
+    // Create popup content
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${priorityInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                🏠 救災目標 (${priorityLevel})
+            </h6>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 35%; border-right: 1px solid #dee2e6;">
+                        地址
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${address}
+                    </td>
+                </tr>
+    `;
+    
+    if (sedimentLevel && sedimentLevel.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        泥沙淤積程度
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${sedimentLevel}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (furnitureRemoved && furnitureRemoved.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        大型廢棄家具已移除
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${furnitureRemoved}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (cleaningStage && cleaningStage.trim() !== '') {
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        進入一般清潔階段
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${cleaningStage}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    if (lastUpdateDate && lastUpdateDate.trim() !== '') {
+        const updateInfo = lastUpdateTime && lastUpdateTime.trim() !== '' ? `${lastUpdateDate} ${lastUpdateTime}` : lastUpdateDate;
+        popupContent += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                        最後更新
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        ${updateInfo}
+                    </td>
+                </tr>
+        `;
+    }
+    
+    popupContent += `
+            </table>
+            ${getMapServiceButtons(lat, lng)}
+        </div>
+    `;
+    
+    marker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: false,
+        keepInView: true
+    });
+    
+    // Add click event to update URL hash with coordinates
+    marker.on('click', function() {
+        history.replaceState(null, null, `#${lat}/${lng}`);
+    });
+    
+    targetsLayer.addLayer(marker);
+    return marker;
+}
+
+// Get priority info for target markers
+function getTargetPriorityInfo(priorityLevel) {
+    const level = priorityLevel.replace('級', '').trim();
+    
+    switch (level) {
+        case '1':
+            return { color: '#cf6e69', level: '1', label: '最高優先' };
+        case '2':
+            return { color: '#cf6e69', level: '2', label: '高優先' };
+        case '3':
+            return { color: '#d8964b', level: '3', label: '中高優先' };
+        case '4':
+            return { color: '#e7c451', level: '4', label: '中優先' };
+        case '5':
+            return { color: '#9dc285', level: '5', label: '低優先' };
+        case '6':
+            return { color: '#7fa6d7', level: '6', label: '最低優先' };
+        default:
+            return { color: '#6c757d', level: '?', label: '無法判斷' };
     }
 }
 
@@ -1023,6 +1213,9 @@ function switchTab(tabName) {
         if (map.hasLayer(submissionsLayer2)) {
             map.removeLayer(submissionsLayer2);
         }
+        if (map.hasLayer(targetsLayer)) {
+            map.removeLayer(targetsLayer);
+        }
     } else if (tabName === 'submissions2') {
         // Show resources layer, hide urgent needs
         if (map.hasLayer(submissionsLayer)) {
@@ -1030,6 +1223,31 @@ function switchTab(tabName) {
         }
         if (!map.hasLayer(submissionsLayer2)) {
             map.addLayer(submissionsLayer2);
+        }
+        if (map.hasLayer(targetsLayer)) {
+            map.removeLayer(targetsLayer);
+        }
+    } else if (tabName === 'targets') {
+        // Show targets layer, hide submission layers
+        if (map.hasLayer(submissionsLayer)) {
+            map.removeLayer(submissionsLayer);
+        }
+        if (map.hasLayer(submissionsLayer2)) {
+            map.removeLayer(submissionsLayer2);
+        }
+        if (!map.hasLayer(targetsLayer)) {
+            map.addLayer(targetsLayer);
+        }
+    } else if (tabName === 'government') {
+        // Hide submission and targets layers when showing government only
+        if (map.hasLayer(submissionsLayer)) {
+            map.removeLayer(submissionsLayer);
+        }
+        if (map.hasLayer(submissionsLayer2)) {
+            map.removeLayer(submissionsLayer2);
+        }
+        if (map.hasLayer(targetsLayer)) {
+            map.removeLayer(targetsLayer);
         }
     }
     // Government layer stays visible regardless
@@ -1064,6 +1282,16 @@ function updateDataList(layerName, filterText = '') {
                 );
             }
             
+            // For targets, also search address and priority level
+            if (layerName === 'targets') {
+                const addressMatch = item.address && item.address.toLowerCase().includes(searchStr);
+                const priorityMatch = item.priorityLevel && item.priorityLevel.toLowerCase().includes(searchStr);
+                const sedimentMatch = item.sedimentLevel && item.sedimentLevel.toLowerCase().includes(searchStr);
+                const cleaningMatch = item.cleaningStage && item.cleaningStage.toLowerCase().includes(searchStr);
+                
+                return nameMatch || descMatch || addressMatch || priorityMatch || sedimentMatch || cleaningMatch || propsMatch;
+            }
+            
             return nameMatch || descMatch || propsMatch;
         }) : data;
     
@@ -1084,6 +1312,13 @@ function updateDataList(layerName, filterText = '') {
             name: item.name,
             firstValue: item.properties ? Object.values(item.properties)[0] : 'no props'
         })));
+    } else if (layerName === 'targets') {
+        // Sort targets by priority level (ascending, so 1級 comes first)
+        filteredData = filteredData.sort((a, b) => {
+            const levelA = parseInt(a.priorityLevel.replace('級', '')) || 999;
+            const levelB = parseInt(b.priorityLevel.replace('級', '')) || 999;
+            return levelA - levelB;
+        });
     }
     
     // Update counter
@@ -1124,6 +1359,11 @@ function updateDataList(layerName, filterText = '') {
             const iconInfo = getGovernmentIconType(item.type);
             title = `${iconInfo.icon} ${item.name}`;
             details = item.description || '';
+        } else if (layerName === 'targets') {
+            const priorityInfo = getTargetPriorityInfo(item.priorityLevel);
+            title = `${priorityInfo.level}級 ${item.address}`;
+            details = `泥沙: ${item.sedimentLevel || '無'} | 清潔階段: ${item.cleaningStage || '無'}`;
+            address = item.address;
         } else if (layerName === 'submissions' || layerName === 'submissions2') {
             const reportContent = item.properties['通報內容'] || '';
             const iconInfo = getIconForReportType(reportContent);
@@ -1154,13 +1394,19 @@ function updateDataList(layerName, filterText = '') {
             }
         }
         
-        // Add timestamp for submissions (reports)
+        // Add timestamp for submissions (reports) and targets
         let timestampHtml = '';
         if (layerName === 'submissions' && item.properties) {
             const timestamp = Object.values(item.properties)[0] || '';
             if (timestamp) {
                 // Format timestamp for display
                 const displayTime = timestamp.replace('2025/', '').replace(' ', ' '); // Remove year, keep as is
+                timestampHtml = `<div class="data-list-item-timestamp">${displayTime}</div>`;
+            }
+        } else if (layerName === 'targets' && (item.lastUpdateDate || item.lastUpdateTime)) {
+            const updateInfo = item.lastUpdateTime ? `${item.lastUpdateDate} ${item.lastUpdateTime}` : item.lastUpdateDate;
+            if (updateInfo) {
+                const displayTime = updateInfo.replace('2025/', '');
                 timestampHtml = `<div class="data-list-item-timestamp">${displayTime}</div>`;
             }
         }
@@ -1217,6 +1463,15 @@ function navigateToItem(item, layerName) {
             map.removeLayer(submissionsLayer2);
         }
         map.addLayer(submissionsLayer);
+    } else if (layerName === 'targets' && !map.hasLayer(targetsLayer)) {
+        // Need to switch to targets layer
+        if (map.hasLayer(submissionsLayer)) {
+            map.removeLayer(submissionsLayer);
+        }
+        if (map.hasLayer(submissionsLayer2)) {
+            map.removeLayer(submissionsLayer2);
+        }
+        map.addLayer(targetsLayer);
     }
     
     // Close sidebar to show the marker clearly
@@ -1265,6 +1520,8 @@ function navigateToItem(item, layerName) {
                 clusterGroup = submissionsLayer2;
             } else if (layerName === 'government') {
                 clusterGroup = governmentLayer;
+            } else if (layerName === 'targets') {
+                clusterGroup = targetsLayer;
             }
             
             // Try to show marker in cluster first
@@ -1293,6 +1550,9 @@ function highlightMarker(marker, layerName) {
     if (layerName === 'government') {
         const iconInfo = getGovernmentIconType(marker.itemType || 'general');
         iconHtml = `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
+    } else if (layerName === 'targets') {
+        const priorityInfo = getTargetPriorityInfo(marker.itemPriority || '6級');
+        iconHtml = `<div style="background-color: ${priorityInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3);">${priorityInfo.level}</div>`;
     } else {
         // Get the current icon HTML and add highlight
         const currentIcon = marker.options.icon;

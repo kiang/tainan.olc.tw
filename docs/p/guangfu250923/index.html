@@ -363,6 +363,9 @@
             <button class="sidebar-tab" onclick="switchTab('government')" data-tab="government">
                 🏛️ 政府設施
             </button>
+            <button class="sidebar-tab" onclick="switchTab('targets')" data-tab="targets">
+                🎯 救災目標
+            </button>
         </div>
         <div class="sidebar-content">
             <div id="submissions-pane" class="tab-pane active">
@@ -394,6 +397,16 @@
                 </div>
                 <div class="list-counter">載入中...</div>
                 <ul class="data-list" id="government-list"></ul>
+            </div>
+            <div id="targets-pane" class="tab-pane">
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="targets-filter" placeholder="搜尋救災目標..." onkeyup="filterDataList('targets')">
+                    <button class="filter-clear" onclick="clearFilter('targets')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="targets-list"></ul>
             </div>
         </div>
     </div>
