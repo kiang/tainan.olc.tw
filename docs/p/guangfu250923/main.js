@@ -14,6 +14,7 @@ let layerData = {
 };
 let activeMarkers = {};
 let submissionMarkers = {}; // Store submission markers by UUID
+let uuidToLayer = {}; // Map UUID to layer (1 or 2)
 
 // Generate map service buttons
 function getMapServiceButtons(lat, lng) {
@@ -260,11 +261,12 @@ function loadFormSubmissions() {
             
             const headers = parseCSVLine(lines[0]);
             
-            // Clear existing submissions
+            // Clear existing submissions and mappings
             submissionsLayer.clearLayers();
             submissionsLayer2.clearLayers();
             layerData.submissions = [];
             layerData.submissions2 = [];
+            uuidToLayer = {}; // Clear UUID to layer mapping
             
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
@@ -335,8 +337,16 @@ function loadFormSubmissions() {
                     
                     if (isUrgent) {
                         layerData.submissions.push(dataEntry);
+                        // Map UUID to layer 1
+                        if (uuid) {
+                            uuidToLayer[uuid] = 1;
+                        }
                     } else {
                         layerData.submissions2.push(dataEntry);
+                        // Map UUID to layer 2
+                        if (uuid) {
+                            uuidToLayer[uuid] = 2;
+                        }
                     }
                 }
             }
@@ -876,20 +886,46 @@ function navigateToReport(uuid) {
         const marker = submissionMarkers[uuid];
         const latLng = marker.getLatLng();
         
-        // Center map on marker and zoom in
-        map.setView(latLng, 16);
-        
-        // Determine which layer the marker belongs to
+        // Check which layer this UUID belongs to and auto-switch if needed
+        const targetLayerNum = uuidToLayer[uuid];
         let targetLayer = null;
-        if (submissionsLayer.hasLayer(marker)) {
-            targetLayer = submissionsLayer;
-        } else if (submissionsLayer2.hasLayer(marker)) {
+        
+        if (targetLayerNum === 2) {
+            // UUID is in layer 2 (resources)
             targetLayer = submissionsLayer2;
-            // Make sure layer 2 is visible
+            
+            // If layer 2 is not visible, switch to it
             if (!map.hasLayer(submissionsLayer2)) {
+                // Remove layer 1 if visible
+                if (map.hasLayer(submissionsLayer)) {
+                    map.removeLayer(submissionsLayer);
+                }
+                // Add layer 2
                 map.addLayer(submissionsLayer2);
+                
+                // Update UI to show layer 2 tab as active
+                switchTab('submissions2');
+            }
+        } else {
+            // UUID is in layer 1 (urgent needs) - default
+            targetLayer = submissionsLayer;
+            
+            // If layer 1 is not visible, switch to it
+            if (!map.hasLayer(submissionsLayer)) {
+                // Remove layer 2 if visible
+                if (map.hasLayer(submissionsLayer2)) {
+                    map.removeLayer(submissionsLayer2);
+                }
+                // Add layer 1
+                map.addLayer(submissionsLayer);
+                
+                // Update UI to show layer 1 tab as active
+                switchTab('submissions');
             }
         }
+        
+        // Center map on marker and zoom in
+        map.setView(latLng, 16);
         
         // Handle clustered marker - try to spiderfy or zoom to show
         setTimeout(() => {
@@ -1168,6 +1204,21 @@ function clearFilter(layerName) {
 }
 
 function navigateToItem(item, layerName) {
+    // Auto-switch layer if needed based on which layer the item belongs to
+    if (layerName === 'submissions2' && !map.hasLayer(submissionsLayer2)) {
+        // Need to switch to layer 2
+        if (map.hasLayer(submissionsLayer)) {
+            map.removeLayer(submissionsLayer);
+        }
+        map.addLayer(submissionsLayer2);
+    } else if (layerName === 'submissions' && !map.hasLayer(submissionsLayer)) {
+        // Need to switch to layer 1
+        if (map.hasLayer(submissionsLayer2)) {
+            map.removeLayer(submissionsLayer2);
+        }
+        map.addLayer(submissionsLayer);
+    }
+    
     // Close sidebar to show the marker clearly
     closeSidebar();
     
