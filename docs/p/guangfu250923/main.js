@@ -25,6 +25,53 @@ let featureCache = {
     targets: {}     // ID -> full feature data
 };
 
+// Data loading status tracking for bounds fitting
+let dataLoadStatus = {
+    submissions: false,
+    submissions2: false,
+    government: false,
+    targets: false
+};
+
+// Track if initial load is complete to avoid duplicate bounds fitting
+let initialLoadComplete = false;
+
+// Fit map to show bounds of specific layer markers
+function fitMapToLayerBounds(layerName) {
+    const layerBounds = [];
+    
+    // Collect bounds from the specified layer
+    if (layerData[layerName]) {
+        layerData[layerName].forEach(item => {
+            if (item.lat && item.lng) {
+                layerBounds.push([item.lat, item.lng]);
+            }
+        });
+    }
+    
+    // Fit bounds if we have any markers in this layer
+    if (layerBounds.length > 0) {
+        const bounds = L.latLngBounds(layerBounds);
+        map.fitBounds(bounds, { 
+            padding: [50, 50],
+            maxZoom: 15 
+        });
+        console.log(`Fitted map bounds to ${layerBounds.length} markers in ${layerName} layer`);
+    } else {
+        console.log(`No markers found in ${layerName} layer for bounds fitting`);
+    }
+}
+
+// Check if data is loaded and fit bounds for the current active layer
+function checkDataLoadedAndFitBounds(layerName) {
+    if (dataLoadStatus[layerName]) {
+        console.log(`${layerName} data loaded, fitting bounds for this layer`);
+        setTimeout(() => {
+            fitMapToLayerBounds(layerName);
+        }, 500); // Small delay to ensure all markers are rendered
+    }
+}
+
 // Generate map service buttons
 function getMapServiceButtons(lat, lng) {
     const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
@@ -469,6 +516,49 @@ function createTargetPopupContent(featureData) {
     return popupContent;
 }
 
+// Function to fit map to bounds of all markers
+function fitMapToMarkerBounds() {
+    const allBounds = [];
+    
+    // Collect bounds from all layer data
+    layerData.submissions.forEach(item => {
+        if (item.lat && item.lng) {
+            allBounds.push([item.lat, item.lng]);
+        }
+    });
+    
+    layerData.submissions2.forEach(item => {
+        if (item.lat && item.lng) {
+            allBounds.push([item.lat, item.lng]);
+        }
+    });
+    
+    layerData.government.forEach(item => {
+        if (item.lat && item.lng) {
+            allBounds.push([item.lat, item.lng]);
+        }
+    });
+    
+    layerData.targets.forEach(item => {
+        if (item.lat && item.lng) {
+            allBounds.push([item.lat, item.lng]);
+        }
+    });
+    
+    // Fit map to bounds if we have markers
+    if (allBounds.length > 0) {
+        const bounds = L.latLngBounds(allBounds);
+        map.fitBounds(bounds, { 
+            padding: [50, 50],
+            maxZoom: 15 
+        });
+        console.log(`Fitting map to ${allBounds.length} markers`);
+    } else {
+        console.log('No markers to fit bounds to, using default view');
+    }
+}
+
+
 // Initialize map
 function initMap() {
     // Set default view to Hualien Guangfu area
@@ -756,6 +846,17 @@ function loadFormSubmissions() {
             // Update the data lists for both submission layers
             updateDataList('submissions');
             updateDataList('submissions2');
+            
+            // Mark both submission layers as loaded and do initial bounds fitting for submissions
+            dataLoadStatus.submissions = true;
+            dataLoadStatus.submissions2 = true;
+            
+            // Do initial bounds fitting for the default submissions tab
+            const activeTab = document.querySelector('.sidebar-tab.active');
+            const activeTabName = activeTab ? activeTab.getAttribute('data-tab') : 'submissions';
+            if (activeTabName === 'submissions') {
+                checkDataLoadedAndFitBounds('submissions');
+            }
         })
         .catch(error => {
             console.error('Error loading form submissions:', error);
@@ -805,6 +906,9 @@ function loadGovernmentPoints() {
                 }
             });
             updateDataList('government');
+            
+            // Mark government data as loaded (no bounds fitting needed for government layer)
+            dataLoadStatus.government = true;
         })
         .catch(error => {
             console.error('Error loading government points:', error);
@@ -945,6 +1049,12 @@ function loadTargets() {
                 }
             });
             updateDataList('targets');
+            
+            // Mark targets data as loaded and complete initial loading
+            dataLoadStatus.targets = true;
+            
+            // Mark initial load as complete
+            initialLoadComplete = true;
         })
         .catch(error => {
             console.error('Error loading targets:', error);
@@ -1672,6 +1782,14 @@ function switchTab(tabName) {
     const filterInput = document.getElementById(`${tabName}-filter`);
     if (filterInput && filterInput.value) {
         filterDataList(tabName);
+    }
+    
+    // Fit map bounds to the active layer if data is loaded (except government layer)
+    // Only after initial load is complete to avoid duplicate bounds fitting
+    if (dataLoadStatus[tabName] && tabName !== 'government' && initialLoadComplete) {
+        setTimeout(() => {
+            fitMapToLayerBounds(tabName);
+        }, 200); // Small delay to ensure layer visibility changes are complete
     }
 }
 
