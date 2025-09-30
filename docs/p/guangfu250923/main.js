@@ -813,13 +813,11 @@ function loadCunliBasemap() {
 function loadFormSubmissions() {
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSJH_nQEBtvPNRvFS4EYo-deJ6WqnLb8vII1D2atzeHeGObimmfgE11wA_gveSWYt9uAhD7kYsUlH0m/pub?gid=1425282360&single=true&output=csv';
     
-    fetch(csvUrl)
-        .then(response => response.text())
-        .then(csvText => {
-            const lines = csvText.trim().split('\n');
-            if (lines.length < 2) return; // No data rows
-            
-            const headers = parseCSVLine(lines[0]);
+    Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
             
             // Clear existing submissions and mappings
             submissionsLayer.clearLayers();
@@ -829,14 +827,7 @@ function loadFormSubmissions() {
             uuidToLayer = {}; // Clear UUID to layer mapping
             featureCache.submissions = {}; // Clear submissions feature cache
             
-            for (let i = 1; i < lines.length; i++) {
-                const values = parseCSVLine(lines[i]);
-                const submission = {};
-                
-                // Map values to headers
-                headers.forEach((header, index) => {
-                    submission[header] = values[index] || '';
-                });
+            results.data.forEach((submission, i) => {
                 
                 // Extract coordinates - assuming columns are named something like these
                 // Adjust column names based on actual CSV headers
@@ -912,7 +903,7 @@ function loadFormSubmissions() {
                         }
                     }
                 }
-            }
+            });
             
             // Update the data lists for both submission layers
             updateDataList('submissions');
@@ -928,10 +919,11 @@ function loadFormSubmissions() {
             if (activeTabName === 'submissions') {
                 checkDataLoadedAndFitBounds('submissions');
             }
-        })
-        .catch(error => {
-            console.error('Error loading form submissions:', error);
-        });
+        },
+        error: function(error) {
+            console.error('Error loading CSV:', error);
+        }
+    });
 }
 
 
@@ -1264,28 +1256,7 @@ function getTargetPriorityInfo(priorityLevel) {
     }
 }
 
-// Parse CSV line handling quoted fields
-function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-    
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        
-        if (char === '"') {
-            inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-            result.push(current.trim());
-            current = '';
-        } else {
-            current += char;
-        }
-    }
-    
-    result.push(current.trim());
-    return result;
-}
+// parseCSVLine function removed - now using Papa Parse for robust CSV parsing
 
 // Get icon and color for different report types
 function getIconForReportType(reportContent) {
