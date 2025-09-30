@@ -343,6 +343,173 @@
                 opacity: 1;
             }
         }
+        /* Tutorial mode dropdown at top-center */
+        #tutorial-dropdown-container {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1002;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #tutorial-dropdown {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        /* Tutorial overlay for step-by-step guide */
+        #tutorial-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none; /* Allow clicking through to map */
+            z-index: 2000;
+        }
+        
+        #tutorial-overlay.active {
+            display: block;
+        }
+        
+        #tutorial-overlay.blocking {
+            background: rgba(0, 0, 0, 0.7);
+            pointer-events: all; /* Block interactions when needed */
+        }
+        
+        #tutorial-steps {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 500px;
+            text-align: center;
+            pointer-events: all; /* Steps box is always clickable */
+        }
+        
+        #tutorial-steps h4 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        
+        #tutorial-steps p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .tutorial-button {
+            margin: 10px 5px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .tutorial-button.primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .tutorial-button.secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        /* Enhanced highlight effect for clickable areas during tutorial */
+        .tutorial-highlight {
+            animation: tutorialPulse 1.5s infinite;
+            position: relative;
+            z-index: 2001;
+            border: 3px solid #ff6b6b !important;
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(255, 107, 107, 0.3)) !important;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-highlight::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border: 2px dashed #ff6b6b;
+            border-radius: 8px;
+            animation: tutorialRotate 3s linear infinite;
+            z-index: -1;
+        }
+        
+        .tutorial-highlight::after {
+            content: '👆';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            animation: tutorialBounce 1s infinite;
+            z-index: 2002;
+        }
+        
+        @keyframes tutorialPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(255, 107, 107, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 0 25px rgba(255, 107, 107, 0);
+            }
+        }
+        
+        @keyframes tutorialRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes tutorialBounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+        }
+        
+        #tutorial-marker {
+            display: none;
+        }
+        
+        /* Red border for tutorial popup */
+        .tutorial-highlight-popup .leaflet-popup-content-wrapper {
+            border: 3px solid #ff6b6b;
+            box-shadow: 0 3px 14px rgba(255, 107, 107, 0.4);
+        }
+        
+        .tutorial-highlight-popup .leaflet-popup-tip {
+            border-top: 3px solid #ff6b6b;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -355,6 +522,27 @@
 </head>
 <body>
     <div id="map"></div>
+    
+    <!-- Tutorial Mode Dropdown at Top-Center -->
+    <div id="tutorial-dropdown-container">
+        <label for="tutorial-dropdown" style="margin: 0; font-size: 14px; font-weight: 500;">回報教學：</label>
+        <select id="tutorial-dropdown" onchange="startTutorial(this.value)">
+            <option value="">請選擇類型...</option>
+            <option value="需要志工">需要志工</option>
+            <option value="需要物資">需要物資</option>
+            <option value="提供洗澡點">提供洗澡點</option>
+            <option value="提供住宿點">提供住宿點</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+    
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay">
+        <div id="tutorial-steps">
+            <h4 id="tutorial-title">步驟 1：選擇地點</h4>
+            <p id="tutorial-description">請在地圖上點擊您要回報的位置</p>
+        </div>
+    </div>
     
     <!-- Sidebar Toggle Button -->
     <button id="sidebar-toggle" onclick="openSidebar()">

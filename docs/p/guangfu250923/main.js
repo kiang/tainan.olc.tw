@@ -36,6 +36,62 @@ let dataLoadStatus = {
 // Track if initial load is complete to avoid duplicate bounds fitting
 let initialLoadComplete = false;
 
+// Tutorial mode variables
+let tutorialMode = false;
+let tutorialStep = 0;
+let tutorialType = '';
+let tutorialMarker = null;
+
+// Update tutorial navigation buttons
+function updateTutorialButtons(prevFunction, nextFunction, nextText = '繼續', showCancel = true) {
+    const stepsContainer = document.getElementById('tutorial-steps');
+    
+    // Create button container for proper layout
+    let buttonContainer = document.getElementById('tutorial-button-container');
+    if (!buttonContainer) {
+        buttonContainer = document.createElement('div');
+        buttonContainer.id = 'tutorial-button-container';
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.gap = '10px';
+        buttonContainer.style.justifyContent = 'center';
+        buttonContainer.style.marginTop = '15px';
+        stepsContainer.appendChild(buttonContainer);
+    }
+    buttonContainer.innerHTML = ''; // Clear existing buttons
+    
+    // Button order: 上一步, 取消教學, 繼續 (from left to right)
+    
+    // Add previous button if function provided
+    if (prevFunction) {
+        const prevBtn = document.createElement('button');
+        prevBtn.id = 'tutorial-prev';
+        prevBtn.className = 'tutorial-button secondary';
+        prevBtn.textContent = '上一步';
+        prevBtn.onclick = prevFunction;
+        buttonContainer.appendChild(prevBtn);
+    }
+    
+    // Add cancel button in the middle (unless explicitly disabled)
+    if (showCancel) {
+        const cancelBtn = document.createElement('button');
+        cancelBtn.id = 'tutorial-cancel';
+        cancelBtn.className = 'tutorial-button secondary';
+        cancelBtn.textContent = '取消教學';
+        cancelBtn.onclick = cancelTutorial;
+        buttonContainer.appendChild(cancelBtn);
+    }
+    
+    // Add next/continue button if function provided
+    if (nextFunction) {
+        const nextBtn = document.createElement('button');
+        nextBtn.id = 'tutorial-continue';
+        nextBtn.className = 'tutorial-button primary';
+        nextBtn.textContent = nextText;
+        nextBtn.onclick = nextFunction;
+        buttonContainer.appendChild(nextBtn);
+    }
+}
+
 // Fit map to show bounds of specific layer markers
 function fitMapToLayerBounds(layerName) {
     const layerBounds = [];
@@ -712,7 +768,7 @@ function loadCunliBasemap() {
                         layer.bindPopup(popupContent);
                     }
                     
-                    // Highlight on hover
+                    // Highlight on hover and handle click
                     layer.on({
                         mouseover: function(e) {
                             const layer = e.target;
@@ -724,6 +780,21 @@ function loadCunliBasemap() {
                         },
                         mouseout: function(e) {
                             cunliLayer.resetStyle(e.target);
+                        },
+                        click: function(e) {
+                            // Check if we're in tutorial mode step 3
+                            if (tutorialMode && tutorialStep === 3) {
+                                // Move to tutorial step 4
+                                moveToTutorialStep4();
+                                
+                                // Add red border highlight to the opened popup
+                                setTimeout(() => {
+                                    const popupElement = document.querySelector('.leaflet-popup');
+                                    if (popupElement) {
+                                        popupElement.classList.add('tutorial-highlight-popup');
+                                    }
+                                }, 100);
+                            }
                         }
                     });
                 }
@@ -2186,3 +2257,366 @@ function recreateOriginalIcon(marker, layerName) {
     marker.setIcon(normalIcon);
 }
 
+// Tutorial Mode Functions
+function startTutorial(type) {
+    if (!type) return;
+    
+    tutorialType = type;
+    tutorialMode = true;
+    tutorialStep = 1;
+    
+    // Show tutorial overlay without blocking map interactions for step 1
+    const overlay = document.getElementById('tutorial-overlay');
+    overlay.classList.add('active');
+    overlay.classList.remove('blocking'); // Don't block map clicks in step 1
+    overlay.style.display = 'block';
+    
+    document.getElementById('tutorial-title').textContent = `步驟 1：認識定位功能`;
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-geo-alt"></i> 「<strong>定位</strong>」按鈕可以快速找到您的當前位置<br>
+        <span style="color: #666; font-size: 14px;">點擊下方繼續了解更多功能</span>
+    `;
+    
+    // Close sidebar if open
+    closeSidebar();
+    
+    // Add navigation buttons for step 1
+    updateTutorialButtons(null, moveToTutorialStep2);
+    
+    // Highlight the location button
+    const locateBtn = document.getElementById('locate-me');
+    if (locateBtn) {
+        locateBtn.classList.add('tutorial-highlight');
+    }
+}
+
+function moveToTutorialStep2() {
+    // Update tutorial step
+    tutorialStep = 2;
+    
+    // Remove highlight from location button
+    const locateBtn = document.getElementById('locate-me');
+    if (locateBtn) {
+        locateBtn.classList.remove('tutorial-highlight');
+    }
+    
+    // Update the tutorial overlay content
+    document.getElementById('tutorial-title').textContent = '步驟 2：認識座標功能';
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-geo"></i> 「<strong>座標</strong>」按鈕可以輸入經緯度跳轉到特定位置<br>
+        <span style="color: #666; font-size: 14px;">如果您知道確切座標，可使用此功能快速定位</span>
+    `;
+    
+    // Highlight the coordinates button
+    const coordBtn = document.getElementById('input-coordinates');
+    if (coordBtn) {
+        coordBtn.classList.add('tutorial-highlight');
+    }
+    
+    // Update navigation buttons
+    updateTutorialButtons(backToTutorialStep1, moveToTutorialStep3);
+}
+
+function backToTutorialStep1() {
+    // Remove highlight from coordinates button
+    const coordBtn = document.getElementById('input-coordinates');
+    if (coordBtn) {
+        coordBtn.classList.remove('tutorial-highlight');
+    }
+    
+    tutorialStep = 1;
+    document.getElementById('tutorial-title').textContent = `步驟 1：認識定位功能`;
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-geo-alt"></i> 「<strong>定位</strong>」按鈕可以快速找到您的當前位置<br>
+        <span style="color: #666; font-size: 14px;">點擊下方繼續了解更多功能</span>
+    `;
+    
+    // Highlight the location button
+    const locateBtn = document.getElementById('locate-me');
+    if (locateBtn) {
+        locateBtn.classList.add('tutorial-highlight');
+    }
+    
+    updateTutorialButtons(null, moveToTutorialStep2);
+}
+
+function moveToTutorialStep3() {
+    // Update tutorial step
+    tutorialStep = 3;
+    
+    // Remove highlight from coordinates button
+    const coordBtn = document.getElementById('input-coordinates');
+    if (coordBtn) {
+        coordBtn.classList.remove('tutorial-highlight');
+    }
+    
+    // Update the tutorial overlay content
+    document.getElementById('tutorial-title').textContent = `步驟 3：選擇地點`;
+    document.getElementById('tutorial-description').innerHTML = `
+        現在請在地圖上點擊您要回報「<strong>${tutorialType}</strong>」的位置<br>
+        <span style="color: #666; font-size: 14px;">點擊地圖上的任何位置即可</span>
+    `;
+    
+    // Update navigation buttons - no next button for this step (waiting for map click)
+    updateTutorialButtons(backToTutorialStep2, null);
+}
+
+function backToTutorialStep2() {
+    tutorialStep = 2;
+    document.getElementById('tutorial-title').textContent = '步驟 2：認識座標功能';
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-geo"></i> 「<strong>座標</strong>」按鈕可以輸入經緯度跳轉到特定位置<br>
+        <span style="color: #666; font-size: 14px;">如果您知道確切座標，可使用此功能快速定位</span>
+    `;
+    
+    // Highlight the coordinates button
+    const coordBtn = document.getElementById('input-coordinates');
+    if (coordBtn) {
+        coordBtn.classList.add('tutorial-highlight');
+    }
+    
+    updateTutorialButtons(backToTutorialStep1, moveToTutorialStep3);
+}
+
+function handleTutorialMapClick(e) {
+    if (!tutorialMode || tutorialStep !== 1) return;
+    
+    // Remove existing tutorial marker if any
+    if (tutorialMarker) {
+        map.removeLayer(tutorialMarker);
+    }
+    
+    // Create a temporary marker at clicked location
+    tutorialMarker = L.marker(e.latlng, {
+        icon: L.divIcon({
+            html: `<div style="background-color: #ff6b6b; border: 3px solid white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.4); animation: pulse 1.5s infinite;">📍</div>`,
+            className: '',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        })
+    }).addTo(map);
+    
+    // Create popup with form link
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScLTif33-ans7aChSyWS9NYre10WnX7RbtH1hSbgD35DHTdHQ/viewform';
+    const popupContent = `
+        <div style="padding: 10px; min-width: 250px;">
+            <h6 style="margin: 0 0 10px 0; color: #007bff;">步驟 2：填寫表單</h6>
+            <p style="margin: 10px 0; font-size: 14px;">
+                位置：${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}<br>
+                類型：<strong>${tutorialType}</strong>
+            </p>
+            <p style="margin: 10px 0; font-size: 14px; color: #666;">
+                請點擊下方按鈕填寫救災資訊表單：
+            </p>
+            <a href="${formUrl}" target="_blank" class="btn btn-primary btn-sm" style="width: 100%; text-decoration: none;">
+                <i class="bi bi-pencil-square"></i> 填寫救災資訊表單
+            </a>
+        </div>
+    `;
+    
+    tutorialMarker.bindPopup(popupContent, {
+        maxWidth: 300,
+        className: 'tutorial-popup-content'
+    }).openPopup();
+    
+    // Move to step 4 immediately - this function is not used anymore
+    moveToTutorialStep4();
+}
+
+function moveToTutorialStep4() {
+    // Update tutorial step
+    tutorialStep = 4;
+    
+    // Update the tutorial overlay content
+    document.getElementById('tutorial-title').textContent = '步驟 4：填寫表單';
+    document.getElementById('tutorial-description').innerHTML = `
+        請點擊彈出視窗中的「<strong>填寫救災資訊表單</strong>」按鈕<br>
+        <span style="color: #666; font-size: 14px;">這將開啟 Google 表單供您填寫資訊</span>
+    `;
+    
+    // Update navigation buttons
+    updateTutorialButtons(backToTutorialStep3, showTutorialStep5, '我已開啟表單');
+}
+
+function backToTutorialStep3() {
+    tutorialStep = 3;
+    document.getElementById('tutorial-title').textContent = `步驟 3：選擇地點`;
+    document.getElementById('tutorial-description').innerHTML = `
+        現在請在地圖上點擊您要回報「<strong>${tutorialType}</strong>」的位置<br>
+        <span style="color: #666; font-size: 14px;">點擊地圖上的任何位置即可</span>
+    `;
+    
+    // Remove any popup highlights and tutorial markers
+    if (tutorialMarker) {
+        map.removeLayer(tutorialMarker);
+        tutorialMarker = null;
+    }
+    const highlightedPopups = document.querySelectorAll('.leaflet-popup.tutorial-highlight-popup');
+    highlightedPopups.forEach(popup => {
+        popup.classList.remove('tutorial-highlight-popup');
+    });
+    map.closePopup();
+    
+    updateTutorialButtons(backToTutorialStep2, null);
+}
+
+function showTutorialStep5() {
+    tutorialStep = 5;
+    document.getElementById('tutorial-title').textContent = '步驟 5：提交表單';
+    document.getElementById('tutorial-description').innerHTML = `
+        <strong>請在開啟的表單頁面中：</strong><br>
+        1. 填寫您的聯絡資訊<br>
+        2. 詳細描述「${tutorialType}」的需求<br>
+        3. 如有需要，上傳相關照片<br>
+        4. 點擊表單底部的「提交」按鈕<br>
+        <span style="color: #28a745; margin-top: 10px; display: block;">
+            <i class="bi bi-check-circle"></i> 完成提交後，請點擊下方按鈕
+        </span>
+    `;
+    
+    updateTutorialButtons(backToTutorialStep4, showTutorialStep6, '我已提交表單');
+}
+
+function backToTutorialStep4() {
+    tutorialStep = 4;
+    document.getElementById('tutorial-title').textContent = '步驟 4：填寫表單';
+    document.getElementById('tutorial-description').innerHTML = `
+        請點擊彈出視窗中的「<strong>填寫救災資訊表單</strong>」按鈕<br>
+        <span style="color: #666; font-size: 14px;">這將開啟 Google 表單供您填寫資訊</span>
+    `;
+    
+    updateTutorialButtons(backToTutorialStep3, showTutorialStep5, '我已開啟表單');
+}
+
+function showTutorialStep6() {
+    tutorialStep = 6;
+    document.getElementById('tutorial-title').textContent = '步驟 6：查看圖層列表';
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-list"></i> 「<strong>圖層列表</strong>」包含不同類型的資訊：<br>
+        🆘 緊急需求、🏠 提供資源、🏛️ 政府設施、🎯 救災目標<br>
+        <span style="color: #666; font-size: 14px;">您的回報會根據類型出現在對應的圖層中</span>
+    `;
+    
+    // Highlight the sidebar toggle button
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarToggle) {
+        sidebarToggle.classList.add('tutorial-highlight');
+    }
+    
+    updateTutorialButtons(backToTutorialStep5, showTutorialStep7);
+}
+
+function backToTutorialStep5() {
+    // Remove highlight from sidebar toggle
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarToggle) {
+        sidebarToggle.classList.remove('tutorial-highlight');
+    }
+    
+    tutorialStep = 5;
+    document.getElementById('tutorial-title').textContent = '步驟 5：提交表單';
+    document.getElementById('tutorial-description').innerHTML = `
+        <strong>請在開啟的表單頁面中：</strong><br>
+        1. 填寫您的聯絡資訊<br>
+        2. 詳細描述「${tutorialType}」的需求<br>
+        3. 如有需要，上傳相關照片<br>
+        4. 點擊表單底部的「提交」按鈕<br>
+        <span style="color: #28a745; margin-top: 10px; display: block;">
+            <i class="bi bi-check-circle"></i> 完成提交後，請點擊下方按鈕
+        </span>
+    `;
+    
+    updateTutorialButtons(backToTutorialStep4, showTutorialStep6, '我已提交表單');
+}
+
+function showTutorialStep7() {
+    tutorialStep = 7;
+    
+    // Remove highlight from sidebar toggle
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarToggle) {
+        sidebarToggle.classList.remove('tutorial-highlight');
+    }
+    
+    document.getElementById('tutorial-title').textContent = '步驟 7：完成！';
+    document.getElementById('tutorial-description').innerHTML = `
+        <strong style="color: #28a745;">✅ 感謝您的回報！</strong><br><br>
+        您的「${tutorialType}」資訊將在幾分鐘內顯示在地圖上。<br>
+        系統會自動同步並更新資料。<br><br>
+        <span style="color: #666; font-size: 14px;">
+            提示：您可以在圖層列表中切換檢視不同類型的資訊
+        </span>
+    `;
+    
+    updateTutorialButtons(backToTutorialStep6, completeTutorial, '完成教學', false);
+}
+
+function backToTutorialStep6() {
+    tutorialStep = 6;
+    document.getElementById('tutorial-title').textContent = '步驟 6：查看圖層列表';
+    document.getElementById('tutorial-description').innerHTML = `
+        <i class="bi bi-list"></i> 「<strong>圖層列表</strong>」包含不同類型的資訊：<br>
+        🆘 緊急需求、🏠 提供資源、🏛️ 政府設施、🎯 救災目標<br>
+        <span style="color: #666; font-size: 14px;">您的回報會根據類型出現在對應的圖層中</span>
+    `;
+    
+    // Highlight the sidebar toggle button
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarToggle) {
+        sidebarToggle.classList.add('tutorial-highlight');
+    }
+    
+    updateTutorialButtons(backToTutorialStep5, showTutorialStep7);
+}
+
+function completeTutorial() {
+    // Reset tutorial
+    tutorialMode = false;
+    tutorialStep = 0;
+    tutorialType = '';
+    
+    // Remove tutorial marker if any
+    if (tutorialMarker) {
+        map.removeLayer(tutorialMarker);
+        tutorialMarker = null;
+    }
+    
+    // Remove highlight from any buttons
+    const locateBtn = document.getElementById('locate-me');
+    const coordBtn = document.getElementById('input-coordinates');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (locateBtn) {
+        locateBtn.classList.remove('tutorial-highlight');
+    }
+    if (coordBtn) {
+        coordBtn.classList.remove('tutorial-highlight');
+    }
+    if (sidebarToggle) {
+        sidebarToggle.classList.remove('tutorial-highlight');
+    }
+    
+    // Remove highlight from any popups
+    const highlightedPopups = document.querySelectorAll('.leaflet-popup.tutorial-highlight-popup');
+    highlightedPopups.forEach(popup => {
+        popup.classList.remove('tutorial-highlight-popup');
+    });
+    
+    // Hide overlay and remove classes
+    const overlay = document.getElementById('tutorial-overlay');
+    overlay.style.display = 'none';
+    overlay.classList.remove('active', 'blocking');
+    
+    // Reset dropdown
+    document.getElementById('tutorial-dropdown').value = '';
+    
+    // Remove button container if exists
+    const buttonContainer = document.getElementById('tutorial-button-container');
+    if (buttonContainer) {
+        buttonContainer.remove();
+    }
+}
+
+function cancelTutorial() {
+    // Cancel and reset tutorial
+    completeTutorial();
+}
