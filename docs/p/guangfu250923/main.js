@@ -1972,7 +1972,7 @@ function updateDataList(layerName, filterText = '') {
         
         // Add timestamp for submissions (reports) and targets
         let timestampHtml = '';
-        if (layerName === 'submissions' && item.properties) {
+        if ((layerName === 'submissions' || layerName === 'submissions2') && item.properties) {
             const timestamp = Object.values(item.properties)[0] || '';
             if (timestamp) {
                 // Format timestamp for display
