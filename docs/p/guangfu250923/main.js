@@ -1877,11 +1877,32 @@ function updateDataList(layerName, filterText = '') {
             // Get the first column value (index 0) which should be the timestamp
             const timeA = a.properties ? Object.values(a.properties)[0] || '' : '';
             const timeB = b.properties ? Object.values(b.properties)[0] || '' : '';
-            
-            // Sort in descending order (newest first) using simple string comparison
-            const result = timeB.localeCompare(timeA);
-            
-            return result;
+
+            // Convert Chinese AM/PM format to standard format for Date parsing
+            // Replace 上午 with AM and 下午 with PM
+            const convertTime = (timeStr) => {
+                if (!timeStr) return new Date(0);
+                let converted = timeStr.replace('上午', 'AM').replace('下午', 'PM');
+                // Handle 12-hour format: convert to 24-hour
+                const match = converted.match(/(\d{4}\/\d{1,2}\/\d{1,2})\s+(AM|PM)\s+(\d{1,2}):(\d{2}):(\d{2})/);
+                if (match) {
+                    const [, date, period, hour, minute, second] = match;
+                    let hour24 = parseInt(hour);
+                    if (period === 'PM' && hour24 !== 12) {
+                        hour24 += 12;
+                    } else if (period === 'AM' && hour24 === 12) {
+                        hour24 = 0;
+                    }
+                    return new Date(`${date} ${hour24}:${minute}:${second}`);
+                }
+                return new Date(timeStr);
+            };
+
+            const dateA = convertTime(timeA);
+            const dateB = convertTime(timeB);
+
+            // Sort in descending order (newest first)
+            return dateB - dateA;
         });
         
         console.log('After sorting, first few items:', filteredData.slice(0, 3).map(item => ({
