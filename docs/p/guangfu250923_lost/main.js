@@ -206,67 +206,70 @@ function loadLostAndFoundItems() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSAiNYDq4xgfkzg2nx_14F9rh9SOJqCeySSW7Fyt8cIEDgg2pYQoFqMVca9QZ6OSocTyIEpdlDQxUFZ/pub?gid=1008030730&single=true&output=csv')
         .then(response => response.text())
         .then(csvText => {
-            // Parse CSV data
-            const lines = csvText.split('\n');
-            const headers = lines[0].split(',').map(h => h.trim());
+            // Parse CSV data using Papa Parse
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    layerData.lost = [];
+                    layerData.found = [];
 
-            layerData.lost = [];
-            layerData.found = [];
+                    results.data.forEach(row => {
+                        // Get coordinates from row
+                        const latitude = row['緯度(系統自動填入，不用理會或調整)'] || row['緯度'] || '';
+                        const longitude = row['經度(系統自動填入，不用理會或調整)'] || row['經度'] || '';
 
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
+                        // Only process rows with valid coordinates
+                        if (latitude && longitude && parseFloat(latitude) && parseFloat(longitude)) {
+                            // Determine if this is a lost or found item based on column value
+                            const itemType = row['遺失或招領'] || '';
+                            const isLost = itemType === '我有遺失';
+                            const isFound = itemType === '我要招領';
 
-                const values = lines[i].split(',').map(v => v.trim());
-                const row = {};
+                            const item = {
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                                },
+                                properties: {
+                                    uuid: row['地點編號(系統自動填入，不用理會或調整)'] || row['地點編號'] || '',
+                                    description: row['描述與聯絡資訊'] || '',
+                                    photo: row['照片'] || '',
+                                    town: row['鄉鎮市區(系統自動填入，不用理會或調整)'] || row['鄉鎮市區'] || '',
+                                    village: row['村里(系統自動填入，不用理會或調整)'] || row['村里'] || '',
+                                    timestamp: row['時間戳記'] || ''
+                                }
+                            };
 
-                headers.forEach((header, index) => {
-                    row[header] = values[index] || '';
-                });
-
-                // Only process rows with valid coordinates
-                if (row.latitude && row.longitude && parseFloat(row.latitude) && parseFloat(row.longitude)) {
-                    // Determine if this is a lost or found item based on column value
-                    const itemType = row['遺失或招領'] || '';
-                    const isLost = itemType === '我有遺失';
-                    const isFound = itemType === '我要招領';
-
-                    const item = {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [parseFloat(row.longitude), parseFloat(row.latitude)]
-                        },
-                        properties: {
-                            uuid: row.uuid || row.UUID || '',
-                            item_name: row.item_name || row['物品名稱'] || '',
-                            description: row.description || row['描述'] || '',
-                            lost_date: row.lost_date || row['遺失日期'] || '',
-                            found_date: row.found_date || row['拾獲日期'] || '',
-                            location: row.location || row['地點'] || '',
-                            contact_name: row.contact_name || row['聯絡人'] || '',
-                            contact_phone: row.contact_phone || row['聯絡電話'] || '',
-                            timestamp: row.timestamp || row['時間戳記'] || ''
+                            // Add to appropriate array based on type
+                            if (isLost) {
+                                layerData.lost.push(item);
+                            } else if (isFound) {
+                                layerData.found.push(item);
+                            }
                         }
-                    };
+                    });
 
-                    // Add to appropriate array based on type
-                    if (isLost) {
-                        layerData.lost.push(item);
-                    } else if (isFound) {
-                        layerData.found.push(item);
-                    }
+                    // Render both layers
+                    renderLostMarkers();
+                    renderFoundMarkers();
+                    updateListCounter('lost');
+                    updateListCounter('found');
+
+                    dataLoadStatus.lost = true;
+                    dataLoadStatus.found = true;
+                    checkInitialLoadComplete();
+                },
+                error: function(error) {
+                    console.error('Error parsing CSV:', error);
+                    document.querySelector('#lost-pane .list-counter').textContent = '載入失敗或目前無資料';
+                    document.querySelector('#found-pane .list-counter').textContent = '載入失敗或目前無資料';
+                    dataLoadStatus.lost = true;
+                    dataLoadStatus.found = true;
+                    checkInitialLoadComplete();
                 }
-            }
-
-            // Render both layers
-            renderLostMarkers();
-            renderFoundMarkers();
-            updateListCounter('lost');
-            updateListCounter('found');
-
-            dataLoadStatus.lost = true;
-            dataLoadStatus.found = true;
-            checkInitialLoadComplete();
+            });
         })
         .catch(error => {
             console.error('Error loading items data:', error);
@@ -353,15 +356,16 @@ function renderFoundMarkers() {
 
 // Create popup content for lost items
 function createLostPopupContent(props) {
-    let content = `<div style="min-width: 200px;">`;
+    let content = `<div style="min-width: 250px;">`;
     content += `<h6 style="margin-bottom: 10px; color: #dc3545;"><strong>🔍 遺失物品</strong></h6>`;
 
-    if (props.item_name) content += `<p style="margin: 5px 0;"><strong>物品名稱：</strong>${props.item_name}</p>`;
-    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述：</strong>${props.description}</p>`;
-    if (props.lost_date) content += `<p style="margin: 5px 0;"><strong>遺失日期：</strong>${props.lost_date}</p>`;
-    if (props.location) content += `<p style="margin: 5px 0;"><strong>遺失地點：</strong>${props.location}</p>`;
-    if (props.contact_name) content += `<p style="margin: 5px 0;"><strong>聯絡人：</strong>${props.contact_name}</p>`;
-    if (props.contact_phone) content += `<p style="margin: 5px 0;"><strong>聯絡電話：</strong>${props.contact_phone}</p>`;
+    if (props.photo) {
+        content += `<img src="${props.photo}" alt="照片" style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border-radius: 5px;">`;
+    }
+
+    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述與聯絡資訊：</strong>${props.description}</p>`;
+    if (props.town) content += `<p style="margin: 5px 0;"><strong>鄉鎮：</strong>${props.town}</p>`;
+    if (props.village) content += `<p style="margin: 5px 0;"><strong>村里：</strong>${props.village}</p>`;
     if (props.timestamp) content += `<p style="margin: 5px 0; font-size: 11px; color: #6c757d;"><strong>通報時間：</strong>${props.timestamp}</p>`;
 
     content += `</div>`;
@@ -370,15 +374,16 @@ function createLostPopupContent(props) {
 
 // Create popup content for found items
 function createFoundPopupContent(props) {
-    let content = `<div style="min-width: 200px;">`;
+    let content = `<div style="min-width: 250px;">`;
     content += `<h6 style="margin-bottom: 10px; color: #28a745;"><strong>📦 拾獲物品</strong></h6>`;
 
-    if (props.item_name) content += `<p style="margin: 5px 0;"><strong>物品名稱：</strong>${props.item_name}</p>`;
-    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述：</strong>${props.description}</p>`;
-    if (props.found_date) content += `<p style="margin: 5px 0;"><strong>拾獲日期：</strong>${props.found_date}</p>`;
-    if (props.location) content += `<p style="margin: 5px 0;"><strong>拾獲地點：</strong>${props.location}</p>`;
-    if (props.contact_name) content += `<p style="margin: 5px 0;"><strong>聯絡人：</strong>${props.contact_name}</p>`;
-    if (props.contact_phone) content += `<p style="margin: 5px 0;"><strong>聯絡電話：</strong>${props.contact_phone}</p>`;
+    if (props.photo) {
+        content += `<img src="${props.photo}" alt="照片" style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border-radius: 5px;">`;
+    }
+
+    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述與聯絡資訊：</strong>${props.description}</p>`;
+    if (props.town) content += `<p style="margin: 5px 0;"><strong>鄉鎮：</strong>${props.town}</p>`;
+    if (props.village) content += `<p style="margin: 5px 0;"><strong>村里：</strong>${props.village}</p>`;
     if (props.timestamp) content += `<p style="margin: 5px 0; font-size: 11px; color: #6c757d;"><strong>通報時間：</strong>${props.timestamp}</p>`;
 
     content += `</div>`;
@@ -396,13 +401,16 @@ function renderLostList() {
         li.className = 'data-list-item';
         li.dataset.uuid = props.uuid;
 
+        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
+
         li.innerHTML = `
             <div class="data-list-item-header">
-                <div class="data-list-item-title">🔴 ${props.item_name || '未指定物品'}</div>
+                <div class="data-list-item-title">🔴 遺失物品</div>
                 ${props.timestamp ? `<div class="data-list-item-timestamp">${props.timestamp}</div>` : ''}
             </div>
-            ${props.description ? `<div class="data-list-item-details">${props.description}</div>` : ''}
-            ${props.location ? `<div class="data-list-item-address">${props.location}</div>` : ''}
+            ${descriptionPreview ? `<div class="data-list-item-details">${descriptionPreview}</div>` : ''}
+            ${locationText ? `<div class="data-list-item-address">${locationText}</div>` : ''}
         `;
 
         li.addEventListener('click', () => {
@@ -424,13 +432,16 @@ function renderFoundList() {
         li.className = 'data-list-item';
         li.dataset.uuid = props.uuid;
 
+        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
+
         li.innerHTML = `
             <div class="data-list-item-header">
-                <div class="data-list-item-title">🟢 ${props.item_name || '未指定物品'}</div>
+                <div class="data-list-item-title">🟢 拾獲物品</div>
                 ${props.timestamp ? `<div class="data-list-item-timestamp">${props.timestamp}</div>` : ''}
             </div>
-            ${props.description ? `<div class="data-list-item-details">${props.description}</div>` : ''}
-            ${props.location ? `<div class="data-list-item-address">${props.location}</div>` : ''}
+            ${descriptionPreview ? `<div class="data-list-item-details">${descriptionPreview}</div>` : ''}
+            ${locationText ? `<div class="data-list-item-address">${locationText}</div>` : ''}
         `;
 
         li.addEventListener('click', () => {
