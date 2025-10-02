@@ -84,9 +84,8 @@ function initMap() {
     // Load administrative boundaries
     loadCunliLayer();
 
-    // Load lost and found data
-    loadLostItems();
-    loadFoundItems();
+    // Load lost and found data from single source
+    loadLostAndFoundItems();
 }
 
 // Generate UUID v4
@@ -202,44 +201,80 @@ function loadCunliLayer() {
         .catch(error => console.error('Error loading cunli data:', error));
 }
 
-// Load lost items data
-function loadLostItems() {
-    // This would be replaced with actual data fetch from Google Sheets or API
-    // For now, using placeholder structure
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?type=lost')
-        .then(response => response.json())
-        .then(data => {
-            layerData.lost = data.features || [];
-            renderLostMarkers();
-            updateListCounter('lost');
-            dataLoadStatus.lost = true;
-            checkInitialLoadComplete();
-        })
-        .catch(error => {
-            console.error('Error loading lost items:', error);
-            // Show empty state
-            document.querySelector('#lost-pane .list-counter').textContent = '目前無遺失物品通報';
-            dataLoadStatus.lost = true;
-        });
-}
+// Load lost and found items data from single CSV source
+function loadLostAndFoundItems() {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSAiNYDq4xgfkzg2nx_14F9rh9SOJqCeySSW7Fyt8cIEDgg2pYQoFqMVca9QZ6OSocTyIEpdlDQxUFZ/pub?gid=1008030730&single=true&output=csv')
+        .then(response => response.text())
+        .then(csvText => {
+            // Parse CSV data
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
 
-// Load found items data
-function loadFoundItems() {
-    // This would be replaced with actual data fetch from Google Sheets or API
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?type=found')
-        .then(response => response.json())
-        .then(data => {
-            layerData.found = data.features || [];
+            layerData.lost = [];
+            layerData.found = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+
+                const values = lines[i].split(',').map(v => v.trim());
+                const row = {};
+
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+
+                // Only process rows with valid coordinates
+                if (row.latitude && row.longitude && parseFloat(row.latitude) && parseFloat(row.longitude)) {
+                    // Determine if this is a lost or found item based on column value
+                    const itemType = row['遺失或招領'] || '';
+                    const isLost = itemType === '我有遺失';
+                    const isFound = itemType === '我要招領';
+
+                    const item = {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [parseFloat(row.longitude), parseFloat(row.latitude)]
+                        },
+                        properties: {
+                            uuid: row.uuid || row.UUID || '',
+                            item_name: row.item_name || row['物品名稱'] || '',
+                            description: row.description || row['描述'] || '',
+                            lost_date: row.lost_date || row['遺失日期'] || '',
+                            found_date: row.found_date || row['拾獲日期'] || '',
+                            location: row.location || row['地點'] || '',
+                            contact_name: row.contact_name || row['聯絡人'] || '',
+                            contact_phone: row.contact_phone || row['聯絡電話'] || '',
+                            timestamp: row.timestamp || row['時間戳記'] || ''
+                        }
+                    };
+
+                    // Add to appropriate array based on type
+                    if (isLost) {
+                        layerData.lost.push(item);
+                    } else if (isFound) {
+                        layerData.found.push(item);
+                    }
+                }
+            }
+
+            // Render both layers
+            renderLostMarkers();
             renderFoundMarkers();
+            updateListCounter('lost');
             updateListCounter('found');
+
+            dataLoadStatus.lost = true;
             dataLoadStatus.found = true;
             checkInitialLoadComplete();
         })
         .catch(error => {
-            console.error('Error loading found items:', error);
-            // Show empty state
-            document.querySelector('#found-pane .list-counter').textContent = '目前無拾獲物品通報';
+            console.error('Error loading items data:', error);
+            document.querySelector('#lost-pane .list-counter').textContent = '載入失敗或目前無資料';
+            document.querySelector('#found-pane .list-counter').textContent = '載入失敗或目前無資料';
+            dataLoadStatus.lost = true;
             dataLoadStatus.found = true;
+            checkInitialLoadComplete();
         });
 }
 
