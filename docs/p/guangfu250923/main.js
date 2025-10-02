@@ -1303,7 +1303,16 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     // Get report content type and determine icon
     const reportContent = submission['通報內容'] || submission['Report Content'] || '';
     let iconInfo = getIconForReportType(reportContent);
-    
+
+    // Extract UUID early for use in popup
+    let uuid = null;
+    Object.entries(submission).forEach(([key, value]) => {
+        if (key.includes('地點編號') || key.toLowerCase().includes('uuid') ||
+            (key.includes('編號') && value && value.length >= 8)) {
+            uuid = value;
+        }
+    });
+
     // Create a custom icon based on report type
     const submissionIcon = L.divIcon({
         html: `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`,
@@ -1312,9 +1321,9 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
         iconAnchor: [12, 12],
         popupAnchor: [0, -12]
     });
-    
+
     const marker = L.marker([lat, lng], { icon: submissionIcon });
-    
+
     // Store report content for icon recreation
     marker.reportContent = reportContent;
     
@@ -1365,8 +1374,13 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     };
 
     const submissionEntries = Object.entries(submission);
+
+    // Build textarea content for the update form while creating popup table
+    let textareaContent = '';
+
     submissionEntries.forEach(([key, value], index) => {
         if (value && value.trim() !== '' && columnMapping[index]) {
+            // Add to popup table
             popupContent += `
                 <tr style="border-bottom: 1px solid #eee;">
                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
@@ -1377,28 +1391,36 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
                     </td>
                 </tr>
             `;
+            // Add to textarea content for update form
+            textareaContent += `${columnMapping[index]}: ${value}\n`;
         }
     });
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(lat, lng)}
+    `;
+
+    // Add update button if UUID exists
+    if (uuid) {
+        const updateFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfuWAODqFbTVg8vICS_AnUcsOMd9mABoI8NaVK0ltWJqmXXXA/viewform?usp=pp_url&entry.1631998399=${encodeURIComponent(textareaContent)}&entry.1349169460=${encodeURIComponent(uuid)}`;
+        popupContent += `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
+                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary" style="width: 100%; text-decoration: none; display: inline-block; padding: 8px; background-color: #007bff; color: white; border-radius: 4px; text-align: center; font-size: 13px;">
+                    📝 回報更新資訊
+                </a>
+            </div>
+        `;
+    }
+
+    popupContent += `
         </div>
     `;
-    
+
     marker.bindPopup(popupContent, {
         maxWidth: 400,
         autoPan: false,
         keepInView: true
-    });
-    
-    // Extract UUID from submission data (it could be in various field names)
-    let uuid = null;
-    Object.entries(submission).forEach(([key, value]) => {
-        if (key.includes('地點編號') || key.toLowerCase().includes('uuid') || 
-            (key.includes('編號') && value && value.length >= 8)) {
-            uuid = value;
-        }
     });
     
     // Add click event to set URL hash and update hash when popup opens
