@@ -306,7 +306,14 @@ function renderLostMarkers() {
             });
 
             const props = item.properties;
-            marker.bindPopup(createLostPopupContent(props));
+            // Add coordinates to props for popup use
+            props.coordinates = coords;
+
+            marker.bindPopup(createLostPopupContent(props), {
+                maxWidth: 400,
+                autoPan: false,
+                keepInView: true
+            });
 
             marker.on('click', () => {
                 highlightListItem('lost', props.uuid);
@@ -338,7 +345,14 @@ function renderFoundMarkers() {
             });
 
             const props = item.properties;
-            marker.bindPopup(createFoundPopupContent(props));
+            // Add coordinates to props for popup use
+            props.coordinates = coords;
+
+            marker.bindPopup(createFoundPopupContent(props), {
+                maxWidth: 400,
+                autoPan: false,
+                keepInView: true
+            });
 
             marker.on('click', () => {
                 highlightListItem('found', props.uuid);
@@ -354,40 +368,215 @@ function renderFoundMarkers() {
     renderFoundList();
 }
 
-// Create popup content for lost items
-function createLostPopupContent(props) {
-    let content = `<div style="min-width: 250px;">`;
-    content += `<h6 style="margin-bottom: 10px; color: #dc3545;"><strong>🔍 遺失物品</strong></h6>`;
+// Extract Google Drive file ID from various URL formats
+function extractGoogleDriveFileId(url) {
+    if (!url) return null;
 
-    if (props.photo) {
-        content += `<img src="${props.photo}" alt="照片" style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border-radius: 5px;">`;
+    const patterns = [
+        /\/file\/d\/([a-zA-Z0-9-_]+)/,
+        /id=([a-zA-Z0-9-_]+)/,
+        /\/([a-zA-Z0-9-_]{25,})/
+    ];
+
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) {
+            return match[1];
+        }
     }
 
-    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述與聯絡資訊：</strong>${props.description}</p>`;
-    if (props.town) content += `<p style="margin: 5px 0;"><strong>鄉鎮：</strong>${props.town}</p>`;
-    if (props.village) content += `<p style="margin: 5px 0;"><strong>村里：</strong>${props.village}</p>`;
-    if (props.timestamp) content += `<p style="margin: 5px 0; font-size: 11px; color: #6c757d;"><strong>通報時間：</strong>${props.timestamp}</p>`;
+    return null;
+}
 
-    content += `</div>`;
-    return content;
+// Generate map service buttons
+function getMapServiceButtons(lat, lng) {
+    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    const bingMapsUrl = `https://www.bing.com/maps?cp=${lat}~${lng}&lvl=16&sp=point.${lat}_${lng}_Location`;
+
+    return `
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <a href="${googleMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+                <i class="bi bi-geo-alt"></i> Google Maps
+            </a>
+            <a href="${bingMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #00897b; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+                <i class="bi bi-map"></i> Bing Maps
+            </a>
+        </div>
+    `;
+}
+
+// Create popup content for lost items
+function createLostPopupContent(props) {
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #dc3545; color: white; border-radius: 4px; text-align: center;">
+                🔍 遺失物品
+            </h6>
+    `;
+
+    // Add photo preview if available
+    if (props.photo) {
+        const fileId = extractGoogleDriveFileId(props.photo);
+        if (fileId) {
+            const photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            popupContent += `
+                <div style="margin-bottom: 10px;">
+                    <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+                </div>
+            `;
+        }
+    }
+
+    popupContent += `<table style="width: 100%; border-collapse: collapse; font-size: 12px;">`;
+
+    if (props.timestamp) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                    通報時間
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.timestamp}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.description) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    描述與聯絡資訊
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.description}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.town) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    鄉鎮市區
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.town}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.village) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    村里
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.village}
+                </td>
+            </tr>
+        `;
+    }
+
+    popupContent += `</table>`;
+
+    // Get coordinates from the item
+    const coords = props.coordinates || [0, 0];
+    popupContent += getMapServiceButtons(coords[1], coords[0]);
+
+    popupContent += `</div>`;
+
+    return popupContent;
 }
 
 // Create popup content for found items
 function createFoundPopupContent(props) {
-    let content = `<div style="min-width: 250px;">`;
-    content += `<h6 style="margin-bottom: 10px; color: #28a745;"><strong>📦 拾獲物品</strong></h6>`;
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #28a745; color: white; border-radius: 4px; text-align: center;">
+                📦 拾獲物品
+            </h6>
+    `;
 
+    // Add photo preview if available
     if (props.photo) {
-        content += `<img src="${props.photo}" alt="照片" style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border-radius: 5px;">`;
+        const fileId = extractGoogleDriveFileId(props.photo);
+        if (fileId) {
+            const photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            popupContent += `
+                <div style="margin-bottom: 10px;">
+                    <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+                </div>
+            `;
+        }
     }
 
-    if (props.description) content += `<p style="margin: 5px 0;"><strong>描述與聯絡資訊：</strong>${props.description}</p>`;
-    if (props.town) content += `<p style="margin: 5px 0;"><strong>鄉鎮：</strong>${props.town}</p>`;
-    if (props.village) content += `<p style="margin: 5px 0;"><strong>村里：</strong>${props.village}</p>`;
-    if (props.timestamp) content += `<p style="margin: 5px 0; font-size: 11px; color: #6c757d;"><strong>通報時間：</strong>${props.timestamp}</p>`;
+    popupContent += `<table style="width: 100%; border-collapse: collapse; font-size: 12px;">`;
 
-    content += `</div>`;
-    return content;
+    if (props.timestamp) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                    通報時間
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.timestamp}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.description) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    描述與聯絡資訊
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.description}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.town) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    鄉鎮市區
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.town}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.village) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    村里
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.village}
+                </td>
+            </tr>
+        `;
+    }
+
+    popupContent += `</table>`;
+
+    // Get coordinates from the item
+    const coords = props.coordinates || [0, 0];
+    popupContent += getMapServiceButtons(coords[1], coords[0]);
+
+    popupContent += `</div>`;
+
+    return popupContent;
 }
 
 // Render lost items list
