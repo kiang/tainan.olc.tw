@@ -317,6 +317,10 @@ function renderLostMarkers() {
 
             marker.on('click', () => {
                 highlightListItem('lost', props.uuid);
+                // Update URL hash for sharing
+                if (props.uuid) {
+                    history.replaceState(null, null, `#${props.uuid}`);
+                }
             });
 
             lostLayer.addLayer(marker);
@@ -356,6 +360,10 @@ function renderFoundMarkers() {
 
             marker.on('click', () => {
                 highlightListItem('found', props.uuid);
+                // Update URL hash for sharing
+                if (props.uuid) {
+                    history.replaceState(null, null, `#${props.uuid}`);
+                }
             });
 
             foundLayer.addLayer(marker);
@@ -735,8 +743,66 @@ function zoomToMarker(uuid) {
 
         // Highlight in list
         highlightListItem(layerType, uuid);
+
+        // Update URL hash
+        history.replaceState(null, null, `#${uuid}`);
     }
 }
+
+// Navigate to a specific report by UUID
+function navigateToReport(uuid) {
+    if (!uuid) return false;
+
+    const marker = submissionMarkers[uuid];
+    const layerType = uuidToLayer[uuid];
+
+    if (marker && layerType) {
+        // Switch to the correct layer tab
+        switchTab(layerType);
+
+        // Small delay to ensure layer is active
+        setTimeout(() => {
+            // Zoom to the marker location
+            map.setView(marker.getLatLng(), 16);
+
+            // Open the popup
+            marker.openPopup();
+
+            // Highlight in sidebar list
+            highlightListItem(layerType, uuid);
+
+            // Open sidebar to show the highlighted item
+            openSidebar();
+        }, 300);
+
+        return true;
+    }
+    return false;
+}
+
+// Check URL hash on page load and handle navigation
+function handleUrlHash() {
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (hash) {
+        // Wait for data to be loaded before trying to navigate
+        const checkAndNavigate = () => {
+            if (navigateToReport(hash)) {
+                return; // Successfully navigated
+            }
+            // If marker not found yet, try again in 500ms
+            setTimeout(checkAndNavigate, 500);
+        };
+        checkAndNavigate();
+    }
+}
+
+// Listen for hash changes
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+        navigateToReport(hash);
+    }
+});
 
 // Open sidebar
 function openSidebar() {
@@ -809,4 +875,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tutorialPopup.style.display = 'none';
         }
     });
+
+    // Handle URL hash for direct linking to specific items
+    if (window.location.hash) {
+        handleUrlHash();
+    }
 });
