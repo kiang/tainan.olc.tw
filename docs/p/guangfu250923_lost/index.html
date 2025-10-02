@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>花蓮光復失物招領地圖</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+        }
+        #sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 350px;
+            max-height: calc(100% - 80px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 2100;
+            display: none;
+            overflow: hidden;
+        }
+        #sidebar.active {
+            display: block;
+        }
+        #sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+            background: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar-toggle {
+                top: 10px;
+                right: 10px;
+                z-index: 1001;
+            }
+
+            .navbar .row {
+                justify-content: space-between !important;
+            }
+
+            .navbar .col-md-8 {
+                flex: 0 0 auto !important;
+                width: auto !important;
+            }
+
+            .navbar .col-md-4 {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                justify-content: flex-end !important;
+            }
+        }
+        .sidebar-header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            position: relative;
+        }
+        .sidebar-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .sidebar-close:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #000;
+        }
+        .sidebar-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #dee2e6;
+            background: #f8f9fa;
+        }
+        .sidebar-tab {
+            flex: 1;
+            min-width: 100px;
+            padding: 8px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+        .sidebar-tab:hover {
+            background: #e9ecef;
+        }
+        .sidebar-tab.active {
+            background: white;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: -2px;
+        }
+        .sidebar-content {
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .data-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .data-list-item {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .data-list-item:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+        .data-list-item.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .data-list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
+        .data-list-item-title {
+            font-weight: bold;
+            font-size: 14px;
+            flex: 1;
+        }
+        .data-list-item-timestamp {
+            font-size: 10px;
+            color: #6c757d;
+            white-space: nowrap;
+            margin-left: 8px;
+            line-height: 1.2;
+        }
+        .data-list-item.active .data-list-item-timestamp {
+            color: #e0e0e0 !important;
+        }
+        .data-list-item-details {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .data-list-item.active .data-list-item-details {
+            color: #e0e0e0 !important;
+        }
+        .data-list-item-address {
+            font-size: 11px;
+            color: #007bff;
+            margin-top: 2px;
+        }
+        .data-list-item.active .data-list-item-address {
+            color: #a0c4ff !important;
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        .list-counter {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .filter-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .filter-input {
+            width: 100%;
+            padding: 8px 35px 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .filter-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .filter-clear {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 4px;
+            display: none;
+        }
+        .filter-clear:hover {
+            color: #dc3545;
+        }
+        .filter-input:not(:placeholder-shown) + .filter-clear {
+            display: block;
+        }
+        .no-results {
+            text-align: center;
+            color: #6c757d;
+            padding: 20px;
+            font-size: 14px;
+        }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(248, 249, 250, 0.9);
+            z-index: 1000;
+        }
+        .tutorial-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            min-width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+        .tutorial-closer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .leaflet-popup-content {
+            min-width: 250px;
+            max-width: 350px;
+        }
+        .popup-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .village-label {
+            width: auto !important;
+            height: auto !important;
+        }
+        .village-label div {
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" onclick="openSidebar()">
+        <i class="bi bi-list"></i> 失物列表
+    </button>
+
+    <!-- Sidebar Panel -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h5 style="margin: 0; padding-right: 35px;">失物招領資訊</h5>
+            <button class="sidebar-close" onclick="closeSidebar()" aria-label="關閉">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" onclick="switchTab('lost')" data-tab="lost">
+                🔍 尋找失物
+            </button>
+            <button class="sidebar-tab" onclick="switchTab('found')" data-tab="found">
+                📦 拾獲物品
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div id="lost-pane" class="tab-pane active">
+                <div style="padding: 10px 10px 5px 10px;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScLTif33-ans7aChSyWS9NYre10WnX7RbtH1hSbgD35DHTdHQ/viewform"
+                       target="_blank"
+                       class="btn btn-sm btn-danger w-100"
+                       style="text-decoration: none;">
+                        <i class="bi bi-search"></i> 通報遺失物品
+                    </a>
+                </div>
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="lost-filter" placeholder="搜尋失物..." onkeyup="filterDataList('lost')">
+                    <button class="filter-clear" onclick="clearFilter('lost')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="lost-list"></ul>
+            </div>
+            <div id="found-pane" class="tab-pane">
+                <div style="padding: 10px 10px 5px 10px;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScLTif33-ans7aChSyWS9NYre10WnX7RbtH1hSbgD35DHTdHQ/viewform"
+                       target="_blank"
+                       class="btn btn-sm btn-success w-100"
+                       style="text-decoration: none;">
+                        <i class="bi bi-box-seam"></i> 通報拾獲物品
+                    </a>
+                </div>
+                <div class="filter-container">
+                    <input type="text" class="filter-input" id="found-filter" placeholder="搜尋拾獲物..." onkeyup="filterDataList('found')">
+                    <button class="filter-clear" onclick="clearFilter('found')" title="清除搜尋">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="list-counter">載入中...</div>
+                <ul class="data-list" id="found-list"></ul>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-8 mb-2 mb-md-0">
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary" type="button" id="locate-me">
+                            <i class="bi bi-geo-alt"></i> 定位
+                        </button>
+                        <button class="btn btn-outline-secondary" type="button" id="input-coordinates">
+                            <i class="bi bi-geo"></i> 座標
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                    <small class="text-muted me-2">
+                        <a href="https://facebook.com/k.olc.tw/" target="_blank" class="text-decoration-none">江明宗 製作</a>
+                    </small>
+                    <button id="tutorial-icon" class="btn btn-outline-info">
+                        <i class="bi bi-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="tutorial-popup" class="tutorial-popup">
+        <span class="tutorial-closer" id="tutorial-closer">&times;</span>
+        <div id="tutorial-content">
+            <h5 class="mb-3">花蓮光復失物招領地圖使用說明</h5>
+            <div class="mb-4">
+                <h6>地圖功能說明：</h6>
+                <ul>
+                    <li><strong>失物標記</strong>：地圖上的標記代表通報遺失或拾獲的物品位置</li>
+                    <li><strong>分類顯示</strong>：可切換查看遺失物品或拾獲物品</li>
+                    <li><strong>詳細資訊</strong>：點擊標記可查看物品詳情、聯絡方式</li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h6>資訊分類：</h6>
+                <ul>
+                    <li><strong>🔍 尋找失物</strong>：民眾通報的遺失物品資訊</li>
+                    <li><strong>📦 拾獲物品</strong>：民眾通報的拾獲物品資訊</li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h6>標記圖例：</h6>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><span style="color: #dc3545;">🔴</span> <strong>遺失物品</strong> - 民眾遺失物品通報</li>
+                    <li><span style="color: #28a745;">🟢</span> <strong>拾獲物品</strong> - 民眾拾獲物品通報</li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <h6>操作說明：</h6>
+                <ul>
+                    <li><strong>定位</strong>：點擊「定位」按鈕找到您的當前位置</li>
+                    <li><strong>座標跳轉</strong>：點擊「座標」按鈕輸入經緯度跳轉到特定位置</li>
+                    <li><strong>分類切換</strong>：點擊上方分頁標籤切換遺失物品或拾獲物品</li>
+                    <li><strong>搜尋過濾</strong>：在搜尋框輸入關鍵字過濾標記資訊</li>
+                    <li><strong>通報物品</strong>：點擊「通報遺失物品」或「通報拾獲物品」按鈕填寫表單</li>
+                    <li><strong>清單導航</strong>：點擊右側列表中的任一項目可快速定位到地圖上對應標記</li>
+                </ul>
+            </div>
+            <div class="alert alert-info">
+                <strong>提醒：</strong>此地圖提供災區失物招領資訊媒合服務，協助民眾尋找遺失物品或通報拾獲物品。請如實填寫物品資訊，並保持聯絡方式暢通。
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="coordinatesModal" tabindex="-1" aria-labelledby="coordinatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coordinatesModalLabel">輸入座標</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="coordinatesInput" class="form-label">座標 (緯度,經度)</label>
+                        <input type="text" class="form-control" id="coordinatesInput" placeholder="例如: 23.123456,120.123456">
+                    </div>
+                    <div class="mb-3">
+                        <label for="latitude" class="form-label">緯度</label>
+                        <input type="number" class="form-control" id="latitude" step="any" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="longitude" class="form-label">經度</label>
+                        <input type="number" class="form-control" id="longitude" step="any" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="zoomToCoordinates">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="main.js"></script>
+</body>
+</html>
