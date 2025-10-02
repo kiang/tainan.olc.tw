@@ -843,14 +843,28 @@ document.addEventListener('DOMContentLoaded', () => {
         coordinatesModal.show();
     });
 
+    // Coordinate input handling - parse comma-separated coordinates
+    document.getElementById('coordinatesInput').addEventListener('input', function() {
+        const coords = this.value.split(',');
+        if (coords.length === 2) {
+            document.getElementById('latitude').value = coords[0].trim();
+            document.getElementById('longitude').value = coords[1].trim();
+        }
+    });
+
     // Zoom to coordinates
     document.getElementById('zoomToCoordinates').addEventListener('click', () => {
         const lat = parseFloat(document.getElementById('latitude').value);
         const lng = parseFloat(document.getElementById('longitude').value);
 
         if (!isNaN(lat) && !isNaN(lng)) {
-            map.setView([lat, lng], 15);
+            map.setView([lat, lng], 16);
             coordinatesModal.hide();
+
+            // Clear inputs
+            document.getElementById('coordinatesInput').value = '';
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
         } else {
             alert('請輸入有效的座標');
         }
