@@ -89,27 +89,113 @@ function initMap() {
     loadFoundItems();
 }
 
+// Generate UUID v4
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 // Load village/cunli administrative boundaries
 function loadCunliLayer() {
     fetch('data/hualien.json')
         .then(response => response.json())
-        .then(data => {
-            const topojsonData = data;
-            const geojson = topojson.feature(topojsonData, topojsonData.objects.hualien);
+        .then(topoData => {
+            // Convert TopoJSON to GeoJSON
+            const objectKey = Object.keys(topoData.objects)[0];
+            const geojsonData = topojson.feature(topoData, topoData.objects[objectKey]);
 
-            cunliLayer = L.geoJSON(geojson, {
+            cunliLayer = L.geoJSON(geojsonData, {
                 style: {
-                    color: '#3388ff',
-                    weight: 2,
-                    opacity: 0.6,
-                    fillOpacity: 0.1
+                    color: '#319FD3',
+                    weight: 1,
+                    fillColor: 'rgba(255, 255, 255, 0.2)',
+                    fillOpacity: 0.2
                 },
-                onEachFeature: (feature, layer) => {
-                    const props = feature.properties;
-                    layer.bindPopup(`
-                        <strong>${props.COUNTYNAME || ''} ${props.TOWNNAME || ''}</strong><br>
-                        ${props.VILLNAME || ''}
-                    `);
+                onEachFeature: function(feature, layer) {
+                    // Add popup with specific cunli information
+                    if (feature.properties) {
+                        const props = feature.properties;
+                        const townName = props.TOWNNAME || '';
+                        const villName = props.VILLNAME || '';
+
+                        // Get coordinates from the feature geometry (centroid)
+                        let lat = '';
+                        let lng = '';
+                        if (feature.geometry && feature.geometry.type === 'Polygon') {
+                            // Calculate centroid for polygon
+                            const bounds = L.geoJSON(feature).getBounds();
+                            lat = bounds.getCenter().lat.toFixed(6);
+                            lng = bounds.getCenter().lng.toFixed(6);
+                        }
+
+                        // Generate UUID for the entry
+                        const uuid = generateUUID();
+
+                        // Google Form URL with parameters
+                        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSc1B9g3pR5n4BVMI8TNCI5FkyPjICpJ7syaKttp_cgt5_NwKw/viewform?usp=pp_url&entry.777643802=${encodeURIComponent(townName)}&entry.1805907913=${encodeURIComponent(villName)}&entry.118100066=${encodeURIComponent(lng)}&entry.2113518605=${encodeURIComponent(lat)}&entry.872952482=${encodeURIComponent(uuid)}`;
+
+                        let popupContent = `
+                            <div style="max-width: 350px; font-family: Arial, sans-serif;">
+                                <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #319FD3; color: white; border-radius: 4px; text-align: center;">
+                                    🗺️ 行政區資訊
+                                </h6>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px;">
+                        `;
+
+                        if (townName) {
+                            popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                                        鄉鎮
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top;">
+                                        ${townName}
+                                    </td>
+                                </tr>
+                            `;
+                        }
+
+                        if (villName) {
+                            popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                                        村里
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top;">
+                                        ${villName}
+                                    </td>
+                                </tr>
+                            `;
+                        }
+
+                        if (lat && lng) {
+                            popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                        座標
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; font-family: monospace; font-size: 11px;">
+                                        ${lat}, ${lng}
+                                    </td>
+                                </tr>
+                            `;
+                        }
+
+                        popupContent += `
+                                </table>
+                                <div style="text-align: center; margin-top: 10px;">
+                                    <button onclick="window.open('${formUrl}', '_blank')" class="btn btn-primary btn-sm" style="background-color: #319FD3; border-color: #319FD3; padding: 8px 16px; font-size: 12px; border-radius: 4px; color: white; border: none; cursor: pointer; text-decoration: none; display: inline-block;">
+                                        📝 通報失物招領資訊
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        layer.bindPopup(popupContent);
+                    }
                 }
             }).addTo(map);
         })
