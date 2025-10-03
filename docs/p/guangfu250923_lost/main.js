@@ -221,10 +221,11 @@ function loadLostAndFoundItems() {
 
                         // Only process rows with valid coordinates
                         if (latitude && longitude && parseFloat(latitude) && parseFloat(longitude)) {
-                            // Determine if this is a lost or found item based on column value
-                            const itemType = row['遺失或招領'] || '';
-                            const isLost = itemType === '我有遺失';
-                            const isFound = itemType === '我要招領';
+                            // Determine if this is a lost or found item based on 照片類型 column
+                            const photoType = row['照片類型'] || '';
+                            const isLost = photoType === '我有遺失';
+                            const isFound = photoType === '我要招領';
+                            // Skip 災損照片 - those are not lost/found items
 
                             const item = {
                                 type: 'Feature',
@@ -236,6 +237,7 @@ function loadLostAndFoundItems() {
                                     uuid: row['地點編號(系統自動填入，不用理會或調整)'] || row['地點編號'] || '',
                                     description: row['描述與聯絡資訊'] || '',
                                     photo: row['照片'] || '',
+                                    photoType: photoType,
                                     town: row['鄉鎮市區(系統自動填入，不用理會或調整)'] || row['鄉鎮市區'] || '',
                                     village: row['村里(系統自動填入，不用理會或調整)'] || row['村里'] || '',
                                     timestamp: row['時間戳記'] || ''
@@ -248,6 +250,7 @@ function loadLostAndFoundItems() {
                             } else if (isFound) {
                                 layerData.found.push(item);
                             }
+                            // Skip 災損照片 type - not added to either layer
                         }
                     });
 
