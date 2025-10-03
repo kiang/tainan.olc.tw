@@ -974,6 +974,82 @@ function highlightListItem(type, uuid) {
     }
 }
 
+// Helper function to show a marker in cluster group with multiple strategies
+function showMarkerInCluster(marker, clusterGroup) {
+    if (!marker || !clusterGroup) return false;
+
+    // Strategy 1: Use zoomToShowLayer if available (most reliable method)
+    if (clusterGroup.zoomToShowLayer) {
+        clusterGroup.zoomToShowLayer(marker, function() {
+            setTimeout(() => {
+                marker.openPopup();
+            }, 100);
+        });
+        return true;
+    }
+
+    // Strategy 2: Try zoom-based approach first
+    const currentZoom = map.getZoom();
+    const maxZoom = map.getMaxZoom();
+
+    if (currentZoom < maxZoom) {
+        map.setView(marker.getLatLng(), Math.min(currentZoom + 3, maxZoom));
+
+        setTimeout(() => {
+            const visibleParent = clusterGroup.getVisibleParent(marker);
+            if (!visibleParent || visibleParent === marker) {
+                marker.openPopup();
+            } else {
+                expandClusterRecursively(marker, clusterGroup, 0);
+            }
+        }, 500);
+        return true;
+    }
+
+    return expandClusterRecursively(marker, clusterGroup, 0);
+}
+
+// Recursively expand clusters until the target marker is visible
+function expandClusterRecursively(marker, clusterGroup, depth) {
+    if (depth > 10) return false;
+
+    try {
+        const visibleOne = clusterGroup.getVisibleParent(marker);
+
+        if (!visibleOne || visibleOne === marker) {
+            setTimeout(() => {
+                marker.openPopup();
+            }, 50);
+            return true;
+        }
+
+        if (visibleOne.spiderfy) {
+            visibleOne.spiderfy();
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 300);
+            return true;
+        } else if (visibleOne.fire) {
+            visibleOne.fire('click');
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 300);
+            return true;
+        } else {
+            const bounds = visibleOne.getBounds ? visibleOne.getBounds() : null;
+            if (bounds) {
+                map.fitBounds(bounds, { maxZoom: map.getZoom() + 2 });
+            }
+            setTimeout(() => {
+                expandClusterRecursively(marker, clusterGroup, depth + 1);
+            }, 400);
+            return true;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
 // Zoom to marker
 function zoomToMarker(uuid) {
     const marker = submissionMarkers[uuid];
@@ -986,9 +1062,30 @@ function zoomToMarker(uuid) {
             switchTab(layerType);
         }
 
-        // Zoom to marker
+        // Zoom to marker location
         map.setView(marker.getLatLng(), 16);
-        marker.openPopup();
+
+        // Get the appropriate cluster layer
+        let clusterGroup;
+        if (layerType === 'damage') {
+            clusterGroup = damageLayer;
+        } else if (layerType === 'lost') {
+            clusterGroup = lostLayer;
+        } else if (layerType === 'found') {
+            clusterGroup = foundLayer;
+        }
+
+        // Try to show marker even if it's in a cluster
+        if (clusterGroup) {
+            setTimeout(() => {
+                const success = showMarkerInCluster(marker, clusterGroup);
+                if (!success) {
+                    marker.openPopup();
+                }
+            }, 300);
+        } else {
+            marker.openPopup();
+        }
 
         // Highlight in list
         highlightListItem(layerType, uuid);
@@ -1014,8 +1111,27 @@ function navigateToReport(uuid) {
             // Zoom to the marker location
             map.setView(marker.getLatLng(), 16);
 
-            // Open the popup
-            marker.openPopup();
+            // Get the appropriate cluster layer
+            let clusterGroup;
+            if (layerType === 'damage') {
+                clusterGroup = damageLayer;
+            } else if (layerType === 'lost') {
+                clusterGroup = lostLayer;
+            } else if (layerType === 'found') {
+                clusterGroup = foundLayer;
+            }
+
+            // Try to show marker even if it's in a cluster
+            if (clusterGroup) {
+                setTimeout(() => {
+                    const success = showMarkerInCluster(marker, clusterGroup);
+                    if (!success) {
+                        marker.openPopup();
+                    }
+                }, 300);
+            } else {
+                marker.openPopup();
+            }
 
             // Highlight in sidebar list
             highlightListItem(layerType, uuid);
