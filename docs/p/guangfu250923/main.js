@@ -8,6 +8,7 @@ let submissionsLayer;
 let submissionsLayer2;
 let governmentLayer;
 let targetsLayer;
+let shuttleBusLayer;
 let layerData = {
     government: [],
     submissions: [],
@@ -668,16 +669,19 @@ function initMap() {
 
     // Load markers data
     loadMarkers();
-    
+
     // Load form submissions
     loadFormSubmissions();
-    
-    
+
+
     // Load government points
     loadGovernmentPoints();
-    
+
     // Load targets data
     loadTargets();
+
+    // Load shuttle bus routes
+    loadShuttleBusRoutes();
 }
 
 // Load Hualien cunli basemap
@@ -1254,6 +1258,181 @@ function getTargetPriorityInfo(priorityLevel) {
         default:
             return { color: '#6c757d', level: '?', label: '無法判斷' };
     }
+}
+
+// Load shuttle bus routes from KML with folder structure preservation
+function loadShuttleBusRoutes() {
+    shuttleBusLayer = L.layerGroup();
+
+    // Fetch and parse KML manually to preserve folder structure
+    fetch('data/shuttle_bus.kml')
+        .then(response => response.text())
+        .then(kmlText => {
+            const parser = new DOMParser();
+            const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
+            const folders = kmlDoc.querySelectorAll('Folder');
+
+            folders.forEach(folder => {
+                const folderNameElem = folder.querySelector('name');
+                const folderName = folderNameElem ? folderNameElem.textContent : 'Unknown Route';
+
+                const placemarks = folder.querySelectorAll('Placemark');
+                const markers = [];
+                const lines = [];
+
+                placemarks.forEach(placemark => {
+                    const nameElem = placemark.querySelector('name');
+                    const name = nameElem ? nameElem.textContent : '';
+
+                    // Check if it's a point
+                    const pointElem = placemark.querySelector('Point coordinates');
+                    if (pointElem) {
+                        const coords = pointElem.textContent.trim().split(',');
+                        const lng = parseFloat(coords[0]);
+                        const lat = parseFloat(coords[1]);
+                        markers.push({ name, lat, lng });
+                    }
+
+                    // Check if it's a line
+                    const lineElem = placemark.querySelector('LineString coordinates');
+                    if (lineElem) {
+                        const coordsText = lineElem.textContent.trim();
+                        const coordPairs = coordsText.split(/\s+/);
+                        const latLngs = coordPairs.map(pair => {
+                            const parts = pair.split(',');
+                            return [parseFloat(parts[1]), parseFloat(parts[0])];
+                        }).filter(coord => !isNaN(coord[0]) && !isNaN(coord[1]));
+
+                        if (latLngs.length > 0) {
+                            lines.push({ name, coordinates: latLngs });
+                        }
+                    }
+                });
+
+                // Add lines to map and store references
+                const routeLines = [];
+                lines.forEach(line => {
+                    const polyline = L.polyline(line.coordinates, {
+                        color: '#ff6b00',
+                        weight: 4,
+                        opacity: 0.7
+                    });
+                    routeLines.push(polyline);
+                    shuttleBusLayer.addLayer(polyline);
+                });
+
+                // Store all markers for this route for cross-referencing
+                const routeMarkers = [];
+
+                // Add markers with numbering starting from 1 for each folder
+                markers.forEach((markerData, index) => {
+                    const stopNumber = index + 1;
+                    const customIcon = L.divIcon({
+                        html: `<div style="background-color: #ff6b00; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${stopNumber}</div>`,
+                        className: '',
+                        iconSize: [28, 28],
+                        iconAnchor: [14, 14],
+                        popupAnchor: [0, -14]
+                    });
+
+                    const marker = L.marker([markerData.lat, markerData.lng], { icon: customIcon });
+                    marker._stopIndex = index; // Store index for later reference
+                    routeMarkers.push(marker);
+
+                    // Build stops list with current stop highlighted
+                    let stopsListHTML = '<div style="margin-bottom: 10px;">';
+                    stopsListHTML += '<div style="font-size: 12px; font-weight: bold; color: #e65100; margin-bottom: 5px;">📍 路線站點</div>';
+                    stopsListHTML += '<ol style="margin: 0; padding-left: 20px; font-size: 12px; line-height: 1.8;">';
+
+                    markers.forEach((stop, idx) => {
+                        const isCurrentStop = idx === index;
+                        if (isCurrentStop) {
+                            const stopStyle = 'background-color: #fff3e0; font-weight: bold; padding: 4px 8px; margin: 2px -8px; border-left: 4px solid #ff6b00; color: #e65100;';
+                            stopsListHTML += `<li style="${stopStyle}">${stop.name}</li>`;
+                        } else {
+                            const stopStyle = 'padding: 4px 8px;';
+                            stopsListHTML += `<li style="${stopStyle}"><a href="#" onclick="event.preventDefault(); window.shuttleBusNavigate_${folderName.replace(/\s+/g, '_')}_${idx}();" style="color: #007bff; text-decoration: none; cursor: pointer;">${stop.name}</a></li>`;
+                        }
+                    });
+
+                    stopsListHTML += '</ol></div>';
+
+                    const popupContent = `
+                        <div style="max-width: 350px; font-family: Arial, sans-serif;">
+                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #ff6b00; color: white; border-radius: 4px; text-align: center;">
+                                🚌 ${folderName}
+                            </h6>
+                            <div style="padding: 8px; font-size: 14px; margin-bottom: 10px;">
+                                <strong>目前站點：${markerData.name}</strong>
+                            </div>
+                            ${stopsListHTML}
+                            <div style="padding: 8px; background-color: #fff3e0; border-radius: 4px; margin-bottom: 10px;">
+                                <div style="font-size: 12px; font-weight: bold; color: #e65100; margin-bottom: 5px;">
+                                    ⏰ 發車時刻
+                                </div>
+                                <div style="font-size: 12px; line-height: 1.6;">
+                                    <div style="margin-bottom: 4px;">
+                                        <strong>往程：</strong>07:00、08:00、09:00、10:00
+                                    </div>
+                                    <div>
+                                        <strong>返程：</strong>16:00、17:00、18:00、19:00、20:00
+                                    </div>
+                                </div>
+                            </div>
+                            ${getMapServiceButtons(markerData.lat, markerData.lng)}
+                        </div>
+                    `;
+
+                    marker.bindPopup(popupContent);
+
+                    // Add click handler to highlight route
+                    marker.on('click', function() {
+                        // Reset all routes to default style
+                        shuttleBusLayer.eachLayer(function(layer) {
+                            if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
+                                layer.setStyle({
+                                    color: '#ff6b00',
+                                    weight: 4,
+                                    opacity: 0.7
+                                });
+                            }
+                        });
+
+                        // Highlight this route's lines
+                        routeLines.forEach(function(line) {
+                            line.setStyle({
+                                color: '#ff0000',
+                                weight: 6,
+                                opacity: 0.9
+                            });
+                            line.bringToFront();
+                        });
+                    });
+
+                    shuttleBusLayer.addLayer(marker);
+                });
+
+                // Create navigation functions for each stop in this route
+                markers.forEach((markerData, idx) => {
+                    const functionName = `shuttleBusNavigate_${folderName.replace(/\s+/g, '_')}_${idx}`;
+                    window[functionName] = function() {
+                        const targetMarker = routeMarkers[idx];
+                        if (targetMarker) {
+                            map.setView(targetMarker.getLatLng(), 16);
+                            targetMarker.fire('click');
+                        }
+                    };
+                });
+
+                console.log(`Loaded route: ${folderName} with ${markers.length} stops`);
+            });
+
+            shuttleBusLayer.addTo(map);
+            console.log('All shuttle bus routes loaded successfully');
+        })
+        .catch(error => {
+            console.error('Error loading shuttle bus routes:', error);
+        });
 }
 
 // parseCSVLine function removed - now using Papa Parse for robust CSV parsing
