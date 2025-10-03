@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>花蓮光復失物招領地圖</title>
+    <title>花蓮光復災損與失物招領地圖</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -388,18 +388,19 @@
     <div id="tutorial-popup" class="tutorial-popup">
         <span class="tutorial-closer" id="tutorial-closer">&times;</span>
         <div id="tutorial-content">
-            <h5 class="mb-3">花蓮光復失物招領地圖使用說明</h5>
+            <h5 class="mb-3">花蓮光復災損與失物招領地圖使用說明</h5>
             <div class="mb-4">
                 <h6>地圖功能說明：</h6>
                 <ul>
-                    <li><strong>失物標記</strong>：地圖上的標記代表通報遺失或拾獲的物品位置</li>
-                    <li><strong>分類顯示</strong>：可切換查看遺失物品或拾獲物品</li>
-                    <li><strong>詳細資訊</strong>：點擊標記可查看物品詳情、聯絡方式</li>
+                    <li><strong>災損/失物標記</strong>：地圖上的標記代表災損照片或遺失/拾獲物品的位置</li>
+                    <li><strong>分類顯示</strong>：可切換查看災損照片、遺失物品、拾獲物品</li>
+                    <li><strong>詳細資訊</strong>：點擊標記可查看詳情與聯絡方式</li>
                 </ul>
             </div>
             <div class="mb-4">
                 <h6>資訊分類：</h6>
                 <ul>
+                    <li><strong>📷 災損照片</strong>：民眾通報的災損現況照片</li>
                     <li><strong>🔍 尋找失物</strong>：民眾通報的遺失物品資訊</li>
                     <li><strong>📦 拾獲物品</strong>：民眾通報的拾獲物品資訊</li>
                 </ul>
@@ -407,6 +408,7 @@
             <div class="mb-4">
                 <h6>標記圖例：</h6>
                 <ul style="list-style: none; padding-left: 0;">
+                    <li>📷 <strong>災損照片</strong> - 民眾災損情況通報</li>
                     <li><span style="color: #dc3545;">🔴</span> <strong>遺失物品</strong> - 民眾遺失物品通報</li>
                     <li><span style="color: #28a745;">🟢</span> <strong>拾獲物品</strong> - 民眾拾獲物品通報</li>
                 </ul>
@@ -416,9 +418,9 @@
                 <ul>
                     <li><strong>定位</strong>：點擊「定位」按鈕找到您的當前位置</li>
                     <li><strong>座標跳轉</strong>：點擊「座標」按鈕輸入經緯度跳轉到特定位置</li>
-                    <li><strong>分類切換</strong>：點擊上方分頁標籤切換遺失物品或拾獲物品</li>
+                    <li><strong>分類切換</strong>：點擊上方分頁標籤切換災損照片、遺失物品或拾獲物品</li>
                     <li><strong>搜尋過濾</strong>：在搜尋框輸入關鍵字過濾標記資訊</li>
-                    <li><strong>通報物品</strong>：點擊「通報遺失物品」或「通報拾獲物品」按鈕填寫表單</li>
+                    <li><strong>通報上傳</strong>：點擊地圖上的行政區塊，在彈出視窗按「上傳災損照片或失物資訊」填寫表單</li>
                     <li><strong>清單導航</strong>：點擊右側列表中的任一項目可快速定位到地圖上對應標記</li>
                 </ul>
             </div>
