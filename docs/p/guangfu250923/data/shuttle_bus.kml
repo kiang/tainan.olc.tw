@@ -383,5 +383,47 @@
         </LineString>
       </Placemark>
     </Folder>
+    <Folder>
+      <name>玉里車站路線</name>
+      <Placemark>
+        <name>安通溫泉飯店</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            121.3420105,23.2807855,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>原鄉商旅</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            121.3169892,23.3314024,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>玉里火車站</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            121.31172,23.33152,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>線條 4</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            121.3420105,23.2807855,0
+            121.3169892,23.3314024,0
+            121.31172,23.33152,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+    </Folder>
   </Document>
 </kml>
