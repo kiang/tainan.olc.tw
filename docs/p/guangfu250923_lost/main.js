@@ -4,9 +4,11 @@ let markersLayer;
 let markers = [];
 let coordinatesModal;
 let cunliLayer;
+let damageLayer;
 let lostLayer;
 let foundLayer;
 let layerData = {
+    damage: [],
     lost: [],
     found: []
 };
@@ -16,12 +18,14 @@ let uuidToLayer = {};
 
 // Comprehensive feature cache for instant access
 let featureCache = {
+    damage: {},
     lost: {},
     found: {}
 };
 
 // Data loading status tracking for bounds fitting
 let dataLoadStatus = {
+    damage: false,
     lost: false,
     found: false
 };
@@ -64,6 +68,13 @@ function initMap() {
     }).addTo(map);
 
     // Initialize marker cluster groups
+    damageLayer = L.markerClusterGroup({
+        maxClusterRadius: 80,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true
+    });
+
     lostLayer = L.markerClusterGroup({
         maxClusterRadius: 80,
         spiderfyOnMaxZoom: true,
@@ -78,14 +89,14 @@ function initMap() {
         zoomToBoundsOnClick: true
     });
 
-    // Add default layer to map
-    map.addLayer(lostLayer);
+    // Add default layer to map (disaster damage photos as primary)
+    map.addLayer(damageLayer);
 
     // Load administrative boundaries
     loadCunliLayer();
 
-    // Load lost and found data from single source
-    loadLostAndFoundItems();
+    // Load all item data from single source
+    loadAllItems();
 }
 
 // Generate UUID v4
@@ -201,8 +212,8 @@ function loadCunliLayer() {
         .catch(error => console.error('Error loading cunli data:', error));
 }
 
-// Load lost and found items data from single CSV source
-function loadLostAndFoundItems() {
+// Load all items data from single CSV source (damage, lost, found)
+function loadAllItems() {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSAiNYDq4xgfkzg2nx_14F9rh9SOJqCeySSW7Fyt8cIEDgg2pYQoFqMVca9QZ6OSocTyIEpdlDQxUFZ/pub?gid=1008030730&single=true&output=csv')
         .then(response => response.text())
         .then(csvText => {
@@ -211,6 +222,7 @@ function loadLostAndFoundItems() {
                 header: true,
                 skipEmptyLines: true,
                 complete: function(results) {
+                    layerData.damage = [];
                     layerData.lost = [];
                     layerData.found = [];
 
@@ -221,11 +233,11 @@ function loadLostAndFoundItems() {
 
                         // Only process rows with valid coordinates
                         if (latitude && longitude && parseFloat(latitude) && parseFloat(longitude)) {
-                            // Determine if this is a lost or found item based on 照片類型 column
+                            // Determine item type based on 照片類型 column
                             const photoType = row['照片類型'] || '';
+                            const isDamage = photoType === '災損照片';
                             const isLost = photoType === '我有遺失';
                             const isFound = photoType === '我要招領';
-                            // Skip 災損照片 - those are not lost/found items
 
                             const item = {
                                 type: 'Feature',
@@ -245,29 +257,35 @@ function loadLostAndFoundItems() {
                             };
 
                             // Add to appropriate array based on type
-                            if (isLost) {
+                            if (isDamage) {
+                                layerData.damage.push(item);
+                            } else if (isLost) {
                                 layerData.lost.push(item);
                             } else if (isFound) {
                                 layerData.found.push(item);
                             }
-                            // Skip 災損照片 type - not added to either layer
                         }
                     });
 
-                    // Render both layers
+                    // Render all layers
+                    renderDamageMarkers();
                     renderLostMarkers();
                     renderFoundMarkers();
+                    updateListCounter('damage');
                     updateListCounter('lost');
                     updateListCounter('found');
 
+                    dataLoadStatus.damage = true;
                     dataLoadStatus.lost = true;
                     dataLoadStatus.found = true;
                     checkInitialLoadComplete();
                 },
                 error: function(error) {
                     console.error('Error parsing CSV:', error);
+                    document.querySelector('#damage-pane .list-counter').textContent = '載入失敗或目前無資料';
                     document.querySelector('#lost-pane .list-counter').textContent = '載入失敗或目前無資料';
                     document.querySelector('#found-pane .list-counter').textContent = '載入失敗或目前無資料';
+                    dataLoadStatus.damage = true;
                     dataLoadStatus.lost = true;
                     dataLoadStatus.found = true;
                     checkInitialLoadComplete();
@@ -276,8 +294,10 @@ function loadLostAndFoundItems() {
         })
         .catch(error => {
             console.error('Error loading items data:', error);
+            document.querySelector('#damage-pane .list-counter').textContent = '載入失敗或目前無資料';
             document.querySelector('#lost-pane .list-counter').textContent = '載入失敗或目前無資料';
             document.querySelector('#found-pane .list-counter').textContent = '載入失敗或目前無資料';
+            dataLoadStatus.damage = true;
             dataLoadStatus.lost = true;
             dataLoadStatus.found = true;
             checkInitialLoadComplete();
@@ -286,11 +306,54 @@ function loadLostAndFoundItems() {
 
 // Check if initial data load is complete
 function checkInitialLoadComplete() {
-    if (!initialLoadComplete && dataLoadStatus.lost && dataLoadStatus.found) {
+    if (!initialLoadComplete && dataLoadStatus.damage && dataLoadStatus.lost && dataLoadStatus.found) {
         initialLoadComplete = true;
-        // Fit bounds to show all lost items by default
-        fitMapToLayerBounds('lost');
+        // Fit bounds to show all damage items by default (primary layer)
+        fitMapToLayerBounds('damage');
     }
+}
+
+// Render disaster damage markers
+function renderDamageMarkers() {
+    damageLayer.clearLayers();
+
+    layerData.damage.forEach(item => {
+        if (item.geometry && item.geometry.coordinates) {
+            const coords = item.geometry.coordinates;
+            const marker = L.marker([coords[1], coords[0]], {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background-color: #ff6b6b; color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 18px;">📷</div>',
+                    iconSize: [35, 35]
+                })
+            });
+
+            const props = item.properties;
+            // Add coordinates to props for popup use
+            props.coordinates = coords;
+
+            marker.bindPopup(createDamagePopupContent(props), {
+                maxWidth: 400,
+                autoPan: false,
+                keepInView: true
+            });
+
+            marker.on('click', () => {
+                highlightListItem('damage', props.uuid);
+                // Update URL hash for sharing
+                if (props.uuid) {
+                    history.replaceState(null, null, `#${props.uuid}`);
+                }
+            });
+
+            damageLayer.addLayer(marker);
+            submissionMarkers[props.uuid] = marker;
+            uuidToLayer[props.uuid] = 'damage';
+            featureCache.damage[props.uuid] = item;
+        }
+    });
+
+    renderDamageList();
 }
 
 // Render lost items markers
@@ -414,6 +477,93 @@ function getMapServiceButtons(lat, lng) {
             </a>
         </div>
     `;
+}
+
+// Create popup content for disaster damage photos
+function createDamagePopupContent(props) {
+    let popupContent = `
+        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: #ff6b6b; color: white; border-radius: 4px; text-align: center;">
+                📷 災損照片
+            </h6>
+    `;
+
+    // Add photo preview if available
+    if (props.photo) {
+        const fileId = extractGoogleDriveFileId(props.photo);
+        if (fileId) {
+            const photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            popupContent += `
+                <div style="margin-bottom: 10px;">
+                    <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+                </div>
+            `;
+        }
+    }
+
+    popupContent += `<table style="width: 100%; border-collapse: collapse; font-size: 12px;">`;
+
+    if (props.timestamp) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                    通報時間
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.timestamp}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.description) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    描述與聯絡資訊
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.description}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.town) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    鄉鎮市區
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.town}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.village) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    村里
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.village}
+                </td>
+            </tr>
+        `;
+    }
+
+    popupContent += `</table>`;
+
+    // Get coordinates from the item
+    const coords = props.coordinates || [0, 0];
+    popupContent += getMapServiceButtons(coords[1], coords[0]);
+
+    popupContent += `</div>`;
+
+    return popupContent;
 }
 
 // Create popup content for lost items
@@ -590,6 +740,37 @@ function createFoundPopupContent(props) {
     return popupContent;
 }
 
+// Render disaster damage list
+function renderDamageList() {
+    const listElement = document.getElementById('damage-list');
+    listElement.innerHTML = '';
+
+    layerData.damage.forEach(item => {
+        const props = item.properties;
+        const li = document.createElement('li');
+        li.className = 'data-list-item';
+        li.dataset.uuid = props.uuid;
+
+        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
+
+        li.innerHTML = `
+            <div class="data-list-item-header">
+                <div class="data-list-item-title">📷 災損照片</div>
+                ${props.timestamp ? `<div class="data-list-item-timestamp">${props.timestamp}</div>` : ''}
+            </div>
+            ${descriptionPreview ? `<div class="data-list-item-details">${descriptionPreview}</div>` : ''}
+            ${locationText ? `<div class="data-list-item-address">${locationText}</div>` : ''}
+        `;
+
+        li.addEventListener('click', () => {
+            zoomToMarker(props.uuid);
+        });
+
+        listElement.appendChild(li);
+    });
+}
+
 // Render lost items list
 function renderLostList() {
     const listElement = document.getElementById('lost-list');
@@ -674,10 +855,16 @@ function switchTab(tabName) {
     document.getElementById(`${tabName}-pane`).classList.add('active');
 
     // Switch map layers
-    if (tabName === 'lost') {
+    if (tabName === 'damage') {
+        map.removeLayer(lostLayer);
+        map.removeLayer(foundLayer);
+        map.addLayer(damageLayer);
+    } else if (tabName === 'lost') {
+        map.removeLayer(damageLayer);
         map.removeLayer(foundLayer);
         map.addLayer(lostLayer);
     } else if (tabName === 'found') {
+        map.removeLayer(damageLayer);
         map.removeLayer(lostLayer);
         map.addLayer(foundLayer);
     }
