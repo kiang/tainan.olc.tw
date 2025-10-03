@@ -575,6 +575,19 @@ function createDamagePopupContent(props) {
         `;
     }
 
+    if (props.address) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    地址門牌
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.address}
+                </td>
+            </tr>
+        `;
+    }
+
     popupContent += `</table>`;
 
     // Get coordinates from the item
@@ -657,6 +670,19 @@ function createLostPopupContent(props) {
                 </td>
                 <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
                     ${props.village}
+                </td>
+            </tr>
+        `;
+    }
+
+    if (props.address) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    地址門牌
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.address}
                 </td>
             </tr>
         `;
@@ -749,6 +775,19 @@ function createFoundPopupContent(props) {
         `;
     }
 
+    if (props.address) {
+        popupContent += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                    地址門牌
+                </td>
+                <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    ${props.address}
+                </td>
+            </tr>
+        `;
+    }
+
     popupContent += `</table>`;
 
     // Get coordinates from the item
@@ -771,7 +810,7 @@ function renderDamageList() {
         li.className = 'data-list-item';
         li.dataset.uuid = props.uuid;
 
-        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const locationText = (props.town || '') + (props.village || '') + (props.address || '');
         const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
 
         li.innerHTML = `
@@ -802,7 +841,7 @@ function renderLostList() {
         li.className = 'data-list-item';
         li.dataset.uuid = props.uuid;
 
-        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const locationText = (props.town || '') + (props.village || '') + (props.address || '');
         const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
 
         li.innerHTML = `
@@ -833,7 +872,7 @@ function renderFoundList() {
         li.className = 'data-list-item';
         li.dataset.uuid = props.uuid;
 
-        const locationText = props.town && props.village ? `${props.town}${props.village}` : (props.town || props.village || '');
+        const locationText = (props.town || '') + (props.village || '') + (props.address || '');
         const descriptionPreview = props.description ? props.description.substring(0, 50) + (props.description.length > 50 ? '...' : '') : '';
 
         li.innerHTML = `
