@@ -226,15 +226,34 @@ function loadAllItems() {
                     layerData.lost = [];
                     layerData.found = [];
 
+                    // Resolve field names by substring matching to handle header text changes
+                    const fields = (results.meta && results.meta.fields) ? results.meta.fields : (results.data[0] ? Object.keys(results.data[0]) : []);
+                    const findField = (patterns) => {
+                        const pats = Array.isArray(patterns) ? patterns : [patterns];
+                        return fields.find(f => pats.every(p => typeof f === 'string' && f.includes(p)));
+                    };
+                    const fieldMap = {
+                        timestamp: findField('時間戳記'),
+                        photo: findField('照片'),
+                        photoType: findField('照片類型'),
+                        address: findField('地址門牌'),
+                        town: findField('鄉鎮市區'),
+                        village: findField('村里'),
+                        longitude: findField('經度'),
+                        latitude: findField('緯度'),
+                        uuid: findField('地點編號'),
+                        description: findField(['備註']) || findField(['描述與聯絡資訊'])
+                    };
+
                     results.data.forEach(row => {
                         // Get coordinates from row
-                        const latitude = row['緯度(系統自動填入，不用理會或調整)'] || row['緯度'] || '';
-                        const longitude = row['經度(系統自動填入，不用理會或調整)'] || row['經度'] || '';
+                        const latitude = fieldMap.latitude ? row[fieldMap.latitude] : '';
+                        const longitude = fieldMap.longitude ? row[fieldMap.longitude] : '';
 
                         // Only process rows with valid coordinates
                         if (latitude && longitude && parseFloat(latitude) && parseFloat(longitude)) {
                             // Determine item type based on 照片類型 column
-                            const photoType = row['照片類型'] || '';
+                            const photoType = fieldMap.photoType ? row[fieldMap.photoType] : '';
                             const isDamage = photoType === '災損照片';
                             const isLost = photoType === '我有遺失';
                             const isFound = photoType === '我要招領';
@@ -246,13 +265,14 @@ function loadAllItems() {
                                     coordinates: [parseFloat(longitude), parseFloat(latitude)]
                                 },
                                 properties: {
-                                    uuid: row['地點編號(系統自動填入，不用理會或調整)'] || row['地點編號'] || '',
-                                    description: row['描述與聯絡資訊'] || '',
-                                    photo: row['照片'] || '',
+                                    uuid: fieldMap.uuid ? row[fieldMap.uuid] : '',
+                                    description: fieldMap.description ? row[fieldMap.description] : '',
+                                    photo: fieldMap.photo ? row[fieldMap.photo] : '',
                                     photoType: photoType,
-                                    town: row['鄉鎮市區(系統自動填入，不用理會或調整)'] || row['鄉鎮市區'] || '',
-                                    village: row['村里(系統自動填入，不用理會或調整)'] || row['村里'] || '',
-                                    timestamp: row['時間戳記'] || ''
+                                    town: fieldMap.town ? row[fieldMap.town] : '',
+                                    village: fieldMap.village ? row[fieldMap.village] : '',
+                                    timestamp: fieldMap.timestamp ? row[fieldMap.timestamp] : '',
+                                    address: fieldMap.address ? row[fieldMap.address] : ''
                                 }
                             };
 
