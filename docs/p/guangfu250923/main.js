@@ -18,6 +18,7 @@ let layerData = {
 let activeMarkers = {};
 let submissionMarkers = {}; // Store submission markers by UUID
 let uuidToLayer = {}; // Map UUID to layer (1 or 2)
+let commentsData = {}; // Store comments by UUID
 
 // Comprehensive feature cache for instant access
 let featureCache = {
@@ -682,6 +683,9 @@ function initMap() {
 
     // Load shuttle bus routes
     loadShuttleBusRoutes();
+
+    // Load comments data
+    loadCommentsData();
 }
 
 // Load Hualien cunli basemap
@@ -1435,6 +1439,188 @@ function loadShuttleBusRoutes() {
         });
 }
 
+// Load comments data from Google Sheets CSV
+function loadCommentsData() {
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSaeODzJrFc5BAlatXIIIEvCQstcJ7fpnBuUPX5B_gM8ONv76JWe0e0ydvMiPWZf7SLu_6MRaHr1E8W/pub?output=csv';
+
+    Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            // Organize comments by UUID
+            results.data.forEach(row => {
+                const uuid = row['地點編號(系統自動填入，不用理會或調整)'];
+                const comment = row['修正或建議'];
+                const timestamp = row['時間戳記'];
+
+                if (uuid && uuid.trim() !== '' && comment && comment.trim() !== '') {
+                    if (!commentsData[uuid]) {
+                        commentsData[uuid] = [];
+                    }
+                    commentsData[uuid].push({
+                        timestamp: timestamp || '',
+                        comment: comment.trim()
+                    });
+                }
+            });
+
+            console.log(`Loaded comments for ${Object.keys(commentsData).length} locations`);
+
+            // Refresh popups if any markers are already loaded
+            refreshMarkersWithComments();
+
+            // If there's a hash in URL, retry navigation now that comments are loaded
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const coords = hash.split('/');
+                // Only retry for UUID-based navigation (not coordinate-based)
+                if (coords.length !== 2) {
+                    setTimeout(() => {
+                        navigateToReport(hash);
+                    }, 500);
+                }
+            }
+        },
+        error: function(error) {
+            console.error('Error loading comments data:', error);
+        }
+    });
+}
+
+// Refresh markers to include comments
+function refreshMarkersWithComments() {
+    // Update existing submission markers with comments
+    Object.entries(submissionMarkers).forEach(([uuid, marker]) => {
+        // Recreate popup for all markers to include current comment state
+        const submission = marker._submission;
+        if (!submission) return; // Skip if no submission data stored
+
+        const lat = marker.getLatLng().lat;
+        const lng = marker.getLatLng().lng;
+        const isUrgent = marker._isUrgent;
+
+        // Create updated popup content
+        const reportContent = submission['通報內容'] || submission['Report Content'] || '';
+        let iconInfo = getIconForReportType(reportContent);
+
+        // Create popup content with styled table (same logic as createSubmissionMarker)
+        let popupContent = `
+            <div style="max-width: 400px; font-family: Arial, sans-serif;">
+                <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                    ${iconInfo.icon} 救災資訊回報
+                </h6>
+        `;
+
+        // Check for photo uploads
+        let photoUrl = null;
+        Object.entries(submission).forEach(([key, value]) => {
+            if (value && typeof value === 'string') {
+                if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') ||
+                    key.toLowerCase().includes('upload') || value.includes('drive.google.com')) {
+                    const fileId = extractGoogleDriveFileId(value);
+                    if (fileId) {
+                        photoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                    }
+                }
+            }
+        });
+
+        if (photoUrl) {
+            popupContent += `
+                <div style="margin-bottom: 10px;">
+                    <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+                </div>
+            `;
+        }
+
+        popupContent += `<table style="width: 100%; border-collapse: collapse; font-size: 12px;">`;
+
+        const columnMapping = {
+            0: '通報時間',
+            2: '通報內容',
+            3: '聯絡資訊與說明',
+            4: '鄉鎮市區',
+            5: '村里'
+        };
+
+        let textareaContent = '';
+        Object.entries(submission).forEach(([key, value], index) => {
+            if (value && value.trim() !== '' && columnMapping[index]) {
+                popupContent += `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                            ${columnMapping[index]}
+                        </td>
+                        <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                            ${value}
+                        </td>
+                    </tr>
+                `;
+                textareaContent += `${columnMapping[index]}: ${value}\n`;
+            }
+        });
+
+        popupContent += `
+                </table>
+                ${getMapServiceButtons(lat, lng)}
+        `;
+
+        // Add comments section if UUID has comments
+        if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
+            popupContent += `
+                <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
+                    <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>💬 修正與建議 (${commentsData[uuid].length})</span>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                    </div>
+            `;
+
+            commentsData[uuid].forEach((commentItem, index) => {
+                const commentStyle = index > 0 ? 'margin-top: 8px; padding-top: 8px; border-top: 1px solid #ffe082;' : '';
+                popupContent += `
+                    <div style="${commentStyle}">
+                        <div style="font-size: 10px; color: #9e9e9e; margin-bottom: 4px;">
+                            📅 ${commentItem.timestamp}
+                        </div>
+                        <div style="font-size: 12px; color: #424242; white-space: pre-wrap; line-height: 1.5;">
+                            ${commentItem.comment}
+                        </div>
+                    </div>
+                `;
+            });
+
+            popupContent += `</div>`;
+        } else if (uuid) {
+            popupContent += `
+                <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
+                        💬 新增修正或建議
+                    </a>
+                </div>
+            `;
+        }
+
+        // Add update button if UUID exists
+        if (uuid) {
+            const updateFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfuWAODqFbTVg8vICS_AnUcsOMd9mABoI8NaVK0ltWJqmXXXA/viewform?usp=pp_url&entry.1631998399=${encodeURIComponent(textareaContent)}&entry.1349169460=${encodeURIComponent(uuid)}`;
+            popupContent += `
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
+                    <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary" style="width: 100%; text-decoration: none; display: inline-block; padding: 8px; background-color: #007bff; color: white; border-radius: 4px; text-align: center; font-size: 13px;">
+                        📝 回報更新資訊
+                    </a>
+                </div>
+            `;
+        }
+
+        popupContent += `</div>`;
+
+        // Update the marker's popup
+        marker.setPopupContent(popupContent);
+    });
+
+    console.log('Refreshed all markers with comment data');
+}
+
 // parseCSVLine function removed - now using Papa Parse for robust CSV parsing
 
 // Get icon and color for different report types
@@ -1503,8 +1689,10 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
 
     const marker = L.marker([lat, lng], { icon: submissionIcon });
 
-    // Store report content for icon recreation
+    // Store report content and submission data for icon recreation and refresh
     marker.reportContent = reportContent;
+    marker._submission = submission;
+    marker._isUrgent = isUrgent;
     
     // Create popup content with styled table
     let popupContent = `
@@ -1579,6 +1767,44 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
             </table>
             ${getMapServiceButtons(lat, lng)}
     `;
+
+    // Add comments section if UUID has comments
+    if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
+        popupContent += `
+            <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
+                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>💬 修正與建議 (${commentsData[uuid].length})</span>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                </div>
+        `;
+
+        commentsData[uuid].forEach((commentItem, index) => {
+            const commentStyle = index > 0 ? 'margin-top: 8px; padding-top: 8px; border-top: 1px solid #ffe082;' : '';
+            popupContent += `
+                <div style="${commentStyle}">
+                    <div style="font-size: 10px; color: #9e9e9e; margin-bottom: 4px;">
+                        📅 ${commentItem.timestamp}
+                    </div>
+                    <div style="font-size: 12px; color: #424242; white-space: pre-wrap; line-height: 1.5;">
+                        ${commentItem.comment}
+                    </div>
+                </div>
+            `;
+        });
+
+        popupContent += `
+            </div>
+        `;
+    } else if (uuid) {
+        // Show add comment link even if no comments yet
+        popupContent += `
+            <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
+                    💬 新增修正或建議
+                </a>
+            </div>
+        `;
+    }
 
     // Add update button if UUID exists
     if (uuid) {
