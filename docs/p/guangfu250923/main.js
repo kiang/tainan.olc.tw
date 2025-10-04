@@ -488,9 +488,8 @@ function createSubmissionPopupContent(featureData) {
     if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
         popupContent += `
             <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
-                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <span>💬 修正與建議 (${commentsData[uuid].length})</span>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px;">
+                    💬 修正與建議 (${commentsData[uuid].length})
                 </div>
         `;
 
@@ -509,14 +508,6 @@ function createSubmissionPopupContent(featureData) {
         });
 
         popupContent += `</div>`;
-    } else if (uuid) {
-        popupContent += `
-            <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
-                    💬 新增修正或建議
-                </a>
-            </div>
-        `;
     }
 
     // Add update button if UUID exists
@@ -1710,9 +1701,8 @@ function refreshMarkersWithComments() {
         if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
             popupContent += `
                 <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
-                    <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                        <span>💬 修正與建議 (${commentsData[uuid].length})</span>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                    <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px;">
+                        💬 修正與建議 (${commentsData[uuid].length})
                     </div>
             `;
 
@@ -1731,14 +1721,6 @@ function refreshMarkersWithComments() {
             });
 
             popupContent += `</div>`;
-        } else if (uuid) {
-            popupContent += `
-                <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
-                        💬 新增修正或建議
-                    </a>
-                </div>
-            `;
         }
 
         // Add update button if UUID exists
@@ -1913,9 +1895,8 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
         popupContent += `
             <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
-                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <span>💬 修正與建議 (${commentsData[uuid].length})</span>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px;">
+                    💬 修正與建議 (${commentsData[uuid].length})
                 </div>
         `;
 
@@ -1934,15 +1915,6 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
         });
 
         popupContent += `
-            </div>
-        `;
-    } else if (uuid) {
-        // Show add comment link even if no comments yet
-        popupContent += `
-            <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
-                    💬 新增修正或建議
-                </a>
             </div>
         `;
     }
