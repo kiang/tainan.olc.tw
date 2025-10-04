@@ -310,15 +310,20 @@ function showFeaturePopupInstantly(featureId, layerName) {
     return true;
 }
 
-// Create and place a temporary highlighted marker for instant popups
-function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
-    // Clean up all existing temporary markers first
+// Clean up all temporary highlighted markers
+function cleanupTemporaryMarkers() {
     Object.entries(activeMarkers).forEach(([id, marker]) => {
         if (marker && map.hasLayer(marker)) {
             map.removeLayer(marker);
         }
     });
     activeMarkers = {}; // Clear the object
+}
+
+// Create and place a temporary highlighted marker for instant popups
+function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
+    // Clean up all existing temporary markers first
+    cleanupTemporaryMarkers();
 
     // Create a highlighted marker based on layer type
     let markerIcon;
@@ -1113,9 +1118,10 @@ function createGovernmentMarker(name, description, lat, lng, type) {
     
     // Add click event to update URL hash with coordinates
     marker.on('click', function() {
+        cleanupTemporaryMarkers(); // Remove any highlighted markers
         history.replaceState(null, null, `#${lat}/${lng}`);
     });
-    
+
     governmentLayer.addLayer(marker);
     return marker;
 }
@@ -1296,12 +1302,13 @@ function createTargetMarker(address, sedimentLevel, furnitureRemoved, cleaningSt
         autoPan: false,
         keepInView: true
     });
-    
+
     // Add click event to update URL hash with coordinates
     marker.on('click', function() {
+        cleanupTemporaryMarkers(); // Remove any highlighted markers
         history.replaceState(null, null, `#${lat}/${lng}`);
     });
-    
+
     targetsLayer.addLayer(marker);
     return marker;
 }
@@ -1942,6 +1949,7 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     if (uuid) {
         submissionMarkers[uuid] = marker;
         marker.on('click', function() {
+            cleanupTemporaryMarkers(); // Remove any highlighted markers
             history.replaceState(null, null, `#${uuid}`);
         });
     }
