@@ -310,11 +310,35 @@ function showFeaturePopupInstantly(featureId, layerName) {
     return true;
 }
 
-// Clean up all temporary highlighted markers
+// Clean up all temporary highlighted markers and restore original icons
 function cleanupTemporaryMarkers() {
     Object.entries(activeMarkers).forEach(([id, marker]) => {
-        if (marker && map.hasLayer(marker)) {
-            map.removeLayer(marker);
+        if (marker) {
+            // Check if this is a temporary marker (not in any cluster layer)
+            const isTemporary = !submissionsLayer.hasLayer(marker) &&
+                               !submissionsLayer2.hasLayer(marker) &&
+                               !governmentLayer.hasLayer(marker) &&
+                               !targetsLayer.hasLayer(marker);
+
+            if (isTemporary && map.hasLayer(marker)) {
+                // Remove temporary marker from map
+                map.removeLayer(marker);
+            } else {
+                // This is an original marker that was highlighted, restore its icon
+                if (marker.setIcon) {
+                    // Determine layer type from marker properties
+                    let layerName = 'submissions'; // default
+                    if (marker.itemType) {
+                        layerName = 'government';
+                    } else if (marker.itemPriority) {
+                        layerName = 'targets';
+                    } else if (marker.reportContent) {
+                        layerName = 'submissions';
+                    }
+
+                    recreateOriginalIcon(marker, layerName);
+                }
+            }
         }
     });
     activeMarkers = {}; // Clear the object
