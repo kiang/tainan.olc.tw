@@ -379,20 +379,20 @@ function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
 function createSubmissionPopupContent(featureData) {
     const reportContent = featureData.properties['通報內容'] || '';
     const iconInfo = getIconForReportType(reportContent);
-    
+
     let popupContent = `
         <div style="max-width: 400px; font-family: Arial, sans-serif;">
             <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
                 ${iconInfo.icon} 救災資訊回報
             </h6>
     `;
-    
+
     // Check for photo uploads in submission
     let photoUrl = null;
     Object.entries(featureData.properties).forEach(([key, value]) => {
         if (value && typeof value === 'string') {
             // Look for fields that might contain Google Drive photo URLs
-            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') || 
+            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') ||
                 key.toLowerCase().includes('upload') || value.includes('drive.google.com')) {
                 const fileId = extractGoogleDriveFileId(value);
                 if (fileId) {
@@ -401,7 +401,7 @@ function createSubmissionPopupContent(featureData) {
             }
         }
     });
-    
+
     // Add photo preview if available
     if (photoUrl) {
         popupContent += `
@@ -410,11 +410,11 @@ function createSubmissionPopupContent(featureData) {
             </div>
         `;
     }
-    
+
     popupContent += `
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
     `;
-    
+
     // Use the same column mapping as original markers
     const columnMapping = {
         0: '通報時間',        // Column 0: timestamp
@@ -424,7 +424,7 @@ function createSubmissionPopupContent(featureData) {
         4: '鄉鎮市區',        // Column 4: city/district
         5: '村里'            // Column 5: village
     };
-    
+
     const submissionEntries = Object.entries(featureData.properties);
     submissionEntries.forEach(([key, value], index) => {
         if (value && value.trim() !== '' && columnMapping[index]) {
@@ -440,13 +440,69 @@ function createSubmissionPopupContent(featureData) {
             `;
         }
     });
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(featureData.lat, featureData.lng)}
-        </div>
     `;
-    
+
+    // Add comments section if UUID has comments
+    const uuid = featureData.uuid;
+    if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
+        popupContent += `
+            <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
+                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>💬 修正與建議 (${commentsData[uuid].length})</span>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 11px; color: #f57c00; text-decoration: none;">➕ 新增</a>
+                </div>
+        `;
+
+        commentsData[uuid].forEach((commentItem, index) => {
+            const commentStyle = index > 0 ? 'margin-top: 8px; padding-top: 8px; border-top: 1px solid #ffe082;' : '';
+            popupContent += `
+                <div style="${commentStyle}">
+                    <div style="font-size: 10px; color: #9e9e9e; margin-bottom: 4px;">
+                        📅 ${commentItem.timestamp}
+                    </div>
+                    <div style="font-size: 12px; color: #424242; white-space: pre-wrap; line-height: 1.5;">
+                        ${commentItem.comment}
+                    </div>
+                </div>
+            `;
+        });
+
+        popupContent += `</div>`;
+    } else if (uuid) {
+        popupContent += `
+            <div style="margin-top: 10px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; text-align: center;">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyQX-TvA9HU0p-DqJVjfY8A9WuOMLLh7MRIJGFEjVfGICF_A/viewform?usp=pp_url&entry.1575573481=${encodeURIComponent(uuid)}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">
+                    💬 新增修正或建議
+                </a>
+            </div>
+        `;
+    }
+
+    // Add update button if UUID exists
+    if (uuid) {
+        let textareaContent = '';
+        submissionEntries.forEach(([key, value], index) => {
+            if (value && value.trim() !== '' && columnMapping[index]) {
+                textareaContent += `${columnMapping[index]}: ${value}\n`;
+            }
+        });
+
+        const updateFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfuWAODqFbTVg8vICS_AnUcsOMd9mABoI8NaVK0ltWJqmXXXA/viewform?usp=pp_url&entry.1631998399=${encodeURIComponent(textareaContent)}&entry.1349169460=${encodeURIComponent(uuid)}`;
+        popupContent += `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
+                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary" style="width: 100%; text-decoration: none; display: inline-block; padding: 8px; background-color: #007bff; color: white; border-radius: 4px; text-align: center; font-size: 13px;">
+                    📝 回報更新資訊
+                </a>
+            </div>
+        `;
+    }
+
+    popupContent += `</div>`;
+
     return popupContent;
 }
 
@@ -1470,27 +1526,62 @@ function loadCommentsData() {
             refreshMarkersWithComments();
 
             // If there's currently an open popup, refresh it to show comments
+            let needsRefresh = false;
+            let refreshUuid = null;
+            let refreshLatLng = null;
+
+            // Check if there's an open popup on a marker
             map.eachLayer(function(layer) {
                 if (layer instanceof L.Marker && layer.isPopupOpen()) {
                     // Find the UUID for this marker
-                    let markerUuid = null;
                     Object.entries(submissionMarkers).forEach(([uuid, marker]) => {
                         if (marker === layer) {
-                            markerUuid = uuid;
+                            refreshUuid = uuid;
+                            refreshLatLng = layer.getLatLng();
                         }
                     });
+                }
+            });
 
-                    // If this marker has comments, refresh its popup
-                    if (markerUuid && commentsData[markerUuid]) {
-                        console.log(`Refreshing open popup for ${markerUuid} with ${commentsData[markerUuid].length} comments`);
-                        // Close and reopen to show updated content
-                        layer.closePopup();
+            // Check if there's an open standalone popup (from cached data)
+            if (!refreshUuid) {
+                const openPopup = map._popup;
+                if (openPopup && openPopup.isOpen()) {
+                    // Try to find UUID from active markers or URL hash
+                    const hash = window.location.hash.slice(1);
+                    if (hash && hash.indexOf('/') === -1) {
+                        // Hash is a UUID
+                        refreshUuid = hash;
+                        refreshLatLng = openPopup.getLatLng();
+                    }
+                }
+            }
+
+            // If we found a UUID and it has comments, refresh the popup
+            if (refreshUuid && commentsData[refreshUuid] && commentsData[refreshUuid].length > 0) {
+                console.log(`Refreshing open popup for ${refreshUuid} with ${commentsData[refreshUuid].length} comments`);
+
+                // For cached popups, we need to regenerate content and update
+                if (featureCache.submissions[refreshUuid]) {
+                    const featureData = featureCache.submissions[refreshUuid];
+                    const newContent = createSubmissionPopupContent(featureData);
+
+                    // Update the popup content
+                    const openPopup = map._popup;
+                    if (openPopup && openPopup.isOpen()) {
+                        openPopup.setContent(newContent);
+                    }
+                } else {
+                    // For marker-based popups, close and reopen
+                    const marker = submissionMarkers[refreshUuid];
+                    if (marker) {
+                        marker.closePopup();
                         setTimeout(() => {
-                            layer.openPopup();
+                            marker.openPopup();
                         }, 100);
                     }
                 }
-            });
+            }
         },
         error: function(error) {
             console.error('Error loading comments data:', error);
