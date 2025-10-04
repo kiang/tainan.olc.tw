@@ -312,9 +312,17 @@ function showFeaturePopupInstantly(featureId, layerName) {
 
 // Create and place a temporary highlighted marker for instant popups
 function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
+    // Clean up all existing temporary markers first
+    Object.entries(activeMarkers).forEach(([id, marker]) => {
+        if (marker && map.hasLayer(marker)) {
+            map.removeLayer(marker);
+        }
+    });
+    activeMarkers = {}; // Clear the object
+
     // Create a highlighted marker based on layer type
     let markerIcon;
-    
+
     if (layerName === 'government') {
         const iconInfo = getGovernmentIconType(featureData.type || 'general');
         markerIcon = L.divIcon({
@@ -353,13 +361,13 @@ function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
             popupAnchor: [0, -16]
         });
     }
-    
+
     // Create temporary marker
-    const tempMarker = L.marker([featureData.lat, featureData.lng], { 
+    const tempMarker = L.marker([featureData.lat, featureData.lng], {
         icon: markerIcon,
         zIndexOffset: 1000  // Ensure it appears above clusters
     }).addTo(map);
-    
+
     // Store the temporary marker for cleanup
     activeMarkers[featureId] = tempMarker;
     
