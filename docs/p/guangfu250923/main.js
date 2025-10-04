@@ -1469,17 +1469,28 @@ function loadCommentsData() {
             // Refresh popups if any markers are already loaded
             refreshMarkersWithComments();
 
-            // If there's a hash in URL, retry navigation now that comments are loaded
-            if (window.location.hash) {
-                const hash = window.location.hash.substring(1);
-                const coords = hash.split('/');
-                // Only retry for UUID-based navigation (not coordinate-based)
-                if (coords.length !== 2) {
-                    setTimeout(() => {
-                        navigateToReport(hash);
-                    }, 500);
+            // If there's currently an open popup, refresh it to show comments
+            map.eachLayer(function(layer) {
+                if (layer instanceof L.Marker && layer.isPopupOpen()) {
+                    // Find the UUID for this marker
+                    let markerUuid = null;
+                    Object.entries(submissionMarkers).forEach(([uuid, marker]) => {
+                        if (marker === layer) {
+                            markerUuid = uuid;
+                        }
+                    });
+
+                    // If this marker has comments, refresh its popup
+                    if (markerUuid && commentsData[markerUuid]) {
+                        console.log(`Refreshing open popup for ${markerUuid} with ${commentsData[markerUuid].length} comments`);
+                        // Close and reopen to show updated content
+                        layer.closePopup();
+                        setTimeout(() => {
+                            layer.openPopup();
+                        }, 100);
+                    }
                 }
-            }
+            });
         },
         error: function(error) {
             console.error('Error loading comments data:', error);
