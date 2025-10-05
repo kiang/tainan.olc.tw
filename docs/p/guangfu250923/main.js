@@ -9,6 +9,7 @@ let submissionsLayer2;
 let governmentLayer;
 let targetsLayer;
 let shuttleBusLayer;
+let myMapsLayer;
 let layerData = {
     government: [],
     submissions: [],
@@ -353,7 +354,7 @@ function createAndPlaceTemporaryMarker(featureData, layerName, featureId) {
     let markerIcon;
 
     if (layerName === 'government') {
-        const iconInfo = getGovernmentIconType(featureData.type || 'general');
+        const iconInfo = getMyMapsIconInfo(featureData.type || '');
         markerIcon = L.divIcon({
             html: `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">${iconInfo.icon}</div>`,
             className: '',
@@ -536,7 +537,7 @@ function createSubmissionPopupContent(featureData) {
 
 // Create popup content for government facilities
 function createGovernmentPopupContent(featureData) {
-    const iconInfo = getGovernmentIconType(featureData.type);
+    const iconInfo = getMyMapsIconInfo(featureData.type);
     
     let popupContent = `
         <div style="max-width: 400px; font-family: Arial, sans-serif;">
@@ -759,14 +760,14 @@ function initMap() {
     loadFormSubmissions();
 
 
-    // Load government points
-    loadGovernmentPoints();
-
     // Load targets data
     loadTargets();
 
     // Load shuttle bus routes
     loadShuttleBusRoutes();
+
+    // Load MyMaps layer
+    loadMyMapsLayer();
 
     // Load comments data
     loadCommentsData();
@@ -1522,6 +1523,197 @@ function loadShuttleBusRoutes() {
         })
         .catch(error => {
             console.error('Error loading shuttle bus routes:', error);
+        });
+}
+
+// Get icon info for MyMaps markers based on category
+function getMyMapsIconInfo(category) {
+    switch(category) {
+        case '流動廁所':
+            return { icon: '🚻', color: '#E65100', label: '流動廁所' };
+        case '物資':
+            return { icon: '📦', color: '#558B2F', label: '物資' };
+        case '志工服務站':
+            return { icon: '🤝', color: '#E65100', label: '志工服務站' };
+        case '安心關懷站':
+            return { icon: '❤️', color: '#FF5252', label: '安心關懷站' };
+        default:
+            return { icon: '📍', color: '#0288D1', label: category || '其他' };
+    }
+}
+
+// Load MyMaps layer from GeoJSON (replaces government layer)
+function loadMyMapsLayer() {
+    myMapsLayer = L.layerGroup();
+    governmentLayer = myMapsLayer; // Use myMapsLayer as governmentLayer
+
+    fetch('data/mymaps.json')
+        .then(response => response.json())
+        .then(data => {
+            // Clear existing data
+            layerData.government = [];
+            featureCache.government = {};
+
+            data.features.forEach((feature, index) => {
+                const coords = feature.geometry.coordinates;
+                const props = feature.properties;
+
+                if (feature.geometry.type === 'Point') {
+                    const lat = coords[1];
+                    const lng = coords[0];
+                    const category = props['類別'] || '';
+                    const iconInfo = getMyMapsIconInfo(category);
+
+                    // Create marker icon matching government marker style
+                    const myMapsIcon = L.divIcon({
+                        html: `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`,
+                        className: '',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12],
+                        popupAnchor: [0, -12]
+                    });
+
+                    const marker = L.marker([lat, lng], { icon: myMapsIcon });
+
+                    // Store type info on marker for compatibility
+                    marker.itemType = category;
+
+                    // Build popup content matching government marker style
+                    let popupContent = `
+                        <div style="max-width: 400px; font-family: Arial, sans-serif;">
+                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                                ${iconInfo.icon} ${iconInfo.label}
+                            </h6>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                                        名稱
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                        ${props.name || ''}
+                                    </td>
+                                </tr>
+                    `;
+
+                    // Add other properties to the table
+                    if (props['地址或google座標'] && props['地址或google座標'].trim() !== '') {
+                        popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                        地址
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                        ${props['地址或google座標']}
+                                    </td>
+                                </tr>
+                        `;
+                    }
+
+                    if (props['備註'] && props['備註'].trim() !== '') {
+                        popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                        備註
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                        ${props['備註']}
+                                    </td>
+                                </tr>
+                        `;
+                    }
+
+                    if (props['專線'] && props['專線'].trim() !== '') {
+                        popupContent += `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                        專線
+                                    </td>
+                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                        ${props['專線']}
+                                    </td>
+                                </tr>
+                        `;
+                    }
+
+                    popupContent += `
+                            </table>
+                            ${getMapServiceButtons(lat, lng)}
+                        </div>
+                    `;
+
+                    marker.bindPopup(popupContent, {
+                        maxWidth: 400,
+                        autoPan: false,
+                        keepInView: true
+                    });
+
+                    // Add click event to update URL hash
+                    marker.on('click', function() {
+                        cleanupTemporaryMarkers();
+                        history.replaceState(null, null, `#${lat}/${lng}`);
+                    });
+
+                    myMapsLayer.addLayer(marker);
+
+                    // Add to layerData.government for sidebar list
+                    const description = [
+                        props['地址或google座標'],
+                        props['備註'],
+                        props['專線']
+                    ].filter(Boolean).join(' | ');
+
+                    const featureData = {
+                        id: `mymaps-${index}`,
+                        name: props.name || '',
+                        description: description,
+                        lat: lat,
+                        lng: lng,
+                        type: category,
+                        marker: marker
+                    };
+
+                    layerData.government.push(featureData);
+                    featureCache.government[`mymaps-${index}`] = featureData;
+                } else if (feature.geometry.type === 'LineString') {
+                    const latLngs = coords.map(coord => [coord[1], coord[0]]);
+                    const line = L.polyline(latLngs, {
+                        color: '#4285F4',
+                        weight: 3,
+                        opacity: 0.7
+                    });
+
+                    if (props.name) {
+                        line.bindPopup(`<h4 style="margin: 0;">${props.name}</h4>`);
+                    }
+                    myMapsLayer.addLayer(line);
+                } else if (feature.geometry.type === 'Polygon') {
+                    const latLngs = coords[0].map(coord => [coord[1], coord[0]]);
+                    const polygon = L.polygon(latLngs, {
+                        color: '#4285F4',
+                        weight: 2,
+                        opacity: 0.7,
+                        fillOpacity: 0.2
+                    });
+
+                    if (props.name) {
+                        polygon.bindPopup(`<h4 style="margin: 0;">${props.name}</h4>`);
+                    }
+                    myMapsLayer.addLayer(polygon);
+                }
+            });
+
+            myMapsLayer.addTo(map);
+
+            // Update the sidebar list
+            updateDataList('government');
+
+            // Mark government data as loaded
+            dataLoadStatus.government = true;
+
+            console.log('MyMaps layer loaded successfully with', data.features.length, 'features');
+        })
+        .catch(error => {
+            console.error('Error loading MyMaps layer:', error);
         });
 }
 
@@ -2494,7 +2686,7 @@ function updateDataList(layerName, filterText = '') {
         }
         
         if (layerName === 'government') {
-            const iconInfo = getGovernmentIconType(item.type);
+            const iconInfo = getMyMapsIconInfo(item.type);
             title = `${iconInfo.icon} ${item.name}`;
             details = item.description || '';
         } else if (layerName === 'targets') {
@@ -2726,7 +2918,7 @@ function highlightMarker(marker, layerName) {
     let iconHtml = '';
     
     if (layerName === 'government') {
-        const iconInfo = getGovernmentIconType(marker.itemType || 'general');
+        const iconInfo = getMyMapsIconInfo(marker.itemType || '');
         iconHtml = `<div style="background-color: ${iconInfo.color}; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
     } else if (layerName === 'targets') {
         const priorityInfo = getTargetPriorityInfo(marker.itemPriority || '6級');
@@ -2761,7 +2953,7 @@ function recreateOriginalIcon(marker, layerName) {
     let popupAnchor = [0, -12];
     
     if (layerName === 'government') {
-        const iconInfo = getGovernmentIconType(marker.itemType || 'general');
+        const iconInfo = getMyMapsIconInfo(marker.itemType || '');
         iconHtml = `<div style="background-color: ${iconInfo.color}; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${iconInfo.icon}</div>`;
     } else if (layerName === 'targets') {
         const priorityInfo = getTargetPriorityInfo(marker.itemPriority || '6級');
