@@ -101,8 +101,12 @@ foreach ($folders as $folder) {
                     $properties['備註'] = trim($match[1]);
                 } elseif (preg_match('/^專線:\s*(.+)$/', $part, $match)) {
                     $properties['專線'] = trim($match[1]);
-                } elseif (preg_match('/^地址LINK:\s*(.+)$/', $part, $match)) {
-                    // Ignore address link
+                } elseif (preg_match('/^地址LINK:\s*([0-9.]+),\s*([0-9.]+)/', $part, $match)) {
+                    // Extract coordinates from 地址LINK if main coordinates are 0,0
+                    if ($lat == 0.0 && $lng == 0.0) {
+                        $lat = floatval($match[1]);
+                        $lng = floatval($match[2]);
+                    }
                 }
             }
         }
