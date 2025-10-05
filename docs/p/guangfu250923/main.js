@@ -1543,7 +1543,7 @@ function getMyMapsIconInfo(category) {
             return { icon: '💧', color: '#03A9F4', label: '取水站' };
         case '災區醫療站':
         case '災難醫療站':
-            return { icon: '🏥', color: '#E91E63', label: '醫療站' };
+            return { icon: '⛑️', color: '#D32F2F', label: '醫療站' };
         case '流感疫苗接種站':
             return { icon: '💉', color: '#9C27B0', label: '疫苗接種站' };
         case '犬貓毛孩義診服務':
