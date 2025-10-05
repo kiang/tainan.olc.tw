@@ -135,13 +135,13 @@ function checkDataLoadedAndFitBounds(layerName) {
 function getMapServiceButtons(lat, lng) {
     const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
     const bingMapsUrl = `https://www.bing.com/maps?cp=${lat}~${lng}&lvl=16&sp=point.${lat}_${lng}_Location`;
-    
+
     return `
-        <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <a href="${googleMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+        <div class="map-service-buttons">
+            <a href="${googleMapsUrl}" target="_blank" class="map-service-button google">
                 <i class="bi bi-geo-alt"></i> Google Maps
             </a>
-            <a href="${bingMapsUrl}" target="_blank" style="flex: 1; padding: 6px 12px; background-color: #00897b; color: white; text-decoration: none; border-radius: 4px; text-align: center; font-size: 12px; display: inline-block;">
+            <a href="${bingMapsUrl}" target="_blank" class="map-service-button bing">
                 <i class="bi bi-map"></i> Bing Maps
             </a>
         </div>
@@ -419,8 +419,8 @@ function createSubmissionPopupContent(featureData) {
     const iconInfo = getIconForReportType(reportContent);
 
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                 ${iconInfo.icon} 救災資訊回報
             </h6>
     `;
@@ -443,14 +443,14 @@ function createSubmissionPopupContent(featureData) {
     // Add photo preview if available
     if (photoUrl) {
         popupContent += `
-            <div style="margin-bottom: 10px;">
-                <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+            <div class="popup-photo">
+                <iframe src="${photoUrl}" allow="autoplay"></iframe>
             </div>
         `;
     }
 
     popupContent += `
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <table class="popup-table">
     `;
 
     // Use the same column mapping as original markers
@@ -467,11 +467,11 @@ function createSubmissionPopupContent(featureData) {
     submissionEntries.forEach(([key, value], index) => {
         if (value && value.trim() !== '' && columnMapping[index]) {
             popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label">
                         ${columnMapping[index]}
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                    <td class="popup-table-value">
                         ${value}
                     </td>
                 </tr>
@@ -522,8 +522,8 @@ function createSubmissionPopupContent(featureData) {
 
         const updateFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfuWAODqFbTVg8vICS_AnUcsOMd9mABoI8NaVK0ltWJqmXXXA/viewform?usp=pp_url&entry.1631998399=${encodeURIComponent(textareaContent)}&entry.1349169460=${encodeURIComponent(uuid)}`;
         popupContent += `
-            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
-                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary" style="width: 100%; text-decoration: none; display: inline-block; padding: 8px; background-color: #007bff; color: white; border-radius: 4px; text-align: center; font-size: 13px;">
+            <div class="update-form-container">
+                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary update-form-button">
                     📝 回報更新資訊
                 </a>
             </div>
@@ -540,34 +540,34 @@ function createGovernmentPopupContent(featureData) {
     const iconInfo = getMyMapsIconInfo(featureData.type);
     
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                 ${iconInfo.icon} ${iconInfo.label}
             </h6>
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+            <table class="popup-table">
+                <tr>
+                    <td class="popup-table-label">
                         設施名稱
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.name}
                     </td>
                 </tr>
     `;
-    
+
     if (featureData.description && featureData.description.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label">
                         說明
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.description}
                     </td>
                 </tr>
         `;
     }
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(featureData.lat, featureData.lng)}
@@ -582,74 +582,74 @@ function createTargetPopupContent(featureData) {
     const priorityInfo = getTargetPriorityInfo(featureData.priorityLevel);
     
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${priorityInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${priorityInfo.color};">
                 🏠 救災目標 (${featureData.priorityLevel})
             </h6>
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 35%; border-right: 1px solid #dee2e6;">
+            <table class="popup-table">
+                <tr>
+                    <td class="popup-table-label-wide">
                         地址
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.address}
                     </td>
                 </tr>
     `;
-    
+
     if (featureData.sedimentLevel && featureData.sedimentLevel.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         泥沙淤積程度
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.sedimentLevel}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (featureData.furnitureRemoved && featureData.furnitureRemoved.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         大型廢棄家具已移除
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.furnitureRemoved}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (featureData.cleaningStage && featureData.cleaningStage.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         進入一般清潔階段
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${featureData.cleaningStage}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (featureData.lastUpdateDate && featureData.lastUpdateDate.trim() !== '') {
         const updateInfo = featureData.lastUpdateTime && featureData.lastUpdateTime.trim() !== '' ? `${featureData.lastUpdateDate} ${featureData.lastUpdateTime}` : featureData.lastUpdateDate;
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         最後更新
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${updateInfo}
                     </td>
                 </tr>
         `;
     }
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(featureData.lat, featureData.lng)}
@@ -1092,40 +1092,40 @@ function createGovernmentMarker(name, description, lat, lng, type) {
     
     // Create popup content
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                 ${iconInfo.icon} ${iconInfo.label}
             </h6>
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+            <table class="popup-table">
+                <tr>
+                    <td class="popup-table-label">
                         設施名稱
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${name}
                     </td>
                 </tr>
     `;
-    
+
     if (description && description.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label">
                         說明
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${description}
                     </td>
                 </tr>
         `;
     }
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(lat, lng)}
         </div>
     `;
-    
+
     marker.bindPopup(popupContent, {
         maxWidth: 400,
         autoPan: false,
@@ -1239,80 +1239,80 @@ function createTargetMarker(address, sedimentLevel, furnitureRemoved, cleaningSt
     
     // Create popup content
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${priorityInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${priorityInfo.color};">
                 🏠 救災目標 (${priorityLevel})
             </h6>
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 35%; border-right: 1px solid #dee2e6;">
+            <table class="popup-table">
+                <tr>
+                    <td class="popup-table-label-wide">
                         地址
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${address}
                     </td>
                 </tr>
     `;
-    
+
     if (sedimentLevel && sedimentLevel.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         泥沙淤積程度
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${sedimentLevel}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (furnitureRemoved && furnitureRemoved.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         大型廢棄家具已移除
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${furnitureRemoved}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (cleaningStage && cleaningStage.trim() !== '') {
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         進入一般清潔階段
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${cleaningStage}
                     </td>
                 </tr>
         `;
     }
-    
+
     if (lastUpdateDate && lastUpdateDate.trim() !== '') {
         const updateInfo = lastUpdateTime && lastUpdateTime.trim() !== '' ? `${lastUpdateDate} ${lastUpdateTime}` : lastUpdateDate;
         popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label-wide">
                         最後更新
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td class="popup-table-value">
                         ${updateInfo}
                     </td>
                 </tr>
         `;
     }
-    
+
     popupContent += `
             </table>
             ${getMapServiceButtons(lat, lng)}
         </div>
     `;
-    
+
     marker.bindPopup(popupContent, {
         maxWidth: 400,
         autoPan: false,
@@ -1591,16 +1591,16 @@ function loadMyMapsLayer() {
 
                     // Build popup content matching government marker style
                     let popupContent = `
-                        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-                            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+                        <div class="popup-container">
+                            <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                                 ${iconInfo.icon} ${iconInfo.label}
                             </h6>
-                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                            <table class="popup-table">
+                                <tr>
+                                    <td class="popup-table-label">
                                         名稱
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                                    <td class="popup-table-value">
                                         ${props.name || ''}
                                     </td>
                                 </tr>
@@ -1609,11 +1609,11 @@ function loadMyMapsLayer() {
                     // Add other properties to the table
                     if (props['地址或google座標'] && props['地址或google座標'].trim() !== '') {
                         popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                <tr>
+                                    <td class="popup-table-label">
                                         地址
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                                    <td class="popup-table-value">
                                         ${props['地址或google座標']}
                                     </td>
                                 </tr>
@@ -1622,11 +1622,11 @@ function loadMyMapsLayer() {
 
                     if (props['備註'] && props['備註'].trim() !== '') {
                         popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                <tr>
+                                    <td class="popup-table-label">
                                         備註
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                                    <td class="popup-table-value">
                                         ${props['備註']}
                                     </td>
                                 </tr>
@@ -1635,11 +1635,11 @@ function loadMyMapsLayer() {
 
                     if (props['專線'] && props['專線'].trim() !== '') {
                         popupContent += `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
+                                <tr>
+                                    <td class="popup-table-label">
                                         專線
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                                    <td class="popup-table-value">
                                         ${props['專線']}
                                     </td>
                                 </tr>
@@ -1694,7 +1694,7 @@ function loadMyMapsLayer() {
                     });
 
                     if (props.name) {
-                        line.bindPopup(`<h4 style="margin: 0;">${props.name}</h4>`);
+                        line.bindPopup(`<h4 class="polygon-popup-title">${props.name}</h4>`);
                     }
                     myMapsLayer.addLayer(line);
                 } else if (feature.geometry.type === 'Polygon') {
@@ -1707,7 +1707,7 @@ function loadMyMapsLayer() {
                     });
 
                     if (props.name) {
-                        polygon.bindPopup(`<h4 style="margin: 0;">${props.name}</h4>`);
+                        polygon.bindPopup(`<h4 class="polygon-popup-title">${props.name}</h4>`);
                     }
                     myMapsLayer.addLayer(polygon);
                 }
@@ -1840,8 +1840,8 @@ function refreshMarkersWithComments() {
 
         // Create popup content with styled table (same logic as createSubmissionMarker)
         let popupContent = `
-            <div style="max-width: 400px; font-family: Arial, sans-serif;">
-                <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+            <div class="popup-container">
+                <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                     ${iconInfo.icon} 救災資訊回報
                 </h6>
         `;
@@ -1862,13 +1862,13 @@ function refreshMarkersWithComments() {
 
         if (photoUrl) {
             popupContent += `
-                <div style="margin-bottom: 10px;">
-                    <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+                <div class="popup-photo">
+                    <iframe src="${photoUrl}" allow="autoplay"></iframe>
                 </div>
             `;
         }
 
-        popupContent += `<table style="width: 100%; border-collapse: collapse; font-size: 12px;">`;
+        popupContent += `<table class="popup-table">`;
 
         const columnMapping = {
             0: '通報時間',
@@ -1882,11 +1882,11 @@ function refreshMarkersWithComments() {
         Object.entries(submission).forEach(([key, value], index) => {
             if (value && value.trim() !== '' && columnMapping[index]) {
                 popupContent += `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                    <tr>
+                        <td class="popup-table-label">
                             ${columnMapping[index]}
                         </td>
-                        <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                        <td class="popup-table-value">
                             ${value}
                         </td>
                     </tr>
@@ -1903,20 +1903,19 @@ function refreshMarkersWithComments() {
         // Add comments section if UUID has comments
         if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
             popupContent += `
-                <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
-                    <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px;">
+                <div class="comments-section">
+                    <div class="comments-section-header">
                         💬 修正與建議 (${commentsData[uuid].length})
                     </div>
             `;
 
             commentsData[uuid].forEach((commentItem, index) => {
-                const commentStyle = index > 0 ? 'margin-top: 8px; padding-top: 8px; border-top: 1px solid #ffe082;' : '';
                 popupContent += `
-                    <div style="${commentStyle}">
-                        <div style="font-size: 10px; color: #9e9e9e; margin-bottom: 4px;">
+                    <div class="comment-item">
+                        <div class="comment-timestamp">
                             📅 ${commentItem.timestamp}
                         </div>
-                        <div style="font-size: 12px; color: #424242; white-space: pre-wrap; line-height: 1.5;">
+                        <div class="comment-text">
                             ${commentItem.comment}
                         </div>
                     </div>
@@ -2022,18 +2021,18 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     
     // Create popup content with styled table
     let popupContent = `
-        <div style="max-width: 400px; font-family: Arial, sans-serif;">
-            <h6 style="margin: 0 0 10px 0; padding: 8px; background-color: ${iconInfo.color}; color: white; border-radius: 4px; text-align: center;">
+        <div class="popup-container">
+            <h6 class="popup-header" style="background-color: ${iconInfo.color};">
                 ${iconInfo.icon} 救災資訊回報
             </h6>
     `;
-    
+
     // Check for photo uploads in submission
     let photoUrl = null;
     Object.entries(submission).forEach(([key, value]) => {
         if (value && typeof value === 'string') {
             // Look for fields that might contain Google Drive photo URLs
-            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') || 
+            if (key.includes('照片') || key.includes('圖片') || key.includes('photo') || key.includes('image') ||
                 key.toLowerCase().includes('upload') || value.includes('drive.google.com')) {
                 const fileId = extractGoogleDriveFileId(value);
                 if (fileId) {
@@ -2042,18 +2041,18 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
             }
         }
     });
-    
+
     // Add photo preview if available
     if (photoUrl) {
         popupContent += `
-            <div style="margin-bottom: 10px;">
-                <iframe src="${photoUrl}" width="100%" height="200" style="border: none; border-radius: 4px;" allow="autoplay"></iframe>
+            <div class="popup-photo">
+                <iframe src="${photoUrl}" allow="autoplay"></iframe>
             </div>
         `;
     }
-    
+
     popupContent += `
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <table class="popup-table">
     `;
     
     // Define which columns to show and their labels based on actual Google Sheets structure
@@ -2075,11 +2074,11 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
         if (value && value.trim() !== '' && columnMapping[index]) {
             // Add to popup table
             popupContent += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
+                <tr>
+                    <td class="popup-table-label">
                         ${columnMapping[index]}
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
+                    <td class="popup-table-value">
                         ${value}
                     </td>
                 </tr>
@@ -2097,20 +2096,19 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     // Add comments section if UUID has comments
     if (uuid && commentsData[uuid] && commentsData[uuid].length > 0) {
         popupContent += `
-            <div style="margin-top: 10px; padding: 10px; background-color: #fffbea; border-left: 4px solid #ffc107; border-radius: 4px;">
-                <div style="font-size: 12px; font-weight: bold; color: #f57c00; margin-bottom: 8px;">
+            <div class="comments-section">
+                <div class="comments-section-header">
                     💬 修正與建議 (${commentsData[uuid].length})
                 </div>
         `;
 
         commentsData[uuid].forEach((commentItem, index) => {
-            const commentStyle = index > 0 ? 'margin-top: 8px; padding-top: 8px; border-top: 1px solid #ffe082;' : '';
             popupContent += `
-                <div style="${commentStyle}">
-                    <div style="font-size: 10px; color: #9e9e9e; margin-bottom: 4px;">
+                <div class="comment-item">
+                    <div class="comment-timestamp">
                         📅 ${commentItem.timestamp}
                     </div>
-                    <div style="font-size: 12px; color: #424242; white-space: pre-wrap; line-height: 1.5;">
+                    <div class="comment-text">
                         ${commentItem.comment}
                     </div>
                 </div>
@@ -2126,8 +2124,8 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
     if (uuid) {
         const updateFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfuWAODqFbTVg8vICS_AnUcsOMd9mABoI8NaVK0ltWJqmXXXA/viewform?usp=pp_url&entry.1631998399=${encodeURIComponent(textareaContent)}&entry.1349169460=${encodeURIComponent(uuid)}`;
         popupContent += `
-            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
-                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary" style="width: 100%; text-decoration: none; display: inline-block; padding: 8px; background-color: #007bff; color: white; border-radius: 4px; text-align: center; font-size: 13px;">
+            <div class="update-form-container">
+                <a href="${updateFormUrl}" target="_blank" class="btn btn-sm btn-primary update-form-button">
                     📝 回報更新資訊
                 </a>
             </div>
