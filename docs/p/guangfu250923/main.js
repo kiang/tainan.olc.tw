@@ -471,7 +471,7 @@ function createSubmissionPopupContent(featureData) {
                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
                         ${columnMapping[index]}
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                         ${value}
                     </td>
                 </tr>
@@ -1886,7 +1886,7 @@ function refreshMarkersWithComments() {
                         <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
                             ${columnMapping[index]}
                         </td>
-                        <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                        <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                             ${value}
                         </td>
                     </tr>
@@ -2079,7 +2079,7 @@ function createSubmissionMarker(submission, lat, lng, isUrgent = true) {
                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
                         ${columnMapping[index]}
                     </td>
-                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                         ${value}
                     </td>
                 </tr>
