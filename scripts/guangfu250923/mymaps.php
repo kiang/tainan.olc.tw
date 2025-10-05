@@ -1,6 +1,10 @@
 <?php
 $basePath = dirname(dirname(__DIR__));
 
+// Load manual coordinates pool
+$manualCoordsFile = __DIR__ . '/manual_coordinates.php';
+$manualCoords = file_exists($manualCoordsFile) ? include($manualCoordsFile) : [];
+
 // Fetch KML from Google My Maps
 $kmlUrl = 'https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=1euJJbnUwI0z0SNe4cWVcqzIDT6MMCrM';
 $kmlContent = file_get_contents($kmlUrl);
@@ -108,6 +112,15 @@ foreach ($folders as $folder) {
                         $lng = floatval($match[2]);
                     }
                 }
+            }
+        }
+
+        // Try to use manual coordinates if still 0,0
+        if ($lat == 0.0 && $lng == 0.0 && isset($manualCoords[$name])) {
+            $manualData = $manualCoords[$name];
+            if (isset($manualData['lat']) && isset($manualData['lng'])) {
+                $lat = floatval($manualData['lat']);
+                $lng = floatval($manualData['lng']);
             }
         }
 
