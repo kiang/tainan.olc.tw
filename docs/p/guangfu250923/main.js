@@ -1537,6 +1537,17 @@ function getMyMapsIconInfo(category) {
             return { icon: '🤝', color: '#E65100', label: '志工服務站' };
         case '安心關懷站':
             return { icon: '❤️', color: '#FF5252', label: '安心關懷站' };
+        case '沐浴站':
+            return { icon: '🚿', color: '#0288D1', label: '沐浴站' };
+        case '自來水公司的取水站':
+            return { icon: '💧', color: '#03A9F4', label: '取水站' };
+        case '災區醫療站':
+        case '災難醫療站':
+            return { icon: '🏥', color: '#E91E63', label: '醫療站' };
+        case '流感疫苗接種站':
+            return { icon: '💉', color: '#9C27B0', label: '疫苗接種站' };
+        case '犬貓毛孩義診服務':
+            return { icon: '🐾', color: '#795548', label: '寵物義診' };
         default:
             return { icon: '📍', color: '#0288D1', label: category || '其他' };
     }
