@@ -1600,7 +1600,7 @@ function loadMyMapsLayer() {
                                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; width: 30%; border-right: 1px solid #dee2e6;">
                                         名稱
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                                         ${props.name || ''}
                                     </td>
                                 </tr>
@@ -1613,7 +1613,7 @@ function loadMyMapsLayer() {
                                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
                                         地址
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                                         ${props['地址或google座標']}
                                     </td>
                                 </tr>
@@ -1626,7 +1626,7 @@ function loadMyMapsLayer() {
                                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
                                         備註
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                                         ${props['備註']}
                                     </td>
                                 </tr>
@@ -1639,7 +1639,7 @@ function loadMyMapsLayer() {
                                     <td style="padding: 6px 8px; background-color: #f8f9fa; font-weight: bold; vertical-align: top; border-right: 1px solid #dee2e6;">
                                         專線
                                     </td>
-                                    <td style="padding: 6px 8px; vertical-align: top; word-wrap: break-word;">
+                                    <td style="padding: 6px 8px; vertical-align: top; max-width: 250px; overflow-wrap: break-word; word-break: break-word;">
                                         ${props['專線']}
                                     </td>
                                 </tr>
