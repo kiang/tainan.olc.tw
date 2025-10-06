@@ -266,7 +266,7 @@
       </IconStyle>
     </Style>
     <Folder>
-      <name>流動廁所(10/5更新)</name>
+      <name>流動廁所(10/6更新)</name>
       <Placemark>
         <name>馬太鞍教會</name>
         <address>花蓮縣光復鄉大馬村中山路三段89巷14號</address>
@@ -1183,6 +1183,70 @@
           </coordinates>
         </Point>
       </Placemark>
+      <Placemark>
+        <name>保安寺（古蹟）</name>
+        <address>976花蓮縣光復鄉佛祖街313號 </address>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: 976花蓮縣光復鄉佛祖街313號 <br>備註: 5座<br>地址LINK: 23.672553012753525, 121.43506591534339]]></description>
+        <styleUrl>#icon-1733-E65100-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="類別">
+            <value>流動廁所</value>
+          </Data>
+          <Data name="地址或google座標">
+            <value>976花蓮縣光復鄉佛祖街313號 </value>
+          </Data>
+          <Data name="備註">
+            <value>5座</value>
+          </Data>
+          <Data name="地址LINK">
+            <value>23.672553012753525, 121.43506591534339</value>
+          </Data>
+        </ExtendedData>
+      </Placemark>
+      <Placemark>
+        <name>976花蓮縣光復鄉佛祖街25號</name>
+        <address>976花蓮縣光復鄉佛祖街25號</address>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: 976花蓮縣光復鄉佛祖街25號<br>備註: 10座<br>地址LINK: 23.66468373981058, 121.43243908650753]]></description>
+        <styleUrl>#icon-1733-E65100-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="類別">
+            <value>流動廁所</value>
+          </Data>
+          <Data name="地址或google座標">
+            <value>976花蓮縣光復鄉佛祖街25號</value>
+          </Data>
+          <Data name="備註">
+            <value>10座</value>
+          </Data>
+          <Data name="地址LINK">
+            <value>23.66468373981058, 121.43243908650753</value>
+          </Data>
+        </ExtendedData>
+      </Placemark>
+      <Placemark>
+        <name>976花蓮縣光復鄉佛祖街253號涼亭旁</name>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: <br>備註: 6座<br>地址LINK: 23.670978502260287, 121.43447415582075]]></description>
+        <styleUrl>#icon-1733-E65100-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="類別">
+            <value>流動廁所</value>
+          </Data>
+          <Data name="地址或google座標">
+            <value/>
+          </Data>
+          <Data name="備註">
+            <value>6座</value>
+          </Data>
+          <Data name="地址LINK">
+            <value>23.670978502260287, 121.43447415582075</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            121.434474155821,23.6709785022603,0
+          </coordinates>
+        </Point>
+      </Placemark>
     </Folder>
     <Folder>
       <name>沐浴站(10/3更新)</name>
@@ -1707,7 +1771,7 @@
       <Placemark>
         <name>花蓮光復糖廠醫療站</name>
         <address>花蓮縣光復鄉糖廠街12號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉糖廠街12號<br>備註: 10/5 (09:00~20:30）<br>10/6 (09:00~18:00）<br>10/7 (09:00~18:00）<br>地址LINK: 23.65736420453539, 121.42047926743106]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉糖廠街12號<br>備註: ~10/8 (每日09:00~18:00）<br>地址LINK: 23.65736420453539, 121.42047926743106]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1717,9 +1781,7 @@
             <value>花蓮縣光復鄉糖廠街12號</value>
           </Data>
           <Data name="備註">
-            <value>10/5 (09:00~20:30）
-10/6 (09:00~18:00）
-10/7 (09:00~18:00）</value>
+            <value>~10/8 (每日09:00~18:00）</value>
           </Data>
           <Data name="地址LINK">
             <value>23.65736420453539, 121.42047926743106</value>
@@ -1729,7 +1791,7 @@
       <Placemark>
         <name>馬太鞍教會醫療站</name>
         <address>花蓮縣光復鄉大馬村中山路三段89巷14號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉大馬村中山路三段89巷14號<br>備註: ~10/7 (每日10:00~16:00）<br>地址LINK: 23.675444431837576, 121.4263233196848]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉大馬村中山路三段89巷14號<br>備註: ~10/8 (每日10:00~16:00）<br>地址LINK: 23.675444431837576, 121.4263233196848]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1739,7 +1801,7 @@
             <value>花蓮縣光復鄉大馬村中山路三段89巷14號</value>
           </Data>
           <Data name="備註">
-            <value>~10/7 (每日10:00~16:00）</value>
+            <value>~10/8 (每日10:00~16:00）</value>
           </Data>
           <Data name="地址LINK">
             <value>23.675444431837576, 121.4263233196848</value>
@@ -1749,17 +1811,17 @@
       <Placemark>
         <name>虎爺溫泉醫療站</name>
         <address>花蓮縣瑞穗鄉祥北路二段101-5號</address>
-        <description><![CDATA[類別: <br>地址或google座標: 花蓮縣瑞穗鄉祥北路二段101-5號<br>備註: 10/4(六) 18:00~20:00<br>地址LINK: 23.500648786749707%2C<br>121.36085576446762&z<br>]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣瑞穗鄉祥北路二段101-5號<br>備註: 10/6(一)、10/8(三) 18:00~20:00<br>地址LINK: 23.500648786749707%2C<br>121.36085576446762&z<br>]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
-            <value/>
+            <value>災區醫療站</value>
           </Data>
           <Data name="地址或google座標">
             <value>花蓮縣瑞穗鄉祥北路二段101-5號</value>
           </Data>
           <Data name="備註">
-            <value>10/4(六) 18:00~20:00</value>
+            <value>10/6(一)、10/8(三) 18:00~20:00</value>
           </Data>
           <Data name="地址LINK">
             <value><![CDATA[23.500648786749707%2C
@@ -1771,7 +1833,7 @@
       <Placemark>
         <name>大同村活動中心醫療站</name>
         <address>花蓮縣光復鄉中正路一段370號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段370號<br>備註: ~10/7 (每日09:00~12:00）<br>地址LINK: 23.663440113841563, 121.43092520925103]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段370號<br>備註: ~10/8 (每日09:00~12:00）<br>地址LINK: 23.663440113841563, 121.43092520925103]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1781,7 +1843,7 @@
             <value>花蓮縣光復鄉中正路一段370號</value>
           </Data>
           <Data name="備註">
-            <value>~10/7 (每日09:00~12:00）</value>
+            <value>~10/8 (每日09:00~12:00）</value>
           </Data>
           <Data name="地址LINK">
             <value>23.663440113841563, 121.43092520925103</value>
@@ -1790,18 +1852,18 @@
       </Placemark>
       <Placemark>
         <name>太巴塱松年牧區中心</name>
-        <address>花蓮縣光復鄉中正路二段79號2樓</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路二段79號2樓<br>備註: ~10/7(每日13:00~16:00）<br>地址LINK: 23.65802003195526, 121.4507332776263]]></description>
+        <address>花蓮縣光復鄉中正路二段79號</address>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路二段79號<br>備註: ~10/8 (每日13:00~16:00）<br>地址LINK: 23.65802003195526, 121.4507332776263]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
             <value>災區醫療站</value>
           </Data>
           <Data name="地址或google座標">
-            <value>花蓮縣光復鄉中正路二段79號2樓</value>
+            <value>花蓮縣光復鄉中正路二段79號</value>
           </Data>
           <Data name="備註">
-            <value>~10/7(每日13:00~16:00）</value>
+            <value>~10/8 (每日13:00~16:00）</value>
           </Data>
           <Data name="地址LINK">
             <value>23.65802003195526, 121.4507332776263</value>
@@ -1811,7 +1873,7 @@
       <Placemark>
         <name>光復火車站醫療站</name>
         <address>花蓮縣光復鄉中正路一段2-1號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段2-1號<br>備註: ～10/7 (每日24小時)<br>地址LINK: 23.666570853902957, 121.42101421743148]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段2-1號<br>備註: ～10/8 (每日24小時)<br>地址LINK: 23.666570853902957, 121.42101421743148]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1821,7 +1883,7 @@
             <value>花蓮縣光復鄉中正路一段2-1號</value>
           </Data>
           <Data name="備註">
-            <value>～10/7 (每日24小時)</value>
+            <value>～10/8 (每日24小時)</value>
           </Data>
           <Data name="地址LINK">
             <value>23.666570853902957, 121.42101421743148</value>
@@ -1831,7 +1893,7 @@
       <Placemark>
         <name>光復商工醫療站</name>
         <address>花蓮縣光復鄉林森路100號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉林森路100號<br>備註: ～10/7 (每日24小時)<br>地址LINK: 23.66726673823984, 121.42738027979283]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉林森路100號<br>備註: ～10/8 (每日24小時)<br>地址LINK: 23.66726673823984, 121.42738027979283]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1841,7 +1903,7 @@
             <value>花蓮縣光復鄉林森路100號</value>
           </Data>
           <Data name="備註">
-            <value>～10/7 (每日24小時)</value>
+            <value>～10/8 (每日24小時)</value>
           </Data>
           <Data name="地址LINK">
             <value>23.66726673823984, 121.42738027979283</value>
@@ -1851,7 +1913,7 @@
       <Placemark>
         <name>柏仁診所</name>
         <address>花蓮縣光復鄉中正路一段59號</address>
-        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段59號<br>備註: ~10/7 (10:00~15:00）<br>地址LINK: 23.66615719725777, 121.42301675393593]]></description>
+        <description><![CDATA[類別: 災區醫療站<br>地址或google座標: 花蓮縣光復鄉中正路一段59號<br>備註: 10/7(二) 10:00~15:00<br>10/8(三) 12:00~15:00<br>地址LINK: 23.66615719725777, 121.42301675393593]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1861,7 +1923,8 @@
             <value>花蓮縣光復鄉中正路一段59號</value>
           </Data>
           <Data name="備註">
-            <value>~10/7 (10:00~15:00）</value>
+            <value>10/7(二) 10:00~15:00
+10/8(三) 12:00~15:00</value>
           </Data>
           <Data name="地址LINK">
             <value>23.66615719725777, 121.42301675393593</value>
@@ -1871,7 +1934,7 @@
       <Placemark>
         <name>葉日昇診所</name>
         <address>花蓮縣光復鄉忠孝路100號</address>
-        <description><![CDATA[類別: 災難醫療站<br>地址或google座標: 花蓮縣光復鄉忠孝路100號<br>備註: 10/6(一) 08:00~11:00<br>10/7(二) 08:00~11:00<br>10/7(二) 14:30~17:00<br>地址LINK: 23.664891470105648, 121.42549149077706]]></description>
+        <description><![CDATA[類別: 災難醫療站<br>地址或google座標: 花蓮縣光復鄉忠孝路100號<br>備註: 10/6(一) 08:00~11:00<br>10/7(二) 、10/8(三)08:00~11:00 14:30~17:00<br>地址LINK: 23.664891470105648, 121.42549149077706]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
           <Data name="類別">
@@ -1882,8 +1945,7 @@
           </Data>
           <Data name="備註">
             <value>10/6(一) 08:00~11:00
-10/7(二) 08:00~11:00
-10/7(二) 14:30~17:00</value>
+10/7(二) 、10/8(三)08:00~11:00 14:30~17:00</value>
           </Data>
           <Data name="地址LINK">
             <value>23.664891470105648, 121.42549149077706</value>
@@ -1892,7 +1954,6 @@
       </Placemark>
       <Placemark>
         <name>流感疫苗接種站</name>
-        <address>花蓮縣光復鄉糖廠街12號</address>
         <description><![CDATA[類別: 流感疫苗接種站<br>地址或google座標: 花蓮縣光復鄉糖廠街12號<br>備註: 9/30(二)起 每日09:00-15:00<br>地址LINK: 23.65736420453539, 121.42047926743106]]></description>
         <styleUrl>#icon-1624-A52714</styleUrl>
         <ExtendedData>
@@ -1909,6 +1970,11 @@
             <value>23.65736420453539, 121.42047926743106</value>
           </Data>
         </ExtendedData>
+        <Point>
+          <coordinates>
+            121.42049,23.6571382,0
+          </coordinates>
+        </Point>
       </Placemark>
       <Placemark>
         <name>犬貓毛孩義診服務</name>
