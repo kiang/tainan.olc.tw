@@ -725,6 +725,13 @@ function initMap() {
 
     map.addLayer(markersLayer);
 
+    // Initialize government points layer cluster group (add first so it appears below submissions)
+    governmentLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        showCoverageOnHover: false,
+        maxClusterRadius: 80
+    }).addTo(map);
+
     // Initialize submissions layer cluster group (layer 1: urgent needs)
     submissionsLayer = L.markerClusterGroup({
         chunkedLoading: true,
@@ -738,13 +745,6 @@ function initMap() {
         showCoverageOnHover: false,
         maxClusterRadius: 80
     });  // Not added to map by default
-
-    // Initialize government points layer cluster group
-    governmentLayer = L.markerClusterGroup({
-        chunkedLoading: true,
-        showCoverageOnHover: false,
-        maxClusterRadius: 80
-    }).addTo(map);
 
     // Initialize targets layer cluster group
     targetsLayer = L.markerClusterGroup({
@@ -1555,8 +1555,8 @@ function getMyMapsIconInfo(category) {
 
 // Load MyMaps layer from GeoJSON (replaces government layer)
 function loadMyMapsLayer() {
-    myMapsLayer = L.layerGroup();
-    governmentLayer = myMapsLayer; // Use myMapsLayer as governmentLayer
+    // Use the already-initialized governmentLayer cluster group (already added to map)
+    myMapsLayer = governmentLayer;
 
     fetch('data/mymaps.json')
         .then(response => response.json())
@@ -1713,7 +1713,7 @@ function loadMyMapsLayer() {
                 }
             });
 
-            myMapsLayer.addTo(map);
+            // No need to add to map - governmentLayer is already added during initialization
 
             // Update the sidebar list
             updateDataList('government');
