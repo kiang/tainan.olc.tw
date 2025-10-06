@@ -771,6 +771,77 @@ function initMap() {
 
     // Load comments data
     loadCommentsData();
+
+    // Add map click handler for blank areas
+    map.on('click', function(e) {
+        // Only show popup if not clicking on a marker or feature
+        // The event will be stopped by markers/features, so this only fires on blank areas
+        showPopupAtCoordinates(e.latlng.lat, e.latlng.lng);
+    });
+}
+
+// Show popup at coordinates with temporary marker
+function showPopupAtCoordinates(lat, lng) {
+    // Clean up any existing temporary markers
+    cleanupTemporaryMarkers();
+
+    // Generate UUID for the entry
+    const uuid = generateUUID();
+
+    // Google Form URL with coordinates
+    const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLScjTrlW1dFTY3nDKe1SjtHwhqZluC1wn6IaMaXhDPF_2jyiEw/viewform?usp=pp_url&entry.1588782081=&entry.1966779823=&entry.1998738256=${encodeURIComponent(lng)}&entry.1387778236=${encodeURIComponent(lat)}&entry.2072773208=${encodeURIComponent(uuid)}`;
+
+    const popupContent = `
+        <div class="village-popup-container">
+            <h6 class="village-popup-header">
+                📍 選定位置
+            </h6>
+            <table class="village-popup-table">
+                <tr class="village-popup-row">
+                    <td class="village-popup-label">
+                        緯度
+                    </td>
+                    <td class="village-popup-value">
+                        ${lat.toFixed(6)}
+                    </td>
+                </tr>
+                <tr class="village-popup-row">
+                    <td class="village-popup-label">
+                        經度
+                    </td>
+                    <td class="village-popup-value">
+                        ${lng.toFixed(6)}
+                    </td>
+                </tr>
+            </table>
+            <div class="village-popup-button-container">
+                <button onclick="window.open('${formUrl}', '_blank')" class="btn btn-primary btn-sm village-popup-button">
+                    📝 填寫救災資訊表單
+                </button>
+            </div>
+        </div>
+    `;
+
+    // Create temporary marker
+    const tempMarker = L.marker([lat, lng], {
+        icon: L.divIcon({
+            html: '<div style="background-color: #007bff; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">📍</div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        })
+    }).addTo(map);
+
+    tempMarker.bindPopup(popupContent, {
+        maxWidth: 400,
+        autoPan: true,
+        keepInView: true
+    }).openPopup();
+
+    // Store in activeMarkers so it can be cleaned up
+    const tempId = 'temp_' + Date.now();
+    activeMarkers[tempId] = tempMarker;
 }
 
 // Load Hualien cunli basemap
@@ -875,11 +946,33 @@ function loadCunliBasemap() {
                             cunliLayer.resetStyle(e.target);
                         },
                         click: function(e) {
+                            // Show temporary marker at click location
+                            const clickLat = e.latlng.lat;
+                            const clickLng = e.latlng.lng;
+
+                            // Clean up any existing temporary markers
+                            cleanupTemporaryMarkers();
+
+                            // Create temporary marker at click location
+                            const tempMarker = L.marker([clickLat, clickLng], {
+                                icon: L.divIcon({
+                                    html: '<div style="background-color: #007bff; border: 4px solid #ffff00; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 20px rgba(255,255,0,0.8), 0 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite;">📍</div>',
+                                    className: '',
+                                    iconSize: [32, 32],
+                                    iconAnchor: [16, 16],
+                                    popupAnchor: [0, -16]
+                                })
+                            }).addTo(map);
+
+                            // Store in activeMarkers so it can be cleaned up
+                            const tempId = 'temp_' + Date.now();
+                            activeMarkers[tempId] = tempMarker;
+
                             // Check if we're in tutorial mode step 3
                             if (tutorialMode && tutorialStep === 3) {
                                 // Move to tutorial step 4
                                 moveToTutorialStep4();
-                                
+
                                 // Add red border highlight to the opened popup
                                 setTimeout(() => {
                                     const popupElement = document.querySelector('.leaflet-popup');
@@ -2328,15 +2421,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('zoomToCoordinates').addEventListener('click', function() {
         const lat = parseFloat(document.getElementById('latitude').value);
         const lng = parseFloat(document.getElementById('longitude').value);
-        
+
         if (!isNaN(lat) && !isNaN(lng)) {
             map.setView([lat, lng], 16);
             coordinatesModal.hide();
-            
+
             // Clear inputs
             document.getElementById('coordinatesInput').value = '';
             document.getElementById('latitude').value = '';
             document.getElementById('longitude').value = '';
+
+            // Show popup at coordinates with temporary marker
+            showPopupAtCoordinates(lat, lng);
         } else {
             alert('請輸入有效的座標');
         }
