@@ -266,7 +266,7 @@
       </IconStyle>
     </Style>
     <Folder>
-      <name>流動廁所(10/6更新)</name>
+      <name>流動廁所(10/7更新)</name>
       <Placemark>
         <name>馬太鞍教會</name>
         <address>花蓮縣光復鄉大馬村中山路三段89巷14號</address>
@@ -1225,14 +1225,14 @@
       </Placemark>
       <Placemark>
         <name>976花蓮縣光復鄉佛祖街253號涼亭旁</name>
-        <description><![CDATA[類別: 流動廁所<br>地址或google座標: <br>備註: 6座<br>地址LINK: 23.670978502260287, 121.43447415582075]]></description>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: 23.670978502260287, 121.43447415582075<br>備註: 6座<br>地址LINK: 23.670978502260287, 121.43447415582075]]></description>
         <styleUrl>#icon-1733-E65100-labelson</styleUrl>
         <ExtendedData>
           <Data name="類別">
             <value>流動廁所</value>
           </Data>
           <Data name="地址或google座標">
-            <value/>
+            <value>23.670978502260287, 121.43447415582075</value>
           </Data>
           <Data name="備註">
             <value>6座</value>
@@ -1244,6 +1244,54 @@
         <Point>
           <coordinates>
             121.434474155821,23.6709785022603,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>佛祖街與中正路一段</name>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: 23.663527822162475, 121.4318530153436<br>備註: 1座<br>地址LINK: 23.663527822162475, 121.4318530153436]]></description>
+        <styleUrl>#icon-1733-E65100-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="類別">
+            <value>流動廁所</value>
+          </Data>
+          <Data name="地址或google座標">
+            <value>23.663527822162475, 121.4318530153436</value>
+          </Data>
+          <Data name="備註">
+            <value>1座</value>
+          </Data>
+          <Data name="地址LINK">
+            <value>23.663527822162475, 121.4318530153436</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            121.431853015344,23.6635278221625,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>中學街254號附近</name>
+        <description><![CDATA[類別: 流動廁所<br>地址或google座標: 23.672895272896593, 121.42423694232819<br>備註: 2座<br>地址LINK: 23.672895272896593, 121.42423694232819]]></description>
+        <styleUrl>#icon-1733-E65100-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="類別">
+            <value>流動廁所</value>
+          </Data>
+          <Data name="地址或google座標">
+            <value>23.672895272896593, 121.42423694232819</value>
+          </Data>
+          <Data name="備註">
+            <value>2座</value>
+          </Data>
+          <Data name="地址LINK">
+            <value>23.672895272896593, 121.42423694232819</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            121.424236942328,23.6728952728966,0
           </coordinates>
         </Point>
       </Placemark>
