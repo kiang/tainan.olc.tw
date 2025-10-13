@@ -13,6 +13,7 @@ var markers = {};
 var markersLayer = L.layerGroup().addTo(map);
 var userLocationMarker = null;
 var punishmentsData = {};
+var judgementsData = {};
 
 // Create custom icon for markers
 function createIcon(properties) {
@@ -28,8 +29,21 @@ function createIcon(properties) {
 
     var size = currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? 40 : 30;
     var hasPunishment = punishmentsData[properties.id];
-    var strokeColor = hasPunishment ? '#ff0000' : (currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? '#ff00ff' : '#fff');
-    var strokeWidth = hasPunishment ? '3' : (currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id ? '3' : '2');
+    var hasJudgement = judgementsData[properties.id];
+
+    // Determine stroke color: blue for judgements, red for punishments
+    var strokeColor = '#fff';
+    var strokeWidth = '2';
+    if (hasJudgement) {
+        strokeColor = '#0000ff';
+        strokeWidth = '3';
+    } else if (hasPunishment) {
+        strokeColor = '#ff0000';
+        strokeWidth = '3';
+    } else if (currentFeature && currentFeature.properties && currentFeature.properties.id === properties.id) {
+        strokeColor = '#ff00ff';
+        strokeWidth = '3';
+    }
 
     return L.divIcon({
         html: `<div style="
@@ -99,6 +113,34 @@ function createPopupContent(feature, detailData) {
                         } else {
                             content += '<tr><td style="width: 40%;"><strong>' + key + '</strong></td><td>' + value + '</td></tr>';
                         }
+                    }
+                }
+            }
+
+            content += '</table>';
+            content += '</div>';
+        });
+        content += '</div>';
+    }
+
+    // Show judgements if they exist
+    var judgements = judgementsData[feature.properties.id];
+    if (judgements && judgements.length > 0) {
+        content += '<div style="background-color: #fff5f5; border: 2px solid #ff0000; border-radius: 10px; padding: 10px; margin-bottom: 15px;">';
+        content += '<h5 style="color: #ff0000; margin: 0 0 10px 0; font-size: 16px;">⚖️ 判決記錄 (' + judgements.length + ' 筆)</h5>';
+        judgements.forEach(function(judgement) {
+            content += '<div style="margin-bottom: 10px; padding: 8px; background-color: white; border-radius: 5px;">';
+            content += '<table class="table table-sm mb-0" style="font-size: 13px;">';
+
+            // Show all columns dynamically
+            for (var key in judgement) {
+                if (judgement.hasOwnProperty(key)) {
+                    var value = judgement[key];
+                    // Make url clickable
+                    if (key === 'url') {
+                        content += '<tr><td style="width: 40%;"><strong>判決書</strong></td><td><a href="' + value + '" target="_blank" style="color: #74b9ff; text-decoration: underline;">查看判決書</a></td></tr>';
+                    } else {
+                        content += '<tr><td style="width: 40%;"><strong>' + key + '</strong></td><td>' + value + '</td></tr>';
                     }
                 }
             }
@@ -193,13 +235,21 @@ function showPos(lng, lat) {
     map.setView([lat, lng], 16);
 }
 
-// Load punishments data first
-$.getJSON('data/punishments.json', {}, function(data) {
+// Load punishments and judgements data first
+var punishmentsPromise = $.getJSON('data/punishments.json', {}, function(data) {
     punishmentsData = data;
 }).fail(function() {
     console.log('Failed to load punishments data, continuing without it');
-}).always(function() {
-    // Load babycare data after punishments (or even if it fails)
+});
+
+var judgementsPromise = $.getJSON('data/judgments.json', {}, function(data) {
+    judgementsData = data;
+}).fail(function() {
+    console.log('Failed to load judgements data, continuing without it');
+});
+
+// Load babycare data after both promises complete (or fail)
+$.when(punishmentsPromise, judgementsPromise).always(function() {
     loadBabycareData();
 });
 
