@@ -175,11 +175,15 @@ function showPoint(currentPointId) {
     if (!currentPointId || !markers[currentPointId]) {
         return;
     }
-    
+
     var feature = markers[currentPointId];
-    currentFeature = feature;
-    updateAllMarkers();
-    
+
+    // Only update if the feature changed
+    if (currentFeature !== feature) {
+        currentFeature = feature;
+        updateAllMarkers();
+    }
+
     var marker = feature._leafletMarker;
     if (marker) {
         // Don't change zoom, just pan to the marker
@@ -213,16 +217,28 @@ function updateAllMarkers() {
         marker.on('popupopen', (function(feature) {
             return function(e) {
                 var popup = e.popup;
-                
-                // Update URL hash
-                if (window.location.hash !== '#' + feature.properties.id) {
-                    window.location.hash = '#' + feature.properties.id;
+
+                // Update URL hash only if different (prevents route triggering)
+                var expectedHash = '#' + feature.properties.id;
+                if (window.location.hash !== expectedHash) {
+                    // Temporarily disable route handling
+                    var currentRoute = window.location.hash;
+                    window.location.hash = expectedHash;
                 }
-                
-                // Load detailed data
-                $.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/data/' + feature.properties.city + '/' + feature.properties.id + '.json', {}, function(detailData) {
-                    popup.setContent(createPopupContent(feature, detailData));
-                });
+
+                // Load detailed data only if not already loaded
+                if (!feature._detailDataLoaded) {
+                    feature._detailDataLoaded = true;
+                    $.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/data/' + feature.properties.city + '/' + feature.properties.id + '.json', {}, function(detailData) {
+                        feature._detailData = detailData;
+                        popup.setContent(createPopupContent(feature, detailData));
+                    }).fail(function() {
+                        feature._detailDataLoaded = false; // Allow retry on failure
+                    });
+                } else if (feature._detailData) {
+                    // Use cached data
+                    popup.setContent(createPopupContent(feature, feature._detailData));
+                }
             };
         })(feature));
         
