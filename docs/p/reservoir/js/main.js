@@ -212,6 +212,9 @@ function showReservoirDetail(reservoir) {
 
   let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name}</h2>`;
 
+  // Add map container
+  html += `<div id="modalMap" class="modal-map"></div>`;
+
   // Add SVG
   if (reservoir.svg) {
     html += `<div class="modal-svg" id="modalSvg">${reservoir.svg}</div>`;
@@ -321,6 +324,11 @@ function showReservoirDetail(reservoir) {
   modalBody.innerHTML = html;
   modal.classList.add('show');
 
+  // Initialize map with NLSC basemap
+  setTimeout(() => {
+    initializeReservoirMap(reservoir, locationKeys);
+  }, 100);
+
   // Add click handlers to SVG circles and tab buttons after modal is rendered
   setTimeout(() => {
     const svgContainer = document.getElementById('modalSvg');
@@ -358,6 +366,118 @@ function showReservoirDetail(reservoir) {
       });
     });
   }, 100);
+}
+
+// Global map variable
+let reservoirMap = null;
+let mapMarkers = {};
+
+// Initialize Leaflet map with NLSC basemap
+function initializeReservoirMap(reservoir, locationKeys) {
+  const mapContainer = document.getElementById('modalMap');
+  if (!mapContainer) return;
+
+  // Clear existing map
+  if (reservoirMap) {
+    reservoirMap.remove();
+    reservoirMap = null;
+    mapMarkers = {};
+  }
+
+  // Calculate center and bounds
+  let bounds = [];
+  let centerLat = 0;
+  let centerLon = 0;
+  let validLocations = 0;
+
+  locationKeys.forEach(locationKey => {
+    const locationData = reservoir.data[locationKey];
+    if (locationData && locationData.twd97lat && locationData.twd97lon) {
+      const lat = parseFloat(locationData.twd97lat);
+      const lon = parseFloat(locationData.twd97lon);
+      bounds.push([lat, lon]);
+      centerLat += lat;
+      centerLon += lon;
+      validLocations++;
+    }
+  });
+
+  if (validLocations === 0) return;
+
+  centerLat /= validLocations;
+  centerLon /= validLocations;
+
+  // Initialize map
+  reservoirMap = L.map('modalMap').setView([centerLat, centerLon], 14);
+
+  // Add NLSC basemap (Taiwan WMTS)
+  L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+    attribution: '&copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+    maxZoom: 18
+  }).addTo(reservoirMap);
+
+  // Add monitoring stations as markers
+  locationKeys.forEach(locationKey => {
+    const locationData = reservoir.data[locationKey];
+    if (locationData && locationData.twd97lat && locationData.twd97lon) {
+      const lat = parseFloat(locationData.twd97lat);
+      const lon = parseFloat(locationData.twd97lon);
+
+      // Get CTSI value for color coding
+      let markerColor = '#999';
+      if (locationData.data) {
+        const dates = Object.keys(locationData.data).sort().reverse();
+        if (dates.length > 0) {
+          const latestData = locationData.data[dates[0]];
+          const ctsi = latestData.find(item =>
+            item.itemname === '卡爾森指數' ||
+            item.itemname === '卡爾森優養指數' ||
+            item.itemname === '卡爾森優養指數(CTSI)'
+          );
+
+          if (ctsi) {
+            const value = parseFloat(ctsi.itemvalue);
+            if (value < 40) {
+              markerColor = '#3498db';
+            } else if (value < 50) {
+              markerColor = '#27ae60';
+            } else if (value < 60) {
+              markerColor = '#f39c12';
+            } else {
+              markerColor = '#e74c3c';
+            }
+          }
+        }
+      }
+
+      // Create custom icon
+      const markerIcon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="background: ${markerColor}; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+
+      const marker = L.marker([lat, lon], { icon: markerIcon }).addTo(reservoirMap);
+      marker.bindPopup(`<strong>測站 ${locationKey}</strong><br>點擊切換至此測站資料`);
+
+      // Click handler to activate tab
+      marker.on('click', () => {
+        activateTab(locationKey);
+        const circle = document.querySelector(`#modalSvg circle[id="Dam_S${locationKey}"]`);
+        if (circle) {
+          moveMarkToCircle(document.getElementById('modalSvg'), circle);
+        }
+      });
+
+      mapMarkers[locationKey] = marker;
+    }
+  });
+
+  // Fit bounds if multiple stations
+  if (bounds.length > 1) {
+    reservoirMap.fitBounds(bounds, { padding: [50, 50] });
+  }
 }
 
 // Move Mark group to clicked circle
