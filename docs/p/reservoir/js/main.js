@@ -39,18 +39,15 @@ function processSVG(svgContent, data) {
             let color = '#999'; // Default gray
 
             // Color coding based on Carlson Index
-            // <40: Oligotrophic (blue)
-            // 40-50: Mesotrophic (green)
-            // 50-60: Eutrophic (yellow/orange)
-            // >60: Hypereutrophic (red)
+            // <40: 貧養 (blue)
+            // 40-50: 普養 (green)
+            // >50: 優養 (orange)
             if (value < 40) {
-              color = '#3498db'; // Blue
-            } else if (value < 50) {
-              color = '#27ae60'; // Green
-            } else if (value < 60) {
-              color = '#f39c12'; // Orange
+              color = '#3498db'; // Blue - 貧養
+            } else if (value <= 50) {
+              color = '#27ae60'; // Green - 普養
             } else {
-              color = '#e74c3c'; // Red
+              color = '#f39c12'; // Orange - 優養
             }
 
             circle.setAttribute('fill', color);
@@ -836,13 +833,11 @@ function initializeReservoirMap(reservoir, locationKeys) {
           if (ctsi) {
             const value = parseFloat(ctsi.itemvalue);
             if (value < 40) {
-              markerColor = '#3498db';
-            } else if (value < 50) {
-              markerColor = '#27ae60';
-            } else if (value < 60) {
-              markerColor = '#f39c12';
+              markerColor = '#3498db'; // 貧養
+            } else if (value <= 50) {
+              markerColor = '#27ae60'; // 普養
             } else {
-              markerColor = '#e74c3c';
+              markerColor = '#f39c12'; // 優養
             }
           }
         }
