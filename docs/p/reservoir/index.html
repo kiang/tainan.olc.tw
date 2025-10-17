@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>台灣水庫水質監測地圖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- OpenGraph Meta Tags -->
+  <meta property="og:title" content="台灣水庫水質監測地圖">
+  <meta property="og:description" content="即時顯示台灣各水庫的水質監測資料，包含水位、水溫、溶氧量、pH值等資訊 (2019-2025)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tainan.olc.tw/p/reservoir/">
+  <meta property="og:image" content="https://tainan.olc.tw/p/reservoir/og_image.png">
+  <meta property="og:site_name" content="台灣水庫水質監測地圖">
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+      background: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .controls {
+      background: white;
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .year-selector select {
+      padding: 8px 15px;
+      border-radius: 5px;
+      border: 2px solid #667eea;
+      font-size: 14px;
+      cursor: pointer;
+      background: white;
+      color: #333;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 15px;
+      border-radius: 5px;
+      border: 2px solid #ddd;
+      font-size: 14px;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .container-fluid {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .reservoirs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .reservoir-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .reservoir-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      border-color: #667eea;
+    }
+
+    .reservoir-card h5 {
+      margin: 0 0 10px 0;
+      color: #333;
+      font-size: 18px;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .reservoir-svg {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .reservoir-svg svg {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .reservoir-info {
+      font-size: 13px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .reservoir-info .info-item {
+      margin: 5px 0;
+      padding: 5px 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .info-item .label {
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .no-data {
+      color: #999;
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      margin: 20px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #999;
+      background: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .modal-svg {
+      width: 100%;
+      max-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin: 20px 0;
+      padding: 20px;
+    }
+
+    .modal-svg svg {
+      max-width: 100%;
+      max-height: 350px;
+    }
+
+    .data-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      background: #667eea;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .data-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px 50px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      z-index: 3000;
+      display: none;
+      text-align: center;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-box {
+        max-width: 100%;
+      }
+
+      .reservoirs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+    }
+  </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-FJ1JR851SJ');
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <h1>台灣水庫水質監測</h1>
+    <p>Taiwan Reservoir Water Quality Monitoring (2019-2025)</p>
+  </div>
+
+  <div class="controls">
+    <div class="year-selector">
+      <label for="yearSelect"><strong>選擇年份：</strong></label>
+      <select id="yearSelect">
+        <option value="2025" selected>2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+      </select>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜尋水庫名稱...">
+    </div>
+    <div>
+      <a href="https://github.com/kiang/reservoir_data" target="_blank" class="btn btn-sm btn-primary">資料來源</a>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="reservoirs-grid" id="reservoirsGrid">
+      <!-- Reservoir cards will be generated here -->
+    </div>
+  </div>
+
+  <!-- Modal for detailed view -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalBody">
+        <!-- Modal content will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <div>載入中...</div>
+  </div>
+
+  <div style="position: fixed; bottom: 0px; left: 0px; z-index: 1000;">
+    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">江明宗 製作</a>
+  </div>
+
+  <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
