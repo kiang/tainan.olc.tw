@@ -1,15 +1,53 @@
 let allData = [];
-let filteredData = [];
 let locationStats = {};
+let displayedReasons = 0;
+const reasonsPerPage = 30;
+let isLoading = false;
+let allReasonsLoaded = false;
+
+// Infinite scroll handler
+let scrollTimeout;
+$(window).scroll(function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+        if (isLoading || allReasonsLoaded) return;
+
+        const scrollPosition = $(window).scrollTop() + $(window).height();
+        const documentHeight = $(document).height();
+
+        // Load more when user is within 500px of bottom
+        if (scrollPosition > documentHeight - 500) {
+            displayReasons(true);
+        }
+    }, 100);
+});
 
 // Fetch and process data
 $.getJSON('https://kiang.github.io/join.gov.tw/842b1b2a-464b-4f1d-9d61-d5a0ab1b946b.json', function(data) {
     allData = data;
-    filteredData = data;
     processData();
-    updateDisplay();
-    populateFilters();
+    createTicker();
+    displayReasons();
 });
+
+function createTicker() {
+    const reasons = allData.filter(item => item['附議原因'] && item['附議原因'].trim() !== '');
+
+    // Select random reasons for ticker
+    const shuffled = reasons.sort(() => 0.5 - Math.random()).slice(0, 50);
+
+    let tickerHTML = '';
+    // Duplicate for seamless loop
+    for (let i = 0; i < 2; i++) {
+        shuffled.forEach(item => {
+            const text = item['附議原因'].length > 80 ?
+                item['附議原因'].substring(0, 80) + '...' : item['附議原因'];
+            tickerHTML += `<div class="ticker-item">${text}</div>`;
+        });
+    }
+
+    $('#reasonTicker').html(tickerHTML);
+}
 
 function processData() {
     // Calculate location statistics
@@ -53,6 +91,75 @@ function processData() {
     displayLocationChart();
 }
 
+function displayReasons(loadMore = false) {
+    if (isLoading) return;
+
+    const reasons = allData.filter(item => item['附議原因'] && item['附議原因'].trim() !== '');
+
+    if (!loadMore) {
+        displayedReasons = 0;
+        allReasonsLoaded = false;
+        $('#allReasons').empty();
+    }
+
+    // Check if all reasons are already loaded
+    if (displayedReasons >= reasons.length) {
+        allReasonsLoaded = true;
+        $('#loadMoreBtn').html('已顯示所有附議原因').prop('disabled', true);
+        return;
+    }
+
+    isLoading = true;
+    $('#loadingIndicator').addClass('active');
+    $('#loadMoreBtn').html('載入中...').prop('disabled', true);
+
+    const start = displayedReasons;
+    const end = Math.min(start + reasonsPerPage, reasons.length);
+    const gradients = ['gradient-1', 'gradient-2', 'gradient-3', 'gradient-4',
+                       'gradient-5', 'gradient-6', 'gradient-7', 'gradient-8'];
+
+    // Simulate slight delay for smooth loading
+    setTimeout(function() {
+        for (let i = start; i < end; i++) {
+            const item = reasons[i];
+            const gradient = gradients[i % gradients.length];
+            const date = new Date(item['附議時間']);
+            const dateStr = isNaN(date) ? '' : date.toLocaleDateString('zh-TW');
+
+            const card = $(`
+                <div class="reason-card ${gradient}">
+                    <div class="reason-text">${item['附議原因']}</div>
+                    <div class="reason-meta">
+                        <span><i class="fa fa-user"></i> ${item['附議人暱稱']}</span>
+                        <span><i class="fa fa-map-marker"></i> ${item['居住縣市']} ${item['鄉鎮市區'] || ''}</span>
+                    </div>
+                </div>
+            `);
+
+            $('#allReasons').append(card);
+        }
+
+        displayedReasons = end;
+
+        // Update button and loading indicator state
+        $('#loadingIndicator').removeClass('active');
+
+        if (displayedReasons >= reasons.length) {
+            allReasonsLoaded = true;
+            $('#loadMoreBtn').html('已顯示所有附議原因 (' + reasons.length + ' 筆)').prop('disabled', true).addClass('btn-success').removeClass('btn-primary');
+        } else {
+            $('#loadMoreBtn').html('載入更多附議原因 (' + displayedReasons + '/' + reasons.length + ')').prop('disabled', false);
+        }
+
+        isLoading = false;
+    }, 200);
+}
+
+// Load more button handler
+$('#loadMoreBtn').click(function() {
+    displayReasons(true);
+});
+
 function displayLocationChart() {
     // Sort locations by count
     const sortedLocations = Object.entries(locationStats)
@@ -76,106 +183,4 @@ function displayLocationChart() {
     });
 
     $('#locationChart').html(html);
-}
-
-function populateFilters() {
-    // Populate city filter
-    const cities = Object.keys(locationStats).sort();
-    cities.forEach(city => {
-        $('#cityFilter').append(`<option value="${city}">${city} (${locationStats[city].count})</option>`);
-    });
-
-    // Event listeners
-    $('#cityFilter').change(function() {
-        const selectedCity = $(this).val();
-
-        // Update district filter
-        $('#districtFilter').html('<option value="">全部</option>');
-        if (selectedCity && locationStats[selectedCity]) {
-            const districts = Object.entries(locationStats[selectedCity].districts)
-                .sort((a, b) => b[1] - a[1]);
-            districts.forEach(([district, count]) => {
-                $('#districtFilter').append(`<option value="${district}">${district} (${count})</option>`);
-            });
-        }
-
-        applyFilters();
-    });
-
-    $('#districtFilter').change(applyFilters);
-    $('#searchInput').on('input', applyFilters);
-}
-
-function applyFilters() {
-    const city = $('#cityFilter').val();
-    const district = $('#districtFilter').val();
-    const searchTerm = $('#searchInput').val().toLowerCase();
-
-    filteredData = allData.filter(item => {
-        if (city && item['居住縣市'] !== city) return false;
-        if (district && item['鄉鎮市區'] !== district) return false;
-        if (searchTerm) {
-            const nickname = (item['附議人暱稱'] || '').toLowerCase();
-            const reason = (item['附議原因'] || '').toLowerCase();
-            if (!nickname.includes(searchTerm) && !reason.includes(searchTerm)) {
-                return false;
-            }
-        }
-        return true;
-    });
-
-    updateDisplay();
-}
-
-function updateDisplay() {
-    $('#recordCount').text(`(共 ${filteredData.length.toLocaleString()} 筆)`);
-
-    const tbody = $('#dataTableBody');
-    tbody.empty();
-
-    if (filteredData.length === 0) {
-        tbody.append('<tr><td colspan="6" class="text-center">無符合條件的資料</td></tr>');
-        return;
-    }
-
-    // Display data (limit to first 100 for performance)
-    const displayLimit = 100;
-    const displayData = filteredData.slice(0, displayLimit);
-
-    displayData.forEach(item => {
-        const date = new Date(item['附議時間']);
-        const dateStr = isNaN(date) ? item['附議時間'] :
-            date.toLocaleDateString('zh-TW', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-        const reason = item['附議原因'] || '-';
-        const reasonDisplay = reason.length > 100 ?
-            reason.substring(0, 100) + '...' : reason;
-
-        tbody.append(`
-            <tr>
-                <td>${item['編號']}</td>
-                <td>${dateStr}</td>
-                <td>${item['居住縣市']}</td>
-                <td>${item['鄉鎮市區'] || '-'}</td>
-                <td>${item['附議人暱稱']}</td>
-                <td title="${reason}">${reasonDisplay}</td>
-            </tr>
-        `);
-    });
-
-    if (filteredData.length > displayLimit) {
-        tbody.append(`
-            <tr>
-                <td colspan="6" class="text-center text-muted">
-                    顯示前 ${displayLimit} 筆，共 ${filteredData.length.toLocaleString()} 筆資料
-                </td>
-            </tr>
-        `);
-    }
 }

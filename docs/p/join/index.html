@@ -51,25 +51,6 @@
             margin-top: 5px;
         }
 
-        .filters {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .data-table {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-
-        table {
-            font-size: 0.9em;
-        }
 
         .location-stats {
             background-color: #fff;
@@ -96,6 +77,144 @@
             margin-left: 10px;
             border-radius: 3px;
         }
+
+        .ticker-wrapper {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .ticker {
+            display: flex;
+            animation: scroll 60s linear infinite;
+            white-space: nowrap;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 30px;
+            font-size: 1.1em;
+        }
+
+        .ticker-item::before {
+            content: "💧";
+            margin-right: 10px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .ticker-wrapper:hover .ticker {
+            animation-play-state: paused;
+        }
+
+        .all-reasons-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .reasons-grid {
+            column-count: 4;
+            column-gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .reasons-grid {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reasons-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reasons-grid {
+                column-count: 1;
+            }
+        }
+
+        .featured-reasons {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .reason-card {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            break-inside: avoid;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .reason-card.gradient-1 { background: linear-gradient(135deg, #5568d3 0%, #6b3fa0 100%); }
+        .reason-card.gradient-2 { background: linear-gradient(135deg, #d946a8 0%, #c93a4f 100%); }
+        .reason-card.gradient-3 { background: linear-gradient(135deg, #2d8bdb 0%, #0098d1 100%); }
+        .reason-card.gradient-4 { background: linear-gradient(135deg, #2eb872 0%, #1fb89f 100%); }
+        .reason-card.gradient-5 { background: linear-gradient(135deg, #e8537a 0%, #d69a28 100%); }
+        .reason-card.gradient-6 { background: linear-gradient(135deg, #269bb8 0%, #330867 100%); }
+        .reason-card.gradient-7 { background: linear-gradient(135deg, #6bb4c7 0%, #d88fa3 100%); }
+        .reason-card.gradient-8 { background: linear-gradient(135deg, #e57a7e 0%, #d98cb6 100%); }
+
+        .reason-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .reason-meta {
+            font-size: 0.9em;
+            opacity: 0.95;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border-left: 4px solid #667eea;
+            padding-left: 10px;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .loading-indicator.active {
+            display: block;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -110,9 +229,13 @@
 
 <body>
     <div class="container-fluid">
+        <div class="ticker-wrapper">
+            <div class="ticker" id="reasonTicker"></div>
+        </div>
+
         <div class="header">
             <h1>Join.gov.tw 水庫種電附議紀錄</h1>
-            <p class="text-muted">公共政策網路參與平台附議資料視覺化</p>
+            <p class="text-muted">公共政策網路參與平台附議資料視覺化 - 看看大家為什麼支持！</p>
         </div>
 
         <div class="stats-container">
@@ -130,52 +253,20 @@
             </div>
         </div>
 
-        <div class="location-stats">
-            <h3>各縣市附議統計</h3>
-            <div id="locationChart"></div>
-        </div>
-
-        <div class="filters">
-            <h4>篩選條件</h4>
-            <div class="row">
-                <div class="col-md-4">
-                    <label>縣市</label>
-                    <select class="form-select" id="cityFilter">
-                        <option value="">全部</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label>鄉鎮市區</label>
-                    <select class="form-select" id="districtFilter">
-                        <option value="">全部</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label>搜尋</label>
-                    <input type="text" class="form-control" id="searchInput" placeholder="搜尋暱稱或原因">
-                </div>
+        <div class="all-reasons-container">
+            <div class="section-title">💧 全部附議原因 - 讓每個聲音都被聽見</div>
+            <div class="reasons-grid" id="allReasons"></div>
+            <div class="loading-indicator" id="loadingIndicator">
+                載入更多附議原因中...
+            </div>
+            <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg" id="loadMoreBtn">載入更多附議原因</button>
             </div>
         </div>
 
-        <div class="data-table">
-            <h4>附議紀錄 <span id="recordCount"></span></h4>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>編號</th>
-                        <th>附議時間</th>
-                        <th>縣市</th>
-                        <th>鄉鎮市區</th>
-                        <th>暱稱</th>
-                        <th>附議原因</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTableBody">
-                    <tr>
-                        <td colspan="6" class="text-center">載入中...</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="location-stats">
+            <div class="section-title">各縣市附議統計</div>
+            <div id="locationChart"></div>
         </div>
 
         <div style="margin-top: 20px; text-align: center;">
