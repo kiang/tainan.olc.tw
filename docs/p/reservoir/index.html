@@ -233,6 +233,16 @@
       max-height: 350px;
     }
 
+    .modal-svg svg circle[id^="Dam_S"] {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-svg svg circle[id^="Dam_S"]:hover {
+      stroke-width: 4 !important;
+      filter: brightness(1.2);
+    }
+
     .data-table {
       width: 100%;
       margin-top: 20px;
@@ -254,6 +264,75 @@
 
     .data-table tr:hover {
       background: #f8f9fa;
+    }
+
+    .tabs-container {
+      margin-top: 20px;
+    }
+
+    .tabs-nav {
+      display: flex;
+      gap: 5px;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      padding: 10px 20px;
+      background: #f8f9fa;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s ease;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .tab-button:hover {
+      background: #e9ecef;
+      color: #333;
+    }
+
+    .tab-button.active {
+      background: white;
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .station-info {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .station-info p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 14px;
     }
 
     .loading {
@@ -287,6 +366,27 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+
+    .legend-colors {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .legend-colors .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .legend-colors .color-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
 
     @media (max-width: 768px) {
@@ -348,6 +448,28 @@
     </div>
     <div>
       <a href="https://github.com/kiang/reservoir_data" target="_blank" class="btn btn-sm btn-primary">資料來源</a>
+    </div>
+  </div>
+
+  <div style="position: fixed; top: 80px; right: 20px; background: rgba(255,255,255,0.95); padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; max-width: 200px;">
+    <h6 style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold;">卡爾森指數圖例</h6>
+    <div class="legend-colors">
+      <div class="legend-item">
+        <div class="color-box" style="background: #3498db;"></div>
+        <span style="font-size: 12px;">&lt;40 貧養</span>
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background: #27ae60;"></div>
+        <span style="font-size: 12px;">40-50 普養</span>
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background: #f39c12;"></div>
+        <span style="font-size: 12px;">50-60 優養</span>
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background: #e74c3c;"></div>
+        <span style="font-size: 12px;">&gt;60 超優養</span>
+      </div>
     </div>
   </div>
 

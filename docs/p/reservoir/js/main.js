@@ -4,6 +4,72 @@ let reservoirsList = [];
 let reservoirsData = {};
 let allReservoirsData = [];
 
+// Process SVG to color-code monitoring points based on Carlson Index
+function processSVG(svgContent, data) {
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+
+  // Find all circles with Dam_S* IDs
+  const circles = svgDoc.querySelectorAll('circle[id^="Dam_S"]');
+
+  circles.forEach(circle => {
+    const id = circle.getAttribute('id');
+    const match = id.match(/Dam_S(\d+)/);
+
+    if (match) {
+      const locationKey = match[1];
+      const locationData = data[locationKey];
+
+      if (locationData && locationData.data) {
+        // Get latest data
+        const dates = Object.keys(locationData.data).sort().reverse();
+        if (dates.length > 0) {
+          const latestData = locationData.data[dates[0]];
+
+          // Find Carlson Index
+          const ctsi = latestData.find(item =>
+            item.itemname === '卡爾森指數' ||
+            item.itemname === '卡爾森優養指數' ||
+            item.itemname === '卡爾森優養指數(CTSI)'
+          );
+
+          if (ctsi) {
+            const value = parseFloat(ctsi.itemvalue);
+            let color = '#999'; // Default gray
+
+            // Color coding based on Carlson Index
+            // <40: Oligotrophic (blue)
+            // 40-50: Mesotrophic (green)
+            // 50-60: Eutrophic (yellow/orange)
+            // >60: Hypereutrophic (red)
+            if (value < 40) {
+              color = '#3498db'; // Blue
+            } else if (value < 50) {
+              color = '#27ae60'; // Green
+            } else if (value < 60) {
+              color = '#f39c12'; // Orange
+            } else {
+              color = '#e74c3c'; // Red
+            }
+
+            circle.setAttribute('fill', color);
+            circle.setAttribute('stroke', '#fff');
+            circle.setAttribute('stroke-width', '2');
+
+            // Add title for tooltip
+            const title = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `測站 ${locationKey}\n卡爾森指數: ${value}\n日期: ${dates[0]}`;
+            circle.appendChild(title);
+          }
+        }
+      }
+    }
+  });
+
+  const serializer = new XMLSerializer();
+  return serializer.serializeToString(svgDoc);
+}
+
 // Load reservoir list and data
 async function loadReservoirs(year) {
   try {
@@ -28,6 +94,8 @@ async function loadReservoirs(year) {
           const svgResponse = await fetch(`shaps/${reservoir}.svg`);
           if (svgResponse.ok) {
             svgContent = await svgResponse.text();
+            // Process SVG to color-code monitoring points
+            svgContent = processSVG(svgContent, data);
           }
         } catch (error) {
           console.log(`SVG not found for ${reservoir}`);
@@ -146,7 +214,7 @@ function showReservoirDetail(reservoir) {
 
   // Add SVG
   if (reservoir.svg) {
-    html += `<div class="modal-svg">${reservoir.svg}</div>`;
+    html += `<div class="modal-svg" id="modalSvg">${reservoir.svg}</div>`;
   }
 
   // Get all data - data structure has location IDs as keys
@@ -155,6 +223,21 @@ function showReservoirDetail(reservoir) {
   let allDates = [];
 
   if (locationKeys.length > 0) {
+    html += `<h4 style="color: #28a745; margin-top: 20px;">監測站資料</h4>`;
+
+    // Create tabs if multiple stations
+    if (locationKeys.length > 1) {
+      html += '<div class="tabs-container">';
+      html += '<div class="tabs-nav">';
+
+      locationKeys.forEach((locationKey, index) => {
+        const activeClass = index === 0 ? 'active' : '';
+        html += `<button class="tab-button ${activeClass}" data-tab="tab-${locationKey}">測站 ${locationKey}</button>`;
+      });
+
+      html += '</div>';
+    }
+
     // Process each location
     locationKeys.forEach((locationKey, index) => {
       const locationData = reservoir.data[locationKey];
@@ -165,14 +248,20 @@ function showReservoirDetail(reservoir) {
         const latestDate = dates[0];
         const latestData = locationData.data[latestDate];
 
-        if (index === 0) {
-          html += `<h4 style="color: #28a745; margin-top: 20px;">最新監測資料</h4>`;
-        }
+        const activeClass = index === 0 ? 'active' : '';
 
         if (locationKeys.length > 1) {
-          html += `<h5 style="color: #666; margin-top: 15px;">測站 ${locationKey}</h5>`;
+          html += `<div class="tab-content ${activeClass}" id="tab-${locationKey}">`;
         }
-        html += `<p style="color: #666; margin-bottom: 15px;">日期：${latestDate}</p>`;
+
+        // Station info
+        html += '<div class="station-info">';
+        html += `<p><strong>測站編號：</strong>${locationKey}</p>`;
+        html += `<p><strong>更新日期：</strong>${latestDate}</p>`;
+        if (locationData.twd97lon && locationData.twd97lat) {
+          html += `<p><strong>座標：</strong>${locationData.twd97lat}, ${locationData.twd97lon}</p>`;
+        }
+        html += '</div>';
 
         // Group data by measurement
         const measurements = {};
@@ -200,16 +289,18 @@ function showReservoirDetail(reservoir) {
         });
 
         html += '</tbody></table>';
-        hasData = true;
 
-        // Add coordinates for this location
-        if (locationData.twd97lon && locationData.twd97lat) {
-          html += `<p style="margin-top: 10px; color: #666; font-size: 13px;">
-            座標：${locationData.twd97lat}, ${locationData.twd97lon}
-          </p>`;
+        if (locationKeys.length > 1) {
+          html += '</div>'; // Close tab-content
         }
+
+        hasData = true;
       }
     });
+
+    if (locationKeys.length > 1) {
+      html += '</div>'; // Close tabs-container
+    }
 
     // Show all available dates summary
     if (allDates.length > 1) {
@@ -229,6 +320,92 @@ function showReservoirDetail(reservoir) {
 
   modalBody.innerHTML = html;
   modal.classList.add('show');
+
+  // Add click handlers to SVG circles and tab buttons after modal is rendered
+  setTimeout(() => {
+    const svgContainer = document.getElementById('modalSvg');
+    if (svgContainer) {
+      const circles = svgContainer.querySelectorAll('circle[id^="Dam_S"]');
+      circles.forEach(circle => {
+        circle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = this.getAttribute('id');
+          const match = id.match(/Dam_S(\d+)/);
+          if (match) {
+            const locationKey = match[1];
+            moveMarkToCircle(svgContainer, circle);
+            activateTab(locationKey);
+          }
+        });
+      });
+    }
+
+    // Add tab button handlers
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        const locationKey = tabId.replace('tab-', '');
+
+        // Activate this tab
+        activateTabByButton(this);
+
+        // Move mark to corresponding circle
+        const circle = document.querySelector(`#modalSvg circle[id="Dam_S${locationKey}"]`);
+        if (circle) {
+          moveMarkToCircle(document.getElementById('modalSvg'), circle);
+        }
+      });
+    });
+  }, 100);
+}
+
+// Move Mark group to clicked circle
+function moveMarkToCircle(svgContainer, circle) {
+  const svg = svgContainer.querySelector('svg');
+  if (!svg) return;
+
+  const markGroup = svg.querySelector('#Mark');
+  if (!markGroup) return;
+
+  // Get circle position
+  const cx = parseFloat(circle.getAttribute('cx'));
+  const cy = parseFloat(circle.getAttribute('cy'));
+
+  // Update Mark group position
+  const gMark = markGroup.querySelector('#gMark');
+  if (gMark) {
+    gMark.setAttribute('transform', `translate(${cx}, ${cy}) translate(-14, -14)`);
+  }
+}
+
+// Activate tab by location key
+function activateTab(locationKey) {
+  const tabId = `tab-${locationKey}`;
+
+  // Find and click the corresponding tab button
+  const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+  if (tabButton) {
+    activateTabByButton(tabButton);
+  }
+}
+
+// Activate tab by button element
+function activateTabByButton(button) {
+  const tabId = button.getAttribute('data-tab');
+
+  // Remove active class from all buttons and contents
+  document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+  // Add active class to clicked button
+  button.classList.add('active');
+
+  // Show corresponding content
+  const tabContent = document.getElementById(tabId);
+  if (tabContent) {
+    tabContent.classList.add('active');
+  }
 }
 
 // Close modal
