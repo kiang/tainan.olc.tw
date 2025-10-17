@@ -231,7 +231,10 @@ function renderReservoirsGrid(reservoirs) {
   reservoirs.forEach(reservoir => {
     const card = document.createElement('div');
     card.className = 'reservoir-card';
-    card.onclick = () => showReservoirDetail(reservoir);
+    card.onclick = () => {
+      updateHash(currentYear, reservoir.name);
+      showReservoirDetail(reservoir);
+    };
 
     let cardHTML = `<h5>${reservoir.name}</h5>`;
 
@@ -936,28 +939,39 @@ function activateTabByButton(button) {
 // Close modal
 document.getElementById('modalClose').addEventListener('click', function() {
   document.getElementById('detailModal').classList.remove('show');
+  updateHash(currentYear, null);
 });
 
 document.getElementById('detailModal').addEventListener('click', function(e) {
   if (e.target === this) {
     this.classList.remove('show');
+    updateHash(currentYear, null);
   }
 });
 
 // Year selector
 document.getElementById('yearSelect').addEventListener('change', function(e) {
-  currentYear = e.target.value;
-  document.getElementById('detailModal').classList.remove('show');
-  loadReservoirs(currentYear).then(() => {
-    // Re-apply current search filter after loading new year
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-    if (searchTerm !== '') {
-      const filtered = allReservoirsData.filter(reservoir =>
-        reservoir.name.toLowerCase().includes(searchTerm)
-      );
-      renderReservoirsGrid(filtered);
+  const newYear = e.target.value;
+  const oldHash = window.location.hash;
+  updateHash(newYear, null);
+
+  // If hash didn't change (e.g., switching from #2024 to #2025 when already on 2024),
+  // manually trigger the reload
+  setTimeout(() => {
+    if (window.location.hash === oldHash && newYear !== currentYear) {
+      currentYear = newYear;
+      document.getElementById('detailModal').classList.remove('show');
+      loadReservoirs(currentYear).then(() => {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        if (searchTerm !== '') {
+          const filtered = allReservoirsData.filter(reservoir =>
+            reservoir.name.toLowerCase().includes(searchTerm)
+          );
+          renderReservoirsGrid(filtered);
+        }
+      });
     }
-  });
+  }, 10);
 });
 
 // Search functionality
@@ -974,5 +988,87 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
   }
 });
 
+// Parse URL hash to set initial year and reservoir
+function parseHash() {
+  const hash = window.location.hash.substring(1); // Remove #
+  if (!hash) {
+    return {
+      year: currentYear,
+      reservoir: null
+    };
+  }
+
+  const parts = hash.split('/');
+  let parsedYear = currentYear;
+
+  if (parts.length >= 1 && parts[0]) {
+    // First part is year
+    const year = parts[0];
+    if (['2019', '2020', '2021', '2022', '2023', '2024', '2025'].includes(year)) {
+      parsedYear = year;
+    }
+  }
+
+  return {
+    year: parsedYear,
+    reservoir: parts.length >= 2 ? decodeURIComponent(parts[1]) : null
+  };
+}
+
+// Update URL hash
+function updateHash(year, reservoir) {
+  if (reservoir) {
+    window.location.hash = `${year}/${encodeURIComponent(reservoir)}`;
+  } else {
+    window.location.hash = year;
+  }
+}
+
+// Handle hash changes
+window.addEventListener('hashchange', function() {
+  const params = parseHash();
+  if (params.year !== currentYear) {
+    currentYear = params.year;
+    document.getElementById('yearSelect').value = currentYear;
+    document.getElementById('detailModal').classList.remove('show');
+    loadReservoirs(currentYear).then(() => {
+      // Re-apply current search filter after loading new year
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (searchTerm !== '') {
+        const filtered = allReservoirsData.filter(reservoir =>
+          reservoir.name.toLowerCase().includes(searchTerm)
+        );
+        renderReservoirsGrid(filtered);
+      }
+
+      if (params.reservoir) {
+        openReservoirByName(params.reservoir);
+      }
+    });
+  } else if (params.reservoir) {
+    openReservoirByName(params.reservoir);
+  } else {
+    // Hash cleared, close modal
+    document.getElementById('detailModal').classList.remove('show');
+  }
+});
+
+// Open reservoir by name
+function openReservoirByName(name) {
+  const reservoir = allReservoirsData.find(r => r.name === name);
+  if (reservoir) {
+    showReservoirDetail(reservoir);
+  }
+}
+
 // Initial load
-loadReservoirs(currentYear);
+const initialParams = parseHash();
+if (initialParams.year) {
+  currentYear = initialParams.year;
+  document.getElementById('yearSelect').value = currentYear;
+}
+loadReservoirs(currentYear).then(() => {
+  if (initialParams.reservoir) {
+    openReservoirByName(initialParams.reservoir);
+  }
+});
