@@ -948,7 +948,16 @@ document.getElementById('detailModal').addEventListener('click', function(e) {
 document.getElementById('yearSelect').addEventListener('change', function(e) {
   currentYear = e.target.value;
   document.getElementById('detailModal').classList.remove('show');
-  loadReservoirs(currentYear);
+  loadReservoirs(currentYear).then(() => {
+    // Re-apply current search filter after loading new year
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (searchTerm !== '') {
+      const filtered = allReservoirsData.filter(reservoir =>
+        reservoir.name.toLowerCase().includes(searchTerm)
+      );
+      renderReservoirsGrid(filtered);
+    }
+  });
 });
 
 // Search functionality
