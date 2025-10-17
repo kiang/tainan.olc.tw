@@ -116,8 +116,40 @@ async function loadReservoirs(year) {
 
     await Promise.all(promises);
 
-    // Sort by name
-    allReservoirsData.sort((a, b) => a.name.localeCompare(b.name, 'zh-TW'));
+    // Sort by latest update date in descending order
+    allReservoirsData.sort((a, b) => {
+      // Get latest date for reservoir a
+      let latestDateA = null;
+      const locationKeysA = Object.keys(a.data).filter(key => key !== 'name' && key !== 'svg');
+      locationKeysA.forEach(locationKey => {
+        const locationData = a.data[locationKey];
+        if (locationData.data && Object.keys(locationData.data).length > 0) {
+          const dates = Object.keys(locationData.data).sort().reverse();
+          if (!latestDateA || dates[0] > latestDateA) {
+            latestDateA = dates[0];
+          }
+        }
+      });
+
+      // Get latest date for reservoir b
+      let latestDateB = null;
+      const locationKeysB = Object.keys(b.data).filter(key => key !== 'name' && key !== 'svg');
+      locationKeysB.forEach(locationKey => {
+        const locationData = b.data[locationKey];
+        if (locationData.data && Object.keys(locationData.data).length > 0) {
+          const dates = Object.keys(locationData.data).sort().reverse();
+          if (!latestDateB || dates[0] > latestDateB) {
+            latestDateB = dates[0];
+          }
+        }
+      });
+
+      // Sort in descending order (newest first)
+      if (!latestDateA && !latestDateB) return 0;
+      if (!latestDateA) return 1;
+      if (!latestDateB) return -1;
+      return latestDateB.localeCompare(latestDateA);
+    });
 
     // Render grid
     renderReservoirsGrid(allReservoirsData);
