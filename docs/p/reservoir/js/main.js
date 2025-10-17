@@ -313,7 +313,7 @@ function showReservoirDetail(reservoir) {
   // Store reservoir data for chart generation
   currentReservoirData = reservoir;
 
-  let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name}</h2>`;
+  let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name} (${currentYear})</h2>`;
 
   // Add water usage pie chart if data available
   const usageData = waterUsageData[reservoir.name];
