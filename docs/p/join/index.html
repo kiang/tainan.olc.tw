@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta property="og:title" content="Join.gov.tw 水庫種電附議紀錄">
-    <meta property="og:description" content="公共政策網路參與平台 - 水庫種電附議紀錄視覺化">
+    <meta property="og:title" content="拒絕水庫水面裝設太陽能板 - 守護民生用水安全">
+    <meta property="og:description" content="烏山頭水庫供應南台灣 1/4 民生用水，影響數百萬人飲水安全。加入連署，拒絕水庫水面裝設太陽能板！">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://tainan.olc.tw/p/join/og_image.png">
-    <title>Join.gov.tw 水庫種電附議紀錄</title>
+    <title>拒絕水庫水面裝設太陽能板 - 守護民生用水安全</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -215,6 +215,141 @@
         .loading-indicator.active {
             display: block;
         }
+
+        .floating-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 380px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .floating-cta-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .floating-cta-text {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .cta-stats {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .cta-stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .cta-stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .cta-stat-label {
+            opacity: 0.9;
+        }
+
+        .cta-stat-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .cta-progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .cta-progress-fill {
+            background: #fee140;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .cta-impact {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 6px;
+            border-left: 3px solid #fee140;
+        }
+
+        .floating-cta-button {
+            display: block;
+            background: white;
+            color: #667eea;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .floating-cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            color: #5568d3;
+            text-decoration: none;
+        }
+
+        .floating-cta-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .floating-cta-close:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .floating-cta {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                max-width: none;
+                padding: 20px;
+            }
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -234,8 +369,8 @@
         </div>
 
         <div class="header">
-            <h1>Join.gov.tw 水庫種電附議紀錄</h1>
-            <p class="text-muted">公共政策網路參與平台附議資料視覺化 - 看看大家為什麼支持！</p>
+            <h1>拒絕水庫水面裝設太陽能板 - 守護民生用水安全</h1>
+            <p class="text-muted">看看大家的附議理由，一起守護南台灣數百萬人的飲水安全！</p>
         </div>
 
         <div class="stats-container">
@@ -273,6 +408,39 @@
             <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg btn-primary">江明宗 製作</a>
             <a href="https://github.com/kiang/tainan.olc.tw" target="_blank" class="btn btn-lg btn-secondary">
                 <i class="fa fa-github"></i> GitHub
+            </a>
+        </div>
+
+        <!-- Floating Call-to-Action -->
+        <div class="floating-cta" id="floatingCta">
+            <button class="floating-cta-close" id="closeCta">&times;</button>
+            <div class="floating-cta-title">💧 守護水源，需要你的支持！</div>
+            <div class="floating-cta-text">
+                拒絕水庫水面裝設太陽能板，維護民生用水安全
+            </div>
+
+            <div class="cta-stats">
+                <div class="cta-stat-row">
+                    <span class="cta-stat-label">已附議人數</span>
+                    <span class="cta-stat-value" id="ctaEndorsementCount">-</span>
+                </div>
+                <div class="cta-stat-row">
+                    <span class="cta-stat-label">距離目標</span>
+                    <span class="cta-stat-value">5,000 人</span>
+                </div>
+                <div class="cta-progress-bar">
+                    <div class="cta-progress-fill" id="ctaProgressBar"></div>
+                </div>
+            </div>
+
+            <div class="cta-impact">
+                ⏰ 剩餘 <strong id="ctaDaysRemaining">-</strong> 天 | 烏山頭水庫供應南台灣 1/4 民生用水，影響數百萬人飲水安全
+            </div>
+
+            <a href="https://join.gov.tw/idea/endorse/step1/fast/842b1b2a-464b-4f1d-9d61-d5a0ab1b946b"
+               target="_blank"
+               class="floating-cta-button">
+                🔥 立即附議 →
             </a>
         </div>
     </div>

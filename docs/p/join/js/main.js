@@ -28,6 +28,7 @@ $.getJSON('https://kiang.github.io/join.gov.tw/842b1b2a-464b-4f1d-9d61-d5a0ab1b9
     processData();
     createTicker();
     displayReasons();
+    updateCTA();
 });
 
 function createTicker() {
@@ -94,7 +95,13 @@ function processData() {
 function displayReasons(loadMore = false) {
     if (isLoading) return;
 
-    const reasons = allData.filter(item => item['附議原因'] && item['附議原因'].trim() !== '');
+    const reasons = allData
+        .filter(item => item['附議原因'] && item['附議原因'].trim() !== '')
+        .sort((a, b) => {
+            const dateA = new Date(a['附議時間']);
+            const dateB = new Date(b['附議時間']);
+            return dateB - dateA; // Descending order (newest first)
+        });
 
     if (!loadMore) {
         displayedReasons = 0;
@@ -126,11 +133,17 @@ function displayReasons(loadMore = false) {
             const date = new Date(item['附議時間']);
             const dateStr = isNaN(date) ? '' : date.toLocaleDateString('zh-TW');
 
+            // Extract username if nickname contains '@'
+            let displayName = item['附議人暱稱'];
+            if (displayName.includes('@')) {
+                displayName = displayName.split('@')[0];
+            }
+
             const card = $(`
                 <div class="reason-card ${gradient}">
                     <div class="reason-text">${item['附議原因']}</div>
                     <div class="reason-meta">
-                        <span><i class="fa fa-user"></i> ${item['附議人暱稱']}</span>
+                        <span><i class="fa fa-user"></i> ${displayName}</span>
                         <span><i class="fa fa-map-marker"></i> ${item['居住縣市']} ${item['鄉鎮市區'] || ''}</span>
                     </div>
                 </div>
@@ -159,6 +172,42 @@ function displayReasons(loadMore = false) {
 $('#loadMoreBtn').click(function() {
     displayReasons(true);
 });
+
+// Close floating CTA
+$('#closeCta').click(function() {
+    $('#floatingCta').fadeOut(300);
+});
+
+// Update CTA with dynamic data
+function updateCTA() {
+    const targetGoal = 5000;
+    const endorsementCount = allData.length;
+
+    // Update endorsement count
+    $('#ctaEndorsementCount').text(endorsementCount.toLocaleString() + ' 人');
+
+    // Calculate progress percentage
+    const progressPercentage = (endorsementCount / targetGoal) * 100;
+    $('#ctaProgressBar').css('width', progressPercentage.toFixed(1) + '%');
+
+    // Calculate days remaining
+    // Fixed start date: October 16, 2025 (GMT+8)
+    const startDate = new Date('2025-10-16T00:00:00+08:00');
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 60); // 60 days from start (December 15, 2025)
+
+    // Get current time in GMT+8
+    const now = new Date();
+    const taiwanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+
+    const daysRemaining = Math.ceil((endDate - taiwanTime) / (1000 * 60 * 60 * 24));
+
+    if (daysRemaining > 0) {
+        $('#ctaDaysRemaining').text(daysRemaining);
+    } else {
+        $('#ctaDaysRemaining').text('0');
+    }
+}
 
 function displayLocationChart() {
     // Sort locations by count
