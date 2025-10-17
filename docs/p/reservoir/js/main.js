@@ -304,6 +304,7 @@ function renderReservoirsGrid(reservoirs) {
 
 // Global variable to store current reservoir data for chart generation
 let currentReservoirData = null;
+let usageChartInstance = null;
 
 // Show reservoir detail in modal
 function showReservoirDetail(reservoir) {
@@ -491,6 +492,11 @@ function showReservoirDetail(reservoir) {
     setTimeout(() => {
       const canvas = document.getElementById('usageChart');
       if (canvas) {
+        // Destroy previous chart instance if exists
+        if (usageChartInstance) {
+          usageChartInstance.destroy();
+        }
+
         const ctx = canvas.getContext('2d');
         const total = usageData.agriculture + usageData.domestic + usageData.industrial;
 
@@ -517,7 +523,7 @@ function showReservoirDetail(reservoir) {
           colors.push('#f39c12');
         }
 
-        new Chart(ctx, {
+        usageChartInstance = new Chart(ctx, {
           type: 'pie',
           data: {
             labels: labels,
