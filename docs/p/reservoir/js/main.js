@@ -259,7 +259,6 @@ function showReservoirDetail(reservoir) {
         const dates = Object.keys(locationData.data).sort().reverse();
         allDates = allDates.concat(dates);
         const latestDate = dates[0];
-        const latestData = locationData.data[latestDate];
 
         const activeClass = index === 0 ? 'active' : '';
 
@@ -270,38 +269,70 @@ function showReservoirDetail(reservoir) {
         // Station info
         html += '<div class="station-info">';
         html += `<p><strong>測站編號：</strong>${locationKey}</p>`;
-        html += `<p><strong>更新日期：</strong>${latestDate}</p>`;
+        html += `<p><strong>最新更新：</strong>${latestDate}</p>`;
+        html += `<p><strong>資料筆數：</strong>${dates.length} 筆</p>`;
         if (locationData.twd97lon && locationData.twd97lat) {
           html += `<p><strong>座標：</strong>${locationData.twd97lat}, ${locationData.twd97lon}</p>`;
         }
         html += '</div>';
 
-        // Group data by measurement
-        const measurements = {};
-        latestData.forEach(item => {
-          if (!measurements[item.itemname]) {
-            measurements[item.itemname] = [];
-          }
-          measurements[item.itemname].push(item);
-        });
+        // Create date tabs if multiple dates
+        if (dates.length > 1) {
+          html += '<div class="tabs-container" style="margin-top: 15px;">';
+          html += '<div class="tabs-nav">';
 
-        // Display all measurements in table
-        html += '<table class="data-table">';
-        html += '<thead><tr><th>監測項目</th><th>數值</th><th>單位</th><th>採樣深度</th></tr></thead>';
-        html += '<tbody>';
-
-        Object.entries(measurements).forEach(([name, items]) => {
-          items.forEach(item => {
-            html += `<tr>
-              <td><strong>${item.itemname}</strong></td>
-              <td>${item.itemvalue}</td>
-              <td>${item.itemunit}</td>
-              <td>${item.sampledepth || '-'} ${item.samplelayer || ''}</td>
-            </tr>`;
+          dates.forEach((date, dateIndex) => {
+            const activeClass = dateIndex === 0 ? 'active' : '';
+            const dateLabel = dateIndex === 0 ? `最新 ${date}` : date;
+            html += `<button class="tab-button date-tab ${activeClass}" data-tab="date-${locationKey}-${dateIndex}">${dateLabel}</button>`;
           });
+
+          html += '</div>';
+        }
+
+        // Display data for all dates (latest first)
+        dates.forEach((date, dateIndex) => {
+          const dateData = locationData.data[date];
+          const activeClass = dateIndex === 0 ? 'active' : '';
+
+          if (dates.length > 1) {
+            html += `<div class="tab-content ${activeClass}" id="date-${locationKey}-${dateIndex}">`;
+          } else {
+            html += `<div style="margin-top: 15px;">`;
+          }
+
+          // Group data by measurement
+          const measurements = {};
+          dateData.forEach(item => {
+            if (!measurements[item.itemname]) {
+              measurements[item.itemname] = [];
+            }
+            measurements[item.itemname].push(item);
+          });
+
+          // Display all measurements in table
+          html += '<table class="data-table">';
+          html += '<thead><tr><th>監測項目</th><th>數值</th><th>單位</th><th>採樣深度</th></tr></thead>';
+          html += '<tbody>';
+
+          Object.entries(measurements).forEach(([name, items]) => {
+            items.forEach(item => {
+              html += `<tr>
+                <td><strong>${item.itemname}</strong></td>
+                <td>${item.itemvalue}</td>
+                <td>${item.itemunit}</td>
+                <td>${item.sampledepth || '-'} ${item.samplelayer || ''}</td>
+              </tr>`;
+            });
+          });
+
+          html += '</tbody></table>';
+          html += '</div>';
         });
 
-        html += '</tbody></table>';
+        if (dates.length > 1) {
+          html += '</div>'; // Close date tabs-container
+        }
 
         if (locationKeys.length > 1) {
           html += '</div>'; // Close tab-content
@@ -362,8 +393,8 @@ function showReservoirDetail(reservoir) {
       });
     }
 
-    // Add tab button handlers
-    const tabButtons = document.querySelectorAll('.tab-button');
+    // Add tab button handlers for station tabs
+    const tabButtons = document.querySelectorAll('.tab-button:not(.date-tab)');
     tabButtons.forEach(button => {
       button.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
@@ -377,6 +408,14 @@ function showReservoirDetail(reservoir) {
         if (circle) {
           moveMarkToCircle(document.getElementById('modalSvg'), circle);
         }
+      });
+    });
+
+    // Add tab button handlers for date tabs
+    const dateTabButtons = document.querySelectorAll('.tab-button.date-tab');
+    dateTabButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        activateTabByButton(this);
       });
     });
   }, 100);
@@ -557,10 +596,20 @@ function activateTab(locationKey) {
 // Activate tab by button element
 function activateTabByButton(button) {
   const tabId = button.getAttribute('data-tab');
+  const isDateTab = button.classList.contains('date-tab');
 
-  // Remove active class from all buttons and contents
-  document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  if (isDateTab) {
+    // For date tabs, only toggle within the same parent container
+    const parentContainer = button.closest('.tabs-container');
+    if (parentContainer) {
+      parentContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      parentContainer.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    }
+  } else {
+    // For station tabs, toggle all station-level tabs
+    document.querySelectorAll('.tab-button:not(.date-tab)').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content[id^="tab-"]').forEach(content => content.classList.remove('active'));
+  }
 
   // Add active class to clicked button
   button.classList.add('active');
