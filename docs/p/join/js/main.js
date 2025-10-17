@@ -173,9 +173,22 @@ $('#loadMoreBtn').click(function() {
     displayReasons(true);
 });
 
-// Close floating CTA
-$('#closeCta').click(function() {
-    $('#floatingCta').fadeOut(300);
+// Minimize floating CTA
+$('#closeCta').click(function(e) {
+    e.stopPropagation();
+    $('#floatingCta').addClass('minimized');
+});
+
+// Expand floating CTA when clicking on minimized box
+$('#floatingCta').click(function(e) {
+    if ($(this).hasClass('minimized')) {
+        $(this).removeClass('minimized');
+    }
+});
+
+// Prevent clicks on content from closing
+$('.cta-content').click(function(e) {
+    e.stopPropagation();
 });
 
 // Update CTA with dynamic data

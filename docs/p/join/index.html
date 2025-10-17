@@ -228,6 +228,31 @@
             z-index: 1000;
             max-width: 380px;
             animation: pulse 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .floating-cta.minimized {
+            max-width: 80px;
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .floating-cta.minimized .cta-content {
+            display: none;
+        }
+
+        .floating-cta.minimized .floating-cta-close {
+            display: none;
+        }
+
+        .floating-cta-icon {
+            font-size: 2em;
+            text-align: center;
+            display: none;
+        }
+
+        .floating-cta.minimized .floating-cta-icon {
+            display: block;
         }
 
         @keyframes pulse {
@@ -406,42 +431,42 @@
 
         <div style="margin-top: 20px; text-align: center;">
             <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg btn-primary">江明宗 製作</a>
-            <a href="https://github.com/kiang/tainan.olc.tw" target="_blank" class="btn btn-lg btn-secondary">
-                <i class="fa fa-github"></i> GitHub
-            </a>
         </div>
 
         <!-- Floating Call-to-Action -->
         <div class="floating-cta" id="floatingCta">
-            <button class="floating-cta-close" id="closeCta">&times;</button>
-            <div class="floating-cta-title">💧 守護水源，需要你的支持！</div>
-            <div class="floating-cta-text">
-                拒絕水庫水面裝設太陽能板，維護民生用水安全
-            </div>
-
-            <div class="cta-stats">
-                <div class="cta-stat-row">
-                    <span class="cta-stat-label">已附議人數</span>
-                    <span class="cta-stat-value" id="ctaEndorsementCount">-</span>
+            <div class="floating-cta-icon">💧</div>
+            <div class="cta-content">
+                <button class="floating-cta-close" id="closeCta">&times;</button>
+                <div class="floating-cta-title">💧 守護水源，需要你的支持！</div>
+                <div class="floating-cta-text">
+                    拒絕水庫水面裝設太陽能板，維護民生用水安全
                 </div>
-                <div class="cta-stat-row">
-                    <span class="cta-stat-label">距離目標</span>
-                    <span class="cta-stat-value">5,000 人</span>
-                </div>
-                <div class="cta-progress-bar">
-                    <div class="cta-progress-fill" id="ctaProgressBar"></div>
-                </div>
-            </div>
 
-            <div class="cta-impact">
-                ⏰ 剩餘 <strong id="ctaDaysRemaining">-</strong> 天 | 烏山頭水庫供應南台灣 1/4 民生用水，影響數百萬人飲水安全
-            </div>
+                <div class="cta-stats">
+                    <div class="cta-stat-row">
+                        <span class="cta-stat-label">已附議人數</span>
+                        <span class="cta-stat-value" id="ctaEndorsementCount">-</span>
+                    </div>
+                    <div class="cta-stat-row">
+                        <span class="cta-stat-label">距離目標</span>
+                        <span class="cta-stat-value">5,000 人</span>
+                    </div>
+                    <div class="cta-progress-bar">
+                        <div class="cta-progress-fill" id="ctaProgressBar"></div>
+                    </div>
+                </div>
 
-            <a href="https://join.gov.tw/idea/endorse/step1/fast/842b1b2a-464b-4f1d-9d61-d5a0ab1b946b"
-               target="_blank"
-               class="floating-cta-button">
-                🔥 立即附議 →
-            </a>
+                <div class="cta-impact">
+                    ⏰ 剩餘 <strong id="ctaDaysRemaining">-</strong> 天 | 烏山頭水庫供應南台灣 1/4 民生用水，影響數百萬人飲水安全
+                </div>
+
+                <a href="https://join.gov.tw/idea/endorse/step1/fast/842b1b2a-464b-4f1d-9d61-d5a0ab1b946b"
+                   target="_blank"
+                   class="floating-cta-button">
+                    🔥 立即附議 →
+                </a>
+            </div>
         </div>
     </div>
 
