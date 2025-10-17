@@ -3,6 +3,7 @@ let currentYear = '2025';
 let reservoirsList = [];
 let reservoirsData = {};
 let allReservoirsData = [];
+let waterUsageData = {};
 
 // Process SVG to color-code monitoring points based on Carlson Index
 function processSVG(svgContent, data) {
@@ -70,10 +71,65 @@ function processSVG(svgContent, data) {
   return serializer.serializeToString(svgDoc);
 }
 
+// Load water usage CSV data
+async function loadWaterUsageData(year) {
+  try {
+    const response = await fetch(`data/${year}.csv`);
+    if (!response.ok) return;
+
+    const csvText = await response.text();
+    const lines = csvText.trim().split('\n');
+
+    waterUsageData = {};
+
+    // Skip header row
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      // Handle quoted CSV fields
+      const parts = [];
+      let current = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          parts.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      parts.push(current);
+
+      if (parts.length >= 5) {
+        const name = parts[0];
+        const agriculture = parseFloat(parts[2].replace(/,/g, '').replace(/-00/g, '0'));
+        const domestic = parseFloat(parts[3].replace(/,/g, '').replace(/-00/g, '0'));
+        const industrial = parseFloat(parts[4].replace(/,/g, '').replace(/-00/g, '0'));
+
+        waterUsageData[name] = {
+          agriculture: agriculture,
+          domestic: domestic,
+          industrial: industrial
+        };
+      }
+    }
+  } catch (error) {
+    console.log('Water usage data not available for year:', year);
+  }
+}
+
 // Load reservoir list and data
 async function loadReservoirs(year) {
   try {
     document.getElementById('loading').classList.add('show');
+
+    // Load water usage data (always use 2024 data)
+    await loadWaterUsageData('2024');
 
     const response = await fetch(`https://kiang.github.io/reservoir_data/json/${year}/list.json`);
     reservoirsList = await response.json();
@@ -189,6 +245,20 @@ function renderReservoirsGrid(reservoirs) {
     // Add basic info
     cardHTML += '<div class="reservoir-info">';
 
+    // Add water usage data if available
+    const usageData = waterUsageData[reservoir.name];
+    if (usageData && (usageData.agriculture > 0 || usageData.domestic > 0 || usageData.industrial > 0)) {
+      if (usageData.agriculture > 0) {
+        cardHTML += `<div class="info-item"><span class="label">農業用水</span><span>${usageData.agriculture.toLocaleString()} 萬噸</span></div>`;
+      }
+      if (usageData.domestic > 0) {
+        cardHTML += `<div class="info-item"><span class="label">生活用水</span><span>${usageData.domestic.toLocaleString()} 萬噸</span></div>`;
+      }
+      if (usageData.industrial > 0) {
+        cardHTML += `<div class="info-item"><span class="label">工業用水</span><span>${usageData.industrial.toLocaleString()} 萬噸</span></div>`;
+      }
+    }
+
     // Get latest data summary - data structure has location IDs as keys
     const locationKeys = Object.keys(reservoir.data).filter(key => key !== 'name' && key !== 'svg');
     let hasData = false;
@@ -204,15 +274,10 @@ function renderReservoirsGrid(reservoirs) {
 
         // Find key measurement
         const ctsi = latestData.find(item => item.itemname === '卡爾森指數' || item.itemname === '卡爾森優養指數' || item.itemname === '卡爾森優養指數(CTSI)');
-        const waterTemp = latestData.find(item => item.itemname === '水溫');
         const ph = latestData.find(item => item.itemname === 'pH');
 
         if (ctsi) {
           cardHTML += `<div class="info-item"><span class="label">卡爾森指數</span><span>${ctsi.itemvalue}</span></div>`;
-          hasData = true;
-        }
-        if (waterTemp) {
-          cardHTML += `<div class="info-item"><span class="label">水溫</span><span>${waterTemp.itemvalue}${waterTemp.itemunit}</span></div>`;
           hasData = true;
         }
         if (ph) {
@@ -226,7 +291,7 @@ function renderReservoirsGrid(reservoirs) {
       }
     }
 
-    if (!hasData) {
+    if (!hasData && !usageData) {
       cardHTML += '<div class="no-data">目前無監測資料</div>';
     }
 
@@ -249,6 +314,22 @@ function showReservoirDetail(reservoir) {
   currentReservoirData = reservoir;
 
   let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name}</h2>`;
+
+  // Add water usage pie chart if data available
+  const usageData = waterUsageData[reservoir.name];
+  if (usageData && (usageData.agriculture > 0 || usageData.domestic > 0 || usageData.industrial > 0)) {
+    html += `<div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+      <h5 style="text-align: center; color: #667eea; margin-bottom: 15px;">供水用途分布</h5>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <canvas id="usageChart" style="max-width: 250px; max-height: 250px;"></canvas>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div><span style="display: inline-block; width: 20px; height: 20px; background: #27ae60; margin-right: 8px;"></span><strong>農業用水:</strong> ${usageData.agriculture.toLocaleString()} 萬噸</div>
+          <div><span style="display: inline-block; width: 20px; height: 20px; background: #3498db; margin-right: 8px;"></span><strong>生活用水:</strong> ${usageData.domestic.toLocaleString()} 萬噸</div>
+          <div><span style="display: inline-block; width: 20px; height: 20px; background: #f39c12; margin-right: 8px;"></span><strong>工業用水:</strong> ${usageData.industrial.toLocaleString()} 萬噸</div>
+        </div>
+      </div>
+    </div>`;
+  }
 
   // Add view switcher tabs
   html += `<div class="view-tabs">
@@ -404,6 +485,71 @@ function showReservoirDetail(reservoir) {
 
   modalBody.innerHTML = html;
   modal.classList.add('show');
+
+  // Create water usage pie chart if data available
+  if (usageData && (usageData.agriculture > 0 || usageData.domestic > 0 || usageData.industrial > 0)) {
+    setTimeout(() => {
+      const canvas = document.getElementById('usageChart');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const total = usageData.agriculture + usageData.domestic + usageData.industrial;
+
+        const chartData = [];
+        const labels = [];
+        const colors = [];
+
+        if (usageData.agriculture > 0) {
+          const percent = ((usageData.agriculture / total) * 100).toFixed(1);
+          chartData.push(usageData.agriculture);
+          labels.push(`農業用水 (${percent}%)`);
+          colors.push('#27ae60');
+        }
+        if (usageData.domestic > 0) {
+          const percent = ((usageData.domestic / total) * 100).toFixed(1);
+          chartData.push(usageData.domestic);
+          labels.push(`生活用水 (${percent}%)`);
+          colors.push('#3498db');
+        }
+        if (usageData.industrial > 0) {
+          const percent = ((usageData.industrial / total) * 100).toFixed(1);
+          chartData.push(usageData.industrial);
+          labels.push(`工業用水 (${percent}%)`);
+          colors.push('#f39c12');
+        }
+
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: chartData,
+              backgroundColor: colors,
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed.toLocaleString();
+                    return `${label}: ${value} 萬噸`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }, 100);
+  }
 
   // Add click handlers to SVG circles, tab buttons, and view switcher after modal is rendered
   setTimeout(() => {
