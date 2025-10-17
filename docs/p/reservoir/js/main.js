@@ -305,11 +305,34 @@ function renderReservoirsGrid(reservoirs) {
 // Global variable to store current reservoir data for chart generation
 let currentReservoirData = null;
 let usageChartInstance = null;
+let itemChartInstances = {};
+let chartIdCounter = 0;
+let chartClickInProgress = false;
 
 // Show reservoir detail in modal
 function showReservoirDetail(reservoir) {
   const modal = document.getElementById('detailModal');
   const modalBody = document.getElementById('modalBody');
+
+  // Reset map state for new modal
+  if (reservoirMap) {
+    reservoirMap.remove();
+    reservoirMap = null;
+  }
+  mapInitialized = false;
+  mapMarkers = {};
+
+  // Destroy all item chart instances
+  Object.values(itemChartInstances).forEach(chart => {
+    if (chart) {
+      try {
+        chart.destroy();
+      } catch (e) {
+        console.error('Error destroying chart:', e);
+      }
+    }
+  });
+  itemChartInstances = {};
 
   // Store reservoir data for chart generation
   currentReservoirData = reservoir;
@@ -628,6 +651,14 @@ function showReservoirDetail(reservoir) {
 
 // Show line chart for selected monitoring item
 function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
+  // Prevent double-click
+  if (chartClickInProgress) return;
+
+  chartClickInProgress = true;
+  setTimeout(() => {
+    chartClickInProgress = false;
+  }, 500);
+
   if (!currentReservoirData) return;
 
   const locationData = currentReservoirData.data[locationKey];
@@ -636,10 +667,18 @@ function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
   // Check if chart already exists for this row
   const existingChart = clickedRow.nextElementSibling;
   if (existingChart && existingChart.classList.contains('chart-row')) {
-    // Remove existing chart
+    // Destroy chart instance before removing
+    const existingChartId = existingChart.getAttribute('data-chart-id');
+    if (existingChartId && itemChartInstances[existingChartId]) {
+      itemChartInstances[existingChartId].destroy();
+      delete itemChartInstances[existingChartId];
+    }
     existingChart.remove();
     return;
   }
+
+  // Generate unique chart ID
+  const chartId = `chart-${chartIdCounter++}-${locationKey}-${itemName.replace(/[^a-zA-Z0-9]/g, '')}`;
 
   // Collect data for this item + depth + layer combination across all dates
   const dates = Object.keys(locationData.data).sort();
@@ -670,11 +709,11 @@ function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
   // Create chart row
   const chartRow = document.createElement('tr');
   chartRow.className = 'chart-row';
-  const chartId = `chart-${locationKey}-${itemName.replace(/[^a-zA-Z0-9]/g, '')}-${depth}-${layer}`;
+  chartRow.setAttribute('data-chart-id', chartId);
   chartRow.innerHTML = `
     <td colspan="4">
       <div class="chart-container">
-        <span class="chart-close" onclick="this.closest('.chart-row').remove()">&times;</span>
+        <span class="chart-close">&times;</span>
         <h6 style="margin: 0 0 15px 0; color: #667eea;">${chartTitle}</h6>
         <canvas id="${chartId}"></canvas>
       </div>
@@ -682,13 +721,41 @@ function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
   `;
 
   // Insert chart row after clicked row
-  clickedRow.parentNode.insertBefore(chartRow, clickedRow.nextSibling);
+  if (clickedRow && clickedRow.parentNode) {
+    clickedRow.parentNode.insertBefore(chartRow, clickedRow.nextSibling);
+  } else {
+    console.error('Cannot insert chart row - no parent node');
+    return;
+  }
+
+  // Add close handler
+  const closeBtn = chartRow.querySelector('.chart-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (itemChartInstances[chartId]) {
+        itemChartInstances[chartId].destroy();
+        delete itemChartInstances[chartId];
+      }
+      chartRow.remove();
+    });
+  }
 
   // Create chart
   const canvas = chartRow.querySelector('canvas');
+  if (!canvas) {
+    console.error('Canvas not found in chart row');
+    return;
+  }
+
   const ctx = canvas.getContext('2d');
 
-  new Chart(ctx, {
+  // Destroy existing chart if any
+  if (itemChartInstances[chartId]) {
+    itemChartInstances[chartId].destroy();
+  }
+
+  try {
+    itemChartInstances[chartId] = new Chart(ctx, {
     type: 'line',
     data: {
       labels: chartData.map(d => d.date),
@@ -737,6 +804,9 @@ function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
       }
     }
   });
+  } catch (error) {
+    console.error('Error creating Chart.js instance:', error);
+  }
 }
 
 // Global map variable
@@ -776,14 +846,6 @@ function switchView(view, reservoir, locationKeys) {
 function initializeReservoirMap(reservoir, locationKeys) {
   const mapContainer = document.getElementById('modalMap');
   if (!mapContainer) return;
-
-  // Clear existing map and reset flag
-  if (reservoirMap) {
-    reservoirMap.remove();
-    reservoirMap = null;
-    mapMarkers = {};
-  }
-  mapInitialized = false;
 
   // Calculate center and bounds
   let bounds = [];
