@@ -205,10 +205,16 @@ function renderReservoirsGrid(reservoirs) {
   });
 }
 
+// Global variable to store current reservoir data for chart generation
+let currentReservoirData = null;
+
 // Show reservoir detail in modal
 function showReservoirDetail(reservoir) {
   const modal = document.getElementById('detailModal');
   const modalBody = document.getElementById('modalBody');
+
+  // Store reservoir data for chart generation
+  currentReservoirData = reservoir;
 
   let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name}</h2>`;
 
@@ -317,7 +323,9 @@ function showReservoirDetail(reservoir) {
 
           Object.entries(measurements).forEach(([name, items]) => {
             items.forEach(item => {
-              html += `<tr>
+              const depthKey = item.sampledepth || 'default';
+              const layerKey = item.samplelayer || 'default';
+              html += `<tr class="data-row" data-location="${locationKey}" data-item="${item.itemname}" data-depth="${depthKey}" data-layer="${layerKey}" data-unit="${item.itemunit}">
                 <td><strong>${item.itemname}</strong></td>
                 <td>${item.itemvalue}</td>
                 <td>${item.itemunit}</td>
@@ -418,7 +426,133 @@ function showReservoirDetail(reservoir) {
         activateTabByButton(this);
       });
     });
+
+    // Add click handlers to data rows to show charts
+    const dataRows = document.querySelectorAll('.data-row');
+    dataRows.forEach(row => {
+      row.addEventListener('click', function() {
+        const locationKey = this.getAttribute('data-location');
+        const itemName = this.getAttribute('data-item');
+        const depth = this.getAttribute('data-depth');
+        const layer = this.getAttribute('data-layer');
+        const unit = this.getAttribute('data-unit');
+        showItemChart(locationKey, itemName, depth, layer, unit, this);
+      });
+    });
   }, 100);
+}
+
+// Show line chart for selected monitoring item
+function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
+  if (!currentReservoirData) return;
+
+  const locationData = currentReservoirData.data[locationKey];
+  if (!locationData || !locationData.data) return;
+
+  // Check if chart already exists for this row
+  const existingChart = clickedRow.nextElementSibling;
+  if (existingChart && existingChart.classList.contains('chart-row')) {
+    // Remove existing chart
+    existingChart.remove();
+    return;
+  }
+
+  // Collect data for this item + depth + layer combination across all dates
+  const dates = Object.keys(locationData.data).sort();
+  const chartData = [];
+
+  dates.forEach(date => {
+    const dateData = locationData.data[date];
+    // Match by item name, depth, and layer
+    const item = dateData.find(d => {
+      const itemDepth = d.sampledepth || 'default';
+      const itemLayer = d.samplelayer || 'default';
+      return d.itemname === itemName && itemDepth === depth && itemLayer === layer;
+    });
+    if (item && item.itemvalue !== null && item.itemvalue !== undefined) {
+      chartData.push({
+        date: date,
+        value: parseFloat(item.itemvalue)
+      });
+    }
+  });
+
+  if (chartData.length === 0) return;
+
+  // Create descriptive label
+  const depthLabel = depth !== 'default' ? ` (深度: ${depth}${layer !== 'default' ? ' ' + layer : ''})` : '';
+  const chartTitle = `${itemName}${depthLabel} 歷史趨勢`;
+
+  // Create chart row
+  const chartRow = document.createElement('tr');
+  chartRow.className = 'chart-row';
+  const chartId = `chart-${locationKey}-${itemName.replace(/[^a-zA-Z0-9]/g, '')}-${depth}-${layer}`;
+  chartRow.innerHTML = `
+    <td colspan="4">
+      <div class="chart-container">
+        <span class="chart-close" onclick="this.closest('.chart-row').remove()">&times;</span>
+        <h6 style="margin: 0 0 15px 0; color: #667eea;">${chartTitle}</h6>
+        <canvas id="${chartId}"></canvas>
+      </div>
+    </td>
+  `;
+
+  // Insert chart row after clicked row
+  clickedRow.parentNode.insertBefore(chartRow, clickedRow.nextSibling);
+
+  // Create chart
+  const canvas = chartRow.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: chartData.map(d => d.date),
+      datasets: [{
+        label: `${itemName} (${unit})`,
+        data: chartData.map(d => d.value),
+        borderColor: '#667eea',
+        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          title: {
+            display: true,
+            text: unit
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: '監測日期'
+          },
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45
+          }
+        }
+      }
+    }
+  });
 }
 
 // Global map variable
