@@ -279,6 +279,45 @@
       margin-top: 20px;
     }
 
+    .view-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .view-tab-button {
+      padding: 12px 30px;
+      background: #f8f9fa;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+    }
+
+    .view-tab-button:hover {
+      background: #e9ecef;
+      border-color: #667eea;
+      color: #333;
+    }
+
+    .view-tab-button.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .view-content {
+      display: none;
+    }
+
+    .view-content.active {
+      display: block;
+    }
+
     .tabs-nav {
       display: flex;
       gap: 5px;

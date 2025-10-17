@@ -212,13 +212,23 @@ function showReservoirDetail(reservoir) {
 
   let html = `<h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">${reservoir.name}</h2>`;
 
-  // Add map container
-  html += `<div id="modalMap" class="modal-map"></div>`;
+  // Add view switcher tabs
+  html += `<div class="view-tabs">
+    <button class="view-tab-button active" data-view="svg">SVG 圖形</button>
+    <button class="view-tab-button" data-view="map">地理位置</button>
+  </div>`;
 
-  // Add SVG
+  // SVG view container
+  html += `<div class="view-content active" id="svgView">`;
   if (reservoir.svg) {
     html += `<div class="modal-svg" id="modalSvg">${reservoir.svg}</div>`;
   }
+  html += `</div>`;
+
+  // Map view container
+  html += `<div class="view-content" id="mapView">`;
+  html += `<div id="modalMap" class="modal-map"></div>`;
+  html += `</div>`;
 
   // Get all data - data structure has location IDs as keys
   const locationKeys = Object.keys(reservoir.data).filter(key => key !== 'name' && key !== 'svg');
@@ -324,13 +334,17 @@ function showReservoirDetail(reservoir) {
   modalBody.innerHTML = html;
   modal.classList.add('show');
 
-  // Initialize map with NLSC basemap
+  // Add click handlers to SVG circles, tab buttons, and view switcher after modal is rendered
   setTimeout(() => {
-    initializeReservoirMap(reservoir, locationKeys);
-  }, 100);
+    // View switcher handlers
+    const viewButtons = document.querySelectorAll('.view-tab-button');
+    viewButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const view = this.getAttribute('data-view');
+        switchView(view, reservoir, locationKeys);
+      });
+    });
 
-  // Add click handlers to SVG circles and tab buttons after modal is rendered
-  setTimeout(() => {
     const svgContainer = document.getElementById('modalSvg');
     if (svgContainer) {
       const circles = svgContainer.querySelectorAll('circle[id^="Dam_S"]');
@@ -371,18 +385,48 @@ function showReservoirDetail(reservoir) {
 // Global map variable
 let reservoirMap = null;
 let mapMarkers = {};
+let mapInitialized = false;
+
+// Switch between SVG and Map views
+function switchView(view, reservoir, locationKeys) {
+  // Update button states
+  document.querySelectorAll('.view-tab-button').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.view-tab-button[data-view="${view}"]`).classList.add('active');
+
+  // Update content visibility
+  document.querySelectorAll('.view-content').forEach(content => content.classList.remove('active'));
+
+  if (view === 'svg') {
+    document.getElementById('svgView').classList.add('active');
+  } else if (view === 'map') {
+    document.getElementById('mapView').classList.add('active');
+    // Initialize map only when first switching to map view
+    if (!mapInitialized) {
+      setTimeout(() => {
+        initializeReservoirMap(reservoir, locationKeys);
+        mapInitialized = true;
+      }, 100);
+    } else if (reservoirMap) {
+      // Invalidate size if map already exists
+      setTimeout(() => {
+        reservoirMap.invalidateSize();
+      }, 100);
+    }
+  }
+}
 
 // Initialize Leaflet map with NLSC basemap
 function initializeReservoirMap(reservoir, locationKeys) {
   const mapContainer = document.getElementById('modalMap');
   if (!mapContainer) return;
 
-  // Clear existing map
+  // Clear existing map and reset flag
   if (reservoirMap) {
     reservoirMap.remove();
     reservoirMap = null;
     mapMarkers = {};
   }
+  mapInitialized = false;
 
   // Calculate center and bounds
   let bounds = [];
