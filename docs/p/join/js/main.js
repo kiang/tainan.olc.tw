@@ -1,26 +1,5 @@
 let allData = [];
 let locationStats = {};
-let displayedReasons = 0;
-const reasonsPerPage = 30;
-let isLoading = false;
-let allReasonsLoaded = false;
-
-// Infinite scroll handler
-let scrollTimeout;
-$(window).scroll(function() {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(function() {
-        if (isLoading || allReasonsLoaded) return;
-
-        const scrollPosition = $(window).scrollTop() + $(window).height();
-        const documentHeight = $(document).height();
-
-        // Load more when user is within 500px of bottom
-        if (scrollPosition > documentHeight - 500) {
-            displayReasons(true);
-        }
-    }, 100);
-});
 
 // Fetch and process data
 $.getJSON('https://kiang.github.io/join.gov.tw/842b1b2a-464b-4f1d-9d61-d5a0ab1b946b.json', function(data) {
@@ -92,9 +71,7 @@ function processData() {
     displayLocationChart();
 }
 
-function displayReasons(loadMore = false) {
-    if (isLoading) return;
-
+function displayReasons() {
     const reasons = allData
         .filter(item => item['附議原因'] && item['附議原因'].trim() !== '')
         .sort((a, b) => {
@@ -103,75 +80,30 @@ function displayReasons(loadMore = false) {
             return dateB - dateA; // Descending order (newest first)
         });
 
-    if (!loadMore) {
-        displayedReasons = 0;
-        allReasonsLoaded = false;
-        $('#allReasons').empty();
-    }
+    $('#allReasons').empty();
 
-    // Check if all reasons are already loaded
-    if (displayedReasons >= reasons.length) {
-        allReasonsLoaded = true;
-        $('#loadMoreBtn').html('已顯示所有附議原因').prop('disabled', true);
-        return;
-    }
+    reasons.forEach((item, i) => {
+        // Extract username if nickname contains '@'
+        let displayName = item['附議人暱稱'];
+        if (displayName.includes('@')) {
+            displayName = displayName.split('@')[0];
+        }
 
-    isLoading = true;
-    $('#loadingIndicator').addClass('active');
-    $('#loadMoreBtn').html('載入中...').prop('disabled', true);
-
-    const start = displayedReasons;
-    const end = Math.min(start + reasonsPerPage, reasons.length);
-    const gradients = ['gradient-1', 'gradient-2', 'gradient-3', 'gradient-4',
-                       'gradient-5', 'gradient-6', 'gradient-7', 'gradient-8'];
-
-    // Simulate slight delay for smooth loading
-    setTimeout(function() {
-        for (let i = start; i < end; i++) {
-            const item = reasons[i];
-            const gradient = gradients[i % gradients.length];
-            const date = new Date(item['附議時間']);
-            const dateStr = isNaN(date) ? '' : date.toLocaleDateString('zh-TW');
-
-            // Extract username if nickname contains '@'
-            let displayName = item['附議人暱稱'];
-            if (displayName.includes('@')) {
-                displayName = displayName.split('@')[0];
-            }
-
-            const card = $(`
-                <div class="reason-card ${gradient}">
-                    <div class="reason-text">${item['附議原因']}</div>
-                    <div class="reason-meta">
-                        <span><i class="fa fa-user"></i> ${displayName}</span>
-                        <span><i class="fa fa-map-marker"></i> ${item['居住縣市']} ${item['鄉鎮市區'] || ''}</span>
-                    </div>
+        const card = $(`
+            <div class="reason-card">
+                <div class="reason-text">${item['附議原因']}</div>
+                <div class="reason-meta">
+                    <span><i class="fa fa-user"></i> ${displayName}</span>
+                    <span><i class="fa fa-map-marker"></i> ${item['居住縣市']} ${item['鄉鎮市區'] || ''}</span>
                 </div>
-            `);
+            </div>
+        `);
 
-            $('#allReasons').append(card);
-        }
+        $('#allReasons').append(card);
+    });
 
-        displayedReasons = end;
-
-        // Update button and loading indicator state
-        $('#loadingIndicator').removeClass('active');
-
-        if (displayedReasons >= reasons.length) {
-            allReasonsLoaded = true;
-            $('#loadMoreBtn').html('已顯示所有附議原因 (' + reasons.length + ' 筆)').prop('disabled', true).addClass('btn-success').removeClass('btn-primary');
-        } else {
-            $('#loadMoreBtn').html('載入更多附議原因 (' + displayedReasons + '/' + reasons.length + ')').prop('disabled', false);
-        }
-
-        isLoading = false;
-    }, 200);
+    $('#loadingIndicator').removeClass('active');
 }
-
-// Load more button handler
-$('#loadMoreBtn').click(function() {
-    displayReasons(true);
-});
 
 // Minimize floating CTA
 $('#closeCta').click(function(e) {
