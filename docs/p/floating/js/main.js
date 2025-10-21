@@ -71,39 +71,54 @@ function initMap() {
 // DATA LOADING
 // ==============================================
 function loadMarkersFromCSV() {
-    fetch(GOOGLE_SPREADSHEET_CSV_URL)
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').map(row => {
-                // Handle CSV with quoted fields
-                const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
-                const matches = [];
-                let match;
-                while ((match = regex.exec(row)) !== null) {
-                    matches.push(match[0].replace(/^"|"$/g, ''));
-                }
-                return matches.length > 0 ? matches : row.split(',');
-            });
+    Papa.parse(GOOGLE_SPREADSHEET_CSV_URL, {
+        download: true,
+        header: false,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const rows = results.data;
+            let markerCount = 0;
+
+            console.log(`Total rows in CSV: ${rows.length}`);
+            console.log('Headers:', rows[0]);
 
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
-                if (row.length < 2) continue; // Skip empty rows
+
+                if (!row || row.length < 2) {
+                    console.log(`Skipping empty row ${i}`);
+                    continue;
+                }
+
+                console.log(`\nRow ${i} data:`, {
+                    timestamp: row[CSV_COLUMNS.timestamp],
+                    eiaUrl: row[CSV_COLUMNS.eiaUrl],
+                    area: row[CSV_COLUMNS.area],
+                    capacity: row[CSV_COLUMNS.capacity],
+                    longitude: row[CSV_COLUMNS.longitude],
+                    latitude: row[CSV_COLUMNS.latitude],
+                    uuid: row[CSV_COLUMNS.uuid]
+                });
 
                 const lon = parseFloat(row[CSV_COLUMNS.longitude]);
                 const lat = parseFloat(row[CSV_COLUMNS.latitude]);
+
+                console.log(`Parsed coordinates - Lon: ${lon}, Lat: ${lat}`);
 
                 if (!isNaN(lon) && !isNaN(lat)) {
                     const uuid = (row[CSV_COLUMNS.uuid] || '').trim().replace(/[\u200B-\u200D\uFEFF]/g, '');
                     const timestamp = row[CSV_COLUMNS.timestamp] || '';
                     const eiaUrl = row[CSV_COLUMNS.eiaUrl] || '';
-                    const area = row[CSV_COLUMNS.area] || 'N/A';
-                    const capacity = row[CSV_COLUMNS.capacity] || 'N/A';
+                    const area = row[CSV_COLUMNS.area] || '';
+                    const capacity = row[CSV_COLUMNS.capacity] || '';
 
                     // Extract project name from EIA URL or timestamp
                     let name = '水面型光電案場';
                     if (uuid) {
                         name += ` #${uuid.substring(0, 8)}`;
                     }
+
+                    console.log(`✓ Creating marker: ${name} at (${lat}, ${lon})`);
 
                     const marker = createMarker(lat, lon, {
                         uuid: uuid,
@@ -118,13 +133,25 @@ function loadMarkersFromCSV() {
                     if (uuid) {
                         points[uuid] = marker;
                     }
+                    markerCount++;
+                } else {
+                    console.log(`✗ Invalid coordinates in row ${i}, skipping`);
                 }
             }
-        })
-        .catch(error => {
-            console.error('Error fetching CSV:', error);
+
+            console.log(`\n✓ Successfully loaded ${markerCount} markers from CSV`);
+
+            // Fit map bounds to show all markers
+            if (markerCount > 0) {
+                const bounds = markers.getBounds();
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        },
+        error: function(error) {
+            console.error('Error parsing CSV:', error);
             alert('資料載入失敗，請確認 Google Spreadsheet CSV URL 設定是否正確');
-        });
+        }
+    });
 }
 
 // ==============================================
