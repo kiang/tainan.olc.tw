@@ -188,7 +188,10 @@ function showPoint(currentPointId) {
     if (marker) {
         // Don't change zoom, just pan to the marker
         map.panTo(marker.getLatLng());
-        marker.openPopup();
+        // Only open popup if it's not already open
+        if (!marker.isPopupOpen()) {
+            marker.openPopup();
+        }
     }
 }
 
@@ -206,23 +209,28 @@ function updateAllMarkers() {
         // Store reference to marker in feature
         feature._leafletMarker = marker;
         
-        // Bind popup with loading content
-        marker.bindPopup(createPopupContent(feature, null), {
+        // Bind popup with dynamic content
+        marker.bindPopup(function() {
+            if (feature._detailData) {
+                return createPopupContent(feature, feature._detailData);
+            } else {
+                return createPopupContent(feature, null);
+            }
+        }, {
             maxWidth: 450,
             maxHeight: 550,
             offset: L.point(0, -20) // Offset popup to appear above the triangle marker
         });
-        
+
         // Load detailed data when popup opens
-        marker.on('popupopen', (function(feature) {
+        marker.on('popupopen', (function(feature, marker) {
             return function(e) {
-                var popup = e.popup;
+                // Update current feature to prevent unnecessary marker recreation
+                currentFeature = feature;
 
                 // Update URL hash only if different (prevents route triggering)
                 var expectedHash = '#' + feature.properties.id;
                 if (window.location.hash !== expectedHash) {
-                    // Temporarily disable route handling
-                    var currentRoute = window.location.hash;
                     window.location.hash = expectedHash;
                 }
 
@@ -231,16 +239,21 @@ function updateAllMarkers() {
                     feature._detailDataLoaded = true;
                     $.getJSON('https://kiang.github.io/ncwisweb.sfaa.gov.tw/data/' + feature.properties.city + '/' + feature.properties.id + '.json', {}, function(detailData) {
                         feature._detailData = detailData;
-                        popup.setContent(createPopupContent(feature, detailData));
-                    }).fail(function() {
+                        // Update popup content using the marker's popup reference
+                        var popup = marker.getPopup();
+                        if (popup && popup.isOpen()) {
+                            popup.setContent(createPopupContent(feature, detailData));
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
                         feature._detailDataLoaded = false; // Allow retry on failure
+                        var popup = marker.getPopup();
+                        if (popup && popup.isOpen()) {
+                            popup.setContent('<div style="text-align: center; padding: 20px; color: #ff0000;">載入失敗，請重試<br><small>' + textStatus + '</small></div>');
+                        }
                     });
-                } else if (feature._detailData) {
-                    // Use cached data
-                    popup.setContent(createPopupContent(feature, feature._detailData));
                 }
             };
-        })(feature));
+        })(feature, marker));
         
         markersLayer.addLayer(marker);
     }
