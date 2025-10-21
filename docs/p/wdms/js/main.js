@@ -1,6 +1,20 @@
 // Initialize map centered on Taiwan
 const map = L.map('map').setView([23.5, 121], 8);
 
+// Set popup pane z-index to be above all other UI elements
+map.getPane('popupPane').style.zIndex = 10000;
+
+// Handle popup open/close to manage z-index of map container
+map.on('popupopen', function(e) {
+    // Increase map container z-index when popup opens
+    document.getElementById('map').style.zIndex = 5000;
+});
+
+map.on('popupclose', function(e) {
+    // Reset map container z-index when popup closes
+    document.getElementById('map').style.zIndex = '';
+});
+
 // NLSC (National Land Surveying and Mapping Center) satellite base layer
 L.tileLayer('https://wmts.nlsc.gov.tw/wmts/PHOTO_MIX/default/GoogleMapsCompatible/{z}/{y}/{x}', {
     attribution: '&copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
