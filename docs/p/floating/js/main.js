@@ -315,6 +315,11 @@ function setupEventHandlers() {
     map.on('click', function(e) {
         showEmptyPointPopup(e.latlng);
         document.getElementById('readme-popup').style.display = 'none';
+
+        // Clear URL hash
+        if (window.location.hash) {
+            history.pushState('', document.title, window.location.pathname + window.location.search);
+        }
     });
 
     // View all markers button
