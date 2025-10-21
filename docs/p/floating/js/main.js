@@ -199,12 +199,12 @@ function showMarkerPopup(marker) {
 
     content += `<div class="row mb-2">`;
     content += `<div class="col-5 text-muted"><i class="bi bi-lightning-charge-fill"></i> 裝置容量</div>`;
-    content += `<div class="col-7 fw-bold">${props.capacity} MW</div>`;
+    content += `<div class="col-7 fw-bold">${props.capacity}</div>`;
     content += `</div>`;
 
     content += `<div class="row mb-2">`;
     content += `<div class="col-5 text-muted"><i class="bi bi-map-fill"></i> 開發面積</div>`;
-    content += `<div class="col-7">${props.area} 公頃</div>`;
+    content += `<div class="col-7">${props.area}</div>`;
     content += `</div>`;
 
     if (props.eiaUrl && props.eiaUrl.trim() !== '') {
