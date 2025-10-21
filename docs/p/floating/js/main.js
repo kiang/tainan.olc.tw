@@ -189,12 +189,13 @@ function getMarkerIcon() {
     return L.divIcon({
         className: 'custom-marker',
         html: `<div style="background-color: ${MARKER_COLOR}; color: white;
-                      border: 3px solid white; border-radius: 50%;
+                      border: 3px solid white;
                       width: 44px; height: 44px; display: flex;
                       align-items: center; justify-content: center;
                       font-weight: bold; font-size: 20px;
-                      box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
-                      <i class="bi bi-sun-fill"></i>
+                      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                      transform: skewX(-20deg);">
+                      <i class="bi bi-sun-fill" style="transform: skewX(20deg);"></i>
                 </div>`,
         iconSize: [44, 44],
         iconAnchor: [22, 22],
