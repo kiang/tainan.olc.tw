@@ -40,8 +40,8 @@ var markers = L.markerClusterGroup({
     maxClusterRadius: CLUSTER_DISTANCE
 });
 var points = {};
-var userMarker;
 var coordinatesModal;
+var allMarkersBounds = null;
 
 // ==============================================
 // MAP INITIALIZATION
@@ -147,7 +147,7 @@ function loadMarkersFromCSV() {
 
             // Fit map bounds to show all markers
             if (markerCount > 0) {
-                const bounds = markers.getBounds();
+                allMarkersBounds = markers.getBounds();
 
                 // Check if there's a hash in URL to show specific point
                 const hash = window.location.hash.substring(1);
@@ -156,7 +156,7 @@ function loadMarkersFromCSV() {
                     console.log('Hash detected, will navigate to point:', hash);
                 } else {
                     // No specific point requested, fit to all markers
-                    map.fitBounds(bounds, { padding: [50, 50] });
+                    map.fitBounds(allMarkersBounds, { padding: [50, 50] });
                 }
 
                 // Trigger routing after data is loaded
@@ -341,28 +341,18 @@ function setupEventHandlers() {
         document.getElementById('readme-popup').style.display = 'none';
     });
 
-    // Locate button
-    document.getElementById('locate-me').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                map.setView([lat, lon], 15);
-
-                if (userMarker) {
-                    map.removeLayer(userMarker);
-                }
-
-                userMarker = L.marker([lat, lon], {
-                    icon: L.divIcon({
-                        className: 'user-location',
-                        html: '<div style="background-color: #3399CC; border: 2px solid white; border-radius: 50%; width: 12px; height: 12px;"></div>',
-                        iconSize: [12, 12],
-                        iconAnchor: [6, 6]
-                    })
-                }).addTo(map);
-            });
+    // View all markers button
+    document.getElementById('view-all-markers').addEventListener('click', function() {
+        if (allMarkersBounds) {
+            map.fitBounds(allMarkersBounds, { padding: [50, 50] });
+            // Clear any URL hash
+            if (window.location.hash) {
+                history.pushState('', document.title, window.location.pathname + window.location.search);
+            }
+            // Close any open popups
+            map.closePopup();
+        } else {
+            console.warn('No markers loaded yet');
         }
     });
 
