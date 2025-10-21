@@ -80,32 +80,15 @@ function loadMarkersFromCSV() {
             const rows = results.data;
             let markerCount = 0;
 
-            console.log(`Total rows in CSV: ${rows.length}`);
-            console.log('Headers:', rows[0]);
-
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
 
                 if (!row || row.length < 2) {
-                    console.log(`Skipping empty row ${i}`);
                     continue;
                 }
 
-                console.log(`\nRow ${i} data:`, {
-                    timestamp: row[CSV_COLUMNS.timestamp],
-                    eiaUrl: row[CSV_COLUMNS.eiaUrl],
-                    area: row[CSV_COLUMNS.area],
-                    capacity: row[CSV_COLUMNS.capacity],
-                    longitude: row[CSV_COLUMNS.longitude],
-                    latitude: row[CSV_COLUMNS.latitude],
-                    uuid: row[CSV_COLUMNS.uuid],
-                    description: row[CSV_COLUMNS.description]
-                });
-
                 const lon = parseFloat(row[CSV_COLUMNS.longitude]);
                 const lat = parseFloat(row[CSV_COLUMNS.latitude]);
-
-                console.log(`Parsed coordinates - Lon: ${lon}, Lat: ${lat}`);
 
                 if (!isNaN(lon) && !isNaN(lat)) {
                     const uuid = (row[CSV_COLUMNS.uuid] || '').trim().replace(/[\u200B-\u200D\uFEFF]/g, '');
@@ -120,8 +103,6 @@ function loadMarkersFromCSV() {
                     if (uuid) {
                         name += ` #${uuid.substring(0, 8)}`;
                     }
-
-                    console.log(`✓ Creating marker: ${name} at (${lat}, ${lon})`);
 
                     const marker = createMarker(lat, lon, {
                         uuid: uuid,
@@ -138,12 +119,8 @@ function loadMarkersFromCSV() {
                         points[uuid] = marker;
                     }
                     markerCount++;
-                } else {
-                    console.log(`✗ Invalid coordinates in row ${i}, skipping`);
                 }
             }
-
-            console.log(`\n✓ Successfully loaded ${markerCount} markers from CSV`);
 
             // Fit map bounds to show all markers
             if (markerCount > 0) {
@@ -153,7 +130,6 @@ function loadMarkersFromCSV() {
                 const hash = window.location.hash.substring(1);
                 if (hash.startsWith('point/')) {
                     // Don't fit bounds, let the routing handle it
-                    console.log('Hash detected, will navigate to point:', hash);
                 } else {
                     // No specific point requested, fit to all markers
                     map.fitBounds(allMarkersBounds, { padding: [50, 50] });
@@ -351,8 +327,6 @@ function setupEventHandlers() {
             }
             // Close any open popups
             map.closePopup();
-        } else {
-            console.warn('No markers loaded yet');
         }
     });
 
@@ -406,31 +380,22 @@ function setupRouting() {
 
 function handleRoute() {
     const hash = window.location.hash.substring(1);
-    console.log('handleRoute called with hash:', hash);
 
     if (hash.startsWith('point/')) {
         const pointId = hash.substring(6);
-        console.log('Looking for point:', pointId);
-        console.log('Available points:', Object.keys(points));
         showPoint(pointId);
     }
 }
 
 function showPoint(pointId) {
     const marker = points[pointId];
-    console.log('showPoint called for:', pointId, 'marker found:', !!marker);
 
     if (marker) {
         const latLng = marker.getLatLng();
-        console.log('Navigating to marker at:', latLng);
-
         map.setView(latLng, 16);
         setTimeout(() => {
-            console.log('Opening popup for marker');
             showMarkerPopup(marker);
         }, 500);
-    } else {
-        console.warn(`Marker with UUID ${pointId} not found in points object`);
     }
 }
 
