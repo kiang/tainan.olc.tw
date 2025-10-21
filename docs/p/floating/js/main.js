@@ -20,7 +20,8 @@ const CSV_COLUMNS = {
     capacity: 3,       // 裝置容量
     longitude: 4,      // 經度
     latitude: 5,       // 緯度
-    uuid: 6            // 地點編號
+    uuid: 6,           // 地點編號
+    description: 7     // 說明
 };
 
 // Map settings
@@ -97,7 +98,8 @@ function loadMarkersFromCSV() {
                     capacity: row[CSV_COLUMNS.capacity],
                     longitude: row[CSV_COLUMNS.longitude],
                     latitude: row[CSV_COLUMNS.latitude],
-                    uuid: row[CSV_COLUMNS.uuid]
+                    uuid: row[CSV_COLUMNS.uuid],
+                    description: row[CSV_COLUMNS.description]
                 });
 
                 const lon = parseFloat(row[CSV_COLUMNS.longitude]);
@@ -111,6 +113,7 @@ function loadMarkersFromCSV() {
                     const eiaUrl = row[CSV_COLUMNS.eiaUrl] || '';
                     const area = row[CSV_COLUMNS.area] || '';
                     const capacity = row[CSV_COLUMNS.capacity] || '';
+                    const description = row[CSV_COLUMNS.description] || '';
 
                     // Extract project name from EIA URL or timestamp
                     let name = '水面型光電案場';
@@ -126,7 +129,8 @@ function loadMarkersFromCSV() {
                         capacity: capacity,
                         area: area,
                         timestamp: timestamp,
-                        eiaUrl: eiaUrl
+                        eiaUrl: eiaUrl,
+                        description: description
                     });
 
                     markers.addLayer(marker);
@@ -144,7 +148,19 @@ function loadMarkersFromCSV() {
             // Fit map bounds to show all markers
             if (markerCount > 0) {
                 const bounds = markers.getBounds();
-                map.fitBounds(bounds, { padding: [50, 50] });
+
+                // Check if there's a hash in URL to show specific point
+                const hash = window.location.hash.substring(1);
+                if (hash.startsWith('point/')) {
+                    // Don't fit bounds, let the routing handle it
+                    console.log('Hash detected, will navigate to point:', hash);
+                } else {
+                    // No specific point requested, fit to all markers
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+
+                // Trigger routing after data is loaded
+                handleRoute();
             }
         },
         error: function(error) {
@@ -218,6 +234,13 @@ function showMarkerPopup(marker) {
         content += `<div class="row mb-2">`;
         content += `<div class="col-5 text-muted"><i class="bi bi-file-earmark-text-fill"></i> 環評書</div>`;
         content += `<div class="col-7"><a href="${props.eiaUrl}" target="_blank" class="btn btn-sm btn-outline-primary" style="padding: 2px 10px; font-size: 0.85rem;">查看環評書 <i class="bi bi-box-arrow-up-right"></i></a></div>`;
+        content += `</div>`;
+    }
+
+    if (props.description && props.description.trim() !== '') {
+        content += `<div class="row mb-2">`;
+        content += `<div class="col-5 text-muted"><i class="bi bi-chat-left-text-fill"></i> 說明</div>`;
+        content += `<div class="col-7">${props.description}</div>`;
         content += `</div>`;
     }
 
@@ -387,25 +410,36 @@ function setupEventHandlers() {
 // ==============================================
 function setupRouting() {
     window.addEventListener('hashchange', handleRoute);
-    handleRoute();
+    // Don't call handleRoute() here - will be called after data loads
 }
 
 function handleRoute() {
     const hash = window.location.hash.substring(1);
+    console.log('handleRoute called with hash:', hash);
+
     if (hash.startsWith('point/')) {
         const pointId = hash.substring(6);
+        console.log('Looking for point:', pointId);
+        console.log('Available points:', Object.keys(points));
         showPoint(pointId);
     }
 }
 
 function showPoint(pointId) {
     const marker = points[pointId];
+    console.log('showPoint called for:', pointId, 'marker found:', !!marker);
+
     if (marker) {
         const latLng = marker.getLatLng();
+        console.log('Navigating to marker at:', latLng);
+
         map.setView(latLng, 16);
         setTimeout(() => {
+            console.log('Opening popup for marker');
             showMarkerPopup(marker);
         }, 500);
+    } else {
+        console.warn(`Marker with UUID ${pointId} not found in points object`);
     }
 }
 
