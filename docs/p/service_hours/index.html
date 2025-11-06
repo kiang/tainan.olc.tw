@@ -108,6 +108,12 @@
             <p class="subtitle">Community Service Learning Organizations in Tainan</p>
         </header>
 
+        <div class="tabs">
+            <button class="tab-button active" data-tab="organizations">服務學習機構</button>
+            <button class="tab-button" data-tab="schools">學校直接簽約機構</button>
+        </div>
+
+        <div id="organizations-tab" class="tab-content active">
         <div class="filters">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="搜尋關鍵字...">
@@ -174,6 +180,20 @@
             </table>
             <div id="noResults" class="no-results" style="display: none;">
                 找不到符合條件的資料
+            </div>
+        </div>
+        </div>
+
+        <div id="schools-tab" class="tab-content">
+            <div class="school-selector">
+                <label for="schoolSelect">選擇學校：</label>
+                <select id="schoolSelect">
+                    <option value="">請選擇學校</option>
+                </select>
+            </div>
+
+            <div id="schoolResults" class="school-results">
+                <div class="no-results">請選擇學校以查看名單</div>
             </div>
         </div>
     </div>

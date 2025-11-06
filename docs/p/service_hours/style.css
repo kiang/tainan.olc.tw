@@ -38,6 +38,45 @@ header h1 {
     opacity: 0.9;
 }
 
+/* Tabs */
+.tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    background: transparent;
+    color: #6c757d;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.tab-button.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 .filters {
     padding: 30px;
     background: #f8f9fa;
@@ -219,6 +258,79 @@ tr:hover {
     padding: 60px 20px;
     color: #6c757d;
     font-size: 18px;
+}
+
+/* School selector */
+.school-selector {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.school-selector label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.school-selector select {
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    background: white;
+    font-size: 15px;
+    cursor: pointer;
+    min-width: 200px;
+    transition: all 0.3s;
+}
+
+.school-selector select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.school-results {
+    padding: 30px;
+}
+
+.school-info {
+    margin-bottom: 30px;
+}
+
+.school-name {
+    font-size: 24px;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.student-list {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.student-list h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+.student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.student-item {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+    font-size: 14px;
+    color: #495057;
 }
 
 /* Responsive Design */

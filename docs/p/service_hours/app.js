@@ -2,6 +2,7 @@
 let serviceData = [];
 let filteredData = [];
 let allAreas = new Set();
+let schoolsData = {};
 
 // Zip code mapping for Tainan districts
 const zipCodeMap = {
@@ -47,6 +48,8 @@ const zipCodeMap = {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     loadDataAndInitialize();
+    loadSchoolsData();
+    setupTabSwitching();
 });
 
 async function loadDataAndInitialize() {
@@ -338,7 +341,112 @@ function clearAllFilters() {
     document.getElementById('areaFilter').value = '';
     document.getElementById('typeFilter').value = '';
     document.getElementById('timeFilter').value = '';
-    
+
     filteredData = [...serviceData];
     displayData();
+}
+
+// Tab switching functionality
+function setupTabSwitching() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            // Remove active class from all buttons and tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding tab
+            this.classList.add('active');
+            document.getElementById(`${targetTab}-tab`).classList.add('active');
+        });
+    });
+}
+
+// Load schools data
+async function loadSchoolsData() {
+    try {
+        const response = await fetch('schools.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        schoolsData = await response.json();
+
+        // Populate school selector
+        populateSchoolSelector();
+
+        // Setup school selector event listener
+        document.getElementById('schoolSelect').addEventListener('change', displaySchoolData);
+    } catch (error) {
+        console.error('Error loading schools data:', error);
+        document.getElementById('schoolResults').innerHTML = '<div class="no-results">無法載入學校資料</div>';
+    }
+}
+
+function populateSchoolSelector() {
+    const schoolSelect = document.getElementById('schoolSelect');
+
+    // Clear existing options (except the first one)
+    while (schoolSelect.options.length > 1) {
+        schoolSelect.remove(1);
+    }
+
+    // Add school options
+    Object.keys(schoolsData).sort().forEach(schoolName => {
+        const option = document.createElement('option');
+        option.value = schoolName;
+        option.textContent = schoolName;
+        schoolSelect.appendChild(option);
+    });
+}
+
+function displaySchoolData() {
+    const schoolSelect = document.getElementById('schoolSelect');
+    const selectedSchool = schoolSelect.value;
+    const schoolResults = document.getElementById('schoolResults');
+
+    if (!selectedSchool) {
+        schoolResults.innerHTML = '<div class="no-results">請選擇學校以查看名單</div>';
+        return;
+    }
+
+    const schoolInfo = schoolsData[selectedSchool];
+
+    if (!schoolInfo) {
+        schoolResults.innerHTML = '<div class="no-results">找不到學校資料</div>';
+        return;
+    }
+
+    // Parse organizations from comma-separated string
+    const schools = schoolInfo.organizations
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+    // Build HTML
+    let html = `
+        <div class="school-info">
+            <div class="school-name">${schoolInfo.name}</div>
+            <div class="student-list">
+                <h3>直接簽約機構 (共 ${schools.length} 所)</h3>
+    `;
+
+    if (schools.length > 0) {
+        html += '<div class="student-grid">';
+        schools.forEach(school => {
+            html += `<div class="student-item">${school}</div>`;
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="no-results" style="padding: 20px;">尚無簽約機構資料</div>';
+    }
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    schoolResults.innerHTML = html;
 }
