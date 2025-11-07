@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>台南市北門區錦湖里光電地圖</title>
+    <meta name="description" content="台南市北門區錦湖里光電地圖，顯示地籍資料與光電開發相關資訊">
+    <meta name="keywords" content="台南,北門區,錦湖里,光電,地籍,地圖,太陽能">
+    <meta name="author" content="江明宗">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/jinhu/">
+    <meta property="og:title" content="台南市北門區錦湖里光電地圖">
+    <meta property="og:description" content="台南市北門區錦湖里光電地圖，顯示地籍資料與光電開發相關資訊">
+    <meta property="og:image" content="https://tainan.olc.tw/p/jinhu/og_image.png">
+    <meta property="og:site_name" content="台南開放資料地圖">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://tainan.olc.tw/p/jinhu/">
+    <meta name="twitter:title" content="台南市北門區錦湖里光電地圖">
+    <meta name="twitter:description" content="台南市北門區錦湖里光電地圖，顯示地籍資料與光電開發相關資訊">
+    <meta name="twitter:image" content="https://tainan.olc.tw/p/jinhu/og_image.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 300px;
+        }
+
+        .info-panel h6 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .info-panel ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .info-panel li {
+            margin: 5px 0;
+        }
+
+        .info-panel small {
+            font-size: 12px;
+        }
+
+        .info-panel a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .info-panel a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <div class="info-panel">
+        <h6>台南市北門區錦湖里光電地圖</h6>
+        <ul>
+            <li><span style="color:#e74c3c; font-weight: bold;">紅色</span> - 平○公司1</li>
+            <li><span style="color:#3498db; font-weight: bold;">藍色</span> - 平○公司2</li>
+            <li><span style="color:#2ecc71; font-weight: bold;">綠色</span> - 新○公司</li>
+        </ul>
+        <p style="margin: 10px 0 5px 0; font-size: 12px;">
+            點擊地圖上的地籍查看詳細資訊
+        </p>
+        <small>
+            <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">問題回報</a> |
+            <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a>
+        </small>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+</body>
+
+</html>
