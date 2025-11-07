@@ -97,11 +97,20 @@ fetch('https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/臺南�
         var objectKey = Object.keys(data.objects)[0];
         var geojson = topojson.feature(data, data.objects[objectKey]);
 
-        L.geoJSON(geojson, {
+        // Villages to show labels by default
+        var visibleVillages = ['錦湖里', '三慶里', '平和里', '蚵寮里'];
+        var clickedVillages = {};
+
+        // Create two separate layers
+        var focusedLayer = L.geoJSON(geojson, {
+            filter: function(feature) {
+                var villName = feature.properties.VILLNAME || '';
+                return visibleVillages.indexOf(villName) !== -1;
+            },
             style: {
-                color: '#666666',
-                weight: 1.5,
-                opacity: 0.6,
+                color: '#ff6600',
+                weight: 2,
+                opacity: 0.8,
                 fillOpacity: 0,
                 fillColor: 'transparent'
             },
@@ -110,13 +119,53 @@ fetch('https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/臺南�
                 if (feature.properties) {
                     var props = feature.properties;
                     var label = (props.COUNTYNAME || '') + (props.TOWNNAME || '') + (props.VILLNAME || '');
-                    if (label) {
-                        layer.bindTooltip(label, {
-                            permanent: true,
-                            direction: 'center',
-                            className: 'village-label'
-                        });
-                    }
+                    layer.bindTooltip(label, {
+                        permanent: true,
+                        direction: 'center',
+                        className: 'village-label'
+                    });
+                }
+            }
+        }).addTo(map);
+
+        var otherLayer = L.geoJSON(geojson, {
+            filter: function(feature) {
+                var villName = feature.properties.VILLNAME || '';
+                return visibleVillages.indexOf(villName) === -1;
+            },
+            style: {
+                color: '#666666',
+                weight: 1.5,
+                opacity: 0.6,
+                fillOpacity: 0,
+                fillColor: 'transparent'
+            },
+            interactive: true,
+            onEachFeature: function(feature, layer) {
+                if (feature.properties) {
+                    var props = feature.properties;
+                    var villName = props.VILLNAME || '';
+                    var label = (props.COUNTYNAME || '') + (props.TOWNNAME || '') + (props.VILLNAME || '');
+
+                    layer.on('click', function(e) {
+                        // Toggle label visibility
+                        if (clickedVillages[villName]) {
+                            clickedVillages[villName].remove();
+                            delete clickedVillages[villName];
+                        } else {
+                            var tooltip = L.tooltip({
+                                permanent: true,
+                                direction: 'center',
+                                className: 'village-label'
+                            })
+                            .setContent(label)
+                            .setLatLng(e.latlng)
+                            .addTo(map);
+
+                            clickedVillages[villName] = tooltip;
+                        }
+                        L.DomEvent.stopPropagation(e);
+                    });
                 }
             }
         }).addTo(map);
