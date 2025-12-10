@@ -269,128 +269,124 @@ const nameCounts = {
     '其他': 0
 };
 
-// Function to fetch additional images
+// Function to fetch additional images using PapaParse
 function fetchAdditionalImages() {
-    return fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS1i3CTbXdGTyTQiTKt5LIFgLXB5mt-RVecYcgiseoND0IZOiVpU4bK9kQ8bXP8NFGIq2OxLF8ITUHC/pub?gid=1036449859&single=true&output=csv')
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').slice(1); // Skip header row
-            rows.forEach(row => {
-                const [timestamp, fileUrl, name, city, town, lon, lat, id] = row.split(',');
-                if (id && fileUrl) {
-                    const trimmedId = id.trim();
-                    if (!additionalImages[trimmedId]) {
-                        additionalImages[trimmedId] = [];
-                    }
-                    const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
-                    if (fileId) {
-                        additionalImages[trimmedId].push({
-                            fileId: fileId,
-                            timestamp: timestamp
-                        });
-                    }
-                }
-            });
-        })
-        .catch(error => console.error('Error fetching additional images:', error));
-}
+    return new Promise((resolve, reject) => {
+        Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vS1i3CTbXdGTyTQiTKt5LIFgLXB5mt-RVecYcgiseoND0IZOiVpU4bK9kQ8bXP8NFGIq2OxLF8ITUHC/pub?gid=1036449859&single=true&output=csv', {
+            download: true,
+            header: false,
+            skipEmptyLines: true,
+            complete: function(results) {
+                // Skip header row (index 0)
+                for (let i = 1; i < results.data.length; i++) {
+                    const row = results.data[i];
+                    const timestamp = row[0];
+                    const fileUrl = row[1];
+                    const id = row[7];
 
-// Function to fetch CSV data and add markers
-function addMarkersFromCSV() {
-    return fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv')
-        .then(response => response.text())
-        .then(data => {
-            // Use a CSV parser that handles quoted fields containing newlines
-            const parseCSV = (str) => {
-                const arr = [];
-                let quote = false;
-                let col = '';
-                let row = [];
-
-                for (let char of str) {
-                    if (char === '"') {
-                        quote = !quote;
-                    } else if (char === ',' && !quote) {
-                        row.push(col.trim());
-                        col = '';
-                    } else if (char === '\n' && !quote) {
-                        row.push(col.trim());
-                        arr.push(row);
-                        row = [];
-                        col = '';
-                    } else {
-                        col += char;
-                    }
-                }
-                if (col) row.push(col.trim());
-                if (row.length) arr.push(row);
-                return arr;
-            };
-
-            const rows = parseCSV(data);
-            const features = [];
-
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                const lon = parseFloat(row[5]);
-                const lat = parseFloat(row[6]);
-                const name = row[2];
-                const city = row[3];
-                const town = row[4];
-                const timestamp = row[0];
-                const fileUrl = row[1];
-                const uuid = row[7];
-                const hasLocal = (row[8] == 1) ? '1' : '0';
-                const reply = row[14];
-                let fileId = '';
-                
-                if (fileUrl) {
-                    const match = fileUrl.match(/[-\w]{25,}/);
-                    if (match) {
-                        fileId = match[0];
-                    }
-                }
-
-                if (!isNaN(lon) && !isNaN(lat)) {
-                    const feature = new ol.Feature({
-                        geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
-                        name: name,
-                        timestamp: timestamp,
-                        fileId: fileId,
-                        city: city,
-                        town: town,
-                        uuid: uuid,
-                        hasLocal: hasLocal,
-                        reply: reply
-                    });
-                    features.push(feature);
-                    points[uuid] = feature;
-
-                    // Count names
-                    let found = false;
-                    for(let k in nameCounts){
-                        if (name.includes(k)) {
-                            nameCounts[k] += 1;
-                            found = true;
+                    if (id && fileUrl) {
+                        const trimmedId = id.trim();
+                        if (!additionalImages[trimmedId]) {
+                            additionalImages[trimmedId] = [];
+                        }
+                        const fileId = fileUrl.match(/[-\w]{25,}/)?.[0];
+                        if (fileId) {
+                            additionalImages[trimmedId].push({
+                                fileId: fileId,
+                                timestamp: timestamp
+                            });
                         }
                     }
-                    if(!found){
-                        nameCounts['其他'] += 1;
+                }
+                resolve();
+            },
+            error: function(error) {
+                console.error('Error fetching additional images:', error);
+                reject(error);
+            }
+        });
+    });
+}
+
+// Function to fetch CSV data and add markers using PapaParse
+function addMarkersFromCSV() {
+    return new Promise((resolve, reject) => {
+        Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTEzTO4cQ9fO0UXFihhpXsgkakGeNK7gJSU7DKIinsgNahkLyWgdYecGs61OfA8ZpGWn5kEo7T0bp2v/pub?single=true&output=csv', {
+            download: true,
+            header: false,
+            skipEmptyLines: true,
+            complete: function(results) {
+                const features = [];
+
+                // Skip header row (index 0)
+                for (let i = 1; i < results.data.length; i++) {
+                    const row = results.data[i];
+                    const lon = parseFloat(row[5]);
+                    const lat = parseFloat(row[6]);
+                    const name = row[2];
+                    const city = row[3];
+                    const town = row[4];
+                    const timestamp = row[0];
+                    const fileUrl = row[1];
+                    const uuid = row[7];
+                    const hasLocal = (row[8] == 1) ? '1' : '0';
+                    const reply = row[14];
+                    let fileId = '';
+
+                    if (fileUrl) {
+                        const match = fileUrl.match(/[-\w]{25,}/);
+                        if (match) {
+                            fileId = match[0];
+                        }
+                    }
+
+                    if (!isNaN(lon) && !isNaN(lat)) {
+                        const feature = new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
+                            name: name,
+                            timestamp: timestamp,
+                            fileId: fileId,
+                            city: city,
+                            town: town,
+                            uuid: uuid,
+                            hasLocal: hasLocal,
+                            reply: reply
+                        });
+                        features.push(feature);
+                        points[uuid] = feature;
+
+                        // Count names
+                        let found = false;
+                        for (let k in nameCounts) {
+                            if (name.includes(k)) {
+                                nameCounts[k] += 1;
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            nameCounts['其他'] += 1;
+                        }
                     }
                 }
+                vectorSource.addFeatures(features);
+                clusterSource.refresh();
+
+                // Create the pie chart
+                createNameChart(nameCounts);
+
+                // Set up routing
+                routie({
+                    'point/:pointId': showPoint
+                });
+
+                resolve();
+            },
+            error: function(error) {
+                console.error('Error fetching CSV:', error);
+                reject(error);
             }
-            vectorSource.addFeatures(features);
-            clusterSource.refresh();
-
-            // Create the pie chart
-            createNameChart(nameCounts);
-
-            // Set up routing
-            routie({
-                'point/:pointId': showPoint
-            });
-        })
-        .catch(error => console.error('Error fetching CSV:', error));
+        });
+    });
 }
 
 function showPoint(pointId) {
