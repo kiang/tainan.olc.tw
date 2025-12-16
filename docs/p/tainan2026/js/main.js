@@ -555,20 +555,28 @@ function showPopup(feature, coordinate) {
 
 function showEmptyPointPopup(coordinate, city, town) {
     var lonLat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-    
+
     var content = '<div class="card">';
     content += '<div class="card-body">';
     content += '<h5 class="card-title">位置資訊</h5>';
     content += '<p class="card-text">經度: ' + lonLat[0].toFixed(6) + '</p>';
     content += '<p class="card-text">緯度: ' + lonLat[1].toFixed(6) + '</p>';
-    content += '<p class="card-text">縣市: ' + (city || '') + '</p>';
-    content += '<p class="card-text">鄉鎮市區: ' + (town || '') + '</p>';
+    if (city) {
+        content += '<p class="card-text">縣市: ' + city + '</p>';
+    }
+    if (town) {
+        content += '<p class="card-text">鄉鎮市區: ' + town + '</p>';
+    }
     content += '</div>';
 
     // Add button to open Google Form
     var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeTfx52aNFu9eY-IGU7wn3t1y8iEdBtEqg2FHHJE1_Wuc5xLQ/viewform?usp=pp_url&hl=zh_TW';
-    formUrl += '&entry.1588782081=' + encodeURIComponent(city || '');
-    formUrl += '&entry.1966779823=' + encodeURIComponent(town || '');
+    if (city) {
+        formUrl += '&entry.1588782081=' + encodeURIComponent(city);
+    }
+    if (town) {
+        formUrl += '&entry.1966779823=' + encodeURIComponent(town);
+    }
     formUrl += '&entry.1998738256=' + lonLat[0].toFixed(6);
     formUrl += '&entry.1387778236=' + lonLat[1].toFixed(6);
     formUrl += '&entry.2072773208=' + uuidv4(); // Generate a new UUID for each submission
@@ -908,35 +916,52 @@ function initMap() {
             return;
         }
 
-        let featureFound = false;
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-          var p = feature.getProperties();
-          if(p.COUNTYNAME && !featureFound) {
-            showEmptyPointPopup(evt.coordinate, p.COUNTYNAME, p.TOWNNAME);
-            window.location.hash = ''; // Clear hash when showing empty point popup
-          } else {
-            featureFound = true;
-            var features = feature.get('features');
-            if (features && features.length > 1) {
-                // Cluster clicked
-                var view = map.getView();
-                var zoom = view.getZoom();
-                view.animate({
-                    center: feature.getGeometry().getCoordinates(),
-                    zoom: zoom + 1,
-                    duration: 250
-                });
-            } else {
-                // Single feature clicked
-                var clickedFeature = features ? features[0] : feature;
-                var uuid = clickedFeature.get('uuid');
-                if (uuid) {
-                    // Update the hash and let routie handle it
-                    window.location.hash = 'point/' + uuid;
-                }
+        let markerClicked = false;
+        let cityInfo = { city: '', town: '' };
+
+        // First pass: check for markers/clusters and collect city info from TopoJSON
+        map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+            var p = feature.getProperties();
+
+            // Check if this is a TopoJSON feature (has COUNTYNAME)
+            if (p.COUNTYNAME) {
+                cityInfo.city = p.COUNTYNAME;
+                cityInfo.town = p.TOWNNAME || '';
+                return; // Continue to check for markers
             }
-          }
+
+            // Check if this is a marker/cluster feature
+            var features = feature.get('features');
+            if (features) {
+                markerClicked = true;
+                if (features.length > 1) {
+                    // Cluster clicked - zoom in
+                    var view = map.getView();
+                    var zoom = view.getZoom();
+                    view.animate({
+                        center: feature.getGeometry().getCoordinates(),
+                        zoom: zoom + 1,
+                        duration: 250
+                    });
+                } else {
+                    // Single feature clicked
+                    var clickedFeature = features[0];
+                    var uuid = clickedFeature.get('uuid');
+                    if (uuid) {
+                        // Update the hash and let routie handle it
+                        window.location.hash = 'point/' + uuid;
+                    }
+                }
+                return true; // Stop iteration after handling marker
+            }
         });
+
+        // If no marker was clicked, show the empty point popup
+        if (!markerClicked) {
+            showEmptyPointPopup(evt.coordinate, cityInfo.city, cityInfo.town);
+            window.location.hash = ''; // Clear hash when showing empty point popup
+        }
+
         document.getElementById('readme-popup').style.display = 'none';
     });
 
