@@ -98,9 +98,9 @@ foreach ($groups as $prefix => $features) {
     echo "Created: {$filename} ({$stats[$prefix]} features)\n";
 }
 
-// Sort manifest by name
+// Sort manifest by count in descending order
 usort($manifest, function($a, $b) {
-    return strcmp($a['name'], $b['name']);
+    return $b['count'] - $a['count'];
 });
 
 // Write manifest file
