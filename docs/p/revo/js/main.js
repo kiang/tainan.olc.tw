@@ -18,6 +18,8 @@ var projectSearchIndex = {};  // Map projectKey -> { owner, count } for search
 var projectScopeLayer = null;  // Layer for showing project boundary
 var currentProjectKey = null;  // Current project in view mode
 var projectViewMode = false;  // Whether in project view mode
+var currentCounty = null;  // Current county for URL hash
+var isInitializing = false;  // Flag to prevent hash updates during initialization
 var markers = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 50,
@@ -163,9 +165,14 @@ function showProjectScope(projectKey) {
     var bounds = L.latLngBounds(latlngs);
     map.fitBounds(bounds, { padding: [50, 50] });
 
-    // Get project owner from first marker
+    // Get project owner and county from first marker
     var firstMarker = projectMarkers[0];
     var owner = firstMarker.feature.properties['設置者名稱'] || '-';
+    var markerName = firstMarker.feature.properties.name || '';
+    var county = markerName.substring(0, 3);  // First 3 chars are county name
+    if (county) {
+        currentCounty = county;
+    }
 
     // Show project section in info panel
     document.getElementById('projectSection').style.display = 'block';
@@ -173,8 +180,9 @@ function showProjectScope(projectKey) {
     document.getElementById('projectCount').textContent = projectMarkers.length + ' 筆地號';
     document.getElementById('projectOwner').textContent = owner;
 
-    // Update filter stats
+    // Update filter stats and URL hash
     document.getElementById('filterStats').textContent = '案場模式';
+    updateUrlHash();
 }
 
 // Exit project view mode and restore all markers
@@ -194,6 +202,9 @@ function exitProjectView() {
 
     // Hide project section in info panel
     document.getElementById('projectSection').style.display = 'none';
+
+    // Update URL hash
+    updateUrlHash();
 
     // Restore all markers with current filter
     applyFilter();
@@ -234,6 +245,66 @@ function getConvexHull(points) {
 
 function cross(o, a, b) {
     return (a[1] - o[1]) * (b[0] - o[0]) - (a[0] - o[0]) * (b[1] - o[1]);
+}
+
+// Update URL hash based on current state
+function updateUrlHash() {
+    if (isInitializing) return;
+
+    var hash = '';
+    if (currentCounty) {
+        hash = currentCounty;
+        if (projectViewMode && currentProjectKey) {
+            hash += '/' + currentProjectKey;
+        }
+    }
+
+    if (hash) {
+        history.replaceState(null, '', '#' + encodeURIComponent(hash));
+    } else {
+        history.replaceState(null, '', window.location.pathname);
+    }
+}
+
+// Parse URL hash and return county and project key
+function parseUrlHash() {
+    var hash = decodeURIComponent(window.location.hash.slice(1));
+    if (!hash) return { county: null, projectKey: null };
+
+    var parts = hash.split('/');
+    return {
+        county: parts[0] || null,
+        projectKey: parts[1] || null
+    };
+}
+
+// Apply state from URL hash
+function applyHashState() {
+    var state = parseUrlHash();
+    if (!state.county) return;
+
+    // Find county in manifest
+    var countyItem = manifest.find(function(item) {
+        return item.name === state.county;
+    });
+
+    if (!countyItem) return;
+
+    // Check the county checkbox
+    var checkbox = document.getElementById('county-' + state.county);
+    if (checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+    }
+
+    // Set current county
+    currentCounty = state.county;
+
+    // Load county data and optionally enter project view
+    loadCountyData(state.county, countyItem.file).then(function() {
+        if (state.projectKey && projectIndex[state.projectKey]) {
+            showProjectScope(state.projectKey);
+        }
+    });
 }
 
 // Create marker icon
@@ -540,9 +611,19 @@ function renderCountyList() {
 
         checkbox.addEventListener('change', function() {
             if (this.checked) {
+                currentCounty = item.name;
                 loadCountyData(item.name, item.file);
+                updateUrlHash();
             } else {
                 removeCountyData(item.name);
+                // Update currentCounty to another checked county or null
+                var checkedCounties = document.querySelectorAll('#countyList input[type="checkbox"]:checked');
+                if (checkedCounties.length > 0) {
+                    currentCounty = checkedCounties[0].dataset.name;
+                } else {
+                    currentCounty = null;
+                }
+                updateUrlHash();
             }
         });
 
@@ -626,12 +707,23 @@ document.getElementById('projectSearch').addEventListener('focus', function() {
     }
 });
 
+// Handle hash change event
+window.addEventListener('hashchange', function() {
+    if (isInitializing) return;
+    applyHashState();
+});
+
 // Load manifest and initialize
 fetch('json/manifest.json')
     .then(function(response) { return response.json(); })
     .then(function(data) {
         manifest = data;
         renderCountyList();
+
+        // Apply initial hash state
+        isInitializing = true;
+        applyHashState();
+        isInitializing = false;
     })
     .catch(function(error) {
         console.error('Error loading manifest:', error);
