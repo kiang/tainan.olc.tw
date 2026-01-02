@@ -9,7 +9,10 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
 
 // Store loaded layers and data
 var countyLayers = {};
+var countyData = {};  // Store raw feature data for filtering
 var manifest = [];
+var locationTypes = new Set();  // Track unique 設置位置 values
+var currentFilter = '';
 var markers = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 50,
@@ -91,6 +94,8 @@ function createMarkerIcon(color) {
 // Load a county's data
 function loadCountyData(countyName, filename) {
     if (countyLayers[countyName]) {
+        // Already loaded, just apply current filter
+        applyFilter();
         return Promise.resolve();
     }
 
@@ -100,16 +105,31 @@ function loadCountyData(countyName, filename) {
             var color = getCountyColor(countyName);
             var icon = createMarkerIcon(color);
             var layerMarkers = [];
+            var featureData = [];
 
             data.features.forEach(function(feature) {
                 var coords = feature.geometry.coordinates;
                 var marker = L.marker([coords[1], coords[0]], { icon: icon });
                 marker.bindPopup(function() { return createPopupContent(feature); });
+                marker.feature = feature;  // Store feature reference
                 layerMarkers.push(marker);
+                featureData.push(feature);
+
+                // Track location types
+                var locationType = feature.properties['設置位置'];
+                if (locationType) {
+                    locationTypes.add(locationType);
+                }
             });
 
             countyLayers[countyName] = layerMarkers;
-            markers.addLayers(layerMarkers);
+            countyData[countyName] = featureData;
+
+            // Update filter dropdown
+            updateFilterDropdown();
+
+            // Apply current filter
+            applyFilter();
         })
         .catch(function(error) {
             console.error('Error loading ' + filename + ':', error);
@@ -121,6 +141,91 @@ function removeCountyData(countyName) {
     if (countyLayers[countyName]) {
         markers.removeLayers(countyLayers[countyName]);
         delete countyLayers[countyName];
+        delete countyData[countyName];
+        updateFilterStats();
+    }
+}
+
+// Update filter dropdown with available location types
+function updateFilterDropdown() {
+    var select = document.getElementById('locationFilter');
+    var currentValue = select.value;
+
+    // Clear existing options except "全部"
+    select.innerHTML = '<option value="">全部</option>';
+
+    // Add sorted location types
+    var sortedTypes = Array.from(locationTypes).sort();
+    sortedTypes.forEach(function(type) {
+        var option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        select.appendChild(option);
+    });
+
+    // Restore previous selection if still valid
+    if (currentValue && locationTypes.has(currentValue)) {
+        select.value = currentValue;
+    }
+
+    // Show filter section if we have data
+    var filterSection = document.getElementById('filterSection');
+    if (locationTypes.size > 0) {
+        filterSection.style.display = 'block';
+    }
+
+    updateFilterStats();
+}
+
+// Apply current filter to all loaded markers
+function applyFilter() {
+    currentFilter = document.getElementById('locationFilter').value;
+
+    // Clear all markers first
+    markers.clearLayers();
+
+    var totalCount = 0;
+    var filteredCount = 0;
+
+    // Re-add markers that match the filter
+    Object.keys(countyLayers).forEach(function(countyName) {
+        var layerMarkers = countyLayers[countyName];
+        layerMarkers.forEach(function(marker) {
+            totalCount++;
+            var locationType = marker.feature.properties['設置位置'] || '';
+            if (!currentFilter || locationType === currentFilter) {
+                markers.addLayer(marker);
+                filteredCount++;
+            }
+        });
+    });
+
+    updateFilterStats(filteredCount, totalCount);
+}
+
+// Update filter statistics display
+function updateFilterStats(filtered, total) {
+    var statsEl = document.getElementById('filterStats');
+    if (typeof filtered === 'undefined') {
+        // Calculate from current state
+        filtered = 0;
+        total = 0;
+        Object.keys(countyLayers).forEach(function(countyName) {
+            var layerMarkers = countyLayers[countyName];
+            layerMarkers.forEach(function(marker) {
+                total++;
+                var locationType = marker.feature.properties['設置位置'] || '';
+                if (!currentFilter || locationType === currentFilter) {
+                    filtered++;
+                }
+            });
+        });
+    }
+
+    if (total > 0) {
+        statsEl.textContent = '顯示 ' + filtered.toLocaleString() + ' / ' + total.toLocaleString() + ' 筆';
+    } else {
+        statsEl.textContent = '';
     }
 }
 
@@ -180,6 +285,11 @@ document.getElementById('deselectAll').addEventListener('click', function() {
             removeCountyData(cb.dataset.name);
         }
     });
+});
+
+// Filter change event
+document.getElementById('locationFilter').addEventListener('change', function() {
+    applyFilter();
 });
 
 // Load manifest and initialize

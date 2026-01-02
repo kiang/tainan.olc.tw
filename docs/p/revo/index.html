@@ -124,6 +124,33 @@
             color: #999;
             font-style: italic;
         }
+
+        .filter-section {
+            margin: 15px 0 10px 0;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .filter-section label {
+            font-size: 13px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .filter-section select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .filter-stats {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -147,6 +174,13 @@
         <ul class="county-list" id="countyList">
             <li class="loading">載入中...</li>
         </ul>
+        <div class="filter-section" id="filterSection" style="display: none;">
+            <label for="locationFilter">設置位置篩選</label>
+            <select id="locationFilter">
+                <option value="">全部</option>
+            </select>
+            <div class="filter-stats" id="filterStats"></div>
+        </div>
         <p style="margin: 10px 0 5px 0; font-size: 12px;">
             勾選縣市即可載入該地區的光電設施點位
         </p>
