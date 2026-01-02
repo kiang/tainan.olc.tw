@@ -151,6 +151,45 @@
             color: #666;
             margin-top: 5px;
         }
+
+        .project-section {
+            margin: 15px 0 10px 0;
+            padding: 10px;
+            background: #fff8e6;
+            border: 2px solid #e67e22;
+            border-radius: 8px;
+        }
+
+        .project-section h6 {
+            margin: 0 0 8px 0;
+            color: #e67e22;
+            font-size: 14px;
+        }
+
+        .project-section table {
+            width: 100%;
+            font-size: 13px;
+        }
+
+        .project-section td {
+            padding: 3px 0;
+        }
+
+        .project-section button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .project-section button:hover {
+            background-color: #7f8c8d;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -180,6 +219,15 @@
                 <option value="">全部</option>
             </select>
             <div class="filter-stats" id="filterStats"></div>
+        </div>
+        <div class="project-section" id="projectSection" style="display: none;">
+            <h6>案場檢視模式</h6>
+            <table>
+                <tr><td style="width: 35%;"><strong>案件編號</strong></td><td id="projectId"></td></tr>
+                <tr><td><strong>案場範圍</strong></td><td id="projectCount"></td></tr>
+                <tr><td><strong>設置者</strong></td><td id="projectOwner"></td></tr>
+            </table>
+            <button onclick="exitProjectView()">返回全部顯示</button>
         </div>
         <p style="margin: 10px 0 5px 0; font-size: 12px;">
             勾選縣市即可載入該地區的光電設施點位

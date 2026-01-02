@@ -15,6 +15,8 @@ var locationTypes = new Set();  // Track unique 設置位置 values
 var currentFilter = '';
 var projectIndex = {};  // Map projectKey -> array of markers
 var projectScopeLayer = null;  // Layer for showing project boundary
+var currentProjectKey = null;  // Current project in view mode
+var projectViewMode = false;  // Whether in project view mode
 var markers = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 50,
@@ -44,18 +46,9 @@ function createPopupContent(feature) {
     content += '<h4 style="margin-top: 0; margin-bottom: 10px;">' + (props.name || '未命名') + '</h4>';
     content += '<table style="width: 100%; font-size: 13px;">';
 
-    // Show project info
-    if (projectKey && projectIndex[projectKey]) {
-        var projectCount = projectIndex[projectKey].length;
-        content += '<tr><td style="padding: 3px; width: 35%;"><strong>案件編號</strong></td>';
-        content += '<td style="padding: 3px;">' + projectKey + '</td></tr>';
-        content += '<tr><td style="padding: 3px;"><strong>案場範圍</strong></td>';
-        content += '<td style="padding: 3px;">' + projectCount + ' 筆地號</td></tr>';
-    }
-
     // Show solar panel specific info
     if (props['設置者名稱']) {
-        content += '<tr><td style="padding: 3px;"><strong>設置者</strong></td>';
+        content += '<tr><td style="padding: 3px; width: 35%;"><strong>設置者</strong></td>';
         content += '<td style="padding: 3px;">' + props['設置者名稱'] + '</td></tr>';
     }
     if (props['案件狀態']) {
@@ -81,17 +74,28 @@ function createPopupContent(feature) {
 
     content += '</table>';
 
-    // Add project scope button if project has multiple points
-    if (projectKey && projectIndex[projectKey] && projectIndex[projectKey].length > 1) {
-        content += '<div style="margin-top: 10px;">';
-        content += '<button onclick="showProjectScope(\'' + projectKey + '\')" style="width: 100%; padding: 8px; background-color: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px;">顯示案場範圍</button>';
-        content += '</div>';
-    }
-
-    // Add navigation buttons
-    content += '<div style="margin-top: 5px;">';
+    // Add navigation button
+    content += '<div style="margin-top: 10px;">';
     content += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + coords[1] + ',' + coords[0] + '&travelmode=driving" target="_blank" style="display: block; padding: 8px; background-color: #4285F4; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Google 導航</a>';
     content += '</div>';
+
+    // Show project info at bottom (only show button when not in project view mode)
+    if (projectKey && projectIndex[projectKey]) {
+        var projectCount = projectIndex[projectKey].length;
+        content += '<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">';
+        content += '<table style="width: 100%; font-size: 13px;">';
+        content += '<tr><td style="padding: 3px; width: 35%;"><strong>案件編號</strong></td>';
+        content += '<td style="padding: 3px;">' + projectKey + '</td></tr>';
+        content += '<tr><td style="padding: 3px;"><strong>案場範圍</strong></td>';
+        content += '<td style="padding: 3px;">' + projectCount + ' 筆地號</td></tr>';
+        content += '</table>';
+
+        // Show project scope button only when not in project view mode
+        if (!projectViewMode && projectCount > 1) {
+            content += '<button onclick="showProjectScope(\'' + projectKey + '\')" style="width: 100%; margin-top: 8px; padding: 8px; background-color: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px;">顯示案場範圍</button>';
+        }
+        content += '</div>';
+    }
 
     content += '</div>';
     return content;
@@ -99,6 +103,9 @@ function createPopupContent(feature) {
 
 // Show project scope on map
 function showProjectScope(projectKey) {
+    // Close any open popup
+    map.closePopup();
+
     // Remove existing project scope layer
     if (projectScopeLayer) {
         map.removeLayer(projectScopeLayer);
@@ -107,6 +114,16 @@ function showProjectScope(projectKey) {
 
     var projectMarkers = projectIndex[projectKey];
     if (!projectMarkers || projectMarkers.length === 0) return;
+
+    // Enter project view mode
+    projectViewMode = true;
+    currentProjectKey = projectKey;
+
+    // Clear all markers and show only project markers
+    markers.clearLayers();
+    projectMarkers.forEach(function(marker) {
+        markers.addLayer(marker);
+    });
 
     // Collect all coordinates
     var latlngs = projectMarkers.map(function(marker) {
@@ -144,6 +161,41 @@ function showProjectScope(projectKey) {
     // Fit map to show project scope
     var bounds = L.latLngBounds(latlngs);
     map.fitBounds(bounds, { padding: [50, 50] });
+
+    // Get project owner from first marker
+    var firstMarker = projectMarkers[0];
+    var owner = firstMarker.feature.properties['設置者名稱'] || '-';
+
+    // Show project section in info panel
+    document.getElementById('projectSection').style.display = 'block';
+    document.getElementById('projectId').textContent = projectKey;
+    document.getElementById('projectCount').textContent = projectMarkers.length + ' 筆地號';
+    document.getElementById('projectOwner').textContent = owner;
+
+    // Update filter stats
+    document.getElementById('filterStats').textContent = '案場模式';
+}
+
+// Exit project view mode and restore all markers
+function exitProjectView() {
+    // Close any open popup
+    map.closePopup();
+
+    // Remove project scope layer
+    if (projectScopeLayer) {
+        map.removeLayer(projectScopeLayer);
+        projectScopeLayer = null;
+    }
+
+    // Exit project view mode
+    projectViewMode = false;
+    currentProjectKey = null;
+
+    // Hide project section in info panel
+    document.getElementById('projectSection').style.display = 'none';
+
+    // Restore all markers with current filter
+    applyFilter();
 }
 
 // Simple convex hull algorithm (Graham scan)
@@ -253,6 +305,16 @@ function loadCountyData(countyName, filename) {
 // Remove a county's data
 function removeCountyData(countyName) {
     if (countyLayers[countyName]) {
+        // Check if current project view will be affected
+        var affectsCurrentProject = false;
+        if (projectViewMode && currentProjectKey) {
+            countyLayers[countyName].forEach(function(marker) {
+                if (marker.feature.properties.projectKey === currentProjectKey) {
+                    affectsCurrentProject = true;
+                }
+            });
+        }
+
         // Remove markers from project index
         countyLayers[countyName].forEach(function(marker) {
             var projectKey = marker.feature.properties.projectKey;
@@ -271,13 +333,17 @@ function removeCountyData(countyName) {
         delete countyLayers[countyName];
         delete countyData[countyName];
 
-        // Clear project scope layer if visible
-        if (projectScopeLayer) {
-            map.removeLayer(projectScopeLayer);
-            projectScopeLayer = null;
+        // Exit project view mode if current project was affected
+        if (affectsCurrentProject) {
+            exitProjectView();
+        } else {
+            // Clear project scope layer if visible
+            if (projectScopeLayer) {
+                map.removeLayer(projectScopeLayer);
+                projectScopeLayer = null;
+            }
+            updateFilterStats();
         }
-
-        updateFilterStats();
     }
 }
 
@@ -424,6 +490,16 @@ document.getElementById('deselectAll').addEventListener('click', function() {
 
 // Filter change event
 document.getElementById('locationFilter').addEventListener('change', function() {
+    // Exit project view mode when filter changes
+    if (projectViewMode) {
+        projectViewMode = false;
+        currentProjectKey = null;
+        if (projectScopeLayer) {
+            map.removeLayer(projectScopeLayer);
+            projectScopeLayer = null;
+        }
+        document.getElementById('projectSection').style.display = 'none';
+    }
     applyFilter();
 });
 
