@@ -61,10 +61,38 @@
             overflow-y: auto;
         }
 
-        .info-panel h6 {
-            margin: 0 0 10px 0;
+        .info-panel.collapsed .panel-content {
+            display: none;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .panel-header h6 {
+            margin: 0;
             font-size: 16px;
             font-weight: bold;
+        }
+
+        .panel-toggle {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .panel-toggle:hover {
+            background: #e5e5e5;
         }
 
         .info-panel .county-list {
@@ -277,43 +305,48 @@
 <body>
     <div id="map"></div>
 
-    <div class="info-panel">
-        <h6>台灣太陽光電地圖</h6>
-        <div class="btn-group">
-            <button id="selectAll">全選</button>
-            <button id="deselectAll">取消全選</button>
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-header">
+            <h6>台灣太陽光電地圖</h6>
+            <button class="panel-toggle" id="panelToggle" title="收合選單">✕</button>
         </div>
-        <ul class="county-list" id="countyList">
-            <li class="loading">載入中...</li>
-        </ul>
-        <div class="filter-section" id="filterSection" style="display: none;">
-            <label for="locationFilter">設置位置篩選</label>
-            <select id="locationFilter">
-                <option value="">全部</option>
-            </select>
-            <div class="filter-stats" id="filterStats"></div>
+        <div class="panel-content">
+            <div class="btn-group">
+                <button id="selectAll">全選</button>
+                <button id="deselectAll">取消全選</button>
+            </div>
+            <ul class="county-list" id="countyList">
+                <li class="loading">載入中...</li>
+            </ul>
+            <div class="filter-section" id="filterSection" style="display: none;">
+                <label for="locationFilter">設置位置篩選</label>
+                <select id="locationFilter">
+                    <option value="">全部</option>
+                </select>
+                <div class="filter-stats" id="filterStats"></div>
+            </div>
+            <div class="search-section" id="searchSection" style="display: none;">
+                <input type="text" id="projectSearch" placeholder="搜尋案件編號或設置者...">
+                <div class="search-results" id="searchResults" style="display: none;"></div>
+            </div>
+            <div class="project-section" id="projectSection" style="display: none;">
+                <h6>案場檢視模式</h6>
+                <table>
+                    <tr><td style="width: 35%;"><strong>案件編號</strong></td><td id="projectId"></td></tr>
+                    <tr><td><strong>案場範圍</strong></td><td id="projectCount"></td></tr>
+                    <tr><td><strong>設置者</strong></td><td id="projectOwner"></td></tr>
+                </table>
+                <button onclick="exitProjectView()">返回全部顯示</button>
+            </div>
+            <p style="margin: 10px 0 5px 0; font-size: 12px;">
+                勾選縣市即可載入該地區的光電設施點位
+            </p>
+            <small>
+                資料來源：<a href="https://public.revo.org.tw/GraphicWeb" target="_blank">太陽光電案場資訊揭露</a><br>
+                <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">問題回報</a> |
+                <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a>
+            </small>
         </div>
-        <div class="search-section" id="searchSection" style="display: none;">
-            <input type="text" id="projectSearch" placeholder="搜尋案件編號或設置者...">
-            <div class="search-results" id="searchResults" style="display: none;"></div>
-        </div>
-        <div class="project-section" id="projectSection" style="display: none;">
-            <h6>案場檢視模式</h6>
-            <table>
-                <tr><td style="width: 35%;"><strong>案件編號</strong></td><td id="projectId"></td></tr>
-                <tr><td><strong>案場範圍</strong></td><td id="projectCount"></td></tr>
-                <tr><td><strong>設置者</strong></td><td id="projectOwner"></td></tr>
-            </table>
-            <button onclick="exitProjectView()">返回全部顯示</button>
-        </div>
-        <p style="margin: 10px 0 5px 0; font-size: 12px;">
-            勾選縣市即可載入該地區的光電設施點位
-        </p>
-        <small>
-            資料來源：<a href="https://public.revo.org.tw/GraphicWeb" target="_blank">太陽光電案場資訊揭露</a><br>
-            <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">問題回報</a> |
-            <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a>
-        </small>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

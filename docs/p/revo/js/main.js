@@ -707,6 +707,23 @@ document.getElementById('projectSearch').addEventListener('focus', function() {
     }
 });
 
+// Panel toggle functionality
+document.getElementById('panelToggle').addEventListener('click', function() {
+    var panel = document.getElementById('infoPanel');
+    var toggle = this;
+
+    panel.classList.toggle('collapsed');
+
+    // Change icon based on state
+    if (panel.classList.contains('collapsed')) {
+        toggle.textContent = '☰';
+        toggle.title = '展開選單';
+    } else {
+        toggle.textContent = '✕';
+        toggle.title = '收合選單';
+    }
+});
+
 // Handle hash change event
 window.addEventListener('hashchange', function() {
     if (isInitializing) return;
