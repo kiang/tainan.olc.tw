@@ -13,6 +13,8 @@ var countyData = {};  // Store raw feature data for filtering
 var manifest = [];
 var locationTypes = new Set();  // Track unique 設置位置 values
 var currentFilter = '';
+var projectIndex = {};  // Map projectKey -> array of markers
+var projectScopeLayer = null;  // Layer for showing project boundary
 var markers = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 50,
@@ -36,14 +38,24 @@ function getCountyColor(name) {
 function createPopupContent(feature) {
     var props = feature.properties;
     var coords = feature.geometry.coordinates;
+    var projectKey = props.projectKey || '';
 
     var content = '<div style="max-width: 300px;">';
     content += '<h4 style="margin-top: 0; margin-bottom: 10px;">' + (props.name || '未命名') + '</h4>';
     content += '<table style="width: 100%; font-size: 13px;">';
 
+    // Show project info
+    if (projectKey && projectIndex[projectKey]) {
+        var projectCount = projectIndex[projectKey].length;
+        content += '<tr><td style="padding: 3px; width: 35%;"><strong>案件編號</strong></td>';
+        content += '<td style="padding: 3px;">' + projectKey + '</td></tr>';
+        content += '<tr><td style="padding: 3px;"><strong>案場範圍</strong></td>';
+        content += '<td style="padding: 3px;">' + projectCount + ' 筆地號</td></tr>';
+    }
+
     // Show solar panel specific info
     if (props['設置者名稱']) {
-        content += '<tr><td style="padding: 3px; width: 35%;"><strong>設置者</strong></td>';
+        content += '<tr><td style="padding: 3px;"><strong>設置者</strong></td>';
         content += '<td style="padding: 3px;">' + props['設置者名稱'] + '</td></tr>';
     }
     if (props['案件狀態']) {
@@ -69,13 +81,106 @@ function createPopupContent(feature) {
 
     content += '</table>';
 
+    // Add project scope button if project has multiple points
+    if (projectKey && projectIndex[projectKey] && projectIndex[projectKey].length > 1) {
+        content += '<div style="margin-top: 10px;">';
+        content += '<button onclick="showProjectScope(\'' + projectKey + '\')" style="width: 100%; padding: 8px; background-color: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px;">顯示案場範圍</button>';
+        content += '</div>';
+    }
+
     // Add navigation buttons
-    content += '<div style="margin-top: 10px;">';
-    content += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + coords[1] + ',' + coords[0] + '&travelmode=driving" target="_blank" style="display: block; margin-bottom: 5px; padding: 8px; background-color: #4285F4; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Google 導航</a>';
+    content += '<div style="margin-top: 5px;">';
+    content += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + coords[1] + ',' + coords[0] + '&travelmode=driving" target="_blank" style="display: block; padding: 8px; background-color: #4285F4; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Google 導航</a>';
     content += '</div>';
 
     content += '</div>';
     return content;
+}
+
+// Show project scope on map
+function showProjectScope(projectKey) {
+    // Remove existing project scope layer
+    if (projectScopeLayer) {
+        map.removeLayer(projectScopeLayer);
+        projectScopeLayer = null;
+    }
+
+    var projectMarkers = projectIndex[projectKey];
+    if (!projectMarkers || projectMarkers.length === 0) return;
+
+    // Collect all coordinates
+    var latlngs = projectMarkers.map(function(marker) {
+        var coords = marker.feature.geometry.coordinates;
+        return [coords[1], coords[0]];
+    });
+
+    // Create bounds and convex hull-like polygon
+    if (latlngs.length === 1) {
+        // Single point - show circle
+        projectScopeLayer = L.circle(latlngs[0], {
+            radius: 100,
+            color: '#e67e22',
+            weight: 3,
+            fillColor: '#e67e22',
+            fillOpacity: 0.2
+        }).addTo(map);
+    } else if (latlngs.length === 2) {
+        // Two points - show line with buffer
+        projectScopeLayer = L.polyline(latlngs, {
+            color: '#e67e22',
+            weight: 4
+        }).addTo(map);
+    } else {
+        // Multiple points - create convex hull
+        var hull = getConvexHull(latlngs);
+        projectScopeLayer = L.polygon(hull, {
+            color: '#e67e22',
+            weight: 3,
+            fillColor: '#e67e22',
+            fillOpacity: 0.2
+        }).addTo(map);
+    }
+
+    // Fit map to show project scope
+    var bounds = L.latLngBounds(latlngs);
+    map.fitBounds(bounds, { padding: [50, 50] });
+}
+
+// Simple convex hull algorithm (Graham scan)
+function getConvexHull(points) {
+    if (points.length < 3) return points;
+
+    // Find the point with lowest y (and leftmost if tie)
+    var start = 0;
+    for (var i = 1; i < points.length; i++) {
+        if (points[i][0] < points[start][0] ||
+            (points[i][0] === points[start][0] && points[i][1] < points[start][1])) {
+            start = i;
+        }
+    }
+
+    // Sort points by polar angle with respect to start point
+    var startPoint = points[start];
+    var sorted = points.slice().sort(function(a, b) {
+        var angleA = Math.atan2(a[0] - startPoint[0], a[1] - startPoint[1]);
+        var angleB = Math.atan2(b[0] - startPoint[0], b[1] - startPoint[1]);
+        return angleA - angleB;
+    });
+
+    // Build hull
+    var hull = [];
+    for (var i = 0; i < sorted.length; i++) {
+        while (hull.length >= 2 && cross(hull[hull.length - 2], hull[hull.length - 1], sorted[i]) <= 0) {
+            hull.pop();
+        }
+        hull.push(sorted[i]);
+    }
+
+    return hull;
+}
+
+function cross(o, a, b) {
+    return (a[1] - o[1]) * (b[0] - o[0]) - (a[0] - o[0]) * (b[1] - o[1]);
 }
 
 // Create marker icon
@@ -120,6 +225,15 @@ function loadCountyData(countyName, filename) {
                 if (locationType) {
                     locationTypes.add(locationType);
                 }
+
+                // Build project index
+                var projectKey = feature.properties.projectKey;
+                if (projectKey) {
+                    if (!projectIndex[projectKey]) {
+                        projectIndex[projectKey] = [];
+                    }
+                    projectIndex[projectKey].push(marker);
+                }
             });
 
             countyLayers[countyName] = layerMarkers;
@@ -139,9 +253,30 @@ function loadCountyData(countyName, filename) {
 // Remove a county's data
 function removeCountyData(countyName) {
     if (countyLayers[countyName]) {
+        // Remove markers from project index
+        countyLayers[countyName].forEach(function(marker) {
+            var projectKey = marker.feature.properties.projectKey;
+            if (projectKey && projectIndex[projectKey]) {
+                var idx = projectIndex[projectKey].indexOf(marker);
+                if (idx > -1) {
+                    projectIndex[projectKey].splice(idx, 1);
+                }
+                if (projectIndex[projectKey].length === 0) {
+                    delete projectIndex[projectKey];
+                }
+            }
+        });
+
         markers.removeLayers(countyLayers[countyName]);
         delete countyLayers[countyName];
         delete countyData[countyName];
+
+        // Clear project scope layer if visible
+        if (projectScopeLayer) {
+            map.removeLayer(projectScopeLayer);
+            projectScopeLayer = null;
+        }
+
         updateFilterStats();
     }
 }

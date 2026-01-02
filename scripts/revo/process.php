@@ -34,9 +34,14 @@ foreach ($data['points'] as $point) {
         $stats[$prefix] = 0;
     }
 
-    // Parse groupContent to get solar panel details
+    // Parse groupContent to get solar panel details and project key
     $solarInfo = [];
+    $projectKey = '';
     if (!empty($point['groupContent'])) {
+        // Get project key from first groupContent
+        if (isset($point['groupContent'][0]['key'])) {
+            $projectKey = $point['groupContent'][0]['key'];
+        }
         foreach ($point['groupContent'] as $content) {
             if (isset($content['value'])) {
                 $decoded = json_decode($content['value'], true);
@@ -63,6 +68,7 @@ foreach ($data['points'] as $point) {
             'address' => $point['address'] ?? '',
             'village' => $point['village'] ?? '',
             'neighborhood' => $point['neighborhood'] ?? '',
+            'projectKey' => $projectKey,
         ]
     ];
 
