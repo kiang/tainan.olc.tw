@@ -14,6 +14,7 @@ var manifest = [];
 var locationTypes = new Set();  // Track unique 設置位置 values
 var currentFilter = '';
 var projectIndex = {};  // Map projectKey -> array of markers
+var projectSearchIndex = {};  // Map projectKey -> { owner, count } for search
 var projectScopeLayer = null;  // Layer for showing project boundary
 var currentProjectKey = null;  // Current project in view mode
 var projectViewMode = false;  // Whether in project view mode
@@ -278,21 +279,31 @@ function loadCountyData(countyName, filename) {
                     locationTypes.add(locationType);
                 }
 
-                // Build project index
+                // Build project index and search index
                 var projectKey = feature.properties.projectKey;
                 if (projectKey) {
                     if (!projectIndex[projectKey]) {
                         projectIndex[projectKey] = [];
                     }
                     projectIndex[projectKey].push(marker);
+
+                    // Build search index
+                    if (!projectSearchIndex[projectKey]) {
+                        projectSearchIndex[projectKey] = {
+                            owner: feature.properties['設置者名稱'] || '',
+                            count: 0
+                        };
+                    }
+                    projectSearchIndex[projectKey].count++;
                 }
             });
 
             countyLayers[countyName] = layerMarkers;
             countyData[countyName] = featureData;
 
-            // Update filter dropdown
+            // Update filter dropdown and show search section
             updateFilterDropdown();
+            updateSearchSection();
 
             // Apply current filter
             applyFilter();
@@ -315,7 +326,7 @@ function removeCountyData(countyName) {
             });
         }
 
-        // Remove markers from project index
+        // Remove markers from project index and search index
         countyLayers[countyName].forEach(function(marker) {
             var projectKey = marker.feature.properties.projectKey;
             if (projectKey && projectIndex[projectKey]) {
@@ -325,6 +336,7 @@ function removeCountyData(countyName) {
                 }
                 if (projectIndex[projectKey].length === 0) {
                     delete projectIndex[projectKey];
+                    delete projectSearchIndex[projectKey];
                 }
             }
         });
@@ -332,6 +344,9 @@ function removeCountyData(countyName) {
         markers.removeLayers(countyLayers[countyName]);
         delete countyLayers[countyName];
         delete countyData[countyName];
+
+        // Update search section
+        updateSearchSection();
 
         // Exit project view mode if current project was affected
         if (affectsCurrentProject) {
@@ -345,6 +360,86 @@ function removeCountyData(countyName) {
             updateFilterStats();
         }
     }
+}
+
+// Update search section visibility
+function updateSearchSection() {
+    var searchSection = document.getElementById('searchSection');
+    var projectCount = Object.keys(projectSearchIndex).length;
+    if (projectCount > 0) {
+        searchSection.style.display = 'block';
+    } else {
+        searchSection.style.display = 'none';
+    }
+}
+
+// Search projects by keyword
+function searchProjects(keyword) {
+    if (!keyword || keyword.length < 1) {
+        return [];
+    }
+
+    keyword = keyword.toLowerCase();
+    var results = [];
+
+    Object.keys(projectSearchIndex).forEach(function(projectKey) {
+        var info = projectSearchIndex[projectKey];
+        var matchKey = projectKey.toLowerCase().indexOf(keyword) !== -1;
+        var matchOwner = info.owner.toLowerCase().indexOf(keyword) !== -1;
+
+        if (matchKey || matchOwner) {
+            results.push({
+                projectKey: projectKey,
+                owner: info.owner,
+                count: projectIndex[projectKey] ? projectIndex[projectKey].length : info.count
+            });
+        }
+    });
+
+    // Sort by count descending
+    results.sort(function(a, b) {
+        return b.count - a.count;
+    });
+
+    return results.slice(0, 20);  // Limit to 20 results
+}
+
+// Render search results
+function renderSearchResults(results) {
+    var container = document.getElementById('searchResults');
+
+    if (results.length === 0) {
+        container.innerHTML = '<div class="no-results">找不到符合的案件</div>';
+        container.style.display = 'block';
+        return;
+    }
+
+    var html = '';
+    results.forEach(function(result) {
+        html += '<div class="result-item" onclick="selectSearchResult(\'' + result.projectKey + '\')">';
+        html += '<div class="project-id">' + result.projectKey + '</div>';
+        html += '<div class="owner">' + result.owner + ' (' + result.count + ' 筆地號)</div>';
+        html += '</div>';
+    });
+
+    container.innerHTML = html;
+    container.style.display = 'block';
+}
+
+// Handle selecting a search result
+function selectSearchResult(projectKey) {
+    // Clear search
+    document.getElementById('projectSearch').value = '';
+    document.getElementById('searchResults').style.display = 'none';
+
+    // Check if project markers are loaded
+    if (!projectIndex[projectKey] || projectIndex[projectKey].length === 0) {
+        alert('請先勾選包含此案件的縣市');
+        return;
+    }
+
+    // Enter project view mode
+    showProjectScope(projectKey);
 }
 
 // Update filter dropdown with available location types
@@ -501,6 +596,34 @@ document.getElementById('locationFilter').addEventListener('change', function() 
         document.getElementById('projectSection').style.display = 'none';
     }
     applyFilter();
+});
+
+// Search input event
+document.getElementById('projectSearch').addEventListener('input', function() {
+    var keyword = this.value.trim();
+    if (keyword.length === 0) {
+        document.getElementById('searchResults').style.display = 'none';
+        return;
+    }
+    var results = searchProjects(keyword);
+    renderSearchResults(results);
+});
+
+// Hide search results when clicking outside
+document.addEventListener('click', function(e) {
+    var searchSection = document.getElementById('searchSection');
+    if (!searchSection.contains(e.target)) {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+
+// Show search results when focusing on search input
+document.getElementById('projectSearch').addEventListener('focus', function() {
+    var keyword = this.value.trim();
+    if (keyword.length > 0) {
+        var results = searchProjects(keyword);
+        renderSearchResults(results);
+    }
 });
 
 // Load manifest and initialize

@@ -190,6 +190,72 @@
         .project-section button:hover {
             background-color: #7f8c8d;
         }
+
+        .search-section {
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .search-section input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .search-section input:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1001;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .search-results .result-item {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .search-results .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-results .result-item:hover {
+            background: #fff8e6;
+        }
+
+        .search-results .result-item .project-id {
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .search-results .result-item .owner {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .search-results .no-results {
+            padding: 10px;
+            color: #999;
+            text-align: center;
+            font-size: 12px;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -219,6 +285,10 @@
                 <option value="">全部</option>
             </select>
             <div class="filter-stats" id="filterStats"></div>
+        </div>
+        <div class="search-section" id="searchSection" style="display: none;">
+            <input type="text" id="projectSearch" placeholder="搜尋案件編號或設置者...">
+            <div class="search-results" id="searchResults" style="display: none;"></div>
         </div>
         <div class="project-section" id="projectSection" style="display: none;">
             <h6>案場檢視模式</h6>
