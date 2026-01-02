@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>台灣太陽光電地圖</title>
+    <meta name="description" content="台灣太陽光電設施分佈地圖，顯示各縣市光電設備資訊">
+    <meta name="keywords" content="台灣,太陽能,光電,再生能源,地圖">
+    <meta name="author" content="江明宗">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/revo/">
+    <meta property="og:title" content="台灣太陽光電地圖">
+    <meta property="og:description" content="台灣太陽光電設施分佈地圖，顯示各縣市光電設備資訊">
+    <meta property="og:image" content="https://tainan.olc.tw/p/revo/og_image.png">
+    <meta property="og:site_name" content="台南開放資料地圖">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://tainan.olc.tw/p/revo/">
+    <meta name="twitter:title" content="台灣太陽光電地圖">
+    <meta name="twitter:description" content="台灣太陽光電設施分佈地圖，顯示各縣市光電設備資訊">
+    <meta name="twitter:image" content="https://tainan.olc.tw/p/revo/og_image.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 320px;
+            max-height: calc(100vh - 50px);
+            overflow-y: auto;
+        }
+
+        .info-panel h6 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .info-panel .county-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 13px;
+        }
+
+        .info-panel .county-list li {
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-panel .county-list input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .info-panel .county-list label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .info-panel .county-list .count {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .info-panel small {
+            font-size: 12px;
+        }
+
+        .info-panel a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .info-panel a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-group {
+            margin: 10px 0;
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-group button {
+            flex: 1;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-group button:hover {
+            background: #e5e5e5;
+        }
+
+        .loading {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <div class="info-panel">
+        <h6>台灣太陽光電地圖</h6>
+        <div class="btn-group">
+            <button id="selectAll">全選</button>
+            <button id="deselectAll">取消全選</button>
+        </div>
+        <ul class="county-list" id="countyList">
+            <li class="loading">載入中...</li>
+        </ul>
+        <p style="margin: 10px 0 5px 0; font-size: 12px;">
+            勾選縣市即可載入該地區的光電設施點位
+        </p>
+        <small>
+            資料來源：<a href="https://public.revo.org.tw/" target="_blank">公民電廠資訊平台</a><br>
+            <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">問題回報</a> |
+            <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a>
+        </small>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+</body>
+
+</html>
