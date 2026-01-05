@@ -272,6 +272,16 @@ function addMarkersFromCSV() {
                 vectorSource.addFeatures(features);
                 clusterSource.refresh();
 
+                // Fit map to bounds of all features
+                if (features.length > 0) {
+                    var extent = vectorSource.getExtent();
+                    map.getView().fit(extent, {
+                        padding: [50, 50, 50, 50],
+                        maxZoom: 16,
+                        duration: 500
+                    });
+                }
+
                 // Create the chart
                 createCategoryChart(categoryCounts);
 
