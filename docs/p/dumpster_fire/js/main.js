@@ -290,6 +290,15 @@ function addMarkersFromCSV() {
                     'point/:pointId': showPoint
                 });
 
+                // Check if there's an existing hash URL and trigger it
+                if (window.location.hash) {
+                    var hash = window.location.hash.substring(1);
+                    if (hash.startsWith('point/')) {
+                        var pointId = hash.substring(6);
+                        showPoint(pointId);
+                    }
+                }
+
                 resolve();
             },
             error: function(error) {
@@ -306,7 +315,15 @@ function showPoint(pointId) {
     const feature = points[pointId];
     if (feature) {
         const coordinate = feature.getGeometry().getCoordinates();
-        showPopup(feature, coordinate);
+        // Center map on the point
+        map.getView().animate({
+            center: coordinate,
+            zoom: 16,
+            duration: 500
+        }, function() {
+            // Show popup after animation completes
+            showPopup(feature, coordinate);
+        });
     }
 }
 
