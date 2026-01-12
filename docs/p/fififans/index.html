@@ -272,6 +272,27 @@
             font-size: 1.1em;
             color: #999;
         }
+        .cunli-name-label {
+            background: transparent !important;
+            border: none !important;
+        }
+        .cunli-name-label span {
+            background: rgba(255, 255, 255, 0.85);
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            border: 1px solid #ccc;
+        }
+        .cunli-label {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid #999 !important;
+            padding: 4px 8px !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+        }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -336,6 +357,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
     <script>
         // Route colors for different dates
         const ROUTE_COLORS = [
@@ -362,6 +384,8 @@
         let playInterval = null;
         let currentPlayIndex = 0;
         let isPlaying = false;
+        let cunliLayer = null;
+        let cunliLabels = [];
 
         // Initialize map
         function initMap() {
@@ -369,6 +393,72 @@
             L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
                 attribution: '&copy; 內政部國土測繪中心'
             }).addTo(map);
+
+            // Create custom pane for cunli layer (below routes)
+            map.createPane('cunliPane');
+            map.getPane('cunliPane').style.zIndex = 350;
+
+            loadCunliLayer();
+        }
+
+        // Load cunli (village) boundaries layer
+        async function loadCunliLayer() {
+            try {
+                const response = await fetch('https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/臺南市.json');
+                const topoData = await response.json();
+                // Get the first object key from TopoJSON
+                const objectKey = Object.keys(topoData.objects)[0];
+                const geojsonData = topojson.feature(topoData, topoData.objects[objectKey]);
+
+                cunliLayer = L.geoJSON(geojsonData, {
+                    style: {
+                        color: '#999',
+                        weight: 0.5,
+                        fillColor: 'transparent',
+                        fillOpacity: 0
+                    },
+                    pane: 'cunliPane',
+                    onEachFeature: function(feature, layer) {
+                        const townName = feature.properties.TOWNNAME || '';
+                        const villName = feature.properties.VILLNAME || '';
+                        const name = townName + villName;
+                        if (name) {
+                            layer.bindTooltip(name, {
+                                permanent: false,
+                                direction: 'center',
+                                className: 'cunli-label'
+                            });
+
+                            // Create permanent label at center
+                            const center = layer.getBounds().getCenter();
+                            const label = L.marker(center, {
+                                icon: L.divIcon({
+                                    className: 'cunli-name-label',
+                                    html: '<span>' + name + '</span>',
+                                    iconSize: null
+                                })
+                            });
+                            cunliLabels.push(label);
+                        }
+                    }
+                }).addTo(map);
+
+                // Show labels only at higher zoom levels
+                map.on('zoomend', updateCunliLabels);
+                updateCunliLabels();
+            } catch (error) {
+                console.error('Failed to load cunli layer:', error);
+            }
+        }
+
+        // Update cunli labels visibility based on zoom
+        function updateCunliLabels() {
+            const zoom = map.getZoom();
+            if (zoom >= 14) {
+                cunliLabels.forEach(label => label.addTo(map));
+            } else {
+                cunliLabels.forEach(label => map.removeLayer(label));
+            }
         }
 
         // Get color for a date
@@ -553,7 +643,7 @@
 
                 const color = getColorForDate(date);
                 const isMajor = date === majorDate;
-                const weight = isMajor ? 5 : 3;
+                const weight = isMajor ? 8 : 5;
                 const opacity = isMajor ? 0.9 : 0.6;
 
                 // Draw route polyline
