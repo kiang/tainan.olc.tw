@@ -293,6 +293,20 @@
             font-size: 12px !important;
             font-weight: bold !important;
         }
+        .cunli-highlight-label {
+            background: transparent !important;
+            border: none !important;
+        }
+        .cunli-highlight-label span {
+            background: rgba(231, 76, 60, 0.95);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -385,6 +399,8 @@
         let isPlaying = false;
         let cunliLayer = null;
         let cunliLabels = [];
+        let highlightedCunli = null;
+        let highlightedCunliLabel = null;
 
         // Initialize map
         function initMap() {
@@ -457,6 +473,85 @@
                 cunliLabels.forEach(label => label.addTo(map));
             } else {
                 cunliLabels.forEach(label => map.removeLayer(label));
+            }
+        }
+
+        // Highlight cunli containing a point
+        function highlightCunliAtPoint(lat, lng) {
+            // Clear previous highlight
+            clearCunliHighlight();
+
+            if (!cunliLayer) return;
+
+            const point = L.latLng(lat, lng);
+
+            cunliLayer.eachLayer(function(layer) {
+                if (layer.getBounds && layer.getBounds().contains(point)) {
+                    // Check if point is actually inside polygon
+                    const isInside = isPointInPolygon(point, layer);
+                    if (isInside) {
+                        // Highlight this cunli
+                        highlightedCunli = L.geoJSON(layer.toGeoJSON(), {
+                            style: {
+                                color: '#e74c3c',
+                                weight: 3,
+                                fillColor: '#e74c3c',
+                                fillOpacity: 0.2
+                            }
+                        }).addTo(map);
+
+                        // Show label
+                        const props = layer.feature.properties;
+                        const townName = props.TOWNNAME || '';
+                        const villName = props.VILLNAME || '';
+                        const name = townName + villName;
+                        if (name) {
+                            const center = layer.getBounds().getCenter();
+                            highlightedCunliLabel = L.marker(center, {
+                                icon: L.divIcon({
+                                    className: 'cunli-highlight-label',
+                                    html: '<span>' + name + '</span>',
+                                    iconSize: null
+                                })
+                            }).addTo(map);
+                        }
+                        return;
+                    }
+                }
+            });
+        }
+
+        // Check if point is inside polygon
+        function isPointInPolygon(point, layer) {
+            if (layer.getLatLngs) {
+                const latlngs = layer.getLatLngs();
+                // Handle MultiPolygon or Polygon
+                const rings = Array.isArray(latlngs[0][0]) ? latlngs[0] : latlngs;
+                const ring = Array.isArray(rings[0]) ? rings[0] : rings;
+
+                let inside = false;
+                for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                    const xi = ring[i].lat, yi = ring[i].lng;
+                    const xj = ring[j].lat, yj = ring[j].lng;
+                    if (((yi > point.lng) !== (yj > point.lng)) &&
+                        (point.lat < (xj - xi) * (point.lng - yi) / (yj - yi) + xi)) {
+                        inside = !inside;
+                    }
+                }
+                return inside;
+            }
+            return false;
+        }
+
+        // Clear cunli highlight
+        function clearCunliHighlight() {
+            if (highlightedCunli) {
+                map.removeLayer(highlightedCunli);
+                highlightedCunli = null;
+            }
+            if (highlightedCunliLabel) {
+                map.removeLayer(highlightedCunliLabel);
+                highlightedCunliLabel = null;
             }
         }
 
@@ -908,6 +1003,9 @@
             }).addTo(map).bindPopup('<b>' + item.time + '</b><br>' + item.addr + '<br>速度：' + item.speed + ' km/h');
 
             map.setView([item.lat, item.lng], 15);
+
+            // Highlight cunli at current point
+            highlightCunliAtPoint(item.lat, item.lng);
         }
 
         // Playback functions
@@ -949,6 +1047,7 @@
                 map.removeLayer(currentMarker);
                 currentMarker = null;
             }
+            clearCunliHighlight();
             document.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
 
             // Fit to show all routes
