@@ -3,7 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPS 軌跡紀錄</title>
+    <title>陳亭妃單車踩街軌跡地圖 - GPS 騎乘路線紀錄</title>
+    <meta name="description" content="陳亭妃單車踩街活動 GPS 軌跡地圖，完整記錄騎乘路線、距離統計、休息站位置及行進時間，支援多日路線比較與動態播放功能。">
+    <meta name="keywords" content="陳亭妃,單車,踩街,GPS,軌跡,騎乘路線,台南,地圖,自行車,選舉">
+    <meta name="author" content="江明宗">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="canonical" href="https://tainan.olc.tw/p/fififans/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/fififans/">
+    <meta property="og:title" content="陳亭妃單車踩街軌跡地圖 - GPS 騎乘路線紀錄">
+    <meta property="og:description" content="陳亭妃單車踩街活動 GPS 軌跡地圖，完整記錄騎乘路線、距離統計、休息站位置及行進時間，支援多日路線比較與動態播放功能。">
+    <meta property="og:image" content="https://tainan.olc.tw/p/fififans/og_image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="台南開放資料地圖">
+    <meta property="og:locale" content="zh_TW">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://tainan.olc.tw/p/fififans/">
+    <meta name="twitter:title" content="陳亭妃單車踩街軌跡地圖 - GPS 騎乘路線紀錄">
+    <meta name="twitter:description" content="陳亭妃單車踩街活動 GPS 軌跡地圖，完整記錄騎乘路線、距離統計、休息站位置及行進時間，支援多日路線比較與動態播放功能。">
+    <meta name="twitter:image" content="https://tainan.olc.tw/p/fififans/og_image.png">
+    <meta name="twitter:creator" content="@kaborWu">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -247,11 +273,21 @@
             color: #999;
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5571465503362954" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="header">
         <div class="title-section">
-            <h1 id="projectName">GPS 軌跡紀錄</h1>
+            <h1 id="projectName">陳亭妃單車踩街軌跡</h1>
             <div class="meta" id="metaInfo">請選擇日期</div>
         </div>
         <div class="date-controls">
@@ -676,7 +712,7 @@
         // Update stats display
         function updateStats(data) {
             if (!data) {
-                document.getElementById('projectName').textContent = 'GPS 軌跡紀錄';
+                document.getElementById('projectName').textContent = '陳亭妃單車踩街軌跡';
                 document.getElementById('metaInfo').textContent = '請選擇日期';
                 document.getElementById('totalRecords').textContent = '-';
                 document.getElementById('totalDistance').textContent = '-';
@@ -688,7 +724,7 @@
                 return;
             }
 
-            document.getElementById('projectName').textContent = data.projectName || 'GPS 軌跡紀錄';
+            document.getElementById('projectName').textContent = data.projectName || '陳亭妃單車踩街軌跡';
             document.getElementById('metaInfo').textContent = (data.dotName || '') + ' | ' + data.date;
             document.getElementById('totalRecords').textContent = data.timeline.length;
             document.getElementById('totalDistance').textContent = data.totalDistanceKm + ' 公里';
