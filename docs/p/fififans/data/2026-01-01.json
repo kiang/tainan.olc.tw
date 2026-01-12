@@ -1,0 +1,48 @@
+{
+    "date": "2026-01-01",
+    "projectName": "【行動政府-行動正能量】女力鐵馬精神",
+    "dotName": "前導車",
+    "totalDistance": 0,
+    "totalDistanceKm": 0,
+    "restCount": 0,
+    "anomalyCount": 0,
+    "center": {
+        "lat": 22.9776,
+        "lng": 120.226417
+    },
+    "points": [
+        {
+            "lat": 22.9776,
+            "lng": 120.226417
+        }
+    ],
+    "timeline": [
+        {
+            "time": "14:29:57",
+            "lat": 22.9776,
+            "lng": 120.226417,
+            "addr": "臺南市東區中華東路三段157號",
+            "power": "12.2V",
+            "distance": 0,
+            "speed": 0,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        }
+    ],
+    "restStops": [],
+    "speedAnomalies": [],
+    "segments": [
+        {
+            "from": "起點",
+            "fromTime": "14:29:57",
+            "fromAddr": "臺南市東區中華東路三段157號",
+            "fromPointIndex": 0,
+            "to": "終點",
+            "toTime": "14:29:57",
+            "toAddr": "臺南市東區中華東路三段157號",
+            "toPointIndex": 0,
+            "distance": 0
+        }
+    ]
+}
