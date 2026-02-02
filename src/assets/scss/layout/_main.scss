@@ -1,0 +1,40 @@
+%flexCenter {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.district-map-page .container {
+  @media (min-width: 992px) {
+    height: calc(100vh - 81.609px);
+    overflow: hidden;
+  }
+  @extend %flexCenter;
+}
+
+.tainan-three-page .container {
+  @media (min-width: 992px) {
+    height: calc(100vh - 81.609px);
+    overflow: hidden;
+  }
+
+  @extend %flexCenter;
+}
+
+.front-page .container {
+  @media (min-width: 992px) {
+    height: calc(100vh - 81.609px);
+    overflow: hidden;
+  }
+
+  @extend %flexCenter;
+}
+
+.record-of-street-map-page .container {
+  @media (min-width: 992px) {
+    height: calc(100vh - 81.609px);
+    overflow: hidden;
+  }
+  @extend %flexCenter;
+}

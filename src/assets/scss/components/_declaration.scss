@@ -1,0 +1,46 @@
+@use "../utility";
+
+.declaration {
+  border: 10px solid utility.$secondary-middle;
+  background-color: utility.$secondary-light;
+  position: relative;
+  line-height: 23.17px;
+
+  .oneTape {
+    position: absolute;
+    top: -30px;
+    left: -40px;
+  }
+
+  .twoTape {
+    position: absolute;
+    bottom: -30px;
+    right: -40px;
+  }
+
+  .politics.content-container {
+    height: calc(100vh - 200px);
+    overflow: scroll;
+    padding: 40px;
+  }
+
+  .content-container {
+    height: calc(100vh - 200px);
+    overflow: scroll;
+    padding: 40px;
+
+    @media (min-width: 1920px) {
+      height: initial;
+    }
+
+    .content {
+      h2 {
+        margin-bottom: 24px;
+        font-size: 26px;
+      }
+      p {
+        font-size: 16px;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+@use "../utility";
+
+.tags {
+  display: inline-block;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 4px;
+
+  &--normal {
+    background-color: utility.$secondary-lightlight;
+    color: #fff;
+  }
+
+  &:hover,
+  &--disable {
+    background-color: utility.$primary;
+    color: #fff;
+  }
+}

@@ -1,0 +1,129 @@
+@use "../utility";
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+.tainan-container {
+  position: relative;
+  @media (min-width: 1920px) {
+    height: calc(100vh - 77px);
+  }
+}
+
+.tainan-three {
+  margin-top: 50px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  transform: translateY(1.8%);
+
+  &:hover {
+    @keyframes bounceName {
+      from {
+        transform: translateY(0px);
+        animation-timing-function: ease-out;
+      }
+
+      50% {
+        transform: translateY(-3px);
+        animation-timing-function: ease-in;
+      }
+
+      to {
+        transform: translateY(0px);
+        animation-timing-function: ease-in-out;
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    margin-top: 0;
+    transform: translateY(16.8%);
+    overflow: initial;
+  }
+
+  @media (min-width: 1920px) {
+    transform: translateY(1.8%);
+  }
+
+  .tainan-three-img {
+    object-fit: contain;
+    align-self: center;
+
+    @include size(120%, 120%);
+
+    @media (min-width: 992px) {
+      @include size(100%, calc(100vh - 77px));
+    }
+
+    @media (min-width: 1920px) {
+      @include size(100%, 100%);
+    }
+  }
+}
+
+.people-name {
+  position: absolute;
+  cursor: pointer;
+  animation-name: bounceName;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.kiang-name {
+  top: 75%;
+  left: 78%;
+
+  @media (min-width: 992px) {
+    top: 70%;
+    left: 73%;
+  }
+  img {
+    @include size(65%, 65%);
+    @media (min-width: 1920px) {
+      @include size(90%, 90%);
+    }
+  }
+}
+
+.kuo-name {
+  top: 70%;
+  left: 43%;
+
+  @media (min-width: 992px) {
+    top: 66%;
+    left: 44%;
+  }
+  img {
+    @include size(40%, 40%);
+    @media (min-width: 576px) {
+      @include size(65%, 65%);
+    }
+    @media (min-width: 1920px) {
+      @include size(90%, 90%);
+    }
+  }
+}
+
+.ping-name {
+  top: 75%;
+  left: 8%;
+
+  @media (min-width: 992px) {
+    top: 70%;
+    left: 13%;
+  }
+  img {
+    @include size(40%, 40%);
+    @media (min-width: 576px) {
+      @include size(70%, 70%);
+    }
+    @media (min-width: 1920px) {
+      @include size(90%, 90%);
+    }
+  }
+}

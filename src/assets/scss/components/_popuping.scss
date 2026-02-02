@@ -1,0 +1,141 @@
+@use "../utility";
+
+%button-style-unset {
+  border: 1px solid transparent;
+  background-color: transparent;
+
+  &:focus-visible {
+    outline: 1px solid transparent;
+  }
+}
+
+// bootstrap
+.candidate,
+.kiang-dialog,
+.kuo-dialog,
+.ping-dialog {
+  .modal-content {
+    border-radius: 0;
+  }
+  .modal-laptop {
+    display: none;
+    @media (min-width: 992px) {
+      display: block;
+      .modal-content {
+        .modal-header {
+          border-radius: 0;
+          position: relative;
+          height: 60px;
+          background-color: utility.$secondary-dark;
+
+          h2 {
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 60px;
+            color: white;
+          }
+          button {
+            @extend %button-style-unset;
+          }
+        }
+
+        .modal-body {
+          background-color: #fff;
+          padding: 20px 40px;
+
+          .people-img-container {
+            img {
+              float: left;
+              margin-right: 16px;
+            }
+          }
+
+          h3 {
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 24px;
+          }
+
+          p {
+            line-height: 21.27px;
+            font-size: 14px;
+          }
+
+          .facebook-container {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+          }
+        }
+      }
+    }
+  }
+
+  .modal-mobile {
+    .modal-content {
+      background-color: utility.$secondary-light;
+      border-radius: 0;
+
+      .modal-header {
+        padding: 5px 10px;
+
+        button {
+          @extend %button-style-unset;
+        }
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .content {
+        .people-img-container {
+          text-align: center;
+          margin-bottom: 20px;
+          img {
+            width: 150px;
+            height: 150px;
+          }
+        }
+        h2 {
+          font-size: 16px;
+          font-weight: 700;
+          margin-bottom: 15px;
+        }
+        p {
+          font-size: 16px;
+          line-height: 23.17px;
+        }
+
+        .facebook-container {
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          margin: 10px 0;
+        }
+      }
+    }
+    @media (min-width: 992px) {
+      display: none;
+    }
+  }
+}
+
+.street-map-dialog {
+  .modal-body,
+  .modal-header {
+    button {
+      @extend %button-style-unset;
+    }
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+
+  .modal-header {
+    padding: 10px 20px;
+  }
+}

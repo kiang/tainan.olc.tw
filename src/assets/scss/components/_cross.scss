@@ -1,0 +1,17 @@
+.cross {
+  width: 20px;
+  height: 20px;
+  background-image: url("@/assets/images/black-cross.png");
+  background-repeat: no-repeat;
+
+  @media (min-width: 992px) {
+    background-image: url("@/assets/images/Vector.png");
+  }
+
+  &--black {
+    width: 20px;
+    height: 20px;
+    background-image: url("@/assets/images/black-cross.png");
+    background-repeat: no-repeat;
+  }
+}

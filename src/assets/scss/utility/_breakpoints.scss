@@ -1,0 +1,15 @@
+// 斷點
+$mobile: 576px;
+$ipad: 768px;
+$desktop: 992px;
+
+@mixin breakpoint($min_width) {
+  @media (min-width: $min_width) {
+    @content;
+  }
+}
+
+// 使用範例
+//  @include breakpoint($desktop) {
+//     要改動地方
+//   }

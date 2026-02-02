@@ -1,0 +1,65 @@
+.front-page-container {
+  display: flex;
+  height: calc(100vh - 81.609px);
+}
+
+.candidate {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+  @media (min-width: 992px) {
+    margin: 0 40px;
+  }
+}
+
+.candidate-image {
+  position: relative;
+  align-self: center;
+
+  @media (min-width: 992px) {
+    align-self: flex-end;
+  }
+
+  img {
+    object-fit: contain;
+    width: 100%;
+    height: calc(100vh - 77px);
+  }
+}
+
+.candidate-information {
+  display: none;
+  @media (min-width: 992px) {
+    display: block;
+    align-self: center;
+    flex-basis: 880px;
+  }
+  @media (min-width: 1920px) {
+    height: initial;
+  }
+}
+.candidate-about-me-button {
+  cursor: pointer;
+  position: absolute;
+  // button會因為畫面小距離不變的話會消失
+  // left: 170px;
+  // top: 50px;
+
+  top: 5%;
+  right: 0;
+
+  @media (min-width: 390px) {
+    right: 0;
+    top: 10%;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  @media (min-width: 992px) {
+    display: none;
+  }
+}

@@ -1,0 +1,91 @@
+@use "../utility";
+
+.map-button {
+  // 1280px以上再使用absolute，以下讓他使用normal flow
+  align-self: flex-end;
+  width: 153px;
+  height: 130px;
+
+  @media (min-width: 1280px) {
+    position: absolute;
+    right: -21%;
+    top: 10%;
+    left: 100%;
+    bottom: 60%;
+  }
+
+  @media (min-width: 1920px) {
+    width: 245px;
+    height: 215px;
+  }
+
+  background-image: url(@/assets/images/mapButton.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  &:hover {
+    background-image: url(@/assets/images/mapButtonHover.png);
+  }
+}
+
+.facebook-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 242px;
+  height: 41px;
+  background-color: utility.$facebook;
+  border-radius: 4px;
+  color: #fff;
+  line-height: 41px;
+  border: none;
+  img {
+    padding-left: 6px;
+  }
+  .facebook-text {
+    padding-right: 17px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 23.17px;
+  }
+
+  &:active {
+    transform: scale(0.5);
+    transition: 0.3s;
+    color: white;
+  }
+
+  &:hover {
+    color: white;
+  }
+}
+
+.toggle-button {
+  min-width: 98px;
+  min-height: 53px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  border-bottom-right-radius: 0;
+  text-align: center;
+
+  color: #30363a;
+  background-color: #e3eaea;
+  border: 5px solid #a7ced4;
+
+  @media (min-width: 768px) {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    width: 182px;
+    height: 80px;
+    line-height: 50px;
+  }
+
+  &:hover {
+    color: #fff;
+    background-color: #a7ced4;
+    border: 5px solid #e3eaea;
+  }
+}

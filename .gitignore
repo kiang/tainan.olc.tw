@@ -1,1 +1,22 @@
 scripts/config.php
+
+# Dependencies
+node_modules/
+
+# Build cache
+.vite/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

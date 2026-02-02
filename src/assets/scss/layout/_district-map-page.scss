@@ -1,0 +1,64 @@
+.map-page {
+  padding-top: 30px;
+  margin: auto 0;
+  flex-basis: 803px;
+  align-self: flex-start;
+  flex-direction: column;
+
+  @media (min-width: 1920px) {
+    flex-basis: 1003px;
+  }
+
+  .district-map-container,
+  .street-map-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(657 / 1066 * 100%);
+
+    .district-map-iframe,
+    .street-map-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+}
+
+.district-text-container {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.district-instruct-sign,
+.street-instruct-sign {
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  animation-name: bounce;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0px);
+    animation-timing-function: ease-out;
+  }
+
+  50% {
+    transform: translateY(-3px);
+    animation-timing-function: ease-in;
+  }
+
+  to {
+    transform: translateY(0px);
+    animation-timing-function: ease-in-out;
+  }
+}

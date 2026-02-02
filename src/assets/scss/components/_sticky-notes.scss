@@ -1,0 +1,42 @@
+@use "../utility";
+
+.sticky-notes {
+  width: 100%;
+  background: linear-gradient(to right bottom, transparent 50%, #fff 0)
+      no-repeat 0% 0 / 50px 50px,
+    linear-gradient(135deg, transparent 35px, #ffffffcc 0);
+
+  @media (min-width: 992px) {
+    background: linear-gradient(to right bottom, transparent 50%, #fff 0)
+        no-repeat 0% 0 / 100px 100px,
+      linear-gradient(135deg, transparent 70px, #ffffffcc 0);
+
+    width: 977px;
+  }
+}
+
+.top {
+  --offset: 300px;
+  position: sticky;
+  bottom: 10px;
+  left: calc(100vw - 20%);
+  margin-top: calc(100vh + var(--offset));
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 5px 10px 10px;
+  color: #000;
+  border: 5px solid #a7ced4;
+  background: #e3eaea;
+  border-radius: 30px;
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    left: calc(100vw - 15%);
+
+    &:hover {
+      background: #a7ced4;
+      border: 5px solid #e3eaea;
+    }
+  }
+}

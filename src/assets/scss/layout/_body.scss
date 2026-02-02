@@ -1,0 +1,5 @@
+@use "../utility";
+body {
+  background-color: utility.$primary;
+  height: 100vh;
+}

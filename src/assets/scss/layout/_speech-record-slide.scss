@@ -1,0 +1,97 @@
+// speech-record
+.speech-record {
+  padding: 14px 20px;
+
+  @media (min-width: 992px) {
+    padding: 24px 40px;
+  }
+
+  h2 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 33px;
+    font-size: 16px;
+
+    @media (min-width: 992px) {
+      font-size: 36px;
+    }
+  }
+  p {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  // 針對past-speech-record
+
+  &-topic {
+    display: none;
+
+    @media (min-width: 992px) {
+      margin-top: 53px;
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 3fr;
+      gap: 30px;
+
+      h3 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  &-desktop {
+    display: none;
+
+    @media (min-width: 992px) {
+      display: block;
+
+      .speech-record-content {
+        display: grid;
+        grid-template-columns: 2fr 2fr 1fr 3fr;
+        align-items: center;
+        border-bottom: white 1px solid;
+        padding: 20px 0;
+        gap: 30px;
+
+        .resources-content {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+  }
+
+  &-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-bottom: #0000001a 1px solid;
+    padding: 20px 0;
+
+    @media (min-width: 992px) {
+      display: none;
+    }
+
+    h3 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .speech-record-topicNcontent {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+    }
+
+    .speech-record-resources-topicNcontent {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .resources-content {
+        display: flex;
+        flex-direction: row;
+        // justify-content: space-between;
+      }
+    }
+  }
+}

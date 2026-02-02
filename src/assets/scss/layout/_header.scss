@@ -1,0 +1,90 @@
+@use "../utility";
+
+header {
+  // 一起的設定
+  background-color: utility.$header;
+
+  .container .navbar-nav .nav-link {
+    font-weight: 700;
+    font-size: 14px;
+    color: black;
+    padding: 5px 15px;
+
+    &:hover {
+      background-color: #30363a;
+      color: white;
+    }
+
+    @media (min-width: 992px) {
+      padding: 15px 20px;
+      font-size: 18px;
+    }
+  }
+  .navbar-brand {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    height: 56px;
+
+    img {
+      object-fit: contain;
+      height: 100%;
+    }
+
+    .candidate-logo {
+      width: 130px;
+    }
+
+    .party-logo {
+      @media (min-width: 992px) {
+        display: inline-block;
+      }
+    }
+  }
+
+  // 桌機的設定
+  .navbar-desktop {
+    display: none;
+    @media (min-width: 992px) {
+      display: flex;
+    }
+
+    background-color: utility.$header;
+    padding: 10px 40px;
+
+    .navbar-collapse {
+      justify-content: end;
+    }
+  }
+
+  // 手機的設定
+  .navbar-mobile {
+    display: block;
+    @media (min-width: 992px) {
+      display: none;
+    }
+
+    &.navbar {
+      padding: 0;
+    }
+
+    .brand-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 12px;
+    }
+
+    .navbar-nav {
+      flex-direction: row;
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-item {
+        flex-shrink: 0;
+      }
+    }
+  }
+}

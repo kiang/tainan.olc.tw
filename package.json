@@ -1,0 +1,21 @@
+{
+  "name": "tainan-olc",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.3.0",
+    "bootstrap-icons": "^1.9.1",
+    "sass": "^1.55.0",
+    "vue": "^3.2.38",
+    "vue-masonry": "^0.16.0",
+    "vue-router": "^4.1.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.3",
+    "vite": "^3.0.9"
+  }
+}
