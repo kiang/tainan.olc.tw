@@ -86,7 +86,7 @@ const categoryCounts = computed(() => {
           class="featured-card"
         >
           <div class="featured-image">
-            <img :src="item.portfolio.imgUrl" :alt="item.portfolio.title" />
+            <img :src="item.portfolio.imgUrl" :alt="item.portfolio.title" loading="lazy" />
             <div
               class="category-badge"
               :style="{ backgroundColor: getCategoryInfo(item.category).color }"

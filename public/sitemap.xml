@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main campaign site -->
+  <url>
+    <loc>https://tainan.olc.tw/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Note: This Vue SPA uses hash-based routing (#/).
+       Hash fragments are typically not indexed by search engines.
+       The main URL above will load the full SPA with all routes accessible.
+
+       Routes available in the app:
+       - #/ (Home)
+       - #/Politics (政治理念)
+       - #/DistrictMap (選區地圖)
+       - #/RecordOfStreetMap (掃街紀錄)
+       - #/TainanThree (台南三傑)
+       - #/PastRecord (過去成績)
+       - #/PastRecord/SpeechRecord (演講紀錄)
+       - #/PastRecord/PastWorks (專案作品)
+       - #/PastRecord/RelatedNews (相關報導)
+  -->
+
+  <!-- Project portal with 40+ civic tech projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Featured civic tech projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/pharmacies/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/covid19/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/egg/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/air_raid_shelter/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/foodlover/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/tainan2026/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Health category projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/er/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/dengue/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Transportation projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/traffic/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/youbike/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Environment projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/cunli/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Politics projects -->
+  <url>
+    <loc>https://tainan.olc.tw/p/recall/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tainan.olc.tw/p/election2024/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

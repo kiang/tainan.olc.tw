@@ -1,17 +1,20 @@
 <script setup></script>
 
 <template>
-  <header>
+  <!-- Skip to content link for keyboard users -->
+  <a href="#main-content" class="skip-link">跳到主要內容</a>
+
+  <header role="banner">
     <div class="container p-0">
-      <nav ref="navbarDesktop" class="navbar-desktop navbar navbar-expand-lg">
+      <nav ref="navbarDesktop" class="navbar-desktop navbar navbar-expand-lg" aria-label="主要導覽列">
         <div class="container-fluid p-0">
-          <RouterLink class="navbar-brand candidate-logo" to="/"
+          <RouterLink class="navbar-brand candidate-logo" to="/" aria-label="江明宗 - 回到首頁"
             ><img
               src="@/assets/images/navbar-candidate-logo.png"
-              alt="navbar-candidate-logo"
+              alt="江明宗競選標誌"
           /></RouterLink>
           <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mb-2 mb-lg-0 me-2 mt-2 mt-lg-0">
+            <ul class="navbar-nav mb-2 mb-lg-0 me-2 mt-2 mt-lg-0" role="menubar">
               <li class="nav-item">
                 <RouterLink
                   class="nav-link"
@@ -73,11 +76,14 @@
                   >台南三江街講</RouterLink
                 >
               </li>
-              <li class="nav-item">
+              <li class="nav-item" role="none">
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="nav-link"
                   href="https://www.facebook.com/k.olc.tw/"
+                  role="menuitem"
+                  aria-label="透過臉書聯絡江明宗 (開啟新視窗)"
                   >透過臉書聯絡江明宗</a
                 >
               </li>
@@ -86,30 +92,34 @@
               class="navbar-brand party-logo"
               href="https://www.tpp.org.tw/"
               target="_blank"
+              rel="noopener noreferrer"
+              aria-label="台灣民眾黨官方網站 (開啟新視窗)"
               ><img
                 src="@/assets/images/navbar-party-logo.png"
-                alt="navbar-candidate-logo"
+                alt="台灣民眾黨標誌"
             /></a>
           </div>
         </div>
       </nav>
-      <nav ref="navbarMobile" class="navbar-mobile navbar">
+      <nav ref="navbarMobile" class="navbar-mobile navbar" aria-label="行動版導覽列">
         <div class="brand-container">
-          <RouterLink class="navbar-brand candidate-logo" to="/"
+          <RouterLink class="navbar-brand candidate-logo" to="/" aria-label="江明宗 - 回到首頁"
             ><img
               src="@/assets/images/navbar-candidate-logo.png"
-              alt="navbar-candidate-logo"
+              alt="江明宗競選標誌"
           /></RouterLink>
           <a
             class="navbar-brand party-logo"
             href="https://www.tpp.org.tw/"
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label="台灣民眾黨官方網站 (開啟新視窗)"
             ><img
               src="@/assets/images/navbar-party-logo.png"
-              alt="navbar-candidate-logo"
+              alt="台灣民眾黨標誌"
           /></a>
         </div>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" role="menubar">
           <li class="nav-item">
             <RouterLink
               class="nav-link"
@@ -171,11 +181,14 @@
               >台南三江街講</RouterLink
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" role="none">
             <a
               target="_blank"
+              rel="noopener noreferrer"
               class="nav-link"
               href="https://www.facebook.com/k.olc.tw/"
+              role="menuitem"
+              aria-label="透過臉書聯絡江明宗 (開啟新視窗)"
               >透過臉書聯絡江明宗</a
             >
           </li>
@@ -183,10 +196,31 @@
       </nav>
     </div>
   </header>
-  <RouterView />
+  <main id="main-content" role="main">
+    <RouterView />
+  </main>
 </template>
 
 <style lang="scss" scoped>
+// Skip link for keyboard navigation (accessibility)
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #28c8c8;
+  color: white;
+  padding: 8px 16px;
+  z-index: 9999;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+  transition: top 0.2s;
+
+  &:focus {
+    top: 0;
+  }
+}
+
 .container {
   max-width: 1920px;
 }
