@@ -1,10 +1,44 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { computed } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const route = useRoute();
 const showBreadcrumb = computed(() => route.name !== "Home");
+
+// Mobile nav scroll indicators
+const navbarMobile = ref(null);
+
+const updateScrollIndicators = () => {
+  const nav = navbarMobile.value;
+  if (!nav) return;
+
+  const navList = nav.querySelector('.navbar-nav');
+  if (!navList) return;
+
+  const canScrollLeft = navList.scrollLeft > 0;
+  const canScrollRight = navList.scrollLeft < navList.scrollWidth - navList.clientWidth - 1;
+
+  nav.classList.toggle('can-scroll-left', canScrollLeft);
+  nav.classList.toggle('can-scroll-right', canScrollRight);
+};
+
+onMounted(() => {
+  const nav = navbarMobile.value;
+  if (nav) {
+    const navList = nav.querySelector('.navbar-nav');
+    if (navList) {
+      navList.addEventListener('scroll', updateScrollIndicators, { passive: true });
+      // Initial check
+      setTimeout(updateScrollIndicators, 100);
+    }
+  }
+  window.addEventListener('resize', updateScrollIndicators, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScrollIndicators);
+});
 </script>
 
 <template>
@@ -302,6 +336,8 @@ header {
   // 手機的設定
   .navbar-mobile {
     display: block;
+    position: relative;
+
     @media (min-width: 992px) {
       display: none;
     }
@@ -322,16 +358,64 @@ header {
 
     .navbar-nav {
       flex-direction: row;
-      justify-content: space-between;
-      overflow: auto;
+      justify-content: flex-start;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+      scroll-behavior: smooth;
+      scroll-snap-type: x proximity;
+      padding: 0 8px;
+
+      // Hide scrollbar but keep functionality
+      scrollbar-width: none; // Firefox
+      -ms-overflow-style: none; // IE/Edge
 
       &::-webkit-scrollbar {
-        display: none;
+        display: none; // Chrome/Safari
       }
 
       .nav-item {
         flex-shrink: 0;
+        scroll-snap-align: start;
       }
+
+      .nav-link {
+        white-space: nowrap;
+        padding: 12px 14px; // Larger touch targets
+        min-height: 44px; // iOS accessibility minimum
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    // Scroll fade indicators
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 24px;
+      height: 44px;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(to right, $header 30%, transparent);
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(to left, $header 30%, transparent);
+    }
+
+    // Show indicators when content is scrollable
+    &.can-scroll-left::before,
+    &.can-scroll-right::after {
+      opacity: 1;
     }
   }
 }

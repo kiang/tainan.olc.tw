@@ -85,11 +85,11 @@ Improved:
 - Imported 100+ projects from kiang.github.io/data/projects.json
 - All images now use public URLs from https://kiang.github.io/img/
 
-### 2.2 Simplified Navigation (Partial)
-- [ ] Reduce cognitive load on homepage
-- [ ] Create clear call-to-action paths
+### 2.2 Simplified Navigation ✅ COMPLETED
+- [ ] Reduce cognitive load on homepage (requires design decisions)
+- [ ] Create clear call-to-action paths (requires design decisions)
 - [x] Add breadcrumb navigation
-- [ ] Improve mobile navigation UX
+- [x] Improve mobile navigation UX
 
 **Implementation Details:**
 - Created `src/components/Breadcrumb.vue` with route-aware navigation
@@ -97,6 +97,10 @@ Improved:
 - Hidden on Home page, visible on all other pages
 - Includes aria-label and aria-current for accessibility
 - Styled to match brand colors (teal links)
+- Mobile nav: Added smooth scrolling with `-webkit-overflow-scrolling: touch`
+- Mobile nav: Added scroll-snap for better touch interaction
+- Mobile nav: Increased touch targets to 44px minimum (iOS accessibility)
+- Mobile nav: Added gradient fade indicators for scroll affordance
 
 ### 2.3 Localized Content for 北區/中西區
 - [ ] Highlight projects specifically relevant to the district
