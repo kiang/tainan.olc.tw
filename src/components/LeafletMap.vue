@@ -261,6 +261,11 @@ async function loadGeoJson() {
                 iconSize: [100, 20],
                 iconAnchor: [50, 10],
               }),
+              interactive: true,
+            });
+            // Add click handler to label
+            label.on("click", () => {
+              emit("featureClick", feature);
             });
             label.addTo(map);
           }
