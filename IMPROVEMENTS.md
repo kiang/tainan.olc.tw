@@ -132,15 +132,30 @@ Simple issue reporting for residents:
 
 ## Phase 4: Technical Excellence (Demonstrates tech credibility)
 
-### 4.1 Progressive Web App (PWA)
-- [ ] Add service worker for offline support
-- [ ] Create app manifest for installation
-- [ ] Add push notification capability for campaign updates
+### 4.1 Progressive Web App (PWA) ✅ COMPLETED
+- [x] Add service worker for offline support
+- [x] Create app manifest for installation
+- [ ] Add push notification capability for campaign updates (requires backend)
 
-### 4.2 Modern Web Features
-- [ ] Dark mode support
-- [ ] Reduced motion preferences
-- [ ] Print-friendly styles for policy pages
+**Implementation Details:**
+- Created `public/manifest.json` with app metadata and icons
+- Created `public/sw.js` service worker with cache-first strategy
+- Created `public/offline.html` branded offline fallback page
+- Generated PWA icons in multiple sizes from og_image.png
+- Added manifest link and service worker registration to index.html
+- Added Apple touch icon and meta tags for iOS support
+
+### 4.2 Modern Web Features ✅ COMPLETED
+- [x] Dark mode support
+- [x] Reduced motion preferences
+- [x] Print-friendly styles for policy pages
+
+**Implementation Details:**
+- Created `src/assets/scss/utility/_dark-mode.scss` with CSS custom properties
+- Added `prefers-color-scheme: dark` media query with dark theme variables
+- Added `prefers-reduced-motion: reduce` to disable animations
+- Added print styles that hide navigation and optimize content for printing
+- Added dark mode import to vite.config.js
 
 ### 4.3 Developer-Friendly
 - [ ] Open source the campaign site code
