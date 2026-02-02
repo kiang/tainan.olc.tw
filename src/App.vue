@@ -62,7 +62,7 @@ onUnmounted(() => {
                   :to="{
                     name: 'Home',
                   }"
-                  >誰是江明宗</RouterLink
+                  >首頁</RouterLink
                 >
               </li>
               <li class="nav-item">
@@ -102,17 +102,6 @@ onUnmounted(() => {
                       $route.name === 'RelatedNews',
                   }"
                   >過往紀錄</RouterLink
-                >
-              </li>
-              <li class="nav-item" role="none">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="nav-link"
-                  href="https://www.facebook.com/k.olc.tw/"
-                  role="menuitem"
-                  aria-label="透過臉書聯絡江明宗 (開啟新視窗)"
-                  >透過臉書聯絡江明宗</a
                 >
               </li>
             </ul>
