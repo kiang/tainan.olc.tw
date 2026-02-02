@@ -1,4 +1,11 @@
-<script setup></script>
+<script setup>
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+const route = useRoute();
+const showBreadcrumb = computed(() => route.name !== "Home");
+</script>
 
 <template>
   <!-- Skip to content link for keyboard users -->
@@ -196,6 +203,7 @@
       </nav>
     </div>
   </header>
+  <Breadcrumb v-if="showBreadcrumb" />
   <main id="main-content" role="main">
     <RouterView />
   </main>
