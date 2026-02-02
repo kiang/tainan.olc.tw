@@ -1,271 +1,334 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import politicsData from "@/data/politics.json";
+
+const activeSection = ref("intro");
+const sidebarOpen = ref(false);
+
+const { sections, hero, intro, walkingCity, techGovernance, culturalHeritage, declaration, videos } = politicsData;
+
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    const offset = 80;
+    const top = element.offsetTop - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+  sidebarOpen.value = false;
+}
+
+function handleScroll() {
+  const scrollPosition = window.scrollY + 120;
+
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const section = document.getElementById(sections[i].id);
+    if (section && section.offsetTop <= scrollPosition) {
+      activeSection.value = sections[i].id;
+      break;
+    }
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
   <main class="politics-page">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <span class="hero-label">政見主張</span>
-        <h1>用科技找回<br />台南 400 年榮景</h1>
-        <p class="hero-description">
-          以公民科技專業，結合資料治理與開放政府理念，<br class="hide-mobile" />
-          為台南北區、中西區打造更美好的未來。
-        </p>
-      </div>
-      <div class="hero-decoration">
-        <div class="decoration-circle circle-1"></div>
-        <div class="decoration-circle circle-2"></div>
-        <div class="decoration-circle circle-3"></div>
-      </div>
-    </section>
+    <!-- Mobile Nav Toggle -->
+    <button class="nav-toggle" @click="sidebarOpen = !sidebarOpen" :class="{ active: sidebarOpen }">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <!-- Core Policies -->
-    <section class="policies-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">01</span>
-          <h2>三大核心政見</h2>
+    <!-- Navigation Sidebar -->
+    <nav class="politics-nav" :class="{ open: sidebarOpen }">
+      <div class="nav-header">
+        <span class="nav-label">章節導覽</span>
+      </div>
+      <ul class="nav-list">
+        <li v-for="section in sections" :key="section.id">
+          <a
+            :href="'#' + section.id"
+            :class="{ active: activeSection === section.id }"
+            @click.prevent="scrollToSection(section.id)"
+          >
+            {{ section.label }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="politics-content">
+      <!-- Hero Section -->
+      <section id="intro" class="hero-section">
+        <div class="hero-content">
+          <span class="hero-label">{{ hero.label }}</span>
+          <h1 v-html="hero.title"></h1>
+          <p class="hero-description">{{ hero.description }}</p>
         </div>
+        <div class="hero-decoration">
+          <div class="decoration-circle circle-1"></div>
+          <div class="decoration-circle circle-2"></div>
+          <div class="decoration-circle circle-3"></div>
+        </div>
+      </section>
 
-        <!-- Policy 1: Walking City -->
-        <article class="policy-detail-card">
-          <div class="policy-header">
-            <div class="policy-icon walking-city">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+      <!-- Introduction -->
+      <section class="intro-section">
+        <div class="container">
+          <div class="intro-card">
+            <h2>{{ intro.title }}</h2>
+            <p v-for="(paragraph, index) in intro.paragraphs" :key="index" v-html="paragraph"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Policy 1: Walking City -->
+      <section id="walking-city" class="policy-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-number">{{ walkingCity.number }}</span>
+            <div class="section-title-group">
+              <h2>{{ walkingCity.title }}</h2>
+              <p class="section-subtitle">{{ walkingCity.subtitle }}</p>
+            </div>
+          </div>
+
+          <article class="policy-article">
+            <div class="policy-icon-badge walking-city">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M11.5 4a.5.5 0 0 1 .5.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H6a2 2 0 1 1-4 0h-.5A1.5 1.5 0 0 1 0 10.5v-5A1.5 1.5 0 0 1 1.5 4h10zM2.5 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M4.416 3.223A1.5 1.5 0 0 1 5.5 4h6a1.5 1.5 0 0 1 1.5 1.5V6h-9v-.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 0 .5-.5v-.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 1-.5-.5v-.277a.5.5 0 0 1 .416-.5z"/>
               </svg>
             </div>
-            <div class="policy-title-group">
-              <span class="policy-number">政見 1</span>
-              <h3>BBW 步行城市</h3>
-              <p class="policy-tagline">Bus・Bike・Walk 三位一體的交通願景</p>
-            </div>
-          </div>
-          <div class="policy-content">
-            <p class="policy-intro">
-              北區、中西區擁有最知名的府城歷史街區，我希望從這裡開始把台南打造成<strong>步行城市</strong>，
-              提供居民與遊客更舒適的步行空間，讓觀光客能夠倍增，同時避免交通問題侵蝕台南的文化古蹟。
-            </p>
-            <div class="policy-points">
-              <div class="point-item">
-                <div class="point-icon bus">
-                  <span>B</span>
-                </div>
-                <div class="point-content">
-                  <h4>Bus 公車優化</h4>
-                  <p>優化公車路網與班次，建立便捷的大眾運輸系統，讓居民與遊客都能輕鬆抵達各景點。</p>
-                </div>
-              </div>
-              <div class="point-item">
-                <div class="point-icon bike">
-                  <span>B</span>
-                </div>
-                <div class="point-content">
-                  <h4>Bike 自行車友善</h4>
-                  <p>擴建自行車道網絡，增設 YouBike 站點，讓短程移動更加環保便利。</p>
-                </div>
-              </div>
-              <div class="point-item">
-                <div class="point-icon walk">
-                  <span>W</span>
-                </div>
-                <div class="point-content">
-                  <h4>Walk 步行空間</h4>
-                  <p>拓寬人行道、改善騎樓連貫性，打造安全舒適的步行環境，讓府城古蹟巡禮成為享受。</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
 
-        <!-- Policy 2: Tech Governance -->
-        <article class="policy-detail-card">
-          <div class="policy-header">
-            <div class="policy-icon tech-governance">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+            <div class="chapter" v-for="(chapter, cIndex) in walkingCity.chapters" :key="cIndex">
+              <h3>{{ chapter.title }}</h3>
+              <p v-for="(paragraph, pIndex) in chapter.paragraphs" :key="pIndex" v-html="paragraph"></p>
+            </div>
+
+            <div class="chapter">
+              <h3>具體策略</h3>
+
+              <div class="strategy-block" v-for="(strategy, sIndex) in walkingCity.strategies" :key="sIndex">
+                <div class="strategy-header">
+                  <div class="strategy-icon" :class="strategy.icon">{{ strategy.letter }}</div>
+                  <h4>{{ strategy.title }}</h4>
+                </div>
+                <div class="strategy-content">
+                  <p>{{ strategy.intro }}</p>
+                  <ul>
+                    <li v-for="(item, iIndex) in strategy.items" :key="iIndex">
+                      <strong>{{ item.title }}：</strong>{{ item.content }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Policy 2: Tech Governance -->
+      <section id="tech-governance" class="policy-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-number">{{ techGovernance.number }}</span>
+            <div class="section-title-group">
+              <h2>{{ techGovernance.title }}</h2>
+              <p class="section-subtitle">{{ techGovernance.subtitle }}</p>
+            </div>
+          </div>
+
+          <article class="policy-article">
+            <div class="policy-icon-badge tech-governance">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M5 0a.5.5 0 0 1 .5.5V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2A2.5 2.5 0 0 1 14 4.5h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14a2.5 2.5 0 0 1-2.5 2.5v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14A2.5 2.5 0 0 1 2 11.5H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2v-1H.5a.5.5 0 0 1 0-1H2A2.5 2.5 0 0 1 4.5 2V.5A.5.5 0 0 1 5 0zm-.5 3A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13h7a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 11.5 3h-7zM5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3zM6.5 6a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
               </svg>
             </div>
-            <div class="policy-title-group">
-              <span class="policy-number">政見 2</span>
-              <h3>科技治理</h3>
-              <p class="policy-tagline">以資料為基礎，讓政策制定更透明有效</p>
-            </div>
-          </div>
-          <div class="policy-content">
-            <p class="policy-intro">
-              科技是我的本業，過去開發超過 <strong>100 個公民科技專案</strong>，包含口罩地圖、登革熱地圖等，
-              幫助數百萬人解決生活問題。我要把這份專業帶進議會，用科技監督市政、服務市民。
-            </p>
-            <div class="policy-features">
-              <div class="feature-item">
-                <div class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
-                  </svg>
-                </div>
-                <h4>資料治理</h4>
-                <p>建立開放資料平台，讓市政資訊公開透明，市民可以隨時監督</p>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </div>
-                <h4>數位服務</h4>
-                <p>推動市政服務數位化，讓民眾在家就能辦理各項申請</p>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-                  </svg>
-                </div>
-                <h4>科技教育</h4>
-                <p>推動數位素養教育，縮小城鄉與世代的數位落差</p>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                    <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
-                    <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-                  </svg>
-                </div>
-                <h4>公民參與</h4>
-                <p>建立線上陳情與建議平台，讓市民聲音能被聽見並追蹤處理進度</p>
-              </div>
-            </div>
-          </div>
-        </article>
 
-        <!-- Policy 3: Cultural Heritage -->
-        <article class="policy-detail-card">
-          <div class="policy-header">
-            <div class="policy-icon cultural-heritage">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+            <div class="chapter">
+              <h3>{{ techGovernance.background.title }}</h3>
+              <p v-html="techGovernance.background.intro"></p>
+              <ul class="achievement-list">
+                <li v-for="(achievement, aIndex) in techGovernance.background.achievements" :key="aIndex">
+                  <strong>{{ achievement.title }}：</strong>{{ achievement.content }}
+                </li>
+              </ul>
+              <p v-html="techGovernance.background.conclusion"></p>
+            </div>
+
+            <div class="chapter">
+              <h3>{{ techGovernance.pillars.title }}</h3>
+
+              <div class="governance-grid">
+                <div class="governance-item" v-for="(pillar, pIndex) in techGovernance.pillars.items" :key="pIndex">
+                  <div class="governance-icon">
+                    <svg v-if="pIndex === 0" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
+                    </svg>
+                    <svg v-else-if="pIndex === 1" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                    <svg v-else-if="pIndex === 2" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                      <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                      <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
+                  </div>
+                  <h4>{{ pillar.title }}</h4>
+                  <p class="governance-subtitle">{{ pillar.subtitle }}</p>
+                  <p>{{ pillar.content }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter">
+              <h3>{{ techGovernance.monitoring.title }}</h3>
+              <p>{{ techGovernance.monitoring.intro }}</p>
+              <ul>
+                <li v-for="(item, mIndex) in techGovernance.monitoring.items" :key="mIndex">
+                  <strong>{{ item.title }}：</strong>{{ item.content }}
+                </li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Policy 3: Cultural Heritage -->
+      <section id="cultural-heritage" class="policy-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-number">{{ culturalHeritage.number }}</span>
+            <div class="section-title-group">
+              <h2>{{ culturalHeritage.title }}</h2>
+              <p class="section-subtitle">{{ culturalHeritage.subtitle }}</p>
+            </div>
+          </div>
+
+          <article class="policy-article">
+            <div class="policy-icon-badge cultural-heritage">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
                 <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
               </svg>
             </div>
-            <div class="policy-title-group">
-              <span class="policy-number">政見 3</span>
-              <h3>文化傳承</h3>
-              <p class="policy-tagline">讓信仰與文化融入現代生活</p>
+
+            <div class="chapter">
+              <h3>{{ culturalHeritage.challenges.title }}</h3>
+              <p v-html="culturalHeritage.challenges.intro"></p>
+              <ul>
+                <li v-for="(item, cIndex) in culturalHeritage.challenges.items" :key="cIndex">
+                  <strong>{{ item.title }}：</strong>{{ item.content }}
+                </li>
+              </ul>
+              <p>{{ culturalHeritage.challenges.conclusion }}</p>
             </div>
-          </div>
-          <div class="policy-content">
-            <p class="policy-intro">
-              台南是<strong>眾神之都</strong>，宮廟文化的傳承與現代化生活經常出現衝突。
-              我認為要借鏡日本京都與台南普濟殿的經驗，讓傳統與現代共榮共存。
-            </p>
-            <div class="policy-highlights">
-              <div class="highlight-item">
-                <div class="highlight-number">01</div>
-                <div class="highlight-content">
-                  <h4>廟會嘉年華</h4>
-                  <p>將分散的廟會活動集中資源，打造成信仰與文化的嘉年華會，擴大規模吸引世界各地的信徒與觀光客共同參與。</p>
-                </div>
-              </div>
-              <div class="highlight-item">
-                <div class="highlight-number">02</div>
-                <div class="highlight-content">
-                  <h4>古蹟活化</h4>
-                  <p>結合科技與文創，讓古蹟不只是靜態展示，而是能與現代生活互動的活歷史。</p>
-                </div>
-              </div>
-              <div class="highlight-item">
-                <div class="highlight-number">03</div>
-                <div class="highlight-content">
-                  <h4>青年傳承</h4>
-                  <p>鼓勵年輕世代參與傳統文化活動，透過創新形式讓文化傳承不再與生活脫節。</p>
+
+            <div class="chapter">
+              <h3>{{ culturalHeritage.strategies.title }}</h3>
+
+              <div class="heritage-items">
+                <div class="heritage-item" v-for="(strategy, sIndex) in culturalHeritage.strategies.items" :key="sIndex">
+                  <div class="heritage-number">{{ strategy.number }}</div>
+                  <div class="heritage-content">
+                    <h4>{{ strategy.title }}</h4>
+                    <p v-for="(paragraph, pIndex) in strategy.paragraphs" :key="pIndex" v-html="paragraph"></p>
+                    <ul>
+                      <li v-for="(item, iIndex) in strategy.items" :key="iIndex">
+                        <template v-if="typeof item === 'string'">{{ item }}</template>
+                        <template v-else><strong>{{ item.title }}：</strong>{{ item.content }}</template>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </article>
-      </div>
-    </section>
+          </article>
+        </div>
+      </section>
 
-    <!-- Declaration Section -->
-    <section class="declaration-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">02</span>
-          <h2>參選宣言</h2>
-        </div>
-        <div class="declaration-card">
-          <div class="declaration-content">
-            <p>
-              從登革熱地圖、口罩地圖到最近的好食券地圖，過去 6
-              年多的時間我一直嘗試用科技工具參與解決你我生活所面臨的問題，這些創作已經幫助了數百萬人，我有扎實的技術基礎可以讓科技不再只是口號，我希望把這個能力帶進台南市議會，從北區、中西區開始帶動台南科技發展！
-            </p>
-            <p>
-              台南即將迎接 400
-              年的歷史里程碑，只是隨著時代演進，過去的榮景已經有些黯淡，在文化與美食之外我更在意這個地方如何走向下個
-              400
-              年，我也希望兩個孩子有機會在台南找到自己的未來，不一定要離鄉背井。
-            </p>
-            <p>
-              科技是我的本業，過去幾年脫離舒適圈走進政治領域，有幸在中央待過經濟部政策辦、在台南市政府服務時協助創設智慧城市辦公室。我已經準備好為更多民眾服務，科技也只是工具，我會善用這個工具聆聽大家的需求與期待，以資料治理為基礎監督台南市政府，進而讓台南可以走出下個
-              400 年的路，懇請北區、中西區的朋友給我這個機會！
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Video Section -->
-    <section class="video-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">03</span>
-          <h2>競選影片</h2>
-        </div>
-        <div class="video-grid">
-          <div class="video-card">
-            <div class="video-wrapper">
-              <iframe
-                src="https://www.youtube.com/embed/QqGQ21UenCI"
-                title="競選廣告"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
+      <!-- Declaration Section -->
+      <section id="declaration" class="declaration-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-number">{{ declaration.number }}</span>
+            <div class="section-title-group">
+              <h2>{{ declaration.title }}</h2>
+              <p class="section-subtitle">{{ declaration.subtitle }}</p>
             </div>
-            <h3>競選廣告</h3>
           </div>
-          <div class="video-card">
-            <div class="video-wrapper">
-              <iframe
-                src="https://www.youtube.com/embed/ShZTQWEmvHc"
-                title="怪咖系列 【真相地圖】完整正片"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
+
+          <div class="declaration-card">
+            <div class="declaration-content">
+              <p v-for="(paragraph, pIndex) in declaration.paragraphs" :key="pIndex">{{ paragraph }}</p>
             </div>
-            <h3>怪咖系列【真相地圖】完整正片</h3>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Policy Image -->
-    <section class="policy-image-section">
-      <div class="container">
-        <img
-          src="@/assets/images/politics.jpg"
-          alt="政見圖"
-          class="policy-image"
-        />
-      </div>
-    </section>
+      <!-- Video Section -->
+      <section id="videos" class="video-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-number">{{ videos.number }}</span>
+            <div class="section-title-group">
+              <h2>{{ videos.title }}</h2>
+              <p class="section-subtitle">{{ videos.subtitle }}</p>
+            </div>
+          </div>
+
+          <div class="video-grid">
+            <div class="video-card" v-for="(video, vIndex) in videos.items" :key="vIndex">
+              <div class="video-wrapper">
+                <iframe
+                  :src="video.url"
+                  :title="video.title"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <h3>{{ video.title }}</h3>
+            </div>
+          </div>
+
+          <div class="more-videos-link" v-if="videos.moreLink">
+            <a :href="videos.moreLink.url" target="_blank" rel="noopener">
+              {{ videos.moreLink.text }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Policy Image -->
+      <section class="policy-image-section">
+        <div class="container">
+          <img
+            src="@/assets/images/politics.jpg"
+            alt="政見圖"
+            class="policy-image"
+          />
+        </div>
+      </section>
+    </div>
   </main>
 </template>
 
@@ -273,16 +336,158 @@ import { ref } from "vue";
 .politics-page {
   min-height: calc(100vh - 89.3px);
   background: #f8f9fa;
+  display: flex;
 
   @media (min-width: 992px) {
     min-height: calc(100vh - 81.609px);
   }
 }
 
+// Mobile Nav Toggle
+.nav-toggle {
+  position: fixed;
+  top: 100px;
+  left: 16px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+
+  span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  &.active {
+    background: #28c8c8;
+
+    span {
+      background: white;
+
+      &:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      &:nth-child(2) {
+        opacity: 0;
+      }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+    }
+  }
+}
+
+// Navigation Sidebar
+.politics-nav {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 260px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 100px 0 40px;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+
+  &.open {
+    left: 0;
+  }
+
+  @media (min-width: 1024px) {
+    position: sticky;
+    top: 80px;
+    left: 0;
+    height: calc(100vh - 80px);
+    flex-shrink: 0;
+    box-shadow: none;
+    border-right: 1px solid #e9ecef;
+    padding-top: 40px;
+  }
+}
+
+.nav-header {
+  padding: 0 24px 20px;
+  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 20px;
+}
+
+.nav-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #28c8c8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    padding: 14px 24px;
+    color: #666;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      color: #28c8c8;
+      background: rgba(40, 200, 200, 0.05);
+    }
+
+    &.active {
+      color: #28c8c8;
+      background: rgba(40, 200, 200, 0.08);
+      border-left-color: #28c8c8;
+      font-weight: 600;
+    }
+  }
+}
+
+// Main Content
+.politics-content {
+  flex: 1;
+  min-width: 0;
+}
+
 .container {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
+
+  @media (min-width: 1024px) {
+    padding: 0 40px;
+  }
 }
 
 .hide-mobile {
@@ -384,10 +589,60 @@ import { ref } from "vue";
   }
 }
 
+// Intro Section
+.intro-section {
+  padding: 60px 0;
+
+  @media (min-width: 768px) {
+    padding: 80px 0;
+  }
+}
+
+.intro-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 24px;
+
+    @media (min-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 2;
+    color: #444;
+    margin: 0 0 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    :deep(strong) {
+      color: #28c8c8;
+    }
+
+    @media (min-width: 768px) {
+      font-size: 17px;
+    }
+  }
+}
+
 // Section Header
 .section-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   margin-bottom: 32px;
 
@@ -396,9 +651,18 @@ import { ref } from "vue";
     font-weight: 800;
     color: rgba(40, 200, 200, 0.2);
     line-height: 1;
+    flex-shrink: 0;
 
     @media (min-width: 768px) {
       font-size: 64px;
+    }
+  }
+
+  .section-title-group {
+    padding-top: 8px;
+
+    @media (min-width: 768px) {
+      padding-top: 16px;
     }
   }
 
@@ -406,29 +670,35 @@ import { ref } from "vue";
     font-size: 28px;
     font-weight: 700;
     color: #333;
-    margin: 0;
+    margin: 0 0 8px;
 
     @media (min-width: 768px) {
       font-size: 32px;
     }
   }
+
+  .section-subtitle {
+    font-size: 15px;
+    color: #666;
+    margin: 0;
+  }
 }
 
-// Policies Section
-.policies-section {
+// Policy Section
+.policy-section {
   padding: 60px 0;
+  border-top: 1px solid #e9ecef;
 
   @media (min-width: 768px) {
     padding: 80px 0;
   }
 }
 
-// Policy Detail Card
-.policy-detail-card {
+// Policy Article
+.policy-article {
   background: white;
   border-radius: 20px;
   padding: 30px;
-  margin-bottom: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 
   @media (min-width: 768px) {
@@ -436,25 +706,14 @@ import { ref } from "vue";
   }
 }
 
-.policy-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 28px;
-
-  @media (min-width: 768px) {
-    align-items: center;
-  }
-}
-
-.policy-icon {
-  width: 72px;
-  height: 72px;
+.policy-icon-badge {
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  flex-shrink: 0;
+  border-radius: 16px;
+  margin-bottom: 24px;
 
   &.walking-city {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -472,45 +731,42 @@ import { ref } from "vue";
   }
 }
 
-.policy-title-group {
-  flex: 1;
+// Chapter
+.chapter {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #e9ecef;
 
-  .policy-number {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    color: #28c8c8;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   h3 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: #333;
-    margin: 0 0 8px;
+    margin: 0 0 20px;
+    padding-left: 16px;
+    border-left: 4px solid #28c8c8;
 
     @media (min-width: 768px) {
-      font-size: 28px;
+      font-size: 22px;
     }
   }
 
-  .policy-tagline {
-    font-size: 15px;
-    color: #666;
-    margin: 0;
-  }
-}
-
-.policy-content {
-  .policy-intro {
+  p {
     font-size: 16px;
-    line-height: 1.9;
+    line-height: 2;
     color: #444;
-    margin: 0 0 28px;
+    margin: 0 0 16px;
 
-    strong {
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    :deep(strong) {
       color: #28c8c8;
     }
 
@@ -518,153 +774,279 @@ import { ref } from "vue";
       font-size: 17px;
     }
   }
-}
 
-// BBW Points
-.policy-points {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  ul {
+    margin: 16px 0;
+    padding-left: 24px;
 
-.point-item {
-  display: flex;
-  gap: 16px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-
-  .point-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
-
-    &.bus {
-      background: #667eea;
-    }
-
-    &.bike {
-      background: #764ba2;
-    }
-
-    &.walk {
-      background: #9b59b6;
-    }
-  }
-
-  .point-content {
-    h4 {
+    li {
       font-size: 16px;
-      font-weight: 700;
-      color: #333;
-      margin: 0 0 6px;
-    }
+      line-height: 1.9;
+      color: #444;
+      margin-bottom: 12px;
 
-    p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: #666;
-      margin: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        color: #333;
+      }
+
+      @media (min-width: 768px) {
+        font-size: 17px;
+      }
     }
   }
 }
 
-// Policy Features Grid
-.policy-features {
+.achievement-list {
+  li {
+    margin-bottom: 16px;
+  }
+}
+
+// Strategy Block
+.strategy-block {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 768px) {
+    padding: 28px;
+  }
+}
+
+.strategy-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.strategy-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+
+  &.bus {
+    background: #667eea;
+  }
+
+  &.bike {
+    background: #764ba2;
+  }
+
+  &.walk {
+    background: #9b59b6;
+  }
+}
+
+.strategy-header h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.strategy-content {
+  p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: #555;
+    margin: 0 0 16px;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+
+    li {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        color: #333;
+      }
+
+      @media (min-width: 768px) {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Governance Grid
+.governance-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 20px;
 
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.feature-item {
-  padding: 24px;
+.governance-item {
   background: #f8f9fa;
-  border-radius: 12px;
-  text-align: center;
+  border-radius: 16px;
+  padding: 24px;
 
-  .feature-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(40, 200, 200, 0.1);
-    color: #28c8c8;
-    border-radius: 12px;
-    margin: 0 auto 12px;
+  @media (min-width: 768px) {
+    padding: 28px;
   }
+}
 
+.governance-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(40, 200, 200, 0.1);
+  color: #28c8c8;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.governance-item h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 6px;
+}
+
+.governance-subtitle {
+  font-size: 13px;
+  color: #28c8c8;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.governance-item > p:last-child {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #666;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+// Heritage Items
+.heritage-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heritage-item {
+  display: flex;
+  gap: 20px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 24px;
+
+  @media (min-width: 768px) {
+    padding: 28px;
+    gap: 24px;
+  }
+}
+
+.heritage-number {
+  font-size: 36px;
+  font-weight: 800;
+  color: rgba(235, 51, 73, 0.2);
+  line-height: 1;
+  flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    font-size: 48px;
+  }
+}
+
+.heritage-content {
   h4 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #333;
-    margin: 0 0 8px;
+    margin: 0 0 12px;
+
+    @media (min-width: 768px) {
+      font-size: 20px;
+    }
   }
 
   p {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #666;
-    margin: 0;
-  }
-}
+    font-size: 15px;
+    line-height: 1.9;
+    color: #555;
+    margin: 0 0 16px;
 
-// Policy Highlights
-.policy-highlights {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.highlight-item {
-  display: flex;
-  gap: 20px;
-  padding: 24px;
-  background: #f8f9fa;
-  border-radius: 12px;
-
-  .highlight-number {
-    font-size: 32px;
-    font-weight: 800;
-    color: rgba(235, 51, 73, 0.2);
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .highlight-content {
-    h4 {
-      font-size: 17px;
-      font-weight: 700;
-      color: #333;
-      margin: 0 0 8px;
+    :deep(strong) {
+      color: #28c8c8;
     }
 
-    p {
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+
+    li {
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
       color: #666;
-      margin: 0;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        color: #333;
+      }
+
+      @media (min-width: 768px) {
+        font-size: 15px;
+      }
     }
   }
 }
 
 // Declaration Section
 .declaration-section {
-  padding: 0 0 60px;
+  padding: 60px 0;
+  border-top: 1px solid #e9ecef;
 
   @media (min-width: 768px) {
-    padding: 0 0 80px;
+    padding: 80px 0;
   }
 }
 
@@ -699,10 +1081,11 @@ import { ref } from "vue";
 
 // Video Section
 .video-section {
-  padding: 0 0 60px;
+  padding: 60px 0;
+  border-top: 1px solid #e9ecef;
 
   @media (min-width: 768px) {
-    padding: 0 0 80px;
+    padding: 80px 0;
   }
 }
 
@@ -742,6 +1125,37 @@ import { ref } from "vue";
     left: 0;
     width: 100%;
     height: 100%;
+  }
+}
+
+.more-videos-link {
+  margin-top: 32px;
+  text-align: center;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: white;
+    color: #28c8c8;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #28c8c8;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(40, 200, 200, 0.3);
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
   }
 }
 
