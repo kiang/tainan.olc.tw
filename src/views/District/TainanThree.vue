@@ -472,8 +472,8 @@ watch(width, (newWidth, oldWidth) => {
 </template>
 
 <style scoped lang="scss">
-@import "../assets/scss/components/_cross";
-@import "../assets/scss/components/_buttons";
+@import "@/assets/scss/components/_cross";
+@import "@/assets/scss/components/_buttons";
 
 @mixin size($width, $height) {
   width: $width;

@@ -28,6 +28,18 @@ import { RouterLink, RouterView } from "vue-router";
           </svg>
           <span>掃街</span>
         </RouterLink>
+
+        <RouterLink
+          class="tab-button"
+          :to="{ name: 'TainanThree' }"
+          aria-label="街講"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M6 1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H6zm0 1h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+            <path d="M8 4.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5zM8 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 1a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+          </svg>
+          <span>街講</span>
+        </RouterLink>
       </nav>
 
       <!-- Content Area -->

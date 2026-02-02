@@ -65,16 +65,16 @@ const router = createRouter({
             description: "江明宗競選期間的掃街活動GPS紀錄，展現勤跑基層的決心。",
           },
         },
+        {
+          path: "TainanThree",
+          name: "TainanThree",
+          component: asyncComponent(() => import("@/views/District/TainanThree.vue")),
+          meta: {
+            title: `台南三江街講 | ${baseTitle}`,
+            description: "台南三江街講活動紀錄。",
+          },
+        },
       ],
-    },
-    {
-      path: "/TainanThree",
-      name: "TainanThree",
-      component: asyncComponent(() => import("@/views/TainanThree.vue")),
-      meta: {
-        title: `台南三傑 | ${baseTitle}`,
-        description: "台南三傑介紹。",
-      },
     },
     {
       path: "/PastRecord",

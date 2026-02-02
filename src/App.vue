@@ -83,7 +83,8 @@ onUnmounted(() => {
                   :class="{
                     'router-link-exact-active':
                       $route.name === 'DistrictMap' ||
-                      $route.name === 'StreetRecord',
+                      $route.name === 'StreetRecord' ||
+                      $route.name === 'TainanThree',
                   }"
                   >選區</RouterLink
                 >
@@ -101,15 +102,6 @@ onUnmounted(() => {
                       $route.name === 'RelatedNews',
                   }"
                   >過往紀錄</RouterLink
-                >
-              </li>
-              <li class="nav-item">
-                <RouterLink
-                  class="nav-link"
-                  :to="{
-                    name: 'TainanThree',
-                  }"
-                  >台南三江街講</RouterLink
                 >
               </li>
               <li class="nav-item" role="none">
@@ -184,7 +176,8 @@ onUnmounted(() => {
               :class="{
                 'router-link-exact-active':
                   $route.name === 'DistrictMap' ||
-                  $route.name === 'StreetRecord',
+                  $route.name === 'StreetRecord' ||
+                  $route.name === 'TainanThree',
               }"
               >選區</RouterLink
             >
@@ -202,15 +195,6 @@ onUnmounted(() => {
                   $route.name === 'RelatedNews',
               }"
               >過往紀錄</RouterLink
-            >
-          </li>
-          <li class="nav-item">
-            <RouterLink
-              class="nav-link"
-              :to="{
-                name: 'TainanThree',
-              }"
-              >台南三江街講</RouterLink
             >
           </li>
           <li class="nav-item" role="none">

@@ -11,7 +11,7 @@ const breadcrumbMap = {
   District: { label: "選區" },
   DistrictMap: { label: "選區", parent: "District" },
   StreetRecord: { label: "掃街", parent: "District" },
-  TainanThree: { label: "台南三傑" },
+  TainanThree: { label: "街講", parent: "District" },
   PastRecord: { label: "過去成績" },
   SpeechRecord: { label: "演講紀錄", parent: "PastRecord" },
   PastWorks: { label: "科技創作", parent: "PastRecord" },
