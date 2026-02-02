@@ -1,20 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { defineAsyncComponent, h } from "vue";
 import Home from "@/views/Home.vue";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const baseTitle = "江明宗 - 台灣民眾黨 北中西區台南市議員參選人";
-
-// Helper to create async component with loading state
-const asyncComponent = (loader) =>
-  defineAsyncComponent({
-    loader,
-    loadingComponent: {
-      render: () => h(LoadingSpinner, { size: "large" }),
-    },
-    delay: 200, // Show loading after 200ms
-    timeout: 30000, // Timeout after 30s
-  });
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -31,7 +18,7 @@ const router = createRouter({
     {
       path: "/Politics",
       name: "Politics",
-      component: asyncComponent(() => import("@/views/Politics.vue")),
+      component: () => import("@/views/Politics.vue"),
       meta: {
         title: `政治理念 | ${baseTitle}`,
         description: "江明宗的政治理念與政見，推動資料治理、開放政府、公民參與。",
@@ -40,7 +27,7 @@ const router = createRouter({
     {
       path: "/District",
       name: "District",
-      component: asyncComponent(() => import("@/views/District/District.vue")),
+      component: () => import("@/views/District/District.vue"),
       meta: {
         title: `選區資訊 | ${baseTitle}`,
         description: "台南市北區、中西區選區地圖與掃街紀錄。",
@@ -50,7 +37,7 @@ const router = createRouter({
         {
           path: "Map",
           name: "DistrictMap",
-          component: asyncComponent(() => import("@/views/District/DistrictMap.vue")),
+          component: () => import("@/views/District/DistrictMap.vue"),
           meta: {
             title: `選區 | ${baseTitle}`,
             description: "台南市北區、中西區選區地圖，了解選區人口統計與區域資訊。",
@@ -59,7 +46,7 @@ const router = createRouter({
         {
           path: "Street",
           name: "StreetRecord",
-          component: asyncComponent(() => import("@/views/District/StreetRecord.vue")),
+          component: () => import("@/views/District/StreetRecord.vue"),
           meta: {
             title: `掃街 | ${baseTitle}`,
             description: "江明宗競選期間的掃街活動GPS紀錄，展現勤跑基層的決心。",
@@ -68,7 +55,7 @@ const router = createRouter({
         {
           path: "StreetTalk",
           name: "StreetTalk",
-          component: asyncComponent(() => import("@/views/District/StreetTalk.vue")),
+          component: () => import("@/views/District/StreetTalk.vue"),
           meta: {
             title: `街講 | ${baseTitle}`,
             description: "台南三江街講活動紀錄。",
@@ -79,7 +66,7 @@ const router = createRouter({
     {
       path: "/PastRecord",
       name: "PastRecord",
-      component: asyncComponent(() => import("@/views/PastRecord/PastRecord.vue")),
+      component: () => import("@/views/PastRecord/PastRecord.vue"),
       meta: {
         title: `過去成績 | ${baseTitle}`,
         description: "江明宗過去的公民科技專案成果、演講紀錄與媒體報導。",
@@ -88,7 +75,7 @@ const router = createRouter({
         {
           path: "SpeechRecord",
           name: "SpeechRecord",
-          component: asyncComponent(() => import("@/views/PastRecord/SpeechRecord.vue")),
+          component: () => import("@/views/PastRecord/SpeechRecord.vue"),
           meta: {
             title: `演講紀錄 | ${baseTitle}`,
             description: "江明宗的公開演講與分享紀錄。",
@@ -97,7 +84,7 @@ const router = createRouter({
         {
           path: "PastWorks",
           name: "PastWorks",
-          component: asyncComponent(() => import("@/views/PastRecord/PastWorks.vue")),
+          component: () => import("@/views/PastRecord/PastWorks.vue"),
           meta: {
             title: `科技創作 | ${baseTitle}`,
             description: "超過100個公民科技專案，包含口罩地圖、COVID-19本土病例地圖、蛋蛋前線支援地圖等，獲國際媒體報導。",
@@ -106,7 +93,7 @@ const router = createRouter({
         {
           path: "RelatedNews",
           name: "RelatedNews",
-          component: asyncComponent(() => import("@/views/PastRecord/RelatedNews.vue")),
+          component: () => import("@/views/PastRecord/RelatedNews.vue"),
           meta: {
             title: `相關報導 | ${baseTitle}`,
             description: "江明宗相關的媒體報導，包含Bloomberg、PBS、CNN等國際媒體。",
