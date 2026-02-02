@@ -87,7 +87,7 @@ const router = createRouter({
           name: "PastWorks",
           component: asyncComponent(() => import("@/views/PastRecord/PastWorks.vue")),
           meta: {
-            title: `專案作品 | ${baseTitle}`,
+            title: `科技創作 | ${baseTitle}`,
             description: "超過100個公民科技專案，包含口罩地圖、COVID-19本土病例地圖、蛋蛋前線支援地圖等，獲國際媒體報導。",
           },
         },

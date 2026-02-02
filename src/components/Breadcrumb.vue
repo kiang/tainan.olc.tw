@@ -13,7 +13,7 @@ const breadcrumbMap = {
   TainanThree: { label: "台南三傑" },
   PastRecord: { label: "過去成績" },
   SpeechRecord: { label: "演講紀錄", parent: "PastRecord" },
-  PastWorks: { label: "專案作品", parent: "PastRecord" },
+  PastWorks: { label: "科技創作", parent: "PastRecord" },
   RelatedNews: { label: "相關報導", parent: "PastRecord" },
 };
 
