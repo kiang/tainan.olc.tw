@@ -66,11 +66,11 @@ const router = createRouter({
           },
         },
         {
-          path: "TainanThree",
-          name: "TainanThree",
-          component: asyncComponent(() => import("@/views/District/TainanThree.vue")),
+          path: "StreetTalk",
+          name: "StreetTalk",
+          component: asyncComponent(() => import("@/views/District/StreetTalk.vue")),
           meta: {
-            title: `台南三江街講 | ${baseTitle}`,
+            title: `街講 | ${baseTitle}`,
             description: "台南三江街講活動紀錄。",
           },
         },

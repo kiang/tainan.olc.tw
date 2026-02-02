@@ -41,46 +41,63 @@ watch(width, (newWidth, oldWidth) => {
 <template>
   <main class="tainan-three-page">
     <div class="container p-0">
-      <div class="tainan-container">
-        <div class="tainan-three">
-          <div
-            class="map-button"
-            data-bs-toggle="modal"
-            data-bs-target="#street-map-modal"
-          ></div>
-          <img
-            class="tainan-three-img"
-            src="@/assets/images/tainan-cadidate-without-name.png"
-            alt="tainan-total"
-          />
-          <div
-            class="people-name kiang-name"
-            data-bs-toggle="modal"
-            data-bs-target="#kiang-modal"
-          >
-            <img
-              src="@/assets/images/kiang-name.png"
-              alt="Kiang candidate photo"
-            />
+      <!-- Candidate Cards -->
+      <div class="candidate-grid">
+        <div
+          class="candidate-card"
+          data-bs-toggle="modal"
+          data-bs-target="#kiang-modal"
+        >
+          <div class="candidate-photo">
+            <img src="@/assets/images/kiang-popuping.png" alt="江明宗" />
           </div>
-          <div
-            class="people-name kuo-name"
-            data-bs-toggle="modal"
-            data-bs-target="#kuo-modal"
-          >
-            <img src="@/assets/images/kuo-name.png" alt="Kuo candidate photo" />
-          </div>
-          <div
-            class="people-name ping-name"
-            data-bs-toggle="modal"
-            data-bs-target="#ping-modal"
-          >
-            <img
-              src="@/assets/images/ping-name.png"
-              alt="Ping candidate photo"
-            />
+          <div class="candidate-info">
+            <h3>江明宗</h3>
+            <p>北區、中西區</p>
           </div>
         </div>
+
+        <div
+          class="candidate-card"
+          data-bs-toggle="modal"
+          data-bs-target="#kuo-modal"
+        >
+          <div class="candidate-photo">
+            <img src="@/assets/images/kuo-popuping.png" alt="江國銘" />
+          </div>
+          <div class="candidate-info">
+            <h3>江國銘</h3>
+            <p>新豐區</p>
+          </div>
+        </div>
+
+        <div
+          class="candidate-card"
+          data-bs-toggle="modal"
+          data-bs-target="#ping-modal"
+        >
+          <div class="candidate-photo">
+            <img src="@/assets/images/ping-popuping.png" alt="江品璁" />
+          </div>
+          <div class="candidate-info">
+            <h3>江品璁</h3>
+            <p>永康區</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Street Map Button -->
+      <div class="map-section">
+        <button
+          class="street-map-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#street-map-modal"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+          </svg>
+          查看街講地圖
+        </button>
       </div>
       <div class="modal fade kiang-dialog" id="kiang-modal" tabindex="-1">
         <div
@@ -475,139 +492,113 @@ watch(width, (newWidth, oldWidth) => {
 @import "@/assets/scss/components/_cross";
 @import "@/assets/scss/components/_buttons";
 
-@mixin size($width, $height) {
-  width: $width;
-  height: $height;
-}
-
-.tainan-container {
-  position: relative;
-  // height: calc(100vh - 75px - 75px);
-
-  // @media (min-width: 1920px) {
-  //   height: calc(100vh - 77px);
-  // }
-}
-
-.tainan-three {
-  // 小尺寸讓他變成flex
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  // 為了讓台南三江兩側背hidden住
-  overflow: hidden;
-  transform: translateY(5%);
-  // transform: translateY(12%);
+.tainan-three-page {
+  padding: 24px 16px;
 
   @media (min-width: 992px) {
-    margin-top: 0;
-    transform: translateY(17%);
-    // 大尺寸要有map-button不能被hidden
-    overflow: initial;
-  }
-
-  .tainan-three-img {
-    object-fit: contain;
-    align-self: center;
-
-    @include size(120%, 120%);
-
-    @media (min-width: 992px) {
-      @include size(100%, calc(100vh - 81.609px));
-    }
-
-    @media (min-width: 1920px) {
-      @include size(100%, 100vh);
-    }
-  }
-
-  // hover時的動畫
-  &:hover .people-name {
-    animation-name: bounceName;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes bounceName {
-    from {
-      transform: translateY(0px);
-      animation-timing-function: ease-out;
-    }
-
-    50% {
-      transform: translateY(-3px);
-      animation-timing-function: ease-in;
-    }
-
-    to {
-      transform: translateY(0px);
-      animation-timing-function: ease-in-out;
-    }
+    padding: 40px;
   }
 }
 
-// people name distance adjustment
-.people-name {
-  position: absolute;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Candidate Grid
+.candidate-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+.candidate-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 24px;
   cursor: pointer;
-}
+  transition: all 0.2s;
+  text-align: center;
 
-.kiang-name {
-  top: 75%;
-  left: 78%;
-
-  @media (min-width: 992px) {
-    top: 70%;
-    left: 73%;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(40, 200, 200, 0.2);
   }
-  img {
-    @include size(80%, 80%);
-    @media (min-width: 450px) {
-      @include size(60%, 60%);
+
+  .candidate-photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f5f5f5;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
+
     @media (min-width: 992px) {
-      @include size(65%, 65%);
+      width: 150px;
+      height: 150px;
     }
-    @media (min-width: 1920px) {
-      @include size(90%, 90%);
+  }
+
+  .candidate-info {
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+      margin: 0 0 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
     }
   }
 }
-.kuo-name {
-  top: 70%;
-  left: 43%;
 
-  @media (min-width: 992px) {
-    top: 66%;
-    left: 44%;
-  }
-  img {
-    @include size(40%, 40%);
-    @media (min-width: 576px) {
-      @include size(65%, 65%);
-    }
-    @media (min-width: 1920px) {
-      @include size(90%, 90%);
-    }
-  }
+// Map Section
+.map-section {
+  text-align: center;
+  margin-bottom: 32px;
 }
-.ping-name {
-  top: 75%;
-  left: 8%;
 
-  @media (min-width: 992px) {
-    top: 70%;
-    left: 13%;
+.street-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: #28c8c8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #1a9a9a;
+    transform: translateY(-2px);
   }
-  img {
-    @include size(40%, 40%);
-    @media (min-width: 576px) {
-      @include size(65%, 65%);
-    }
-    @media (min-width: 1920px) {
-      @include size(90%, 90%);
-    }
+
+  svg {
+    flex-shrink: 0;
   }
 }
 

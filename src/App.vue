@@ -84,7 +84,7 @@ onUnmounted(() => {
                     'router-link-exact-active':
                       $route.name === 'DistrictMap' ||
                       $route.name === 'StreetRecord' ||
-                      $route.name === 'TainanThree',
+                      $route.name === 'StreetTalk',
                   }"
                   >選區</RouterLink
                 >
@@ -177,7 +177,7 @@ onUnmounted(() => {
                 'router-link-exact-active':
                   $route.name === 'DistrictMap' ||
                   $route.name === 'StreetRecord' ||
-                  $route.name === 'TainanThree',
+                  $route.name === 'StreetTalk',
               }"
               >選區</RouterLink
             >
