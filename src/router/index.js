@@ -38,22 +38,34 @@ const router = createRouter({
       },
     },
     {
-      path: "/DistrictMap",
-      name: "DistrictMap",
-      component: asyncComponent(() => import("@/views/DistrictMap.vue")),
+      path: "/District",
+      name: "District",
+      component: asyncComponent(() => import("@/views/District/District.vue")),
       meta: {
-        title: `選區地圖 | ${baseTitle}`,
-        description: "台南市北區、中西區選區地圖，了解選區人口統計與區域資訊。",
+        title: `選區資訊 | ${baseTitle}`,
+        description: "台南市北區、中西區選區地圖與掃街紀錄。",
       },
-    },
-    {
-      path: "/RecordOfStreetMap",
-      name: "RecordOfStreetMap",
-      component: asyncComponent(() => import("@/views/RecordOfStreetMap.vue")),
-      meta: {
-        title: `掃街紀錄 | ${baseTitle}`,
-        description: "江明宗競選期間的掃街活動GPS紀錄，展現勤跑基層的決心。",
-      },
+      redirect: { name: "DistrictMap" },
+      children: [
+        {
+          path: "Map",
+          name: "DistrictMap",
+          component: asyncComponent(() => import("@/views/District/DistrictMap.vue")),
+          meta: {
+            title: `選區 | ${baseTitle}`,
+            description: "台南市北區、中西區選區地圖，了解選區人口統計與區域資訊。",
+          },
+        },
+        {
+          path: "Street",
+          name: "StreetRecord",
+          component: asyncComponent(() => import("@/views/District/StreetRecord.vue")),
+          meta: {
+            title: `掃街 | ${baseTitle}`,
+            description: "江明宗競選期間的掃街活動GPS紀錄，展現勤跑基層的決心。",
+          },
+        },
+      ],
     },
     {
       path: "/TainanThree",

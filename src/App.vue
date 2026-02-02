@@ -80,17 +80,12 @@ onUnmounted(() => {
                   :to="{
                     name: 'DistrictMap',
                   }"
-                  >選區里民資料</RouterLink
-                >
-              </li>
-
-              <li class="nav-item">
-                <RouterLink
-                  class="nav-link"
-                  :to="{
-                    name: 'RecordOfStreetMap',
+                  :class="{
+                    'router-link-exact-active':
+                      $route.name === 'DistrictMap' ||
+                      $route.name === 'StreetRecord',
                   }"
-                  >掃街紀錄</RouterLink
+                  >選區</RouterLink
                 >
               </li>
               <li class="nav-item">
@@ -186,16 +181,12 @@ onUnmounted(() => {
               :to="{
                 name: 'DistrictMap',
               }"
-              >選區里民資料</RouterLink
-            >
-          </li>
-          <li class="nav-item">
-            <RouterLink
-              class="nav-link"
-              :to="{
-                name: 'RecordOfStreetMap',
+              :class="{
+                'router-link-exact-active':
+                  $route.name === 'DistrictMap' ||
+                  $route.name === 'StreetRecord',
               }"
-              >掃街紀錄</RouterLink
+              >選區</RouterLink
             >
           </li>
           <li class="nav-item">

@@ -8,8 +8,9 @@ const route = useRoute();
 const breadcrumbMap = {
   Home: { label: "首頁", icon: "bi-house-door" },
   Politics: { label: "政治理念" },
-  DistrictMap: { label: "選區地圖" },
-  RecordOfStreetMap: { label: "掃街紀錄" },
+  District: { label: "選區" },
+  DistrictMap: { label: "選區", parent: "District" },
+  StreetRecord: { label: "掃街", parent: "District" },
   TainanThree: { label: "台南三傑" },
   PastRecord: { label: "過去成績" },
   SpeechRecord: { label: "演講紀錄", parent: "PastRecord" },
