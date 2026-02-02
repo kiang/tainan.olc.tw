@@ -93,7 +93,7 @@ onUnmounted(() => {
                 <RouterLink
                   class="nav-link"
                   :to="{
-                    name: 'SpeechRecord',
+                    name: 'PastWorks',
                   }"
                   :class="{
                     'router-link-exact-active':
@@ -186,7 +186,7 @@ onUnmounted(() => {
             <RouterLink
               class="nav-link"
               :to="{
-                name: 'SpeechRecord',
+                name: 'PastWorks',
               }"
               :class="{
                 'router-link-exact-active':
