@@ -1,14 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="江明宗 - 台灣民眾黨 北中西區台南市議員參選人">
-    <meta property="og:description" content="江明宗 - 台灣民眾黨 北中西區台南市議員參選人">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://tainan.olc.tw/og_image.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#28c8c8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="江明宗" />
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
+
+    <!-- Primary Meta Tags -->
     <title>江明宗 - 台灣民眾黨 北中西區台南市議員參選人</title>
+    <meta name="title" content="江明宗 - 台灣民眾黨 北中西區台南市議員參選人">
+    <meta name="description" content="江明宗，公民科技專家，100+公民科技專案開發者。曾開發口罩地圖、COVID-19本土病例地圖等，獲Bloomberg、PBS、CNN等國際媒體報導。用科技解決社會問題，推動資料治理與開放政府。">
+    <meta name="keywords" content="江明宗,台南市議員,北區,中西區,台灣民眾黨,公民科技,口罩地圖,開放資料,資料治理">
+    <meta name="author" content="江明宗">
+    <link rel="canonical" href="https://tainan.olc.tw/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/">
+    <meta property="og:title" content="江明宗 - 台灣民眾黨 北中西區台南市議員參選人">
+    <meta property="og:description" content="江明宗，公民科技專家，100+公民科技專案開發者。用科技解決社會問題，推動資料治理與開放政府。">
+    <meta property="og:image" content="https://tainan.olc.tw/og_image.png">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:site_name" content="江明宗競選網站">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tainan.olc.tw/">
+    <meta property="twitter:title" content="江明宗 - 台灣民眾黨 北中西區台南市議員參選人">
+    <meta property="twitter:description" content="江明宗，公民科技專家，100+公民科技專案開發者。用科技解決社會問題，推動資料治理與開放政府。">
+    <meta property="twitter:image" content="https://tainan.olc.tw/og_image.png">
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://kiang.github.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://kiang.github.io">
+
+    <!-- JSON-LD Structured Data for Person/Politician -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "江明宗",
+      "givenName": "明宗",
+      "familyName": "江",
+      "alternateName": "Finjon Kiang",
+      "description": "公民科技專家，台灣民眾黨北中西區台南市議員參選人。開發超過100個公民科技專案，包含口罩地圖、COVID-19本土病例地圖等。",
+      "url": "https://tainan.olc.tw/",
+      "image": "https://tainan.olc.tw/og_image.png",
+      "sameAs": [
+        "https://github.com/kiang",
+        "https://kiang.github.io/"
+      ],
+      "jobTitle": "公民科技專家",
+      "knowsAbout": ["公民科技", "開放資料", "資料視覺化", "地理資訊系統", "Web開發"],
+      "memberOf": {
+        "@type": "PoliticalParty",
+        "name": "台灣民眾黨"
+      },
+      "seeks": {
+        "@type": "Role",
+        "roleName": "台南市議員",
+        "description": "北區/中西區台南市議員參選人"
+      },
+      "workLocation": {
+        "@type": "Place",
+        "name": "台南市",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "台南市",
+          "addressRegion": "北區、中西區",
+          "addressCountry": "TW"
+        }
+      }
+    }
+    </script>
+
+    <!-- WebSite Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "江明宗競選網站",
+      "url": "https://tainan.olc.tw/",
+      "description": "江明宗台南市議員參選人官方網站，展示公民科技專案成果與競選理念。",
+      "inLanguage": "zh-TW",
+      "author": {
+        "@type": "Person",
+        "name": "江明宗"
+      }
+    }
+    </script>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -23,8 +114,8 @@
       gtag('js', new Date());
       gtag('config', 'G-FJ1JR851SJ');
     </script>
-    <script type="module" crossorigin src="/assets/index.BoHVJ8qj.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index.CxtgtuvU.css">
+    <script type="module" crossorigin src="/assets/index.5N1_v06W.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.Cy8LwznU.css">
   </head>
   <body>
     <style>
@@ -43,5 +134,19 @@
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.0.0/masonry.pkgd.min.js"
     ></script>
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

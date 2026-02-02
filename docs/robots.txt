@@ -1,0 +1,11 @@
+# Robots.txt for tainan.olc.tw
+# Campaign site for Finjon Kiang - Tainan City Councilor Candidate
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://tainan.olc.tw/sitemap.xml
+
+# Crawl-delay (optional, be gentle with the server)
+Crawl-delay: 1
