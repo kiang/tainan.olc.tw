@@ -159,11 +159,13 @@ function getLinkLabel(link) {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "@/assets/scss/layout/past-record-page";
-@import "@/assets/scss/components/sticky-notes";
-@import "@/assets/scss/components/tags";
+<style lang="scss">
+@use "@/assets/scss/layout/past-record-page";
+@use "@/assets/scss/components/sticky-notes";
+@use "@/assets/scss/components/tags";
+</style>
 
+<style lang="scss" scoped>
 .speech-record-page {
   // Stats Banner
   .stats-banner {

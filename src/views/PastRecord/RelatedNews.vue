@@ -140,10 +140,12 @@ function getSource(url) {
   </div>
 </template>
 
-<style scoped lang="scss">
-@import "@/assets/scss/layout/past-record-page";
-@import "@/assets/scss/components/sticky-notes";
+<style lang="scss">
+@use "@/assets/scss/layout/past-record-page";
+@use "@/assets/scss/components/sticky-notes";
+</style>
 
+<style lang="scss" scoped>
 .related-news-page {
   // Stats Banner
   .stats-banner {

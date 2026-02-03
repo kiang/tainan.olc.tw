@@ -1,6 +1,6 @@
 @use "../utility";
 
-%button-style-unset {
+@mixin button-style-unset {
   border: 1px solid transparent;
   background-color: transparent;
 
@@ -36,7 +36,7 @@
             color: white;
           }
           button {
-            @extend %button-style-unset;
+            @include button-style-unset;
           }
         }
 
@@ -82,7 +82,7 @@
         padding: 5px 10px;
 
         button {
-          @extend %button-style-unset;
+          @include button-style-unset;
         }
       }
 
@@ -127,7 +127,7 @@
   .modal-body,
   .modal-header {
     button {
-      @extend %button-style-unset;
+      @include button-style-unset;
     }
   }
 
