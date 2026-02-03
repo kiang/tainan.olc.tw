@@ -2,9 +2,13 @@
 import { useRoute } from "vue-router";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import PetitionModal from "@/components/PetitionModal.vue";
 
 const route = useRoute();
 const showBreadcrumb = computed(() => route.name !== "Home");
+
+// Petition modal
+const showPetitionModal = ref(false);
 
 // Mobile nav scroll indicators
 const navbarMobile = ref(null);
@@ -64,6 +68,12 @@ onUnmounted(() => {
                   }"
                   >首頁</RouterLink
                 >
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link nav-link-petition"
+                  @click="showPetitionModal = true"
+                >陳情</button>
               </li>
               <li class="nav-item">
                 <RouterLink
@@ -147,6 +157,12 @@ onUnmounted(() => {
             >
           </li>
           <li class="nav-item">
+            <button
+              class="nav-link nav-link-petition"
+              @click="showPetitionModal = true"
+            >陳情</button>
+          </li>
+          <li class="nav-item">
             <RouterLink
               class="nav-link"
               :to="{
@@ -154,7 +170,6 @@ onUnmounted(() => {
               }"
               >政見</RouterLink
             >
-            
           </li>
           <li class="nav-item">
             <RouterLink
@@ -205,6 +220,9 @@ onUnmounted(() => {
   <main id="main-content" role="main">
     <RouterView />
   </main>
+
+  <!-- Petition Modal -->
+  <PetitionModal v-model="showPetitionModal" />
 
   <footer class="site-footer" role="contentinfo">
     <div class="footer-content">
@@ -283,6 +301,9 @@ header {
     font-size: 14px;
     color: black;
     padding: 10px 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 
     &:hover,
     &-hover {
@@ -293,6 +314,15 @@ header {
     &.router-link-exact-active {
       background-color: #30363a;
       color: white;
+    }
+
+    &.nav-link-petition {
+      color: #ff6b6b;
+
+      &:hover {
+        background-color: #ff6b6b;
+        color: white;
+      }
     }
 
     @media (min-width: 992px) {

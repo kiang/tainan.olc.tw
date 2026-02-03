@@ -1,5 +1,9 @@
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import PetitionModal from "@/components/PetitionModal.vue";
+
+const showPetitionModal = ref(false);
 </script>
 
 <template>
@@ -26,6 +30,13 @@ import { RouterLink } from "vue-router";
               </svg>
               <span>線上服務處</span>
             </a>
+            <button class="btn-petition-action" @click="showPetitionModal = true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+              </svg>
+              <span>我要陳情</span>
+            </button>
             <RouterLink :to="{ name: 'Politics' }" class="btn-primary-action">
               <span>了解政見</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -79,6 +90,17 @@ import { RouterLink } from "vue-router";
     <!-- Quick Navigation Cards -->
     <section class="quick-nav-section">
       <div class="nav-cards">
+        <button class="nav-card nav-card-petition" @click="showPetitionModal = true">
+          <div class="nav-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+            </svg>
+          </div>
+          <h3>我要陳情</h3>
+          <p>反映地方問題，一起改善環境</p>
+        </button>
+
         <RouterLink :to="{ name: 'Politics' }" class="nav-card">
           <div class="nav-card-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
@@ -137,6 +159,9 @@ import { RouterLink } from "vue-router";
         </div>
       </div>
     </section>
+
+    <!-- Petition Modal -->
+    <PetitionModal v-model="showPetitionModal" />
   </main>
 </template>
 
@@ -331,6 +356,29 @@ import { RouterLink } from "vue-router";
   }
 }
 
+.btn-petition-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: #ff6b6b;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+
+  &:hover {
+    background: #ee5a5a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  }
+}
+
 .social-links {
   display: flex;
   gap: 12px;
@@ -375,14 +423,19 @@ import { RouterLink } from "vue-router";
 }
 
 .nav-cards {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 
   @media (min-width: 576px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
 }
@@ -398,6 +451,8 @@ import { RouterLink } from "vue-router";
   color: #333;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-4px);
@@ -405,6 +460,18 @@ import { RouterLink } from "vue-router";
 
     .nav-card-icon {
       background: #28c8c8;
+      color: white;
+    }
+  }
+
+  &.nav-card-petition {
+    .nav-card-icon {
+      background: rgba(255, 107, 107, 0.1);
+      color: #ff6b6b;
+    }
+
+    &:hover .nav-card-icon {
+      background: #ff6b6b;
       color: white;
     }
   }
