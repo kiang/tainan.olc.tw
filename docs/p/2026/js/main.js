@@ -289,8 +289,14 @@ function showElections() {
 
     applicableTypes.forEach(function (elType) {
         var count = countCandidates(elType, ctx.countyCode, ctx.townCode, ctx.villCode);
+        var label = electionLabel(elType);
+        var district = findDistrict(elType, ctx.countyCode, ctx.townCode, ctx.villCode);
+        if (district) {
+            var distName = currentLang === 'en' && district.nameEn ? district.nameEn : district.name;
+            label += ' - ' + distName;
+        }
         html += '<tr class="election-row" onclick="showCandidates(\'' + elType.replace(/'/g, "\\'") + '\')">';
-        html += '<td>' + electionLabel(elType) + '</td>';
+        html += '<td>' + label + '</td>';
         html += '<td class="text-end"><span class="badge bg-primary badge-count">' + count + '</span></td>';
         html += '</tr>';
     });
@@ -395,10 +401,30 @@ function showDetail(c) {
 
 // --- Data helpers ---
 
+function findDistrict(elType, countyCode, townCode, villCode) {
+    if (!candidatesData || !candidatesData.districts) return null;
+    var districtMap = candidatesData.districts[elType];
+    if (!districtMap || !districtMap[countyCode]) return null;
+    var districts = districtMap[countyCode];
+    for (var i = 0; i < districts.length; i++) {
+        var d = districts[i];
+        if (d.villCodes && villCode && d.villCodes.indexOf(villCode) >= 0) {
+            return d;
+        }
+        if (d.townCodes && d.townCodes.indexOf(townCode) >= 0) {
+            return d;
+        }
+    }
+    return null;
+}
+
 function countCandidates(elType, countyCode, townCode, villCode) {
     if (!candidatesData) return 0;
     return filterCandidates(elType, countyCode, townCode, villCode).length;
 }
+
+// Election types that use electoral districts
+var districtElectionTypes = ['直轄市議員', '縣市議員', '直轄市山地原住民區區民代表', '鄉鎮市民代表'];
 
 function filterCandidates(elType, countyCode, townCode, villCode) {
     if (!candidatesData) return [];
@@ -406,6 +432,13 @@ function filterCandidates(elType, countyCode, townCode, villCode) {
         if (c.election !== elType) return false;
         if (elType === '村里長') return c.villCode === villCode;
         if (elType === '直轄市市長' || elType === '縣市首長') return c.countyCode === countyCode;
+        // District-based elections
+        if (districtElectionTypes.indexOf(elType) >= 0) {
+            var district = findDistrict(elType, countyCode, townCode, villCode);
+            if (district) {
+                return c.countyCode === countyCode && c.district === district.name;
+            }
+        }
         return c.townCode === townCode;
     });
 }
