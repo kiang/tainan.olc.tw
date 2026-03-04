@@ -46,6 +46,7 @@ var currentLang = 'zh';
 var candidatesData = null;
 var map, countyLayer, cunliLayer;
 var currentCounty = null;
+var selectedCunliLayer = null;
 var electionModal, candidateModal, detailModal;
 
 // Election type definitions
@@ -203,6 +204,7 @@ function cunliHighlight(e) {
 }
 
 function cunliReset(e) {
+    if (e.target === selectedCunliLayer) return;
     if (cunliLayer) {
         cunliLayer.resetStyle(e.target);
     }
@@ -235,10 +237,13 @@ function onCunliClick(feature, layer) {
     if (cunliLayer) {
         cunliLayer.resetStyle();
     }
+    selectedCunliLayer = layer;
     layer.setStyle({
         fillColor: '#e67e22',
         fillOpacity: 0.6
     });
+
+    map.fitBounds(layer.getBounds());
 
     var props = feature.properties;
     var countyName = props.COUNTYNAME || '';
