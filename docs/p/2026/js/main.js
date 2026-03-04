@@ -401,11 +401,16 @@ function showDetail(c) {
 
 // --- Data helpers ---
 
+// Town-based election types (districts keyed by townCode, not countyCode)
+var townBasedElectionTypes = ['直轄市山地原住民區區民代表', '鄉鎮市民代表'];
+
 function findDistrict(elType, countyCode, townCode, villCode) {
     if (!candidatesData || !candidatesData.districts) return null;
     var districtMap = candidatesData.districts[elType];
-    if (!districtMap || !districtMap[countyCode]) return null;
-    var districts = districtMap[countyCode];
+    if (!districtMap) return null;
+    var key = townBasedElectionTypes.indexOf(elType) >= 0 ? townCode : countyCode;
+    if (!districtMap[key]) return null;
+    var districts = districtMap[key];
     for (var i = 0; i < districts.length; i++) {
         var d = districts[i];
         if (d.villCodes && villCode && d.villCodes.indexOf(villCode) >= 0) {
@@ -436,7 +441,9 @@ function filterCandidates(elType, countyCode, townCode, villCode) {
         if (districtElectionTypes.indexOf(elType) >= 0) {
             var district = findDistrict(elType, countyCode, townCode, villCode);
             if (district) {
-                return c.countyCode === countyCode && c.district === district.name;
+                var isTownBased = townBasedElectionTypes.indexOf(elType) >= 0;
+                var codeMatch = isTownBased ? c.townCode === townCode : c.countyCode === countyCode;
+                return codeMatch && c.district === district.name;
             }
         }
         return c.townCode === townCode;

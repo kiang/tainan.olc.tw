@@ -25,7 +25,7 @@
       ]
     },
     "鄉鎮市民代表": {
-      "67000": [
+      "67000180": [
         { "name": "第1選舉區", "nameEn": "District 1", "villCodes": ["67000180001", "67000180002", "67000180003"] },
         { "name": "第2選舉區", "nameEn": "District 2", "villCodes": ["67000180004", "67000180005", "67000180006"] }
       ]
@@ -261,6 +261,8 @@
       "election": "鄉鎮市民代表",
       "countyCode": "67000",
       "countyName": "臺南市",
+      "townCode": "67000180",
+      "townName": "關廟區",
       "district": "第1選舉區",
       "number": 1,
       "name": "楊國華",
@@ -279,6 +281,8 @@
       "election": "鄉鎮市民代表",
       "countyCode": "67000",
       "countyName": "臺南市",
+      "townCode": "67000180",
+      "townName": "關廟區",
       "district": "第1選舉區",
       "number": 2,
       "name": "方淑惠",
@@ -297,6 +301,8 @@
       "election": "鄉鎮市民代表",
       "countyCode": "67000",
       "countyName": "臺南市",
+      "townCode": "67000180",
+      "townName": "關廟區",
       "district": "第2選舉區",
       "number": 1,
       "name": "郭文進",
