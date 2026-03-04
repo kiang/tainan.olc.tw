@@ -47,7 +47,18 @@ var candidatesData = null;
 var map, countyLayer, cunliLayer;
 var currentCounty = null;
 var selectedCunliLayer = null;
-var electionModal, candidateModal, detailModal;
+var infoModal;
+
+// Current modal context for breadcrumb navigation
+var modalContext = {
+    areaName: '',
+    countyCode: '',
+    townCode: '',
+    villCode: '',
+    isMunicipal: false,
+    currentElType: '',
+    currentCandidate: null
+};
 
 // Election type definitions
 var electionTypes = {
@@ -61,6 +72,12 @@ var municipalCodes = ['63000', '64000', '65000', '66000', '67000', '68000'];
 
 function t(key) {
     return lang[currentLang][key] || key;
+}
+
+function electionLabel(elType) {
+    return currentLang === 'en' && candidatesData && candidatesData.elections[elType]
+        ? candidatesData.elections[elType].en
+        : elType;
 }
 
 function toggleLang() {
@@ -82,9 +99,7 @@ function initMap() {
         attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">NLSC</a>'
     }).addTo(map);
 
-    electionModal = new bootstrap.Modal(document.getElementById('electionModal'));
-    candidateModal = new bootstrap.Modal(document.getElementById('candidateModal'));
-    detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
+    infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
 
     loadCandidates();
     loadCounties();
@@ -114,7 +129,7 @@ function loadCounties() {
         });
 }
 
-function countyStyle(feature) {
+function countyStyle() {
     return {
         fillColor: '#a8d5e2',
         weight: 2,
@@ -125,23 +140,15 @@ function countyStyle(feature) {
 }
 
 function countyHighlight(e) {
-    var layer = e.target;
-    layer.setStyle({
-        fillColor: '#5dade2',
-        fillOpacity: 0.6
-    });
+    e.target.setStyle({ fillColor: '#5dade2', fillOpacity: 0.6 });
 }
 
 function countyReset(e) {
-    if (countyLayer) {
-        countyLayer.resetStyle(e.target);
-    }
+    if (countyLayer) countyLayer.resetStyle(e.target);
 }
 
 function renderCounties(geojson) {
-    if (countyLayer) {
-        map.removeLayer(countyLayer);
-    }
+    if (countyLayer) map.removeLayer(countyLayer);
 
     countyLayer = L.geoJSON(geojson, {
         style: countyStyle,
@@ -151,9 +158,7 @@ function renderCounties(geojson) {
             layer.on({
                 mouseover: countyHighlight,
                 mouseout: countyReset,
-                click: function () {
-                    onCountyClick(feature, layer);
-                }
+                click: function () { onCountyClick(feature, layer); }
             });
         }
     }).addTo(map);
@@ -167,17 +172,13 @@ function onCountyClick(feature, layer) {
 
     map.fitBounds(layer.getBounds());
 
-    // Load cunli for this county
     var url = 'https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/' + countyName + '.json';
     fetch(url)
         .then(function (r) { return r.json(); })
         .then(function (topoData) {
             var geojson = topojson.feature(topoData, Object.values(topoData.objects)[0]);
             renderCunli(geojson);
-            // Remove county layer after cunli loads
-            if (countyLayer) {
-                map.removeLayer(countyLayer);
-            }
+            if (countyLayer) map.removeLayer(countyLayer);
             document.getElementById('backBtn').style.display = 'block';
         })
         .catch(function (err) {
@@ -185,7 +186,7 @@ function onCountyClick(feature, layer) {
         });
 }
 
-function cunliStyle(feature) {
+function cunliStyle() {
     return {
         fillColor: '#a8e6cf',
         weight: 1,
@@ -197,23 +198,16 @@ function cunliStyle(feature) {
 
 function cunliHighlight(e) {
     var layer = e.target;
-    layer.setStyle({
-        fillColor: '#2ecc71',
-        fillOpacity: 0.5
-    });
+    layer.setStyle({ fillColor: '#2ecc71', fillOpacity: 0.5 });
 }
 
 function cunliReset(e) {
     if (e.target === selectedCunliLayer) return;
-    if (cunliLayer) {
-        cunliLayer.resetStyle(e.target);
-    }
+    if (cunliLayer) cunliLayer.resetStyle(e.target);
 }
 
 function renderCunli(geojson) {
-    if (cunliLayer) {
-        map.removeLayer(cunliLayer);
-    }
+    if (cunliLayer) map.removeLayer(cunliLayer);
 
     cunliLayer = L.geoJSON(geojson, {
         style: cunliStyle,
@@ -224,40 +218,63 @@ function renderCunli(geojson) {
             layer.on({
                 mouseover: cunliHighlight,
                 mouseout: cunliReset,
-                click: function () {
-                    onCunliClick(feature, layer);
-                }
+                click: function () { onCunliClick(feature, layer); }
             });
         }
     }).addTo(map);
 }
 
 function onCunliClick(feature, layer) {
-    // Highlight selected
-    if (cunliLayer) {
-        cunliLayer.resetStyle();
-    }
+    if (cunliLayer) cunliLayer.resetStyle();
     selectedCunliLayer = layer;
-    layer.setStyle({
-        fillColor: '#e67e22',
-        fillOpacity: 0.6
-    });
-
+    layer.setStyle({ fillColor: '#e67e22', fillOpacity: 0.6 });
     map.fitBounds(layer.getBounds());
 
     var props = feature.properties;
-    var countyName = props.COUNTYNAME || '';
-    var townName = props.TOWNNAME || '';
-    var villName = props.VILLNAME || '';
     var countyCode = props.COUNTYCODE || '';
     var townCode = props.TOWNCODE || '';
     var villCode = props.VILLCODE || '';
-    var fullName = countyName + townName + villName;
+    var fullName = (props.COUNTYNAME || '') + (props.TOWNNAME || '') + (props.VILLNAME || '');
 
-    document.getElementById('electionModalTitle').textContent = fullName + ' - ' + t('elections');
+    modalContext = {
+        areaName: fullName,
+        countyCode: countyCode,
+        townCode: townCode,
+        villCode: villCode,
+        isMunicipal: municipalCodes.indexOf(countyCode) >= 0,
+        currentElType: '',
+        currentCandidate: null
+    };
 
-    var isMunicipal = municipalCodes.indexOf(countyCode) >= 0;
-    var applicableTypes = isMunicipal ? electionTypes.municipal : electionTypes.county;
+    showElections();
+    infoModal.show();
+}
+
+// --- Breadcrumb rendering ---
+
+function renderBreadcrumb(items) {
+    // items: [{label, onclick}, ...] last one is active (no onclick)
+    var html = '<ol class="breadcrumb mb-0">';
+    items.forEach(function (item, i) {
+        if (i < items.length - 1) {
+            html += '<li class="breadcrumb-item"><a href="#" onclick="' + item.onclick + '; return false;">' + item.label + '</a></li>';
+        } else {
+            html += '<li class="breadcrumb-item active" aria-current="page">' + item.label + '</li>';
+        }
+    });
+    html += '</ol>';
+    document.getElementById('modalBreadcrumb').innerHTML = html;
+}
+
+// --- View: Election types ---
+
+function showElections() {
+    var ctx = modalContext;
+    renderBreadcrumb([
+        { label: ctx.areaName }
+    ]);
+
+    var applicableTypes = ctx.isMunicipal ? electionTypes.municipal.slice() : electionTypes.county.slice();
     applicableTypes = applicableTypes.concat(electionTypes.village);
 
     var html = '<table class="table table-hover mb-0">';
@@ -265,56 +282,30 @@ function onCunliClick(feature, layer) {
     html += '<tbody>';
 
     applicableTypes.forEach(function (elType) {
-        var count = countCandidates(elType, countyCode, townCode, villCode);
-        var elLabel = currentLang === 'en' && candidatesData && candidatesData.elections[elType]
-            ? candidatesData.elections[elType].en
-            : elType;
-
-        html += '<tr class="election-row" onclick="showCandidates(\'' +
-            elType + '\',\'' + countyCode + '\',\'' + townCode + '\',\'' + villCode + '\',\'' +
-            fullName + '\')">';
-        html += '<td>' + elLabel + '</td>';
+        var count = countCandidates(elType, ctx.countyCode, ctx.townCode, ctx.villCode);
+        html += '<tr class="election-row" onclick="showCandidates(\'' + elType.replace(/'/g, "\\'") + '\')">';
+        html += '<td>' + electionLabel(elType) + '</td>';
         html += '<td class="text-end"><span class="badge bg-primary badge-count">' + count + '</span></td>';
         html += '</tr>';
     });
 
     html += '</tbody></table>';
-
-    document.getElementById('electionModalBody').innerHTML = html;
-    electionModal.show();
+    document.getElementById('modalBody').innerHTML = html;
 }
 
-function countCandidates(elType, countyCode, townCode, villCode) {
-    if (!candidatesData) return 0;
-    return filterCandidates(elType, countyCode, townCode, villCode).length;
-}
+// --- View: Candidate list ---
 
-function filterCandidates(elType, countyCode, townCode, villCode) {
-    if (!candidatesData) return [];
-    return candidatesData.candidates.filter(function (c) {
-        if (c.election !== elType) return false;
-        // Match based on election type
-        if (elType === '村里長') {
-            return c.villCode === villCode;
-        }
-        if (elType === '直轄市市長' || elType === '縣市首長') {
-            return c.countyCode === countyCode;
-        }
-        // Council members, township mayors, representatives: match by townCode
-        return c.townCode === townCode;
-    });
-}
+function showCandidates(elType) {
+    var ctx = modalContext;
+    ctx.currentElType = elType;
+    var elLabel = electionLabel(elType);
 
-function showCandidates(elType, countyCode, townCode, villCode, areaName) {
-    electionModal.hide();
+    renderBreadcrumb([
+        { label: ctx.areaName, onclick: 'showElections()' },
+        { label: elLabel }
+    ]);
 
-    var elLabel = currentLang === 'en' && candidatesData && candidatesData.elections[elType]
-        ? candidatesData.elections[elType].en
-        : elType;
-
-    document.getElementById('candidateModalTitle').textContent = areaName + ' - ' + elLabel;
-
-    var candidates = filterCandidates(elType, countyCode, townCode, villCode);
+    var candidates = filterCandidates(elType, ctx.countyCode, ctx.townCode, ctx.villCode);
     var html = '';
 
     if (candidates.length === 0) {
@@ -325,7 +316,7 @@ function showCandidates(elType, countyCode, townCode, villCode, areaName) {
             var party = currentLang === 'en' && c.partyEn ? c.partyEn : c.party;
             var initial = c.name ? c.name.charAt(0) : '?';
 
-            html += '<div class="candidate-card d-flex align-items-center" onclick=\'showDetail(' + JSON.stringify(c).replace(/'/g, "\\'") + ')\'>';
+            html += '<div class="candidate-card d-flex align-items-center" onclick="showDetailByIndex(' + idx + ')">';
             html += '<div class="candidate-photo me-3">';
             if (c.photo) {
                 html += '<img src="' + c.photo + '" class="rounded-circle" width="60" height="60" alt="' + name + '">';
@@ -342,16 +333,23 @@ function showCandidates(elType, countyCode, townCode, villCode, areaName) {
         });
     }
 
-    document.getElementById('candidateModalBody').innerHTML = html;
+    document.getElementById('modalBody').innerHTML = html;
+}
 
-    setTimeout(function () {
-        candidateModal.show();
-    }, 300);
+// --- View: Candidate detail ---
+
+function showDetailByIndex(idx) {
+    var ctx = modalContext;
+    var candidates = filterCandidates(ctx.currentElType, ctx.countyCode, ctx.townCode, ctx.villCode);
+    if (idx >= 0 && idx < candidates.length) {
+        showDetail(candidates[idx]);
+    }
 }
 
 function showDetail(c) {
-    candidateModal.hide();
-
+    var ctx = modalContext;
+    ctx.currentCandidate = c;
+    var elLabel = electionLabel(ctx.currentElType);
     var name = currentLang === 'en' && c.nameEn ? c.nameEn : c.name;
     var party = currentLang === 'en' && c.partyEn ? c.partyEn : c.party;
     var platform = currentLang === 'en' && c.platformEn ? c.platformEn : c.platform;
@@ -360,7 +358,11 @@ function showDetail(c) {
         gender = c.gender === '男' ? t('male') : t('female');
     }
 
-    document.getElementById('detailModalTitle').textContent = t('candidateDetail');
+    renderBreadcrumb([
+        { label: ctx.areaName, onclick: 'showElections()' },
+        { label: elLabel, onclick: 'showCandidates(modalContext.currentElType)' },
+        { label: name }
+    ]);
 
     var html = '<div class="text-center mb-3">';
     html += '<div class="candidate-photo mx-auto mb-2" style="width:80px;height:80px;font-size:32px;">';
@@ -382,15 +384,31 @@ function showDetail(c) {
     html += '<tr><th>' + t('platform') + '</th><td>' + platform + '</td></tr>';
     html += '</table>';
 
-    document.getElementById('detailModalBody').innerHTML = html;
-
-    setTimeout(function () {
-        detailModal.show();
-    }, 300);
+    document.getElementById('modalBody').innerHTML = html;
 }
+
+// --- Data helpers ---
+
+function countCandidates(elType, countyCode, townCode, villCode) {
+    if (!candidatesData) return 0;
+    return filterCandidates(elType, countyCode, townCode, villCode).length;
+}
+
+function filterCandidates(elType, countyCode, townCode, villCode) {
+    if (!candidatesData) return [];
+    return candidatesData.candidates.filter(function (c) {
+        if (c.election !== elType) return false;
+        if (elType === '村里長') return c.villCode === villCode;
+        if (elType === '直轄市市長' || elType === '縣市首長') return c.countyCode === countyCode;
+        return c.townCode === townCode;
+    });
+}
+
+// --- Map controls ---
 
 function backToCounty() {
     currentCounty = null;
+    selectedCunliLayer = null;
     if (cunliLayer) {
         map.removeLayer(cunliLayer);
         cunliLayer = null;
@@ -407,10 +425,8 @@ function locateUser() {
     }
     navigator.geolocation.getCurrentPosition(
         function (pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
-            map.setView([lat, lng], 14);
-            L.marker([lat, lng]).addTo(map)
+            map.setView([pos.coords.latitude, pos.coords.longitude], 14);
+            L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
                 .bindPopup(t('locating').replace('...', ''))
                 .openPopup();
         },
@@ -420,5 +436,4 @@ function locateUser() {
     );
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', initMap);
