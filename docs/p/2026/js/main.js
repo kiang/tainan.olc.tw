@@ -44,6 +44,7 @@ var lang = {
 
 var currentLang = 'zh';
 var candidatesData = null;
+var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 var map, countyLayer, cunliLayer;
 var currentCounty = null;
 var selectedCunliLayer = null;
@@ -245,8 +246,11 @@ function onCunliClick(feature, layer) {
     modalContext = {
         areaName: fullName,
         countyCode: countyCode,
+        countyName: props.COUNTYNAME || '',
         townCode: townCode,
+        townName: props.TOWNNAME || '',
         villCode: villCode,
+        villName: props.VILLNAME || '',
         isMunicipal: municipalCodes.indexOf(countyCode) >= 0,
         currentElType: '',
         currentCandidate: null
@@ -297,7 +301,27 @@ function showElections() {
         }
         html += '<tr class="election-row" onclick="showCandidates(\'' + elType.replace(/'/g, "\\'") + '\')">';
         html += '<td>' + label + '</td>';
-        html += '<td class="text-end"><span class="badge bg-primary badge-count">' + count + '</span></td>';
+        html += '<td class="text-end">';
+        if (isLocal && districtElectionTypes.indexOf(elType) >= 0) {
+            var dAreaCode = townBasedElectionTypes.indexOf(elType) >= 0 ? ctx.townCode : ctx.countyCode;
+            if (district) {
+                var dIdx = findDistrictIndex(elType, dAreaCode, district);
+                html += '<a href="admin.php?edit=district&electionType=' + encodeURIComponent(elType) + '&areaCode=' + encodeURIComponent(dAreaCode) + '&districtIndex=' + dIdx + '" class="btn btn-outline-primary btn-sm me-1" target="_blank" onclick="event.stopPropagation()" title="編輯選區"><i class="bi bi-pencil-square"></i></a>';
+            } else {
+                html += '<a href="admin.php?edit=district&electionType=' + encodeURIComponent(elType) + '&areaCode=' + encodeURIComponent(dAreaCode) + '&districtIndex=-1" class="btn btn-outline-success btn-sm me-1" target="_blank" onclick="event.stopPropagation()" title="新增選區"><i class="bi bi-plus-circle"></i></a>';
+            }
+        }
+        if (isLocal) {
+            var addParams = 'edit=candidate&index=-1&election=' + encodeURIComponent(elType)
+                + '&countyCode=' + encodeURIComponent(ctx.countyCode)
+                + '&countyName=' + encodeURIComponent(ctx.countyName)
+                + '&townCode=' + encodeURIComponent(ctx.townCode)
+                + '&townName=' + encodeURIComponent(ctx.townName)
+                + '&villCode=' + encodeURIComponent(ctx.villCode)
+                + '&villName=' + encodeURIComponent(ctx.villName);
+            html += '<a href="admin.php?' + addParams + '" class="btn btn-outline-success btn-sm me-1" target="_blank" onclick="event.stopPropagation()" title="新增候選人"><i class="bi bi-person-plus"></i></a>';
+        }
+        html += '<span class="badge bg-primary badge-count">' + count + '</span></td>';
         html += '</tr>';
     });
 
@@ -340,6 +364,12 @@ function showCandidates(elType) {
             html += '<h6 class="mb-1">' + c.number + '. ' + name + '</h6>';
             html += '<small class="text-muted">' + party + '</small>';
             html += '</div>';
+            if (isLocal) {
+                var cIdx = findCandidateIndex(c);
+                if (cIdx >= 0) {
+                    html += '<a href="admin.php?edit=candidate&index=' + cIdx + '" class="btn btn-outline-primary btn-sm me-2" target="_blank" onclick="event.stopPropagation()"><i class="bi bi-pencil-square"></i></a>';
+                }
+            }
             html += '<i class="bi bi-chevron-right text-muted"></i>';
             html += '</div>';
         });
@@ -396,7 +426,33 @@ function showDetail(c) {
     html += '<tr><th>' + t('platform') + '</th><td>' + platform + '</td></tr>';
     html += '</table>';
 
+    if (isLocal) {
+        var cIdx = findCandidateIndex(c);
+        if (cIdx >= 0) {
+            html += '<div class="text-end"><a href="admin.php?edit=candidate&index=' + cIdx + '" class="btn btn-outline-primary btn-sm" target="_blank"><i class="bi bi-pencil-square"></i> 編輯候選人</a></div>';
+        }
+    }
+
     document.getElementById('modalBody').innerHTML = html;
+}
+
+function findDistrictIndex(elType, areaCode, district) {
+    if (!candidatesData || !candidatesData.districts) return -1;
+    var districtMap = candidatesData.districts[elType];
+    if (!districtMap || !districtMap[areaCode]) return -1;
+    var districts = districtMap[areaCode];
+    for (var i = 0; i < districts.length; i++) {
+        if (districts[i] === district) return i;
+    }
+    return -1;
+}
+
+function findCandidateIndex(c) {
+    if (!candidatesData) return -1;
+    for (var i = 0; i < candidatesData.candidates.length; i++) {
+        if (candidatesData.candidates[i] === c) return i;
+    }
+    return -1;
 }
 
 // --- Data helpers ---

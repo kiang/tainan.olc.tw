@@ -747,7 +747,40 @@ document.getElementById('districtModal').addEventListener('hidden.bs.modal', () 
     }
 });
 
-load();
+load().then(() => {
+    // Handle URL parameters for direct editing
+    const params = new URLSearchParams(window.location.search);
+    const editType = params.get('edit');
+    if (editType === 'candidate') {
+        const index = parseInt(params.get('index'));
+        if (!isNaN(index) && index >= 0 && index < appData.candidates.length) {
+            editCandidate(index);
+        } else if (!isNaN(index) && index === -1) {
+            // New candidate with pre-filled fields from URL
+            editCandidate(-1);
+            const prefillFields = ['election', 'countyCode', 'countyName', 'townCode', 'townName', 'villCode', 'villName'];
+            prefillFields.forEach(f => {
+                const val = params.get(f);
+                if (val) {
+                    const el = document.getElementById('c_' + f);
+                    if (el) el.value = val;
+                }
+            });
+        }
+    } else if (editType === 'district') {
+        const elType = params.get('electionType');
+        const areaCode = params.get('areaCode');
+        const dIdx = parseInt(params.get('districtIndex'));
+        if (elType && areaCode && !isNaN(dIdx)) {
+            // Switch to districts tab
+            document.querySelectorAll('#mainTabs a').forEach(a => a.classList.remove('active'));
+            document.querySelector('#mainTabs a[data-tab="districts"]').classList.add('active');
+            document.getElementById('tab-candidates').style.display = 'none';
+            document.getElementById('tab-districts').style.display = '';
+            editDistrict(elType, areaCode, dIdx);
+        }
+    }
+});
 </script>
 </body>
 </html>
