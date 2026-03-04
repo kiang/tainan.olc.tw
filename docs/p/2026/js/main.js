@@ -101,6 +101,12 @@ function initMap() {
 
     infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
 
+    map.on('click', function (e) {
+        if (cunliLayer) {
+            backToCounty();
+        }
+    });
+
     loadCandidates();
     loadCounties();
 }
@@ -218,7 +224,7 @@ function renderCunli(geojson) {
             layer.on({
                 mouseover: cunliHighlight,
                 mouseout: cunliReset,
-                click: function () { onCunliClick(feature, layer); }
+                click: function (e) { L.DomEvent.stopPropagation(e); onCunliClick(feature, layer); }
             });
         }
     }).addTo(map);
