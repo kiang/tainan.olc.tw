@@ -129,9 +129,14 @@ if (isset($_GET['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 選舉候選人管理</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <style>
         .table td, .table th { vertical-align: middle; font-size: 0.9rem; }
         .btn-sm { font-size: 0.8rem; }
+        #districtMapContainer { height: 400px; width: 100%; }
+        .map-breadcrumb { background: #f8f9fa; padding: 6px 12px; border-radius: 4px; margin-bottom: 8px; font-size: 0.9rem; }
+        .map-breadcrumb a { cursor: pointer; color: #0d6efd; text-decoration: none; }
+        .map-breadcrumb a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -276,7 +281,7 @@ if (isset($_GET['action'])) {
 
 <!-- District Modal -->
 <div class="modal fade" id="districtModal" tabindex="-1">
-<div class="modal-dialog">
+<div class="modal-dialog modal-xl">
 <div class="modal-content">
     <div class="modal-header"><h5 class="modal-title">選區</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
     <div class="modal-body">
@@ -302,11 +307,26 @@ if (isset($_GET['action'])) {
             </div>
             <div class="col-md-12">
                 <label class="form-label">townCodes (逗號分隔)</label>
-                <input id="d_townCodes" class="form-control form-control-sm">
+                <input id="d_townCodes" class="form-control form-control-sm" readonly>
             </div>
             <div class="col-md-12">
                 <label class="form-label">villCodes (逗號分隔)</label>
-                <input id="d_villCodes" class="form-control form-control-sm">
+                <input id="d_villCodes" class="form-control form-control-sm" readonly>
+            </div>
+            <div class="col-md-12 mt-2">
+                <label class="form-label fw-bold">地圖選取</label>
+                <div class="mb-2">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <input type="radio" class="btn-check" name="mapSelMode" id="selModeTown" value="town" checked>
+                        <label class="btn btn-outline-primary" for="selModeTown">選取鄉鎮市區 Towns</label>
+                        <input type="radio" class="btn-check" name="mapSelMode" id="selModeVill" value="vill">
+                        <label class="btn btn-outline-primary" for="selModeVill">選取村里 Villages</label>
+                    </div>
+                </div>
+                <div class="map-breadcrumb" id="mapBreadcrumb">
+                    <span>全部縣市</span>
+                </div>
+                <div id="districtMapContainer"></div>
             </div>
         </div>
     </div>
@@ -319,6 +339,8 @@ if (isset($_GET['action'])) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
 let appData = null;
 const candidateFields = ['election','countyCode','countyName','district','townCode','townName','villCode','villName','number','name','nameEn','party','partyEn','gender','age','education','experience','platform','platformEn','photo'];
@@ -442,6 +464,15 @@ function editDistrict(elType, areaCode, index) {
     document.getElementById('d_nameEn').value = d.nameEn || '';
     document.getElementById('d_townCodes').value = (d.townCodes || []).join(', ');
     document.getElementById('d_villCodes').value = (d.villCodes || []).join(', ');
+    // Pre-populate selection sets from existing codes
+    selectedTownCodes = new Set(d.townCodes || []);
+    selectedVillCodes = new Set(d.villCodes || []);
+    // Auto-select mode based on existing data
+    if ((d.villCodes || []).length > 0) {
+        document.getElementById('selModeVill').checked = true;
+    } else {
+        document.getElementById('selModeTown').checked = true;
+    }
     new bootstrap.Modal(document.getElementById('districtModal')).show();
 }
 
@@ -489,6 +520,232 @@ document.querySelectorAll('#mainTabs a').forEach(a => {
 // Filter events
 document.getElementById('filterElection').addEventListener('change', renderCandidates);
 document.getElementById('filterCounty').addEventListener('change', renderCandidates);
+
+// === District Map Picker ===
+let districtMap = null;
+let mapDataLayer = null;
+let selectedTownCodes = new Set();
+let selectedVillCodes = new Set();
+let currentCountyName = null;
+let currentCountyCode = null;
+let countyTopoCache = null;
+let cunliTopoCache = {};
+
+const COUNTY_TOPO_URL = 'https://kiang.github.io/taiwan_basecode/county/topo/20200820.json';
+const CUNLI_TOPO_BASE = 'https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/';
+const NLSC_TILE = 'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}';
+
+function getSelectionMode() {
+    return document.querySelector('input[name="mapSelMode"]:checked').value;
+}
+
+function defaultStyle() {
+    return { color: '#3388ff', weight: 1, fillOpacity: 0.15, fillColor: '#3388ff' };
+}
+
+function selectedStyle() {
+    return { color: '#ff6600', weight: 2, fillOpacity: 0.45, fillColor: '#ff6600' };
+}
+
+function hoverStyle() {
+    return { weight: 3, fillOpacity: 0.3 };
+}
+
+function initDistrictMap() {
+    if (districtMap) {
+        districtMap.remove();
+        districtMap = null;
+    }
+    districtMap = L.map('districtMapContainer', { zoomSnap: 0.5 }).setView([23.7, 120.9], 7);
+    L.tileLayer(NLSC_TILE, { maxZoom: 18, attribution: 'NLSC' }).addTo(districtMap);
+    loadCountiesForPicker();
+}
+
+async function loadCountiesForPicker() {
+    if (!countyTopoCache) {
+        const resp = await fetch(COUNTY_TOPO_URL);
+        countyTopoCache = await resp.json();
+    }
+    const objectKey = Object.keys(countyTopoCache.objects)[0];
+    const geojson = topojson.feature(countyTopoCache, countyTopoCache.objects[objectKey]);
+
+    if (mapDataLayer) districtMap.removeLayer(mapDataLayer);
+    currentCountyName = null;
+    currentCountyCode = null;
+
+    mapDataLayer = L.geoJSON(geojson, {
+        style: defaultStyle,
+        onEachFeature: (feature, layer) => {
+            const name = feature.properties.COUNTYNAME;
+            const code = feature.properties.COUNTYCODE;
+            layer.bindTooltip(name, { sticky: true });
+            layer.on('click', () => drillIntoCounty(name, code));
+            layer.on('mouseover', () => layer.setStyle(hoverStyle()));
+            layer.on('mouseout', () => mapDataLayer.resetStyle(layer));
+        }
+    }).addTo(districtMap);
+
+    districtMap.fitBounds(mapDataLayer.getBounds());
+    updateBreadcrumb();
+}
+
+async function drillIntoCounty(countyName, countyCode) {
+    currentCountyName = countyName;
+    currentCountyCode = countyCode;
+
+    if (!cunliTopoCache[countyName]) {
+        const resp = await fetch(CUNLI_TOPO_BASE + countyName + '.json');
+        cunliTopoCache[countyName] = await resp.json();
+    }
+
+    const topo = cunliTopoCache[countyName];
+    const objectKey = Object.keys(topo.objects)[0];
+    const geojson = topojson.feature(topo, topo.objects[objectKey]);
+
+    renderSubLayer(geojson);
+    updateBreadcrumb();
+}
+
+function renderSubLayer(geojson) {
+    if (mapDataLayer) districtMap.removeLayer(mapDataLayer);
+
+    const mode = getSelectionMode();
+
+    if (mode === 'town') {
+        const townGroups = groupByTown(geojson);
+        mapDataLayer = L.layerGroup();
+        for (const [townCode, data] of Object.entries(townGroups)) {
+            const layer = L.geoJSON(data.features, {
+                style: () => selectedTownCodes.has(townCode) ? selectedStyle() : defaultStyle(),
+                onEachFeature: (feature, lyr) => {
+                    lyr.on('mouseover', () => lyr.setStyle(hoverStyle()));
+                    lyr.on('mouseout', () => {
+                        lyr.setStyle(selectedTownCodes.has(townCode) ? selectedStyle() : defaultStyle());
+                    });
+                }
+            });
+            layer.bindTooltip(data.townName || townCode, { sticky: true });
+            layer.on('click', () => toggleTownSelection(townCode, layer));
+            layer.addTo(mapDataLayer);
+        }
+        mapDataLayer.addTo(districtMap);
+        // Fit bounds from all sub-layers
+        const allBounds = L.featureGroup([]);
+        mapDataLayer.eachLayer(l => {
+            if (l.getBounds) allBounds.addLayer(l);
+        });
+        if (allBounds.getLayers().length > 0) districtMap.fitBounds(allBounds.getBounds());
+    } else {
+        mapDataLayer = L.geoJSON(geojson, {
+            style: (feature) => {
+                const code = feature.properties.VILLCODE;
+                return selectedVillCodes.has(code) ? selectedStyle() : defaultStyle();
+            },
+            onEachFeature: (feature, layer) => {
+                const code = feature.properties.VILLCODE;
+                const name = feature.properties.VILLNAME || code;
+                const townName = feature.properties.TOWNNAME || '';
+                layer.bindTooltip(townName + name, { sticky: true });
+                layer.on('click', () => toggleVillSelection(code, layer));
+                layer.on('mouseover', () => layer.setStyle(hoverStyle()));
+                layer.on('mouseout', () => {
+                    layer.setStyle(selectedVillCodes.has(code) ? selectedStyle() : defaultStyle());
+                });
+            }
+        }).addTo(districtMap);
+        districtMap.fitBounds(mapDataLayer.getBounds());
+    }
+}
+
+function groupByTown(geojson) {
+    const groups = {};
+    for (const feature of geojson.features) {
+        const tc = feature.properties.TOWNCODE;
+        if (!groups[tc]) {
+            groups[tc] = { features: [], townName: feature.properties.TOWNNAME };
+        }
+        groups[tc].features.push(feature);
+    }
+    return groups;
+}
+
+function toggleTownSelection(code, layer) {
+    if (selectedTownCodes.has(code)) {
+        selectedTownCodes.delete(code);
+        layer.setStyle(defaultStyle());
+    } else {
+        selectedTownCodes.add(code);
+        layer.setStyle(selectedStyle());
+    }
+    syncCodeInputs();
+}
+
+function toggleVillSelection(code, layer) {
+    if (selectedVillCodes.has(code)) {
+        selectedVillCodes.delete(code);
+        layer.setStyle(defaultStyle());
+    } else {
+        selectedVillCodes.add(code);
+        layer.setStyle(selectedStyle());
+    }
+    syncCodeInputs();
+}
+
+function syncCodeInputs() {
+    document.getElementById('d_townCodes').value = [...selectedTownCodes].sort().join(', ');
+    document.getElementById('d_villCodes').value = [...selectedVillCodes].sort().join(', ');
+}
+
+function updateBreadcrumb() {
+    const bc = document.getElementById('mapBreadcrumb');
+    if (!currentCountyName) {
+        bc.innerHTML = '<span>全部縣市</span>';
+    } else {
+        bc.innerHTML = `<a onclick="loadCountiesForPicker()">全部縣市</a> &gt; <span>${currentCountyName}</span>`;
+    }
+}
+
+// Re-render sub-layer when selection mode changes
+document.querySelectorAll('input[name="mapSelMode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        if (currentCountyName && cunliTopoCache[currentCountyName]) {
+            const topo = cunliTopoCache[currentCountyName];
+            const objectKey = Object.keys(topo.objects)[0];
+            const geojson = topojson.feature(topo, topo.objects[objectKey]);
+            renderSubLayer(geojson);
+        }
+    });
+});
+
+// Init map when district modal is shown
+document.getElementById('districtModal').addEventListener('shown.bs.modal', () => {
+    if (!districtMap) {
+        initDistrictMap();
+    } else {
+        districtMap.invalidateSize();
+    }
+    // Pre-populate: auto-drill into county if areaCode is set
+    const areaCode = document.getElementById('d_areaCode').value;
+    if (areaCode && countyTopoCache) {
+        const objectKey = Object.keys(countyTopoCache.objects)[0];
+        const geojson = topojson.feature(countyTopoCache, countyTopoCache.objects[objectKey]);
+        // areaCode could be a county code (e.g. "67000") or town code (e.g. "67000010")
+        const countyPrefix = areaCode.substring(0, 5);
+        const match = geojson.features.find(f => f.properties.COUNTYCODE === countyPrefix || f.properties.COUNTYCODE === areaCode);
+        if (match) {
+            drillIntoCounty(match.properties.COUNTYNAME, match.properties.COUNTYCODE);
+        }
+    }
+});
+
+// Clean up map when modal is hidden
+document.getElementById('districtModal').addEventListener('hidden.bs.modal', () => {
+    if (districtMap) {
+        districtMap.remove();
+        districtMap = null;
+        mapDataLayer = null;
+    }
+});
 
 load();
 </script>
