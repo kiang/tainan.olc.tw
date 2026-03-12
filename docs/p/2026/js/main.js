@@ -60,6 +60,8 @@ var modalContext = {
     currentElType: '',
     currentCandidate: null
 };
+var historyData = null;
+var currentModalTab = 'candidates';
 
 // Election type definitions
 var electionTypes = {
@@ -255,6 +257,27 @@ function onCunliClick(feature, layer) {
         currentElType: '',
         currentCandidate: null
     };
+
+    // Reset to candidates tab
+    currentModalTab = 'candidates';
+    switchModalTab('candidates');
+
+    // Load historical data
+    historyData = null;
+    document.getElementById('modalBodyHistory').innerHTML = '<p class="text-muted text-center py-3">載入中...</p>';
+    fetch('data/2020-2024/' + villCode + '.json')
+        .then(function (r) {
+            if (!r.ok) throw new Error('Not found');
+            return r.json();
+        })
+        .then(function (data) {
+            historyData = data;
+            renderHistory();
+        })
+        .catch(function () {
+            historyData = null;
+            document.getElementById('modalBodyHistory').innerHTML = '<p class="text-muted text-center py-3">此村里無歷史投票資料</p>';
+        });
 
     showElections();
     infoModal.show();
@@ -536,6 +559,133 @@ function locateUser() {
             alert(t('locateError'));
         }
     );
+}
+
+// --- Modal tab switching ---
+
+function switchModalTab(tab) {
+    currentModalTab = tab;
+    var tabs = document.querySelectorAll('#modalTabs a');
+    tabs.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('data-mtab') === tab);
+    });
+    document.getElementById('modalBody').classList.toggle('d-none', tab !== 'candidates');
+    document.getElementById('modalBodyHistory').classList.toggle('d-none', tab !== 'history');
+}
+
+// --- History chart rendering ---
+
+// Party color mapping for major parties
+var partyColors = {
+    '民主進步黨': '#1B9431',
+    '中國國民黨': '#000095',
+    '台灣民眾黨': '#28C8C8',
+    '時代力量': '#FBBE01',
+    '台灣基進': '#A73F24',
+    '親民黨': '#FF6310',
+    '新黨': '#FFFF00',
+    '綠黨': '#73BF00',
+    '台灣團結聯盟': '#C69E6A',
+    '無黨籍及未經政黨推薦': '#999999'
+};
+
+function getPartyColor(party) {
+    return partyColors[party] || '#' + (Math.abs(hashStr(party)) % 0xFFFFFF).toString(16).padStart(6, '0');
+}
+
+function hashStr(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return hash;
+}
+
+function renderHistory() {
+    if (!historyData) return;
+    var html = '';
+    var keys = Object.keys(historyData).filter(function (k) {
+        return k !== 'county' && k !== 'town' && k !== 'name';
+    }).sort(function (a, b) {
+        return b.localeCompare(a);
+    });
+
+    keys.forEach(function (key) {
+        html += '<div class="history-section">';
+        html += '<h6>' + key + '</h6>';
+        var data = historyData[key];
+        if (Array.isArray(data)) {
+            html += renderCandidateChart(data);
+        } else if (typeof data === 'object') {
+            // Check if it's presidential format (nested objects with party+votes)
+            var firstVal = data[Object.keys(data)[0]];
+            if (firstVal && typeof firstVal === 'object' && firstVal.votes !== undefined) {
+                html += renderPresidentialChart(data);
+            } else {
+                html += renderPartyChart(data);
+            }
+        }
+        html += '</div>';
+    });
+
+    document.getElementById('modalBodyHistory').innerHTML = html;
+}
+
+function renderPartyChart(data) {
+    // data: { partyName: votes, ... }
+    var entries = Object.entries(data).sort(function (a, b) { return b[1] - a[1]; });
+    var max = entries.length > 0 ? entries[0][1] : 1;
+    if (max === 0) max = 1;
+    var html = '';
+    entries.forEach(function (e) {
+        var party = e[0];
+        var votes = e[1];
+        var pct = (votes / max * 100).toFixed(0);
+        html += '<div class="history-bar-row">';
+        html += '<div class="history-bar-label" title="' + party + '">' + party + '</div>';
+        html += '<div class="history-bar-track"><div class="history-bar-fill" style="width:' + pct + '%;background:' + getPartyColor(party) + '"></div></div>';
+        html += '<div class="history-bar-value">' + votes + '</div>';
+        html += '</div>';
+    });
+    return html;
+}
+
+function renderPresidentialChart(data) {
+    // data: { candidateName: { party, votes }, ... }
+    var entries = Object.entries(data).sort(function (a, b) { return b[1].votes - a[1].votes; });
+    var max = entries.length > 0 ? entries[0][1].votes : 1;
+    if (max === 0) max = 1;
+    var html = '';
+    entries.forEach(function (e) {
+        var name = e[0];
+        var info = e[1];
+        var pct = (info.votes / max * 100).toFixed(0);
+        html += '<div class="history-bar-row">';
+        html += '<div class="history-bar-label" title="' + name + ' (' + info.party + ')">' + name + '</div>';
+        html += '<div class="history-bar-track"><div class="history-bar-fill" style="width:' + pct + '%;background:' + getPartyColor(info.party) + '"></div></div>';
+        html += '<div class="history-bar-value">' + info.votes + '</div>';
+        html += '</div>';
+    });
+    return html;
+}
+
+function renderCandidateChart(data) {
+    // data: [{ no, name, party, votes, elected }, ...]
+    var sorted = data.slice().sort(function (a, b) { return b.votes - a.votes; });
+    var max = sorted.length > 0 ? sorted[0].votes : 1;
+    if (max === 0) max = 1;
+    var html = '';
+    sorted.forEach(function (c) {
+        var pct = (c.votes / max * 100).toFixed(0);
+        var label = c.name + (c.elected ? ' ✓' : '');
+        html += '<div class="history-bar-row">';
+        html += '<div class="history-bar-label" title="' + c.name + ' (' + c.party + ')">' + label + '</div>';
+        html += '<div class="history-bar-track"><div class="history-bar-fill" style="width:' + pct + '%;background:' + getPartyColor(c.party) + '"></div></div>';
+        html += '<div class="history-bar-value">' + c.votes + '</div>';
+        html += '</div>';
+    });
+    return html;
 }
 
 document.addEventListener('DOMContentLoaded', initMap);

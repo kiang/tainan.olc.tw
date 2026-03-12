@@ -87,6 +87,60 @@
         .badge-count {
             font-size: 0.9em;
         }
+
+        .history-bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+            font-size: 0.85rem;
+        }
+
+        .history-bar-label {
+            width: 140px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-bar-track {
+            flex-grow: 1;
+            background: #f0f0f0;
+            border-radius: 3px;
+            height: 20px;
+            position: relative;
+        }
+
+        .history-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            min-width: 1px;
+        }
+
+        .history-bar-value {
+            width: 50px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-left: 6px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .history-section {
+            margin-bottom: 20px;
+        }
+
+        .history-section h6 {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        #modalTabs {
+            margin-top: -8px;
+        }
     </style>
 </head>
 
@@ -113,7 +167,12 @@
                     <nav aria-label="breadcrumb" class="w-100" id="modalBreadcrumb"></nav>
                     <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <ul class="nav nav-tabs px-3" id="modalTabs">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-mtab="candidates" onclick="switchModalTab('candidates')">2026 候選人</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-mtab="history" onclick="switchModalTab('history')">歷史投票</a></li>
+                </ul>
                 <div class="modal-body" id="modalBody"></div>
+                <div class="modal-body d-none" id="modalBodyHistory"></div>
             </div>
         </div>
     </div>
