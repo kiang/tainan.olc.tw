@@ -615,16 +615,25 @@ function renderHistory() {
         html += '<div class="history-section">';
         html += '<h6>' + key + '</h6>';
         var data = historyData[key];
+        var partyVotes = null;
         if (Array.isArray(data)) {
             html += renderCandidateChart(data);
+            partyVotes = aggregateByParty(data);
         } else if (typeof data === 'object') {
-            // Check if it's presidential format (nested objects with party+votes)
             var firstVal = data[Object.keys(data)[0]];
             if (firstVal && typeof firstVal === 'object' && firstVal.votes !== undefined) {
                 html += renderPresidentialChart(data);
+                partyVotes = {};
+                Object.values(data).forEach(function (v) {
+                    partyVotes[v.party] = (partyVotes[v.party] || 0) + v.votes;
+                });
             } else {
                 html += renderPartyChart(data);
+                partyVotes = data;
             }
+        }
+        if (partyVotes) {
+            html += renderPartySummary(partyVotes);
         }
         html += '</div>';
     });
@@ -683,6 +692,36 @@ function renderCandidateChart(data) {
         html += '<div class="history-bar-label" title="' + c.name + ' (' + c.party + ')">' + label + '</div>';
         html += '<div class="history-bar-track"><div class="history-bar-fill" style="width:' + pct + '%;background:' + getPartyColor(c.party) + '"></div></div>';
         html += '<div class="history-bar-value">' + c.votes + '</div>';
+        html += '</div>';
+    });
+    return html;
+}
+
+function aggregateByParty(candidates) {
+    var partyVotes = {};
+    candidates.forEach(function (c) {
+        partyVotes[c.party] = (partyVotes[c.party] || 0) + c.votes;
+    });
+    return partyVotes;
+}
+
+function renderPartySummary(partyVotes) {
+    var entries = Object.entries(partyVotes).sort(function (a, b) { return b[1] - a[1]; });
+    var total = entries.reduce(function (sum, e) { return sum + e[1]; }, 0);
+    if (total === 0) total = 1;
+    var top5 = entries.slice(0, 5);
+    var max = top5.length > 0 ? top5[0][1] : 1;
+    if (max === 0) max = 1;
+    var html = '<div class="mt-2 pt-2" style="border-top:1px dashed #ccc"><small class="text-muted fw-bold">政黨得票率 Top 5</small></div>';
+    top5.forEach(function (e) {
+        var party = e[0];
+        var votes = e[1];
+        var barPct = (votes / max * 100).toFixed(0);
+        var rate = (votes / total * 100).toFixed(1);
+        html += '<div class="history-bar-row">';
+        html += '<div class="history-bar-label" title="' + party + '">' + party + '</div>';
+        html += '<div class="history-bar-track"><div class="history-bar-fill" style="width:' + barPct + '%;background:' + getPartyColor(party) + '"></div></div>';
+        html += '<div class="history-bar-value">' + rate + '%</div>';
         html += '</div>';
     });
     return html;
