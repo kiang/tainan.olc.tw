@@ -102,6 +102,15 @@ const router = createRouter({
       ],
     },
     {
+      path: "/TainanNews",
+      name: "TainanNews",
+      component: () => import("@/views/TainanNews.vue"),
+      meta: {
+        title: `台南焦點 | ${baseTitle}`,
+        description: "台南市政府與台南市議會最新新聞焦點。",
+      },
+    },
+    {
       path: "/:pathMatch(.*)*",
       redirect: { name: "Home" },
     },

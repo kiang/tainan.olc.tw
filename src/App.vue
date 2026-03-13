@@ -78,6 +78,12 @@ onUnmounted(() => {
               <li class="nav-item">
                 <RouterLink
                   class="nav-link"
+                  :to="{ name: 'TainanNews' }"
+                >台南焦點</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink
+                  class="nav-link"
                   :to="{
                     name: 'Politics',
                   }"
@@ -161,6 +167,12 @@ onUnmounted(() => {
               class="nav-link nav-link-petition"
               @click="showPetitionModal = true"
             >陳情</button>
+          </li>
+          <li class="nav-item">
+            <RouterLink
+              class="nav-link"
+              :to="{ name: 'TainanNews' }"
+            >台南焦點</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink
