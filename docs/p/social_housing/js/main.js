@@ -101,18 +101,28 @@ function render() {
     filtered.forEach(function (item, idx) {
         totalUnits += item.units;
 
+        var li = document.createElement('li');
+        li.className = 'item-card';
+        item._li = li;
+
         if (item.lat && item.lng) {
             withCoords++;
             var marker = L.marker([item.lat, item.lng], { icon: createIcon(item.status, hasExpiredDates(item)) })
-                .bindPopup(buildPopup(item));
+                .bindPopup(buildPopup(item))
+                .on('click', (function (el) {
+                    return function () {
+                        document.querySelectorAll('#itemList .item-card').forEach(function (c) {
+                            c.classList.remove('active');
+                        });
+                        el.classList.add('active');
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    };
+                })(li));
             markers.addLayer(marker);
             item._marker = marker;
         } else {
             item._marker = null;
         }
-
-        var li = document.createElement('li');
-        li.className = 'item-card';
         var displayName = item.nickname ? item.nickname + ' (' + item.name + ')' : item.name;
         li.innerHTML = '<div class="name">' + displayName + '</div>' +
             '<div class="meta">' +
@@ -121,14 +131,18 @@ function render() {
             '</div>' +
             ((!item.lat || !item.lng) ? '<div class="no-coords">尚無座標</div>' : '');
 
-        li.addEventListener('click', (function (d) {
+        li.addEventListener('click', (function (d, el) {
             return function () {
+                document.querySelectorAll('#itemList .item-card').forEach(function (c) {
+                    c.classList.remove('active');
+                });
+                el.classList.add('active');
                 if (d.lat && d.lng) {
                     map.setView([d.lat, d.lng], 16);
                     if (d._marker) d._marker.openPopup();
                 }
             };
-        })(item));
+        })(item, li));
 
         listEl.appendChild(li);
     });
