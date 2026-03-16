@@ -99,12 +99,14 @@ function render() {
     var filtered = allData.filter(matchFilter);
     var totalUnits = 0;
     var withCoords = 0;
+    var delayedCount = 0;
 
     filtered.forEach(function (item, idx) {
         totalUnits += item.units;
 
         var li = document.createElement('li');
         var expired = hasExpiredDates(item);
+        if (expired) delayedCount++;
         li.className = 'item-card' + (expired ? ' expired' : '');
         item._li = li;
 
@@ -153,7 +155,7 @@ function render() {
     });
 
     document.getElementById('statsBar').textContent =
-        '共 ' + filtered.length + ' 案 / ' + totalUnits + ' 戶 / ' + withCoords + ' 案有座標';
+        '共 ' + filtered.length + ' 案 / ' + totalUnits + ' 戶 / ' + withCoords + ' 案有座標 / ' + delayedCount + ' 案逾期';
 }
 
 // Sidebar toggle
