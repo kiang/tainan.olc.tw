@@ -8,6 +8,7 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
 var markers = L.layerGroup().addTo(map);
 var allData = [];
 var currentStatus = 'all';
+var currentCity = '';
 var currentSearch = '';
 
 var statusColors = {
@@ -77,6 +78,7 @@ function buildPopup(item) {
 }
 
 function matchFilter(item) {
+    if (currentCity && item.city !== currentCity) return false;
     if (currentStatus !== 'all' && item.status.indexOf(currentStatus) === -1) return false;
     if (currentSearch) {
         var q = currentSearch.toLowerCase();
@@ -140,6 +142,8 @@ function render() {
                 if (d.lat && d.lng) {
                     map.setView([d.lat, d.lng], 16);
                     if (d._marker) d._marker.openPopup();
+                } else {
+                    showDetailModal(d);
                 }
             };
         })(item, li));
@@ -168,10 +172,32 @@ document.querySelectorAll('#statusFilter .filter-btn').forEach(function (btn) {
     });
 });
 
+// City filter
+document.getElementById('cityFilter').addEventListener('change', function () {
+    currentCity = this.value;
+    render();
+});
+
 // Search
 document.getElementById('searchInput').addEventListener('input', function () {
     currentSearch = this.value;
     render();
+});
+
+// Detail modal for items without coordinates
+function showDetailModal(item) {
+    var modal = document.getElementById('detailModal');
+    var content = document.getElementById('modalContent');
+    content.innerHTML = buildPopup(item);
+    modal.classList.add('show');
+}
+
+document.getElementById('modalClose').addEventListener('click', function () {
+    document.getElementById('detailModal').classList.remove('show');
+});
+
+document.getElementById('detailModal').addEventListener('click', function (e) {
+    if (e.target === this) this.classList.remove('show');
 });
 
 // Load data
@@ -179,6 +205,17 @@ fetch('data/social_housing.json')
     .then(function (r) { return r.json(); })
     .then(function (data) {
         allData = data;
+        var cities = [];
+        data.forEach(function (item) {
+            if (cities.indexOf(item.city) === -1) cities.push(item.city);
+        });
+        var sel = document.getElementById('cityFilter');
+        cities.forEach(function (c) {
+            var opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            sel.appendChild(opt);
+        });
         render();
     })
     .catch(function (err) {

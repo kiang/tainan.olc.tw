@@ -98,6 +98,15 @@
             color: #2c3e50;
         }
 
+        .city-filter {
+            width: 100%;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
         .search-input {
             width: 100%;
             padding: 6px 12px;
@@ -208,6 +217,64 @@
             white-space: nowrap;
         }
 
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 8px;
+        }
+
+        .modal-box table { width: 100%; }
+
+        .modal-box table td {
+            padding: 5px 8px;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-box table td:first-child {
+            color: #666;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+        }
+
+        .modal-close:hover { color: #333; }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -237,6 +304,9 @@
                 <button class="filter-btn" data-status="已決標待開工">已決標待開工</button>
                 <button class="filter-btn" data-status="既有">既有</button>
             </div>
+            <select id="cityFilter" class="city-filter">
+                <option value="">全部縣市</option>
+            </select>
             <input type="text" class="search-input" id="searchInput" placeholder="搜尋案名、縣市或興辦主體...">
             <div class="stats-bar" id="statsBar"></div>
         </div>
@@ -246,6 +316,13 @@
     <button class="sidebar-toggle" id="sidebarToggle">
         <i class="fa fa-bars"></i>
     </button>
+
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/main.js"></script>
