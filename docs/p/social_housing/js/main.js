@@ -104,7 +104,8 @@ function render() {
         totalUnits += item.units;
 
         var li = document.createElement('li');
-        li.className = 'item-card';
+        var expired = hasExpiredDates(item);
+        li.className = 'item-card' + (expired ? ' expired' : '');
         item._li = li;
 
         if (item.lat && item.lng) {
