@@ -24,12 +24,37 @@ function getStatusColor(status) {
     return '#95a5a6';
 }
 
-function createIcon(status) {
+var today = new Date();
+today.setHours(0, 0, 0, 0);
+
+function isExpiredEstimate(dateStr) {
+    if (!dateStr || dateStr.indexOf('(預定)') === -1) return false;
+    var m = dateStr.match(/(\d+)\/(\d+)\/(\d+)/);
+    if (!m) return false;
+    var d = new Date(parseInt(m[1]) + 1911, parseInt(m[2]) - 1, parseInt(m[3]));
+    return d < today;
+}
+
+function hasExpiredDates(item) {
+    return isExpiredEstimate(item.award_date) ||
+        isExpiredEstimate(item.start_date) ||
+        isExpiredEstimate(item.completion_date);
+}
+
+function formatDateCell(dateStr) {
+    if (isExpiredEstimate(dateStr)) {
+        return '<span style="color:#e74c3c;font-weight:600;">' + dateStr + '</span>';
+    }
+    return dateStr;
+}
+
+function createIcon(status, expired) {
     var color = getStatusColor(status);
+    var border = expired ? '3px solid #e74c3c' : '3px solid white';
     return L.divIcon({
         className: '',
         html: '<div style="width:28px;height:28px;border-radius:50%;background:' + color +
-            ';border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">' +
+            ';border:' + border + ';box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">' +
             '<i class="fa fa-home" style="color:white;font-size:13px;"></i></div>',
         iconSize: [28, 28],
         iconAnchor: [14, 14],
@@ -44,9 +69,9 @@ function buildPopup(item) {
         '<tr><td>縣市</td><td>' + item.city + '</td></tr>' +
         '<tr><td>興辦主體</td><td>' + item.organizer + '</td></tr>' +
         '<tr><td>戶數</td><td>' + item.units + '</td></tr>' +
-        '<tr><td>決標日期</td><td>' + item.award_date + '</td></tr>' +
-        '<tr><td>開工日期</td><td>' + item.start_date + '</td></tr>' +
-        '<tr><td>完工日期</td><td>' + item.completion_date + '</td></tr>' +
+        '<tr><td>決標日期</td><td>' + formatDateCell(item.award_date) + '</td></tr>' +
+        '<tr><td>開工日期</td><td>' + formatDateCell(item.start_date) + '</td></tr>' +
+        '<tr><td>完工日期</td><td>' + formatDateCell(item.completion_date) + '</td></tr>' +
         '<tr><td>狀態</td><td><span class="status-badge status-' + item.status.replace(/\s/g, '') + '">' + item.status + '</span></td></tr>' +
         '</table>';
 }
@@ -78,7 +103,7 @@ function render() {
 
         if (item.lat && item.lng) {
             withCoords++;
-            var marker = L.marker([item.lat, item.lng], { icon: createIcon(item.status) })
+            var marker = L.marker([item.lat, item.lng], { icon: createIcon(item.status, hasExpiredDates(item)) })
                 .bindPopup(buildPopup(item));
             markers.addLayer(marker);
             item._marker = marker;
