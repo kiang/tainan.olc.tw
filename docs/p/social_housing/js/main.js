@@ -1,7 +1,7 @@
 var map = L.map('map').setView([23.7, 120.9], 8);
 
 L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
-    attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪中心</a> | <a href="https://pip.moi.gov.tw/V3/B/SCRB0505.aspx" target="_blank">資料來源</a>',
+    attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪中心</a> | <a href="https://pip.moi.gov.tw/V3/B/SCRB0505.aspx" target="_blank">資料來源</a> | <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗製作</a>',
     maxZoom: 19
 }).addTo(map);
 
