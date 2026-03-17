@@ -283,14 +283,19 @@
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
+                transform: translateX(-100%);
             }
 
-            .sidebar.collapsed+.sidebar-toggle {
-                left: 10px;
+            .sidebar.open {
+                transform: translateX(0);
             }
 
             .sidebar-toggle {
-                left: calc(100%);
+                left: 10px;
+            }
+
+            .sidebar.open+.sidebar-toggle {
+                left: calc(100% - 40px);
             }
         }
     </style>

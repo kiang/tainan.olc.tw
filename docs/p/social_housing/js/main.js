@@ -147,6 +147,9 @@ function render() {
                 });
                 el.classList.add('active');
                 if (d.lat && d.lng) {
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('open');
+                    }
                     map.setView([d.lat, d.lng], 16);
                     if (d._marker) d._marker.openPopup();
                 } else {
@@ -164,7 +167,12 @@ function render() {
 
 // Sidebar toggle
 document.getElementById('sidebarToggle').addEventListener('click', function () {
-    document.getElementById('sidebar').classList.toggle('collapsed');
+    var sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('open');
+    } else {
+        sidebar.classList.toggle('collapsed');
+    }
 });
 
 // Status filter
