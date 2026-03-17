@@ -49,17 +49,21 @@ function formatDateCell(dateStr) {
     return dateStr;
 }
 
-function createIcon(status, expired) {
+function createIcon(status, expired, units) {
     var color = getStatusColor(status);
-    var border = expired ? '3px solid #e74c3c' : '3px solid white';
+    var border = expired ? '2px solid #e74c3c' : '2px solid white';
+    var label = units >= 1000 ? Math.round(units / 100) / 10 + 'k' : units;
     return L.divIcon({
         className: '',
-        html: '<div style="width:28px;height:28px;border-radius:50%;background:' + color +
+        html: '<div style="display:flex;flex-direction:column;align-items:center;">' +
+            '<div style="width:28px;height:28px;border-radius:50%;background:' + color +
             ';border:' + border + ';box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">' +
-            '<i class="fa fa-home" style="color:white;font-size:13px;"></i></div>',
-        iconSize: [28, 28],
-        iconAnchor: [14, 14],
-        popupAnchor: [0, -14]
+            '<i class="fa fa-home" style="color:white;font-size:13px;"></i></div>' +
+            '<div style="background:' + color + ';color:white;font-size:10px;font-weight:700;' +
+            'padding:0 4px;border-radius:3px;margin-top:1px;white-space:nowrap;text-align:center;">' + label + '</div></div>',
+        iconSize: [28, 42],
+        iconAnchor: [14, 21],
+        popupAnchor: [0, -21]
     });
 }
 
@@ -112,7 +116,7 @@ function render() {
 
         if (item.lat && item.lng) {
             withCoords++;
-            var marker = L.marker([item.lat, item.lng], { icon: createIcon(item.status, hasExpiredDates(item)) })
+            var marker = L.marker([item.lat, item.lng], { icon: createIcon(item.status, hasExpiredDates(item), item.units) })
                 .bindPopup(buildPopup(item))
                 .on('click', (function (el) {
                     return function () {
