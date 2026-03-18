@@ -31,6 +31,52 @@ function saveZones($zones) {
     file_put_contents($zonesFile, json_encode($zones, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
 }
 
+// Photo upload/delete (multipart, before JSON parsing)
+if (isset($_GET['action']) && $_GET['action'] === 'upload_photo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json; charset=utf-8');
+    $photoDir = __DIR__ . '/data/photos';
+    if (!is_dir($photoDir)) mkdir($photoDir, 0755, true);
+    if (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode(['error' => 'Upload failed']);
+        exit;
+    }
+    $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
+    $mime = mime_content_type($_FILES['photo']['tmp_name']);
+    if (!isset($allowed[$mime])) {
+        echo json_encode(['error' => 'Invalid file type']);
+        exit;
+    }
+    $ext = $allowed[$mime];
+    $filename = uniqid('photo_') . '.' . $ext;
+    $dest = $photoDir . '/' . $filename;
+    move_uploaded_file($_FILES['photo']['tmp_name'], $dest);
+    echo json_encode(['ok' => true, 'url' => 'data/photos/' . $filename]);
+    exit;
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'delete_photo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json; charset=utf-8');
+    $post = json_decode(file_get_contents('php://input'), true);
+    $url = $post['url'] ?? '';
+    // Only allow deleting files in data/photos/
+    if ($url && preg_match('#^data/photos/[a-zA-Z0-9_]+\.\w+$#', $url)) {
+        $path = __DIR__ . '/' . $url;
+        if (file_exists($path)) unlink($path);
+        echo json_encode(['ok' => true]);
+    } else {
+        echo json_encode(['error' => 'Invalid path']);
+    }
+    exit;
+}
+
+function unlinkPhoto($candidate) {
+    $photo = $candidate['photo'] ?? '';
+    if ($photo && preg_match('#^data/photos/[a-zA-Z0-9_]+\.\w+$#', $photo)) {
+        $path = __DIR__ . '/' . $photo;
+        if (file_exists($path)) unlink($path);
+    }
+}
+
 // API handling
 if (isset($_GET['action'])) {
     header('Content-Type: application/json; charset=utf-8');
@@ -60,6 +106,9 @@ if (isset($_GET['action'])) {
             if (isset($candidate[$f]) && $candidate[$f] === '') unset($candidate[$f]);
         }
         if ($index >= 0 && $index < count($data['candidates'])) {
+            $oldPhoto = $data['candidates'][$index]['photo'] ?? '';
+            $newPhoto = $candidate['photo'] ?? '';
+            if ($oldPhoto && $oldPhoto !== $newPhoto) unlinkPhoto($data['candidates'][$index]);
             $data['candidates'][$index] = $candidate;
         } else {
             $data['candidates'][] = $candidate;
@@ -72,6 +121,7 @@ if (isset($_GET['action'])) {
     if ($action === 'delete_candidate') {
         $index = (int)($post['index'] ?? -1);
         if ($index >= 0 && $index < count($data['candidates'])) {
+            unlinkPhoto($data['candidates'][$index]);
             array_splice($data['candidates'], $index, 1);
             saveData($data);
             echo json_encode(['ok' => true]);
@@ -93,6 +143,7 @@ if (isset($_GET['action'])) {
         $deleted = 0;
         foreach ($indices as $index) {
             if ($index >= 0 && $index < count($data['candidates'])) {
+                unlinkPhoto($data['candidates'][$index]);
                 array_splice($data['candidates'], $index, 1);
                 $deleted++;
             }
@@ -173,6 +224,11 @@ if (isset($_GET['action'])) {
         .map-breadcrumb { background: #f8f9fa; padding: 6px 12px; border-radius: 4px; margin-bottom: 8px; font-size: 0.9rem; }
         .map-breadcrumb a { cursor: pointer; color: #0d6efd; text-decoration: none; }
         .map-breadcrumb a:hover { text-decoration: underline; }
+        .thumb { width: 36px; height: 36px; object-fit: cover; border-radius: 4px; }
+        .thumb-placeholder { width: 36px; height: 36px; background: #e9ecef; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 18px; }
+        .photo-preview { max-width: 120px; max-height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; }
+        .photo-drop-zone { border: 2px dashed #dee2e6; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+        .photo-drop-zone:hover, .photo-drop-zone.drag-over { border-color: #0d6efd; background: #f8f9fa; }
     </style>
 </head>
 <body>
@@ -200,7 +256,7 @@ if (isset($_GET['action'])) {
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm">
                 <thead><tr>
-                    <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th><th>#</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>操作</th>
+                    <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th><th>#</th><th>照片</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>操作</th>
                 </tr></thead>
                 <tbody id="candidateTable"></tbody>
             </table>
@@ -303,8 +359,24 @@ if (isset($_GET['action'])) {
                 <textarea id="c_platformEn" class="form-control form-control-sm" rows="2"></textarea>
             </div>
             <div class="col-md-12">
-                <label class="form-label">photo URL</label>
-                <input id="c_photo" class="form-control form-control-sm">
+                <label class="form-label">照片</label>
+                <input type="hidden" id="c_photo">
+                <div class="d-flex align-items-start gap-3">
+                    <div id="photoPreviewWrap">
+                        <img id="photoPreview" class="photo-preview d-none" src="" alt="">
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="photo-drop-zone" id="photoDropZone" onclick="document.getElementById('photoFileInput').click()">
+                            <input type="file" id="photoFileInput" accept="image/*" class="d-none" onchange="handlePhotoFile(this.files)">
+                            <div>點擊或拖曳上傳照片</div>
+                            <small class="text-muted">支援 JPG / PNG / GIF / WebP</small>
+                        </div>
+                        <div class="mt-2 d-flex gap-2">
+                            <input id="c_photoUrl" class="form-control form-control-sm" placeholder="或輸入圖片網址" onchange="setPhotoFromUrl(this.value)">
+                            <button type="button" class="btn btn-outline-danger btn-sm flex-shrink-0" id="photoDeleteBtn" onclick="deletePhoto()" style="display:none">刪除</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -420,6 +492,7 @@ function renderCandidates() {
     document.getElementById('candidateTable').innerHTML = filtered.map(c => `<tr>
         <td><input type="checkbox" class="row-check" data-index="${c._i}" onchange="updateBatchBtn()"></td>
         <td>${c._i}</td>
+        <td>${c.photo ? `<img src="${c.photo}" class="thumb" alt="">` : '<div class="thumb-placeholder">?</div>'}</td>
         <td>${c.election}</td>
         <td>${c.countyName}</td>
         <td>${c.district || ''}</td>
@@ -437,6 +510,31 @@ function renderCandidates() {
     updateBatchBtn();
 }
 
+// Field visibility per election type
+const electionFieldRules = {
+    '直轄市市長':               { district: false, townCode: false, townName: false, villCode: false, villName: false },
+    '縣市首長':                 { district: false, townCode: false, townName: false, villCode: false, villName: false },
+    '直轄市議員':               { district: true,  townCode: false, townName: false, villCode: false, villName: false },
+    '縣市議員':                 { district: true,  townCode: false, townName: false, villCode: false, villName: false },
+    '直轄市山地原住民區區長':     { district: false, townCode: true,  townName: true,  villCode: false, villName: false },
+    '鄉鎮市長':                 { district: false, townCode: true,  townName: true,  villCode: false, villName: false },
+    '直轄市山地原住民區區民代表': { district: true,  townCode: true,  townName: true,  villCode: false, villName: false },
+    '鄉鎮市民代表':             { district: true,  townCode: true,  townName: true,  villCode: false, villName: false },
+    '村里長':                   { district: false, townCode: true,  townName: true,  villCode: true,  villName: true  },
+};
+
+function applyFieldRules(elType) {
+    const rules = electionFieldRules[elType] || {};
+    ['district', 'townCode', 'townName', 'villCode', 'villName'].forEach(f => {
+        const wrap = document.getElementById('c_' + f)?.closest('.col-md-4');
+        if (wrap) {
+            const show = rules[f] !== false;
+            wrap.style.display = show ? '' : 'none';
+            if (!show) document.getElementById('c_' + f).value = '';
+        }
+    });
+}
+
 function editCandidate(index) {
     document.getElementById('c_index').value = index;
     const c = index >= 0 ? appData.candidates[index] : {};
@@ -444,6 +542,12 @@ function editCandidate(index) {
         const el = document.getElementById('c_' + f);
         if (el) el.value = c[f] ?? '';
     });
+    applyFieldRules(c.election || Object.keys(appData.elections)[0]);
+    // Sync photo UI
+    const photoUrl = c.photo || '';
+    document.getElementById('c_photoUrl').value = photoUrl;
+    updatePhotoPreview(photoUrl);
+    document.getElementById('photoFileInput').value = '';
     new bootstrap.Modal(document.getElementById('candidateModal')).show();
 }
 
@@ -454,6 +558,8 @@ async function saveCandidate() {
         const el = document.getElementById('c_' + f);
         if (el) candidate[f] = el.value;
     });
+    // Remove empty photo field
+    if (!candidate.photo) delete candidate.photo;
     await api('save_candidate', { index, candidate });
     bootstrap.Modal.getInstance(document.getElementById('candidateModal')).hide();
     await load();
@@ -546,6 +652,66 @@ async function deleteDistrict(elType, areaCode, index) {
     await load();
 }
 
+// Photo handling
+function updatePhotoPreview(url) {
+    const img = document.getElementById('photoPreview');
+    const delBtn = document.getElementById('photoDeleteBtn');
+    if (url) {
+        img.src = url;
+        img.classList.remove('d-none');
+        delBtn.style.display = '';
+    } else {
+        img.src = '';
+        img.classList.add('d-none');
+        delBtn.style.display = 'none';
+    }
+}
+
+function setPhotoFromUrl(url) {
+    document.getElementById('c_photo').value = url;
+    updatePhotoPreview(url);
+}
+
+async function handlePhotoFile(files) {
+    if (!files || !files.length) return;
+    const fd = new FormData();
+    fd.append('photo', files[0]);
+    const r = await fetch('?action=upload_photo', { method: 'POST', body: fd });
+    const res = await r.json();
+    if (res.ok) {
+        document.getElementById('c_photo').value = res.url;
+        document.getElementById('c_photoUrl').value = res.url;
+        updatePhotoPreview(res.url);
+    } else {
+        alert(res.error || 'Upload failed');
+    }
+}
+
+async function deletePhoto() {
+    const url = document.getElementById('c_photo').value;
+    if (url && url.startsWith('data/photos/')) {
+        await fetch('?action=delete_photo', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ url })
+        });
+    }
+    document.getElementById('c_photo').value = '';
+    document.getElementById('c_photoUrl').value = '';
+    document.getElementById('photoFileInput').value = '';
+    updatePhotoPreview('');
+}
+
+// Drag and drop
+const dropZone = document.getElementById('photoDropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    handlePhotoFile(e.dataTransfer.files);
+});
+
 // Batch delete
 function toggleSelectAll(el) {
     document.querySelectorAll('.row-check').forEach(cb => { cb.checked = el.checked; });
@@ -581,6 +747,9 @@ document.querySelectorAll('#mainTabs a').forEach(a => {
 // Filter events
 document.getElementById('filterElection').addEventListener('change', renderCandidates);
 document.getElementById('filterCounty').addEventListener('change', renderCandidates);
+
+// Update field visibility when election type changes in candidate form
+document.getElementById('c_election').addEventListener('change', e => applyFieldRules(e.target.value));
 
 // === District Map Picker ===
 let districtMap = null;
@@ -819,7 +988,7 @@ load().then(() => {
         } else if (!isNaN(index) && index === -1) {
             // New candidate with pre-filled fields from URL
             editCandidate(-1);
-            const prefillFields = ['election', 'countyCode', 'countyName', 'townCode', 'townName', 'villCode', 'villName'];
+            const prefillFields = ['election', 'countyCode', 'countyName', 'district', 'townCode', 'townName', 'villCode', 'villName'];
             prefillFields.forEach(f => {
                 const val = params.get(f);
                 if (val) {

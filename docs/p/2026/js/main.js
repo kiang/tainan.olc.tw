@@ -349,13 +349,18 @@ function showElections() {
             }
         }
         if (isLocal) {
+            var addDistrict = findDistrict(elType, ctx.countyCode, ctx.townCode, ctx.villCode);
+            var needsTown = (elType !== '直轄市市長' && elType !== '縣市首長'
+                && elType !== '直轄市議員' && elType !== '縣市議員');
+            var needsVill = (elType === '村里長');
             var addParams = 'edit=candidate&index=-1&election=' + encodeURIComponent(elType)
                 + '&countyCode=' + encodeURIComponent(ctx.countyCode)
                 + '&countyName=' + encodeURIComponent(ctx.countyName)
-                + '&townCode=' + encodeURIComponent(ctx.townCode)
-                + '&townName=' + encodeURIComponent(ctx.townName)
-                + '&villCode=' + encodeURIComponent(ctx.villCode)
-                + '&villName=' + encodeURIComponent(ctx.villName);
+                + (addDistrict ? '&district=' + encodeURIComponent(addDistrict.name) : '')
+                + (needsTown ? '&townCode=' + encodeURIComponent(ctx.townCode)
+                    + '&townName=' + encodeURIComponent(ctx.townName) : '')
+                + (needsVill ? '&villCode=' + encodeURIComponent(ctx.villCode)
+                    + '&villName=' + encodeURIComponent(ctx.villName) : '');
             html += '<a href="admin.php?' + addParams + '" class="btn btn-outline-success btn-sm me-1" target="_blank" onclick="event.stopPropagation()" title="新增候選人"><i class="bi bi-person-plus"></i></a>';
         }
         html += '<span class="badge bg-primary badge-count">' + count + '</span></td>';
