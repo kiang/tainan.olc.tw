@@ -81,6 +81,27 @@ if (isset($_GET['action'])) {
         exit;
     }
 
+    if ($action === 'delete_candidates') {
+        $indices = $post['indices'] ?? [];
+        if (!is_array($indices) || empty($indices)) {
+            echo json_encode(['error' => 'No indices provided']);
+            exit;
+        }
+        // Sort descending so splicing doesn't shift subsequent indices
+        $indices = array_map('intval', $indices);
+        rsort($indices);
+        $deleted = 0;
+        foreach ($indices as $index) {
+            if ($index >= 0 && $index < count($data['candidates'])) {
+                array_splice($data['candidates'], $index, 1);
+                $deleted++;
+            }
+        }
+        saveData($data);
+        echo json_encode(['ok' => true, 'deleted' => $deleted]);
+        exit;
+    }
+
     if ($action === 'save_district') {
         $electionType = $post['electionType'] ?? '';
         $areaCode = $post['areaCode'] ?? '';
@@ -173,12 +194,13 @@ if (isset($_GET['action'])) {
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary btn-sm" onclick="editCandidate(-1)">+ 新增候選人</button>
+                <button class="btn btn-danger btn-sm d-none" id="batchDeleteBtn" onclick="batchDelete()">刪除所選 (<span id="batchCount">0</span>)</button>
             </div>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm">
                 <thead><tr>
-                    <th>#</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>操作</th>
+                    <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th><th>#</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>操作</th>
                 </tr></thead>
                 <tbody id="candidateTable"></tbody>
             </table>
@@ -396,6 +418,7 @@ function renderCandidates() {
     if (fe) filtered = filtered.filter(c => c.election === fe);
     if (fc) filtered = filtered.filter(c => c.countyName === fc);
     document.getElementById('candidateTable').innerHTML = filtered.map(c => `<tr>
+        <td><input type="checkbox" class="row-check" data-index="${c._i}" onchange="updateBatchBtn()"></td>
         <td>${c._i}</td>
         <td>${c.election}</td>
         <td>${c.countyName}</td>
@@ -410,6 +433,8 @@ function renderCandidates() {
             <button class="btn btn-outline-danger btn-sm" onclick="deleteCandidate(${c._i})">刪除</button>
         </td>
     </tr>`).join('');
+    document.getElementById('selectAll').checked = false;
+    updateBatchBtn();
 }
 
 function editCandidate(index) {
@@ -518,6 +543,27 @@ async function deleteDistrict(elType, areaCode, index) {
     const d = appData.districts[elType][areaCode][index];
     if (!confirm(`確定刪除 ${d.name}?`)) return;
     await api('delete_district', { electionType: elType, areaCode, districtIndex: index });
+    await load();
+}
+
+// Batch delete
+function toggleSelectAll(el) {
+    document.querySelectorAll('.row-check').forEach(cb => { cb.checked = el.checked; });
+    updateBatchBtn();
+}
+
+function updateBatchBtn() {
+    const checked = document.querySelectorAll('.row-check:checked');
+    const btn = document.getElementById('batchDeleteBtn');
+    document.getElementById('batchCount').textContent = checked.length;
+    btn.classList.toggle('d-none', checked.length === 0);
+}
+
+async function batchDelete() {
+    const indices = [...document.querySelectorAll('.row-check:checked')].map(cb => parseInt(cb.dataset.index));
+    if (indices.length === 0) return;
+    if (!confirm(`確定刪除所選的 ${indices.length} 筆候選人資料？`)) return;
+    await api('delete_candidates', { indices });
     await load();
 }
 
