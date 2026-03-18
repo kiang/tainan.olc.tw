@@ -44,6 +44,7 @@ var lang = {
 
 var currentLang = 'zh';
 var candidatesData = null;
+var zonesData = null;
 var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 var map, countyLayer, cunliLayer;
 var currentCounty = null;
@@ -110,8 +111,21 @@ function initMap() {
         }
     });
 
+    loadZones();
     loadCandidates();
     loadCounties();
+}
+
+function loadZones() {
+    fetch('data/zones.json')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            zonesData = data;
+        })
+        .catch(function (err) {
+            console.error('Failed to load zones:', err);
+            zonesData = {};
+        });
 }
 
 function loadCandidates() {
@@ -460,8 +474,8 @@ function showDetail(c) {
 }
 
 function findDistrictIndex(elType, areaCode, district) {
-    if (!candidatesData || !candidatesData.districts) return -1;
-    var districtMap = candidatesData.districts[elType];
+    if (!zonesData) return -1;
+    var districtMap = zonesData[elType];
     if (!districtMap || !districtMap[areaCode]) return -1;
     var districts = districtMap[areaCode];
     for (var i = 0; i < districts.length; i++) {
@@ -484,8 +498,8 @@ function findCandidateIndex(c) {
 var townBasedElectionTypes = ['直轄市山地原住民區區民代表', '鄉鎮市民代表'];
 
 function findDistrict(elType, countyCode, townCode, villCode) {
-    if (!candidatesData || !candidatesData.districts) return null;
-    var districtMap = candidatesData.districts[elType];
+    if (!zonesData) return null;
+    var districtMap = zonesData[elType];
     if (!districtMap) return null;
     var key = townBasedElectionTypes.indexOf(elType) >= 0 ? townCode : countyCode;
     if (!districtMap[key]) return null;

@@ -8,6 +8,7 @@ if ($ip !== '127.0.0.1' && $ip !== '::1') {
 }
 
 $dataFile = __DIR__ . '/data/candidates.json';
+$zonesFile = __DIR__ . '/data/zones.json';
 
 function loadData() {
     global $dataFile;
@@ -19,6 +20,17 @@ function saveData($data) {
     file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
 }
 
+function loadZones() {
+    global $zonesFile;
+    $zones = json_decode(file_get_contents($zonesFile), true);
+    return $zones ?: [];
+}
+
+function saveZones($zones) {
+    global $zonesFile;
+    file_put_contents($zonesFile, json_encode($zones, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
+}
+
 // API handling
 if (isset($_GET['action'])) {
     header('Content-Type: application/json; charset=utf-8');
@@ -26,6 +38,7 @@ if (isset($_GET['action'])) {
     $data = loadData();
 
     if ($action === 'load') {
+        $data['districts'] = loadZones();
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -82,18 +95,19 @@ if (isset($_GET['action'])) {
             $district['villCodes'] = array_values(array_filter(array_map('trim', explode(',', $district['villCodes']))));
             if (empty($district['villCodes'])) unset($district['villCodes']);
         }
-        if (!isset($data['districts'][$electionType])) {
-            $data['districts'][$electionType] = [];
+        $zones = loadZones();
+        if (!isset($zones[$electionType])) {
+            $zones[$electionType] = [];
         }
-        if (!isset($data['districts'][$electionType][$areaCode])) {
-            $data['districts'][$electionType][$areaCode] = [];
+        if (!isset($zones[$electionType][$areaCode])) {
+            $zones[$electionType][$areaCode] = [];
         }
-        if ($districtIndex >= 0 && $districtIndex < count($data['districts'][$electionType][$areaCode])) {
-            $data['districts'][$electionType][$areaCode][$districtIndex] = $district;
+        if ($districtIndex >= 0 && $districtIndex < count($zones[$electionType][$areaCode])) {
+            $zones[$electionType][$areaCode][$districtIndex] = $district;
         } else {
-            $data['districts'][$electionType][$areaCode][] = $district;
+            $zones[$electionType][$areaCode][] = $district;
         }
-        saveData($data);
+        saveZones($zones);
         echo json_encode(['ok' => true]);
         exit;
     }
@@ -102,15 +116,16 @@ if (isset($_GET['action'])) {
         $electionType = $post['electionType'] ?? '';
         $areaCode = $post['areaCode'] ?? '';
         $districtIndex = (int)($post['districtIndex'] ?? -1);
-        if (isset($data['districts'][$electionType][$areaCode][$districtIndex])) {
-            array_splice($data['districts'][$electionType][$areaCode], $districtIndex, 1);
-            if (empty($data['districts'][$electionType][$areaCode])) {
-                unset($data['districts'][$electionType][$areaCode]);
+        $zones = loadZones();
+        if (isset($zones[$electionType][$areaCode][$districtIndex])) {
+            array_splice($zones[$electionType][$areaCode], $districtIndex, 1);
+            if (empty($zones[$electionType][$areaCode])) {
+                unset($zones[$electionType][$areaCode]);
             }
-            if (empty($data['districts'][$electionType])) {
-                unset($data['districts'][$electionType]);
+            if (empty($zones[$electionType])) {
+                unset($zones[$electionType]);
             }
-            saveData($data);
+            saveZones($zones);
             echo json_encode(['ok' => true]);
         } else {
             echo json_encode(['error' => 'Invalid district']);
