@@ -2,31 +2,225 @@
 <html>
 
 <head>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
   <title>台南 YouBike</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta charset="utf-8">
   <meta property="og:title" content="台南 YouBike">
-  <meta property="og:description" content="台南 YouBike">
+  <meta property="og:description" content="台南 YouBike 站點地圖">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://tainan.olc.tw/p/youbike/og_image.png">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/ol.css" type="text/css">
-  <link rel="stylesheet" href="../css/ol3-sidebar.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
-    body {
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body, #map {
+      height: 100%;
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    html,
-    body,
-    #map {
-      height: 100%;
-      font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    body { overflow: hidden; }
+
+    /* Locate button */
+    .locate-btn {
+      position: absolute;
+      bottom: 24px;
+      right: 12px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
     }
+
+    .locate-btn:active { background: #e8e8e8; }
+    .locate-btn.tracking { color: #f9a825; }
+
+    /* Bottom panel */
+    .panel-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 1100;
+    }
+
+    .panel-overlay.show { display: block; }
+
+    .bottom-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      z-index: 1200;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      max-height: 70vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .bottom-panel.show { transform: translateY(0); }
+
+    .panel-handle {
+      width: 40px;
+      height: 5px;
+      background: #ddd;
+      border-radius: 3px;
+      margin: 10px auto 0 auto;
+    }
+
+    .panel-header {
+      padding: 12px 16px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+      margin: 0;
+    }
+
+    .panel-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+
+    .panel-body { padding: 0 16px 16px; }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 15px;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label { color: #888; }
+
+    .info-value { font-weight: 600; color: #333; }
+
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .nav-btn {
+      display: block;
+      padding: 14px;
+      text-align: center;
+      background: #f9a825;
+      color: #333;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn:active {
+      background: #f57f17;
+      color: #333;
+      text-decoration: none;
+    }
+
+    /* Capacity tooltip on markers */
+    .capacity-tooltip {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      font-weight: bold;
+      font-size: 13px;
+      color: #e65100;
+      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+      pointer-events: none !important;
+    }
+
+    .capacity-tooltip::before { display: none !important; }
+
+    /* Cluster styles - YouBike yellow theme */
+    .marker-cluster-small {
+      background-color: rgba(249, 168, 37, 0.5) !important;
+    }
+    .marker-cluster-small div {
+      background-color: rgba(249, 168, 37, 0.8) !important;
+      color: #333 !important;
+      font-weight: 700;
+    }
+    .marker-cluster-medium {
+      background-color: rgba(245, 127, 23, 0.5) !important;
+    }
+    .marker-cluster-medium div {
+      background-color: rgba(245, 127, 23, 0.8) !important;
+      color: #fff !important;
+      font-weight: 700;
+    }
+    .marker-cluster-large {
+      background-color: rgba(230, 81, 0, 0.5) !important;
+    }
+    .marker-cluster-large div {
+      background-color: rgba(230, 81, 0, 0.8) !important;
+      color: #fff !important;
+      font-weight: 700;
+    }
+
+    /* Attribution */
+    .credit {
+      position: fixed;
+      bottom: 6px;
+      left: 6px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.85);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .credit a { color: #1e88e5; text-decoration: none; }
+
+    /* Source link */
+    .source-link {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 1000;
+      background: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 13px;
+    }
+
+    .source-link a { color: #f57f17; text-decoration: none; font-weight: 600; }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -34,58 +228,37 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-FJ1JR851SJ');
   </script>
 </head>
 
 <body>
-  <div id="sidebar" class="sidebar collapsed">
-    <!-- Nav tabs -->
-    <div class="sidebar-tabs">
-      <ul role="tablist">
-        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-        <li><a href="#book" role="tab"><i class="fa fa-book"></i></a></li>
-        <li><a href="https://www.facebook.com/k.olc.tw/" role="tab" target="_blank"><i class="fa fa-facebook"></i></a>
-        </li>
-      </ul>
-    </div>
+  <div id="map"></div>
 
-    <!-- Tab panes -->
-    <div class="sidebar-content">
-      <div class="sidebar-pane" id="home">
-        <h1 class="sidebar-header">
-          <span id="sidebarTitle">台南 YouBike</span>
-          <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-        </h1>
-        <div id="sidebarContent"></div>
-        <hr />
-        <a href="https://tdx.transportdata.tw/" target="_blank">資料來源</a>
-      </div>
-      <div class="sidebar-pane" id="book">
-        <h1 class="sidebar-header"><span id="weekTitle">說明</span><span class="sidebar-close"><i
-              class="fa fa-caret-left"></i></span></h1>
-        <div>
-          <p>
+  <div class="source-link">
+    <a href="https://tdx.transportdata.tw/" target="_blank">資料來源: TDX</a>
+  </div>
 
-          </p>
-          <ul>
-            <li>每個三角形代表一處站點</li>
-          </ul>
-        </div>
-      </div>
+  <button class="locate-btn" id="locateBtn" title="定位">&#9737;</button>
+
+  <!-- Bottom panel for station details -->
+  <div class="panel-overlay" id="panelOverlay"></div>
+  <div class="bottom-panel" id="bottomPanel">
+    <div class="panel-handle"></div>
+    <div class="panel-header">
+      <h2 id="panelTitle"></h2>
+      <button class="panel-close" id="panelClose">&times;</button>
     </div>
+    <div class="panel-body" id="panelBody"></div>
   </div>
-  <div id="map" class="map"></div>
-  <div style="position: fixed; bottom: 0px; left: 0px;">
-    <a href="https://facebook.com/k.olc.tw/" target="_blank" class="btn btn-lg alert-primary">江明宗 製作</a>
+
+  <div class="credit">
+    <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
   </div>
-  <script
-    src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-  <script src="../../js/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
-  <script src="../../js/ol.js"></script>
-  <script src="../../js/ol5-sidebar.min.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/main.js"></script>
 </body>
 

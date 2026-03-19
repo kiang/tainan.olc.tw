@@ -1,209 +1,155 @@
-window.app = {};
-var sidebar = new ol.control.Sidebar({
-  element: 'sidebar',
-  position: 'right'
+// Initialize map
+var map = L.map('map', {
+  center: [23.000694, 120.221507],
+  zoom: 13,
+  zoomControl: true
 });
 
-var projection = ol.proj.get('EPSG:3857');
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(20);
-var matrixIds = new Array(20);
-var clickedCoordinate, populationLayer, gPopulation;
-for (var z = 0; z < 20; ++z) {
-  // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
-}
+L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+}).addTo(map);
 
-var pointsStyle = function (f) {
-  var p = f.getProperties(),
-    z = map.getView().getZoom();
-  var imgColor = 'rgba(120, 236, 62, 1)';
-  if (z > 12) {
-    return new ol.style.Style({
-      image: new ol.style.RegularShape({
-        radius: 10,
-        points: 3,
-        fill: new ol.style.Fill({
-          color: imgColor
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#00f',
-          width: 1
-        })
-      }),
-      text: new ol.style.Text({
-        font: 'bold 16px "Open Sans", "Arial Unicode MS", "sans-serif"',
-        placement: 'point',
-        textAlign: 'left',
-        textBaseline: 'bottom',
-        fill: new ol.style.Fill({
-          color: 'rgba(255, 0, 255, 1)'
-        }),
-        text: p.capcity + ''
-      })
-    });
-  } else {
-    return new ol.style.Style({
-      image: new ol.style.RegularShape({
-        radius: 10,
-        points: 3,
-        fill: new ol.style.Fill({
-          color: imgColor
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#00f',
-          width: 1
-        })
-      })
-    });
-  }
+// Cycling paths
+var linesLayer = null;
 
-}
-
-var lines = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'https://kiang.github.io/traffic.tainan.gov.tw/bike/lines.json',
-    format: new ol.format.GeoJSON()
-  }),
-  style: new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'rgba(100, 100, 255, 0.5)',
-      width: 3
-    })
+fetch('https://kiang.github.io/traffic.tainan.gov.tw/bike/lines.json')
+  .then(function (r) { return r.json(); })
+  .then(function (geojson) {
+    linesLayer = L.geoJSON(geojson, {
+      style: { color: '#e65100', weight: 5, opacity: 0.8, dashArray: '10 6' }
+    }).addTo(map);
   })
-});
+  .catch(function (err) { console.error('Failed to load cycling paths:', err); });
 
-var points = new ol.layer.Vector({
-  source: new ol.source.Vector(),
-  style: pointsStyle
-});
+// Station markers with clustering
+var stationsLayer = L.markerClusterGroup({
+  maxClusterRadius: 50,
+  disableClusteringAtZoom: 16,
+  spiderfyOnMaxZoom: false,
+  showCoverageOnHover: false
+}).addTo(map);
+var labelMarkers = [];
 
-$.getJSON('https://tdx.transportdata.tw/api/basic/v2/Bike/Station/City/Tainan?%24format=JSON', {}, function (data) {
-  var pointsFc = [];
-  for (k in data) {
-    var pointFeature = new ol.Feature({
-      geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([data[k].StationPosition.PositionLon, data[k].StationPosition.PositionLat])
-      )
-    });
-    pointFeature.setProperties({
-      name: data[k].StationName.Zh_tw,
-      address: data[k].StationAddress.Zh_tw,
-      capcity: data[k].BikesCapacity
-    });
-    pointsFc.push(pointFeature);
-  }
-  if (pointsFc.length > 0) {
-    points.getSource().addFeatures(pointsFc);
-  }
-})
-
-var baseLayer = new ol.layer.Tile({
-  source: new ol.source.WMTS({
-    matrixSet: 'EPSG:3857',
-    format: 'image/png',
-    url: 'https://wmts.nlsc.gov.tw/wmts',
-    layer: 'EMAP',
-    tileGrid: new ol.tilegrid.WMTS({
-      origin: ol.extent.getTopLeft(projectionExtent),
-      resolutions: resolutions,
-      matrixIds: matrixIds
-    }),
-    style: 'default',
-    wrapX: true,
-    attributions: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
-  }),
-  opacity: 0.3
-});
-
-var appView = new ol.View({
-  center: ol.proj.fromLonLat([120.221507, 23.000694]),
-  zoom: 13
-});
-
-var geolocation = new ol.Geolocation({
-  projection: appView.getProjection()
-});
-
-geolocation.setTracking(true);
-
-geolocation.on('error', function (error) {
-  console.log(error.message);
-});
-
-var positionFeature = new ol.Feature();
-
-positionFeature.setStyle(new ol.style.Style({
-  image: new ol.style.Circle({
-    radius: 6,
-    fill: new ol.style.Fill({
-      color: '#3399CC'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#fff',
-      width: 2
-    })
-  })
-}));
-
-geolocation.on('change:position', function () {
-  var coordinates = geolocation.getPosition();
-  positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
-});
-
-var map = new ol.Map({
-  layers: [baseLayer, points, lines],
-  target: 'map',
-  view: appView
-});
-map.addControl(sidebar);
-
-new ol.layer.Vector({
-  map: map,
-  source: new ol.source.Vector({
-    features: [positionFeature]
-  })
-});
-
-var sidebarTitle = document.getElementById('sidebarTitle');
-var content = document.getElementById('sidebarContent');
-
-map.on('singleclick', function (evt) {
-  content.innerHTML = '';
-  pointClicked = false;
-  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-    if (false === pointClicked) {
-      var p = feature.getProperties();
-      var message = '<table class="table table-dark"><tbody>';
-      if (p.capcity) {
-        var lonLat = ol.proj.toLonLat(p.geometry.getCoordinates());
-        for (k in p) {
-          if (k !== 'geometry') {
-            message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p[k] + '</td></tr>';
-          }
-        }
-        message += '<tr><td colspan="2">';
-        message += '<hr /><div class="btn-group-vertical" role="group" style="width: 100%;">';
-        message += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lonLat[1] + ',' + lonLat[0] + '&travelmode=driving" target="_blank" class="btn btn-info btn-lg btn-block">Google 導航</a>';
-        message += '<a href="https://wego.here.com/directions/drive/mylocation/' + lonLat[1] + ',' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Here WeGo 導航</a>';
-        message += '<a href="https://bing.com/maps/default.aspx?rtp=~pos.' + lonLat[1] + '_' + lonLat[0] + '" target="_blank" class="btn btn-info btn-lg btn-block">Bing 導航</a>';
-        message += '</div></td></tr>';
-
-      } else {
-        for (k in p) {
-          if (k !== 'geometry') {
-            message += '<tr><th scope="row" style="width: 80px;">' + k + '</th><td>' + p[k] + '</td></tr>';
-          }
-        }
-      }
-      message += '</tbody></table>';
-
-      sidebarTitle.innerHTML = p.name;
-      content.innerHTML = message;
-      sidebar.open('home');
-      pointClicked = true;
-    }
+function createStationIcon() {
+  // Bicycle icon for YouBike stations
+  return L.divIcon({
+    className: '',
+    html: '<svg width="32" height="32" viewBox="0 0 32 32">' +
+      '<circle cx="16" cy="16" r="15" fill="#f9a825" stroke="#fff" stroke-width="2"/>' +
+      '<g transform="translate(6,7) scale(0.8)">' +
+      '<circle cx="5" cy="14" r="4" fill="none" stroke="#fff" stroke-width="2"/>' +
+      '<circle cx="20" cy="14" r="4" fill="none" stroke="#fff" stroke-width="2"/>' +
+      '<path d="M5 14 L10 5 L15 5 M10 5 L13 14 L20 14 M13 14 L17 5 L20 5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</g></svg>',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16]
   });
+}
+
+function showPanel(name, address, capacity, lat, lon) {
+  var panel = document.getElementById('bottomPanel');
+  var overlay = document.getElementById('panelOverlay');
+
+  document.getElementById('panelTitle').textContent = name;
+
+  var html = '<div class="info-row"><span class="info-label">地址</span><span class="info-value">' + (address || '-') + '</span></div>' +
+    '<div class="info-row"><span class="info-label">車位數</span><span class="info-value">' + capacity + '</span></div>' +
+    '<div class="nav-buttons">' +
+    '<a class="nav-btn" href="https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lon + '&travelmode=walking" target="_blank">Google 導航</a>' +
+    '<a class="nav-btn" href="https://wego.here.com/directions/drive/mylocation/' + lat + ',' + lon + '" target="_blank">Here WeGo 導航</a>' +
+    '</div>';
+
+  document.getElementById('panelBody').innerHTML = html;
+  panel.classList.add('show');
+  overlay.classList.add('show');
+}
+
+function hidePanel() {
+  document.getElementById('bottomPanel').classList.remove('show');
+  document.getElementById('panelOverlay').classList.remove('show');
+}
+
+document.getElementById('panelClose').addEventListener('click', hidePanel);
+document.getElementById('panelOverlay').addEventListener('click', hidePanel);
+
+// Load stations from TDX
+fetch('https://tdx.transportdata.tw/api/basic/v2/Bike/Station/City/Tainan?%24format=JSON')
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    data.forEach(function (station) {
+      var lat = station.StationPosition.PositionLat;
+      var lon = station.StationPosition.PositionLon;
+      var name = station.StationName.Zh_tw;
+      var address = station.StationAddress.Zh_tw;
+      var capacity = station.BikesCapacity;
+
+      var marker = L.marker([lat, lon], { icon: createStationIcon() });
+      marker.stationData = { name: name, address: address, capacity: capacity, lat: lat, lon: lon };
+
+      marker.on('click', function () {
+        var d = this.stationData;
+        showPanel(d.name, d.address, d.capacity, d.lat, d.lon);
+      });
+
+      stationsLayer.addLayer(marker);
+    });
+
+    updateLabels();
+  })
+  .catch(function (err) { console.error('Failed to load stations:', err); });
+
+// Show capacity labels when zoomed in
+function updateLabels() {
+  // Remove old labels
+  labelMarkers.forEach(function (m) { map.removeLayer(m); });
+  labelMarkers = [];
+
+  if (map.getZoom() < 15) return;
+
+  stationsLayer.eachLayer(function (marker) {
+    if (!marker.stationData) return;
+    var d = marker.stationData;
+    var label = L.marker([d.lat, d.lon], {
+      icon: L.divIcon({
+        className: 'capacity-tooltip',
+        html: d.capacity + '',
+        iconSize: [30, 16],
+        iconAnchor: [-2, 24]
+      }),
+      interactive: false
+    }).addTo(map);
+    labelMarkers.push(label);
+  });
+}
+
+map.on('zoomend', updateLabels);
+
+// Geolocation
+var userMarker = null;
+var locateBtn = document.getElementById('locateBtn');
+
+locateBtn.addEventListener('click', function () {
+  locateBtn.classList.add('tracking');
+  map.locate({ setView: true, maxZoom: 16 });
+});
+
+map.on('locationfound', function (e) {
+  if (userMarker) {
+    userMarker.setLatLng(e.latlng);
+  } else {
+    userMarker = L.circleMarker(e.latlng, {
+      radius: 8,
+      fillColor: '#3399CC',
+      color: '#fff',
+      weight: 3,
+      fillOpacity: 1
+    }).addTo(map);
+  }
+});
+
+map.on('locationerror', function () {
+  locateBtn.classList.remove('tracking');
+  alert('無法取得您的位置');
 });
