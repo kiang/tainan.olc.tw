@@ -523,29 +523,27 @@ function startPlaybackPoll() {
   clearInterval(pollTimer);
   pollTimer = setInterval(() => {
     if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
-    const state = ytPlayer.getPlayerState();
-    // Only track when playing (1) or paused (2) — skip unstarted/buffering/ended
-    if (state !== 1 && state !== 2) return;
     const t = ytPlayer.getCurrentTime();
+    if (!t && t !== 0) return;
     const r = reports[currentVideoId];
     if (!r) return;
 
-    // Find which highlight the current time falls in
-    const active = r.timeline.find(h => t >= h.start_time && t < h.end_time) || null;
+    // Find which highlight the current time falls in (use <= end_time to handle boundary)
+    const active = r.timeline.find(h => t >= h.start_time && t <= h.end_time) || null;
+    const activeId = active ? active.id : null;
+    const currentId = currentHighlight ? currentHighlight.id : null;
 
-    if (active && active.id !== currentHighlight?.id) {
-      // Playback entered a new highlight — update active state without full re-render
+    if (activeId !== currentId) {
       currentHighlight = active;
-      updateHighlightActiveClass(active.id);
-      renderDetail(r, active);
-      scrollHighlightIntoView(active.id);
-    } else if (!active && currentHighlight !== null) {
-      // Playback is between highlights — clear active highlight
-      currentHighlight = null;
-      updateHighlightActiveClass(null);
-      showDetailEmpty();
+      updateHighlightActiveClass(activeId);
+      if (active) {
+        renderDetail(r, active);
+        scrollHighlightIntoView(activeId);
+      } else {
+        showDetailEmpty();
+      }
     }
-  }, 500);
+  }, 300);
 }
 
 function updateHighlightActiveClass(highlightId) {
