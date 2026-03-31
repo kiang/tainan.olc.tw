@@ -519,43 +519,28 @@ async function ensurePlayer(videoId, startSeconds) {
 
 let currentPlayerVideoId = null;
 
-function startPlaybackPoll() {
+function startPlaybackPoll(endTime) {
   clearInterval(pollTimer);
   pollTimer = setInterval(() => {
     if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
     const t = ytPlayer.getCurrentTime();
-    if (!t && t !== 0) return;
-    const r = reports[currentVideoId];
-    if (!r) return;
-
-    // Find which highlight the current time falls in (use <= end_time to handle boundary)
-    const active = r.timeline.find(h => t >= h.start_time && t <= h.end_time) || null;
-    const activeId = active ? active.id : null;
-    const currentId = currentHighlight ? currentHighlight.id : null;
-
-    if (activeId !== currentId) {
-      currentHighlight = active;
-      updateHighlightActiveClass(activeId);
-      if (active) {
-        renderDetail(r, active);
-        scrollHighlightIntoView(activeId);
-      } else {
-        showDetailEmpty();
-      }
+    if (t >= endTime) {
+      clearInterval(pollTimer);
+      advanceToNextHighlight();
     }
-  }, 300);
+  }, 500);
 }
 
-function updateHighlightActiveClass(highlightId) {
-  document.querySelectorAll('.highlight-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.id === String(highlightId));
-  });
+function advanceToNextHighlight() {
+  const r = reports[currentVideoId];
+  if (!r || !currentHighlight) return;
+  const idx = r.timeline.findIndex(x => x.id === currentHighlight.id);
+  const next = r.timeline[idx + 1];
+  if (next) {
+    selectHighlight(currentVideoId, next.id);
+  }
 }
 
-function scrollHighlightIntoView(highlightId) {
-  const el = document.querySelector(`.highlight-item[data-id="${highlightId}"]`);
-  if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-}
 
 // ── Bootstrap ──────────────────────────────────────────────────────────
 async function init() {
@@ -657,10 +642,9 @@ function selectVideo(videoId) {
 }
 
 function loadMainPlayer(videoId) {
+  clearInterval(pollTimer);
   const r = reports[videoId];
-  ensurePlayer(r._player_id, 0).then(() => {
-    startPlaybackPoll();
-  });
+  ensurePlayer(r._player_id, 0);
 }
 
 // ── Highlight list ─────────────────────────────────────────────────────
@@ -720,7 +704,7 @@ function selectHighlight(videoId, highlightId) {
 
   // Seek player to highlight start; continuous poll handles auto-advance
   ensurePlayer(r._player_id, h.start_time).then(() => {
-    startPlaybackPoll();
+    startPlaybackPoll(h.end_time);
   });
 
   renderHighlightList();
