@@ -8,6 +8,7 @@ const ENTRY = {
   donor:     "entry.104046133",  // 捐款者名稱與統編
   details:   "entry.1347559518"  // 捐款日期與金額
 };
+const REPORTS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh5LBcUYFjtfKQ20tWA62gDVbUWAWxXK-1st4Oy5pzWRypE6tWoHPX9iANynGYOWbS-pu4XBU0rrcC/pub?output=csv";
 
 // ============================================================
 // STATE
@@ -611,6 +612,56 @@ function shareUrl() {
   }).catch(() => {
     showToast('請手動複製網址列', 'info');
   });
+}
+
+// ============================================================
+// COMMUNITY REPORTS
+// ============================================================
+let reportsLoaded = false;
+async function loadReports() {
+  if (reportsLoaded) return;
+  reportsLoaded = true;
+  const container = document.getElementById('reportsContainer');
+  try {
+    const result = await fetchCSV(REPORTS_CSV, { header: true, skipEmptyLines: true });
+    const rows = result.data.filter(r => r['Timestamp']);
+    document.getElementById('reportCountBadge').textContent = rows.length + ' 筆';
+    if (rows.length === 0) {
+      container.innerHTML = '<div class="text-center text-slate-500 py-8">尚無回報紀錄，成為第一位！</div>';
+      return;
+    }
+    // Newest first
+    rows.reverse();
+    container.innerHTML = rows.map(r => {
+      const ts = r['Timestamp'] || '';
+      const caseName = escHtml(r['關聯標案/都計/政策名稱'] || '');
+      const reason = escHtml(r['說明對價關係的理由（請具體說明您的懷疑基礎）'] || '');
+      const link = r['公開資訊連結（例如：採購網、新聞、政府公報等）（選填）'] || '';
+      const caseDate = escHtml(r['案件發生或決標日期（選填）'] || '');
+      const recipient = escHtml(r['（系統自動帶入）收受候選人資訊'] || '');
+      const donor = escHtml(r['（系統自動帶入）捐款者名稱與統編'] || '');
+      const details = escHtml(r['（系統自動帶入）捐款日期與金額'] || '');
+      const linkHtml = link ? `<a href="${escHtml(link)}" target="_blank" rel="noopener" class="text-amber-400 hover:underline break-all">${escHtml(link)}</a>` : '<span class="text-slate-600">（無）</span>';
+      return `<div class="border border-slate-700 rounded-lg p-4 mb-3 bg-slate-900/50 fade-in">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="text-xs text-slate-500">${escHtml(ts)}</span>
+          <span class="ml-auto text-xs bg-red-900/60 text-red-300 border border-red-800/50 px-2 py-0.5 rounded">🚨 疑似對價關係</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-3">
+          <div><span class="text-slate-500 text-xs">收受候選人</span><div class="text-slate-200">${recipient || '—'}</div></div>
+          <div><span class="text-slate-500 text-xs">捐款者</span><div class="text-slate-200">${donor || '—'}</div></div>
+          <div><span class="text-slate-500 text-xs">捐款日期與金額</span><div class="text-slate-200">${details || '—'}</div></div>
+          <div><span class="text-slate-500 text-xs">案件日期</span><div class="text-slate-200">${caseDate || '—'}</div></div>
+        </div>
+        <div class="mb-2"><span class="text-slate-500 text-xs">關聯標案/政策</span><div class="text-amber-300 font-semibold">${caseName || '—'}</div></div>
+        <div class="mb-2"><span class="text-slate-500 text-xs">懷疑理由</span><div class="text-slate-300 text-sm leading-relaxed">${reason || '—'}</div></div>
+        <div><span class="text-slate-500 text-xs">公開資訊連結</span><div class="mt-1">${linkHtml}</div></div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('reportCountBadge').textContent = '失敗';
+    container.innerHTML = '<div class="text-center text-red-400 py-8">回報資料載入失敗</div>';
+  }
 }
 
 // ============================================================
