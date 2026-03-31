@@ -481,7 +481,7 @@
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────
-const REPORTS = ["8mv8ZLz-Gt0.json", "a7l2DHU72K4.json", "eOh--4msRJo.json", "s1p7fcS-2-Q.json"];
+const REPORTS = ["4m5yW8foiTs.json", "8mv8ZLz-Gt0.json", "F4uzim6UEfs.json", "JPK41F2s8gw.json", "VV5GwToE48w.json", "Y_C2ZUJjWho.json", "a7l2DHU72K4.json", "bWV-72UoXxA.json", "eOh--4msRJo.json", "hCd4j-T3ooI.json", "m2rJyIfZc4Y.json", "qL5x1ODKzwc.json", "s1p7fcS-2-Q.json", "vmMWAEdlFsA.json", "xZ7zfY5oiWs.json"];
 let reports = {};          // video_id → report data
 let currentVideoId = null;
 let currentHighlight = null;
@@ -694,7 +694,7 @@ function switchTab(tab) {
 
 // ── Video list ─────────────────────────────────────────────────────────
 function renderVideoList() {
-  const sorted = Object.values(reports).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const sorted = Object.values(reports).sort((a, b) => extractTaiwanDate(b.title) - extractTaiwanDate(a.title));
   const el = document.getElementById('panel-videos');
   if (!sorted.length) { el.innerHTML = '<div style="padding:20px;color:var(--text2)">無資料</div>'; return; }
 
@@ -709,6 +709,13 @@ function renderVideoList() {
       </div>
     </div>
   `).join('');
+}
+
+function extractTaiwanDate(title) {
+  // Extract Taiwan calendar date from title e.g. "114/12/24" → sortable number 1141224
+  const m = (title || '').match(/(\d{2,3})\/(\d{1,2})\/(\d{1,2})/);
+  if (!m) return 0;
+  return parseInt(m[1]) * 10000 + parseInt(m[2]) * 100 + parseInt(m[3]);
 }
 
 function fmtDuration(s) {
