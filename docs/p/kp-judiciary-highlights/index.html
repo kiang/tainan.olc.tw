@@ -473,6 +473,7 @@ let ytPlayer = null;
 let ytReadyResolve = null;
 const ytReady = new Promise(r => { ytReadyResolve = r; });
 let pollTimer = null;
+let pollGeneration = 0;  // incremented on every selectHighlight; poll self-cancels if stale
 
 // Called by YouTube IFrame API when ready
 window.onYouTubeIframeAPIReady = function() { ytReadyResolve(); };
@@ -519,14 +520,15 @@ async function ensurePlayer(videoId, startSeconds) {
 
 let currentPlayerVideoId = null;
 
-function startPlaybackPoll(endTime) {
+function startPlaybackPoll(endTime, generation) {
   clearInterval(pollTimer);
   pollTimer = setInterval(() => {
+    if (generation !== pollGeneration) { clearInterval(pollTimer); return; }
     if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
     const t = ytPlayer.getCurrentTime();
     if (t >= endTime) {
       clearInterval(pollTimer);
-      advanceToNextHighlight();
+      if (generation === pollGeneration) advanceToNextHighlight();
     }
   }, 500);
 }
@@ -699,20 +701,17 @@ function selectHighlight(videoId, highlightId) {
   const h = r.timeline.find(x => x.id === highlightId);
   if (!h) return;
 
-  // Cancel any running poll immediately so previous highlight doesn't advance
+  // Increment generation to invalidate any in-flight or running polls
+  const gen = ++pollGeneration;
   clearInterval(pollTimer);
   pollTimer = null;
 
   currentVideoId = videoId;
   currentHighlight = h;
 
-  // Capture the end time now; startPlaybackPoll uses it after seek completes
   const endTime = h.end_time;
   ensurePlayer(r._player_id, h.start_time).then(() => {
-    // Only start poll if this highlight is still the active one
-    if (currentHighlight && currentHighlight.id === h.id) {
-      startPlaybackPoll(endTime);
-    }
+    if (gen === pollGeneration) startPlaybackPoll(endTime, gen);
   });
 
   renderHighlightList();
