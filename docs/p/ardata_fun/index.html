@@ -400,8 +400,11 @@ async function initData() {
     businessData = result.data.map((row, i) => ({
       rank: i + 1,
       amount: parseFloat(row[0]) || 0,
-      taxId: String(row[1]).trim()
+      taxId: String(row[1]).trim(),
+      name: String(row[2] || '').trim()
     }));
+    // Pre-populate nameCache from ranking data
+    businessData.forEach(d => { if (d.name) nameCache.set(d.taxId, d.name); });
     filteredBusiness = businessData;
     document.getElementById('loadingState').classList.add('hidden');
     document.getElementById('tableWrap').classList.remove('hidden');
