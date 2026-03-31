@@ -608,12 +608,20 @@ function startPlaybackPoll(startTime, endTime, generation) {
     if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
     const t = ytPlayer.getCurrentTime();
     renderSubtitleAt(t);
-    // Wait until playback has actually reached startTime before arming the end check.
-    // This prevents a stale getCurrentTime() from immediately triggering advance.
+
+    // Wait until playback has actually reached startTime before arming checks.
     if (!seekConfirmed) {
       if (t >= startTime) seekConfirmed = true;
       return;
     }
+
+    // If the player is outside the expected range, the user scrubbed away —
+    // stop this poll without advancing.
+    if (t < startTime || t > endTime + 2) {
+      clearInterval(pollTimer);
+      return;
+    }
+
     if (t >= endTime) {
       clearInterval(pollTimer);
       if (generation === pollGeneration) advanceToNextHighlight();
