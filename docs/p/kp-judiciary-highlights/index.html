@@ -559,7 +559,16 @@ async function init() {
 async function loadReport(filename) {
   const res = await fetch(filename);
   const data = await res.json();
-  reports[data.video_id] = data;
+  // Key by the filename stem (backup ID if uploaded, original otherwise)
+  // and store the YouTube player ID extracted from embed_url
+  const fileId = filename.replace('.json', '');
+  data._player_id = extractYouTubeId(data.embed_url) || fileId;
+  reports[fileId] = data;
+}
+
+function extractYouTubeId(embedUrl) {
+  const m = embedUrl && embedUrl.match(/embed\/([A-Za-z0-9_-]+)/);
+  return m ? m[1] : null;
 }
 
 // ── Mobile panel navigation ─────────────────────────────────────────────
@@ -598,8 +607,8 @@ function renderVideoList() {
   if (!sorted.length) { el.innerHTML = '<div style="padding:20px;color:var(--text2)">無資料</div>'; return; }
 
   el.innerHTML = sorted.map(r => `
-    <div class="video-item ${r.video_id === currentVideoId ? 'active' : ''}"
-         onclick="selectVideo('${r.video_id}')">
+    <div class="video-item ${r._player_id === currentVideoId ? 'active' : ''}"
+         onclick="selectVideo('${r._player_id}')">
       <div class="v-title">${r.title}</div>
       <div class="v-meta">
         ${r.date ? `<span>📅 ${r.date}</span>` : ''}
@@ -635,7 +644,8 @@ function selectVideo(videoId) {
 function loadMainPlayer(videoId) {
   clearInterval(pollTimer);
   currentHighlight = null;
-  ensurePlayer(videoId, 0);
+  const r = reports[videoId];
+  ensurePlayer(r._player_id, 0);
 }
 
 // ── Highlight list ─────────────────────────────────────────────────────
@@ -664,7 +674,7 @@ function renderHighlightList() {
 
   document.getElementById('highlight-items').innerHTML = items.map(h => `
     <div class="highlight-item ${currentHighlight?.id === h.id ? 'active' : ''}"
-         onclick="selectHighlight('${r.video_id}', ${h.id})">
+         onclick="selectHighlight('${r._player_id}', ${h.id})">
       <div class="h-top">
         <span class="h-time">${h.start_label}</span>
         <span class="h-tag ${h.category}">${h.category_label}</span>
@@ -694,7 +704,7 @@ function selectHighlight(videoId, highlightId) {
   currentHighlight = h;
 
   // Seek player to highlight start; poll for end to auto-advance
-  ensurePlayer(videoId, h.start_time).then(() => {
+  ensurePlayer(r._player_id, h.start_time).then(() => {
     startHighlightPoll(h.end_time);
   });
 
@@ -732,10 +742,10 @@ function renderDetail(report, h) {
     </div>
     <div class="detail-desc">${h.description}</div>
     <div class="detail-actions">
-      <button class="btn btn-primary" onclick="selectHighlight('${report.video_id}', ${h.id})">
+      <button class="btn btn-primary" onclick="selectHighlight('${report._player_id}', ${h.id})">
         ▶ 播放此片段
       </button>
-      <button class="btn btn-outline" onclick="loadMainPlayer('${report.video_id}')">
+      <button class="btn btn-outline" onclick="loadMainPlayer('${report._player_id}')">
         ⏮ 回到完整影片
       </button>
       <a class="btn btn-outline" href="${h.youtube_url}" target="_blank" rel="noopener">
@@ -747,13 +757,13 @@ function renderDetail(report, h) {
       <h3>相鄰片段</h3>
       <div class="adj-grid">
         ${prev ? `
-          <div class="adj-card" onclick="selectHighlight('${report.video_id}', ${prev.id})">
+          <div class="adj-card" onclick="selectHighlight('${report._player_id}', ${prev.id})">
             <div class="adj-label">← 上一段</div>
             <div class="adj-time">${prev.start_label}</div>
             <div class="adj-desc">${prev.description}</div>
           </div>` : '<div></div>'}
         ${next ? `
-          <div class="adj-card" onclick="selectHighlight('${report.video_id}', ${next.id})">
+          <div class="adj-card" onclick="selectHighlight('${report._player_id}', ${next.id})">
             <div class="adj-label">下一段 →</div>
             <div class="adj-time">${next.start_label}</div>
             <div class="adj-desc">${next.description}</div>
