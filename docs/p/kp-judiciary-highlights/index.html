@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>柯文哲京華城案影音速覽</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --accent: #4f8ef7;
+      --accent2: #7c5ef7;
+      --text: #e8eaf6;
+      --text2: #8b92b8;
+      --tag-testimony: #1e6b5e;
+      --tag-testimony-text: #4ecdc4;
+      --tag-cross: #6b3a1e;
+      --tag-cross-text: #f4a261;
+      --tag-ruling: #1e3a6b;
+      --tag-ruling-text: #74b0f4;
+      --tag-emotional: #6b1e3a;
+      --tag-emotional-text: #f47474;
+      --tag-argument: #3a1e6b;
+      --tag-argument-text: #b474f4;
+      --star-on: #f5c518;
+      --star-off: #333;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0d1b3e 0%, #1a0d3e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+    }
+    header .subtitle {
+      font-size: 0.75rem;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    /* ── Layout ── */
+    .app {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: 100vh;
+      height: calc(100vh - 61px);
+    }
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: auto; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sidebar-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-tabs button {
+      flex: 1;
+      padding: 10px 8px;
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .sidebar-tabs button.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Video list */
+    .video-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .video-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .video-item:hover { background: var(--surface2); }
+    .video-item.active { background: var(--surface2); border-left: 3px solid var(--accent); }
+    .video-item .v-title {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .video-item .v-meta {
+      font-size: 0.72rem;
+      color: var(--text2);
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Highlight list */
+    .highlight-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .filter-bar {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .filter-btn {
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--text2);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .highlight-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .highlight-item:hover { background: var(--surface2); }
+    .highlight-item.active { background: var(--surface2); border-left: 3px solid var(--accent); }
+    .highlight-item .h-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .h-time {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      min-width: 52px;
+    }
+    .h-tag {
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+    .h-tag.key_testimony    { background: var(--tag-testimony);   color: var(--tag-testimony-text); }
+    .h-tag.cross_examination{ background: var(--tag-cross);        color: var(--tag-cross-text); }
+    .h-tag.ruling           { background: var(--tag-ruling);       color: var(--tag-ruling-text); }
+    .h-tag.emotional_moment { background: var(--tag-emotional);    color: var(--tag-emotional-text); }
+    .h-tag.key_argument     { background: var(--tag-argument);     color: var(--tag-argument-text); }
+    .h-stars { font-size: 0.65rem; letter-spacing: -1px; }
+    .h-desc {
+      font-size: 0.78rem;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+
+    /* ── Main panel ── */
+    .main {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Player */
+    .player-wrap {
+      background: #000;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      flex-shrink: 0;
+    }
+    .player-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .player-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+    .player-placeholder svg { opacity: 0.3; }
+
+    /* Detail panel */
+    .detail {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+    .detail-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text2);
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+    .detail-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.78rem;
+      color: var(--text2);
+      margin-bottom: 18px;
+      align-items: center;
+    }
+    .detail-meta .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .detail-desc {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .detail-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline { background: none; border: 1px solid var(--border); color: var(--text2); }
+
+    /* Adjacent highlights */
+    .adjacent {
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+    .adjacent h3 {
+      font-size: 0.78rem;
+      color: var(--text2);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .adj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 600px) { .adj-grid { grid-template-columns: 1fr; } }
+    .adj-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .adj-card:hover { border-color: var(--accent); }
+    .adj-card .adj-label { font-size: 0.68rem; color: var(--text2); margin-bottom: 4px; }
+    .adj-card .adj-time { font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+    .adj-card .adj-desc { font-size: 0.75rem; color: var(--text2); line-height: 1.4; }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: var(--text2);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>柯文哲京華城案影音速覽</h1>
+    <div class="subtitle">臺灣臺北地方法院 · 113年度金訴字第51號</div>
+  </div>
+</header>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-tabs">
+      <button class="active" id="tab-videos" onclick="switchTab('videos')">庭期列表</button>
+      <button id="tab-highlights" onclick="switchTab('highlights')">精華片段</button>
+    </div>
+
+    <!-- Video list panel -->
+    <div class="video-list" id="panel-videos">
+      <div class="loading">載入中…</div>
+    </div>
+
+    <!-- Highlight list panel -->
+    <div class="highlight-list" id="panel-highlights" style="display:none">
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-btn active" data-cat="all" onclick="filterHighlights('all')">全部</button>
+      </div>
+      <div id="highlight-items">
+        <div style="padding:20px;color:var(--text2);font-size:0.85rem;">請先選擇一個庭期</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="main">
+    <div class="player-wrap" id="player-wrap">
+      <div class="player-placeholder" id="player-placeholder">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <span>選擇左側庭期或精華片段開始觀看</span>
+      </div>
+    </div>
+    <div class="detail" id="detail">
+      <div class="detail-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" opacity="0.2">
+          <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+        </svg>
+        <span>選擇精華片段以查看詳細資訊</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────
+const REPORTS = ["xV6hqj2Ybds.json"];
+let reports = {};          // video_id → report data
+let currentVideoId = null;
+let currentHighlight = null;
+let activeFilter = 'all';
+
+// ── Bootstrap ──────────────────────────────────────────────────────────
+async function init() {
+  const files = REPORTS;
+  if (!files.length) {
+    document.getElementById('panel-videos').innerHTML =
+      '<div style="padding:20px;color:var(--text2);font-size:0.85rem;">找不到任何報告檔案</div>';
+    return;
+  }
+  await Promise.all(files.map(loadReport));
+  renderVideoList();
+}
+
+async function loadReport(filename) {
+  const res = await fetch(filename);
+  const data = await res.json();
+  reports[data.video_id] = data;
+}
+
+// ── Tab switching ───────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('tab-videos').classList.toggle('active', tab === 'videos');
+  document.getElementById('tab-highlights').classList.toggle('active', tab === 'highlights');
+  document.getElementById('panel-videos').style.display = tab === 'videos' ? '' : 'none';
+  document.getElementById('panel-highlights').style.display = tab === 'highlights' ? '' : 'none';
+}
+
+// ── Video list ─────────────────────────────────────────────────────────
+function renderVideoList() {
+  const sorted = Object.values(reports).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const el = document.getElementById('panel-videos');
+  if (!sorted.length) { el.innerHTML = '<div style="padding:20px;color:var(--text2)">無資料</div>'; return; }
+
+  el.innerHTML = sorted.map(r => `
+    <div class="video-item ${r.video_id === currentVideoId ? 'active' : ''}"
+         onclick="selectVideo('${r.video_id}')">
+      <div class="v-title">${r.title}</div>
+      <div class="v-meta">
+        ${r.date ? `<span>📅 ${r.date}</span>` : ''}
+        <span>🎬 ${fmtDuration(r.duration)}</span>
+        <span>⭐ ${r.highlight_count} 精華</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function fmtDuration(s) {
+  if (!s) return '--';
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+  return h ? `${h}h ${m}m` : `${m}m`;
+}
+
+// ── Select video ───────────────────────────────────────────────────────
+function selectVideo(videoId) {
+  currentVideoId = videoId;
+  currentHighlight = null;
+  activeFilter = 'all';
+  renderVideoList();
+  renderHighlightList();
+  loadMainPlayer(videoId);
+  showDetailEmpty();
+  switchTab('highlights');
+}
+
+function loadMainPlayer(videoId) {
+  const r = reports[videoId];
+  document.getElementById('player-wrap').innerHTML =
+    `<iframe src="${r.embed_url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+}
+
+// ── Highlight list ─────────────────────────────────────────────────────
+function renderHighlightList() {
+  const r = reports[currentVideoId];
+  if (!r) return;
+
+  // Filter bar
+  const filterBar = document.getElementById('filter-bar');
+  const cats = r.categories;
+  filterBar.innerHTML = `
+    <button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}"
+            data-cat="all" onclick="filterHighlights('all')">全部 (${r.highlight_count})</button>
+    ${cats.map(c => `
+      <button class="filter-btn ${activeFilter === c.id ? 'active' : ''}"
+              data-cat="${c.id}" onclick="filterHighlights('${c.id}')">
+        ${c.label} (${c.count})
+      </button>
+    `).join('')}
+  `;
+
+  // Highlight items
+  const items = activeFilter === 'all'
+    ? r.timeline
+    : (r.categories.find(c => c.id === activeFilter)?.highlights || []);
+
+  document.getElementById('highlight-items').innerHTML = items.map(h => `
+    <div class="highlight-item ${currentHighlight?.id === h.id ? 'active' : ''}"
+         onclick="selectHighlight('${r.video_id}', ${h.id})">
+      <div class="h-top">
+        <span class="h-time">${h.start_label}</span>
+        <span class="h-tag ${h.category}">${h.category_label}</span>
+        <span class="h-stars">${stars(h.importance)}</span>
+      </div>
+      <div class="h-desc">${h.description}</div>
+    </div>
+  `).join('');
+}
+
+function filterHighlights(cat) {
+  activeFilter = cat;
+  renderHighlightList();
+}
+
+function stars(n) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+
+// ── Select highlight ───────────────────────────────────────────────────
+function selectHighlight(videoId, highlightId) {
+  const r = reports[videoId];
+  const h = r.timeline.find(x => x.id === highlightId);
+  if (!h) return;
+
+  currentVideoId = videoId;
+  currentHighlight = h;
+
+  // Swap player to this clip
+  document.getElementById('player-wrap').innerHTML =
+    `<iframe src="${h.embed_url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+
+  renderHighlightList();
+  renderDetail(r, h);
+}
+
+// ── Detail panel ───────────────────────────────────────────────────────
+function showDetailEmpty() {
+  document.getElementById('detail').innerHTML = `
+    <div class="detail-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" opacity="0.2">
+        <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+      </svg>
+      <span>選擇精華片段以查看詳細資訊</span>
+    </div>`;
+}
+
+function renderDetail(report, h) {
+  const idx = report.timeline.findIndex(x => x.id === h.id);
+  const prev = idx > 0 ? report.timeline[idx - 1] : null;
+  const next = idx < report.timeline.length - 1 ? report.timeline[idx + 1] : null;
+
+  document.getElementById('detail').innerHTML = `
+    <div class="detail-title">${report.title}</div>
+    <div class="detail-meta">
+      <span class="badge">
+        <span class="h-tag ${h.category}" style="font-size:0.72rem">${h.category_label}</span>
+      </span>
+      <span>${h.start_label} → ${h.end_label}</span>
+      ${report.date ? `<span>📅 ${report.date}</span>` : ''}
+      <span class="h-stars" style="font-size:0.8rem">${stars(h.importance)}</span>
+    </div>
+    <div class="detail-desc">${h.description}</div>
+    <div class="detail-actions">
+      <button class="btn btn-primary" onclick="selectHighlight('${report.video_id}', ${h.id})">
+        ▶ 播放此片段
+      </button>
+      <button class="btn btn-outline" onclick="loadMainPlayer('${report.video_id}')">
+        ⏮ 回到完整影片
+      </button>
+      <a class="btn btn-outline" href="${h.youtube_url}" target="_blank" rel="noopener">
+        ↗ 在 YouTube 開啟
+      </a>
+    </div>
+    ${(prev || next) ? `
+    <div class="adjacent">
+      <h3>相鄰片段</h3>
+      <div class="adj-grid">
+        ${prev ? `
+          <div class="adj-card" onclick="selectHighlight('${report.video_id}', ${prev.id})">
+            <div class="adj-label">← 上一段</div>
+            <div class="adj-time">${prev.start_label}</div>
+            <div class="adj-desc">${prev.description}</div>
+          </div>` : '<div></div>'}
+        ${next ? `
+          <div class="adj-card" onclick="selectHighlight('${report.video_id}', ${next.id})">
+            <div class="adj-label">下一段 →</div>
+            <div class="adj-time">${next.start_label}</div>
+            <div class="adj-desc">${next.description}</div>
+          </div>` : '<div></div>'}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+init();
+</script>
+</body>
+</html>
