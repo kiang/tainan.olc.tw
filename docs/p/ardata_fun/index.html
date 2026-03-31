@@ -363,6 +363,14 @@ function closeModal() {
 // ============================================================
 // DATE & AMOUNT PARSERS
 // ============================================================
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function parseRocDate(d) {
   if (!d) return d;
   d = String(d).trim();
@@ -398,12 +406,12 @@ async function initData() {
   document.getElementById('errorState').classList.add('hidden');
   try {
     const result = await fetchCSV(BASE + 'incomes/business.csv', { header: false, skipEmptyLines: true });
-    businessData = result.data.map((row, i) => ({
+    businessData = shuffle(result.data.map((row, i) => ({
       rank: i + 1,
       amount: parseFloat(row[0]) || 0,
       taxId: String(row[1]).trim(),
       name: String(row[2] || '').trim()
-    }));
+    })));
     // Pre-populate nameCache from ranking data
     businessData.forEach(d => { if (d.name) nameCache.set(d.taxId, d.name); });
     filteredBusiness = businessData;
@@ -424,11 +432,11 @@ async function loadIndividualData() {
   document.getElementById('indTableWrap').classList.add('hidden');
   try {
     const result = await fetchCSV(BASE + 'incomes/individual.csv', { header: false, skipEmptyLines: true });
-    individualData = result.data.map((row, i) => ({
+    individualData = shuffle(result.data.map((row, i) => ({
       rank: i + 1,
       amount: parseFloat(row[0]) || 0,
       label: String(row[1]).trim()
-    }));
+    })));
     filteredIndividual = individualData;
     document.getElementById('indLoadingState').classList.add('hidden');
     document.getElementById('indTableWrap').classList.remove('hidden');
