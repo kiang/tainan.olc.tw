@@ -2,9 +2,12 @@
 // CONFIG
 // ============================================================
 const BASE = "https://kiang.github.io/ardata.cy.gov.tw/";
-// NOTE: Replace PLACEHOLDER with real Google Form ID
-const FORM_URL = "https://docs.google.com/forms/d/e/PLACEHOLDER/viewform";
-const ENTRY = { donor: "entry.1", details: "entry.2", recipient: "entry.3" };
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSce9lbrfHrdQb1Z62PKW4OzEKwyMp4EDgpgM27m0Lqy-bi3dQ/viewform";
+const ENTRY = {
+  recipient: "entry.160199042",  // 收受候選人資訊
+  donor:     "entry.104046133",  // 捐款者名稱與統編
+  details:   "entry.1347559518"  // 捐款日期與金額
+};
 
 // ============================================================
 // STATE
