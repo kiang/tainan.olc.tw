@@ -523,6 +523,9 @@ function startPlaybackPoll() {
   clearInterval(pollTimer);
   pollTimer = setInterval(() => {
     if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    const state = ytPlayer.getPlayerState();
+    // Only track when playing (1) or paused (2) — skip unstarted/buffering/ended
+    if (state !== 1 && state !== 2) return;
     const t = ytPlayer.getCurrentTime();
     const r = reports[currentVideoId];
     if (!r) return;
@@ -531,18 +534,24 @@ function startPlaybackPoll() {
     const active = r.timeline.find(h => t >= h.start_time && t < h.end_time) || null;
 
     if (active && active.id !== currentHighlight?.id) {
-      // Playback entered a new highlight — update UI without seeking
+      // Playback entered a new highlight — update active state without full re-render
       currentHighlight = active;
-      renderHighlightList();
+      updateHighlightActiveClass(active.id);
       renderDetail(r, active);
       scrollHighlightIntoView(active.id);
     } else if (!active && currentHighlight !== null) {
       // Playback is between highlights — clear active highlight
       currentHighlight = null;
-      renderHighlightList();
+      updateHighlightActiveClass(null);
       showDetailEmpty();
     }
   }, 500);
+}
+
+function updateHighlightActiveClass(highlightId) {
+  document.querySelectorAll('.highlight-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === String(highlightId));
+  });
 }
 
 function scrollHighlightIntoView(highlightId) {
