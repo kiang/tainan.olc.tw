@@ -59,7 +59,7 @@
         <h1 class="text-2xl md:text-3xl font-bold">
           <span class="gold">🔍 前金後謝調查局</span>
         </h1>
-        <p class="text-slate-400 text-sm mt-1">政治獻金追蹤系統 — 資料來源：<a href="https://kiang.github.io/ardata.cy.gov.tw/" target="_blank" class="text-amber-400 hover:underline">ardata.cy.gov.tw</a></p>
+        <p class="text-slate-400 text-sm mt-1">政治獻金追蹤系統 — 資料來源：<a href="https://ardata.cy.gov.tw/home" target="_blank" class="text-amber-400 hover:underline">ardata.cy.gov.tw</a></p>
       </div>
       <div class="bg-slate-800 rounded-xl px-5 py-3 border border-slate-700 text-right">
         <div class="text-xs text-slate-400 mb-1">偵探職階</div>
@@ -130,10 +130,10 @@
       <table class="w-full text-sm">
         <thead>
           <tr class="border-b border-slate-700 bg-slate-900/50">
-            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12">排名</th>
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12 cursor-pointer hover:text-amber-400 select-none" onclick="sortBy('rank')" id="th-rank">排名 <span id="sort-rank"></span></th>
             <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider">統一編號</th>
-            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider">捐贈者</th>
-            <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider">歷次捐贈總額</th>
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="sortBy('name')" id="th-name">捐贈者 <span id="sort-name"></span></th>
+            <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="sortBy('amount')" id="th-amount">歷次捐贈總額 <span id="sort-amount"></span></th>
             <th class="px-4 py-3 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider w-20">操作</th>
           </tr>
         </thead>
@@ -161,9 +161,9 @@
       <table class="w-full text-sm">
         <thead>
           <tr class="border-b border-slate-700 bg-slate-900/50">
-            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12">排名</th>
-            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider">捐贈者</th>
-            <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider">歷次捐贈總額</th>
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12 cursor-pointer hover:text-amber-400 select-none" onclick="indSortBy('rank')" id="ind-th-rank">排名 <span id="ind-sort-rank"></span></th>
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="indSortBy('label')" id="ind-th-label">捐贈者 <span id="ind-sort-label"></span></th>
+            <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="indSortBy('amount')" id="ind-th-amount">歷次捐贈總額 <span id="ind-sort-amount"></span></th>
             <th class="px-4 py-3 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider w-16">詳情</th>
           </tr>
         </thead>

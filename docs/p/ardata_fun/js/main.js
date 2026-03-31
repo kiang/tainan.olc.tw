@@ -564,6 +564,7 @@ function applyFilters() {
       const name = (nameCache.get(item.taxId) || '').toLowerCase();
       return name.includes(q);
     });
+    applySort();
     renderBusinessTable(true);
   } else {
     filteredIndividual = individualData.filter(item => {
@@ -571,6 +572,7 @@ function applyFilters() {
       if (!q) return true;
       return item.label.toLowerCase().includes(q);
     });
+    applyIndSort();
     renderIndividualTable(true);
   }
 }
@@ -676,6 +678,53 @@ async function loadReports() {
     document.getElementById('reportCountBadge').textContent = '失敗';
     container.innerHTML = '<div class="text-center text-red-400 py-8">回報資料載入失敗</div>';
   }
+}
+
+// ============================================================
+// SORT
+// ============================================================
+let sortKey = 'rank', sortDir = 1;      // 1=asc, -1=desc
+let indSortKey = 'rank', indSortDir = 1;
+
+function sortBy(key) {
+  if (sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = key === 'name' ? 1 : -1; }
+  updateSortIndicators(['rank','name','amount'], sortKey, sortDir, '');
+  applySort();
+  renderBusinessTable(true);
+}
+
+function indSortBy(key) {
+  if (indSortKey === key) indSortDir *= -1;
+  else { indSortKey = key; indSortDir = key === 'label' ? 1 : -1; }
+  updateSortIndicators(['rank','label','amount'], indSortKey, indSortDir, 'ind-');
+  applyIndSort();
+  renderIndividualTable(true);
+}
+
+function updateSortIndicators(keys, activeKey, dir, prefix) {
+  keys.forEach(k => {
+    const el = document.getElementById(`${prefix}sort-${k}`);
+    if (el) el.textContent = k === activeKey ? (dir === 1 ? '▲' : '▼') : '';
+  });
+}
+
+function applySort() {
+  filteredBusiness.sort((a, b) => {
+    const av = sortKey === 'name' ? (nameCache.get(a.taxId) || '') : a[sortKey];
+    const bv = sortKey === 'name' ? (nameCache.get(b.taxId) || '') : b[sortKey];
+    if (typeof av === 'string') return av.localeCompare(bv, 'zh-TW') * sortDir;
+    return (av - bv) * sortDir;
+  });
+}
+
+function applyIndSort() {
+  filteredIndividual.sort((a, b) => {
+    const av = a[indSortKey];
+    const bv = b[indSortKey];
+    if (typeof av === 'string') return av.localeCompare(bv, 'zh-TW') * indSortDir;
+    return (av - bv) * indSortDir;
+  });
 }
 
 // ============================================================
