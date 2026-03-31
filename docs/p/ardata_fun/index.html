@@ -181,6 +181,7 @@
             <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12">排名</th>
             <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider">捐贈者</th>
             <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider">歷次捐贈總額</th>
+            <th class="px-4 py-3 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider w-16">詳情</th>
           </tr>
         </thead>
         <tbody id="indTableBody"></tbody>
@@ -620,16 +621,105 @@ function renderIndividualTable(reset=false) {
     const big = item.amount >= 1000000;
     const huge = item.amount >= 10000000;
     const tr = document.createElement('tr');
-    tr.className = `border-b border-slate-700/50 transition-colors ${huge ? 'big-money' : ''}`;
+    const labelId = encodeURIComponent(item.label);
+    tr.id = 'indrow-' + labelId;
+    tr.className = `border-b border-slate-700/50 transition-colors cursor-pointer hover:bg-slate-700/30 ${huge ? 'big-money' : ''}`;
     tr.innerHTML = `
       <td class="px-4 py-3 text-slate-400 text-xs">${item.rank}</td>
       <td class="px-4 py-3 text-slate-300">${escHtml(item.label)}</td>
       <td class="px-4 py-3 text-right font-bold ${big ? 'text-red-400' : 'text-slate-200'}">${fmtAmount(item.amount)}</td>
+      <td class="px-4 py-3 text-center"><button class="text-amber-400 hover:text-amber-300 text-lg" title="展開詳情">＋</button></td>
     `;
+    tr.onclick = () => expandIndividualDetail(item.label, item.amount);
     tbody.appendChild(tr);
   });
   displayedIndividual += slice.length;
   document.getElementById('indLoadMoreBtn').classList.toggle('hidden', displayedIndividual >= filteredIndividual.length);
+}
+
+let expandedIndRow = null;
+async function expandIndividualDetail(label, totalAmount) {
+  const tbody = document.getElementById('indTableBody');
+  const labelId = encodeURIComponent(label);
+  if (expandedIndRow === label) {
+    const existing = document.getElementById('inddetail-' + labelId);
+    if (existing) existing.remove();
+    expandedIndRow = null;
+    return;
+  }
+  if (expandedIndRow) {
+    const prev = document.getElementById('inddetail-' + encodeURIComponent(expandedIndRow));
+    if (prev) prev.remove();
+  }
+  expandedIndRow = label;
+
+  const anchor = document.getElementById('indrow-' + labelId);
+  const loadingTr = document.createElement('tr');
+  loadingTr.id = 'inddetail-' + labelId;
+  loadingTr.innerHTML = `<td colspan="4" class="px-6 py-6 text-center text-amber-400 text-sm detail-section fade-in"><div class="spinner mx-auto mb-2"></div>正在解密檔案...</td>`;
+  anchor.insertAdjacentElement('afterend', loadingTr);
+
+  try {
+    const result = await fetchCSV(BASE + `incomes/individual/${encodeURIComponent(label)}.csv`, { header: true, skipEmptyLines: true });
+    const rows = result.data;
+    const elections = [...new Set(rows.map(r => r['選舉']))].filter(Boolean);
+    if (elections.length >= 3) awardBadge('TIME_TRAVELER');
+    const maxSingle = Math.max(...rows.map(r => parseFloat(r['捐贈金額']||0)));
+    if (maxSingle >= 1000000) awardBadge('BIG_FISH');
+    if (totalAmount >= 10000000) awardBadge('WHALE');
+
+    const timelineHtml = elections.length > 0 ? `
+      <div class="mt-4 mb-2">
+        <div class="text-xs text-slate-400 mb-2">捐贈選舉時間軸 (共 ${elections.length} 次)</div>
+        <div class="flex flex-wrap gap-2">${elections.map(e => `<span class="bg-slate-700 text-amber-300 text-xs px-2 py-1 rounded">${e}</span>`).join('')}</div>
+      </div>` : '';
+
+    const rowsHtml = rows.map(r => {
+      const amt = parseFloat(r['捐贈金額']||0);
+      const big = amt >= 1000000;
+      const donorName = r['捐贈人'] || '';
+      const recipient = r['捐贈對象'] || '';
+      const election = r['選舉'] || '';
+      const dateStr = parseRocDate(r['捐贈日期'] || '');
+      const reportUrl = buildReportUrl(donorName, recipient, election, dateStr, amt);
+      return `<tr class="border-b border-slate-700/30 hover:bg-slate-700/30">
+        <td class="px-3 py-2 text-slate-400 text-xs">${election}</td>
+        <td class="px-3 py-2 text-slate-300 text-xs">${recipient}</td>
+        <td class="px-3 py-2 text-slate-400 text-xs">${dateStr}</td>
+        <td class="px-3 py-2 text-right text-xs font-semibold ${big ? 'text-red-400' : 'text-slate-300'}">${fmtAmount(amt)}</td>
+        <td class="px-3 py-2 text-center">
+          <a href="${reportUrl}" target="_blank" onclick="onReport('${escHtml(label)}')"
+            class="text-xs bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded border border-red-800/50 transition-colors whitespace-nowrap">
+            🚨 回報
+          </a>
+        </td>
+      </tr>`;
+    }).join('');
+
+    loadingTr.innerHTML = `<td colspan="4" class="detail-section fade-in">
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-amber-400 font-bold text-base">${escHtml(label)}</span>
+          <span class="ml-auto text-xs text-slate-500">${rows.length} 筆捐款記錄</span>
+        </div>
+        ${timelineHtml}
+        <div class="overflow-x-auto mt-3">
+          <table class="w-full text-sm">
+            <thead><tr class="text-left text-xs text-slate-500 border-b border-slate-700">
+              <th class="px-3 py-2">選舉</th>
+              <th class="px-3 py-2">收受候選人</th>
+              <th class="px-3 py-2">日期</th>
+              <th class="px-3 py-2 text-right">金額</th>
+              <th class="px-3 py-2 text-center">疑似對價關係</th>
+            </tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    </td>`;
+  } catch(e) {
+    loadingTr.innerHTML = `<td colspan="4" class="px-6 py-4 text-center text-red-400 text-sm">資料載入失敗</td>`;
+  }
 }
 
 function escHtml(s) {
