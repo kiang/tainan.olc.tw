@@ -15,6 +15,7 @@ This repository contains various map-based visualizations of public issues in Ta
 - [Floor Area Information](https://tainan.olc.tw/p/floor_area/) - Building floor area study, focus on volume rewards from Tainan City Government
 - [Baby Care Facilities](https://tainan.olc.tw/p/babycare/) - Map of baby care facilities in Taiwan
 - [Community Services](https://tainan.olc.tw/p/community/) - Community service locations
+- [Social Housing Map](https://tainan.olc.tw/p/social_housing/) - Map of social housing locations in Taiwan
 
 ### Energy & Environment
 - [Solar Power](https://tainan.olc.tw/p/solar/) - Solar power installation information
@@ -37,6 +38,8 @@ This repository contains various map-based visualizations of public issues in Ta
 - [Unilions Information](https://tainan.olc.tw/p/unilions/) - Showing shops that support Uni-President Lions baseball team
 
 ### Election & Political Activities
+- [前金後謝調查局](https://tainan.olc.tw/p/ardata_fun/) - Gamified crowdsourcing investigation system for tracking political donations and potential quid pro quo relationships across 28,869 business donors
+- [2026 Taiwan Election Map](https://tainan.olc.tw/p/2026/) - Candidate map for the 2026 Taiwan elections
 - [Tainan 2026](https://tainan.olc.tw/p/tainan2026/) - Collect election boards for the election of 2026 in Tainan City
 - [2025 Projects](https://tainan.olc.tw/p/2025/) - Recall information of regional legislators in Taiwan during 2025
 - [2024 Information](https://tainan.olc.tw/p/2024/) - List legislator candidators recommended by TPP in 2024
