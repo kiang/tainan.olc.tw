@@ -133,6 +133,7 @@
     <div class="flex gap-2">
       <button id="tabBusiness" onclick="switchTab('business')" class="tab-active px-5 py-2 rounded-lg text-sm transition-all">企業捐贈</button>
       <button id="tabIndividual" onclick="switchTab('individual')" class="tab-inactive px-5 py-2 rounded-lg text-sm transition-all">個人捐贈</button>
+      <button id="tabCandidate" onclick="switchTab('candidate')" class="tab-inactive px-5 py-2 rounded-lg text-sm transition-all">被捐贈者</button>
     </div>
   </div>
 
@@ -195,6 +196,32 @@
       </table>
       <div class="p-4 text-center">
         <button id="indLoadMoreBtn" onclick="indLoadMore()" class="bg-slate-700 hover:bg-amber-500 hover:text-slate-900 text-slate-300 px-8 py-2.5 rounded-lg text-sm transition-all duration-200 font-semibold hidden">
+          載入更多
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANDIDATE TABLE AREA -->
+  <div id="candidateArea" class="hidden bg-slate-800/60 rounded-xl border border-slate-700 overflow-hidden mb-6">
+    <div id="candLoadingState" class="flex flex-col items-center justify-center py-20 gap-4">
+      <div class="spinner" style="width:40px;height:40px;border-width:4px;"></div>
+      <div class="text-slate-400">正在載入被捐贈者資料...</div>
+    </div>
+    <div id="candTableWrap" class="hidden overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-700 bg-slate-900/50">
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider w-12 cursor-pointer hover:text-amber-400 select-none" onclick="candSortBy('rank')" id="cand-th-rank">排名 <span id="cand-sort-rank"></span></th>
+            <th class="px-4 py-3 text-left text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="candSortBy('label')" id="cand-th-label">被捐贈者 <span id="cand-sort-label"></span></th>
+            <th class="px-4 py-3 text-right text-xs text-slate-400 font-semibold uppercase tracking-wider cursor-pointer hover:text-amber-400 select-none" onclick="candSortBy('amount')" id="cand-th-amount">歷次收受總額 <span id="cand-sort-amount"></span></th>
+            <th class="px-4 py-3 text-center text-xs text-slate-400 font-semibold uppercase tracking-wider w-16">詳情</th>
+          </tr>
+        </thead>
+        <tbody id="candTableBody"></tbody>
+      </table>
+      <div class="p-4 text-center">
+        <button id="candLoadMoreBtn" onclick="candLoadMore()" class="bg-slate-700 hover:bg-amber-500 hover:text-slate-900 text-slate-300 px-8 py-2.5 rounded-lg text-sm transition-all duration-200 font-semibold hidden">
           載入更多
         </button>
       </div>

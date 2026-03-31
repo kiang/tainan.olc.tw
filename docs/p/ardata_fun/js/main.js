@@ -538,6 +538,157 @@ function escHtml(s) {
 }
 
 // ============================================================
+// CANDIDATE TAB
+// ============================================================
+let candidateData = [];
+let filteredCandidate = [];
+let displayedCandidate = 0;
+let candSortKey = 'rank', candSortDir = 1;
+
+async function loadCandidateData() {
+  document.getElementById('candLoadingState').classList.remove('hidden');
+  document.getElementById('candTableWrap').classList.add('hidden');
+  try {
+    const result = await fetchCSV(BASE + 'incomes/candidate.csv', { header: false, skipEmptyLines: true });
+    candidateData = shuffle(result.data.map((row, i) => ({
+      rank: i + 1,
+      amount: parseFloat(row[0]) || 0,
+      label: String(row[1]).trim()
+    })));
+    filteredCandidate = candidateData;
+    document.getElementById('candLoadingState').classList.add('hidden');
+    document.getElementById('candTableWrap').classList.remove('hidden');
+    displayedCandidate = 0;
+    renderCandidateTable(true);
+  } catch(e) {
+    console.error(e);
+    document.getElementById('candLoadingState').innerHTML = '<div class="flex flex-col items-center gap-3 text-red-400 py-20"><div class="text-4xl">⚠️</div><div>資料載入失敗</div></div>';
+  }
+}
+
+function renderCandidateTable(reset=false) {
+  const tbody = document.getElementById('candTableBody');
+  if (reset) { tbody.innerHTML = ''; displayedCandidate = 0; }
+  const slice = filteredCandidate.slice(displayedCandidate, displayedCandidate + PAGE_SIZE);
+  slice.forEach(item => {
+    const big = item.amount >= 1000000;
+    const huge = item.amount >= 10000000;
+    const tr = document.createElement('tr');
+    const labelId = encodeURIComponent(item.label);
+    tr.id = 'candrow-' + labelId;
+    tr.className = `border-b border-slate-700/50 transition-colors cursor-pointer hover:bg-slate-700/30 ${huge ? 'big-money' : ''}`;
+    tr.innerHTML = `
+      <td class="px-4 py-3 text-slate-400 text-xs">${item.rank}</td>
+      <td class="px-4 py-3 text-slate-300">${escHtml(item.label)}</td>
+      <td class="px-4 py-3 text-right font-bold ${big ? 'text-red-400' : 'text-slate-200'}">${fmtAmount(item.amount)}</td>
+      <td class="px-4 py-3 text-center"><button class="text-amber-400 hover:text-amber-300 text-lg" title="展開詳情">＋</button></td>
+    `;
+    tr.onclick = () => expandCandidateDetail(item.label, item.amount);
+    tbody.appendChild(tr);
+  });
+  displayedCandidate += slice.length;
+  document.getElementById('candLoadMoreBtn').classList.toggle('hidden', displayedCandidate >= filteredCandidate.length);
+}
+
+let expandedCandRow = null;
+async function expandCandidateDetail(label, totalAmount) {
+  const labelId = encodeURIComponent(label);
+  if (expandedCandRow === label) {
+    const existing = document.getElementById('canddetail-' + labelId);
+    if (existing) existing.remove();
+    expandedCandRow = null;
+    return;
+  }
+  if (expandedCandRow) {
+    const prev = document.getElementById('canddetail-' + encodeURIComponent(expandedCandRow));
+    if (prev) prev.remove();
+  }
+  expandedCandRow = label;
+
+  const anchor = document.getElementById('candrow-' + labelId);
+  const loadingTr = document.createElement('tr');
+  loadingTr.id = 'canddetail-' + labelId;
+  loadingTr.innerHTML = `<td colspan="4" class="px-6 py-6 text-center text-amber-400 text-sm detail-section fade-in"><div class="spinner mx-auto mb-2"></div>正在解密檔案...</td>`;
+  anchor.insertAdjacentElement('afterend', loadingTr);
+
+  try {
+    const result = await fetchCSV(BASE + `incomes/candidate/${encodeURIComponent(label)}.csv`, { header: true, skipEmptyLines: true });
+    const rows = result.data;
+    const elections = [...new Set(rows.map(r => r['選舉']))].filter(Boolean);
+    if (elections.length >= 3) awardBadge('TIME_TRAVELER');
+    const maxSingle = Math.max(...rows.map(r => parseFloat(r['捐贈金額']||0)));
+    if (maxSingle >= 1000000) awardBadge('BIG_FISH');
+    if (totalAmount >= 10000000) awardBadge('WHALE');
+
+    const timelineHtml = elections.length > 0 ? `
+      <div class="mt-4 mb-2">
+        <div class="text-xs text-slate-400 mb-2">收受選舉時間軸 (共 ${elections.length} 次)</div>
+        <div class="flex flex-wrap gap-2">${elections.map(e => `<span class="bg-slate-700 text-amber-300 text-xs px-2 py-1 rounded">${e}</span>`).join('')}</div>
+      </div>` : '';
+
+    const rowsHtml = rows.map(r => {
+      const amt = parseFloat(r['捐贈金額']||0);
+      const big = amt >= 1000000;
+      const donorName = r['捐贈人'] || '';
+      const recipient = r['捐贈對象'] || '';
+      const election = r['選舉'] || '';
+      const dateStr = parseRocDate(r['捐贈日期'] || '');
+      const reportUrl = buildReportUrl(donorName, recipient, election, dateStr, amt);
+      return `<tr class="border-b border-slate-700/30 hover:bg-slate-700/30">
+        <td class="px-3 py-2 text-slate-400 text-xs">${election}</td>
+        <td class="px-3 py-2 text-slate-300 text-xs">${escHtml(donorName)}</td>
+        <td class="px-3 py-2 text-slate-400 text-xs">${dateStr}</td>
+        <td class="px-3 py-2 text-right text-xs font-semibold ${big ? 'text-red-400' : 'text-slate-300'}">${fmtAmount(amt)}</td>
+        <td class="px-3 py-2 text-center">
+          <button onclick="openReportModal('${escHtml(donorName)}','${escHtml(recipient)}','${escHtml(election)}','${escHtml(dateStr)}',${amt})"
+            class="text-xs bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded border border-red-800/50 transition-colors whitespace-nowrap">
+            🚨 回報
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    loadingTr.innerHTML = `<td colspan="4" class="detail-section fade-in">
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-amber-400 font-bold text-base">${escHtml(label)}</span>
+          <span class="ml-auto text-xs text-slate-500">${rows.length} 筆捐款記錄</span>
+        </div>
+        ${timelineHtml}
+        <div class="overflow-x-auto mt-3">
+          <table class="w-full text-sm">
+            <thead><tr class="text-left text-xs text-slate-500 border-b border-slate-700">
+              <th class="px-3 py-2">選舉</th>
+              <th class="px-3 py-2">捐贈者</th>
+              <th class="px-3 py-2">日期</th>
+              <th class="px-3 py-2 text-right">金額</th>
+              <th class="px-3 py-2 text-center">疑似對價關係</th>
+            </tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    </td>`;
+  } catch(e) {
+    loadingTr.innerHTML = `<td colspan="4" class="px-6 py-4 text-center text-red-400 text-sm">資料載入失敗</td>`;
+  }
+}
+
+function candSortBy(key) {
+  if (candSortKey === key) candSortDir *= -1;
+  else { candSortKey = key; candSortDir = key === 'label' ? 1 : -1; }
+  updateSortIndicators(['rank','label','amount'], candSortKey, candSortDir, 'cand-');
+  filteredCandidate.sort((a, b) => {
+    const av = a[candSortKey], bv = b[candSortKey];
+    if (typeof av === 'string') return av.localeCompare(bv, 'zh-TW') * candSortDir;
+    return (av - bv) * candSortDir;
+  });
+  renderCandidateTable(true);
+}
+
+function candLoadMore() { renderCandidateTable(false); }
+
+// ============================================================
 // SEARCH
 // ============================================================
 function onSearchInput() {
@@ -566,7 +717,7 @@ function applyFilters() {
     });
     applySort();
     renderBusinessTable(true);
-  } else {
+  } else if (currentTab === 'individual') {
     filteredIndividual = individualData.filter(item => {
       if (minAmt && item.amount < minAmt) return false;
       if (!q) return true;
@@ -574,6 +725,13 @@ function applyFilters() {
     });
     applyIndSort();
     renderIndividualTable(true);
+  } else {
+    filteredCandidate = candidateData.filter(item => {
+      if (minAmt && item.amount < minAmt) return false;
+      if (!q) return true;
+      return item.label.toLowerCase().includes(q);
+    });
+    renderCandidateTable(true);
   }
 }
 
@@ -581,14 +739,20 @@ function applyFilters() {
 // TABS
 // ============================================================
 let indLoaded = false;
+let candLoaded = false;
 function switchTab(tab) {
   currentTab = tab;
-  document.getElementById('tabBusiness').className = tab === 'business' ? 'tab-active px-5 py-2 rounded-lg text-sm transition-all' : 'tab-inactive px-5 py-2 rounded-lg text-sm transition-all';
-  document.getElementById('tabIndividual').className = tab === 'individual' ? 'tab-active px-5 py-2 rounded-lg text-sm transition-all' : 'tab-inactive px-5 py-2 rounded-lg text-sm transition-all';
+  ['business','individual','candidate'].forEach(t => {
+    document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).className =
+      tab === t ? 'tab-active px-5 py-2 rounded-lg text-sm transition-all'
+                : 'tab-inactive px-5 py-2 rounded-lg text-sm transition-all';
+  });
   document.getElementById('tableArea').classList.toggle('hidden', tab !== 'business');
   document.getElementById('individualArea').classList.toggle('hidden', tab !== 'individual');
+  document.getElementById('candidateArea').classList.toggle('hidden', tab !== 'candidate');
   if (tab === 'individual' && !indLoaded) { indLoaded = true; loadIndividualData(); }
-  updateUrlParam('tab', tab === 'individual' ? 'individual' : null);
+  if (tab === 'candidate' && !candLoaded) { candLoaded = true; loadCandidateData(); }
+  updateUrlParam('tab', tab !== 'business' ? tab : null);
 }
 
 // ============================================================
@@ -610,7 +774,7 @@ function checkUrlParams() {
   const url = new URL(window.location.href);
   const q = url.searchParams.get('q');
   const tab = url.searchParams.get('tab');
-  if (tab === 'individual') switchTab('individual');
+  if (tab === 'individual' || tab === 'candidate') switchTab(tab);
   if (q) {
     document.getElementById('searchInput').value = q;
     applyFilters();
