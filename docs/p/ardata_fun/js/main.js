@@ -348,17 +348,16 @@ async function expandDetail(taxId, totalAmount) {
       const recipient = r['捐贈對象'] || '';
       const election = r['選舉'] || '';
       const dateStr = parseRocDate(r['捐贈日期'] || '');
-      const reportUrl = buildReportUrl(donorName, recipient, election, dateStr, amt);
       return `<tr class="border-b border-slate-700/30 hover:bg-slate-700/30">
         <td class="px-3 py-2 text-slate-400 text-xs">${election}</td>
         <td class="px-3 py-2 text-slate-300 text-xs">${recipient}</td>
         <td class="px-3 py-2 text-slate-400 text-xs">${dateStr}</td>
         <td class="px-3 py-2 text-right text-xs font-semibold ${big ? 'text-red-400' : 'text-slate-300'}">${fmtAmount(amt)}</td>
         <td class="px-3 py-2 text-center">
-          <a href="${reportUrl}" target="_blank" onclick="onReport('${taxId}')"
+          <button onclick="openReportModal('${escHtml(donorName)}','${escHtml(recipient)}','${escHtml(election)}','${escHtml(dateStr)}',${amt})"
             class="text-xs bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded border border-red-800/50 transition-colors whitespace-nowrap">
             🚨 回報
-          </a>
+          </button>
         </td>
       </tr>`;
     }).join('');
@@ -398,14 +397,29 @@ function buildReportUrl(donor, recipient, election, date, amount) {
   params.set(ENTRY.donor, donor);
   params.set(ENTRY.recipient, `${recipient} (${election})`);
   params.set(ENTRY.details, `日期: ${date} / 金額: ${fmtAmount(amount)}`);
+  params.set('usp', 'pp_url');
+  params.set('embedded', 'true');
   return `${FORM_URL}?${params.toString()}`;
 }
 
-function onReport(taxId) {
+function openReportModal(donor, recipient, election, date, amount) {
+  const url = buildReportUrl(donor, recipient, election, date, amount);
+  document.getElementById('reportIframe').src = url;
+  document.getElementById('reportModal').classList.remove('hidden');
+  // Award badge when modal is opened
   const s = getStore();
   s.stats.reported = (s.stats.reported || 0) + 1;
   saveStore(s);
   awardBadge('FIRST_REPORT');
+}
+
+function closeReportModal() {
+  document.getElementById('reportModal').classList.add('hidden');
+  document.getElementById('reportIframe').src = '';
+  // Reload reports panel so new submission appears
+  reportsLoaded = false;
+  const panel = document.getElementById('reportsPanel');
+  if (panel && panel.open) loadReports();
 }
 
 // ============================================================

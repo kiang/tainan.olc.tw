@@ -32,6 +32,22 @@
   </div>
 </div>
 
+<!-- REPORT MODAL -->
+<div id="reportModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
+  <div class="bg-slate-900 border border-amber-500/50 rounded-2xl w-full max-w-2xl mx-4 flex flex-col shadow-2xl" style="max-height:90vh;">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-700">
+      <h2 class="text-base font-bold gold">🚨 回報疑似對價關係</h2>
+      <button onclick="closeReportModal()" class="text-slate-400 hover:text-white text-2xl leading-none transition-colors">&times;</button>
+    </div>
+    <div class="flex-1 overflow-hidden rounded-b-2xl">
+      <iframe id="reportIframe" src="" width="100%" height="100%"
+        style="min-height:520px; border:none; background:#fff;"
+        title="回報表單">
+      </iframe>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST CONTAINER -->
 <div id="toastContainer" class="fixed bottom-6 right-6 z-40 flex flex-col gap-2"></div>
 
