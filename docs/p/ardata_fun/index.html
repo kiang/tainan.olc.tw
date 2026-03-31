@@ -458,7 +458,7 @@ function renderBusinessTable(reset=false) {
     tr.innerHTML = `
       <td class="px-4 py-3 text-slate-400 text-xs">${item.rank}</td>
       <td class="px-4 py-3 font-mono text-slate-300">${item.taxId}</td>
-      <td class="px-4 py-3 text-slate-300" id="name-${item.taxId}"><span class="text-slate-600 text-xs italic">點擊載入</span></td>
+      <td class="px-4 py-3 text-slate-300" id="name-${item.taxId}">${item.name || item.taxId}</td>
       <td class="px-4 py-3 text-right font-bold ${big ? 'text-red-400' : 'text-slate-200'}">${fmtAmount(item.amount)}</td>
       <td class="px-4 py-3 text-center">
         <button onclick="expandDetail('${item.taxId}',${item.amount})" class="text-amber-400 hover:text-amber-300 text-lg" title="展開詳情">＋</button>
