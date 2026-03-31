@@ -352,27 +352,21 @@
 
     /* ── Subtitle overlay ── */
     .subtitle-overlay {
-      position: absolute;
-      bottom: 8%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      min-height: 2.8em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
       text-align: center;
-      pointer-events: none;
-      z-index: 10;
     }
     .subtitle-overlay span {
-      display: inline-block;
-      background: rgba(0, 0, 0, 0.75);
-      color: #fff;
-      font-size: clamp(0.85rem, 2vw, 1.15rem);
-      line-height: 1.5;
-      padding: 3px 10px;
-      border-radius: 3px;
+      color: var(--text);
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      line-height: 1.6;
       white-space: pre-wrap;
-      max-width: 100%;
     }
-    .subtitle-overlay:empty span { display: none; }
 
     /* ── Mobile bottom navigation ── */
     .mobile-nav {
@@ -456,8 +450,8 @@
         </svg>
         <span>選擇左側庭期或精華片段開始觀看</span>
       </div>
-      <div class="subtitle-overlay" id="subtitle-overlay"></div>
     </div>
+    <div class="subtitle-overlay" id="subtitle-overlay"></div>
     <div class="detail" id="detail">
       <div class="detail-empty">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" opacity="0.2">
@@ -487,7 +481,7 @@
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────
-const REPORTS = ["8mv8ZLz-Gt0.json", "eOh--4msRJo.json", "s1p7fcS-2-Q.json"];
+const REPORTS = ["8mv8ZLz-Gt0.json", "a7l2DHU72K4.json", "eOh--4msRJo.json", "s1p7fcS-2-Q.json"];
 let reports = {};          // video_id → report data
 let currentVideoId = null;
 let currentHighlight = null;
@@ -578,7 +572,7 @@ async function ensurePlayer(videoId, startSeconds) {
 
   // New video — destroy old player and create fresh one
   if (ytPlayer) { ytPlayer.destroy(); ytPlayer = null; }
-  wrap.innerHTML = '<div id="yt-iframe"></div><div class="subtitle-overlay" id="subtitle-overlay"></div>';
+  wrap.innerHTML = '<div id="yt-iframe"></div>';
 
   await new Promise(resolve => {
     ytPlayer = new YT.Player('yt-iframe', {
