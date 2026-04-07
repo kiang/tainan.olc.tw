@@ -13,9 +13,12 @@ function fmtNum(val) {
 }
 
 // ── State ──────────────────────────────────────────────────────────────────
+const LABEL_ZOOM = 13;
 let map, geoLayer, currentChart = null;
 let cunliSalary = {};
 let geoData = null;
+let featureBounds = [];   // [{ feature, minLat, maxLat, minLng, maxLng, layer? }]
+let layerCache = {};      // { VILLCODE: L.layer } — reuse layers across viewport updates
 let countrySort   = {};   // { VILLCODE: { year: { metric: rank } } }
 let sortedRanks   = {};   // { year: { metric: [villcode sorted desc] } }
 let cunliListPool = {};   // { year: { metric: { value: [VILLCODE...] } } }
@@ -99,6 +102,7 @@ function initMap() {
             if (!geolocationCentered) { map.setView(ll, 14); geolocationCentered = true; }
         }, null, { enableHighAccuracy: true });
     }
+    map.on('zoomend', updateLabelVisibility);
 }
 
 // ── TopoJSON → GeoJSON ─────────────────────────────────────────────────────
@@ -143,6 +147,7 @@ async function loadData() {
         geoData = topoToGeoJSON(await geoRes.json());
 
         buildIndexes();
+        buildFeatureBounds();
 
         // Extract village names
         for (const feat of geoData.features) {
@@ -232,32 +237,115 @@ function getFeatureStyle(feature) {
 }
 
 // ── Layer ─────────────────────────────────────────────────────────────────
-function renderLayer() {
-    if (geoLayer) map.removeLayer(geoLayer);
-    geoLayer = L.geoJSON(geoData, {
-        style: getFeatureStyle,
-        onEachFeature(feature, layer) {
-            layer.on({
-                mouseover(e) {
-                    if (e.target !== selectedLayer)
-                        e.target.setStyle({ weight: 2, color: '#1a252f', fillOpacity: 0.95 });
-                    e.target.bringToFront();
-                },
-                mouseout(e) {
-                    if (e.target !== selectedLayer) geoLayer.resetStyle(e.target);
-                },
-                click() { selectVillage(feature, layer); }
-            });
-            // Lightweight popup with key stats
-            layer.bindPopup(() => buildPopup(feature), { maxWidth: 260 });
+
+// Pre-compute bounding box for each feature (called once after geoData is ready)
+function buildFeatureBounds() {
+    featureBounds = geoData.features.map(feature => {
+        const coords = [];
+        function collect(c) {
+            if (Array.isArray(c[0])) { c.forEach(collect); }
+            else { coords.push(c); }
         }
-    }).addTo(map);
+        collect(feature.geometry.coordinates);
+        let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+        for (const [lng, lat] of coords) {
+            if (lat < minLat) minLat = lat; if (lat > maxLat) maxLat = lat;
+            if (lng < minLng) minLng = lng; if (lng > maxLng) maxLng = lng;
+        }
+        return { feature, minLat, maxLat, minLng, maxLng };
+    });
+}
+
+function makeLayer(feature) {
+    const vc = feature.properties.VILLCODE;
+    const layer = L.geoJSON(feature, { style: getFeatureStyle });
+    // L.geoJSON wraps in a FeatureGroup; get the actual path layer
+    let path;
+    layer.eachLayer(l => { path = l; });
+    path.feature = feature;
+    path.on({
+        mouseover(e) {
+            if (e.target !== selectedLayer)
+                e.target.setStyle({ weight: 2, color: '#1a252f', fillOpacity: 0.95 });
+            e.target.bringToFront();
+        },
+        mouseout(e) {
+            if (e.target !== selectedLayer) {
+                e.target.setStyle(getFeatureStyle(feature));
+            }
+        },
+        click() { selectVillage(feature, path); }
+    });
+    path.bindPopup(() => buildPopup(feature), { maxWidth: 260 });
+    path.bindTooltip(feature.properties.VILLNAME, {
+        permanent: true, direction: 'center', className: 'cunli-label'
+    });
+    layerCache[vc] = path;
+    return path;
+}
+
+function renderLayer() {
+    if (!geoLayer) {
+        geoLayer = L.layerGroup().addTo(map);
+        map.on('moveend', updateViewport);
+    }
+    // Clear existing layers from group but keep layerCache for reuse
+    geoLayer.clearLayers();
+    // Reset selected if any
+    if (selectedLayer) selectedLayer = null;
+    updateViewport();
+}
+
+function updateViewport() {
+    if (!geoData || !geoLayer) return;
+    const bounds = map.getBounds();
+    const s = bounds.getSouth(), n = bounds.getNorth();
+    const w = bounds.getWest(),  e = bounds.getEast();
+
+    // Track which VILLCODEs should be visible
+    const visible = new Set();
+    for (const fb of featureBounds) {
+        if (fb.maxLat < s || fb.minLat > n || fb.maxLng < w || fb.minLng > e) continue;
+        visible.add(fb.feature.properties.VILLCODE);
+    }
+
+    // Remove layers no longer in viewport (except selectedLayer)
+    const toRemove = [];
+    geoLayer.eachLayer(layer => {
+        const vc = layer.feature && layer.feature.properties.VILLCODE;
+        if (vc && !visible.has(vc) && layer !== selectedLayer) toRemove.push(layer);
+    });
+    toRemove.forEach(l => geoLayer.removeLayer(l));
+
+    // Add new layers that entered the viewport
+    const existing = new Set();
+    geoLayer.eachLayer(layer => {
+        if (layer.feature) existing.add(layer.feature.properties.VILLCODE);
+    });
+
+    for (const fb of featureBounds) {
+        const vc = fb.feature.properties.VILLCODE;
+        if (!visible.has(vc) || existing.has(vc)) continue;
+        const layer = layerCache[vc] || makeLayer(fb.feature);
+        geoLayer.addLayer(layer);
+    }
+
+    updateLabelVisibility();
+}
+
+function updateLabelVisibility() {
+    if (!geoLayer) return;
+    const show = map.getZoom() >= LABEL_ZOOM;
+    geoLayer.eachLayer(layer => {
+        const tt = layer.getTooltip ? layer.getTooltip() : null;
+        if (tt) show ? layer.openTooltip() : layer.closeTooltip();
+    });
 }
 
 function refreshStyles() {
     if (!geoLayer) return;
     geoLayer.eachLayer(layer => {
-        if (layer !== selectedLayer) layer.setStyle(getFeatureStyle(layer.feature));
+        if (layer !== selectedLayer && layer.feature) layer.setStyle(getFeatureStyle(layer.feature));
     });
     updateRankingList();
 }
@@ -307,7 +395,7 @@ function buildPopup(feature) {
 
 // ── Village selection ─────────────────────────────────────────────────────
 function selectVillage(feature, layer) {
-    if (selectedLayer && selectedLayer !== layer) geoLayer.resetStyle(selectedLayer);
+    if (selectedLayer && selectedLayer !== layer) selectedLayer.setStyle(getFeatureStyle(selectedLayer.feature));
     selectedLayer = layer;
     layer.setStyle({ weight: 3, color: '#e74c3c', fillColor: 'rgba(255,230,50,0.65)', fillOpacity: 0.9 });
     layer.bringToFront();
@@ -441,11 +529,21 @@ function updateRankingList() {
 }
 
 function navigateToVillcode(vc) {
-    if (!geoLayer) return;
-    geoLayer.eachLayer(layer => {
-        if (layer.feature && layer.feature.properties.VILLCODE === vc)
-            selectVillage(layer.feature, layer);
-    });
+    if (!geoData) return;
+    // Find feature in full dataset
+    const fb = featureBounds.find(f => f.feature.properties.VILLCODE === vc);
+    if (!fb) return;
+    // Pan map to feature bounds — this triggers moveend → updateViewport → layer appears
+    const llBounds = L.latLngBounds(
+        [fb.minLat, fb.minLng], [fb.maxLat, fb.maxLng]
+    );
+    map.fitBounds(llBounds, { maxZoom: 16 });
+    // After viewport update the layer will be in layerCache; select it
+    // Use setTimeout to run after updateViewport's moveend handler
+    map.once('moveend', () => setTimeout(() => {
+        const layer = layerCache[vc];
+        if (layer) selectVillage(fb.feature, layer);
+    }, 0));
 }
 
 // ── Search ────────────────────────────────────────────────────────────────
