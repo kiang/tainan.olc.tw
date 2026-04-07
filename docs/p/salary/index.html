@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣所得地圖</title>
+
+    <meta property="og:title" content="台灣所得地圖">
+    <meta property="og:description" content="台灣各村里所得分布地圖，涵蓋2011-2023年度資料">
+    <meta property="og:image" content="https://tainan.olc.tw/p/salary/og_image.png">
+    <meta property="og:url" content="https://tainan.olc.tw/p/salary/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="台灣所得地圖">
+    <meta name="twitter:description" content="台灣各村里所得分布地圖，涵蓋2011-2023年度資料">
+    <meta name="twitter:image" content="https://tainan.olc.tw/p/salary/og_image.png">
+
+    <meta name="description" content="台灣各村里所得分布互動地圖，可查看平均數、中位數、標準差及分位數等統計指標，涵蓋2011-2023年度資料">
+    <meta name="keywords" content="台灣,所得,收入,地圖,村里,統計,課稅資料">
+    <meta name="author" content="江明宗">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            background: #f8f9fa;
+            flex-shrink: 0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: #2c3e50;
+            border-bottom-color: #2c3e50;
+            background: white;
+            font-weight: bold;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .tab-pane {
+            display: none;
+            padding: 15px;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Legend */
+        .legend-block {
+            margin-bottom: 12px;
+        }
+
+        .legend-block h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 14px;
+            border: 1px solid #ccc;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .disclaimer {
+            font-size: 11px;
+            color: #888;
+            margin-top: 12px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #ddd;
+        }
+
+        /* Controls */
+        .control-section {
+            margin-bottom: 15px;
+        }
+
+        .control-section h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .btn-group-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            background: white;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #e9ecef;
+        }
+
+        .btn.active {
+            background: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+
+        .btn-metric {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+
+        .btn-city {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+
+        /* Village detail */
+        #village-detail h3 {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+
+        #village-detail .detail-unit {
+            font-size: 11px;
+            color: #888;
+            text-align: right;
+            margin-bottom: 4px;
+        }
+
+        #village-detail table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        #village-detail table thead th {
+            background: #f0f0f0;
+            padding: 4px 3px;
+            text-align: center;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+        }
+
+        #village-detail table tbody td {
+            padding: 3px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        #village-detail table tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        #village-chart-container {
+            margin-top: 10px;
+        }
+
+        /* Ranking list */
+        #ranking-content table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+        }
+
+        #ranking-content table thead th {
+            background: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+        }
+
+        #ranking-content table tbody td {
+            padding: 4px 5px;
+            border: 1px solid #eee;
+        }
+
+        #ranking-content table tbody tr:hover {
+            background: #f0f8ff;
+        }
+
+        #ranking-content a {
+            color: #2c3e50;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #ranking-content a:hover {
+            text-decoration: underline;
+        }
+
+        .rank-value {
+            font-weight: bold;
+            color: #c0392b;
+        }
+
+        /* Author credit */
+        .author-credit {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .author-credit a {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .author-credit a:hover { text-decoration: underline; }
+
+        /* Map */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.93);
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                min-width: unset;
+                height: 50vh;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1001;
+            }
+
+            .sidebar.open {
+                transform: translateY(0);
+            }
+
+            .map-container {
+                height: 100vh;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">台灣所得地圖</div>
+
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" data-tab="info">資訊</button>
+                <button class="tab-btn" data-tab="controls">設定</button>
+                <button class="tab-btn" data-tab="ranking">排名</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Info tab -->
+                <div class="tab-pane active" id="tab-info">
+                    <div id="village-detail">
+                        <p style="color:#888;font-size:13px;">點擊地圖上的村里查看詳細所得資料</p>
+                    </div>
+
+                    <div class="legend-block">
+                        <h4>圖例 (單位：千元)</h4>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(255,255,255,0.8);"></div>無資料</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(254,232,200,0.7);"></div>≤ 300</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(253,212,158,0.7);"></div>≤ 400</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(253,187,132,0.7);"></div>≤ 500</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(252,141,89,0.7);"></div>≤ 700</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(239,101,72,0.7);"></div>≤ 900</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(215,48,31,0.7);"></div>≤ 1100</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(179,0,0,0.7);"></div>≤ 1300</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(127,0,0,0.7);"></div>≤ 1500</div>
+                        <div class="legend-item"><div class="legend-color" style="background:rgba(64,0,0,0.7);"></div>&gt; 1500</div>
+                    </div>
+
+                    <div class="disclaimer">
+                        ※ 本統計之所得為課稅資料，未納入「政府移轉支出」各戶所得、免稅所得、分離課稅所得等資料，故不宜逕作為衡量所得差距之參據，相關所得資料應以行政院主計總處公布之資料為準。
+                    </div>
+                </div>
+
+                <!-- Controls tab -->
+                <div class="tab-pane" id="tab-controls">
+                    <div class="control-section">
+                        <h4>統計指標</h4>
+                        <button class="btn btn-metric" data-metric="mid">中位數</button>
+                        <button class="btn btn-metric active" data-metric="avg">平均數</button>
+                        <button class="btn btn-metric" data-metric="sd">標準差</button>
+                        <button class="btn btn-metric" data-metric="mid1">第一分位數</button>
+                        <button class="btn btn-metric" data-metric="mid3">第三分位數</button>
+                    </div>
+
+                    <div class="control-section">
+                        <h4>年度</h4>
+                        <div class="btn-group-wrap" id="year-buttons">
+                            <button class="btn active" data-year="2023">2023</button>
+                            <button class="btn" data-year="2022">2022</button>
+                            <button class="btn" data-year="2021">2021</button>
+                            <button class="btn" data-year="2020">2020</button>
+                            <button class="btn" data-year="2019">2019</button>
+                            <button class="btn" data-year="2018">2018</button>
+                            <button class="btn" data-year="2017">2017</button>
+                            <button class="btn" data-year="2016">2016</button>
+                            <button class="btn" data-year="2015">2015</button>
+                            <button class="btn" data-year="2014">2014</button>
+                            <button class="btn" data-year="2013">2013</button>
+                            <button class="btn" data-year="2012">2012</button>
+                            <button class="btn" data-year="2011">2011</button>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h4>快速定位</h4>
+                        <div class="btn-group-wrap">
+                            <button class="btn btn-city" data-lat="25.053699" data-lng="121.507837">台北</button>
+                            <button class="btn btn-city" data-lat="24.752504" data-lng="121.771097">宜蘭</button>
+                            <button class="btn btn-city" data-lat="24.804498" data-lng="120.988528">新竹</button>
+                            <button class="btn btn-city" data-lat="24.167804" data-lng="120.658214">台中</button>
+                            <button class="btn btn-city" data-lat="23.477332" data-lng="120.430085">嘉義</button>
+                            <button class="btn btn-city" data-lat="22.996169" data-lng="120.201330">台南</button>
+                            <button class="btn btn-city" data-lat="22.643894" data-lng="120.317828">高雄</button>
+                            <button class="btn btn-city" data-lat="22.674185" data-lng="120.501103">屏東</button>
+                            <button class="btn btn-city" data-lat="23.999479" data-lng="121.606658">花蓮</button>
+                            <button class="btn btn-city" data-lat="22.793229" data-lng="121.124322">台東</button>
+                            <button class="btn btn-city" data-lat="23.962005" data-lng="120.963292">南投</button>
+                            <button class="btn btn-city" data-lat="23.561951" data-lng="119.608123">澎湖</button>
+                            <button class="btn btn-city" data-lat="24.446522" data-lng="118.376170">金門</button>
+                            <button class="btn btn-city" data-lat="26.149491" data-lng="119.936241">馬祖</button>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <button id="locate-btn" class="btn" style="width:100%;background:#3498db;color:white;border-color:#3498db;">📍 定位到我的村里</button>
+                    </div>
+                </div>
+
+                <!-- Ranking tab -->
+                <div class="tab-pane" id="tab-ranking">
+                    <div id="ranking-content">
+                        <p style="color:#888;font-size:13px;">載入資料後顯示排名</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="author-credit">
+                <a href="https://www.facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
+                &nbsp;|&nbsp;
+                <a href="https://github.com/kiang/salary" target="_blank">原始碼</a>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <button class="sidebar-toggle" id="sidebar-toggle">☰ 選單</button>
+            <div id="map"></div>
+            <div class="loading-overlay" id="loading">載入所得資料中，請稍候...</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
