@@ -32,8 +32,15 @@ const TW_AREAS = {
 };
 
 // ── LocalStorage keys ──────────────────────────────────────────
-const KEY_ISSUES = 'helpyou_issues';
-const KEY_DRAFT  = 'helpyou_draft';
+const KEY_ISSUES  = 'helpyou_issues';
+const KEY_DRAFT   = 'helpyou_draft';
+const KEY_PROFILE = 'helpyou_profile';
+
+// Personal info fields — saved as profile, restored on every page load
+const PROFILE_FIELDS = ['name','idno','mobile','email','zip','county','district','address',
+                        'phone','fax','lineId','org','jobTitle','edu','party','age','gender'];
+// Petition content fields — only restored from draft
+const CONTENT_FIELDS = ['category','content','demand'];
 
 // ── State ─────────────────────────────────────────────────────
 let issues = [];
@@ -46,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadIssues();
   populateCounty();
   bindFormEvents();
+  restoreProfile();
   restoreDraft();
   renderDashboard();
 
@@ -120,21 +128,36 @@ function scheduleDraftSave() {
   draftTimer = setTimeout(saveDraft, 1500);
 }
 
-// ── Draft save / restore ───────────────────────────────────────
+// ── Draft / profile save & restore ────────────────────────────
 function saveDraft() {
   const data = collectFormData();
+  // Always persist personal info as profile
+  const profile = {};
+  PROFILE_FIELDS.forEach(f => { if (data[f] !== undefined) profile[f] = data[f]; });
+  localStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
+  // Save full form as draft (includes content fields)
   localStorage.setItem(KEY_DRAFT, JSON.stringify(data));
   const el = document.getElementById('draft-saved');
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
 }
 
+function restoreProfile() {
+  // Always pre-fill personal info on load
+  const raw = localStorage.getItem(KEY_PROFILE);
+  if (!raw) return;
+  try { applyFormData(JSON.parse(raw)); } catch(e) { /* ignore */ }
+}
+
 function restoreDraft() {
+  // Only restore petition content from draft (personal info already restored via profile)
   const raw = localStorage.getItem(KEY_DRAFT);
   if (!raw) return;
   try {
     const data = JSON.parse(raw);
-    applyFormData(data);
+    const contentOnly = {};
+    CONTENT_FIELDS.forEach(f => { if (data[f] !== undefined) contentOnly[f] = data[f]; });
+    applyFormData(contentOnly);
   } catch(e) { /* ignore */ }
 }
 
@@ -256,13 +279,25 @@ function handleSubmit() {
 
   issues.unshift(issue);
   saveIssues();
+  // Clear draft content but keep profile so personal info stays pre-filled
   localStorage.removeItem(KEY_DRAFT);
+  clearContentFields();
 
   // POST directly to official site in a new tab — browser treats this as a
   // normal form navigation (not XHR), so CORS doesn't apply.
   // The server ignores the missing CSRF token and returns the form pre-filled;
   // the user only needs to complete reCAPTCHA and click submit.
   submitToOfficial(data);
+}
+
+function clearContentFields() {
+  const form = document.getElementById('petition-form');
+  CONTENT_FIELDS.forEach(f => {
+    const el = form.elements[f] || document.getElementById('f-' + f);
+    if (el) el.value = '';
+  });
+  document.getElementById('demand-count').textContent = '0';
+  document.getElementById('f-confirm').checked = false;
 }
 
 function submitToOfficial(data) {
