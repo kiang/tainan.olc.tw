@@ -6,21 +6,14 @@
     <title>台灣所得地圖</title>
 
     <meta property="og:title" content="台灣所得地圖">
-    <meta property="og:description" content="台灣各村里所得分布地圖，涵蓋2011-2023年度資料">
+    <meta property="og:description" content="台灣各村里所得分布地圖，涵蓋2011-2023年度資料，可查看排名、趨勢與貧富差距">
     <meta property="og:image" content="https://tainan.olc.tw/p/salary/og_image.png">
     <meta property="og:url" content="https://tainan.olc.tw/p/salary/">
     <meta property="og:type" content="website">
-
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="台灣所得地圖">
-    <meta name="twitter:description" content="台灣各村里所得分布地圖，涵蓋2011-2023年度資料">
-    <meta name="twitter:image" content="https://tainan.olc.tw/p/salary/og_image.png">
-
-    <meta name="description" content="台灣各村里所得分布互動地圖，可查看平均數、中位數、標準差及分位數等統計指標，涵蓋2011-2023年度資料">
-    <meta name="keywords" content="台灣,所得,收入,地圖,村里,統計,課稅資料">
+    <meta name="description" content="台灣各村里所得分布互動地圖，支援快照與年度變化兩種檢視模式，可查看平均數、中位數、貧富差距等統計指標">
     <meta name="author" content="江明宗">
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -32,458 +25,369 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            background: #f5f5f5;
-        }
+        .app { display: flex; height: 100vh; }
 
-        .app-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Sidebar */
+        /* ── Sidebar ── */
         .sidebar {
-            width: 320px;
-            min-width: 320px;
+            width: 320px; min-width: 320px;
             background: white;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             box-shadow: 2px 0 6px rgba(0,0,0,0.15);
-            z-index: 1000;
-            overflow: hidden;
+            z-index: 1000; overflow: hidden;
         }
-
         .sidebar-header {
-            background: #2c3e50;
-            color: white;
-            padding: 12px 15px;
-            font-size: 18px;
-            font-weight: bold;
+            background: #1a252f; color: white;
+            padding: 12px 15px; font-size: 17px; font-weight: bold;
+            display: flex; align-items: center; justify-content: space-between;
             flex-shrink: 0;
         }
+        .sidebar-header small { font-size: 11px; font-weight: normal; opacity: 0.7; }
 
-        .sidebar-tabs {
-            display: flex;
-            border-bottom: 2px solid #e0e0e0;
-            background: #f8f9fa;
-            flex-shrink: 0;
+        /* ── Tabs ── */
+        .tabs {
+            display: flex; border-bottom: 2px solid #e0e0e0;
+            background: #f8f9fa; flex-shrink: 0;
         }
+        .tab { flex: 1; padding: 9px 4px; border: none; background: none; cursor: pointer;
+            font-size: 12px; color: #666; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .tab.active { color: #1a252f; border-bottom-color: #1a252f; background: white; font-weight: bold; }
+        .tab:hover:not(.active) { background: #e9ecef; }
 
-        .tab-btn {
-            flex: 1;
-            padding: 10px 4px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 12px;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
+        .tab-content { flex: 1; overflow-y: auto; }
+        .tab-pane { display: none; padding: 14px; }
+        .tab-pane.active { display: block; }
+
+        /* ── Search ── */
+        .search-wrap { position: relative; margin-bottom: 12px; }
+        .search-wrap input {
+            width: 100%; padding: 8px 32px 8px 10px;
+            border: 1px solid #ccc; border-radius: 4px; font-size: 13px;
         }
-
-        .tab-btn.active {
-            color: #2c3e50;
-            border-bottom-color: #2c3e50;
-            background: white;
-            font-weight: bold;
+        .search-wrap input:focus { outline: none; border-color: #1a252f; }
+        .search-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #999; pointer-events: none; }
+        .search-results {
+            position: absolute; top: 100%; left: 0; right: 0; z-index: 9999;
+            background: white; border: 1px solid #ccc; border-top: none;
+            border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .tab-btn:hover {
-            background: #e9ecef;
+        .search-result-item {
+            padding: 8px 10px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #f0f0f0;
         }
+        .search-result-item:hover { background: #f0f8ff; }
+        .search-result-item:last-child { border-bottom: none; }
 
-        .tab-content {
-            flex: 1;
-            overflow-y: auto;
+        /* ── Mode selector ── */
+        .mode-row { display: flex; gap: 6px; margin-bottom: 12px; }
+        .mode-btn {
+            flex: 1; padding: 7px 4px; border: 1px solid #ccc; border-radius: 4px;
+            cursor: pointer; font-size: 12px; background: white; color: #555; text-align: center; transition: all 0.2s;
         }
+        .mode-btn.active { background: #1a252f; color: white; border-color: #1a252f; }
 
-        .tab-pane {
-            display: none;
-            padding: 15px;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        /* Legend */
-        .legend-block {
-            margin-bottom: 12px;
-        }
-
-        .legend-block h4 {
-            margin: 0 0 8px 0;
-            font-size: 13px;
-            color: #555;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-            font-size: 12px;
-        }
-
-        .legend-color {
-            width: 18px;
-            height: 14px;
-            border: 1px solid #ccc;
-            margin-right: 8px;
-            flex-shrink: 0;
-        }
-
-        .disclaimer {
-            font-size: 11px;
-            color: #888;
-            margin-top: 12px;
-            padding: 8px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            border-left: 3px solid #ddd;
-        }
-
-        /* Controls */
-        .control-section {
-            margin-bottom: 15px;
-        }
-
-        .control-section h4 {
-            margin: 0 0 8px 0;
-            font-size: 13px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        .btn-group-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
+        /* ── Controls ── */
+        .ctrl-section { margin-bottom: 14px; }
+        .ctrl-label { font-size: 11px; font-weight: bold; color: #888; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 6px; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 4px; }
         .btn {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            background: white;
-            color: #333;
-            transition: all 0.2s;
+            padding: 5px 9px; border: 1px solid #ccc; border-radius: 4px;
+            cursor: pointer; font-size: 12px; background: white; color: #333; transition: all 0.2s;
+        }
+        .btn:hover { background: #e9ecef; }
+        .btn.active { background: #1a252f; color: white; border-color: #1a252f; }
+        .btn-full { width: 100%; text-align: center; margin-bottom: 4px; }
+        .btn-city { font-size: 11px; padding: 4px 7px; }
+
+        /* compare base year */
+        .base-year-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .base-year-row label { font-size: 12px; color: #555; white-space: nowrap; }
+        .base-year-row select {
+            flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px;
         }
 
-        .btn:hover {
-            background: #e9ecef;
+        /* ── Village detail ── */
+        #village-detail { min-height: 60px; }
+        .detail-name { font-size: 15px; font-weight: bold; color: #1a252f; margin: 0 0 8px 0; }
+        .detail-rank {
+            display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
         }
-
-        .btn.active {
-            background: #2c3e50;
-            color: white;
-            border-color: #2c3e50;
+        .rank-badge {
+            background: #f0f4f8; border: 1px solid #d0dce8; border-radius: 4px;
+            padding: 4px 8px; font-size: 11px; line-height: 1.4;
         }
+        .rank-badge strong { display: block; font-size: 14px; color: #c0392b; }
+        .rank-badge span { color: #666; }
 
-        .btn-metric {
-            width: 100%;
-            text-align: left;
-            margin-bottom: 4px;
+        .detail-table-wrap { overflow-x: auto; margin: 8px 0; }
+        .detail-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+        .detail-table th {
+            background: #f0f0f0; padding: 4px 3px; text-align: center;
+            border: 1px solid #ddd; white-space: nowrap; position: sticky; top: 0;
         }
+        .detail-table td { padding: 3px; text-align: center; border: 1px solid #eee; white-space: nowrap; }
+        .detail-table tr:hover td { background: #f5f8ff; }
+        .detail-table tr.current-year td { background: #fff8e1; font-weight: bold; }
 
-        .btn-city {
-            font-size: 11px;
-            padding: 4px 8px;
+        /* ── Legend ── */
+        .legend-block { margin-bottom: 12px; }
+        .legend-title { font-size: 12px; font-weight: bold; color: #555; margin-bottom: 6px; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 3px; font-size: 11px; }
+        .legend-swatch { width: 18px; height: 13px; border: 1px solid #ccc; margin-right: 7px; flex-shrink: 0; }
+
+        /* ── Ranking ── */
+        #ranking-content h4 { margin: 0 0 8px 0; font-size: 13px; color: #1a252f; }
+        .rank-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+        .rank-table th { background: #f0f0f0; padding: 5px; border: 1px solid #ddd; }
+        .rank-table td { padding: 4px 5px; border: 1px solid #eee; }
+        .rank-table tr:hover td { background: #f0f8ff; }
+        .rank-table a { color: #1a252f; text-decoration: none; cursor: pointer; }
+        .rank-table a:hover { text-decoration: underline; }
+        .rank-val { font-weight: bold; color: #c0392b; }
+
+        /* ── Footer ── */
+        .sidebar-footer {
+            padding: 8px 14px; background: #f8f9fa; border-top: 1px solid #ddd;
+            font-size: 11px; text-align: center; flex-shrink: 0; color: #666;
         }
+        .sidebar-footer a { color: #1a252f; text-decoration: none; }
+        .sidebar-footer a:hover { text-decoration: underline; }
 
-        /* Village detail */
-        #village-detail h3 {
-            margin: 0 0 8px 0;
-            font-size: 15px;
-            color: #2c3e50;
-        }
-
-        #village-detail .detail-unit {
-            font-size: 11px;
-            color: #888;
-            text-align: right;
-            margin-bottom: 4px;
-        }
-
-        #village-detail table {
-            width: 100%;
-            font-size: 11px;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-
-        #village-detail table thead th {
-            background: #f0f0f0;
-            padding: 4px 3px;
-            text-align: center;
-            border: 1px solid #ddd;
-            white-space: nowrap;
-        }
-
-        #village-detail table tbody td {
-            padding: 3px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        #village-detail table tbody tr:hover {
-            background: #f5f5f5;
-        }
-
-        #village-chart-container {
-            margin-top: 10px;
-        }
-
-        /* Ranking list */
-        #ranking-content table {
-            width: 100%;
-            font-size: 11px;
-            border-collapse: collapse;
-        }
-
-        #ranking-content table thead th {
-            background: #f0f0f0;
-            padding: 5px;
-            border: 1px solid #ddd;
-            position: sticky;
-            top: 0;
-        }
-
-        #ranking-content table tbody td {
-            padding: 4px 5px;
-            border: 1px solid #eee;
-        }
-
-        #ranking-content table tbody tr:hover {
-            background: #f0f8ff;
-        }
-
-        #ranking-content a {
-            color: #2c3e50;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #ranking-content a:hover {
-            text-decoration: underline;
-        }
-
-        .rank-value {
-            font-weight: bold;
-            color: #c0392b;
-        }
-
-        /* Author credit */
-        .author-credit {
-            padding: 10px 15px;
-            background: #f8f9fa;
-            border-top: 1px solid #ddd;
-            font-size: 12px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .author-credit a {
-            color: #2c3e50;
-            text-decoration: none;
-        }
-
-        .author-credit a:hover { text-decoration: underline; }
-
-        /* Map */
-        .map-container {
-            flex: 1;
-            position: relative;
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-        }
+        /* ── Map ── */
+        .map-wrap { flex: 1; position: relative; }
+        #map { width: 100%; height: 100%; }
 
         .loading-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,255,255,0.93);
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 2000;
-            text-align: center;
-            font-size: 14px;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95); padding: 20px 30px;
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000; text-align: center; font-size: 14px; min-width: 200px;
         }
+        .loading-bar {
+            height: 4px; background: #e0e0e0; border-radius: 2px; margin-top: 10px; overflow: hidden;
+        }
+        .loading-bar-inner {
+            height: 100%; background: #1a252f; border-radius: 2px;
+            animation: loadpulse 1.2s ease-in-out infinite;
+        }
+        @keyframes loadpulse { 0%,100%{width:20%} 50%{width:80%} }
 
-        /* Mobile sidebar toggle */
+        /* Mobile */
         .sidebar-toggle {
-            display: none;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1001;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 8px 12px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            font-size: 13px;
+            display: none; position: absolute; top: 10px; right: 10px; z-index: 1001;
+            background: white; border: 1px solid #ddd; border-radius: 4px;
+            padding: 8px 12px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px;
         }
-
         @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-
+            .app { flex-direction: column; }
             .sidebar {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                min-width: unset;
-                height: 50vh;
-                transform: translateY(-100%);
-                transition: transform 0.3s ease;
-                z-index: 1001;
+                position: absolute; top: 0; left: 0; width: 100%; min-width: unset;
+                height: 55vh; transform: translateY(-100%); transition: transform 0.3s ease; z-index: 1001;
             }
-
-            .sidebar.open {
-                transform: translateY(0);
-            }
-
-            .map-container {
-                height: 100vh;
-            }
-
-            .sidebar-toggle {
-                display: block;
-            }
+            .sidebar.open { transform: translateY(0); }
+            .map-wrap { height: 100vh; }
+            .sidebar-toggle { display: block; }
         }
+
+        /* Leaflet popup override */
+        .leaflet-popup-content { margin: 10px 14px; min-width: 180px; }
+        .popup-name { font-weight: bold; font-size: 13px; margin-bottom: 6px; }
+        .popup-stat { display: flex; justify-content: space-between; font-size: 12px;
+            padding: 2px 0; border-bottom: 1px solid #f0f0f0; }
+        .popup-stat:last-child { border-bottom: none; }
+        .popup-stat .label { color: #666; }
+        .popup-stat .value { font-weight: bold; color: #1a252f; }
+        .popup-rank { font-size: 11px; color: #999; margin-top: 5px; }
+        .popup-change-pos { color: #27ae60; font-weight: bold; }
+        .popup-change-neg { color: #c0392b; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">台灣所得地圖</div>
-
-            <div class="sidebar-tabs">
-                <button class="tab-btn active" data-tab="info">資訊</button>
-                <button class="tab-btn" data-tab="controls">設定</button>
-                <button class="tab-btn" data-tab="ranking">排名</button>
-            </div>
-
-            <div class="tab-content">
-                <!-- Info tab -->
-                <div class="tab-pane active" id="tab-info">
-                    <div id="village-detail">
-                        <p style="color:#888;font-size:13px;">點擊地圖上的村里查看詳細所得資料</p>
-                    </div>
-
-                    <div class="legend-block">
-                        <h4>圖例</h4>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(255,255,255,0.8);"></div>無資料</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(254,232,200,0.7);"></div>≤ 30 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(253,212,158,0.7);"></div>≤ 40 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(253,187,132,0.7);"></div>≤ 50 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(252,141,89,0.7);"></div>≤ 70 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(239,101,72,0.7);"></div>≤ 90 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(215,48,31,0.7);"></div>≤ 110 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(179,0,0,0.7);"></div>≤ 130 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(127,0,0,0.7);"></div>≤ 150 萬</div>
-                        <div class="legend-item"><div class="legend-color" style="background:rgba(64,0,0,0.7);"></div>&gt; 150 萬</div>
-                    </div>
-
-                    <div class="disclaimer">
-                        ※ 本統計之所得為課稅資料，未納入「政府移轉支出」各戶所得、免稅所得、分離課稅所得等資料，故不宜逕作為衡量所得差距之參據，相關所得資料應以行政院主計總處公布之資料為準。
-                    </div>
-                </div>
-
-                <!-- Controls tab -->
-                <div class="tab-pane" id="tab-controls">
-                    <div class="control-section">
-                        <h4>統計指標</h4>
-                        <button class="btn btn-metric" data-metric="mid">中位數</button>
-                        <button class="btn btn-metric active" data-metric="avg">平均數</button>
-                        <button class="btn btn-metric" data-metric="sd">標準差</button>
-                        <button class="btn btn-metric" data-metric="mid1">第一分位數</button>
-                        <button class="btn btn-metric" data-metric="mid3">第三分位數</button>
-                    </div>
-
-                    <div class="control-section">
-                        <h4>年度</h4>
-                        <div class="btn-group-wrap" id="year-buttons">
-                            <button class="btn active" data-year="2023">2023</button>
-                            <button class="btn" data-year="2022">2022</button>
-                            <button class="btn" data-year="2021">2021</button>
-                            <button class="btn" data-year="2020">2020</button>
-                            <button class="btn" data-year="2019">2019</button>
-                            <button class="btn" data-year="2018">2018</button>
-                            <button class="btn" data-year="2017">2017</button>
-                            <button class="btn" data-year="2016">2016</button>
-                            <button class="btn" data-year="2015">2015</button>
-                            <button class="btn" data-year="2014">2014</button>
-                            <button class="btn" data-year="2013">2013</button>
-                            <button class="btn" data-year="2012">2012</button>
-                            <button class="btn" data-year="2011">2011</button>
-                        </div>
-                    </div>
-
-                    <div class="control-section">
-                        <h4>快速定位</h4>
-                        <div class="btn-group-wrap">
-                            <button class="btn btn-city" data-lat="25.053699" data-lng="121.507837">台北</button>
-                            <button class="btn btn-city" data-lat="24.752504" data-lng="121.771097">宜蘭</button>
-                            <button class="btn btn-city" data-lat="24.804498" data-lng="120.988528">新竹</button>
-                            <button class="btn btn-city" data-lat="24.167804" data-lng="120.658214">台中</button>
-                            <button class="btn btn-city" data-lat="23.477332" data-lng="120.430085">嘉義</button>
-                            <button class="btn btn-city" data-lat="22.996169" data-lng="120.201330">台南</button>
-                            <button class="btn btn-city" data-lat="22.643894" data-lng="120.317828">高雄</button>
-                            <button class="btn btn-city" data-lat="22.674185" data-lng="120.501103">屏東</button>
-                            <button class="btn btn-city" data-lat="23.999479" data-lng="121.606658">花蓮</button>
-                            <button class="btn btn-city" data-lat="22.793229" data-lng="121.124322">台東</button>
-                            <button class="btn btn-city" data-lat="23.962005" data-lng="120.963292">南投</button>
-                            <button class="btn btn-city" data-lat="23.561951" data-lng="119.608123">澎湖</button>
-                            <button class="btn btn-city" data-lat="24.446522" data-lng="118.376170">金門</button>
-                            <button class="btn btn-city" data-lat="26.149491" data-lng="119.936241">馬祖</button>
-                        </div>
-                    </div>
-
-                    <div class="control-section">
-                        <button id="locate-btn" class="btn" style="width:100%;background:#3498db;color:white;border-color:#3498db;">📍 定位到我的村里</button>
-                    </div>
-                </div>
-
-                <!-- Ranking tab -->
-                <div class="tab-pane" id="tab-ranking">
-                    <div id="ranking-content">
-                        <p style="color:#888;font-size:13px;">載入資料後顯示排名</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="author-credit">
-                <a href="https://www.facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
-                &nbsp;|&nbsp;
-                <a href="https://github.com/kiang/salary" target="_blank">原始碼</a>
-            </div>
+<div class="app">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            台灣所得地圖
+            <small>2011–2023</small>
         </div>
 
-        <div class="map-container">
-            <button class="sidebar-toggle" id="sidebar-toggle">☰ 選單</button>
-            <div id="map"></div>
-            <div class="loading-overlay" id="loading">載入所得資料中，請稍候...</div>
+        <div class="tabs">
+            <button class="tab active" data-tab="explore">探索</button>
+            <button class="tab" data-tab="village">村里</button>
+            <button class="tab" data-tab="ranking">排名</button>
+            <button class="tab" data-tab="legend">圖例</button>
+        </div>
+
+        <div class="tab-content">
+
+            <!-- ── Explore tab ── -->
+            <div class="tab-pane active" id="tab-explore">
+
+                <!-- Search -->
+                <div class="search-wrap">
+                    <input type="text" id="search-input" placeholder="搜尋村里名稱…" autocomplete="off">
+                    <span class="search-icon">🔍</span>
+                    <div class="search-results" id="search-results" style="display:none;"></div>
+                </div>
+
+                <!-- View mode -->
+                <div class="ctrl-section">
+                    <div class="ctrl-label">檢視模式</div>
+                    <div class="mode-row">
+                        <button class="mode-btn active" data-mode="snapshot">快照</button>
+                        <button class="mode-btn" data-mode="change">年度變化</button>
+                        <button class="mode-btn" data-mode="inequality">貧富差距</button>
+                    </div>
+                </div>
+
+                <!-- Metric -->
+                <div class="ctrl-section">
+                    <div class="ctrl-label">指標</div>
+                    <div class="btn-group" id="metric-btns">
+                        <button class="btn active" data-metric="mid">中位數</button>
+                        <button class="btn" data-metric="avg">平均數</button>
+                        <button class="btn" data-metric="mid1">Q1</button>
+                        <button class="btn" data-metric="mid3">Q3</button>
+                        <button class="btn" data-metric="sd">標準差</button>
+                    </div>
+                    <div id="inequality-note" style="display:none;font-size:11px;color:#888;margin-top:5px;">
+                        貧富差距模式顯示變異係數 (CV) — 數值越高代表所得差距越大
+                    </div>
+                </div>
+
+                <!-- Year -->
+                <div class="ctrl-section">
+                    <div class="ctrl-label">年度</div>
+                    <div class="btn-group" id="year-btns">
+                        <button class="btn active" data-year="2023">2023</button>
+                        <button class="btn" data-year="2022">2022</button>
+                        <button class="btn" data-year="2021">2021</button>
+                        <button class="btn" data-year="2020">2020</button>
+                        <button class="btn" data-year="2019">2019</button>
+                        <button class="btn" data-year="2018">2018</button>
+                        <button class="btn" data-year="2017">2017</button>
+                        <button class="btn" data-year="2016">2016</button>
+                        <button class="btn" data-year="2015">2015</button>
+                        <button class="btn" data-year="2014">2014</button>
+                        <button class="btn" data-year="2013">2013</button>
+                        <button class="btn" data-year="2012">2012</button>
+                        <button class="btn" data-year="2011">2011</button>
+                    </div>
+
+                    <!-- Compare base year (only in change mode) -->
+                    <div id="base-year-ctrl" style="display:none;" class="base-year-row">
+                        <label>對比基準年</label>
+                        <select id="base-year-select"></select>
+                    </div>
+                </div>
+
+                <!-- Quick nav -->
+                <div class="ctrl-section">
+                    <div class="ctrl-label">快速定位</div>
+                    <div class="btn-group">
+                        <button class="btn btn-city" data-lat="25.053699" data-lng="121.507837">台北</button>
+                        <button class="btn btn-city" data-lat="24.752504" data-lng="121.771097">宜蘭</button>
+                        <button class="btn btn-city" data-lat="24.804498" data-lng="120.988528">新竹</button>
+                        <button class="btn btn-city" data-lat="24.167804" data-lng="120.658214">台中</button>
+                        <button class="btn btn-city" data-lat="23.477332" data-lng="120.430085">嘉義</button>
+                        <button class="btn btn-city" data-lat="22.996169" data-lng="120.201330">台南</button>
+                        <button class="btn btn-city" data-lat="22.643894" data-lng="120.317828">高雄</button>
+                        <button class="btn btn-city" data-lat="22.674185" data-lng="120.501103">屏東</button>
+                        <button class="btn btn-city" data-lat="23.999479" data-lng="121.606658">花蓮</button>
+                        <button class="btn btn-city" data-lat="22.793229" data-lng="121.124322">台東</button>
+                        <button class="btn btn-city" data-lat="23.962005" data-lng="120.963292">南投</button>
+                        <button class="btn btn-city" data-lat="23.561951" data-lng="119.608123">澎湖</button>
+                        <button class="btn btn-city" data-lat="24.446522" data-lng="118.376170">金門</button>
+                        <button class="btn btn-city" data-lat="26.149491" data-lng="119.936241">馬祖</button>
+                    </div>
+                </div>
+
+                <button id="locate-btn" class="btn btn-full" style="background:#2980b9;color:white;border-color:#2980b9;">📍 定位到我的村里</button>
+            </div>
+
+            <!-- ── Village tab ── -->
+            <div class="tab-pane" id="tab-village">
+                <div id="village-detail">
+                    <p style="color:#aaa;font-size:13px;text-align:center;padding:20px 0;">點擊地圖上的村里<br>查看詳細所得資料</p>
+                </div>
+            </div>
+
+            <!-- ── Ranking tab ── -->
+            <div class="tab-pane" id="tab-ranking">
+                <div id="ranking-content">
+                    <p style="color:#aaa;font-size:13px;">資料載入中…</p>
+                </div>
+            </div>
+
+            <!-- ── Legend tab ── -->
+            <div class="tab-pane" id="tab-legend">
+                <div id="legend-snapshot" class="legend-block">
+                    <div class="legend-title">快照模式（萬元）</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,255,255,0.8);"></div>無資料</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(254,232,200,0.8);"></div>≤ 30 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(253,212,158,0.8);"></div>≤ 40 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(253,187,132,0.8);"></div>≤ 50 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(252,141,89,0.8);"></div>≤ 70 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(239,101,72,0.8);"></div>≤ 90 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(215,48,31,0.8);"></div>≤ 110 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(179,0,0,0.8);"></div>≤ 130 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(127,0,0,0.8);"></div>≤ 150 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(64,0,0,0.8);"></div>&gt; 150 萬</div>
+                </div>
+                <div id="legend-change" class="legend-block" style="display:none;">
+                    <div class="legend-title">年度變化模式</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,100,0,0.7);"></div>成長 &gt; 12 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(34,139,34,0.7);"></div>成長 9–12 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(50,205,50,0.7);"></div>成長 6–9 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(144,238,144,0.7);"></div>成長 3–6 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(200,230,200,0.7);"></div>成長 0–3 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,200,200,0.7);"></div>下降 0–3 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,160,122,0.7);"></div>下降 3–6 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(240,128,128,0.7);"></div>下降 6–9 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(220,20,60,0.7);"></div>下降 9–12 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(139,0,0,0.7);"></div>下降 &gt; 12 萬</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(200,200,200,0.7);"></div>無資料</div>
+                </div>
+                <div id="legend-inequality" class="legend-block" style="display:none;">
+                    <div class="legend-title">貧富差距模式（變異係數 CV%）</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,255,204,0.8);"></div>≤ 60%（較平均）</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(254,217,118,0.8);"></div>≤ 80%</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(254,178,76,0.8);"></div>≤ 100%</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(253,141,60,0.8);"></div>≤ 120%</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(240,59,32,0.8);"></div>≤ 150%</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:rgba(189,0,38,0.8);"></div>&gt; 150%（差距很大）</div>
+                </div>
+                <div class="legend-block">
+                    <div class="legend-title">資料說明</div>
+                    <p style="font-size:11px;color:#777;line-height:1.6;margin:0;">
+                        本統計為課稅資料，未納入「政府移轉支出」各戶所得、免稅所得、分離課稅所得等資料，不宜逕作為衡量所得差距之參據。相關所得資料應以行政院主計總處公布之資料為準。<br><br>
+                        資料來源：財政資訊中心
+                    </p>
+                </div>
+            </div>
+
+        </div><!-- /tab-content -->
+
+        <div class="sidebar-footer">
+            <a href="https://www.facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/kiang/salary" target="_blank">GitHub</a>
+        </div>
+    </div><!-- /sidebar -->
+
+    <div class="map-wrap">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰ 選單</button>
+        <div id="map"></div>
+        <div class="loading-overlay" id="loading">
+            <div>載入所得資料中，請稍候…</div>
+            <div class="loading-bar"><div class="loading-bar-inner"></div></div>
         </div>
     </div>
+</div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
