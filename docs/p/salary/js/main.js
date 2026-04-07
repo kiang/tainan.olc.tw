@@ -350,7 +350,7 @@ function showVillageDetail(props, vc) {
     html += '<canvas id="village-chart" height="160"></canvas>';
 
     // Full table
-    const years = Object.keys(data).sort();
+    const years = Object.keys(data).sort((a, b) => b - a);
     html += '<div class="detail-table-wrap"><table class="detail-table"><thead><tr>'
         + '<th>年</th><th>中位</th><th>平均</th><th>Q1</th><th>Q3</th><th>CV%</th><th>排名</th>'
         + '</tr></thead><tbody>';
@@ -372,11 +372,11 @@ function showVillageDetail(props, vc) {
 
     container.innerHTML = html;
 
-    // Build chart
+    // Build chart (ascending order for left→right time axis)
     if (currentChart) { currentChart.destroy(); currentChart = null; }
     const ctx = document.getElementById('village-chart');
     if (ctx) {
-        const labels = years;
+        const labels = years.slice().reverse();
         currentChart = new Chart(ctx.getContext('2d'), {
             type: 'line',
             data: {
