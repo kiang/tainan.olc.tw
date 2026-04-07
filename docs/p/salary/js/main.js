@@ -35,48 +35,50 @@ const YEARS   = ['2023','2022','2021','2020','2019','2018','2017','2016','2015',
 
 // ── Color scales ───────────────────────────────────────────────────────────
 // Snapshot: orange-red scale (values in 千元, thresholds match original)
+// Snapshot: YlGnBu — yellow (low income) → teal → dark blue (high income)
+// Visually distinct from red-based change/inequality modes
 const SNAPSHOT_COLORS = [
-    { max: 300,      fill: 'rgba(254,232,200,0.8)' },
-    { max: 400,      fill: 'rgba(253,212,158,0.8)' },
-    { max: 500,      fill: 'rgba(253,187,132,0.8)' },
-    { max: 700,      fill: 'rgba(252,141,89,0.8)'  },
-    { max: 900,      fill: 'rgba(239,101,72,0.8)'  },
-    { max: 1100,     fill: 'rgba(215,48,31,0.8)'   },
-    { max: 1300,     fill: 'rgba(179,0,0,0.8)'     },
-    { max: 1500,     fill: 'rgba(127,0,0,0.8)'     },
-    { max: Infinity, fill: 'rgba(64,0,0,0.8)'      }
+    { max: 300,      fill: 'rgba(255,255,204,0.85)' },
+    { max: 400,      fill: 'rgba(199,233,180,0.85)' },
+    { max: 500,      fill: 'rgba(127,205,187,0.85)' },
+    { max: 700,      fill: 'rgba(65,182,196,0.85)'  },
+    { max: 900,      fill: 'rgba(29,145,192,0.85)'  },
+    { max: 1100,     fill: 'rgba(34,94,168,0.85)'   },
+    { max: 1300,     fill: 'rgba(37,52,148,0.85)'   },
+    { max: 1500,     fill: 'rgba(8,29,88,0.85)'     },
+    { max: Infinity, fill: 'rgba(2,10,50,0.9)'      }
 ];
 
 function snapshotColor(val) {
-    if (!val) return 'rgba(220,220,220,0.5)';
+    if (!val) return 'rgba(210,210,210,0.5)';
     for (const c of SNAPSHOT_COLORS) { if (val <= c.max) return c.fill; }
-    return 'rgba(64,0,0,0.8)';
+    return 'rgba(2,10,50,0.9)';
 }
 
-// Change: delta in 千元; thresholds ±30 = ±3萬, ±60=±6萬 etc.
+// Change: RdBu diverging — red (decline) / blue (growth), neutral at zero
 function changeColor(delta) {
     if (delta === null) return 'rgba(200,200,200,0.6)';
-    if (delta >  120) return 'rgba(0,100,0,0.7)';
-    if (delta >   90) return 'rgba(34,139,34,0.7)';
-    if (delta >   60) return 'rgba(50,205,50,0.7)';
-    if (delta >   30) return 'rgba(144,238,144,0.7)';
-    if (delta >=   0) return 'rgba(200,230,200,0.7)';
-    if (delta > -30)  return 'rgba(255,200,200,0.7)';
-    if (delta > -60)  return 'rgba(255,160,122,0.7)';
-    if (delta > -90)  return 'rgba(240,128,128,0.7)';
-    if (delta > -120) return 'rgba(220,20,60,0.7)';
-    return 'rgba(139,0,0,0.7)';
+    if (delta >  120) return 'rgba(33,102,172,0.85)';
+    if (delta >   90) return 'rgba(67,147,195,0.85)';
+    if (delta >   60) return 'rgba(146,197,222,0.85)';
+    if (delta >   30) return 'rgba(209,229,240,0.85)';
+    if (delta >=   0) return 'rgba(234,243,248,0.85)';
+    if (delta > -30)  return 'rgba(253,219,199,0.85)';
+    if (delta > -60)  return 'rgba(244,165,130,0.85)';
+    if (delta > -90)  return 'rgba(214,96,77,0.85)';
+    if (delta > -120) return 'rgba(178,24,43,0.85)';
+    return 'rgba(103,0,31,0.9)';
 }
 
-// Inequality: cv is already a percentage in the data
+// Inequality: YlOrRd — yellow (low CV/equal) → orange → red (high CV/unequal)
 function inequalityColor(cv) {
-    if (!cv) return 'rgba(220,220,220,0.5)';
-    if (cv <=  60) return 'rgba(255,255,204,0.8)';
-    if (cv <=  80) return 'rgba(254,217,118,0.8)';
-    if (cv <= 100) return 'rgba(254,178,76,0.8)';
-    if (cv <= 120) return 'rgba(253,141,60,0.8)';
-    if (cv <= 150) return 'rgba(240,59,32,0.8)';
-    return 'rgba(189,0,38,0.8)';
+    if (!cv) return 'rgba(210,210,210,0.5)';
+    if (cv <=  60) return 'rgba(255,255,178,0.85)';
+    if (cv <=  80) return 'rgba(254,204,92,0.85)';
+    if (cv <= 100) return 'rgba(253,141,60,0.85)';
+    if (cv <= 120) return 'rgba(240,59,32,0.85)';
+    if (cv <= 150) return 'rgba(189,0,38,0.85)';
+    return 'rgba(100,0,20,0.9)';
 }
 
 // ── Map init ───────────────────────────────────────────────────────────────
