@@ -282,8 +282,8 @@ function buildPopup(feature) {
         const rank = getRank(vc, currentYear, currentMetric);
         const pct  = getPercentile(rank);
         html += '<div class="popup-stat"><span class="label">' + METRICS[currentMetric] + '</span><span class="value">' + fmtWan(yr[currentMetric]) + '</span></div>';
-        html += '<div class="popup-stat"><span class="label">中位數</span><span class="value">' + fmtWan(yr.mid) + '</span></div>';
-        html += '<div class="popup-stat"><span class="label">平均數</span><span class="value">' + fmtWan(yr.avg) + '</span></div>';
+        if (currentMetric !== 'mid') html += '<div class="popup-stat"><span class="label">中位數</span><span class="value">' + fmtWan(yr.mid) + '</span></div>';
+        if (currentMetric !== 'avg') html += '<div class="popup-stat"><span class="label">平均數</span><span class="value">' + fmtWan(yr.avg) + '</span></div>';
         html += '<div class="popup-stat"><span class="label">納稅單位</span><span class="value">' + fmtNum(yr.adm) + '</span></div>';
         if (rank) html += '<div class="popup-rank">全國第 ' + rank + ' 名 · 前 ' + pct + '%</div>';
     } else if (currentMode === 'change') {
