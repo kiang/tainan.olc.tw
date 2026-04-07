@@ -5,7 +5,7 @@ This document outlines improvements for tainan.olc.tw, a campaign site for a tec
 ## Current State
 
 - Vue 3 + Vite campaign site
-- 50+ civic tech projects in portfolio (mask maps, COVID maps, dengue maps, etc.)
+- 70+ civic tech projects in portfolio (mask maps, COVID maps, dengue maps, etc.)
 - Extensive media coverage demonstrating real impact
 - GPS tracking of campaign activities
 - District demographic data visualization
@@ -62,7 +62,7 @@ This document outlines improvements for tainan.olc.tw, a campaign site for a tec
 ## Phase 2: Content Restructure (Medium effort)
 
 ### 2.1 Portfolio Impact Showcase ✅ COMPLETED
-Current: Flat list of 50+ projects with news links
+Current: Flat list of 70+ projects with news links
 Improved:
 - [x] Categorize projects by theme (健康/交通/環境/政治/民生/災害/台南在地)
 - [x] Add impact metrics (media mentions count per project)

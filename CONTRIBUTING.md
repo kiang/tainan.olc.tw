@@ -31,23 +31,30 @@ npm run build
 ```
 tainan.olc.tw/
 ├── docs/                    # Built site (GitHub Pages deployment)
-│   ├── p/                   # Individual civic tech projects
-│   ├── assets/              # Compiled assets
-│   └── index.html           # Main entry point
+│   ├── p/                   # 70+ standalone civic tech project pages
+│   │   ├── projects.json    # Project metadata for dynamic listing
+│   │   └── index.html       # Project hub with search and filters
+│   ├── assets/              # Compiled assets (Vite output)
+│   ├── json/                # Data files (YouTube, districts, routes)
+│   └── index.html           # Built entry point
 ├── public/                  # Static files (copied to docs/)
 │   ├── icons/               # PWA icons
 │   ├── manifest.json        # PWA manifest
 │   ├── sw.js                # Service worker
-│   └── sitemap.xml          # SEO sitemap
+│   ├── offline.html         # Offline fallback page
+│   ├── sitemap.xml          # SEO sitemap
+│   └── robots.txt           # Search engine directives
 ├── src/
 │   ├── assets/
 │   │   ├── images/          # Source images
 │   │   ├── JSON/            # Data files
-│   │   └── scss/            # SCSS styles
-│   ├── components/          # Vue components
-│   ├── router/              # Vue Router config
-│   └── views/               # Page components
-├── index.html               # Development entry point
+│   │   └── scss/            # SCSS styles (utilities, dark mode)
+│   ├── components/          # Vue components (Breadcrumb, LeafletMap, etc.)
+│   ├── router/              # Vue Router config with SEO meta
+│   └── views/               # Page components (Home, District, PastRecord)
+├── scripts/                 # PHP data processing utilities
+├── raw/                     # Source data files (KML, GeoJSON, GPS)
+├── index.html               # Development entry point (Vite)
 ├── vite.config.js           # Vite configuration
 └── IMPROVEMENTS.md          # Roadmap and progress
 ```
@@ -58,8 +65,10 @@ tainan.olc.tw/
 - **Build Tool**: Vite
 - **Styling**: SCSS with Bootstrap 5
 - **Router**: Vue Router with hash history
-- **PWA**: Custom service worker
-- **Deployment**: GitHub Pages
+- **Mapping**: Leaflet (modern), OpenLayers (legacy projects in docs/p/)
+- **Charts**: Chart.js
+- **PWA**: Custom service worker with cache-first strategy
+- **Deployment**: GitHub Pages from docs/
 
 ## How to Contribute
 

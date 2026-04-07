@@ -8,16 +8,30 @@ Tainan Open Data Maps is a collection of map-based visualizations for public iss
 
 ## Architecture
 
-### Frontend Structure
-- **docs/**: Main website content deployed via GitHub Pages
-  - **docs/index.html**: Main political campaign site with district maps and candidate information
-  - **docs/p/**: Project overview portal and individual project pages
-  - **docs/p/index.html**: Central hub listing all 40+ public data projects
-  - **docs/assets/**: Compiled assets for the main campaign site
-  - **docs/json/**: Data files including YouTube video metadata, district boundaries, and routing information
+This is a **hybrid architecture** project: a modern Vue 3 SPA at the root for the campaign site, plus 70+ standalone project pages under `docs/p/`.
 
-### Individual Projects
-Each project in `docs/p/` follows a consistent structure:
+### Vue 3 Campaign Site (Root)
+- **index.html**: Root entry point for Vite dev server
+- **src/**: Vue 3 application source
+  - **src/main.js**: App entry point
+  - **src/App.vue**: Main component
+  - **src/components/**: Reusable components (Breadcrumb, LeafletMap, LoadingSpinner, PetitionModal)
+  - **src/views/**: Page components (Home, Politics, TainanNews, District/*, PastRecord/*)
+  - **src/router/index.js**: Vue Router config with meta tags for SEO
+  - **src/assets/**: SCSS styles, images, and JSON data files
+- **vite.config.js**: Vite build config — outputs to `docs/` while preserving `docs/p/`
+- **public/**: Static PWA files (manifest.json, sw.js, offline.html, icons/, sitemap.xml, robots.txt)
+
+### Built Site (docs/)
+- **docs/**: GitHub Pages deployment directory (Vite build output)
+  - **docs/assets/**: Compiled JS/CSS assets from Vite build
+  - **docs/json/**: Data files including YouTube video metadata, district boundaries, and routing information
+  - **docs/p/**: 70+ standalone project pages (not part of Vue build)
+  - **docs/p/index.html**: Central hub listing all projects, loads from `docs/p/projects.json`
+  - **docs/p/projects.json**: Project metadata for dynamic rendering (70 entries)
+
+### Individual Projects (docs/p/)
+Each project in `docs/p/` is a standalone page (not part of the Vue SPA) following a consistent structure:
 - **index.html**: Main project page with map visualization
 - **js/main.js**: Project-specific JavaScript logic
 - **og_image.png**: Social media preview image
@@ -37,9 +51,20 @@ Each project in `docs/p/` follows a consistent structure:
   - **raw/kml/**: KML files for geographic data
   - **raw/car_json/** and **raw/car_kml/**: Vehicle tracking data
 
+## Tech Stack
+
+- **Framework**: Vue 3 with Composition API
+- **Build Tool**: Vite
+- **Styling**: SCSS with Bootstrap 5
+- **Router**: Vue Router with hash history
+- **Mapping**: Leaflet (modern), OpenLayers (legacy in some `docs/p/` projects)
+- **Charts**: Chart.js
+- **PWA**: Custom service worker with cache-first strategy
+- **Deployment**: GitHub Pages from `docs/`
+
 ## Project Categories
 
-The 40+ projects are organized into categories:
+The 70+ projects are organized into 11 categories:
 - **政治** (Politics): Election data, candidate information, recall campaigns
 - **交通** (Transportation): Traffic accidents, bike routes, YouBike stations
 - **健康** (Health): Emergency rooms, dengue fever tracking, medical facilities
@@ -54,10 +79,17 @@ The 40+ projects are organized into categories:
 
 ## Development Workflow
 
-### Adding New Projects
+### Campaign Site (Vue SPA)
+```bash
+npm install        # Install dependencies
+npm run dev        # Start Vite dev server
+npm run build      # Build to docs/ directory
+```
+
+### Adding New Projects (docs/p/)
 1. Create new directory under `docs/p/[project-name]/`
 2. Follow existing project structure with index.html and main.js
-3. Add project entry to `docs/p/index.html` with appropriate category
+3. Add project entry to `docs/p/projects.json` with appropriate category
 4. Include og_image.png for social sharing
 
 ### Data Processing
@@ -66,11 +98,9 @@ The 40+ projects are organized into categories:
 3. Output processed data to project-specific locations
 
 ### Map Integration
-Most projects use OpenLayers (ol.js) for interactive mapping:
-- **docs/css/ol.css**: Base OpenLayers styling
-- **docs/js/ol.js**: OpenLayers library
-- **docs/js/ol5-sidebar.min.js**: Sidebar components for map interfaces
+- **Modern (Vue SPA)**: Uses Leaflet via `src/components/LeafletMap.vue`
+- **Legacy (docs/p/ projects)**: Many use OpenLayers (ol.js) with sidebar components
 
 ## GitHub Pages Deployment
 
-The site is deployed via GitHub Pages from the `docs/` directory. The main campaign site assets are pre-compiled and committed to the repository.
+The site is deployed via GitHub Pages from the `docs/` directory. Vite builds the Vue SPA into `docs/` while preserving the standalone project pages in `docs/p/`.
