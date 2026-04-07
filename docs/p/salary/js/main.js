@@ -33,6 +33,17 @@ const COLORS = [
     { max: Infinity, fill: 'rgba(64,0,0,0.7)'  }
 ];
 
+// Format a 千元 value as 萬 with 1 decimal place, e.g. 1264 → "126.4 萬"
+// For the total income field (綜合所得總額) which can be very large, use 億 when appropriate.
+function fmtWan(val) {
+    if (!val && val !== 0) return '—';
+    const wan = val / 10;           // 千元 ÷ 10 = 萬元
+    if (wan >= 10000) {
+        return (wan / 10000).toFixed(1) + ' 億';
+    }
+    return wan.toFixed(1) + ' 萬';
+}
+
 function getColor(value) {
     if (!value || value === 0) return 'rgba(255,255,255,0.5)';
     for (const c of COLORS) {
@@ -323,9 +334,8 @@ function showVillageDetail(props, vc) {
     html += '<div id="village-chart-container"><canvas id="village-chart" height="180"></canvas></div>';
 
     // Table
-    html += '<div class="detail-unit">單位：金額(千元)</div>';
     html += '<div style="overflow-x:auto;"><table><thead><tr>';
-    html += '<th>年度</th><th>納稅</th><th>總額</th><th>平均</th><th>中位</th><th>Q1</th><th>Q3</th><th>標差</th></tr></thead><tbody>';
+    html += '<th>年度</th><th>納稅單位</th><th>所得總額</th><th>平均數</th><th>中位數</th><th>Q1</th><th>Q3</th><th>標準差</th></tr></thead><tbody>';
 
     const chartLabels = [], chartMid = [], chartAvg = [];
     for (const year of Object.keys(data).sort()) {
@@ -333,17 +343,15 @@ function showVillageDetail(props, vc) {
         chartLabels.push(year);
         chartMid.push(d.mid || 0);
         chartAvg.push(d.avg || 0);
-        const rank = countrySort[vc] && countrySort[vc][year]
-            ? countrySort[vc][year][currentMetric] : '';
         html += '<tr>'
             + '<td>' + year + '</td>'
-            + '<td>' + (d.adm || '') + '</td>'
-            + '<td>' + (d.total || '') + '</td>'
-            + '<td>' + (d.avg || '') + '</td>'
-            + '<td>' + (d.mid || '') + '</td>'
-            + '<td>' + (d.mid1 || '') + '</td>'
-            + '<td>' + (d.mid3 || '') + '</td>'
-            + '<td>' + (d.sd || '') + '</td>'
+            + '<td>' + (d.adm ? d.adm.toLocaleString() : '—') + '</td>'
+            + '<td>' + fmtWan(d.total) + '</td>'
+            + '<td>' + fmtWan(d.avg) + '</td>'
+            + '<td>' + fmtWan(d.mid) + '</td>'
+            + '<td>' + fmtWan(d.mid1) + '</td>'
+            + '<td>' + fmtWan(d.mid3) + '</td>'
+            + '<td>' + fmtWan(d.sd) + '</td>'
             + '</tr>';
     }
     html += '</tbody></table></div>';
@@ -369,8 +377,24 @@ function showVillageDetail(props, vc) {
             },
             options: {
                 responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { title: { display: true, text: '千元' } } }
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ctx.dataset.label + ': ' + fmtWan(ctx.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        title: { display: true, text: '萬元' },
+                        ticks: {
+                            callback: function(val) { return fmtWan(val); }
+                        }
+                    }
+                }
             }
         });
     }
@@ -384,11 +408,11 @@ function updateRankingList() {
     const sortedVals = Object.keys(pool).map(Number).sort((a, b) => b - a);
 
     let html = '<h4 style="margin:0 0 8px 0;">' + currentYear + ' / ' + METRICS[currentMetric] + '</h4>';
-    html += '<table><thead><tr><th>值(千元)</th><th>村里</th></tr></thead><tbody>';
+    html += '<table><thead><tr><th>' + METRICS[currentMetric] + '</th><th>村里</th></tr></thead><tbody>';
 
     for (const val of sortedVals) {
         const codes = pool[val];
-        html += '<tr><td class="rank-value">' + val + '</td><td>';
+        html += '<tr><td class="rank-value">' + fmtWan(val) + '</td><td>';
         for (const code of codes) {
             const name = countrySort[code] ? countrySort[code].name : code;
             html += '<a data-villcode="' + code + '">' + name + '</a> ';
