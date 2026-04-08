@@ -109,7 +109,12 @@ class EmergencyDashboard {
     updateLatestCases() {
         const container = document.getElementById('latestCases');
         const latest = this.cases
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .sort((a, b) => {
+                const aFire = this.isFireCase(a.case_type) ? 1 : 0;
+                const bFire = this.isFireCase(b.case_type) ? 1 : 0;
+                if (bFire !== aFire) return bFire - aFire;
+                return new Date(b.timestamp) - new Date(a.timestamp);
+            })
             .slice(0, 5);
         
         if (latest.length === 0) {
@@ -160,7 +165,12 @@ class EmergencyDashboard {
         }
         
         tbody.innerHTML = this.cases
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .sort((a, b) => {
+                const aFire = this.isFireCase(a.case_type) ? 1 : 0;
+                const bFire = this.isFireCase(b.case_type) ? 1 : 0;
+                if (bFire !== aFire) return bFire - aFire;
+                return new Date(b.timestamp) - new Date(a.timestamp);
+            })
             .map(caseData => `
                 <tr${this.isFireCase(caseData.case_type) ? ' class="fire-row"' : ''}>
                     <td>#${caseData.case_number}</td>
