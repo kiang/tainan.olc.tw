@@ -51,7 +51,7 @@
       margin-bottom: 6px;
     }
 
-    select, input[type="date"] {
+    input[type="date"] {
       width: 100%;
       padding: 10px 14px;
       background: #16213e;
@@ -63,8 +63,83 @@
       transition: border-color 0.2s;
     }
 
-    select:focus, input[type="date"]:focus { border-color: #e94560; }
-    select option { background: #16213e; }
+    input[type="date"]:focus { border-color: #e94560; }
+
+    /* Searchable dropdown */
+    .ssd-wrap { position: relative; }
+
+    .ssd-display {
+      width: 100%;
+      padding: 10px 36px 10px 14px;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      color: #eee;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .ssd-display:focus { outline: none; border-color: #e94560; }
+    .ssd-display.open { border-color: #e94560; border-radius: 8px 8px 0 0; }
+    .ssd-display .ssd-arrow {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #888;
+      font-size: 0.7rem;
+    }
+    .ssd-display.open .ssd-arrow { transform: translateY(-50%) rotate(180deg); }
+
+    .ssd-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #16213e;
+      border: 1px solid #e94560;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 260px;
+    }
+    .ssd-dropdown.open { display: flex; }
+
+    .ssd-search {
+      padding: 8px 12px;
+      background: #0f3460;
+      border: none;
+      border-bottom: 1px solid #0f3460;
+      color: #eee;
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .ssd-search::placeholder { color: #666; }
+
+    .ssd-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .ssd-option {
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #eee;
+      transition: background 0.1s;
+    }
+    .ssd-option:hover, .ssd-option.focused { background: rgba(233,69,96,0.15); }
+    .ssd-option.selected { color: #e94560; }
+    .ssd-option.placeholder-opt { color: #666; }
 
     .btn-primary {
       width: 100%;
@@ -345,23 +420,35 @@
 
   <div class="form-group">
     <label>縣市</label>
-    <select id="countySelect" onchange="loadAreas()">
-      <option value="">載入中...</option>
-    </select>
+    <div class="ssd-wrap" id="countyWrap">
+      <div class="ssd-display" id="countyDisplay" tabindex="0">載入中...<span class="ssd-arrow">▼</span></div>
+      <div class="ssd-dropdown" id="countyDropdown">
+        <input class="ssd-search" type="text" placeholder="搜尋縣市..." id="countySearch">
+        <div class="ssd-list" id="countyList"></div>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
     <label>鄉鎮市區</label>
-    <select id="areaSelect" onchange="loadSchools()">
-      <option value="">請先選縣市</option>
-    </select>
+    <div class="ssd-wrap" id="areaWrap">
+      <div class="ssd-display" id="areaDisplay" tabindex="0">請先選縣市<span class="ssd-arrow">▼</span></div>
+      <div class="ssd-dropdown" id="areaDropdown">
+        <input class="ssd-search" type="text" placeholder="搜尋鄉鎮市區..." id="areaSearch">
+        <div class="ssd-list" id="areaList"></div>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
     <label>學校</label>
-    <select id="schoolSelect">
-      <option value="">請先選鄉鎮市區</option>
-    </select>
+    <div class="ssd-wrap" id="schoolWrap">
+      <div class="ssd-display" id="schoolDisplay" tabindex="0">請先選鄉鎮市區<span class="ssd-arrow">▼</span></div>
+      <div class="ssd-dropdown" id="schoolDropdown">
+        <input class="ssd-search" type="text" placeholder="搜尋學校..." id="schoolSearch">
+        <div class="ssd-list" id="schoolList"></div>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
@@ -408,6 +495,107 @@ let dishes = [];
 let currentIndex = 0;
 let votes = {};
 
+// ---- Searchable Dropdown ----
+// state: { value, label } per dropdown id
+const ssdState = { county: {value:'',label:''}, area: {value:'',label:''}, school: {value:'',label:''} };
+
+function ssdSetup(id, onSelect) {
+  const display = document.getElementById(id + 'Display');
+  const dropdown = document.getElementById(id + 'Dropdown');
+  const search = document.getElementById(id + 'Search');
+
+  function open() {
+    document.querySelectorAll('.ssd-dropdown.open').forEach(d => {
+      if (d !== dropdown) {
+        d.classList.remove('open');
+        d.previousElementSibling.classList.remove('open');
+      }
+    });
+    display.classList.add('open');
+    dropdown.classList.add('open');
+    search.value = '';
+    ssdFilter(id, '');
+    search.focus();
+  }
+
+  function close() {
+    display.classList.remove('open');
+    dropdown.classList.remove('open');
+  }
+
+  display.addEventListener('click', () => {
+    if (dropdown.classList.contains('open')) close(); else open();
+  });
+  display.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    if (e.key === 'Escape') close();
+  });
+  search.addEventListener('input', () => ssdFilter(id, search.value));
+  search.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { close(); display.focus(); }
+  });
+
+  document.addEventListener('click', e => {
+    if (!display.contains(e.target) && !dropdown.contains(e.target)) close();
+  });
+}
+
+function ssdFilter(id, query) {
+  const list = document.getElementById(id + 'List');
+  const q = query.trim().toLowerCase();
+  list.querySelectorAll('.ssd-option').forEach(opt => {
+    opt.style.display = (!q || opt.dataset.label.toLowerCase().includes(q)) ? '' : 'none';
+  });
+}
+
+function ssdSetOptions(id, options, placeholder, onSelect) {
+  const list = document.getElementById(id + 'List');
+  const display = document.getElementById(id + 'Display');
+  list.innerHTML = '';
+
+  const placeholderEl = document.createElement('div');
+  placeholderEl.className = 'ssd-option placeholder-opt';
+  placeholderEl.dataset.label = placeholder;
+  placeholderEl.dataset.value = '';
+  placeholderEl.textContent = placeholder;
+  placeholderEl.addEventListener('click', () => ssdSelect(id, '', placeholder, onSelect));
+  list.appendChild(placeholderEl);
+
+  options.forEach(({value, label}) => {
+    const el = document.createElement('div');
+    el.className = 'ssd-option';
+    el.dataset.label = label;
+    el.dataset.value = value;
+    el.textContent = label;
+    if (ssdState[id].value === value) el.classList.add('selected');
+    el.addEventListener('click', () => ssdSelect(id, value, label, onSelect));
+    list.appendChild(el);
+  });
+}
+
+function ssdSelect(id, value, label, onSelect) {
+  ssdState[id] = {value, label};
+  const display = document.getElementById(id + 'Display');
+  const arrow = display.querySelector('.ssd-arrow');
+  display.textContent = label;
+  display.appendChild(arrow);
+  display.classList.remove('open');
+  document.getElementById(id + 'Dropdown').classList.remove('open');
+  // mark selected
+  document.getElementById(id + 'List').querySelectorAll('.ssd-option').forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.value === value);
+  });
+  if (onSelect) onSelect(value);
+}
+
+function ssdSetDisplay(id, text) {
+  const display = document.getElementById(id + 'Display');
+  const arrow = display.querySelector('.ssd-arrow');
+  display.textContent = text;
+  display.appendChild(arrow);
+  ssdState[id] = {value: '', label: ''};
+}
+
 // ---- API ----
 async function apiGet(path, params = {}) {
   const qs = new URLSearchParams(params).toString();
@@ -423,54 +611,45 @@ async function apiGet(path, params = {}) {
 
 // ---- Setup ----
 async function loadCounties() {
+  ssdSetDisplay('county', '載入中...');
   try {
     const data = await apiGet('county');
-    const sel = document.getElementById('countySelect');
-    sel.innerHTML = '<option value="">請選擇縣市</option>';
-    data.forEach(c => {
-      sel.innerHTML += `<option value="${c.CountyId}">${c.County}</option>`;
-    });
+    ssdSetDisplay('county', '請選擇縣市');
+    ssdSetOptions('county', data.map(c => ({value: String(c.CountyId), label: c.County})), '請選擇縣市', loadAreas);
   } catch(e) {
-    document.getElementById('countySelect').innerHTML = '<option value="">載入失敗</option>';
+    ssdSetDisplay('county', '載入失敗');
   }
 }
 
-async function loadAreas() {
-  const countyId = document.getElementById('countySelect').value;
-  const sel = document.getElementById('areaSelect');
-  sel.innerHTML = '<option value="">載入中...</option>';
-  document.getElementById('schoolSelect').innerHTML = '<option value="">請先選鄉鎮市區</option>';
-  if (!countyId) { sel.innerHTML = '<option value="">請先選縣市</option>'; return; }
+async function loadAreas(countyId) {
+  ssdSetDisplay('area', '載入中...');
+  ssdSetDisplay('school', '請先選鄉鎮市區');
+  ssdSetOptions('school', [], '請先選鄉鎮市區', null);
+  if (!countyId) { ssdSetDisplay('area', '請先選縣市'); return; }
   try {
     const data = await apiGet('area', { CountyId: countyId });
-    sel.innerHTML = '<option value="">請選擇鄉鎮市區</option>';
-    data.forEach(a => {
-      sel.innerHTML += `<option value="${a.AreaId}">${a.Area}</option>`;
-    });
+    ssdSetDisplay('area', '請選擇鄉鎮市區');
+    ssdSetOptions('area', data.map(a => ({value: String(a.AreaId), label: a.Area})), '請選擇鄉鎮市區', loadSchools);
   } catch(e) {
-    sel.innerHTML = '<option value="">載入失敗</option>';
+    ssdSetDisplay('area', '載入失敗');
   }
 }
 
-async function loadSchools() {
-  const areaId = document.getElementById('areaSelect').value;
-  const countyId = document.getElementById('countySelect').value;
-  const sel = document.getElementById('schoolSelect');
-  sel.innerHTML = '<option value="">載入中...</option>';
-  if (!areaId) { sel.innerHTML = '<option value="">請先選鄉鎮市區</option>'; return; }
+async function loadSchools(areaId) {
+  const countyId = ssdState.county.value;
+  ssdSetDisplay('school', '載入中...');
+  if (!areaId) { ssdSetDisplay('school', '請先選鄉鎮市區'); return; }
   try {
     const data = await apiGet('school', { CountyId: countyId, AreaId: areaId });
-    sel.innerHTML = '<option value="">請選擇學校</option>';
-    data.forEach(s => {
-      sel.innerHTML += `<option value="${s.SchoolId}">${s.SchoolName}</option>`;
-    });
+    ssdSetDisplay('school', '請選擇學校');
+    ssdSetOptions('school', data.map(s => ({value: String(s.SchoolId), label: s.SchoolName})), '請選擇學校', null);
   } catch(e) {
-    sel.innerHTML = '<option value="">載入失敗</option>';
+    ssdSetDisplay('school', '載入失敗');
   }
 }
 
 async function startRating() {
-  const schoolId = document.getElementById('schoolSelect').value;
+  const schoolId = ssdState.school.value;
   const date = document.getElementById('dateInput').value;
   const errEl = document.getElementById('setupError');
   errEl.style.display = 'none';
@@ -793,6 +972,9 @@ function shareResults() {
   const m = String(today.getMonth()+1).padStart(2,'0');
   const d = String(today.getDate()).padStart(2,'0');
   document.getElementById('dateInput').value = `${y}-${m}-${d}`;
+  ssdSetup('county', loadAreas);
+  ssdSetup('area', loadSchools);
+  ssdSetup('school', null);
   loadCounties();
 })();
 </script>
