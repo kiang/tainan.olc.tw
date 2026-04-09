@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校園菜色評分 - 好吃還是不好吃？</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #16213e, #0f3460);
+      padding: 16px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    header h1 { font-size: 1.4rem; color: #e94560; letter-spacing: 1px; }
+    header p { font-size: 0.8rem; color: #aaa; margin-top: 4px; }
+
+    /* Setup Panel */
+    .setup-panel {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 20px;
+    }
+
+    .setup-panel h2 {
+      font-size: 1.1rem;
+      color: #e94560;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .form-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #bbb;
+      margin-bottom: 6px;
+    }
+
+    select, input[type="date"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      color: #eee;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus, input[type="date"]:focus { border-color: #e94560; }
+    select option { background: #16213e; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #e94560, #c0392b);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: default; }
+
+    /* Swipe area */
+    .swipe-container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      background: #16213e;
+      border-radius: 6px;
+      height: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #e94560, #f97316);
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .card-stack {
+      width: 100%;
+      position: relative;
+      height: 400px;
+    }
+
+    .dish-card {
+      position: absolute;
+      width: 100%;
+      background: linear-gradient(160deg, #16213e, #0f3460);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      cursor: grab;
+      user-select: none;
+      touch-action: pan-y;
+    }
+
+    .dish-card:active { cursor: grabbing; }
+
+    .dish-card.swipe-left  { animation: flyLeft  0.35s forwards; }
+    .dish-card.swipe-right { animation: flyRight 0.35s forwards; }
+    .dish-card.swipe-skip  { animation: flySkip  0.2s forwards; }
+
+    @keyframes flyLeft  { to { transform: translateX(-150%) rotate(-20deg); opacity: 0; } }
+    @keyframes flyRight { to { transform: translateX(150%)  rotate(20deg);  opacity: 0; } }
+    @keyframes flySkip  { to { transform: scale(0.9); opacity: 0; } }
+
+    .vote-overlay {
+      position: absolute;
+      top: 24px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.1s;
+      border: 3px solid;
+      pointer-events: none;
+    }
+
+    .vote-overlay.like  { right: 20px; color: #27ae60; border-color: #27ae60; background: rgba(39,174,96,0.1); }
+    .vote-overlay.nope  { left: 20px;  color: #e74c3c; border-color: #e74c3c; background: rgba(231,76,60,0.1); }
+
+    .dish-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .dish-type {
+      display: inline-block;
+      background: rgba(233,69,96,0.2);
+      color: #e94560;
+      border: 1px solid rgba(233,69,96,0.4);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+
+    .dish-meta { font-size: 0.85rem; color: #999; line-height: 1.6; margin-bottom: 14px; }
+    .dish-meta .highlight { color: #f0a500; }
+
+    .ingredients-title {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ingredients-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 90px; overflow: hidden; }
+
+    .ingredient-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      color: #ccc;
+    }
+
+    .next-bg {
+      position: absolute;
+      inset: 6px -6px -6px 6px;
+      background: linear-gradient(160deg, #16213e, #0f3460);
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0.5;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    .vote-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    .vote-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: none;
+      font-size: 1.7rem;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+    }
+
+    .vote-btn:active { transform: scale(0.88); }
+    .vote-btn.nope { box-shadow: 0 4px 16px rgba(231,76,60,0.4); border: 2px solid #e74c3c; }
+    .vote-btn.like { box-shadow: 0 4px 16px rgba(39,174,96,0.4);  border: 2px solid #27ae60; }
+    .vote-btn.skip { box-shadow: 0 4px 16px rgba(150,150,150,0.3); border: 2px solid #666; font-size: 1.2rem; }
+
+    .hint-text { font-size: 0.72rem; color: #555; text-align: center; margin-bottom: 4px; }
+
+    /* Results */
+    .results-panel {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      display: none;
+    }
+
+    .results-panel h2 { font-size: 1.2rem; text-align: center; color: #e94560; margin-bottom: 20px; }
+
+    .summary-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+    .summary-item { flex: 1; max-width: 130px; }
+
+    .result-summary {
+      background: linear-gradient(135deg, #16213e, #0f3460);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .result-summary .big-num { font-size: 2rem; font-weight: 700; }
+    .result-summary .label { font-size: 0.78rem; color: #888; margin-top: 2px; }
+
+    .result-section { margin-bottom: 20px; }
+
+    .result-section h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .result-item {
+      background: #16213e;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .result-item .rank { font-size: 1rem; width: 28px; text-align: center; }
+    .result-item .dish-info { flex: 1; }
+    .result-item .dish-info .name { font-size: 0.95rem; color: #fff; }
+    .result-item .dish-info .type { font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+    .done-msg { text-align: center; padding: 40px 20px; }
+    .done-msg .emoji { font-size: 4rem; margin-bottom: 16px; }
+    .done-msg h3 { font-size: 1.2rem; color: #e94560; margin-bottom: 8px; }
+    .done-msg p { font-size: 0.85rem; color: #888; }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid #e94560;
+      border-radius: 10px;
+      color: #e94560;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover { background: rgba(233,69,96,0.1); }
+
+    .error-msg {
+      background: rgba(231,76,60,0.1);
+      border: 1px solid rgba(231,76,60,0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #e74c3c;
+      margin-top: 12px;
+    }
+
+    .spinner-wrap { text-align: center; padding: 30px 0; color: #888; font-size: 0.9rem; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid #16213e;
+      border-top-color: #e94560;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>校園菜色評分</h1>
+  <p>好吃 or 難吃？滑動來評分吧！</p>
+</header>
+
+<!-- Setup Panel -->
+<div class="setup-panel" id="setupPanel">
+  <h2>選擇學校與日期</h2>
+
+  <div class="form-group">
+    <label>縣市</label>
+    <select id="countySelect" onchange="loadAreas()">
+      <option value="">載入中...</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>鄉鎮市區</label>
+    <select id="areaSelect" onchange="loadSchools()">
+      <option value="">請先選縣市</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>學校</label>
+    <select id="schoolSelect">
+      <option value="">請先選鄉鎮市區</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>查詢日期</label>
+    <input type="date" id="dateInput">
+  </div>
+
+  <button class="btn-primary" id="startBtn" onclick="startRating()">開始評分！</button>
+  <div class="error-msg" id="setupError" style="display:none"></div>
+</div>
+
+<!-- Swipe Panel -->
+<div class="swipe-container" id="swipePanel">
+  <div class="progress-label" id="progressLabel"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+  </div>
+
+  <div class="card-stack" id="cardStack"></div>
+
+  <div class="hint-text">← 難吃 &nbsp;|&nbsp; 拖曳或按鈕 &nbsp;|&nbsp; 好吃 →</div>
+
+  <div class="vote-buttons">
+    <button class="vote-btn nope" onclick="vote('nope')" title="難吃">😖</button>
+    <button class="vote-btn skip" onclick="vote('skip')" title="跳過">⏭</button>
+    <button class="vote-btn like" onclick="vote('like')" title="好吃">😋</button>
+  </div>
+</div>
+
+<!-- Results Panel -->
+<div class="results-panel" id="resultsPanel">
+  <h2>評分結果</h2>
+  <div class="summary-row" id="summaryRow"></div>
+  <div class="result-section" id="likedSection"></div>
+  <div class="result-section" id="nopedSection"></div>
+  <button class="btn-primary" onclick="backToSetup()">再評一次</button>
+  <button class="btn-secondary" id="shareBtn" onclick="shareResults()">分享結果</button>
+</div>
+
+<script>
+const API_BASE = 'https://fatraceschool.k12ea.gov.tw/';
+
+let dishes = [];
+let currentIndex = 0;
+let votes = {};
+
+// ---- API ----
+async function apiGet(path, params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const url = API_BASE + path + (qs ? '?' + qs : '');
+  const res = await fetch(url, {
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const json = await res.json();
+  if (json.result !== 1) throw new Error(json.message || 'API error');
+  return json.data || [];
+}
+
+// ---- Setup ----
+async function loadCounties() {
+  try {
+    const data = await apiGet('county');
+    const sel = document.getElementById('countySelect');
+    sel.innerHTML = '<option value="">請選擇縣市</option>';
+    data.forEach(c => {
+      sel.innerHTML += `<option value="${c.CountyId}">${c.County}</option>`;
+    });
+  } catch(e) {
+    document.getElementById('countySelect').innerHTML = '<option value="">載入失敗</option>';
+  }
+}
+
+async function loadAreas() {
+  const countyId = document.getElementById('countySelect').value;
+  const sel = document.getElementById('areaSelect');
+  sel.innerHTML = '<option value="">載入中...</option>';
+  document.getElementById('schoolSelect').innerHTML = '<option value="">請先選鄉鎮市區</option>';
+  if (!countyId) { sel.innerHTML = '<option value="">請先選縣市</option>'; return; }
+  try {
+    const data = await apiGet('area', { CountyId: countyId });
+    sel.innerHTML = '<option value="">請選擇鄉鎮市區</option>';
+    data.forEach(a => {
+      sel.innerHTML += `<option value="${a.AreaId}">${a.Area}</option>`;
+    });
+  } catch(e) {
+    sel.innerHTML = '<option value="">載入失敗</option>';
+  }
+}
+
+async function loadSchools() {
+  const areaId = document.getElementById('areaSelect').value;
+  const countyId = document.getElementById('countySelect').value;
+  const sel = document.getElementById('schoolSelect');
+  sel.innerHTML = '<option value="">載入中...</option>';
+  if (!areaId) { sel.innerHTML = '<option value="">請先選鄉鎮市區</option>'; return; }
+  try {
+    const data = await apiGet('school', { CountyId: countyId, AreaId: areaId });
+    sel.innerHTML = '<option value="">請選擇學校</option>';
+    data.forEach(s => {
+      sel.innerHTML += `<option value="${s.SchoolId}">${s.SchoolName}</option>`;
+    });
+  } catch(e) {
+    sel.innerHTML = '<option value="">載入失敗</option>';
+  }
+}
+
+async function startRating() {
+  const schoolId = document.getElementById('schoolSelect').value;
+  const date = document.getElementById('dateInput').value;
+  const errEl = document.getElementById('setupError');
+  errEl.style.display = 'none';
+
+  if (!schoolId) { showSetupError('請選擇學校'); return; }
+  if (!date) { showSetupError('請選擇日期'); return; }
+
+  const btn = document.getElementById('startBtn');
+  btn.disabled = true;
+  btn.textContent = '載入中...';
+
+  try {
+    const period = date + ',' + date;
+    const canteenData = await apiGet('canteen/meal', { SchoolId: schoolId, period });
+
+    let rawDishes = [];
+
+    if (canteenData && canteenData.length > 0) {
+      // Flatten: each canteen entry has a Meal array
+      canteenData.forEach(canteen => {
+        const restaurantName = canteen.RestaurantName || '';
+        (canteen.Meal || []).forEach(m => {
+          rawDishes.push({ ...m, _restaurantName: restaurantName });
+        });
+      });
+    }
+
+    if (rawDishes.length === 0) {
+      showSetupError('該日期查無菜單資料，請換其他日期或學校試試。');
+      btn.disabled = false;
+      btn.textContent = '開始評分！';
+      return;
+    }
+
+    // Deduplicate by RDishId
+    const seen = new Set();
+    dishes = rawDishes.filter(d => {
+      const key = d.RDishId || d.RDishName;
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).map(d => ({
+      id: String(d.RDishId || d.RDishName),
+      name: d.RDishName || '未知料理',
+      type: d.RDishTypeName || '',
+      restaurant: d._restaurantName || '',
+      calorie: d.calorie || 0,
+      ingredients: d.IngredientList
+        ? d.IngredientList.split(/[、,，\s]+/).filter(Boolean)
+        : []
+    }));
+
+    currentIndex = 0;
+    votes = {};
+    showSwipePanel();
+
+  } catch(e) {
+    showSetupError('載入失敗：' + e.message);
+    btn.disabled = false;
+    btn.textContent = '開始評分！';
+  }
+}
+
+function showSetupError(msg) {
+  const el = document.getElementById('setupError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ---- Swipe ----
+let isDragging = false, startX = 0, currentX = 0;
+
+function showSwipePanel() {
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('swipePanel').style.display = 'flex';
+  renderCard();
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = dishes.length;
+  const done = currentIndex;
+  document.getElementById('progressLabel').textContent = `${done} / ${total}`;
+  document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+}
+
+function renderCard() {
+  const stack = document.getElementById('cardStack');
+  stack.innerHTML = '';
+
+  if (currentIndex >= dishes.length) {
+    stack.innerHTML = `<div class="done-msg"><div class="emoji">🎉</div><h3>評完了！</h3><p>共評 ${dishes.length} 道菜</p></div>`;
+    setTimeout(showResults, 1200);
+    return;
+  }
+
+  // Ghost background card
+  if (currentIndex + 1 < dishes.length) {
+    const bg = document.createElement('div');
+    bg.className = 'next-bg';
+    stack.appendChild(bg);
+  }
+
+  const dish = dishes[currentIndex];
+  const card = document.createElement('div');
+  card.className = 'dish-card';
+  card.innerHTML = `
+    <div class="vote-overlay like">好吃 😋</div>
+    <div class="vote-overlay nope">難吃 😖</div>
+    <div class="dish-name">${esc(dish.name)}</div>
+    ${dish.type ? `<span class="dish-type">${esc(dish.type)}</span>` : ''}
+    <div class="dish-meta">
+      ${dish.restaurant ? `<span>${esc(dish.restaurant)}</span>` : ''}
+      ${dish.calorie ? `<span class="highlight">熱量：${dish.calorie} 大卡</span>` : ''}
+    </div>
+    ${dish.ingredients.length ? `
+      <div class="ingredients-title">食材</div>
+      <div class="ingredients-list">
+        ${dish.ingredients.slice(0,14).map(i => `<span class="ingredient-tag">${esc(i)}</span>`).join('')}
+        ${dish.ingredients.length > 14 ? `<span class="ingredient-tag">+${dish.ingredients.length - 14}</span>` : ''}
+      </div>
+    ` : ''}
+  `;
+
+  setupDrag(card);
+  stack.appendChild(card);
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function setupDrag(card) {
+  card.addEventListener('mousedown', dragStart);
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('mouseup', dragEnd);
+  card.addEventListener('touchstart', e => dragStart(e.touches[0]), { passive: true });
+  window.addEventListener('touchmove', e => dragMove(e.touches[0]), { passive: false });
+  window.addEventListener('touchend', e => dragEnd(e.changedTouches[0]));
+}
+
+function dragStart(e) {
+  isDragging = true;
+  startX = e.clientX;
+  currentX = 0;
+}
+
+function dragMove(e) {
+  if (!isDragging) return;
+  currentX = e.clientX - startX;
+  const card = document.querySelector('.dish-card');
+  if (!card) return;
+
+  const rotate = currentX * 0.07;
+  card.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
+  card.style.transition = 'none';
+
+  const likeEl = card.querySelector('.vote-overlay.like');
+  const nopeEl = card.querySelector('.vote-overlay.nope');
+
+  if (currentX > 30) {
+    likeEl.style.opacity = Math.min((currentX - 30) / 60, 1);
+    nopeEl.style.opacity = 0;
+  } else if (currentX < -30) {
+    nopeEl.style.opacity = Math.min((-currentX - 30) / 60, 1);
+    likeEl.style.opacity = 0;
+  } else {
+    likeEl.style.opacity = 0;
+    nopeEl.style.opacity = 0;
+  }
+}
+
+function dragEnd(e) {
+  if (!isDragging) return;
+  isDragging = false;
+
+  const threshold = 90;
+  if (currentX > threshold) {
+    vote('like');
+  } else if (currentX < -threshold) {
+    vote('nope');
+  } else {
+    const card = document.querySelector('.dish-card');
+    if (card) {
+      card.style.transition = '';
+      card.style.transform = '';
+      card.querySelector('.vote-overlay.like').style.opacity = 0;
+      card.querySelector('.vote-overlay.nope').style.opacity = 0;
+    }
+  }
+  currentX = 0;
+}
+
+function vote(type) {
+  if (currentIndex >= dishes.length) return;
+
+  const dish = dishes[currentIndex];
+  if (type !== 'skip') votes[dish.id] = type;
+
+  const card = document.querySelector('.dish-card');
+  if (card) {
+    // Remove drag listeners to prevent conflicts
+    window.removeEventListener('mousemove', dragMove);
+    window.removeEventListener('mouseup', dragEnd);
+    window.removeEventListener('touchmove', dragMove);
+    window.removeEventListener('touchend', dragEnd);
+
+    card.style.transition = '';
+    if (type === 'like') {
+      card.querySelector('.vote-overlay.like').style.opacity = 1;
+      card.classList.add('swipe-right');
+    } else if (type === 'nope') {
+      card.querySelector('.vote-overlay.nope').style.opacity = 1;
+      card.classList.add('swipe-left');
+    } else {
+      card.classList.add('swipe-skip');
+    }
+
+    setTimeout(() => {
+      currentIndex++;
+      updateProgress();
+      renderCard();
+    }, type === 'skip' ? 200 : 360);
+  } else {
+    currentIndex++;
+    updateProgress();
+    renderCard();
+  }
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (document.getElementById('swipePanel').style.display !== 'flex') return;
+  if (e.key === 'ArrowRight') vote('like');
+  else if (e.key === 'ArrowLeft') vote('nope');
+  else if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); vote('skip'); }
+});
+
+// ---- Results ----
+function showResults() {
+  document.getElementById('swipePanel').style.display = 'none';
+  document.getElementById('resultsPanel').style.display = 'block';
+
+  const liked  = dishes.filter(d => votes[d.id] === 'like');
+  const noped  = dishes.filter(d => votes[d.id] === 'nope');
+  const skipped = dishes.filter(d => !votes[d.id]);
+
+  document.getElementById('summaryRow').innerHTML = `
+    <div class="summary-item result-summary">
+      <div class="big-num" style="color:#27ae60">${liked.length}</div>
+      <div class="label">好吃 😋</div>
+    </div>
+    <div class="summary-item result-summary">
+      <div class="big-num" style="color:#e74c3c">${noped.length}</div>
+      <div class="label">難吃 😖</div>
+    </div>
+    <div class="summary-item result-summary">
+      <div class="big-num" style="color:#888">${skipped.length}</div>
+      <div class="label">跳過 ⏭</div>
+    </div>
+  `;
+
+  const likedSec = document.getElementById('likedSection');
+  likedSec.innerHTML = liked.length ? `<h3>😋 好吃的菜</h3>` +
+    liked.map((d, i) => `
+      <div class="result-item">
+        <span class="rank">${['🥇','🥈','🥉'][i] || (i+1)}</span>
+        <div class="dish-info">
+          <div class="name">${esc(d.name)}</div>
+          ${d.type ? `<div class="type">${esc(d.type)}</div>` : ''}
+        </div>
+      </div>
+    `).join('') : '';
+
+  const nopedSec = document.getElementById('nopedSection');
+  nopedSec.innerHTML = noped.length ? `<h3>😖 難吃的菜</h3>` +
+    noped.map(d => `
+      <div class="result-item">
+        <span class="rank">👎</span>
+        <div class="dish-info">
+          <div class="name">${esc(d.name)}</div>
+          ${d.type ? `<div class="type">${esc(d.type)}</div>` : ''}
+        </div>
+      </div>
+    `).join('') : '';
+}
+
+function backToSetup() {
+  document.getElementById('resultsPanel').style.display = 'none';
+  document.getElementById('setupPanel').style.display = 'block';
+  document.getElementById('setupError').style.display = 'none';
+  const btn = document.getElementById('startBtn');
+  btn.disabled = false;
+  btn.textContent = '開始評分！';
+}
+
+function shareResults() {
+  const liked  = dishes.filter(d => votes[d.id] === 'like').map(d => d.name);
+  const noped  = dishes.filter(d => votes[d.id] === 'nope').map(d => d.name);
+  let text = '校園菜色評分結果 🍱\n';
+  if (liked.length) text += `\n😋 好吃：${liked.join('、')}`;
+  if (noped.length) text += `\n😖 難吃：${noped.join('、')}`;
+  text += '\n\n來自 校園食材登錄平臺評分工具';
+
+  if (navigator.share) {
+    navigator.share({ title: '校園菜色評分', text });
+  } else {
+    navigator.clipboard?.writeText(text).then(() => {
+      const btn = document.getElementById('shareBtn');
+      btn.textContent = '已複製！';
+      setTimeout(() => { btn.textContent = '分享結果'; }, 2000);
+    });
+  }
+}
+
+// ---- Init ----
+(function() {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth()+1).padStart(2,'0');
+  const d = String(today.getDate()).padStart(2,'0');
+  document.getElementById('dateInput').value = `${y}-${m}-${d}`;
+  loadCounties();
+})();
+</script>
+</body>
+</html>
