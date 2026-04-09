@@ -535,10 +535,10 @@ function shareResults() {
   if (selectedVendor)     text += `\n🍳 供應商：${selectedVendor}`;
   if (liked.length) text += `\n\n😋 好吃：${liked.join('、')}`;
   if (noped.length) text += `\n😖 難吃：${noped.join('、')}`;
-  text += '\n\n來自 校園食材登錄平臺評分工具';
+  text += '\n\n來自 校園食材登錄平臺評分工具\nhttps://tainan.olc.tw/p/fatraceschool/';
 
   if (navigator.share) {
-    navigator.share({ title: '校園菜色評分', text });
+    navigator.share({ title: '校園菜色評分', text, url: 'https://tainan.olc.tw/p/fatraceschool/' });
   } else {
     navigator.clipboard?.writeText(text).then(() => {
       const btn = document.getElementById('shareBtn');
