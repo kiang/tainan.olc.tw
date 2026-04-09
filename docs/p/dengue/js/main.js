@@ -187,37 +187,37 @@ style.textContent = [
     '  padding: 6px 8px;',
     '  display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;',
     '}',
-    '#dengue-bar select { flex: 1; min-width: 0; font-size: 14px; }',
+    '#dengue-bar select { flex: 1; min-width: 0; font-size: 16px; }',
     '#dengue-bar .src-btn {',
-    '  white-space: nowrap; font-size: 13px; padding: 4px 8px;',
+    '  white-space: nowrap; font-size: 16px; padding: 6px 12px;',
     '  border-radius: 4px; border: 1px solid #aaa; cursor: pointer;',
     '  background: #f8f8f8; color: #333;',
     '}',
     '#dengue-bar .src-btn.active { background: #0056b3; color: #fff; border-color: #004085; }',
     '#dengue-bar .bar-btn {',
-    '  white-space: nowrap; font-size: 13px; padding: 4px 8px;',
+    '  white-space: nowrap; font-size: 16px; padding: 6px 12px;',
     '  border-radius: 4px; border: 1px solid #aaa; cursor: pointer;',
     '  background: #f8f8f8; color: #333;',
     '}',
     // legend panel
     '#dengue-legend {',
-    '  position: fixed; bottom: 52px; right: 8px; z-index: 1000;',
+    '  position: fixed; bottom: 58px; right: 8px; z-index: 1000;',
     '  background: rgba(255,255,255,0.97); border: 1px solid #ccc;',
-    '  border-radius: 6px; padding: 8px; font-size: 12px; display: none;',
+    '  border-radius: 6px; padding: 10px; font-size: 15px; display: none;',
     '  max-height: 60vh; overflow-y: auto;',
     '}',
     '#dengue-legend table { border-collapse: collapse; margin-bottom: 6px; }',
-    '#dengue-legend td { padding: 2px 4px; }',
+    '#dengue-legend td { padding: 3px 6px; }',
     // menu panel
     '#dengue-menu {',
-    '  position: fixed; bottom: 52px; right: 8px; z-index: 1000;',
+    '  position: fixed; bottom: 58px; right: 8px; z-index: 1000;',
     '  background: rgba(255,255,255,0.97); border: 1px solid #ccc;',
-    '  border-radius: 6px; padding: 8px; font-size: 13px; display: none;',
-    '  min-width: 180px;',
+    '  border-radius: 6px; padding: 10px; font-size: 16px; display: none;',
+    '  min-width: 200px;',
     '}',
-    '#dengue-menu a { display: block; padding: 6px 8px; margin-bottom: 4px; border-radius: 4px; text-decoration: none; color: #fff; font-weight: 500; }',
+    '#dengue-menu a { display: block; padding: 8px 12px; margin-bottom: 4px; border-radius: 4px; text-decoration: none; color: #fff; font-weight: 500; }',
     // push map up so bar doesn't overlap
-    '#map { padding-bottom: 46px; box-sizing: border-box; }'
+    '#map { padding-bottom: 54px; box-sizing: border-box; }'
 ].join('\n');
 document.head.appendChild(style);
 
