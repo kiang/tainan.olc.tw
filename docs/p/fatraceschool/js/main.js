@@ -532,7 +532,7 @@ function shareResults() {
   let text = '校園菜色評分結果 🍱\n';
   if (selectedSchoolName) text += `\n🏫 學校：${selectedSchoolName}`;
   if (selectedDate)       text += `\n📅 日期：${selectedDate}`;
-  if (selectedVendor)     text += `\n🍳 廚商：${selectedVendor}`;
+  if (selectedVendor)     text += `\n🍳 供應商：${selectedVendor}`;
   if (liked.length) text += `\n\n😋 好吃：${liked.join('、')}`;
   if (noped.length) text += `\n😖 難吃：${noped.join('、')}`;
   text += '\n\n來自 校園食材登錄平臺評分工具';
