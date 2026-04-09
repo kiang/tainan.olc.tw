@@ -5,7 +5,7 @@ let currentIndex = 0;
 let votes = {};
 
 // ---- Searchable Dropdown ----
-const ssdState = { county: {value:'',label:''}, area: {value:'',label:''}, school: {value:'',label:''} };
+const ssdState = { county: {value:'',label:''}, area: {value:'',label:''}, school: {value:'',label:''}, kitchen: {value:'',label:''} };
 
 function ssdSetup(id, onSelect) {
   const display  = document.getElementById(id + 'Display');
@@ -127,10 +127,18 @@ async function loadCounties() {
   }
 }
 
+function resetKitchenGroup() {
+  document.getElementById('kitchenGroup').style.display = 'none';
+  document.getElementById('confirmBtn').style.display = 'none';
+  ssdSetDisplay('kitchen', '請選擇廚商');
+  allBatches = [];
+}
+
 async function loadAreas(countyId) {
   ssdSetDisplay('area', '載入中...');
   ssdSetDisplay('school', '請先選鄉鎮市區');
   ssdSetOptions('school', [], '請先選鄉鎮市區', null);
+  resetKitchenGroup();
   if (!countyId) { ssdSetDisplay('area', '請先選縣市'); return; }
   try {
     const data = await apiGet('area', { CountyId: countyId });
@@ -144,6 +152,7 @@ async function loadAreas(countyId) {
 async function loadSchools(areaId) {
   const countyId = ssdState.county.value;
   ssdSetDisplay('school', '載入中...');
+  resetKitchenGroup();
   if (!areaId) { ssdSetDisplay('school', '請先選鄉鎮市區'); return; }
   try {
     const data = await apiGet('school', { CountyId: countyId, AreaId: areaId });
@@ -153,6 +162,8 @@ async function loadSchools(areaId) {
     ssdSetDisplay('school', '載入失敗');
   }
 }
+
+let allBatches = [];
 
 async function startRating() {
   const schoolId = ssdState.school.value;
@@ -168,28 +179,60 @@ async function startRating() {
   btn.textContent = '載入中...';
 
   try {
-    const batches = await apiGet('offered/meal', { SchoolId: schoolId, period: date, KitchenId: 'all', MenuType: 1 });
+    allBatches = await apiGet('offered/meal', { SchoolId: schoolId, period: date, KitchenId: 'all', MenuType: 1 });
 
-    if (!batches || batches.length === 0) {
+    if (!allBatches || allBatches.length === 0) {
       showSetupError('該日期查無菜單資料，請換其他日期或學校試試。');
       btn.disabled = false;
       btn.textContent = '出發評分！🍽️';
       return;
     }
 
-    const dishArrays = await Promise.all(
-      batches.map(b => apiGet('dish', { BatchDataId: b.BatchDataId })
-        .then(list => list.map(d => ({ ...d, _kitchenName: b.KitchenName || '' })))
-        .catch(() => [])
-      )
-    );
+    btn.disabled = false;
+    btn.textContent = '出發評分！🍽️';
 
-    const rawDishes = dishArrays.flat();
+    // Populate kitchen dropdown and show it
+    ssdSetDisplay('kitchen', '請選擇廚商');
+    const kitchenOptions = allBatches.map(b => ({
+      value: String(b.BatchDataId),
+      label: b.KitchenName || String(b.KitchenId)
+    }));
+    ssdSetOptions('kitchen', kitchenOptions, '請選擇廚商', null);
+    document.getElementById('kitchenGroup').style.display = 'block';
+    document.getElementById('confirmBtn').style.display = 'block';
+
+    // Auto-select if only one kitchen
+    if (allBatches.length === 1) {
+      const b = allBatches[0];
+      ssdSelect('kitchen', String(b.BatchDataId), b.KitchenName || String(b.KitchenId), null);
+    }
+
+  } catch(e) {
+    showSetupError('載入失敗：' + e.message);
+    btn.disabled = false;
+    btn.textContent = '出發評分！🍽️';
+  }
+}
+
+async function confirmKitchen() {
+  const batchId = ssdState.kitchen.value;
+  if (!batchId) { showSetupError('請先選擇廚商喔！'); return; }
+
+  const errEl = document.getElementById('setupError');
+  errEl.style.display = 'none';
+
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = true;
+  btn.textContent = '載入中...';
+
+  try {
+    const batch = allBatches.find(b => String(b.BatchDataId) === batchId);
+    const rawDishes = await apiGet('dish', { BatchDataId: batchId });
 
     if (rawDishes.length === 0) {
-      showSetupError('該日期查無菜色資料，請換其他日期或學校試試。');
+      showSetupError('該廚商查無菜色資料，請試試其他廚商。');
       btn.disabled = false;
-      btn.textContent = '出發評分！🍽️';
+      btn.textContent = '開始評分！🍽️';
       return;
     }
 
@@ -204,7 +247,7 @@ async function startRating() {
       dishId: String(d.DishId || ''),
       name: d.DishName || '未知料理',
       type: d.DishType || '',
-      restaurant: d._kitchenName || '',
+      restaurant: batch ? (batch.KitchenName || '') : '',
     }));
 
     currentIndex = 0;
@@ -214,7 +257,7 @@ async function startRating() {
   } catch(e) {
     showSetupError('載入失敗：' + e.message);
     btn.disabled = false;
-    btn.textContent = '出發評分！🍽️';
+    btn.textContent = '開始評分！🍽️';
   }
 }
 
@@ -444,6 +487,10 @@ function backToSetup() {
   document.getElementById('resultsPanel').style.display = 'none';
   document.getElementById('setupPanel').style.display = 'block';
   document.getElementById('setupError').style.display = 'none';
+  document.getElementById('kitchenGroup').style.display = 'none';
+  document.getElementById('confirmBtn').style.display = 'none';
+  ssdSetDisplay('kitchen', '請選擇廚商');
+  allBatches = [];
   const btn = document.getElementById('startBtn');
   btn.disabled = false;
   btn.textContent = '出發評分！🍽️';
@@ -478,5 +525,6 @@ function shareResults() {
   ssdSetup('county', loadAreas);
   ssdSetup('area', loadSchools);
   ssdSetup('school', null);
+  ssdSetup('kitchen', null);
   loadCounties();
 })();
