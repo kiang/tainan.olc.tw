@@ -56,20 +56,17 @@
   </div>
 
   <button class="btn-primary" id="startBtn" onclick="startRating()">出發評分！🍽️</button>
-
-  <div class="form-group" id="kitchenGroup" style="display:none; margin-top:16px;">
-    <label>🍳 廚商</label>
-    <div class="ssd-wrap" id="kitchenWrap">
-      <div class="ssd-display" id="kitchenDisplay" tabindex="0">請選擇廚商<span class="ssd-arrow">▼</span></div>
-      <div class="ssd-dropdown" id="kitchenDropdown">
-        <input class="ssd-search" type="text" placeholder="🔍 搜尋廚商..." id="kitchenSearch">
-        <div class="ssd-list" id="kitchenList"></div>
-      </div>
-    </div>
-  </div>
-
-  <button class="btn-primary" id="confirmBtn" onclick="confirmKitchen()" style="display:none">開始評分！🍽️</button>
   <div class="error-msg" id="setupError" style="display:none"></div>
+</div>
+
+<!-- Kitchen Picker Panel -->
+<div class="kitchen-panel" id="kitchenPanel">
+  <h2>🍳 你今天吃哪一家的餐點？</h2>
+  <p class="kitchen-hint">點選看起來像你午餐的那一組菜！</p>
+  <div class="kitchen-loading" id="kitchenLoading">
+    <div class="spinner"></div>載入菜色中...
+  </div>
+  <div class="kitchen-cards" id="kitchenCards"></div>
 </div>
 
 <!-- Swipe Panel -->

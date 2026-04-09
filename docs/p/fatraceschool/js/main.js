@@ -5,7 +5,7 @@ let currentIndex = 0;
 let votes = {};
 
 // ---- Searchable Dropdown ----
-const ssdState = { county: {value:'',label:''}, area: {value:'',label:''}, school: {value:'',label:''}, kitchen: {value:'',label:''} };
+const ssdState = { county: {value:'',label:''}, area: {value:'',label:''}, school: {value:'',label:''} };
 
 function ssdSetup(id, onSelect) {
   const display  = document.getElementById(id + 'Display');
@@ -127,10 +127,9 @@ async function loadCounties() {
   }
 }
 
-function resetKitchenGroup() {
-  document.getElementById('kitchenGroup').style.display = 'none';
-  document.getElementById('confirmBtn').style.display = 'none';
-  ssdSetDisplay('kitchen', '請選擇廚商');
+function resetKitchenPanel() {
+  document.getElementById('kitchenPanel').style.display = 'none';
+  document.getElementById('kitchenCards').innerHTML = '';
   allBatches = [];
 }
 
@@ -138,7 +137,7 @@ async function loadAreas(countyId) {
   ssdSetDisplay('area', '載入中...');
   ssdSetDisplay('school', '請先選鄉鎮市區');
   ssdSetOptions('school', [], '請先選鄉鎮市區', null);
-  resetKitchenGroup();
+  resetKitchenPanel();
   if (!countyId) { ssdSetDisplay('area', '請先選縣市'); return; }
   try {
     const data = await apiGet('area', { CountyId: countyId });
@@ -152,7 +151,7 @@ async function loadAreas(countyId) {
 async function loadSchools(areaId) {
   const countyId = ssdState.county.value;
   ssdSetDisplay('school', '載入中...');
-  resetKitchenGroup();
+  resetKitchenPanel();
   if (!areaId) { ssdSetDisplay('school', '請先選鄉鎮市區'); return; }
   try {
     const data = await apiGet('school', { CountyId: countyId, AreaId: areaId });
@@ -191,50 +190,73 @@ async function startRating() {
     btn.disabled = false;
     btn.textContent = '出發評分！🍽️';
 
-    // Populate kitchen dropdown and show it
-    ssdSetDisplay('kitchen', '請選擇廚商');
-    const kitchenOptions = allBatches.map(b => ({
-      value: String(b.BatchDataId),
-      label: b.KitchenName || String(b.KitchenId)
-    }));
-    ssdSetOptions('kitchen', kitchenOptions, '請選擇廚商', null);
-    document.getElementById('kitchenGroup').style.display = 'block';
-    document.getElementById('confirmBtn').style.display = 'block';
+    // Show kitchen picker panel, hide setup panel
+    document.getElementById('setupPanel').style.display = 'none';
+    const panel = document.getElementById('kitchenPanel');
+    const loading = document.getElementById('kitchenLoading');
+    const cards = document.getElementById('kitchenCards');
+    panel.style.display = 'block';
+    loading.style.display = 'block';
+    cards.innerHTML = '';
 
-    // Auto-select if only one kitchen
+    // If only one kitchen, skip picker and go straight in
     if (allBatches.length === 1) {
-      const b = allBatches[0];
-      ssdSelect('kitchen', String(b.BatchDataId), b.KitchenName || String(b.KitchenId), null);
+      loading.style.display = 'none';
+      await pickKitchen(allBatches[0]);
+      return;
     }
+
+    // Fetch dishes for all batches in parallel to show preview photos
+    const batchDishes = await Promise.all(
+      allBatches.map(b => apiGet('dish', { BatchDataId: b.BatchDataId })
+        .then(list => ({ batch: b, dishList: list }))
+        .catch(() => ({ batch: b, dishList: [] }))
+      )
+    );
+
+    loading.style.display = 'none';
+
+    batchDishes.forEach(({ batch, dishList }) => {
+      const card = document.createElement('div');
+      card.className = 'kitchen-card';
+      card.onclick = () => pickKitchen(batch, dishList);
+
+      // Show up to 4 dish photos
+      const preview = dishList.slice(0, 4);
+      const photosHtml = preview.map(d => {
+        const url = `${API_BASE}dish/pic/${encodeURIComponent(d.DishId || '')}`;
+        return `<div class="kp-item">
+          <img src="${esc(url)}" alt="${esc(d.DishName || '')}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="kp-placeholder" style="display:none">🍱</div>
+        </div>`;
+      }).join('');
+      // Fill remaining slots with placeholders
+      const empty = Array(Math.max(0, 4 - preview.length))
+        .fill('<div class="kp-item"><div class="kp-placeholder">🍱</div></div>').join('');
+
+      card.innerHTML = `
+        <div class="kitchen-card-photos">${photosHtml}${empty}</div>
+        <div class="kitchen-card-label">
+          <span class="kitchen-tap-hint">👆 這是我的餐點！</span>
+          <span class="dish-count">${dishList.length} 道菜</span>
+        </div>
+      `;
+      cards.appendChild(card);
+    });
 
   } catch(e) {
     showSetupError('載入失敗：' + e.message);
     btn.disabled = false;
     btn.textContent = '出發評分！🍽️';
+    document.getElementById('setupPanel').style.display = 'block';
+    document.getElementById('kitchenPanel').style.display = 'none';
   }
 }
 
-async function confirmKitchen() {
-  const batchId = ssdState.kitchen.value;
-  if (!batchId) { showSetupError('請先選擇廚商喔！'); return; }
-
-  const errEl = document.getElementById('setupError');
-  errEl.style.display = 'none';
-
-  const btn = document.getElementById('confirmBtn');
-  btn.disabled = true;
-  btn.textContent = '載入中...';
-
+async function pickKitchen(batch, dishList) {
   try {
-    const batch = allBatches.find(b => String(b.BatchDataId) === batchId);
-    const rawDishes = await apiGet('dish', { BatchDataId: batchId });
-
-    if (rawDishes.length === 0) {
-      showSetupError('該廚商查無菜色資料，請試試其他廚商。');
-      btn.disabled = false;
-      btn.textContent = '開始評分！🍽️';
-      return;
-    }
+    const rawDishes = dishList || await apiGet('dish', { BatchDataId: batch.BatchDataId });
 
     const seen = new Set();
     dishes = rawDishes.filter(d => {
@@ -247,17 +269,18 @@ async function confirmKitchen() {
       dishId: String(d.DishId || ''),
       name: d.DishName || '未知料理',
       type: d.DishType || '',
-      restaurant: batch ? (batch.KitchenName || '') : '',
+      restaurant: batch.KitchenName || '',
     }));
 
     currentIndex = 0;
     votes = {};
+    document.getElementById('kitchenPanel').style.display = 'none';
     showSwipePanel();
 
   } catch(e) {
+    document.getElementById('kitchenPanel').style.display = 'none';
+    document.getElementById('setupPanel').style.display = 'block';
     showSetupError('載入失敗：' + e.message);
-    btn.disabled = false;
-    btn.textContent = '開始評分！🍽️';
   }
 }
 
@@ -485,11 +508,10 @@ function showResults() {
 
 function backToSetup() {
   document.getElementById('resultsPanel').style.display = 'none';
+  document.getElementById('kitchenPanel').style.display = 'none';
+  document.getElementById('kitchenCards').innerHTML = '';
   document.getElementById('setupPanel').style.display = 'block';
   document.getElementById('setupError').style.display = 'none';
-  document.getElementById('kitchenGroup').style.display = 'none';
-  document.getElementById('confirmBtn').style.display = 'none';
-  ssdSetDisplay('kitchen', '請選擇廚商');
   allBatches = [];
   const btn = document.getElementById('startBtn');
   btn.disabled = false;
@@ -525,6 +547,5 @@ function shareResults() {
   ssdSetup('county', loadAreas);
   ssdSetup('area', loadSchools);
   ssdSetup('school', null);
-  ssdSetup('kitchen', null);
   loadCounties();
 })();

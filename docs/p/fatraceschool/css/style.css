@@ -408,6 +408,116 @@ input[type="date"]:focus { border-color: #ff6b9d; }
 .done-msg h3 { font-size: 1.4rem; font-weight: 900; color: #ff6b9d; margin-bottom: 8px; }
 .done-msg p { font-size: 0.9rem; font-weight: 700; color: #b89a80; }
 
+/* ---- Kitchen Picker Panel ---- */
+.kitchen-panel {
+  width: 100%;
+  max-width: 600px;
+  padding: 24px 20px;
+  display: none;
+}
+
+.kitchen-panel h2 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #ff6b9d;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.kitchen-hint {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #b89a80;
+  margin-bottom: 20px;
+}
+
+.kitchen-loading {
+  text-align: center;
+  color: #ffadd2;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 20px 0;
+  display: none;
+}
+
+.kitchen-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kitchen-card {
+  background: #fff;
+  border: 3px solid #ffd6e8;
+  border-radius: 24px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  box-shadow: 0 4px 0 #ffd6e8;
+}
+
+.kitchen-card:hover {
+  border-color: #ff6b9d;
+  box-shadow: 0 4px 0 #ff6b9d;
+  transform: translateY(-2px);
+}
+
+.kitchen-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #ff6b9d;
+}
+
+.kitchen-card-photos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.kitchen-card-photos .kp-item {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff0f7;
+}
+
+.kitchen-card-photos .kp-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kitchen-card-photos .kp-item .kp-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+.kitchen-card-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kitchen-card-label .dish-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffadd2;
+  white-space: nowrap;
+}
+
+.kitchen-tap-hint {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #ff6b9d;
+}
+
 /* ---- Results Panel ---- */
 .results-panel {
   width: 100%;
