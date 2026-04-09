@@ -195,7 +195,7 @@
     .card-stack {
       width: 100%;
       position: relative;
-      height: 400px;
+      height: 360px;
     }
 
     .dish-card {
@@ -278,6 +278,26 @@
       color: #ccc;
     }
 
+    .dish-photo {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      background: #0f3460;
+    }
+    .dish-photo-placeholder {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      background: #0f3460;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
     .next-bg {
       position: absolute;
       inset: 6px -6px -6px 6px;
@@ -320,7 +340,7 @@
     /* Results */
     .results-panel {
       width: 100%;
-      max-width: 480px;
+      max-width: 960px;
       padding: 20px;
       display: none;
     }
@@ -340,30 +360,78 @@
     .result-summary .big-num { font-size: 2rem; font-weight: 700; }
     .result-summary .label { font-size: 0.78rem; color: #888; margin-top: 2px; }
 
-    .result-section { margin-bottom: 20px; }
-
-    .result-section h3 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 10px;
+    .result-columns {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 20px;
     }
 
-    .result-item {
-      background: #16213e;
+    .result-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .result-col-header {
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 10px 0 12px;
+      border-bottom: 2px solid;
+      margin-bottom: 12px;
+    }
+    .result-col-header.good { color: #27ae60; border-color: #27ae60; }
+    .result-col-header.bad  { color: #e74c3c; border-color: #e74c3c; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .gallery-item {
+      position: relative;
       border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 8px;
+      overflow: hidden;
+      background: #0f3460;
+      aspect-ratio: 1;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item .gallery-placeholder {
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      font-size: 2rem;
     }
 
-    .result-item .rank { font-size: 1rem; width: 28px; text-align: center; }
-    .result-item .dish-info { flex: 1; }
-    .result-item .dish-info .name { font-size: 0.95rem; color: #fff; }
-    .result-item .dish-info .type { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .gallery-item .gallery-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 16px 6px 5px;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .result-empty {
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      padding: 20px 0;
+    }
 
     .done-msg { text-align: center; padding: 40px 20px; }
     .done-msg .emoji { font-size: 4rem; margin-bottom: 16px; }
@@ -482,8 +550,18 @@
 <div class="results-panel" id="resultsPanel">
   <h2>評分結果</h2>
   <div class="summary-row" id="summaryRow"></div>
-  <div class="result-section" id="likedSection"></div>
-  <div class="result-section" id="nopedSection"></div>
+  <div class="result-columns">
+    <div class="result-col">
+      <div class="result-col-header good">😋 好吃</div>
+      <div class="gallery" id="likedGallery"></div>
+      <div class="result-empty" id="likedEmpty" style="display:none">沒有好吃的菜</div>
+    </div>
+    <div class="result-col">
+      <div class="result-col-header bad">😖 難吃</div>
+      <div class="gallery" id="nopedGallery"></div>
+      <div class="result-empty" id="nopedEmpty" style="display:none">沒有難吃的菜</div>
+    </div>
+  </div>
   <button class="btn-primary" onclick="backToSetup()">再評一次</button>
   <button class="btn-secondary" id="shareBtn" onclick="shareResults()">分享結果</button>
 </div>
@@ -662,44 +740,46 @@ async function startRating() {
   btn.textContent = '載入中...';
 
   try {
-    const period = date + ',' + date;
-    const canteenData = await apiGet('canteen/meal', { SchoolId: schoolId, period });
+    // Step 1: get all meal batches for the school on the given date
+    const batches = await apiGet('offered/meal', { SchoolId: schoolId, period: date, KitchenId: 'all', MenuType: 1 });
 
-    let rawDishes = [];
-
-    if (canteenData && canteenData.length > 0) {
-      // Flatten: each canteen entry has a Meal array
-      canteenData.forEach(canteen => {
-        const restaurantName = canteen.RestaurantName || '';
-        (canteen.Meal || []).forEach(m => {
-          rawDishes.push({ ...m, _restaurantName: restaurantName });
-        });
-      });
-    }
-
-    if (rawDishes.length === 0) {
+    if (!batches || batches.length === 0) {
       showSetupError('該日期查無菜單資料，請換其他日期或學校試試。');
       btn.disabled = false;
       btn.textContent = '開始評分！';
       return;
     }
 
-    // Deduplicate by RDishId
+    // Step 2: fetch dishes for each batch in parallel
+    const dishArrays = await Promise.all(
+      batches.map(b => apiGet('dish', { BatchDataId: b.BatchDataId })
+        .then(list => list.map(d => ({ ...d, _kitchenName: b.KitchenName || '' })))
+        .catch(() => [])
+      )
+    );
+
+    const rawDishes = dishArrays.flat();
+
+    if (rawDishes.length === 0) {
+      showSetupError('該日期查無菜色資料，請換其他日期或學校試試。');
+      btn.disabled = false;
+      btn.textContent = '開始評分！';
+      return;
+    }
+
+    // Deduplicate by DishBatchDataId (unique per dish-in-meal)
     const seen = new Set();
     dishes = rawDishes.filter(d => {
-      const key = d.RDishId || d.RDishName;
+      const key = d.DishBatchDataId;
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
     }).map(d => ({
-      id: String(d.RDishId || d.RDishName),
-      name: d.RDishName || '未知料理',
-      type: d.RDishTypeName || '',
-      restaurant: d._restaurantName || '',
-      calorie: d.calorie || 0,
-      ingredients: d.IngredientList
-        ? d.IngredientList.split(/[、,，\s]+/).filter(Boolean)
-        : []
+      id: String(d.DishBatchDataId),
+      dishId: String(d.DishId || ''),
+      name: d.DishName || '未知料理',
+      type: d.DishType || '',
+      restaurant: d._kitchenName || '',
     }));
 
     currentIndex = 0;
@@ -756,22 +836,18 @@ function renderCard() {
   const dish = dishes[currentIndex];
   const card = document.createElement('div');
   card.className = 'dish-card';
+  const photoUrl = `${API_BASE}dish/pic/${encodeURIComponent(dish.dishId)}`;
   card.innerHTML = `
     <div class="vote-overlay like">好吃 😋</div>
     <div class="vote-overlay nope">難吃 😖</div>
+    <img class="dish-photo" src="${photoUrl}" alt="${esc(dish.name)}"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="dish-photo-placeholder" style="display:none">🍱</div>
     <div class="dish-name">${esc(dish.name)}</div>
     ${dish.type ? `<span class="dish-type">${esc(dish.type)}</span>` : ''}
     <div class="dish-meta">
       ${dish.restaurant ? `<span>${esc(dish.restaurant)}</span>` : ''}
-      ${dish.calorie ? `<span class="highlight">熱量：${dish.calorie} 大卡</span>` : ''}
     </div>
-    ${dish.ingredients.length ? `
-      <div class="ingredients-title">食材</div>
-      <div class="ingredients-list">
-        ${dish.ingredients.slice(0,14).map(i => `<span class="ingredient-tag">${esc(i)}</span>`).join('')}
-        ${dish.ingredients.length > 14 ? `<span class="ingredient-tag">+${dish.ingredients.length - 14}</span>` : ''}
-      </div>
-    ` : ''}
   `;
 
   setupDrag(card);
@@ -889,12 +965,24 @@ document.addEventListener('keydown', e => {
 });
 
 // ---- Results ----
+function dishGalleryItem(d) {
+  const photoUrl = `${API_BASE}dish/pic/${encodeURIComponent(d.dishId)}`;
+  return `
+    <div class="gallery-item">
+      <img src="${photoUrl}" alt="${esc(d.name)}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="gallery-placeholder" style="display:none">🍱</div>
+      <div class="gallery-label">${esc(d.name)}</div>
+    </div>
+  `;
+}
+
 function showResults() {
   document.getElementById('swipePanel').style.display = 'none';
   document.getElementById('resultsPanel').style.display = 'block';
 
-  const liked  = dishes.filter(d => votes[d.id] === 'like');
-  const noped  = dishes.filter(d => votes[d.id] === 'nope');
+  const liked   = dishes.filter(d => votes[d.id] === 'like');
+  const noped   = dishes.filter(d => votes[d.id] === 'nope');
   const skipped = dishes.filter(d => !votes[d.id]);
 
   document.getElementById('summaryRow').innerHTML = `
@@ -912,29 +1000,25 @@ function showResults() {
     </div>
   `;
 
-  const likedSec = document.getElementById('likedSection');
-  likedSec.innerHTML = liked.length ? `<h3>😋 好吃的菜</h3>` +
-    liked.map((d, i) => `
-      <div class="result-item">
-        <span class="rank">${['🥇','🥈','🥉'][i] || (i+1)}</span>
-        <div class="dish-info">
-          <div class="name">${esc(d.name)}</div>
-          ${d.type ? `<div class="type">${esc(d.type)}</div>` : ''}
-        </div>
-      </div>
-    `).join('') : '';
+  const likedGallery = document.getElementById('likedGallery');
+  const likedEmpty   = document.getElementById('likedEmpty');
+  if (liked.length) {
+    likedGallery.innerHTML = liked.map(dishGalleryItem).join('');
+    likedEmpty.style.display = 'none';
+  } else {
+    likedGallery.innerHTML = '';
+    likedEmpty.style.display = 'block';
+  }
 
-  const nopedSec = document.getElementById('nopedSection');
-  nopedSec.innerHTML = noped.length ? `<h3>😖 難吃的菜</h3>` +
-    noped.map(d => `
-      <div class="result-item">
-        <span class="rank">👎</span>
-        <div class="dish-info">
-          <div class="name">${esc(d.name)}</div>
-          ${d.type ? `<div class="type">${esc(d.type)}</div>` : ''}
-        </div>
-      </div>
-    `).join('') : '';
+  const nopedGallery = document.getElementById('nopedGallery');
+  const nopedEmpty   = document.getElementById('nopedEmpty');
+  if (noped.length) {
+    nopedGallery.innerHTML = noped.map(dishGalleryItem).join('');
+    nopedEmpty.style.display = 'none';
+  } else {
+    nopedGallery.innerHTML = '';
+    nopedEmpty.style.display = 'block';
+  }
 }
 
 function backToSetup() {
