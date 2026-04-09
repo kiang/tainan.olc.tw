@@ -17,7 +17,7 @@ var colorTable = {
 };
 
 // State
-var currentYear = 2025;
+var currentYear = new Date().getFullYear();
 var currentSource = 'cunli';
 var labelMarkers = [];
 var dengue = {};
