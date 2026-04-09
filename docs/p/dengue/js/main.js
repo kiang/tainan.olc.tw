@@ -17,10 +17,15 @@ var colorTable = {
     ]
 };
 
+// State
+var currentYear = 2025;
+var currentSource = 'cunli'; // 'cunli' = local, 'cunli_imported' = imported
+var labelMarkers = [];
+
 function getFillColor(villCode) {
     var color = 'rgba(200,200,200,0.5)';
     if (villCode && dengue[villCode] !== undefined) {
-        var count = dengue[villCode].count || dengue[villCode]; // Support both old and new format
+        var count = dengue[villCode].count !== undefined ? dengue[villCode].count : dengue[villCode];
         for (var i = 0; i < colorTable[mapStyle].length; i++) {
             var entry = colorTable[mapStyle][i];
             if (color === 'rgba(200,200,200,0.5)' && count > entry[0]) {
@@ -46,6 +51,7 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
 // Data containers
 var dengue = {};
 var areasLayer = null;
+var geojsonCache = null;
 
 function styleFeature(feature) {
     var p = feature.properties || {};
@@ -78,7 +84,7 @@ function onEachArea(feature, layer) {
         layer.bindPopup(html, { maxWidth: 260 }).openPopup();
     });
 
-    layer.on('mouseover', function () { 
+    layer.on('mouseover', function () {
         var data = dengue[feature.properties.VILLCODE];
         var hasData = data !== undefined && (data.count > 0 || data > 0);
         if (hasData) {
@@ -86,33 +92,41 @@ function onEachArea(feature, layer) {
         }
     });
     layer.on('mouseout', function () { layer.setStyle(styleFeature(feature)); });
-    
-    // Add label if this area has data
-    var villCode = feature.properties.VILLCODE;
-    var data = dengue[villCode];
-    if (data && (data.count > 0 || data > 0)) {
-        var count = data.count || data;
-        var center = layer.getBounds().getCenter();
-        console.log('Adding label for', villCode, 'count:', count);
-        
-        var labelMarker = L.circleMarker(center, {
-            radius: 12,
-            fillColor: '#000',
-            color: '#fff',
-            weight: 1,
-            fillOpacity: 0.9,
-            interactive: false
-        });
-        
-        labelMarker.bindTooltip(count.toString(), {
-            permanent: true,
-            direction: 'center',
-            className: 'count-tooltip',
-            offset: [0, 0]
-        });
-        
-        labelMarker.addTo(map);
+}
+
+function clearLabels() {
+    for (var i = 0; i < labelMarkers.length; i++) {
+        map.removeLayer(labelMarkers[i]);
     }
+    labelMarkers = [];
+}
+
+function addLabels() {
+    if (!areasLayer) return;
+    areasLayer.eachLayer(function(layer) {
+        var villCode = layer.feature.properties.VILLCODE;
+        var data = dengue[villCode];
+        if (data && (data.count > 0 || data > 0)) {
+            var count = data.count !== undefined ? data.count : data;
+            var center = layer.getBounds().getCenter();
+            var labelMarker = L.circleMarker(center, {
+                radius: 12,
+                fillColor: '#000',
+                color: '#fff',
+                weight: 1,
+                fillOpacity: 0.9,
+                interactive: false
+            });
+            labelMarker.bindTooltip(count.toString(), {
+                permanent: true,
+                direction: 'center',
+                className: 'count-tooltip',
+                offset: [0, 0]
+            });
+            labelMarker.addTo(map);
+            labelMarkers.push(labelMarker);
+        }
+    });
 }
 
 function refreshAreaStyles() {
@@ -129,7 +143,7 @@ var LegendControl = L.Control.extend({
         div.style.background = 'rgba(255,255,255,0.9)';
         div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
         div.style.cursor = 'pointer';
-        
+
         var header = '<div style="display: flex; justify-content: space-between; align-items: center;"><strong>圖例</strong><span id="legend-toggle" style="font-size: 12px;">▼</span></div>';
         var content = '<div id="legend-content"><table class="table table-sm table-striped mb-2">';
         for (var i = 0; i < colorTable[mapStyle].length; i++) {
@@ -143,10 +157,10 @@ var LegendControl = L.Control.extend({
             '<li><a href="https://data.gov.tw/dataset/21025" target="_blank">登革熱1998年起每日確定病例統計</a></li>' +
             '<li><a href="https://data.gov.tw/dataset/7438" target="_blank">村里界圖(TWD97經緯度)</a></li>' +
             '</ul></small></div></div>';
-        
+
         div.innerHTML = header + content;
-        
-        L.DomEvent.on(div, 'click', function(e) {
+
+        L.DomEvent.on(div, 'click', function (e) {
             var content = div.querySelector('#legend-content');
             var toggle = div.querySelector('#legend-toggle');
             if (content.style.display === 'none') {
@@ -158,7 +172,7 @@ var LegendControl = L.Control.extend({
             }
             L.DomEvent.stopPropagation(e);
         });
-        
+
         L.DomEvent.disableClickPropagation(div);
         return div;
     }
@@ -173,7 +187,7 @@ var LinksControl = L.Control.extend({
         div.style.background = 'rgba(255,255,255,0.9)';
         div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
         div.style.cursor = 'pointer';
-        
+
         var header = '<div style="display: flex; justify-content: space-between; align-items: center;"><strong>選單</strong><span id="links-toggle" style="font-size: 12px;">▼</span></div>';
         var content = '<div id="links-content">' +
             '<div class="mb-2">請點選地圖中的區塊</div>' +
@@ -182,10 +196,10 @@ var LinksControl = L.Control.extend({
             '<a href="https://kiang.github.io/ovitrap/" target="_blank" class="btn btn-sm" style="background-color: #5a6268; color: white; border: 1px solid #4e555b; font-weight: 500;">病媒蚊監控採樣數據地圖</a>' +
             '<a href="https://github.com/kiang/tainan.olc.tw" target="_blank" class="btn btn-sm" style="background-color: #212529; color: white; border: 1px solid #1a1d20; font-weight: 500;"><i class="fa fa-github"></i> 原始碼</a>' +
             '</div></div>';
-        
+
         div.innerHTML = header + content;
-        
-        L.DomEvent.on(div, 'click', function(e) {
+
+        L.DomEvent.on(div, 'click', function (e) {
             var content = div.querySelector('#links-content');
             var toggle = div.querySelector('#links-toggle');
             if (content.style.display === 'none') {
@@ -197,12 +211,77 @@ var LinksControl = L.Control.extend({
             }
             L.DomEvent.stopPropagation(e);
         });
-        
+
         L.DomEvent.disableClickPropagation(div);
         return div;
     }
 });
 map.addControl(new LinksControl());
+
+// Year + Source selector control
+var SelectorControl = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function () {
+        var div = L.DomUtil.create('div', 'leaflet-control p-2');
+        div.style.background = 'rgba(255,255,255,0.9)';
+        div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
+        div.style.minWidth = '200px';
+
+        // Year select
+        var yearOptions = '';
+        for (var y = 2026; y >= 1998; y--) {
+            yearOptions += '<option value="' + y + '"' + (y === currentYear ? ' selected' : '') + '>' + y + ' 年</option>';
+        }
+
+        div.innerHTML =
+            '<div style="margin-bottom:6px"><strong>年份 / 資料類型</strong></div>' +
+            '<div style="margin-bottom:4px">' +
+            '<select id="year-select" class="form-control form-control-sm">' + yearOptions + '</select>' +
+            '</div>' +
+            '<div class="btn-group btn-group-sm" style="width:100%">' +
+            '<button id="btn-local" class="btn btn-primary btn-sm" style="width:50%">本土病例</button>' +
+            '<button id="btn-imported" class="btn btn-outline-secondary btn-sm" style="width:50%">境外移入</button>' +
+            '</div>';
+
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+
+        // Bind events after DOM insertion
+        setTimeout(function () {
+            var yearSelect = document.getElementById('year-select');
+            var btnLocal = document.getElementById('btn-local');
+            var btnImported = document.getElementById('btn-imported');
+
+            yearSelect.addEventListener('change', function () {
+                currentYear = parseInt(this.value);
+                loadData();
+            });
+
+            btnLocal.addEventListener('click', function () {
+                if (currentSource === 'cunli') return;
+                currentSource = 'cunli';
+                btnLocal.className = 'btn btn-primary btn-sm';
+                btnLocal.style.width = '50%';
+                btnImported.className = 'btn btn-outline-secondary btn-sm';
+                btnImported.style.width = '50%';
+                loadData();
+            });
+
+            btnImported.addEventListener('click', function () {
+                if (currentSource === 'cunli_imported') return;
+                currentSource = 'cunli_imported';
+                btnImported.className = 'btn btn-secondary btn-sm';
+                btnImported.style.width = '50%';
+                btnLocal.className = 'btn btn-outline-primary btn-sm';
+                btnLocal.style.width = '50%';
+                loadData();
+            });
+        }, 0);
+
+        return div;
+    }
+});
+map.addControl(new SelectorControl());
 
 // Geolocation control
 var LocateControl = L.Control.extend({
@@ -240,7 +319,7 @@ map.on('locationerror', function () { alert('目前使用的設備無法提供�
 function fitMapToDataBounds() {
     if (areasLayer && Object.keys(dengue).length > 0) {
         var bounds = null;
-        areasLayer.eachLayer(function(layer) {
+        areasLayer.eachLayer(function (layer) {
             var villCode = layer.feature.properties.VILLCODE;
             if (dengue[villCode] && (dengue[villCode].count > 0 || dengue[villCode] > 0)) {
                 if (!bounds) {
@@ -256,19 +335,34 @@ function fitMapToDataBounds() {
     }
 }
 
-// Load dengue data first
-$.getJSON('https://kiang.github.io/dengue/daily/2025/cunli.json', {}, function (data) {
-    dengue = data;
-    
-    // Then load boundaries with labels included
-    fetch('https://kiang.github.io/taiwan_basecode/cunli/s_geo/20250620.json')
-        .then(function (r) { return r.json(); })
-        .then(function (geojson) {
-            areasLayer = L.geoJSON(geojson, {
-                style: styleFeature,
-                onEachFeature: onEachArea
-            }).addTo(map);
-            
-            fitMapToDataBounds();
-        });
-});
+function loadData() {
+    var url = 'https://kiang.github.io/dengue/daily/' + currentYear + '/' + currentSource + '.json';
+    $.getJSON(url, {}, function (data) {
+        dengue = Array.isArray(data) ? {} : data;
+        clearLabels();
+        refreshAreaStyles();
+        addLabels();
+        fitMapToDataBounds();
+
+        // Update page title
+        var sourceLabel = currentSource === 'cunli' ? '本土病例' : '境外移入';
+        document.title = '台灣登革熱' + sourceLabel + '地圖 - ' + currentYear + '年';
+    }).fail(function () {
+        dengue = {};
+        clearLabels();
+        refreshAreaStyles();
+    });
+}
+
+// Load boundaries first (cached), then load dengue data
+fetch('https://kiang.github.io/taiwan_basecode/cunli/s_geo/20250620.json')
+    .then(function (r) { return r.json(); })
+    .then(function (geojson) {
+        geojsonCache = geojson;
+        areasLayer = L.geoJSON(geojson, {
+            style: styleFeature,
+            onEachFeature: onEachArea
+        }).addTo(map);
+
+        loadData();
+    });
