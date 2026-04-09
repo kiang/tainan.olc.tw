@@ -217,7 +217,15 @@ style.textContent = [
     '}',
     '#dengue-menu a { display: block; padding: 8px 12px; margin-bottom: 4px; border-radius: 4px; text-decoration: none; color: #fff; font-weight: 500; }',
     // push map up so bar doesn't overlap
-    '#map { padding-bottom: 54px; box-sizing: border-box; }'
+    '#map { padding-bottom: 54px; box-sizing: border-box; }',
+    // no-data overlay
+    '#dengue-nodata {',
+    '  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);',
+    '  z-index: 1000; background: rgba(255,255,255,0.95);',
+    '  border: 1px solid #ccc; border-radius: 8px;',
+    '  padding: 24px 32px; font-size: 18px; text-align: center;',
+    '  box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: none; pointer-events: none;',
+    '}'
 ].join('\n');
 document.head.appendChild(style);
 
@@ -287,6 +295,11 @@ menuDiv.innerHTML =
     '<a href="https://github.com/kiang/tainan.olc.tw" target="_blank" style="background:#212529">原始碼</a>';
 document.body.appendChild(menuDiv);
 
+// No-data overlay
+var nodataDiv = document.createElement('div');
+nodataDiv.id = 'dengue-nodata';
+document.body.appendChild(nodataDiv);
+
 // Panel toggle helpers
 function closeAll() {
     legendDiv.style.display = 'none';
@@ -339,14 +352,23 @@ function loadData() {
         dengue = Array.isArray(data) ? {} : data;
         clearLabels();
         refreshAreaStyles();
-        addLabels();
-        fitMapToDataBounds();
         var sourceLabel = currentSource === 'cunli' ? '本土病例' : '境外移入';
         document.title = '台灣登革熱' + sourceLabel + '地圖 - ' + currentYear + '年';
+        if (Object.keys(dengue).length === 0) {
+            nodataDiv.innerHTML = currentYear + ' 年' + sourceLabel + '<br>目前無確診病例資料';
+            nodataDiv.style.display = 'block';
+        } else {
+            nodataDiv.style.display = 'none';
+            addLabels();
+            fitMapToDataBounds();
+        }
     }).fail(function () {
         dengue = {};
         clearLabels();
         refreshAreaStyles();
+        var sourceLabel = currentSource === 'cunli' ? '本土病例' : '境外移入';
+        nodataDiv.innerHTML = currentYear + ' 年' + sourceLabel + '<br>目前無確診病例資料';
+        nodataDiv.style.display = 'block';
     });
 }
 
