@@ -163,6 +163,9 @@ async function loadSchools(areaId) {
 }
 
 let allBatches = [];
+let selectedSchoolName = '';
+let selectedDate = '';
+let selectedVendor = '';
 
 async function startRating() {
   const schoolId = ssdState.school.value;
@@ -172,6 +175,10 @@ async function startRating() {
 
   if (!schoolId) { showSetupError('請先選擇學校喔！'); return; }
   if (!date)     { showSetupError('請先選擇日期喔！'); return; }
+
+  selectedSchoolName = ssdState.school.label;
+  selectedDate = date;
+  selectedVendor = '';
 
   const btn = document.getElementById('startBtn');
   btn.disabled = true;
@@ -255,6 +262,7 @@ async function startRating() {
 }
 
 async function pickKitchen(batch, dishList) {
+  selectedVendor = batch.KitchenName || '';
   try {
     const rawDishes = dishList || await apiGet('dish', { BatchDataId: batch.BatchDataId });
 
@@ -522,7 +530,10 @@ function shareResults() {
   const liked = dishes.filter(d => votes[d.id] === 'like').map(d => d.name);
   const noped = dishes.filter(d => votes[d.id] === 'nope').map(d => d.name);
   let text = '校園菜色評分結果 🍱\n';
-  if (liked.length) text += `\n😋 好吃：${liked.join('、')}`;
+  if (selectedSchoolName) text += `\n🏫 學校：${selectedSchoolName}`;
+  if (selectedDate)       text += `\n📅 日期：${selectedDate}`;
+  if (selectedVendor)     text += `\n🍳 廚商：${selectedVendor}`;
+  if (liked.length) text += `\n\n😋 好吃：${liked.join('、')}`;
   if (noped.length) text += `\n😖 難吃：${noped.join('、')}`;
   text += '\n\n來自 校園食材登錄平臺評分工具';
 
