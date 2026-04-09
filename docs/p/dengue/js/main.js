@@ -19,7 +19,7 @@ var colorTable = {
 // State
 var currentYear = new Date().getFullYear();
 var currentSource = 'cunli';
-var labelMarkers = [];
+var clusterGroup = null;
 var dengue = {};
 var areasLayer = null;
 
@@ -88,38 +88,55 @@ function onEachArea(feature, layer) {
 }
 
 function clearLabels() {
-    for (var i = 0; i < labelMarkers.length; i++) {
-        map.removeLayer(labelMarkers[i]);
+    if (clusterGroup) {
+        map.removeLayer(clusterGroup);
+        clusterGroup = null;
     }
-    labelMarkers = [];
 }
 
 function addLabels() {
     if (!areasLayer) return;
+
+    clusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 40,
+        iconCreateFunction: function (cluster) {
+            var total = 0;
+            cluster.getAllChildMarkers().forEach(function (m) {
+                total += m.options.caseCount || 0;
+            });
+            var size = total >= 1000 ? 48 : total >= 100 ? 40 : 32;
+            return L.divIcon({
+                html: '<div style="background:#c00;color:#fff;border-radius:50%;width:' + size + 'px;height:' + size + 'px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.4)">' + total + '</div>',
+                className: '',
+                iconSize: [size, size]
+            });
+        },
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true
+    });
+
     areasLayer.eachLayer(function (layer) {
         var villCode = layer.feature.properties.VILLCODE;
         var data = dengue[villCode];
         if (data && (data.count > 0 || data > 0)) {
             var count = data.count !== undefined ? data.count : data;
             var center = layer.getBounds().getCenter();
-            var labelMarker = L.circleMarker(center, {
-                radius: 12,
-                fillColor: '#000',
-                color: '#fff',
-                weight: 1,
-                fillOpacity: 0.9,
+            var marker = L.marker(center, {
+                caseCount: count,
+                icon: L.divIcon({
+                    html: '<div style="background:#000;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:12px;border:1px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.4)">' + count + '</div>',
+                    className: '',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
+                }),
                 interactive: false
             });
-            labelMarker.bindTooltip(count.toString(), {
-                permanent: true,
-                direction: 'center',
-                className: 'count-tooltip',
-                offset: [0, 0]
-            });
-            labelMarker.addTo(map);
-            labelMarkers.push(labelMarker);
+            clusterGroup.addLayer(marker);
         }
     });
+
+    map.addLayer(clusterGroup);
 }
 
 function refreshAreaStyles() {
