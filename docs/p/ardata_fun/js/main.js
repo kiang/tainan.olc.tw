@@ -810,8 +810,12 @@ async function loadReports() {
       container.innerHTML = '<div class="text-center text-slate-500 py-8">尚無回報紀錄，成為第一位！</div>';
       return;
     }
-    // Newest first
-    rows.reverse();
+    // Newest first — sort descending by Timestamp
+    rows.sort((a, b) => {
+      const ta = new Date(a['Timestamp'] || 0).getTime();
+      const tb = new Date(b['Timestamp'] || 0).getTime();
+      return tb - ta;
+    });
     container.innerHTML = rows.map(r => {
       const ts = r['Timestamp'] || '';
       const caseName = escHtml(r['關聯標案/都計/政策名稱'] || '');
