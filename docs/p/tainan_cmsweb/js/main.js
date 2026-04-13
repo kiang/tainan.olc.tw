@@ -35,6 +35,7 @@ const COUNTIES = [
 
 // Tainan districts hardcoded (from cmsweb oM function)
 const TAINAN_CODE = '6700000000';
+const TAINAN_NAME = '台南市';
 const TAINAN_DISTRICTS = [
   { code: '6700100000', name: '新營區' }, { code: '6700200000', name: '鹽水區' },
   { code: '6700300000', name: '白河區' }, { code: '6700400000', name: '柳營區' },
@@ -258,33 +259,50 @@ const CONTENT_FIELDS = [
 
 const ALL_FIELDS = [...PROFILE_FIELDS, ...CONTENT_FIELDS];
 
-// ── Tom Select instances ───────────────────────────────────────
-const ts = {};   // keyed by field name, e.g. ts.county, ts.district, ts.mainItem …
+// ── District cache (name → code lookups) ──────────────────────
+// districtCache[countyName] = [{code, name}, ...]
+const districtCache = {};
 
-function initTomSelects() {
-  const common = { allowEmptyOption: true, maxOptions: 300 };
-
-  ts.sex        = new TomSelect('#f-sex',        { ...common });
-  ts.county     = new TomSelect('#f-county',     { ...common });
-  ts.district   = new TomSelect('#f-district',   { ...common });
-  ts.mainItem   = new TomSelect('#f-main-item',  { ...common });
-  ts.subItem    = new TomSelect('#f-sub-item',   { ...common });
-  ts.locCounty  = new TomSelect('#f-loc-county', { ...common });
-  ts.locDistrict= new TomSelect('#f-loc-district',{ ...common });
-
-  // Wire county → district changes through Tom Select's onChange
-  ts.county.on('change', () => onCountyChange('f-county', 'f-district', ts.district));
-  ts.locCounty.on('change', () => onCountyChange('f-loc-county', 'f-loc-district', ts.locDistrict));
-  ts.mainItem.on('change', onMainItemChange);
+// ── Lookup helpers: display name → code ──────────────────────
+function countyNameToCode(name) {
+  const c = COUNTIES.find(c => c.name === name);
+  return c ? c.code : '';
 }
 
-// Helper: rebuild a TomSelect's options from an array of {value, text}
-function tsSetOptions(inst, opts, placeholder) {
-  inst.clearOptions();
-  inst.addOption({ value: '', text: placeholder });
-  opts.forEach(o => inst.addOption({ value: o.value, text: o.text }));
-  inst.setValue('', true);   // true = silent (no change event)
-  inst.enable();
+function countyCodeToName(code) {
+  const c = COUNTIES.find(c => c.code === code);
+  return c ? c.name : '';
+}
+
+function districtNameToCode(countyName, districtName) {
+  const list = districtCache[countyName] || [];
+  const d = list.find(d => d.name === districtName);
+  return d ? d.code : '';
+}
+
+function itemNameToCode(name) {
+  const item = CASE_ITEMS.find(i => i.ItemName === name);
+  return item ? item.Item : '';
+}
+
+function subitemNameToCode(itemCode, subName) {
+  const item = CASE_ITEMS.find(i => i.Item === itemCode);
+  if (!item) return '';
+  const sub = item.Subitems.find(s => s.SubitemName === subName);
+  return sub ? sub.Subitem : '';
+}
+
+// ── Datalist population helpers ───────────────────────────────
+function fillDatalist(dlId, items) {
+  // items: [{name}] or [{code, name}] — we put name as value
+  const dl = document.getElementById(dlId);
+  if (!dl) return;
+  dl.innerHTML = '';
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item.name;
+    dl.appendChild(opt);
+  });
 }
 
 // ── Leaflet map ────────────────────────────────────────────────
@@ -352,74 +370,72 @@ function locateMe() {
   );
 }
 
-// ── County/District dropdowns ──────────────────────────────────
-function populateCounty(selectId) {
-  const sel = document.getElementById(selectId);
-  COUNTIES.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c.code; opt.textContent = c.name;
-    sel.appendChild(opt);
-  });
+// ── County/District datalists ──────────────────────────────────
+function populateCountyDatalist(dlId) {
+  fillDatalist(dlId, COUNTIES);
 }
 
-async function onCountyChange(countyId, districtId, tsInst) {
-  const countyCode = document.getElementById(countyId).value;
-  // If Tom Select instance provided, show loading state
-  if (tsInst) { tsInst.disable(); tsInst.clear(true); tsInst.clearOptions(); }
+async function loadDistrictsForCounty(countyName, dlId) {
+  // Return cached list if available
+  if (districtCache[countyName]) {
+    fillDatalist(dlId, districtCache[countyName]);
+    return districtCache[countyName];
+  }
 
-  if (!countyCode) {
-    if (tsInst) tsInst.addOption({ value: '', text: '— 請先選縣市 —' });
-    return;
+  const code = countyNameToCode(countyName);
+  if (!code) {
+    document.getElementById(dlId).innerHTML = '';
+    return [];
   }
 
   let districts;
-  if (countyCode === TAINAN_CODE) {
+  if (code === TAINAN_CODE) {
     districts = TAINAN_DISTRICTS;
   } else {
     try {
-      const res = await fetch(`${API}/AddrCode/2?p1=${countyCode}`);
+      const res = await fetch(`${API}/AddrCode/2?p1=${code}`);
       const data = await res.json();
       districts = data.map(d => ({ code: d.DistrictCode, name: d.DistrictName }));
     } catch {
-      if (tsInst) tsInst.addOption({ value: '', text: '— 載入失敗，請重試 —' });
-      return;
+      return [];
     }
   }
 
-  if (tsInst) {
-    tsSetOptions(tsInst, districts.map(d => ({ value: d.code, text: d.name })), '— 請選擇 —');
-  } else {
-    // Fallback plain DOM (used during init before TomSelect ready)
-    const dSel = document.getElementById(districtId);
-    dSel.innerHTML = '<option value="">— 請選擇 —</option>';
-    districts.forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d.code; opt.textContent = d.name;
-      dSel.appendChild(opt);
-    });
-    dSel.disabled = false;
-  }
+  districtCache[countyName] = districts;
+  fillDatalist(dlId, districts);
+  return districts;
 }
 
-// ── Case item dropdowns ────────────────────────────────────────
-function populateMainItems() {
-  const sel = document.getElementById('f-main-item');
-  CASE_ITEMS.forEach(item => {
-    const opt = document.createElement('option');
-    opt.value = item.Item;
-    opt.textContent = item.ItemName;
-    sel.appendChild(opt);
-  });
-  sel.addEventListener('change', onMainItemChange);
+// Called when county input changes (via change event on the input)
+async function onCountyChange(countyInputId, districtInputId, districtDlId) {
+  const countyName = document.getElementById(countyInputId).value.trim();
+  document.getElementById(districtInputId).value = '';
+  await loadDistrictsForCounty(countyName, districtDlId);
+  scheduleDraftSave();
+}
+
+// ── Case item datalists ────────────────────────────────────────
+function populateMainItemDatalist() {
+  fillDatalist('dl-main-item', CASE_ITEMS.map(i => ({ name: i.ItemName })));
+  const el = document.getElementById('f-main-item');
+  el.addEventListener('change', onMainItemChange);
+  el.addEventListener('input', onMainItemChange);
 }
 
 function onMainItemChange() {
-  const val = document.getElementById('f-main-item').value;
-  if (!ts.subItem) return;
-  if (!val) { ts.subItem.disable(); ts.subItem.clear(true); ts.subItem.clearOptions(); return; }
-  const found = CASE_ITEMS.find(i => i.Item === val);
-  if (!found) { ts.subItem.disable(); return; }
-  tsSetOptions(ts.subItem, found.Subitems.map(s => ({ value: s.Subitem, text: s.SubitemName })), '— 請選擇子項目 —');
+  const name = document.getElementById('f-main-item').value.trim();
+  const item = CASE_ITEMS.find(i => i.ItemName === name);
+  const subDl = document.getElementById('dl-sub-item');
+  const subInput = document.getElementById('f-sub-item');
+  subInput.value = '';
+  subDl.innerHTML = '';
+  if (item) {
+    fillDatalist('dl-sub-item', item.Subitems.map(s => ({ name: s.SubitemName })));
+    subInput.placeholder = '請選擇子項目';
+  } else {
+    subInput.placeholder = '請先選主項目';
+  }
+  scheduleDraftSave();
 }
 
 // ── Profile & draft save/restore ──────────────────────────────
@@ -458,46 +474,78 @@ function saveDraft() {
   setTimeout(() => ind.classList.remove('show'), 2000);
 }
 
+// Normalise a stored value that might be a code or a name, returning the name
+function resolveCountyName(stored) {
+  if (!stored) return TAINAN_NAME;
+  // If it looks like a name already, return as-is
+  if (COUNTIES.find(c => c.name === stored)) return stored;
+  // Try as code
+  const byCode = countyCodeToName(stored);
+  return byCode || TAINAN_NAME;
+}
+
+function resolveDistrictName(countyName, stored) {
+  if (!stored) return '';
+  const list = districtCache[countyName] || [];
+  // If it matches a name, return as-is
+  if (list.find(d => d.name === stored)) return stored;
+  // Try as code
+  const byCode = list.find(d => d.code === stored);
+  return byCode ? byCode.name : '';
+}
+
 async function restoreProfile() {
   let data;
   try { data = JSON.parse(localStorage.getItem(KEY_PROFILE) || '{}'); } catch { data = {}; }
 
-  // Simple profile fields
   ['name', 'telno', 'email', 'address'].forEach(f => {
     if (data[f]) setFieldValue(f, data[f]);
   });
-  if (data.sex) ts.sex?.setValue(data.sex, true);
+
+  if (data.sex) setFieldValue('sex', data.sex);
 
   // Contact county+district; default to 台南市
-  const countyCode = data.county || TAINAN_CODE;
-  ts.county?.setValue(countyCode, true);
-  document.getElementById('f-county').value = countyCode;
-  await onCountyChange('f-county', 'f-district', ts.district);
-  if (data.district) ts.district?.setValue(data.district, true);
+  const countyName = resolveCountyName(data.county);
+  setFieldValue('county', countyName);
+  await loadDistrictsForCounty(countyName, 'dl-district');
+  if (data.district) {
+    const districtName = resolveDistrictName(countyName, data.district);
+    if (districtName) setFieldValue('district', districtName);
+  }
 }
 
 async function restoreDraft() {
   let data;
   try { data = JSON.parse(localStorage.getItem(KEY_DRAFT) || '{}'); } catch { data = {}; }
 
-  // Content-only text fields
   ['locAddress', 'content'].forEach(f => {
     if (data[f]) setFieldValue(f, data[f]);
   });
 
   // Location county+district; default to 台南市
-  const locCountyCode = data.locCounty || TAINAN_CODE;
-  ts.locCounty?.setValue(locCountyCode, true);
-  document.getElementById('f-loc-county').value = locCountyCode;
-  await onCountyChange('f-loc-county', 'f-loc-district', ts.locDistrict);
-  if (data.locDistrict) ts.locDistrict?.setValue(data.locDistrict, true);
+  const locCountyName = resolveCountyName(data.locCounty);
+  setFieldValue('locCounty', locCountyName);
+  await loadDistrictsForCounty(locCountyName, 'dl-loc-district');
+  if (data.locDistrict) {
+    const locDistrictName = resolveDistrictName(locCountyName, data.locDistrict);
+    if (locDistrictName) setFieldValue('locDistrict', locDistrictName);
+  }
 
-  // Main item + sub item
+  // Main item + sub item (stored value may be a code or a name)
   if (data.mainItem) {
-    ts.mainItem?.setValue(data.mainItem, true);
-    document.getElementById('f-main-item').value = data.mainItem;
-    onMainItemChange();
-    if (data.subItem) ts.subItem?.setValue(data.subItem, true);
+    // Resolve: could be ItemName (name) or Item code
+    let item = CASE_ITEMS.find(i => i.ItemName === data.mainItem);
+    if (!item) item = CASE_ITEMS.find(i => i.Item === data.mainItem);
+    if (item) {
+      setFieldValue('mainItem', item.ItemName);
+      fillDatalist('dl-sub-item', item.Subitems.map(s => ({ name: s.SubitemName })));
+      document.getElementById('f-sub-item').placeholder = '請選擇子項目';
+      if (data.subItem) {
+        let sub = item.Subitems.find(s => s.SubitemName === data.subItem);
+        if (!sub) sub = item.Subitems.find(s => s.Subitem === data.subItem);
+        if (sub) setFieldValue('subItem', sub.SubitemName);
+      }
+    }
   }
 
   // Map marker
@@ -514,16 +562,16 @@ async function restoreDraft() {
 }
 
 function clearContentFields() {
-  // Reset text fields
   ['locAddress', 'content', 'lat', 'lng'].forEach(f => setFieldValue(f, ''));
 
-  // Reset Tom Select dropdowns
-  ts.mainItem?.setValue('', true);
-  ts.subItem?.clear(true); ts.subItem?.clearOptions(); ts.subItem?.disable();
-  ts.locCounty?.setValue(TAINAN_CODE, true);
-  document.getElementById('f-loc-county').value = TAINAN_CODE;
-  ts.locDistrict?.clear(true); ts.locDistrict?.clearOptions(); ts.locDistrict?.disable();
-  onCountyChange('f-loc-county', 'f-loc-district', ts.locDistrict);
+  setFieldValue('mainItem', '');
+  setFieldValue('subItem', '');
+  document.getElementById('dl-sub-item').innerHTML = '';
+  document.getElementById('f-sub-item').placeholder = '請先選主項目';
+
+  setFieldValue('locCounty', TAINAN_NAME);
+  setFieldValue('locDistrict', '');
+  loadDistrictsForCounty(TAINAN_NAME, 'dl-loc-district');
 
   if (marker) { map.removeLayer(marker); marker = null; }
   updateContentCount();
@@ -535,16 +583,12 @@ function showError(id, show) {
   const el  = document.getElementById('err-' + id);
   const inp = document.getElementById('f-' + id);
   if (!el || !inp) return;
-  // Also mark the Tom Select wrapper if present
-  const tsWrapper = inp.closest('.ts-wrapper') || inp.parentElement?.querySelector('.ts-wrapper');
   if (show) {
     el.classList.add('show');
     inp.classList.add('error');
-    tsWrapper?.classList.add('error');
   } else {
     el.classList.remove('show');
     inp.classList.remove('error');
-    tsWrapper?.classList.remove('error');
   }
 }
 
@@ -560,20 +604,24 @@ function validate() {
   const email = document.getElementById('f-email').value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('email', true); ok = false; } else showError('email', false);
 
-  const county = document.getElementById('f-county').value;
-  if (!county) { showError('county', true); ok = false; } else showError('county', false);
+  const countyName = document.getElementById('f-county').value.trim();
+  const countyCode = countyNameToCode(countyName);
+  if (!countyCode) { showError('county', true); ok = false; } else showError('county', false);
 
-  const district = document.getElementById('f-district').value;
-  if (!district) { showError('district', true); ok = false; } else showError('district', false);
+  const districtName = document.getElementById('f-district').value.trim();
+  const districtCode = districtNameToCode(countyName, districtName);
+  if (!districtCode) { showError('district', true); ok = false; } else showError('district', false);
 
   const address = document.getElementById('f-address').value.trim();
   if (!address) { showError('address', true); ok = false; } else showError('address', false);
 
-  const mainItem = document.getElementById('f-main-item').value;
-  if (!mainItem) { showError('main-item', true); ok = false; } else showError('main-item', false);
+  const mainItemName = document.getElementById('f-main-item').value.trim();
+  const mainItemCode = itemNameToCode(mainItemName);
+  if (!mainItemCode) { showError('main-item', true); ok = false; } else showError('main-item', false);
 
-  const subItem = document.getElementById('f-sub-item').value;
-  if (!subItem) { showError('sub-item', true); ok = false; } else showError('sub-item', false);
+  const subItemName = document.getElementById('f-sub-item').value.trim();
+  const subItemCode = subitemNameToCode(mainItemCode, subItemName);
+  if (!subItemCode) { showError('sub-item', true); ok = false; } else showError('sub-item', false);
 
   const content = document.getElementById('f-content').value.trim();
   if (!content) { showError('content', true); ok = false; } else showError('content', false);
@@ -618,10 +666,22 @@ async function handleSubmit(e) {
 
   const get = id => document.getElementById(id).value.trim();
 
-  const mainItemVal = get('f-main-item');
-  const subItemVal  = get('f-sub-item');
+  const countyName    = get('f-county');
+  const districtName  = get('f-district');
+  const mainItemName  = get('f-main-item');
+  const subItemName   = get('f-sub-item');
   const lat  = get('f-lat');
   const lng  = get('f-lng');
+
+  // Resolve names to codes for POST
+  const countyCode   = countyNameToCode(countyName);
+  const districtCode = districtNameToCode(countyName, districtName);
+  const mainItemCode = itemNameToCode(mainItemName);
+  const subItemCode  = subitemNameToCode(mainItemCode, subItemName);
+
+  const locCountyName   = get('f-loc-county');
+  const locDistrictName = get('f-loc-district');
+  const locDistrictCode = districtNameToCode(locCountyName, locDistrictName);
 
   const captchaInput = get('f-captcha');
   if (!captchaInput) {
@@ -639,13 +699,13 @@ async function handleSubmit(e) {
   let body = 'Case_Token=' + caseToken;
   body += '&Atth_FileNames=';
   body += '&Subj_Content=' + encodeURIComponent(get('f-content').replace(/&/g, '＆'));
-  body += '&Subj_District=' + encodeURIComponent(get('f-loc-district'));
+  body += '&Subj_District=' + encodeURIComponent(locDistrictCode);
   body += '&Subj_FileCount=0';
-  body += '&Subj_Item=' + encodeURIComponent(mainItemVal);
+  body += '&Subj_Item=' + encodeURIComponent(mainItemCode);
   body += '&Subj_Security=2';
-  body += '&Subj_Subitem=' + encodeURIComponent(subItemVal);
-  body += '&Sugg_Addr1=' + encodeURIComponent(get('f-county'));
-  body += '&Sugg_Addr2=' + encodeURIComponent(get('f-district'));
+  body += '&Subj_Subitem=' + encodeURIComponent(subItemCode);
+  body += '&Sugg_Addr1=' + encodeURIComponent(countyCode);
+  body += '&Sugg_Addr2=' + encodeURIComponent(districtCode);
   body += '&Sugg_Addr3=';
   body += '&Sugg_Addr4=' + encodeURIComponent(get('f-address'));
   body += '&Sugg_Email=' + encodeURIComponent(get('f-email'));
@@ -680,20 +740,20 @@ async function handleSubmit(e) {
       resultTitle.textContent = '✅ 案件送出成功！';
 
       // Save case record
-      const mainItemObj = CASE_ITEMS.find(i => i.Item === mainItemVal);
-      const subItemObj  = mainItemObj?.Subitems.find(s => s.Subitem === subItemVal);
+      const mainItemObj = CASE_ITEMS.find(i => i.Item === mainItemCode);
+      const subItemObj  = mainItemObj?.Subitems.find(s => s.Subitem === subItemCode);
       const newCase = {
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         caseCode: '',
         title: (subItemObj ? subItemObj.SubitemName : mainItemObj?.ItemName || '案件') +
                ' — ' + get('f-content').slice(0, 30) + (get('f-content').length > 30 ? '…' : ''),
-        mainItem: mainItemVal,
+        mainItem: mainItemCode,
         mainItemName: mainItemObj?.ItemName || '',
-        subItem: subItemVal,
+        subItem: subItemCode,
         subItemName: subItemObj?.SubitemName || '',
         content: get('f-content'),
-        county: get('f-county'),
-        district: get('f-district'),
+        county: countyCode,
+        district: districtCode,
         address: get('f-address'),
         locAddress: get('f-loc-address'),
         lat: get('f-lat'),
@@ -799,7 +859,7 @@ function renderDashboard() {
       const sl = STATUS_LABEL[c.status] || c.status;
       return `
       <div class="card" style="border-left:4px solid; padding:16px 20px;"
-           class="${sc}" id="case-${c.id}"
+           id="case-${c.id}"
            style="border-left-color: ${c.status==='done'?'#27ae60':c.status==='processing'?'#3498db':c.status==='rejected'?'#e74c3c':'#f39c12'}">
         <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:8px;">
           <div style="flex:1; font-size:15px; font-weight:bold; color:#1a5c3a;">${esc(c.title)}</div>
@@ -882,22 +942,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   caseToken = randomToken(12);
   loadCases();
   initMap();
-  // Populate <select> options before Tom Select wraps them
-  populateCounty('f-county');
-  populateCounty('f-loc-county');
-  populateMainItems();
-  // Initialise Tom Select (must come after options are in the DOM)
-  initTomSelects();
+
+  // Populate county datalists
+  populateCountyDatalist('dl-county');
+  populateCountyDatalist('dl-loc-county');
+
+  // Populate main item datalist
+  populateMainItemDatalist();
+
+  // Wire county → district cascade
+  document.getElementById('f-county').addEventListener('change', () =>
+    onCountyChange('f-county', 'f-district', 'dl-district'));
+  document.getElementById('f-loc-county').addEventListener('change', () =>
+    onCountyChange('f-loc-county', 'f-loc-district', 'dl-loc-district'));
+
   await restoreProfile();
   await restoreDraft();
   loadCaptcha();
 
-  // Auto-save on input
+  // Auto-save on input/change
   ALL_FIELDS.forEach(f => {
     const id = 'f-' + f.replace(/([A-Z])/g, c => '-' + c.toLowerCase());
     const el = document.getElementById(id);
-    if (el) el.addEventListener('input', scheduleDraftSave);
-    if (el) el.addEventListener('change', scheduleDraftSave);
+    if (el) {
+      el.addEventListener('input', scheduleDraftSave);
+      el.addEventListener('change', scheduleDraftSave);
+    }
   });
 
   // Bidirectional lat/lng ↔ map
