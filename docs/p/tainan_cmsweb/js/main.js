@@ -7,31 +7,55 @@
 
 'use strict';
 
-// ── Taiwan city/district data ──────────────────────────────────
-const TW_AREAS = {
-  '臺北市':   ['松山區','信義區','大安區','中山區','中正區','大同區','萬華區','文山區','南港區','內湖區','士林區','北投區'],
-  '基隆市':   ['仁愛區','信義區','中正區','中山區','安樂區','暖暖區','七堵區'],
-  '新北市':   ['板橋區','三重區','中和區','永和區','新莊區','新店區','樹林區','鶯歌區','三峽區','淡水區','汐止區','瑞芳區','土城區','蘆洲區','五股區','泰山區','林口區','深坑區','石碇區','坪林區','三芝區','石門區','八里區','平溪區','雙溪區','貢寮區','金山區','萬里區','烏來區'],
-  '桃園市':   ['桃園區','中壢區','大溪區','楊梅區','蘆竹區','大園區','龜山區','八德區','龍潭區','平鎮區','新屋區','觀音區','復興區'],
-  '新竹市':   ['東區','北區','香山區'],
-  '新竹縣':   ['竹北市','湖口鄉','新豐鄉','新埔鎮','關西鎮','芎林鄉','寶山鄉','竹東鎮','五峰鄉','橫山鄉','尖石鄉','北埔鄉','峨眉鄉'],
-  '苗栗縣':   ['苗栗市','苑裡鎮','通霄鎮','竹南鎮','頭份市','後龍鎮','卓蘭鎮','大湖鄉','公館鄉','銅鑼鄉','南庄鄉','頭屋鄉','三義鄉','西湖鄉','造橋鄉','三灣鄉','獅潭鄉','泰安鄉'],
-  '臺中市':   ['中區','東區','南區','西區','北區','北屯區','西屯區','南屯區','太平區','大里區','霧峰區','烏日區','豐原區','后里區','石岡區','東勢區','和平區','新社區','潭子區','大雅區','神岡區','大肚區','沙鹿區','龍井區','梧棲區','清水區','大甲區','外埔區','大安區'],
-  '彰化縣':   ['彰化市','鹿港鎮','和美鎮','線西鄉','伸港鄉','福興鄉','秀水鄉','花壇鄉','芬園鄉','員林市','溪湖鎮','田中鎮','大村鄉','埔鹽鄉','埔心鄉','永靖鄉','社頭鄉','二水鄉','北斗鎮','二林鎮','田尾鄉','埤頭鄉','芳苑鄉','大城鄉','竹塘鄉','溪州鄉'],
-  '南投縣':   ['南投市','中寮鄉','草屯鎮','國姓鄉','埔里鎮','仁愛鄉','名間鄉','集集鎮','水里鄉','魚池鄉','信義鄉','竹山鎮','鹿谷鄉'],
-  '雲林縣':   ['斗南鎮','大埤鄉','虎尾鎮','土庫鎮','褒忠鄉','東勢鄉','臺西鄉','崙背鄉','麥寮鄉','斗六市','林內鄉','古坑鄉','莿桐鄉','西螺鎮','二崙鄉','北港鎮','水林鄉','口湖鄉','四湖鄉','元長鄉'],
-  '嘉義市':   ['東區','西區'],
-  '嘉義縣':   ['番路鄉','梅山鄉','竹崎鄉','阿里山鄉','中埔鄉','大埔鄉','水上鄉','鹿草鄉','太保市','朴子市','東石鄉','六腳鄉','新港鄉','民雄鄉','大林鎮','溪口鄉','義竹鄉','布袋鎮'],
-  '臺南市':   ['中西區','東區','南區','北區','安平區','安南區','永康區','歸仁區','新化區','左鎮區','玉井區','楠西區','南化區','仁德區','關廟區','龍崎區','官田區','麻豆區','佳里區','西港區','七股區','將軍區','學甲區','北門區','新營區','後壁區','白河區','東山區','六甲區','下營區','柳營區','鹽水區','善化區','大內區','山上區','新市區','安定區'],
-  '高雄市':   ['楠梓區','左營區','鼓山區','三民區','鹽埕區','前金區','苓雅區','前鎮區','旗津區','小港區','鳳山區','林園區','大寮區','大樹區','大社區','仁武區','鳥松區','岡山區','橋頭區','燕巢區','田寮區','阿蓮區','路竹區','湖內區','茄萣區','永安區','彌陀區','梓官區','旗山區','美濃區','六龜區','甲仙區','杉林區','內門區','茂林區','桃源區','那瑪夏區'],
-  '屏東縣':   ['屏東市','三地門鄉','霧臺鄉','瑪家鄉','九如鄉','里港鄉','高樹鄉','鹽埔鄉','長治鄉','麟洛鄉','竹田鄉','內埔鄉','萬丹鄉','潮州鎮','泰武鄉','來義鄉','萬巒鄉','崁頂鄉','新埤鄉','南州鄉','林邊鄉','東港鎮','琉球鄉','佳冬鄉','新園鄉','枋寮鄉','枋山鄉','春日鄉','獅子鄉','車城鄉','牡丹鄉','恆春鎮','滿州鄉'],
-  '宜蘭縣':   ['宜蘭市','頭城鎮','礁溪鄉','壯圍鄉','員山鄉','羅東鎮','三星鄉','大同鄉','五結鄉','冬山鄉','蘇澳鎮','南澳鄉'],
-  '花蓮縣':   ['花蓮市','新城鄉','秀林鄉','吉安鄉','壽豐鄉','鳳林鎮','光復鄉','豐濱鄉','瑞穗鄉','萬榮鄉','玉里鎮','卓溪鄉','富里鄉'],
-  '臺東縣':   ['臺東市','綠島鄉','蘭嶼鄉','延平鄉','卑南鄉','鹿野鄉','關山鎮','海端鄉','池上鄉','東河鄉','成功鎮','長濱鄉','太麻里鄉','金峰鄉','大武鄉','達仁鄉'],
-  '澎湖縣':   ['馬公市','西嶼鄉','望安鄉','七美鄉','白沙鄉','湖西鄉'],
-  '金門縣':   ['金城鎮','金湖鎮','金沙鎮','金寧鄉','烈嶼鄉','烏坵鄉'],
-  '連江縣':   ['南竿鄉','北竿鄉','莒光鄉','東引鄉'],
-};
+// ── County codes (from cmsweb iM function) ────────────────────
+const COUNTIES = [
+  { code: '6700000000', name: '台南市' },
+  { code: '6500000000', name: '新北市' },
+  { code: '6600000000', name: '台中市' },
+  { code: '6400000000', name: '高雄市' },
+  { code: '6300000000', name: '台北市' },
+  { code: '1001700000', name: '基隆市' },
+  { code: '1000200000', name: '宜蘭縣' },
+  { code: '1001800000', name: '新竹市' },
+  { code: '1000400000', name: '新竹縣' },
+  { code: '6800000000', name: '桃園市' },
+  { code: '1000500000', name: '苗栗縣' },
+  { code: '1000700000', name: '彰化縣' },
+  { code: '1000800000', name: '南投縣' },
+  { code: '1002000000', name: '嘉義市' },
+  { code: '1001000000', name: '嘉義縣' },
+  { code: '1000900000', name: '雲林縣' },
+  { code: '1001600000', name: '澎湖縣' },
+  { code: '1001300000', name: '屏東縣' },
+  { code: '1001400000', name: '台東縣' },
+  { code: '1001500000', name: '花蓮縣' },
+  { code: '0902000000', name: '金門縣' },
+  { code: '0900700000', name: '連江縣' },
+];
+
+// Tainan districts hardcoded (from cmsweb oM function)
+const TAINAN_CODE = '6700000000';
+const TAINAN_DISTRICTS = [
+  { code: '6700100000', name: '新營區' }, { code: '6700200000', name: '鹽水區' },
+  { code: '6700300000', name: '白河區' }, { code: '6700400000', name: '柳營區' },
+  { code: '6700500000', name: '後壁區' }, { code: '6700600000', name: '東山區' },
+  { code: '6700700000', name: '麻豆區' }, { code: '6700800000', name: '下營區' },
+  { code: '6700900000', name: '六甲區' }, { code: '6701000000', name: '官田區' },
+  { code: '6701100000', name: '大內區' }, { code: '6701200000', name: '佳里區' },
+  { code: '6701300000', name: '學甲區' }, { code: '6701400000', name: '西港區' },
+  { code: '6701500000', name: '七股區' }, { code: '6701600000', name: '將軍區' },
+  { code: '6701700000', name: '北門區' }, { code: '6701800000', name: '新化區' },
+  { code: '6701900000', name: '善化區' }, { code: '6702000000', name: '新市區' },
+  { code: '6702100000', name: '安定區' }, { code: '6702200000', name: '山上區' },
+  { code: '6702300000', name: '玉井區' }, { code: '6702400000', name: '楠西區' },
+  { code: '6702500000', name: '南化區' }, { code: '6702600000', name: '左鎮區' },
+  { code: '6702700000', name: '仁德區' }, { code: '6702800000', name: '歸仁區' },
+  { code: '6702900000', name: '關廟區' }, { code: '6703000000', name: '龍崎區' },
+  { code: '6703100000', name: '永康區' }, { code: '6703200000', name: '東區' },
+  { code: '6703300000', name: '南區' },   { code: '6703400000', name: '北區' },
+  { code: '6703500000', name: '安南區' }, { code: '6703600000', name: '安平區' },
+  { code: '6703700000', name: '中西區' },
+];
 
 // ── Case items (from cmsweb.tainan.gov.tw/webapi/api/items/) ──
 const CASE_ITEMS = [
@@ -282,25 +306,45 @@ function locateMe() {
 // ── County/District dropdowns ──────────────────────────────────
 function populateCounty(selectId, districtId) {
   const sel = document.getElementById(selectId);
-  Object.keys(TW_AREAS).forEach(c => {
+  COUNTIES.forEach(c => {
     const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
+    opt.value = c.code; opt.textContent = c.name;
     sel.appendChild(opt);
   });
   sel.addEventListener('change', () => onCountyChange(selectId, districtId));
 }
 
-function onCountyChange(countyId, districtId) {
-  const county = document.getElementById(countyId).value;
+async function onCountyChange(countyId, districtId) {
+  const countyCode = document.getElementById(countyId).value;
   const dSel = document.getElementById(districtId);
+  dSel.innerHTML = '<option value="">— 載入中… —</option>';
+  dSel.disabled = true;
+  if (!countyCode) {
+    dSel.innerHTML = '<option value="">— 請先選縣市 —</option>';
+    return;
+  }
+
+  let districts;
+  if (countyCode === TAINAN_CODE) {
+    districts = TAINAN_DISTRICTS;
+  } else {
+    try {
+      const res = await fetch(`${API}/AddrCode/2?p1=${countyCode}`);
+      const data = await res.json();
+      districts = data.map(d => ({ code: d.DistrictCode, name: d.DistrictName }));
+    } catch {
+      dSel.innerHTML = '<option value="">— 載入失敗，請重試 —</option>';
+      return;
+    }
+  }
+
   dSel.innerHTML = '<option value="">— 請選擇 —</option>';
-  if (!county) { dSel.disabled = true; return; }
-  dSel.disabled = false;
-  (TW_AREAS[county] || []).forEach(d => {
+  districts.forEach(d => {
     const opt = document.createElement('option');
-    opt.value = d; opt.textContent = d;
+    opt.value = d.code; opt.textContent = d.name;
     dSel.appendChild(opt);
   });
+  dSel.disabled = false;
 }
 
 // ── Case item dropdowns ────────────────────────────────────────
@@ -351,7 +395,7 @@ function saveDraft() {
   setTimeout(() => ind.classList.remove('show'), 2000);
 }
 
-function restoreDraft() {
+async function restoreDraft() {
   let data;
   try { data = JSON.parse(localStorage.getItem(KEY_DRAFT) || '{}'); } catch { data = {}; }
 
@@ -362,19 +406,19 @@ function restoreDraft() {
     if (el && data[f]) el.value = data[f];
   });
 
-  // Restore county+district (contact); default to 臺南市
+  // Restore county+district (contact); default to 台南市
   {
     const cSel = document.getElementById('f-county');
-    cSel.value = data.county || '臺南市';
-    onCountyChange('f-county', 'f-district');
+    cSel.value = data.county || TAINAN_CODE;
+    await onCountyChange('f-county', 'f-district');
     if (data.district) document.getElementById('f-district').value = data.district;
   }
 
-  // Restore location county+district; default to 臺南市
+  // Restore location county+district; default to 台南市
   {
     const lc = document.getElementById('f-loc-county');
-    lc.value = data.locCounty || '臺南市';
-    onCountyChange('f-loc-county', 'f-loc-district');
+    lc.value = data.locCounty || TAINAN_CODE;
+    await onCountyChange('f-loc-county', 'f-loc-district');
     if (data.locDistrict) document.getElementById('f-loc-district').value = data.locDistrict;
   }
 
