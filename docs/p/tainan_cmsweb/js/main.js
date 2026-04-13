@@ -228,7 +228,21 @@ const CASE_ITEMS = [
 ];
 
 // ── LocalStorage keys ──────────────────────────────────────────
-const KEY_DRAFT = 'cmsweb_draft';
+const KEY_DRAFT  = 'cmsweb_draft';
+const KEY_CASES  = 'cmsweb_cases';
+
+// ── Cases state ────────────────────────────────────────────────
+let cases = [];
+let currentFilter = 'all';
+
+function loadCases() {
+  try { cases = JSON.parse(localStorage.getItem(KEY_CASES)) || []; }
+  catch { cases = []; }
+}
+
+function saveCases() {
+  localStorage.setItem(KEY_CASES, JSON.stringify(cases));
+}
 
 // Fields saved in draft
 const ALL_FIELDS = [
@@ -586,11 +600,50 @@ async function handleSubmit(e) {
     if (res.ok && text.includes('登錄個案上傳成功')) {
       resultBox.classList.remove('error-box');
       resultTitle.textContent = '✅ 案件送出成功！';
-      resultBody.innerHTML = `
-        <p style="font-size:13px;">系統已收到您的反映事項，請至您的電子郵件信箱點選確認信函中的確認網址，案件即正式進入處理程序。</p>
-      `;
-      // Clear draft after successful submission
+
+      // Save case record
+      const mainItemObj = CASE_ITEMS.find(i => i.Item === mainItemVal);
+      const subItemObj  = mainItemObj?.Subitems.find(s => s.Subitem === subItemVal);
+      const newCase = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        caseCode: '',
+        title: (subItemObj ? subItemObj.SubitemName : mainItemObj?.ItemName || '案件') +
+               ' — ' + get('f-content').slice(0, 30) + (get('f-content').length > 30 ? '…' : ''),
+        mainItem: mainItemVal,
+        mainItemName: mainItemObj?.ItemName || '',
+        subItem: subItemVal,
+        subItemName: subItemObj?.SubitemName || '',
+        content: get('f-content'),
+        county: get('f-county'),
+        district: get('f-district'),
+        address: get('f-address'),
+        locAddress: get('f-loc-address'),
+        lat: get('f-lat'),
+        lng: get('f-lng'),
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        notes: '',
+      };
+      cases.unshift(newCase);
+      saveCases();
       localStorage.removeItem(KEY_DRAFT);
+
+      resultBody.innerHTML = `
+        <p style="font-size:13px; margin-bottom:10px;">
+          系統已收到您的反映事項。請至您的電子郵件信箱點選確認信函中的確認網址，案件即正式進入處理程序。
+        </p>
+        <p style="font-size:13px; margin-bottom:8px;">
+          收到確認信後，信中會有一組受理編號（如 <strong>B-358817</strong>），請填入下方以便追蹤：
+        </p>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <input type="text" id="quick-case-code" placeholder="B-XXXXXX"
+                 style="padding:8px 12px; border:1px solid #d0d7de; border-radius:6px; font-size:14px; width:160px;">
+          <button type="button" class="btn-secondary btn-sm"
+                  onclick="saveQuickCaseCode('${newCase.id}')">儲存編號</button>
+          <button type="button" class="btn-secondary btn-sm"
+                  onclick="switchTab('dashboard')">前往案件列表</button>
+        </div>
+      `;
     } else {
       resultBox.classList.add('error-box');
       resultTitle.textContent = '❌ 送出失敗';
@@ -612,6 +665,118 @@ async function handleSubmit(e) {
   }
 }
 
+// ── Quick case code save (right after submission) ──────────────
+function saveQuickCaseCode(id) {
+  const code = document.getElementById('quick-case-code').value.trim();
+  if (!code) return;
+  const c = cases.find(c => c.id === id);
+  if (c) { c.caseCode = code; saveCases(); }
+  switchTab('dashboard');
+}
+
+// ── Dashboard ──────────────────────────────────────────────────
+const STATUS_LABEL = {
+  pending: '待確認', processing: '處理中', done: '已完成', rejected: '未受理'
+};
+const STATUS_CLASS = {
+  pending: 'status-pending', processing: 'status-processing',
+  done: 'status-done', rejected: 'status-rejected'
+};
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function filterCases(f) {
+  currentFilter = f;
+  document.querySelectorAll('[id^="filter-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter-' + f)?.classList.add('active');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const container = document.getElementById('case-list-container');
+  const filtered = currentFilter === 'all'
+    ? cases
+    : cases.filter(c => c.status === currentFilter);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:40px 20px; color:#aaa;">
+        <div style="font-size:48px; margin-bottom:12px;">📭</div>
+        <p style="font-size:14px;">${currentFilter === 'all' ? '尚無案件紀錄' : '此狀態下無案件'}</p>
+        <p style="margin-top:8px;">
+          <button class="btn-secondary" onclick="switchTab('form')">＋ 新增填報</button>
+        </p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = '<div style="display:flex; flex-direction:column; gap:12px;">' +
+    filtered.map(c => {
+      const date = c.submittedAt
+        ? new Date(c.submittedAt).toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'})
+        : '';
+      const sc = STATUS_CLASS[c.status] || 'status-pending';
+      const sl = STATUS_LABEL[c.status] || c.status;
+      return `
+      <div class="card" style="border-left:4px solid; padding:16px 20px;"
+           class="${sc}" id="case-${c.id}"
+           style="border-left-color: ${c.status==='done'?'#27ae60':c.status==='processing'?'#3498db':c.status==='rejected'?'#e74c3c':'#f39c12'}">
+        <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:8px;">
+          <div style="flex:1; font-size:15px; font-weight:bold; color:#1a5c3a;">${esc(c.title)}</div>
+          <span class="status-badge ${sc}">${sl}</span>
+        </div>
+        <div style="font-size:12px; color:#888; display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+          ${date ? `<span>📅 ${date}</span>` : ''}
+          ${c.mainItemName ? `<span>🏷️ ${esc(c.mainItemName)}</span>` : ''}
+          ${c.caseCode ? `<span>🔢 <strong>${esc(c.caseCode)}</strong></span>` : '<span style="color:#e74c3c;">⚠️ 尚無受理編號</span>'}
+        </div>
+        ${c.content ? `<div style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>` : ''}
+        ${c.notes ? `<div style="font-size:12px;color:#555;margin-top:8px;padding:8px;background:#f8f9fa;border-radius:4px;">💬 ${esc(c.notes)}</div>` : ''}
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn-secondary btn-sm" onclick="editCase('${c.id}')">✏️ 編輯</button>
+          <button class="btn-danger btn-sm" onclick="deleteCase('${c.id}')">🗑️</button>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+// ── Case edit modal ────────────────────────────────────────────
+function editCase(id) {
+  const c = cases.find(c => c.id === id);
+  if (!c) return;
+  document.getElementById('modal-case-id').value    = id;
+  document.getElementById('modal-case-code').value  = c.caseCode || '';
+  document.getElementById('modal-case-status').value = c.status || 'pending';
+  document.getElementById('modal-case-notes').value  = c.notes || '';
+  document.getElementById('modal-title-text').textContent = c.title;
+  document.getElementById('modal-case').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modal-case').style.display = 'none';
+}
+
+function saveModal() {
+  const id     = document.getElementById('modal-case-id').value;
+  const c      = cases.find(c => c.id === id);
+  if (!c) return;
+  c.caseCode = document.getElementById('modal-case-code').value.trim();
+  c.status   = document.getElementById('modal-case-status').value;
+  c.notes    = document.getElementById('modal-case-notes').value.trim();
+  saveCases();
+  closeModal();
+  renderDashboard();
+}
+
+function deleteCase(id) {
+  if (!confirm('確定刪除此案件紀錄？')) return;
+  cases = cases.filter(c => c.id !== id);
+  saveCases();
+  renderDashboard();
+}
+
 // ── Tab switching ──────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -620,13 +785,12 @@ function switchTab(name) {
   document.getElementById('tab-' + name + '-btn').classList.add('active');
 
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  if (name === 'form') document.getElementById('btn-goto-form').classList.add('active');
-  if (name === 'guide') document.getElementById('btn-goto-guide').classList.add('active');
+  if (name === 'form')      document.getElementById('btn-goto-form').classList.add('active');
+  if (name === 'dashboard') document.getElementById('btn-goto-dashboard').classList.add('active');
+  if (name === 'guide')     document.getElementById('btn-goto-guide').classList.add('active');
 
-  if (name === 'form') {
-    // Invalidate leaflet map size after tab becomes visible
-    setTimeout(() => map && map.invalidateSize(), 100);
-  }
+  if (name === 'form') setTimeout(() => map && map.invalidateSize(), 100);
+  if (name === 'dashboard') renderDashboard();
 }
 
 // ── Content char count ─────────────────────────────────────────
@@ -638,6 +802,7 @@ function updateContentCount() {
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   caseToken = randomToken(12);
+  loadCases();
   initMap();
   populateCounty('f-county', 'f-district');
   populateCounty('f-loc-county', 'f-loc-district');

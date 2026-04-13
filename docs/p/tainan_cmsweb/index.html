@@ -152,6 +152,16 @@
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px;
             background: #e8f5ee; color: #1a5c3a; font-weight: bold; }
 
+        /* ── Status badges ── */
+        .status-badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:bold; white-space:nowrap; }
+        .status-pending    { background:#fef3cd; color:#856404; }
+        .status-processing { background:#cfe2ff; color:#084298; }
+        .status-done       { background:#d1e7dd; color:#0f5132; }
+        .status-rejected   { background:#f8d7da; color:#842029; }
+        .btn-danger { background:white; color:#e74c3c; border:1px solid #e74c3c; border-radius:6px;
+            padding:6px 14px; font-size:13px; cursor:pointer; transition:all 0.2s; }
+        .btn-danger:hover { background:#fdf0ef; }
+
         /* ── Submit result ── */
         .result-box {
             display: none; background: #eafaf1; border: 1px solid #27ae60; border-radius: 8px;
@@ -195,6 +205,7 @@
     <div class="logo">台南市民信箱 <span>快速填報</span></div>
     <div class="header-nav">
         <button class="nav-btn active" id="btn-goto-form" onclick="switchTab('form')">填報申請</button>
+        <button class="nav-btn" id="btn-goto-dashboard" onclick="switchTab('dashboard')">我的案件</button>
         <button class="nav-btn" id="btn-goto-guide" onclick="switchTab('guide')">使用說明</button>
     </div>
 </div>
@@ -205,6 +216,9 @@
     <div class="page-tabs">
         <button class="page-tab active" id="tab-form-btn" onclick="switchTab('form')">
             <span class="tab-icon">📝</span>填報申請
+        </button>
+        <button class="page-tab" id="tab-dashboard-btn" onclick="switchTab('dashboard')">
+            <span class="tab-icon">📋</span>我的案件
         </button>
         <button class="page-tab" id="tab-guide-btn" onclick="switchTab('guide')">
             <span class="tab-icon">ℹ️</span>使用說明
@@ -418,6 +432,27 @@
     </div>
 
     <!-- ═══════════════════════════════════════════
+         TAB: 我的案件
+    ═══════════════════════════════════════════ -->
+    <div class="tab-pane" id="tab-dashboard">
+
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
+            <h2 style="margin:0; font-size:18px; color:#1a5c3a;">📋 我的案件紀錄</h2>
+        </div>
+
+        <!-- Filters -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+            <button class="nav-btn active" id="filter-all" onclick="filterCases('all')">全部</button>
+            <button class="nav-btn" id="filter-pending" onclick="filterCases('pending')">待確認</button>
+            <button class="nav-btn" id="filter-processing" onclick="filterCases('processing')">處理中</button>
+            <button class="nav-btn" id="filter-done" onclick="filterCases('done')">已完成</button>
+            <button class="nav-btn" id="filter-rejected" onclick="filterCases('rejected')">未受理</button>
+        </div>
+
+        <div id="case-list-container"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
          TAB: 使用說明
     ═══════════════════════════════════════════ -->
     <div class="tab-pane" id="tab-guide">
@@ -455,6 +490,45 @@
         </div>
     </div>
 
+</div>
+
+<!-- ── Edit Case Modal ── -->
+<div id="modal-case" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+     z-index:500; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:white; border-radius:12px; max-width:480px; width:100%;
+                max-height:90vh; overflow-y:auto; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+        <div style="padding:18px 20px; border-bottom:1px solid #eee;
+                    display:flex; align-items:center; justify-content:space-between;">
+            <h3 style="margin:0; font-size:16px; color:#1a5c3a;">編輯案件</h3>
+            <button onclick="closeModal()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#888;">✕</button>
+        </div>
+        <div style="padding:20px;">
+            <input type="hidden" id="modal-case-id">
+            <p id="modal-title-text" style="font-size:13px; color:#555; margin-bottom:16px; line-height:1.5;"></p>
+
+            <div class="form-group" style="margin-bottom:14px;">
+                <label for="modal-case-code">受理編號（如 B-358817）</label>
+                <input type="text" id="modal-case-code" placeholder="收到確認信後填入">
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label for="modal-case-status">案件狀態</label>
+                <select id="modal-case-status">
+                    <option value="pending">待確認</option>
+                    <option value="processing">處理中</option>
+                    <option value="done">已完成</option>
+                    <option value="rejected">未受理</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label for="modal-case-notes">備註</label>
+                <textarea id="modal-case-notes" rows="3" placeholder="官方回覆內容、後續追蹤紀錄…"></textarea>
+            </div>
+        </div>
+        <div style="padding:14px 20px; border-top:1px solid #eee; display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn-secondary" onclick="closeModal()">取消</button>
+            <button class="btn-primary" onclick="saveModal()">儲存</button>
+        </div>
+    </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
