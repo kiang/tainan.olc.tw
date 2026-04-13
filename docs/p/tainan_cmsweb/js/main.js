@@ -467,6 +467,7 @@ function saveDraft() {
   // Save full form as draft (includes content fields)
   const draft = {};
   ALL_FIELDS.forEach(f => { draft[f] = getFieldValue(f); });
+  draft.savedAt = new Date().toISOString();
   localStorage.setItem(KEY_DRAFT, JSON.stringify(draft));
 
   const ind = document.getElementById('draft-saved');
@@ -576,6 +577,20 @@ function clearContentFields() {
   if (marker) { map.removeLayer(marker); marker = null; }
   updateContentCount();
   localStorage.removeItem(KEY_DRAFT);
+}
+
+// Start a new blank draft (clear content fields, keep profile)
+function newDraft() {
+  if (!confirm('確定要清除目前填寫中的草稿，開始新的填報嗎？')) return;
+  clearContentFields();
+  renderDashboard();  // refresh dashboard so draft card disappears
+}
+
+// Discard draft from dashboard
+function discardDraft() {
+  if (!confirm('確定要清除草稿嗎？')) return;
+  clearContentFields();
+  renderDashboard();
 }
 
 // ── Validation ─────────────────────────────────────────────────
@@ -832,13 +847,56 @@ function filterCases(f) {
   renderDashboard();
 }
 
+function getDraftSummary() {
+  try {
+    const data = JSON.parse(localStorage.getItem(KEY_DRAFT) || '{}');
+    // Only show draft card if there's meaningful content
+    const hasContent = data.content || data.mainItem || data.locAddress;
+    if (!hasContent) return null;
+    return data;
+  } catch { return null; }
+}
+
+function renderDraftCard() {
+  const draft = getDraftSummary();
+  if (!draft) return '';
+
+  const mainItemLabel = draft.mainItem
+    ? (CASE_ITEMS.find(i => i.ItemName === draft.mainItem || i.Item === draft.mainItem)?.ItemName || draft.mainItem)
+    : '';
+  const preview = draft.content ? draft.content.slice(0, 60) + (draft.content.length > 60 ? '…' : '') : '';
+  const savedAt = draft.savedAt
+    ? new Date(draft.savedAt).toLocaleString('zh-TW', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
+    : '';
+
+  return `
+    <div class="card" style="border-left:4px solid #f39c12; padding:16px 20px; margin-bottom:4px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:8px;">
+        <div style="flex:1; font-size:15px; font-weight:bold; color:#856404;">✏️ 草稿（未送出）</div>
+        <span class="status-badge" style="background:#fef3cd;color:#856404;">草稿</span>
+      </div>
+      <div style="font-size:12px; color:#888; display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        ${savedAt ? `<span>💾 ${savedAt}</span>` : ''}
+        ${mainItemLabel ? `<span>🏷️ ${esc(mainItemLabel)}</span>` : ''}
+      </div>
+      ${preview ? `<div style="font-size:13px;color:#555;line-height:1.5;">${esc(preview)}</div>` : '<div style="font-size:13px;color:#aaa;">（尚無內容）</div>'}
+      <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+        <button class="btn-primary btn-sm" onclick="switchTab('form')" style="padding:6px 14px; font-size:13px;">繼續填寫</button>
+        <button class="btn-danger btn-sm" onclick="discardDraft()">清除草稿</button>
+      </div>
+    </div>`;
+}
+
 function renderDashboard() {
   const container = document.getElementById('case-list-container');
   const filtered = currentFilter === 'all'
     ? cases
     : cases.filter(c => c.status === currentFilter);
 
-  if (filtered.length === 0) {
+  // Draft card always shown at top when filter is 'all'
+  const draftHtml = currentFilter === 'all' ? renderDraftCard() : '';
+
+  if (filtered.length === 0 && !draftHtml) {
     container.innerHTML = `
       <div style="text-align:center; padding:40px 20px; color:#aaa;">
         <div style="font-size:48px; margin-bottom:12px;">📭</div>
@@ -850,7 +908,8 @@ function renderDashboard() {
     return;
   }
 
-  container.innerHTML = '<div style="display:flex; flex-direction:column; gap:12px;">' +
+  const casesHtml = filtered.length === 0 ? '' :
+    '<div style="display:flex; flex-direction:column; gap:12px;">' +
     filtered.map(c => {
       const date = c.submittedAt
         ? new Date(c.submittedAt).toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'})
@@ -878,6 +937,8 @@ function renderDashboard() {
         </div>
       </div>`;
     }).join('') + '</div>';
+
+  container.innerHTML = draftHtml + casesHtml;
 }
 
 // ── Case edit modal ────────────────────────────────────────────
