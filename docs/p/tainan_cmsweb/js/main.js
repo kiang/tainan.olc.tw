@@ -249,6 +249,18 @@ function setCoordFields(lat, lng) {
   scheduleDraftSave();
 }
 
+// Called when the user manually edits the lat or lng input fields
+function onCoordInput() {
+  const lat = parseFloat(document.getElementById('f-lat').value);
+  const lng = parseFloat(document.getElementById('f-lng').value);
+  if (!isNaN(lat) && !isNaN(lng) &&
+      lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+    map.setView([lat, lng], map.getZoom());
+    setMarker(lat, lng);
+  }
+  scheduleDraftSave();
+}
+
 function locateMe() {
   if (!navigator.geolocation) {
     alert('您的瀏覽器不支援定位功能');
@@ -350,18 +362,18 @@ function restoreDraft() {
     if (el && data[f]) el.value = data[f];
   });
 
-  // Restore county+district (contact)
-  if (data.county) {
+  // Restore county+district (contact); default to 臺南市
+  {
     const cSel = document.getElementById('f-county');
-    cSel.value = data.county;
+    cSel.value = data.county || '臺南市';
     onCountyChange('f-county', 'f-district');
     if (data.district) document.getElementById('f-district').value = data.district;
   }
 
-  // Restore location county+district
-  if (data.locCounty) {
+  // Restore location county+district; default to 臺南市
+  {
     const lc = document.getElementById('f-loc-county');
-    lc.value = data.locCounty;
+    lc.value = data.locCounty || '臺南市';
     onCountyChange('f-loc-county', 'f-loc-district');
     if (data.locDistrict) document.getElementById('f-loc-district').value = data.locDistrict;
   }
@@ -546,6 +558,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el) el.addEventListener('input', scheduleDraftSave);
     if (el) el.addEventListener('change', scheduleDraftSave);
   });
+
+  // Bidirectional lat/lng ↔ map
+  document.getElementById('f-lat').addEventListener('change', onCoordInput);
+  document.getElementById('f-lng').addEventListener('change', onCoordInput);
 
   document.getElementById('f-content').addEventListener('input', updateContentCount);
 
