@@ -228,8 +228,9 @@ const CASE_ITEMS = [
 ];
 
 // ── LocalStorage keys ──────────────────────────────────────────
-const KEY_DRAFT  = 'cmsweb_draft';
-const KEY_CASES  = 'cmsweb_cases';
+const KEY_PROFILE = 'cmsweb_profile';
+const KEY_DRAFT   = 'cmsweb_draft';
+const KEY_CASES   = 'cmsweb_cases';
 
 // ── Cases state ────────────────────────────────────────────────
 let cases = [];
@@ -245,12 +246,17 @@ function saveCases() {
 }
 
 // Fields saved in draft
-const ALL_FIELDS = [
-  'name', 'sex', 'telno', 'email', 'county', 'district', 'address',
+// Personal info — persisted across sessions as profile
+const PROFILE_FIELDS = ['name', 'sex', 'telno', 'email', 'county', 'district', 'address'];
+
+// Case-specific fields — only in draft, cleared after submission
+const CONTENT_FIELDS = [
   'mainItem', 'subItem',
   'locCounty', 'locDistrict', 'locAddress', 'lat', 'lng',
   'content'
 ];
+
+const ALL_FIELDS = [...PROFILE_FIELDS, ...CONTENT_FIELDS];
 
 // ── Leaflet map ────────────────────────────────────────────────
 let map, marker;
@@ -389,8 +395,20 @@ function onMainItemChange() {
   });
 }
 
-// ── Draft save/restore ─────────────────────────────────────────
+// ── Profile & draft save/restore ──────────────────────────────
 let draftTimer = null;
+
+function getFieldValue(f) {
+  const id = 'f-' + f.replace(/([A-Z])/g, c => '-' + c.toLowerCase());
+  const el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+function setFieldValue(f, v) {
+  const id = 'f-' + f.replace(/([A-Z])/g, c => '-' + c.toLowerCase());
+  const el = document.getElementById(id);
+  if (el && v !== undefined && v !== null) el.value = v;
+}
 
 function scheduleDraftSave() {
   clearTimeout(draftTimer);
@@ -398,52 +416,60 @@ function scheduleDraftSave() {
 }
 
 function saveDraft() {
-  const data = {};
-  ALL_FIELDS.forEach(f => {
-    const el = document.getElementById('f-' + f.replace(/([A-Z])/g, '-$1').toLowerCase());
-    if (el) data[f] = el.value;
-  });
-  localStorage.setItem(KEY_DRAFT, JSON.stringify(data));
+  // Save profile fields separately (persist across sessions)
+  const profile = {};
+  PROFILE_FIELDS.forEach(f => { profile[f] = getFieldValue(f); });
+  localStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
+
+  // Save full form as draft (includes content fields)
+  const draft = {};
+  ALL_FIELDS.forEach(f => { draft[f] = getFieldValue(f); });
+  localStorage.setItem(KEY_DRAFT, JSON.stringify(draft));
+
   const ind = document.getElementById('draft-saved');
   ind.classList.add('show');
   setTimeout(() => ind.classList.remove('show'), 2000);
+}
+
+async function restoreProfile() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(KEY_PROFILE) || '{}'); } catch { data = {}; }
+
+  // Simple profile fields
+  ['name', 'sex', 'telno', 'email', 'address'].forEach(f => {
+    if (data[f]) setFieldValue(f, data[f]);
+  });
+
+  // Contact county+district; default to 台南市
+  const cSel = document.getElementById('f-county');
+  cSel.value = data.county || TAINAN_CODE;
+  await onCountyChange('f-county', 'f-district');
+  if (data.district) document.getElementById('f-district').value = data.district;
 }
 
 async function restoreDraft() {
   let data;
   try { data = JSON.parse(localStorage.getItem(KEY_DRAFT) || '{}'); } catch { data = {}; }
 
-  // Restore simple fields first
-  const simpleFields = ['name', 'sex', 'telno', 'email', 'address', 'locAddress', 'content'];
-  simpleFields.forEach(f => {
-    const el = document.getElementById('f-' + f);
-    if (el && data[f]) el.value = data[f];
+  // Content-only fields (profile already restored via restoreProfile)
+  ['locAddress', 'content'].forEach(f => {
+    if (data[f]) setFieldValue(f, data[f]);
   });
 
-  // Restore county+district (contact); default to 台南市
-  {
-    const cSel = document.getElementById('f-county');
-    cSel.value = data.county || TAINAN_CODE;
-    await onCountyChange('f-county', 'f-district');
-    if (data.district) document.getElementById('f-district').value = data.district;
-  }
+  // Location county+district; default to 台南市
+  const lc = document.getElementById('f-loc-county');
+  lc.value = data.locCounty || TAINAN_CODE;
+  await onCountyChange('f-loc-county', 'f-loc-district');
+  if (data.locDistrict) document.getElementById('f-loc-district').value = data.locDistrict;
 
-  // Restore location county+district; default to 台南市
-  {
-    const lc = document.getElementById('f-loc-county');
-    lc.value = data.locCounty || TAINAN_CODE;
-    await onCountyChange('f-loc-county', 'f-loc-district');
-    if (data.locDistrict) document.getElementById('f-loc-district').value = data.locDistrict;
-  }
-
-  // Restore main item + sub item
+  // Main item + sub item
   if (data.mainItem) {
     document.getElementById('f-main-item').value = data.mainItem;
     onMainItemChange();
     if (data.subItem) document.getElementById('f-sub-item').value = data.subItem;
   }
 
-  // Restore map marker
+  // Map marker
   if (data.lat && data.lng) {
     const lat = parseFloat(data.lat);
     const lng = parseFloat(data.lng);
@@ -454,6 +480,20 @@ async function restoreDraft() {
   }
 
   updateContentCount();
+}
+
+function clearContentFields() {
+  CONTENT_FIELDS.forEach(f => setFieldValue(f, ''));
+  // Reset dependent dropdowns
+  const subSel = document.getElementById('f-sub-item');
+  subSel.innerHTML = '<option value="">— 請選擇子項目 —</option>';
+  subSel.disabled = true;
+  document.getElementById('f-loc-district').innerHTML = '<option value="">— 請選擇 —</option>';
+  document.getElementById('f-loc-district').disabled = true;
+  document.getElementById('f-loc-county').value = TAINAN_CODE;
+  if (marker) { map.removeLayer(marker); marker = null; }
+  updateContentCount();
+  localStorage.removeItem(KEY_DRAFT);
 }
 
 // ── Validation ─────────────────────────────────────────────────
@@ -626,7 +666,7 @@ async function handleSubmit(e) {
       };
       cases.unshift(newCase);
       saveCases();
-      localStorage.removeItem(KEY_DRAFT);
+      clearContentFields();
 
       resultBody.innerHTML = `
         <p style="font-size:13px; margin-bottom:10px;">
@@ -800,14 +840,15 @@ function updateContentCount() {
 }
 
 // ── Init ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   caseToken = randomToken(12);
   loadCases();
   initMap();
   populateCounty('f-county', 'f-district');
   populateCounty('f-loc-county', 'f-loc-district');
   populateMainItems();
-  restoreDraft();
+  await restoreProfile();
+  await restoreDraft();
   loadCaptcha();
 
   // Auto-save on input
