@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台南市民信箱快速填報</title>
+
+    <meta property="og:title" content="台南市民信箱快速填報">
+    <meta property="og:description" content="更友善的台南市政府線上即時服務平台填報介面，自動儲存填寫進度">
+    <meta property="og:image" content="https://tainan.olc.tw/p/tainan_cmsweb/og_image.png">
+    <meta property="og:url" content="https://tainan.olc.tw/p/tainan_cmsweb/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="description" content="台南市民信箱快速填報，提供比 cmsweb.tainan.gov.tw 更友善的操作介面，儲存填寫紀錄">
+    <meta name="author" content="江明宗">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; min-height: 100%;
+            font-family: 'Segoe UI', 'Noto Sans TC', Arial, sans-serif;
+            background: #f0f2f5; color: #1a1a1a; font-size: 15px; line-height: 1.6;
+        }
+
+        /* ── Layout ── */
+        .app-header {
+            background: #1a5c3a; color: white;
+            padding: 0 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px; position: sticky; top: 0; z-index: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .app-header .logo { font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
+        .app-header .logo span { color: #7ec8a3; }
+        .header-nav { display: flex; gap: 4px; }
+        .nav-btn {
+            padding: 6px 14px; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px;
+            background: transparent; color: white; cursor: pointer; font-size: 13px;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.2); }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+
+        /* ── Tabs ── */
+        .page-tabs { display: flex; gap: 0; margin-bottom: 24px; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .page-tab {
+            flex: 1; padding: 12px 8px; border: none; background: white; cursor: pointer;
+            font-size: 14px; color: #555; border-bottom: 3px solid transparent;
+            transition: all 0.2s; text-align: center; font-weight: 500;
+        }
+        .page-tab.active { color: #1a5c3a; border-bottom-color: #1a5c3a; background: #f0fff6; font-weight: bold; }
+        .page-tab:hover:not(.active) { background: #f5f5f5; }
+        .page-tab .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        /* ── Cards ── */
+        .card {
+            background: white; border-radius: 10px; padding: 20px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 16px; font-weight: bold; color: #1a5c3a;
+            margin: 0 0 16px 0; padding-bottom: 10px; border-bottom: 2px solid #e8f5ee;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ── Form ── */
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .form-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 5px; }
+        .form-group.full { min-width: 100%; flex: 100%; }
+        label { font-size: 13px; font-weight: 600; color: #444; }
+        label .req { color: #e74c3c; margin-left: 2px; }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"],
+        select, textarea {
+            width: 100%; padding: 9px 12px; border: 1px solid #d0d7de; border-radius: 6px;
+            font-size: 14px; color: #1a1a1a; background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: #1a5c3a;
+            box-shadow: 0 0 0 3px rgba(26,92,58,0.12);
+        }
+        input.error, select.error, textarea.error { border-color: #e74c3c; }
+        .field-error { font-size: 12px; color: #e74c3c; margin-top: 2px; display: none; }
+        .field-error.show { display: block; }
+        textarea { resize: vertical; min-height: 100px; }
+        .char-count { font-size: 11px; color: #888; text-align: right; margin-top: 2px; }
+
+        /* ── Buttons ── */
+        .btn-primary {
+            background: #1a5c3a; color: white; border: none; border-radius: 6px;
+            padding: 12px 28px; font-size: 15px; font-weight: bold; cursor: pointer;
+            transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary:hover { background: #246b45; }
+        .btn-primary:disabled { background: #8aac9c; cursor: not-allowed; }
+        .btn-secondary {
+            background: white; color: #1a5c3a; border: 1px solid #1a5c3a; border-radius: 6px;
+            padding: 10px 20px; font-size: 14px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-secondary:hover { background: #f0fff6; }
+        .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+        /* ── Tips ── */
+        .tip-box {
+            background: #e8f5ee; border-left: 4px solid #1a5c3a; border-radius: 4px;
+            padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #2c3e50;
+        }
+        .tip-box.warning { background: #fef9e7; border-left-color: #f39c12; }
+        .tip-box ol, .tip-box ul { margin: 8px 0 0 0; padding-left: 20px; }
+        .tip-box li { margin-bottom: 4px; }
+
+        /* ── Map picker ── */
+        #location-map {
+            height: 280px; border-radius: 6px; border: 1px solid #d0d7de;
+            margin-top: 8px; position: relative; z-index: 1;
+        }
+        .map-coords {
+            display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+        }
+        .map-coords .coord-field { flex: 1; min-width: 140px; }
+        .map-tip { font-size: 12px; color: #888; margin-top: 4px; }
+
+        /* ── Confirm box ── */
+        .confirm-row { display: flex; align-items: flex-start; gap: 10px; padding: 14px;
+            background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0; }
+        .confirm-row input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; }
+        .confirm-row label { font-size: 13px; color: #444; font-weight: normal; }
+
+        /* ── Draft saved ── */
+        .draft-saved {
+            font-size: 12px; color: #27ae60; display: none; align-items: center; gap: 4px;
+        }
+        .draft-saved.show { display: flex; }
+
+        /* ── Badge ── */
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px;
+            background: #e8f5ee; color: #1a5c3a; font-weight: bold; }
+
+        /* ── Submit result ── */
+        .result-box {
+            display: none; background: #eafaf1; border: 1px solid #27ae60; border-radius: 8px;
+            padding: 16px 20px; margin-top: 16px;
+        }
+        .result-box.show { display: block; }
+        .result-box.error-box { background: #fdf0ef; border-color: #e74c3c; }
+        .result-title { font-weight: bold; margin-bottom: 8px; color: #1a5c3a; }
+        .result-box.error-box .result-title { color: #e74c3c; }
+
+        /* ── Guide ── */
+        .guide-step {
+            display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start;
+        }
+        .step-num {
+            background: #1a5c3a; color: white; border-radius: 50%;
+            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: bold; flex-shrink: 0; margin-top: 2px;
+        }
+        .step-body { font-size: 14px; color: #333; }
+        .step-body strong { color: #1a5c3a; }
+
+        /* ── Misc ── */
+        .divider { border: none; border-top: 1px solid #e8ecf0; margin: 20px 0; }
+        .text-muted { color: #888; font-size: 13px; }
+
+        @media (max-width: 600px) {
+            .app-header { padding: 0 12px; }
+            .app-header .logo { font-size: 15px; }
+            .container { padding: 16px 10px 60px; }
+            .form-row { gap: 8px; }
+            .form-group { min-width: 100%; }
+            .card { padding: 16px; }
+            .page-tab { font-size: 12px; padding: 10px 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <div class="logo">台南市民信箱 <span>快速填報</span></div>
+    <div class="header-nav">
+        <button class="nav-btn active" id="btn-goto-form" onclick="switchTab('form')">填報申請</button>
+        <button class="nav-btn" id="btn-goto-guide" onclick="switchTab('guide')">使用說明</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- ── Tab nav ── -->
+    <div class="page-tabs">
+        <button class="page-tab active" id="tab-form-btn" onclick="switchTab('form')">
+            <span class="tab-icon">📝</span>填報申請
+        </button>
+        <button class="page-tab" id="tab-guide-btn" onclick="switchTab('guide')">
+            <span class="tab-icon">ℹ️</span>使用說明
+        </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         TAB: 填報申請
+    ═══════════════════════════════════════════ -->
+    <div class="tab-pane active" id="tab-form">
+
+        <div class="tip-box">
+            <strong>📌 填報須知</strong>
+            <ol>
+                <li>此工具自動儲存填寫進度，下次開啟自動帶入上次資料</li>
+                <li>填妥後點「前往官方頁面送出」，資料將自動帶入至台南市政府線上服務平台</li>
+                <li>請務必填寫真實個人資料及具體明確的陳情事由</li>
+                <li>案件送出後，系統將寄發確認信至您的電子信箱，請於 7 日內點選確認</li>
+            </ol>
+        </div>
+
+        <form id="cms-form" novalidate>
+
+            <!-- ── 個人資料 ── -->
+            <div class="card">
+                <div class="card-title">👤 個人資料 <span class="badge">必填</span></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-name">姓名<span class="req">*</span></label>
+                        <input type="text" id="f-name" name="name" placeholder="請輸入真實姓名" autocomplete="name">
+                        <span class="field-error" id="err-name">請填寫姓名（至少2個字）</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-sex">性別</label>
+                        <select id="f-sex" name="sex">
+                            <option value="">— 請選擇 —</option>
+                            <option value="M">先生</option>
+                            <option value="F">小姐</option>
+                            <option value="O">其他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-telno">聯絡電話<span class="req">*</span></label>
+                        <input type="tel" id="f-telno" name="telno" placeholder="手機或市話，多支請以分號 ; 隔開">
+                        <span class="field-error" id="err-telno">請填寫聯絡電話</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-email">電子信箱<span class="req">*</span></label>
+                        <input type="email" id="f-email" name="email" placeholder="example@mail.com" autocomplete="email">
+                        <span class="field-error" id="err-email">請填寫正確的電子信箱</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-county">縣市<span class="req">*</span></label>
+                        <select id="f-county" name="county">
+                            <option value="">— 請選擇縣市 —</option>
+                        </select>
+                        <span class="field-error" id="err-county">請選擇縣市</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-district">行政區<span class="req">*</span></label>
+                        <select id="f-district" name="district" disabled>
+                            <option value="">— 請先選縣市 —</option>
+                        </select>
+                        <span class="field-error" id="err-district">請選擇行政區</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full">
+                        <label for="f-address">詳細地址<span class="req">*</span></label>
+                        <input type="text" id="f-address" name="address" placeholder="路/街 巷 弄 號 樓" autocomplete="street-address">
+                        <span class="field-error" id="err-address">請填寫詳細地址（路段門牌號碼）</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 案件類別 ── -->
+            <div class="card">
+                <div class="card-title">📂 案件類別 <span class="badge">必填</span></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-main-item">主項目<span class="req">*</span></label>
+                        <select id="f-main-item" name="mainItem">
+                            <option value="">— 請選擇主項目 —</option>
+                        </select>
+                        <span class="field-error" id="err-main-item">請選擇主項目</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-sub-item">子項目<span class="req">*</span></label>
+                        <select id="f-sub-item" name="subItem" disabled>
+                            <option value="">— 請先選主項目 —</option>
+                        </select>
+                        <span class="field-error" id="err-sub-item">請選擇子項目</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 反映事項所在位置 ── -->
+            <div class="card">
+                <div class="card-title">📍 反映事項所在位置</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-loc-county">所在縣市</label>
+                        <select id="f-loc-county" name="locCounty">
+                            <option value="">— 請選擇縣市 —</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-loc-district">所在行政區</label>
+                        <select id="f-loc-district" name="locDistrict" disabled>
+                            <option value="">— 請先選縣市 —</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full" style="margin-bottom:12px;">
+                    <label for="f-loc-address">事件地址</label>
+                    <input type="text" id="f-loc-address" name="locAddress" placeholder="路/街 巷 弄 號（若與聯絡地址相同可留空）">
+                </div>
+
+                <div class="form-group full">
+                    <label>地圖定位（可在地圖上點選精確位置）</label>
+                    <div id="location-map"></div>
+                    <div class="map-coords">
+                        <div class="coord-field">
+                            <label for="f-lat" style="font-size:12px; color:#888;">緯度</label>
+                            <input type="text" id="f-lat" name="lat" placeholder="23.0000" readonly>
+                        </div>
+                        <div class="coord-field">
+                            <label for="f-lng" style="font-size:12px; color:#888;">經度</label>
+                            <input type="text" id="f-lng" name="lng" placeholder="120.0000" readonly>
+                        </div>
+                        <div style="display:flex; align-items:flex-end;">
+                            <button type="button" class="btn-secondary btn-sm" onclick="locateMe()">📍 定位到我的位置</button>
+                        </div>
+                    </div>
+                    <div class="map-tip">點擊地圖以設定事件發生位置，或使用上方按鈕定位到您目前所在位置</div>
+                </div>
+            </div>
+
+            <!-- ── 反映事項 ── -->
+            <div class="card">
+                <div class="card-title">📄 反映事項 <span class="badge">必填</span></div>
+
+                <div class="form-row">
+                    <div class="form-group full">
+                        <label for="f-content">具體內容<span class="req">*</span></label>
+                        <textarea id="f-content" name="content" rows="6" placeholder="請詳細描述反映事項，包含時間、地點、相關人員等具體資訊…"></textarea>
+                        <div class="char-count"><span id="content-count">0</span> 字</div>
+                        <span class="field-error" id="err-content">請填寫反映事項具體內容</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 送出 ── -->
+            <div class="card">
+                <div class="confirm-row">
+                    <input type="checkbox" id="f-confirm" name="confirm">
+                    <label for="f-confirm">
+                        本人已閱讀填報須知，確認以上所填資料均為真實，並願對反映內容負責。
+                    </label>
+                </div>
+                <span class="field-error" id="err-confirm" style="margin-top:6px;">請勾選確認聲明</span>
+
+                <div style="margin-top: 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        🚀 前往官方頁面送出
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="saveDraft()">
+                        💾 儲存草稿
+                    </button>
+                    <span class="draft-saved" id="draft-saved">✓ 草稿已儲存</span>
+                </div>
+
+                <div class="result-box" id="result-box">
+                    <div class="result-title" id="result-title"></div>
+                    <div id="result-body"></div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="text-muted" style="text-align:center; margin-top:8px;">
+            官方平台：<a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener">cmsweb.tainan.gov.tw/RWD/</a>
+            　由 <a href="https://tainan.olc.tw/" target="_blank">江明宗</a> 製作
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         TAB: 使用說明
+    ═══════════════════════════════════════════ -->
+    <div class="tab-pane" id="tab-guide">
+        <div class="card">
+            <div class="card-title">🔍 關於本工具</div>
+            <p style="font-size:14px; margin-bottom:16px;">
+                本工具提供比 <a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener">cmsweb.tainan.gov.tw</a> 更友善的操作體驗：
+            </p>
+            <div class="guide-step">
+                <div class="step-num">1</div>
+                <div class="step-body"><strong>自動儲存</strong>：填寫中的所有欄位自動儲存至瀏覽器，下次開啟直接帶入，不怕填到一半跳頁遺失。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">2</div>
+                <div class="step-body"><strong>地圖定位</strong>：直接在地圖上點選事件地點，自動填入經緯度，不必手動查找座標。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">3</div>
+                <div class="step-body"><strong>串接送出</strong>：按下「前往官方頁面送出」後，資料會帶入官方表單，再次確認後完成送出，確保資料走官方管道。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">4</div>
+                <div class="step-body"><strong>確認信件</strong>：官方系統送出後會寄發確認信至您的電子信箱，請於 7 日內點選確認連結，案件才正式受理。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">⚠️ 注意事項</div>
+            <ul style="font-size:14px; padding-left:20px; line-height:2;">
+                <li>即時派工服務（需即時派員到場）：請直接撥打市政府聯合服務中心 <strong>(06) 632-9123</strong></li>
+                <li>天災或重大災害（颱風、地震等）：請於案件類別選擇「其他」，由專人派案</li>
+                <li>交通違規檢舉（實名制）：請登錄 <a href="https://www.tnpd.gov.tw/TrafficMailbox/Index/b591d651-e97c-70ae-1e46-b8b0a7d23064" target="_blank" rel="noopener">警察局首長交通檢舉信箱</a></li>
+                <li>所有個人資料僅儲存於您的瀏覽器本機，本工具不會上傳任何資料至第三方伺服器</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
