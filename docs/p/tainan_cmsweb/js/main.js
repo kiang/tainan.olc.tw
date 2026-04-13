@@ -847,6 +847,24 @@ function filterCases(f) {
   renderDashboard();
 }
 
+function toggleExpand(id) {
+  const div = document.getElementById('content-' + id);
+  const btn = document.getElementById('expand-' + id);
+  if (!div || !btn) return;
+  const expanded = div.style.webkitLineClamp === 'unset';
+  if (expanded) {
+    div.style.webkitLineClamp = '2';
+    div.style.display = '-webkit-box';
+    div.style.overflow = 'hidden';
+    btn.textContent = '▼ 展開';
+  } else {
+    div.style.webkitLineClamp = 'unset';
+    div.style.display = 'block';
+    div.style.overflow = 'visible';
+    btn.textContent = '▲ 收合';
+  }
+}
+
 function getDraftSummary() {
   try {
     const data = JSON.parse(localStorage.getItem(KEY_DRAFT) || '{}');
@@ -929,7 +947,10 @@ function renderDashboard() {
           ${c.mainItemName ? `<span>🏷️ ${esc(c.mainItemName)}</span>` : ''}
           ${c.caseCode ? `<span>🔢 <strong>${esc(c.caseCode)}</strong></span>` : '<span style="color:#e74c3c;">⚠️ 尚無受理編號</span>'}
         </div>
-        ${c.content ? `<div style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>` : ''}
+        ${c.content ? `
+        <div id="content-${c.id}" style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>
+        <button class="btn-sm" id="expand-${c.id}" onclick="toggleExpand('${c.id}')"
+                style="background:none;border:none;color:#1a5c3a;cursor:pointer;font-size:12px;padding:2px 0;margin-top:2px;">▼ 展開</button>` : ''}
         ${c.notes ? `<div style="font-size:12px;color:#555;margin-top:8px;padding:8px;background:#f8f9fa;border-radius:4px;">💬 ${esc(c.notes)}</div>` : ''}
         <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
           <button class="btn-secondary btn-sm" onclick="editCase('${c.id}')">✏️ 編輯</button>
