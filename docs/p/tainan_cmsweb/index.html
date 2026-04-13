@@ -528,6 +528,39 @@
     </div>
 </div>
 
+<!-- ── Query Status Modal ── -->
+<div id="modal-query" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+     z-index:500; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:white; border-radius:12px; max-width:560px; width:100%;
+                max-height:90vh; overflow-y:auto; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+        <div style="padding:18px 20px; border-bottom:1px solid #eee;
+                    display:flex; align-items:center; justify-content:space-between;">
+            <h3 style="margin:0; font-size:16px; color:#1a5c3a;">查詢官方案件進度</h3>
+            <button onclick="closeQueryModal()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#888;">✕</button>
+        </div>
+        <div style="padding:20px;">
+            <input type="hidden" id="query-case-id">
+            <p id="query-case-label" style="font-size:13px; color:#555; margin-bottom:16px; line-height:1.5;"></p>
+
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                <img id="query-captcha-img" src="" alt="驗證碼"
+                     style="height:40px; border:1px solid #d0d7de; border-radius:4px; cursor:pointer;"
+                     title="點擊換一張" onclick="loadQueryCaptcha()">
+                <audio id="query-captcha-audio" controls style="height:32px;"></audio>
+                <button type="button" class="btn-secondary btn-sm" onclick="loadQueryCaptcha()">🔄 換一張</button>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label for="query-captcha-input">驗證碼</label>
+                <input type="text" id="query-captcha-input" placeholder="請輸入圖片中的驗證碼" maxlength="10"
+                       style="max-width:200px;">
+            </div>
+            <button class="btn-primary" onclick="fetchCaseStatus()" id="query-fetch-btn">🔍 查詢進度</button>
+
+            <div id="query-result" style="margin-top:16px;"></div>
+        </div>
+    </div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="js/main.js"></script>
 </body>

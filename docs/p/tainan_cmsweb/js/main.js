@@ -773,6 +773,7 @@ async function handleSubmit(e) {
         locAddress: get('f-loc-address'),
         lat: get('f-lat'),
         lng: get('f-lng'),
+        email: get('f-email'),
         status: 'pending',
         submittedAt: new Date().toISOString(),
         notes: '',
@@ -954,6 +955,7 @@ function renderDashboard() {
         ${c.notes ? `<div style="font-size:12px;color:#555;margin-top:8px;padding:8px;background:#f8f9fa;border-radius:4px;">💬 ${esc(c.notes)}</div>` : ''}
         <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
           <button class="btn-secondary btn-sm" onclick="editCase('${c.id}')">✏️ 編輯</button>
+          ${c.caseCode ? `<button class="btn-secondary btn-sm" onclick="openQueryModal('${c.id}')">🔍 查詢進度</button>` : ''}
           <button class="btn-danger btn-sm" onclick="deleteCase('${c.id}')">🗑️</button>
         </div>
       </div>`;
@@ -994,6 +996,171 @@ function deleteCase(id) {
   if (!confirm('確定刪除此案件紀錄？')) return;
   cases = cases.filter(c => c.id !== id);
   saveCases();
+  renderDashboard();
+}
+
+// ── Case status query modal ────────────────────────────────────
+let queryCaptchaData = null;
+
+async function loadQueryCaptcha() {
+  try {
+    const res = await fetch(API + '/ValidationCode/');
+    queryCaptchaData = await res.json();
+    document.getElementById('query-captcha-img').src =
+      'data:image/gif;base64,' + queryCaptchaData.ValidationCode;
+    document.getElementById('query-captcha-input').value = '';
+    document.getElementById('query-captcha-audio').src =
+      'data:audio/mp3;base64,' + queryCaptchaData.AudioMP3;
+  } catch {
+    alert('無法載入驗證碼，請檢查網路連線後重試');
+  }
+}
+
+function openQueryModal(id) {
+  const c = cases.find(c => c.id === id);
+  if (!c) return;
+  document.getElementById('query-case-id').value = id;
+  document.getElementById('query-case-label').textContent =
+    `受理編號：${c.caseCode}　電子信箱：${c.email || '（未記錄）'}`;
+  document.getElementById('query-result').innerHTML = '';
+  document.getElementById('query-captcha-input').value = '';
+  document.getElementById('modal-query').style.display = 'flex';
+  loadQueryCaptcha();
+}
+
+function closeQueryModal() {
+  document.getElementById('modal-query').style.display = 'none';
+}
+
+async function fetchCaseStatus() {
+  const id = document.getElementById('query-case-id').value;
+  const c  = cases.find(c => c.id === id);
+  if (!c || !c.caseCode) return;
+
+  const captchaInput = document.getElementById('query-captcha-input').value.trim();
+  if (!captchaInput) {
+    alert('請輸入驗證碼');
+    return;
+  }
+  if (!queryCaptchaData) {
+    alert('驗證碼尚未載入，請稍候再試');
+    return;
+  }
+
+  // Parse case code: "B-358820" → letter="B", num="358820"
+  const match = c.caseCode.replace(/\s/g, '').match(/^([A-Za-z]+)-?(\d+)$/);
+  if (!match) {
+    alert('受理編號格式不正確，應如 B-358820');
+    return;
+  }
+  const cLetter = match[1].toUpperCase();
+  const cNum    = match[2];
+
+  // Use the stored email, or fall back to the profile email
+  let email = c.email || '';
+  if (!email) {
+    try {
+      const prof = JSON.parse(localStorage.getItem(KEY_PROFILE) || '{}');
+      email = prof.email || '';
+    } catch {}
+  }
+  if (!email) {
+    alert('找不到電子信箱，請在編輯案件中補充 email');
+    return;
+  }
+
+  const btn = document.getElementById('query-fetch-btn');
+  btn.disabled = true;
+  btn.textContent = '查詢中…';
+  document.getElementById('query-result').innerHTML = '';
+
+  try {
+    const url = `${API}/case/${encodeURIComponent(cLetter)}` +
+      `?p1=${encodeURIComponent(cNum)}` +
+      `&p2=${encodeURIComponent(email)}` +
+      `&p3=${encodeURIComponent(queryCaptchaData.HashCode)}`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    renderQueryResult(data, c);
+  } catch (err) {
+    document.getElementById('query-result').innerHTML =
+      `<div class="tip-box warning">查詢失敗：${esc(String(err))}。請確認驗證碼後重試。</div>`;
+    loadQueryCaptcha();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 查詢進度';
+  }
+}
+
+function renderQueryResult(data, c) {
+  const resultEl = document.getElementById('query-result');
+  if (!data || (!data.Content?.length && !data.ProcessStatus?.length)) {
+    resultEl.innerHTML = `<div class="tip-box warning">查無資料，請確認受理編號與電子信箱是否正確，或驗證碼有誤。</div>`;
+    loadQueryCaptcha();
+    return;
+  }
+
+  const info = data.Content?.[0] || {};
+  const processes = data.ProcessStatus || [];
+
+  // Map CtrlId_Desc to local status
+  const lastProc = processes[processes.length - 1];
+  if (lastProc) {
+    const desc = lastProc.CtrlId_Desc || '';
+    let newStatus = c.status;
+    if (desc.includes('完成') || desc.includes('結案')) newStatus = 'done';
+    else if (desc.includes('不受理') || desc.includes('未受理')) newStatus = 'rejected';
+    else if (desc.includes('處理中') || desc.includes('派案')) newStatus = 'processing';
+    if (newStatus !== c.status) {
+      c.status = newStatus;
+      saveCases();
+    }
+  }
+
+  let html = '<div style="border-top:1px solid #eee; padding-top:16px;">';
+
+  // Basic info
+  if (info.subject) {
+    html += `<div style="font-size:13px;color:#333;line-height:1.6;margin-bottom:12px;">
+      <strong>陳情內容：</strong>${esc(info.subject)}
+    </div>`;
+  }
+  if (info.subj_place) {
+    html += `<div style="font-size:12px;color:#666;margin-bottom:8px;">📍 ${esc(info.subj_place)}</div>`;
+  }
+
+  // Process steps
+  if (processes.length) {
+    html += `<div style="font-size:13px;font-weight:bold;color:#1a5c3a;margin-bottom:10px;">處理進度</div>`;
+    html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+    processes.forEach((p, i) => {
+      const isLast = i === processes.length - 1;
+      const dateStr = p.AssignDate
+        ? p.AssignDate.replace(/(\d{4})(\d{2})(\d{2})/, '$1/$2/$3') : '';
+      const finishStr = p.FinishDate
+        ? p.FinishDate.replace(/(\d{4})(\d{2})(\d{2})/, '$1/$2/$3') : '';
+      html += `
+        <div style="padding:10px 14px;border-radius:6px;border-left:3px solid ${isLast ? '#1a5c3a' : '#d0d7de'};
+                    background:${isLast ? '#f0fff6' : '#f8f9fa'};">
+          <div style="font-size:12px;color:#888;margin-bottom:4px;">
+            ${dateStr ? `📅 ${dateStr}` : ''}
+            ${finishStr ? ` → ${finishStr}` : ''}
+          </div>
+          <div style="font-size:13px;font-weight:bold;color:${isLast ? '#1a5c3a' : '#333'};margin-bottom:4px;">
+            ${esc(p.CtrlId_Desc || '')}
+          </div>
+          ${p.organ_name ? `<div style="font-size:12px;color:#555;">🏢 ${esc(p.organ_name)}${p.dept_name ? ' / ' + esc(p.dept_name) : ''}</div>` : ''}
+          ${p.item_name ? `<div style="font-size:12px;color:#555;">🏷️ ${esc(p.item_name)}${p.sub_itemname ? ' › ' + esc(p.sub_itemname) : ''}</div>` : ''}
+          ${p.Reply && p.Reply !== p.CtrlId_Desc ? `<div style="font-size:12px;color:#333;margin-top:6px;line-height:1.5;">${esc(p.Reply)}</div>` : ''}
+        </div>`;
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  resultEl.innerHTML = html;
+
+  // Refresh dashboard card status badge without closing modal
   renderDashboard();
 }
 
