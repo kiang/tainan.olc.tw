@@ -378,9 +378,24 @@
                 </div>
                 <span class="field-error" id="err-confirm" style="margin-top:6px;">請勾選確認聲明</span>
 
+                <!-- ── 驗證碼 ── -->
+                <div style="margin-top:16px;">
+                    <label style="font-size:13px; font-weight:600; color:#444;">驗證碼<span class="req">*</span></label>
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:6px; flex-wrap:wrap;">
+                        <img id="captcha-img" src="" alt="驗證碼圖片"
+                             style="height:40px; border:1px solid #d0d7de; border-radius:4px; cursor:pointer;"
+                             title="點擊換一張" onclick="loadCaptcha()">
+                        <audio id="captcha-audio" controls style="height:32px;"></audio>
+                        <button type="button" class="btn-secondary btn-sm" onclick="loadCaptcha()">🔄 換一張</button>
+                    </div>
+                    <input type="text" id="f-captcha" name="captcha"
+                           placeholder="請輸入圖片中的驗證碼" maxlength="10"
+                           style="margin-top:8px; max-width:240px;">
+                </div>
+
                 <div style="margin-top: 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                     <button type="submit" class="btn-primary" id="submit-btn">
-                        🚀 前往官方頁面送出
+                        🚀 送出
                     </button>
                     <button type="button" class="btn-secondary" onclick="saveDraft()">
                         💾 儲存草稿

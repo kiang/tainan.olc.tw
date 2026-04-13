@@ -449,75 +449,123 @@ function validate() {
   return ok;
 }
 
-// ── Build cmsweb URL with query params ─────────────────────────
-function buildCmswebUrl() {
-  const get = id => document.getElementById(id).value.trim();
+// ── CAPTCHA & submission ───────────────────────────────────────
+const API = 'https://cmsweb.tainan.gov.tw/webapi/api';
+let captchaData = null;   // { HashCode, TimeStamp, ValidationCode (img), AudioMP3 }
+let caseToken = null;
 
-  // Map sex value to Chinese for display
-  const sexMap = { M: '先生', F: '小姐', O: '其他' };
-  const sexVal = get('f-sex');
+function randomToken(len) {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  let s = '';
+  for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
 
-  const mainItemVal = get('f-main-item');
-  const mainItemObj = CASE_ITEMS.find(i => i.Item === mainItemVal);
-  const mainItemName = mainItemObj ? mainItemObj.ItemName : '';
-  const subItemVal = get('f-sub-item');
-  const subItemObj = mainItemObj ? mainItemObj.Subitems.find(s => s.Subitem === subItemVal) : null;
-  const subItemName = subItemObj ? subItemObj.SubitemName : '';
-
-  const params = new URLSearchParams({
-    Sugg_Name: get('f-name'),
-    Sugg_Sex: sexMap[sexVal] || '',
-    Sugg_Telno: get('f-telno'),
-    Sugg_Email: get('f-email'),
-    Sugg_Addr1: get('f-county'),
-    Sugg_Addr2: get('f-district'),
-    Sugg_Addr3: '',
-    Sugg_Addr4: get('f-address'),
-    MainItem: mainItemVal,
-    MainItemName: mainItemName,
-    SubItem: subItemVal,
-    SubItemName: subItemName,
-    LocCounty: get('f-loc-county'),
-    LocDistrict: get('f-loc-district'),
-    LocAddress: get('f-loc-address'),
-    Lat: get('f-lat'),
-    Lng: get('f-lng'),
-    Content: get('f-content'),
-  });
-
-  return 'https://cmsweb.tainan.gov.tw/RWD/#/report?' + params.toString();
+async function loadCaptcha() {
+  try {
+    const res = await fetch(API + '/ValidationCode/');
+    captchaData = await res.json();
+    document.getElementById('captcha-img').src = 'data:image/gif;base64,' + captchaData.ValidationCode;
+    document.getElementById('f-captcha').value = '';
+    document.getElementById('captcha-audio').src = 'data:audio/mp3;base64,' + captchaData.AudioMP3;
+  } catch (err) {
+    alert('無法載入驗證碼，請檢查網路連線後重試');
+  }
 }
 
 // ── Form submit ────────────────────────────────────────────────
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   if (!validate()) return;
 
   saveDraft();
 
-  // Build the pre-filled URL and open in new tab
-  const url = buildCmswebUrl();
+  const get = id => document.getElementById(id).value.trim();
 
-  // Show info box
-  const box = document.getElementById('result-box');
-  const title = document.getElementById('result-title');
-  const body = document.getElementById('result-body');
-  box.classList.remove('error-box');
-  box.classList.add('show');
-  title.textContent = '✅ 即將前往官方頁面';
-  body.innerHTML = `
-    <p style="font-size:13px; margin-bottom:8px;">
-      請在官方頁面確認資料無誤後，輸入驗證碼並按下送出。
-    </p>
-    <a href="${url}" target="_blank" rel="noopener"
-       style="display:inline-block; background:#1a5c3a; color:white; padding:10px 20px;
-              border-radius:6px; text-decoration:none; font-weight:bold; font-size:14px;">
-      🔗 開啟官方台南市民信箱
-    </a>
-    <p style="font-size:11px; color:#888; margin-top:8px;">若連結沒有自動帶入資料，請手動複製貼上各欄位內容</p>
-  `;
+  const mainItemVal = get('f-main-item');
+  const subItemVal  = get('f-sub-item');
+  const lat  = get('f-lat');
+  const lng  = get('f-lng');
 
-  window.open(url, '_blank', 'noopener');
+  const captchaInput = get('f-captcha');
+  if (!captchaInput) {
+    alert('請輸入驗證碼');
+    document.getElementById('f-captcha').focus();
+    return;
+  }
+
+  if (!captchaData || !caseToken) {
+    alert('驗證碼尚未載入，請稍候再試');
+    return;
+  }
+
+  // Build POST body exactly as the official Angular app does
+  let body = 'Case_Token=' + caseToken;
+  body += '&Atth_FileNames=';
+  body += '&Subj_Content=' + encodeURIComponent(get('f-content').replace(/&/g, '＆'));
+  body += '&Subj_District=' + encodeURIComponent(get('f-loc-district'));
+  body += '&Subj_FileCount=0';
+  body += '&Subj_Item=' + encodeURIComponent(mainItemVal);
+  body += '&Subj_Security=2';
+  body += '&Subj_Subitem=' + encodeURIComponent(subItemVal);
+  body += '&Sugg_Addr1=' + encodeURIComponent(get('f-county'));
+  body += '&Sugg_Addr2=' + encodeURIComponent(get('f-district'));
+  body += '&Sugg_Addr3=';
+  body += '&Sugg_Addr4=' + encodeURIComponent(get('f-address'));
+  body += '&Sugg_Email=' + encodeURIComponent(get('f-email'));
+  body += '&Sugg_Name=' + encodeURIComponent(get('f-name'));
+  body += '&Sugg_Sex=' + encodeURIComponent(get('f-sex'));
+  body += '&Sugg_Telno=' + encodeURIComponent(get('f-telno'));
+  body += '&Input_ValidationCode=' + encodeURIComponent(captchaInput);
+  body += '&Hash_Code=' + encodeURIComponent(captchaData.HashCode);
+  body += '&Time_Stamp=' + encodeURIComponent(captchaData.TimeStamp);
+  body += '&Subj_Latitude=' + encodeURIComponent(lat);
+  body += '&Subj_Longitude=' + encodeURIComponent(lng);
+  body += '&Subj_Location=' + encodeURIComponent(get('f-loc-address'));
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '送出中…';
+
+  try {
+    const res = await fetch(API + '/Case/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    const resultBox   = document.getElementById('result-box');
+    const resultTitle = document.getElementById('result-title');
+    const resultBody  = document.getElementById('result-body');
+    resultBox.classList.add('show');
+
+    const text = await res.text();
+    if (res.ok && text.includes('登錄個案上傳成功')) {
+      resultBox.classList.remove('error-box');
+      resultTitle.textContent = '✅ 案件送出成功！';
+      resultBody.innerHTML = `
+        <p style="font-size:13px;">系統已收到您的反映事項，請至您的電子郵件信箱點選確認信函中的確認網址，案件即正式進入處理程序。</p>
+      `;
+      // Clear draft after successful submission
+      localStorage.removeItem(KEY_DRAFT);
+    } else {
+      resultBox.classList.add('error-box');
+      resultTitle.textContent = '❌ 送出失敗';
+      resultBody.innerHTML = `<p style="font-size:13px;">${text || '請檢查資料後重試，或至官方網站送出。'}</p>`;
+      // Refresh captcha for retry
+      loadCaptcha();
+    }
+  } catch (err) {
+    const resultBox   = document.getElementById('result-box');
+    const resultTitle = document.getElementById('result-title');
+    const resultBody  = document.getElementById('result-body');
+    resultBox.classList.add('show', 'error-box');
+    resultTitle.textContent = '❌ 網路錯誤';
+    resultBody.innerHTML = `<p style="font-size:13px;">無法連線至官方伺服器，請稍後再試。</p>`;
+    loadCaptcha();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 送出';
+  }
 }
 
 // ── Tab switching ──────────────────────────────────────────────
@@ -545,11 +593,13 @@ function updateContentCount() {
 
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  caseToken = randomToken(12);
   initMap();
   populateCounty('f-county', 'f-district');
   populateCounty('f-loc-county', 'f-loc-district');
   populateMainItems();
   restoreDraft();
+  loadCaptcha();
 
   // Auto-save on input
   ALL_FIELDS.forEach(f => {
