@@ -1330,6 +1330,103 @@ function deleteCaseFromDetail(id) {
   closeCaseDetail();
 }
 
+// ── Import case modal ──────────────────────────────────────────
+function openImportModal() {
+  document.getElementById('import-json').value = '';
+  document.getElementById('import-error').style.display = 'none';
+  document.getElementById('modal-import').style.display = 'flex';
+}
+
+function closeImportModal() {
+  document.getElementById('modal-import').style.display = 'none';
+}
+
+function importCase() {
+  const errEl = document.getElementById('import-error');
+  errEl.style.display = 'none';
+
+  let data;
+  try {
+    data = JSON.parse(document.getElementById('import-json').value.trim());
+  } catch {
+    errEl.textContent = 'JSON 格式錯誤，請確認貼上的內容是否完整。';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const info = data?.Content?.[0];
+  if (!info) {
+    errEl.textContent = '找不到 Content 欄位，請確認 JSON 格式是否正確。';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Build case code e.g. "B-358820"
+  const caseCode = info.case_no1 && info.case_no4
+    ? `${info.case_no1}-${info.case_no4}` : '';
+
+  // Deduplicate: if a case with the same caseCode already exists, update it
+  const existing = caseCode ? cases.find(c => c.caseCode === caseCode) : null;
+
+  // Derive status from last ProcessStatus entry
+  let status = 'processing';
+  const processes = data.ProcessStatus || [];
+  const lastProc = processes[processes.length - 1];
+  if (lastProc) {
+    const desc = lastProc.CtrlId_Desc || '';
+    if (desc.includes('完成') || desc.includes('結案'))          status = 'done';
+    else if (desc.includes('不受理') || desc.includes('未受理')) status = 'rejected';
+  }
+
+  // Format subj_date "20260413" → ISO
+  let submittedAt = null;
+  if (info.subj_date && info.subj_date.length === 8) {
+    const d = info.subj_date;
+    const t = info.subj_time || '000000';
+    submittedAt = new Date(
+      `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}T${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}`
+    ).toISOString();
+  }
+
+  if (existing) {
+    // Update remote data and status; preserve local edits
+    existing.remoteData    = data;
+    existing.remoteQueried = new Date().toISOString();
+    existing.status        = status;
+    saveCases();
+    closeImportModal();
+    renderDashboard();
+    openCaseDetail(existing.id);
+    return;
+  }
+
+  const newCase = {
+    id:           randomToken(12),
+    title:        info.subject ? info.subject.slice(0, 40) + (info.subject.length > 40 ? '…' : '') : caseCode,
+    content:      info.subject || '',
+    caseCode,
+    status,
+    email:        info.e_mail || '',
+    mainItemName: lastProc?.item_name    || '',
+    subItemName:  lastProc?.sub_itemname || '',
+    locAddress:   info.subj_place || '',
+    locDistrict:  '',
+    locCounty:    '',
+    lat:          info.subj_latitude  ? parseFloat(info.subj_latitude)  : null,
+    lng:          info.subj_longitude ? parseFloat(info.subj_longitude) : null,
+    notes:        '',
+    submittedAt,
+    remoteData:    data,
+    remoteQueried: new Date().toISOString(),
+  };
+
+  cases.unshift(newCase);
+  saveCases();
+  closeImportModal();
+  renderDashboard();
+  openCaseDetail(newCase.id);
+}
+
 // ── Content char count ─────────────────────────────────────────
 function updateContentCount() {
   const len = document.getElementById('f-content').value.length;
