@@ -1308,15 +1308,18 @@ function renderCaseDetail(c) {
 
   document.getElementById('detail-container').innerHTML = html;
 
-  // Init detail map after DOM is ready
+  // Init detail map after DOM is ready; use setTimeout so the tab is visible
+  // before Leaflet measures the container — otherwise setView is offset
   if (c.lat && c.lng) {
     const lat = parseFloat(c.lat), lng = parseFloat(c.lng);
-    const detailMap = L.map('detail-map').setView([lat, lng], 17);
-    L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
-      maxZoom: 19,
-      attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
-    }).addTo(detailMap);
-    L.marker([lat, lng]).addTo(detailMap);
+    setTimeout(() => {
+      const detailMap = L.map('detail-map').setView([lat, lng], 17);
+      L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+      }).addTo(detailMap);
+      L.marker([lat, lng]).addTo(detailMap);
+    }, 0);
   }
 }
 
