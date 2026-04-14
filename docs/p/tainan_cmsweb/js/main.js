@@ -1256,11 +1256,14 @@ function renderCaseDetail(c) {
 
   // ── Location ──
   const locParts = [c.locAddress, c.locDistrict, c.locCounty].filter(Boolean);
-  if (locParts.length || c.lat || c.lng) {
+  const hasCoords = c.lat && c.lng;
+  if (locParts.length || hasCoords) {
     html += `<div class="card">
       <div class="card-title">📍 事件位置</div>
       ${locParts.length ? `<div style="font-size:13px;color:#333;margin-bottom:8px;">${esc(locParts.join(' '))}</div>` : ''}
-      ${(c.lat && c.lng) ? `<div style="font-size:12px;color:#888;">緯度 ${esc(String(c.lat))}　經度 ${esc(String(c.lng))}</div>` : ''}
+      ${hasCoords ? `
+        <div id="detail-map" style="height:280px;border-radius:6px;margin-top:8px;"></div>
+        <div style="font-size:12px;color:#888;margin-top:6px;">緯度 ${esc(String(c.lat))}　經度 ${esc(String(c.lng))}</div>` : ''}
     </div>`;
   }
 
@@ -1304,6 +1307,17 @@ function renderCaseDetail(c) {
   }
 
   document.getElementById('detail-container').innerHTML = html;
+
+  // Init detail map after DOM is ready
+  if (c.lat && c.lng) {
+    const lat = parseFloat(c.lat), lng = parseFloat(c.lng);
+    const detailMap = L.map('detail-map').setView([lat, lng], 17);
+    L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+    }).addTo(detailMap);
+    L.marker([lat, lng]).addTo(detailMap);
+  }
 }
 
 function deleteCaseFromDetail(id) {
