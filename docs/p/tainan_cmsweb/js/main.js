@@ -1075,10 +1075,11 @@ async function fetchCaseStatus() {
   document.getElementById('query-result').innerHTML = '';
 
   try {
+    const p3 = queryCaptchaData.TimeStamp + captchaInput + encodeURIComponent(queryCaptchaData.HashCode);
     const url = `${API}/case/${encodeURIComponent(cLetter)}` +
       `?p1=${encodeURIComponent(cNum)}` +
       `&p2=${encodeURIComponent(email)}` +
-      `&p3=${encodeURIComponent(queryCaptchaData.HashCode)}`;
+      `&p3=${p3}`;
     const res  = await fetch(url);
     const data = await res.json();
     renderQueryResult(data, c);
