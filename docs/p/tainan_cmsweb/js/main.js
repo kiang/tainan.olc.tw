@@ -1022,9 +1022,14 @@ function openQueryModal(id) {
   document.getElementById('query-case-id').value = id;
   document.getElementById('query-case-label').textContent =
     `受理編號：${c.caseCode}　電子信箱：${c.email || '（未記錄）'}`;
-  document.getElementById('query-result').innerHTML = '';
   document.getElementById('query-captcha-input').value = '';
   document.getElementById('modal-query').style.display = 'flex';
+  // Show cached result if available
+  if (c.remoteData && c.remoteQueried) {
+    renderQueryResult(c.remoteData, c, /*fromCache=*/true);
+  } else {
+    document.getElementById('query-result').innerHTML = '';
+  }
   loadQueryCaptcha();
 }
 
@@ -1082,6 +1087,10 @@ async function fetchCaseStatus() {
       `&p3=${p3}`;
     const res  = await fetch(url);
     const data = await res.json();
+    // Persist full response and query time into the case record
+    c.remoteData    = data;
+    c.remoteQueried = new Date().toISOString();
+    saveCases();
     renderQueryResult(data, c);
   } catch (err) {
     document.getElementById('query-result').innerHTML =
@@ -1093,7 +1102,7 @@ async function fetchCaseStatus() {
   }
 }
 
-function renderQueryResult(data, c) {
+function renderQueryResult(data, c, fromCache = false) {
   const resultEl = document.getElementById('query-result');
   if (!data || (!data.Content?.length && !data.ProcessStatus?.length)) {
     resultEl.innerHTML = `<div class="tip-box warning">查無資料，請確認受理編號與電子信箱是否正確，或驗證碼有誤。</div>`;
@@ -1119,6 +1128,13 @@ function renderQueryResult(data, c) {
   }
 
   let html = '<div style="border-top:1px solid #eee; padding-top:16px;">';
+
+  // Last queried timestamp
+  if (c.remoteQueried) {
+    const qt = new Date(c.remoteQueried).toLocaleString('zh-TW');
+    const label = fromCache ? `快取資料（上次查詢：${qt}）` : `查詢時間：${qt}`;
+    html += `<div style="font-size:11px;color:#888;margin-bottom:10px;">🕐 ${label}</div>`;
+  }
 
   // Basic info
   if (info.subject) {
