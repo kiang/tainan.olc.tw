@@ -50,6 +50,15 @@
         }
         .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.2); }
 
+        /* Filter buttons on white background */
+        .filter-btn {
+            padding: 6px 14px; border: 1px solid #c0c8cc; border-radius: 20px;
+            background: #f0f2f5; color: #444; cursor: pointer; font-size: 13px;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .filter-btn:hover { background: #e2e6ea; border-color: #adb5bd; }
+        .filter-btn.active { background: #1a5c3a; color: #fff; border-color: #1a5c3a; }
+
         .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
 
         /* ── Tabs ── */
@@ -440,11 +449,11 @@
 
         <!-- Filters -->
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
-            <button class="nav-btn active" id="filter-all" onclick="filterCases('all')">全部</button>
-            <button class="nav-btn" id="filter-pending" onclick="filterCases('pending')">待確認</button>
-            <button class="nav-btn" id="filter-processing" onclick="filterCases('processing')">處理中</button>
-            <button class="nav-btn" id="filter-done" onclick="filterCases('done')">已完成</button>
-            <button class="nav-btn" id="filter-rejected" onclick="filterCases('rejected')">未受理</button>
+            <button class="filter-btn active" id="filter-all" onclick="filterCases('all')">全部</button>
+            <button class="filter-btn" id="filter-pending" onclick="filterCases('pending')">待確認</button>
+            <button class="filter-btn" id="filter-processing" onclick="filterCases('processing')">處理中</button>
+            <button class="filter-btn" id="filter-done" onclick="filterCases('done')">已完成</button>
+            <button class="filter-btn" id="filter-rejected" onclick="filterCases('rejected')">未受理</button>
         </div>
 
         <div id="case-list-container"></div>
