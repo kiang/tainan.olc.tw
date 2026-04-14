@@ -936,9 +936,9 @@ function renderDashboard() {
       const sc = STATUS_CLASS[c.status] || 'status-pending';
       const sl = STATUS_LABEL[c.status] || c.status;
       return `
-      <div class="card" style="border-left:4px solid; padding:16px 20px;"
+      <div class="card" style="border-left:4px solid; padding:16px 20px; cursor:pointer;"
            id="case-${c.id}"
-           style="border-left-color: ${c.status==='done'?'#27ae60':c.status==='processing'?'#3498db':c.status==='rejected'?'#e74c3c':'#f39c12'}">
+           onclick="openCaseDetail('${c.id}')">
         <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:8px;">
           <div style="flex:1; font-size:15px; font-weight:bold; color:#1a5c3a;">${esc(c.title)}</div>
           <span class="status-badge ${sc}">${sl}</span>
@@ -949,11 +949,9 @@ function renderDashboard() {
           ${c.caseCode ? `<span>🔢 <strong>${esc(c.caseCode)}</strong></span>` : '<span style="color:#e74c3c;">⚠️ 尚無受理編號</span>'}
         </div>
         ${c.content ? `
-        <div id="content-${c.id}" style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>
-        <button class="btn-sm" id="expand-${c.id}" onclick="toggleExpand('${c.id}')"
-                style="background:none;border:none;color:#1a5c3a;cursor:pointer;font-size:12px;padding:2px 0;margin-top:2px;">▼ 展開</button>` : ''}
+        <div style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>` : ''}
         ${c.notes ? `<div style="font-size:12px;color:#555;margin-top:8px;padding:8px;background:#f8f9fa;border-radius:4px;">💬 ${esc(c.notes)}</div>` : ''}
-        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;" onclick="event.stopPropagation()">
           <button class="btn-secondary btn-sm" onclick="editCase('${c.id}')">✏️ 編輯</button>
           ${c.caseCode ? `<button class="btn-secondary btn-sm" onclick="openQueryModal('${c.id}')">🔍 查詢進度</button>` : ''}
           <button class="btn-danger btn-sm" onclick="deleteCase('${c.id}')">🗑️</button>
@@ -1177,8 +1175,10 @@ function renderQueryResult(data, c, fromCache = false) {
   html += '</div>';
   resultEl.innerHTML = html;
 
-  // Refresh dashboard card status badge without closing modal
+  // Refresh dashboard and detail view if open
   renderDashboard();
+  const detailEl = document.getElementById('tab-detail');
+  if (detailEl && detailEl.classList.contains('active')) renderCaseDetail(c);
 }
 
 // ── Tab switching ──────────────────────────────────────────────
@@ -1186,7 +1186,9 @@ function switchTab(name) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  document.getElementById('tab-' + name + '-btn').classList.add('active');
+  // detail tab has no page-tab button
+  const tabBtn = document.getElementById('tab-' + name + '-btn');
+  if (tabBtn) tabBtn.classList.add('active');
 
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   if (name === 'form')      document.getElementById('btn-goto-form').classList.add('active');
@@ -1195,6 +1197,120 @@ function switchTab(name) {
 
   if (name === 'form') setTimeout(() => map && map.invalidateSize(), 100);
   if (name === 'dashboard') renderDashboard();
+}
+
+// ── Case detail view ───────────────────────────────────────────
+function openCaseDetail(id) {
+  const c = cases.find(c => c.id === id);
+  if (!c) return;
+  location.hash = id;
+  renderCaseDetail(c);
+  switchTab('detail');
+}
+
+function closeCaseDetail() {
+  history.pushState('', document.title, location.pathname + location.search);
+  switchTab('dashboard');
+}
+
+function renderCaseDetail(c) {
+  document.getElementById('detail-title').textContent = c.title || c.caseCode || '案件詳情';
+
+  const sc  = STATUS_CLASS[c.status] || 'status-pending';
+  const sl  = STATUS_LABEL[c.status] || c.status;
+  const date = c.submittedAt
+    ? new Date(c.submittedAt).toLocaleString('zh-TW') : '—';
+
+  // ── Submission info ──
+  let html = `<div class="card">
+    <div class="card-title">📋 基本資訊</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">`;
+
+  const row = (label, val) => val
+    ? `<tr><td style="padding:6px 8px;color:#888;white-space:nowrap;width:120px;">${label}</td>
+           <td style="padding:6px 8px;color:#333;">${val}</td></tr>`
+    : '';
+
+  html += row('受理編號', c.caseCode ? `<strong>${esc(c.caseCode)}</strong>` : '<span style="color:#e74c3c;">尚未取得</span>');
+  html += row('狀態', `<span class="status-badge ${sc}">${sl}</span>`);
+  html += row('送出時間', esc(date));
+  html += row('主項目', esc(c.mainItemName || ''));
+  html += row('子項目', esc(c.subItemName || ''));
+  html += row('電子信箱', esc(c.email || ''));
+  html += row('備註', c.notes ? esc(c.notes) : '');
+  html += `</table>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+      <button class="btn-secondary btn-sm" onclick="editCase('${c.id}')">✏️ 編輯</button>
+      ${c.caseCode ? `<button class="btn-secondary btn-sm" onclick="openQueryModal('${c.id}')">🔍 查詢進度</button>` : ''}
+      <button class="btn-danger btn-sm" onclick="deleteCaseFromDetail('${c.id}')">🗑️ 刪除</button>
+    </div>
+  </div>`;
+
+  // ── Content ──
+  if (c.content) {
+    html += `<div class="card">
+      <div class="card-title">📄 反映事項</div>
+      <div style="font-size:14px;color:#333;line-height:1.8;white-space:pre-wrap;">${esc(c.content)}</div>
+    </div>`;
+  }
+
+  // ── Location ──
+  const locParts = [c.locAddress, c.locDistrict, c.locCounty].filter(Boolean);
+  if (locParts.length || c.lat || c.lng) {
+    html += `<div class="card">
+      <div class="card-title">📍 事件位置</div>
+      ${locParts.length ? `<div style="font-size:13px;color:#333;margin-bottom:8px;">${esc(locParts.join(' '))}</div>` : ''}
+      ${(c.lat && c.lng) ? `<div style="font-size:12px;color:#888;">緯度 ${esc(String(c.lat))}　經度 ${esc(String(c.lng))}</div>` : ''}
+    </div>`;
+  }
+
+  // ── Remote query result ──
+  if (c.remoteData) {
+    const qt = c.remoteQueried ? new Date(c.remoteQueried).toLocaleString('zh-TW') : '';
+    const info = c.remoteData.Content?.[0] || {};
+    const processes = c.remoteData.ProcessStatus || [];
+
+    html += `<div class="card">
+      <div class="card-title">🏛️ 官方處理進度
+        ${qt ? `<span style="font-size:11px;font-weight:normal;color:#888;margin-left:8px;">🕐 ${qt}</span>` : ''}
+      </div>`;
+
+    if (info.subj_place) {
+      html += `<div style="font-size:12px;color:#666;margin-bottom:12px;">📍 ${esc(info.subj_place)}</div>`;
+    }
+
+    if (processes.length) {
+      html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+      processes.forEach((p, i) => {
+        const isLast = i === processes.length - 1;
+        const dateStr   = p.AssignDate  ? p.AssignDate.replace(/(\d{4})(\d{2})(\d{2})/, '$1/$2/$3') : '';
+        const finishStr = p.FinishDate  ? p.FinishDate.replace(/(\d{4})(\d{2})(\d{2})/, '$1/$2/$3') : '';
+        html += `<div style="padding:12px 16px;border-radius:6px;border-left:4px solid ${isLast ? '#1a5c3a' : '#d0d7de'};background:${isLast ? '#f0fff6' : '#f8f9fa'};">
+          <div style="font-size:11px;color:#888;margin-bottom:4px;">
+            ${dateStr ? `📅 ${dateStr}` : ''}${finishStr ? ` → ${finishStr}` : ''}
+          </div>
+          <div style="font-size:14px;font-weight:bold;color:${isLast ? '#1a5c3a' : '#333'};margin-bottom:6px;">${esc(p.CtrlId_Desc || '')}</div>
+          ${p.organ_name ? `<div style="font-size:12px;color:#555;margin-bottom:2px;">🏢 ${esc(p.organ_name)}${p.dept_name ? ' / ' + esc(p.dept_name) : ''}</div>` : ''}
+          ${p.item_name  ? `<div style="font-size:12px;color:#555;margin-bottom:2px;">🏷️ ${esc(p.item_name)}${p.sub_itemname ? ' › ' + esc(p.sub_itemname) : ''}</div>` : ''}
+          ${p.undertaker ? `<div style="font-size:12px;color:#555;margin-bottom:2px;">👤 承辦人：${esc(p.undertaker)}</div>` : ''}
+          ${p.Reply && p.Reply !== p.CtrlId_Desc ? `<div style="font-size:13px;color:#333;margin-top:8px;line-height:1.6;white-space:pre-wrap;">${esc(p.Reply)}</div>` : ''}
+        </div>`;
+      });
+      html += '</div>';
+    } else {
+      html += `<div style="font-size:13px;color:#888;">尚無處理紀錄</div>`;
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('detail-container').innerHTML = html;
+}
+
+function deleteCaseFromDetail(id) {
+  if (!confirm('確定刪除此案件紀錄？')) return;
+  cases = cases.filter(c => c.id !== id);
+  saveCases();
+  closeCaseDetail();
 }
 
 // ── Content char count ─────────────────────────────────────────
@@ -1243,4 +1359,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('f-content').addEventListener('input', updateContentCount);
 
   document.getElementById('cms-form').addEventListener('submit', handleSubmit);
+
+  // Hash-based navigation: #<caseId> opens case detail directly
+  function handleHash() {
+    const id = location.hash.slice(1);
+    if (id) {
+      const c = cases.find(c => c.id === id);
+      if (c) { renderCaseDetail(c); switchTab('detail'); return; }
+    }
+    // No valid hash — stay on default tab (form)
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
 });
