@@ -431,10 +431,6 @@
 
         </form>
 
-        <div class="text-muted" style="text-align:center; margin-top:8px;">
-            官方平台：<a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener">cmsweb.tainan.gov.tw/RWD/</a>
-            　由 <a href="https://tainan.olc.tw/" target="_blank">江明宗</a> 製作
-        </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -474,26 +470,68 @@
          TAB: 使用說明
     ═══════════════════════════════════════════ -->
     <div class="tab-pane" id="tab-guide">
+
         <div class="card">
             <div class="card-title">🔍 關於本工具</div>
-            <p style="font-size:14px; margin-bottom:16px;">
-                本工具提供比 <a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener">cmsweb.tainan.gov.tw</a> 更友善的操作體驗：
+            <p style="font-size:14px; margin-bottom:16px; line-height:1.8;">
+                本工具提供比 <a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener">cmsweb.tainan.gov.tw</a> 更友善的操作體驗，
+                所有個人資料與案件紀錄均儲存於您的瀏覽器本機，本工具不會上傳任何資料至第三方伺服器。
             </p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📝 填報功能</div>
             <div class="guide-step">
                 <div class="step-num">1</div>
-                <div class="step-body"><strong>自動儲存</strong>：填寫中的所有欄位自動儲存至瀏覽器，下次開啟直接帶入，不怕填到一半跳頁遺失。</div>
+                <div class="step-body"><strong>自動儲存草稿</strong>：填寫中的所有欄位自動存入瀏覽器，關閉後下次開啟自動帶入，不怕填到一半遺失。可點「儲存草稿」手動存檔，或「新增草稿」清空重填。</div>
             </div>
             <div class="guide-step">
                 <div class="step-num">2</div>
-                <div class="step-body"><strong>地圖定位</strong>：直接在地圖上點選事件地點，自動填入經緯度，不必手動查找座標。</div>
+                <div class="step-body"><strong>地圖定位</strong>：直接在地圖上點選事件地點，自動填入經緯度；也可點「定位到我的位置」取得目前所在座標。</div>
             </div>
             <div class="guide-step">
                 <div class="step-num">3</div>
-                <div class="step-body"><strong>串接送出</strong>：按下「前往官方頁面送出」後，資料會帶入官方表單，再次確認後完成送出，確保資料走官方管道。</div>
+                <div class="step-body"><strong>送出案件</strong>：按下「送出」後，系統將資料直接 POST 至官方 API。送出成功後會取得受理編號，自動儲存至「我的案件」。</div>
             </div>
             <div class="guide-step">
                 <div class="step-num">4</div>
-                <div class="step-body"><strong>確認信件</strong>：官方系統送出後會寄發確認信至您的電子信箱，請於 7 日內點選確認連結，案件才正式受理。</div>
+                <div class="step-body"><strong>確認信件</strong>：官方系統受理後會寄發確認信至您的電子信箱，請於 7 日內點選確認連結，案件才正式受理。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📋 我的案件</div>
+            <div class="guide-step">
+                <div class="step-num">1</div>
+                <div class="step-body"><strong>案件清單</strong>：所有已送出的案件依狀態分類顯示（待確認／處理中／已完成／未受理）。點擊任一案件卡片可進入詳細頁面。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">2</div>
+                <div class="step-body"><strong>草稿顯示</strong>：若有未送出的草稿，會顯示在清單最上方，可選擇「繼續填寫」或「清除草稿」。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">3</div>
+                <div class="step-body"><strong>查詢官方進度</strong>：對有受理編號的案件點「查詢進度」，輸入驗證碼即可從官方 API 取得最新 ProcessStatus，結果會自動儲存供日後檢視。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">4</div>
+                <div class="step-body"><strong>匯入既有案件</strong>：點「匯入案件」，貼上官方查詢 API 回傳的 JSON，即可將案件加入追蹤清單，無需重新填寫。若受理編號已存在則自動更新資料。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🗂️ 案件詳情</div>
+            <div class="guide-step">
+                <div class="step-num">1</div>
+                <div class="step-body"><strong>完整資訊</strong>：顯示案件基本資料、完整反映內容、事件位置，以及官方每個處理階段的承辦人、機關、回覆內容。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">2</div>
+                <div class="step-body"><strong>地圖顯示</strong>：若案件有經緯度，詳情頁會自動顯示國土測繪地圖並標記事件位置。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">3</div>
+                <div class="step-body"><strong>網址分享</strong>：每個案件詳情頁有獨立網址（以 # 案件編號為 hash），可直接分享或書籤，開啟後直接進入該案件頁面。</div>
             </div>
         </div>
 
@@ -506,8 +544,15 @@
                 <li>所有個人資料僅儲存於您的瀏覽器本機，本工具不會上傳任何資料至第三方伺服器</li>
             </ul>
         </div>
+
     </div>
 
+</div>
+
+<!-- ── Site footer ── -->
+<div style="text-align:center; padding:16px; font-size:13px; color:#888; border-top:1px solid #e0e4e8; margin-top:8px;">
+    官方平台：<a href="https://cmsweb.tainan.gov.tw/RWD/" target="_blank" rel="noopener" style="color:#1a5c3a;">cmsweb.tainan.gov.tw/RWD/</a>
+    　由 <a href="https://www.facebook.com/k.olc.tw/" target="_blank" rel="noopener" style="color:#1a5c3a;">江明宗</a> 製作
 </div>
 
 <!-- ── Edit Case Modal ── -->
