@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>印度東北七邦勞動力概況</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<div class="hero">
+  <h1>印度東北七邦勞動力概況</h1>
+  <p>針對台灣海外勞動力引進的印度東北地區七邦深度調研報告</p>
+  <span class="subtitle">India-Taiwan MOU 2024</span>
+</div>
+
+<nav class="nav" id="nav">
+  <a href="#map-section">地圖</a>
+  <a href="#arunachal">阿魯納恰爾邦</a>
+  <a href="#assam">阿薩姆邦</a>
+  <a href="#nagaland">那加蘭邦</a>
+  <a href="#meghalaya" class="recommended">梅加拉亞邦</a>
+  <a href="#manipur">曼尼普爾邦</a>
+  <a href="#tripura" class="recommended">特里普拉邦</a>
+  <a href="#mizoram" class="recommended">米佐拉姆邦</a>
+  <a href="#salary">薪資比較</a>
+  <a href="#conclusion">結論</a>
+</nav>
+
+<section id="map-section">
+<div id="map-container">
+  <h2>互動地圖 Interactive Map</h2>
+  <div id="map"></div>
+</div>
+</section>
+
+<div class="container">
+
+<!-- ==================== 1. Arunachal Pradesh ==================== -->
+<section id="arunachal">
+<div class="state-card not-recommended">
+  <div class="state-header">
+    <h3>1. 阿魯納恰爾邦 Arunachal Pradesh</h3>
+    <span class="state-badge">日出之邦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置和邊界</h4>
+      <p>阿魯納恰爾邦位於印度東北部，有「日出之邦」的美譽。其邊界為：北鄰中國/西藏，西接不丹，東臨緬甸，南連阿薩姆邦和那加蘭邦。面積：83,743平方公里，是印度東北部面積最大的邦。</p>
+      <p>戰略地位：與中國接壤約1,080公里，與緬甸接壤約440公里，與不丹接壤約160公里。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">面積</div><div class="value">83,743 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 1,383,727</div></div>
+      </div>
+
+      <h4>人口與遷移基礎</h4>
+      <p>由於人口少、地處偏遠，阿魯納恰爾邦本身向海外輸送的工人較少。但東北地區的勞動力流向趨勢如下：</p>
+      <ul>
+        <li><strong>技術/半技術工人：</strong>護士、飯店服務人員、IT畢業生、教師、建築工人、司機、家政工人——他們大多透過古瓦哈提/加爾各答/德里的仲介機構前往波斯灣地區。</li>
+        <li><strong>新興市場：</strong>日本和德國現在也開始引進印度技術工人。透過政府的勞動力流動協議，東北地區的青年正被引導至護理、照護和工廠等工作。</li>
+      </ul>
+
+      <h4>外來移民</h4>
+      <p>阿魯納恰爾邦實際上是勞動力的接收地，引入茶園、基礎設施和邊境道路工人。來自孟加拉的查克瑪族/哈瓊族難民定居在南賽、帕普姆帕雷和昌朗。2011年，該邦的查克瑪族總人口為47,471人（資料來源：arunachal.pscnotes.com）。</p>
+      <p>出國就業規定：與印度其他地區相同。</p>
+
+      <h4>語言</h4>
+      <p>阿魯納恰爾邦部落主要使用藏緬語族塔尼語。英語、印地語和阿薩姆語也廣泛通用。</p>
+      <p><span class="tag">藏緬語族塔尼語</span><span class="tag">英語</span><span class="tag">印地語</span><span class="tag">阿薩姆語</span></p>
+
+      <h4>外出移工</h4>
+      <div class="detail-block">
+        <p><strong>青年出國意願：</strong></p>
+        <p>目前出國人數較少：與泰米爾納德邦/喀拉拉邦不同，阿魯納恰爾邦目前尚無大規模海外勞務輸出的傳統。</p>
+        <p><strong>機會正在增加：</strong>政府技能培訓、國家公民服務入口網站（NCS）以及面向東北地區青年的「數位技能培訓計劃」（DigiSaksham）正在推動就業。</p>
+        <p><strong>最穩健的途徑：</strong></p>
+        <ul>
+          <li>取得技能證書－例如照護、飯店管理、電工等</li>
+          <li>使用電子移民平台（e-Migrate）和各邦技能訓練機構</li>
+          <li>避免使用未註冊的仲介機構</li>
+        </ul>
+        <p><strong>邦內需求：</strong>中央政府在當地承建眾多項目－例如邊境公路、水力發電工程和旅遊業。因此，許多人選擇留在阿魯納恰爾邦或移居古瓦哈提/德里，而非出國。</p>
+      </div>
+
+      <h4>道德文化</h4>
+      <ul>
+        <li><strong>集體利益至上：</strong>個人需求應置於氏族/村莊需求之後。參與房屋建造、農耕、節慶等活動是義不容辭的責任。</li>
+        <li><strong>尊重長者和自然：</strong>在村委會中，長者的話就是法律。森林、河流和動物都是神聖的－狩獵/捕魚只能依照部落規則進行。</li>
+        <li><strong>誠實與口耳相傳：</strong>在尼西族、阿迪族和阿帕塔尼族社會，口頭承諾即為契約。違背契約會帶來社會恥辱。</li>
+        <li><strong>待客之道：</strong>客人即上帝。即使是陌生人也能獲得食物和住所。在許多部落中被稱為「Aatom」。</li>
+        <li><strong>部落內部奉行非暴力原則：</strong>糾紛由村委會調解，而非報警處理。罰則以實物形式執行——例如賠償野牛、獻祭豬隻或釀造米酒。</li>
+      </ul>
+
+      <div class="taiwan-box">
+        <h4>赴台就業可行性</h4>
+        <p>台灣已於2024年2月與印度簽署勞務合作備忘錄（MOU），開放引進印度技術工人。</p>
+        <p>當地雖有就業機會，但若薪資條件優渥，青年仍願意赴台工作。台灣薪資約新台幣 33,000–40,000 元/月（約 ₹85,000–105,000）。</p>
+        <p><strong>東北地區的首批學員預計於2026年開始培訓。</strong></p>
+      </div>
+
+    </div>
+    <div class="state-map" data-state="Arunachal Pradesh"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 2. Assam ==================== -->
+<section id="assam">
+<div class="state-card not-recommended">
+  <div class="state-header">
+    <h3>2. 阿薩姆邦 Assam</h3>
+    <span class="state-badge">犀牛與茶葉之邦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>阿薩姆邦位於印度東北部，東喜馬拉雅山脈以南，與不丹和孟加拉國接壤。首府是迪斯普爾（位於古瓦哈提都會區）。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">面積</div><div class="value">78,438 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">2011年約3,120萬，預計2025年約3,600萬</div></div>
+        <div class="info-item"><div class="label">行政區劃</div><div class="value">35個縣</div></div>
+        <div class="info-item"><div class="label">區域劃分</div><div class="value">5個：上阿薩姆、北阿薩姆、中阿薩姆、下阿薩姆、巴拉克河谷及山區</div></div>
+      </div>
+      <p>阿薩姆邦為單一邦，下轄35個縣（截至2025年）。</p>
+
+      <h4>特色</h4>
+      <p>以卡乍蘭加國家公園的獨角犀牛、布拉馬普特拉河、絲綢、石油和天然氣聞名。</p>
+
+      <h4>經濟</h4>
+      <p>經濟組成：農業佔20%，工業佔39%，服務業佔41%。2024-2025財年邦內生產毛額：約6.38兆盧比，約760億美元。</p>
+
+      <h4>語言</h4>
+      <p>官方語言為阿薩姆語，其他通用語言：</p>
+      <p><span class="tag">阿薩姆語（官方）</span><span class="tag">孟加拉語</span><span class="tag">印地語</span><span class="tag">尼泊爾語</span><span class="tag">米辛語</span><span class="tag">卡爾比語</span><span class="tag">迪馬薩語</span></p>
+
+      <h4>技術工人市場優勢</h4>
+      <p>茶園工人、石油/煉油廠技術人員、絲織工、建築工人、飯店服務人員、護士、技工學校畢業生。</p>
+      <p><strong>政府重點：</strong>就業與技工培訓局運營技工學校，提供學徒制，為阿薩姆邦青年提供焊接、數控加工、護理和飯店服務等方面的培訓，以利海外就業。</p>
+
+      <div class="taiwan-box">
+        <h4>赴台就業可行性</h4>
+        <p>依據2024年2月印台勞務合作備忘錄，阿薩姆邦公民符合赴台工作資格。台灣需要工廠工人、建築工人、農業工人及護理人員。</p>
+        <p><strong>準備情況：正在積極準備中，邦政府將提供協助。</strong></p>
+        <p><strong>CM-FLIGHT計畫：</strong>由首席部長薩爾瑪（Himanta Biswa Sarma）於2025年7月啟動，為青年提供外語培訓，協助取得海外工作機會。</p>
+        <p><strong>日本為首選目標：</strong>邦政府計劃透過特定技能簽證（SSW簽證）派遣5萬名阿薩姆邦青年赴日工作。</p>
+        <ul>
+          <li>福利包括：15萬盧比的培訓補貼 + 5萬盧比的就業後援助</li>
+          <li>訓練內容：日文JFT/JLPT N4至N2級，以及職場文化</li>
+          <li>合作夥伴：ASEAN-ONE、Jaceex Ventures、Meiko Career Partners</li>
+          <li>首期培訓學員180人</li>
+        </ul>
+        <p><strong>學院成立：</strong>阿薩姆邦-東協一號技能與語言學院（Assam-Asean One Skill & Language Institute）於2025年10月正式運作。</p>
+      </div>
+
+    </div>
+    <div class="state-map" data-state="Assam"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 3. Nagaland ==================== -->
+<section id="nagaland">
+<div class="state-card not-recommended">
+  <div class="state-header">
+    <h3>3. 那加蘭邦 Nagaland</h3>
+    <span class="state-badge">犀鳥節之邦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>位置：印度東北部。西鄰阿薩姆邦，北接阿魯納恰爾邦和阿薩姆邦，南鄰曼尼普爾邦，東鄰緬甸。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">首府</div><div class="value">科希馬</div></div>
+        <div class="info-item"><div class="label">最大城市</div><div class="value">迪馬普爾</div></div>
+        <div class="info-item"><div class="label">面積</div><div class="value">16,579 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 1,978,502</div></div>
+        <div class="info-item"><div class="label">行政區</div><div class="value">17 個縣</div></div>
+        <div class="info-item"><div class="label">區域</div><div class="value">無正式行政區劃，分為科希馬、莫科克昌、圖恩桑、蒙等地區</div></div>
+      </div>
+
+      <h4>特色</h4>
+      <p>犀鳥節、那加族、充滿活力的文化、丘陵、手工藝品。</p>
+
+      <h4>經濟</h4>
+      <p>以農業和服務業為主。2023-24財年邦內生產毛額：約3,990億盧比（約47億美元）。人均約18萬盧比。</p>
+
+      <h4>使用的語言</h4>
+      <p><span class="tag">Nagamese</span><span class="tag">阿薩姆語</span><span class="tag">印地語</span><span class="tag">孟加拉語</span></p>
+      <p>邦政府認定19種官方工作語言：Angami、Ao、Chang、Chakhesang、Konyak、Khiamniungan、Lotha、Phom、Pochury、Rengma、Sumi、Sangtam、Tikhir、Ylik、Kachari 等。</p>
+      <div class="challenge-box">
+        <h4>語言問題</h4>
+        <p>缺乏共通的部落語言，不利於海外就業的統一培訓與篩選。</p>
+      </div>
+
+    </div>
+    <div class="state-map" data-state="Nagaland"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 4. Meghalaya ==================== -->
+<section id="meghalaya">
+<div class="state-card recommended">
+  <div class="state-header">
+    <h3>4. 梅加拉亞邦 Meghalaya</h3>
+    <span class="state-badge">推薦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>位於印度東北部，有「雲之居所」的美稱。與阿薩姆邦和孟加拉國接壤。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">首府/最大城市</div><div class="value">西隆</div></div>
+        <div class="info-item"><div class="label">面積</div><div class="value">22,429 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 3,000,000</div></div>
+        <div class="info-item"><div class="label">行政區劃</div><div class="value">12個縣</div></div>
+        <div class="info-item"><div class="label">區域</div><div class="value">3個主要山區</div></div>
+      </div>
+
+      <h4>使用的語言</h4>
+      <p><strong>英語為官方語言。</strong>卡西語和加羅語為各地區的主要通用語言。</p>
+      <p><span class="tag">英語（官方）</span><span class="tag">卡西語</span><span class="tag">帕納爾語</span><span class="tag">賈因蒂亞語</span><span class="tag">印地語</span><span class="tag">孟加拉語</span><span class="tag">尼泊爾語</span></p>
+
+      <h4>技術工人狀況</h4>
+      <p>可提供工廠工人、護理員、建築工人等。已有類似日本的海外輸出模式，MSSDS + 東協集團的合作架構可擴展至台灣。</p>
+      <div class="detail-block">
+        <p><strong>關鍵訊息：</strong></p>
+        <p><strong>語言：</strong>英語為官方語言，卡西語和加羅語為地方通用語言。</p>
+        <p><strong>技術工人：</strong>就業缺口大，但邦政府已在25個領域推動技能培訓，並借鏡日本/德國的計畫。</p>
+        <p><strong>行政區劃：</strong>三個山區共12縣。</p>
+      </div>
+
+      <div class="taiwan-box">
+        <h4>赴台就業可行性</h4>
+        <p><strong>符合資格。</strong>在東北地區，梅加拉亞邦是繼喀拉拉邦/泰米爾納德邦之後<strong>最具海外就業潛力</strong>的邦——已有護士成功赴日的先例。</p>
+      </div>
+
+    </div>
+    <div class="state-map" data-state="Meghalaya"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 5. Manipur ==================== -->
+<section id="manipur">
+<div class="state-card not-recommended">
+  <div class="state-header">
+    <h3>5. 曼尼普爾邦 Manipur</h3>
+    <span class="state-badge">印度的明珠</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>位於印度東北部，有「印度的明珠」之稱。北鄰那加蘭邦，西鄰阿薩姆邦，南鄰米佐拉姆邦，東及南鄰緬甸。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">首府</div><div class="value">英帕爾</div></div>
+        <div class="info-item"><div class="label">面積</div><div class="value">22,327 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 2,855,794</div></div>
+        <div class="info-item"><div class="label">行政區</div><div class="value">16個區</div></div>
+      </div>
+
+      <h4>特色</h4>
+      <p>以洛克塔克湖、曼尼普爾舞蹈、馬球起源地、手工藝品、手工織布和體育運動而聞名。</p>
+
+      <h4>使用的語言</h4>
+      <p>官方語言：英語；主要母語：曼尼普爾語/梅泰語（也列入憲法第八附表）；其他廣泛使用的語言：印地語、尼泊爾語、孟加拉語。</p>
+      <p><span class="tag">英語（官方）</span><span class="tag">曼尼普爾語/梅泰語</span><span class="tag">印地語</span><span class="tag">尼泊爾語</span><span class="tag">孟加拉語</span></p>
+
+      <div class="challenge-box">
+        <h4>當前挑戰</h4>
+        <p>自2023年5月以來，種族暴力事件導致<strong>59,414人流離失所</strong>，居住在<strong>302個救濟營</strong>。</p>
+      </div>
+
+    </div>
+    <div class="state-map" data-state="Manipur"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 6. Tripura ==================== -->
+<section id="tripura">
+<div class="state-card recommended">
+  <div class="state-header">
+    <h3>6. 特里普拉邦 Tripura</h3>
+    <span class="state-badge">推薦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>位置：印度東北部。三面與孟加拉國接壤，與阿薩姆邦和米佐拉姆邦接壤。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">首府</div><div class="value">阿加爾塔拉</div></div>
+        <div class="info-item"><div class="label">面積</div><div class="value">10,492 km²（全國第三小的邦）</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 4,222,000</div></div>
+        <div class="info-item"><div class="label">行政區</div><div class="value">8個區</div></div>
+      </div>
+
+      <h4>特色</h4>
+      <p>以<strong>印度最高識字率（97.22%）</strong>著稱，另有宮殿、竹子、橡膠、茶葉、天然氣等資源。主要產業：農業、工業、服務業。</p>
+
+      <h4>使用的語言</h4>
+      <p>官方語言：</p>
+      <p><span class="tag">英語</span><span class="tag">孟加拉語</span><span class="tag">Kokborok / Tripuri</span></p>
+
+    </div>
+    <div class="state-map" data-state="Tripura"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 7. Mizoram ==================== -->
+<section id="mizoram">
+<div class="state-card recommended">
+  <div class="state-header">
+    <h3>7. 米佐拉姆邦 Mizoram</h3>
+    <span class="state-badge">推薦</span>
+  </div>
+  <div class="state-body">
+    <div class="state-info">
+
+      <h4>位置與基本資訊</h4>
+      <p>位於印度東北部。北鄰阿薩姆邦和曼尼普爾邦，東及南鄰緬甸，西鄰孟加拉國和特里普拉邦。</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">首府</div><div class="value">艾藻爾 (Aizawl)</div></div>
+        <div class="info-item"><div class="label">面積</div><div class="value">21,081 km²</div></div>
+        <div class="info-item"><div class="label">人口</div><div class="value">約 1,264,000</div></div>
+        <div class="info-item"><div class="label">行政區</div><div class="value">11個區</div></div>
+      </div>
+
+      <h4>使用的語言</h4>
+      <p>官方語言：米佐語（Mizo）及英語</p>
+      <p><span class="tag">米佐語（Mizo/Lushai）</span><span class="tag">英語</span><span class="tag">印地語</span><span class="tag">Hmar</span><span class="tag">Lai</span><span class="tag">Mara</span></p>
+
+      <h4>勞動技能</h4>
+      <p>工廠工人、農場工人、醫院工人、護理人員。</p>
+
+    </div>
+    <div class="state-map" data-state="Mizoram"></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== Salary Table ==================== -->
+<section id="salary">
+<h2>各邦薪資比較表（印度盧比/月）</h2>
+<div class="table-wrap">
+<table>
+<thead>
+  <tr>
+    <th rowspan="2">序號</th>
+    <th rowspan="2">邦名</th>
+    <th rowspan="2">人口</th>
+    <th colspan="2" class="col-group">家政服務<br><small>House Keeping</small></th>
+    <th colspan="2" class="col-group">飯店管理<br><small>Hospitality Mgmt</small></th>
+    <th colspan="2" class="col-group">廚師<br><small>Chef</small></th>
+    <th colspan="2" class="col-group">櫃檯接待<br><small>Receptionist</small></th>
+    <th colspan="2" class="col-group">工程師<br><small>Engineer</small></th>
+    <th colspan="2" class="col-group">重型機具操作<br><small>Heavy Machine Op.</small></th>
+  </tr>
+  <tr>
+    <th class="col-group">最低</th><th>最高</th>
+    <th class="col-group">最低</th><th>最高</th>
+    <th class="col-group">最低</th><th>最高</th>
+    <th class="col-group">最低</th><th>最高</th>
+    <th class="col-group">最低</th><th>最高</th>
+    <th class="col-group">最低</th><th>最高</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td><td>梅加拉亞邦</td><td>3,000,000</td>
+    <td class="col-group-body">9,000</td><td>19,000</td>
+    <td class="col-group-body">25,000</td><td>70,000</td>
+    <td class="col-group-body">8,000</td><td>35,000</td>
+    <td class="col-group-body">10,000</td><td>21,000</td>
+    <td class="col-group-body">30,000</td><td>50,000</td>
+    <td class="col-group-body">20,000</td><td>45,000</td>
+  </tr>
+  <tr>
+    <td>2</td><td>特里普拉邦</td><td>4,222,000</td>
+    <td class="col-group-body">16,000</td><td>21,000</td>
+    <td class="col-group-body">15,000</td><td>37,500</td>
+    <td class="col-group-body">10,000</td><td>30,000</td>
+    <td class="col-group-body">15,000</td><td>18,000</td>
+    <td class="col-group-body">29,500</td><td>146,700</td>
+    <td class="col-group-body">18,000</td><td>30,000</td>
+  </tr>
+  <tr>
+    <td>3</td><td>米佐拉姆邦</td><td>1,264,000</td>
+    <td class="col-group-body">15,000</td><td>20,000</td>
+    <td class="col-group-body">15,000</td><td>40,000</td>
+    <td class="col-group-body">10,000</td><td>40,000</td>
+    <td class="col-group-body">10,000</td><td>22,000</td>
+    <td class="col-group-body">24,000</td><td>140,000</td>
+    <td class="col-group-body">15,000</td><td>35,000</td>
+  </tr>
+  <tr>
+    <td>4</td><td>阿魯納恰爾邦</td><td>1,383,727</td>
+    <td class="col-group-body">15,300</td><td>43,700</td>
+    <td class="col-group-body">25,000</td><td>45,000</td>
+    <td class="col-group-body">15,000</td><td>30,000</td>
+    <td class="col-group-body">17,000</td><td>20,000</td>
+    <td class="col-group-body">35,400</td><td>112,400</td>
+    <td class="col-group-body">120,000</td><td>175,000</td>
+  </tr>
+  <tr>
+    <td>5</td><td>阿薩姆邦</td><td>31,205,576</td>
+    <td class="col-group-body">9,000</td><td>15,000</td>
+    <td class="col-group-body">15,000</td><td>50,000</td>
+    <td class="col-group-body">10,000</td><td>35,000</td>
+    <td class="col-group-body">10,000</td><td>20,000</td>
+    <td class="col-group-body">25,000</td><td>68,000</td>
+    <td class="col-group-body">12,500</td><td>67,000</td>
+  </tr>
+  <tr>
+    <td>6</td><td>那加蘭邦</td><td>1,978,502</td>
+    <td class="col-group-body">14,000</td><td>16,000</td>
+    <td class="col-group-body">15,000</td><td>40,000</td>
+    <td class="col-group-body">10,000</td><td>30,000</td>
+    <td class="col-group-body">10,000</td><td>18,000</td>
+    <td class="col-group-body">10,000</td><td>47,500</td>
+    <td class="col-group-body">15,000</td><td>35,000</td>
+  </tr>
+  <tr>
+    <td>7</td><td>曼尼普爾邦</td><td>2,855,794</td>
+    <td class="col-group-body">6,000</td><td>15,900</td>
+    <td class="col-group-body">15,000</td><td>50,000</td>
+    <td class="col-group-body">7,000</td><td>45,000</td>
+    <td class="col-group-body">15,000</td><td>20,000</td>
+    <td class="col-group-body">27,500</td><td>40,000</td>
+    <td class="col-group-body">157,000</td><td>362,500</td>
+  </tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.85em;color:var(--light-text);margin-top:8px">* 薪資為印度當地月薪範圍（盧比）。台灣薪資約 NT$33,000-40,000/月（約 ₹85,000-105,000）。</p>
+</section>
+
+<!-- ==================== Conclusion ==================== -->
+<section id="conclusion">
+<div class="conclusion">
+  <h2>結論與建議</h2>
+  <p style="font-size:1.1em;margin-bottom:20px">以上七個邦中，<strong>建議可以選擇來自梅加拉亞邦、特里普拉邦和米佐拉姆邦的勞工</strong>。</p>
+
+  <h3>推薦邦</h3>
+  <div class="rec-grid">
+    <div class="rec-card yes">
+      <h4>梅加拉亞邦</h4>
+      <p>英語為官方語言，邦政府在25個領域推動技能培訓，借鏡日本/德國計畫。MSSDS + 東協集團的合作模式可擴展至台灣。在東北地區最具海外就業潛力——已有護士成功赴日的先例。</p>
+    </div>
+    <div class="rec-card yes">
+      <h4>特里普拉邦</h4>
+      <p>印度最高識字率（97.22%），人口素質高，產業基礎完善（農業、工業、服務業），具備良好的勞動力輸出條件。</p>
+    </div>
+    <div class="rec-card yes">
+      <h4>米佐拉姆邦</h4>
+      <p>具備工廠工人、農場工人、醫院工人及護理人員等多領域勞動力，適合台灣市場需求的各類工種。</p>
+    </div>
+  </div>
+
+  <h3>為什麼不選擇其他邦？</h3>
+  <div class="rec-grid">
+    <div class="rec-card no">
+      <h4>曼尼普爾邦</h4>
+      <p>當地青年意願強烈，但自2023年起的族群衝突使局勢不穩。印度政府目前優先處理和平與公共安全，加上毒品問題嚴重，短期內不適合作為勞動力引進來源。待局勢穩定後，赴台管道可望開啟。</p>
+    </div>
+    <div class="rec-card no">
+      <h4>阿薩姆邦</h4>
+      <p>人口龐大（約3,500萬），勞動力素質參差不齊。識字率僅73%，且尚無完善的海外就業輸出機制，篩選難度較大。</p>
+    </div>
+    <div class="rec-card no">
+      <h4>那加蘭邦</h4>
+      <p>英語程度尚可，但缺乏工業基礎和海外就業的實績紀錄。</p>
+    </div>
+    <div class="rec-card no">
+      <h4>阿魯納恰爾邦</h4>
+      <p>受內線許可證（ILP）制度限制，人口最少（約170萬）且分布分散，缺乏工廠就業文化。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <p>印度東北七邦勞動力概況 | 資料來源：India-Taiwan MOU 2024 調研報告</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
