@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <title>麻豆中央市場攤商新址地圖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta property="og:title" content="麻豆中央市場攤商新址地圖">
+  <meta property="og:description" content="麻豆中央市場（市四市場）2026年關閉後，攤商搬遷新地點一覽 — 找回熟悉的味道，在新的地方繼續">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #map { height: 100%; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    body { overflow: hidden; }
+
+    .locate-btn {
+      position: absolute; bottom: 24px; right: 12px; z-index: 1000;
+      width: 44px; height: 44px; background: white; border: none; border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #333;
+    }
+    .locate-btn:active { background: #e8e8e8; }
+    .locate-btn.tracking { color: #e65100; }
+
+    .filter-bar {
+      position: absolute; top: 10px; left: 50px; right: 50px; z-index: 1000;
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+    }
+    .filter-btn {
+      padding: 6px 14px; border: 1px solid #ccc; border-radius: 20px;
+      background: white; font-size: 14px; cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15); transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: #e65100; }
+    .filter-btn.active { background: #e65100; color: white; border-color: #e65100; }
+
+    .panel-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3); z-index: 1100;
+    }
+    .panel-overlay.show { display: block; }
+
+    .bottom-panel {
+      position: fixed; bottom: 0; left: 0; right: 0; background: white;
+      border-radius: 16px 16px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      z-index: 1200; transform: translateY(100%); transition: transform 0.3s ease;
+      max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .bottom-panel.show { transform: translateY(0); }
+
+    .panel-handle { width: 40px; height: 5px; background: #ddd; border-radius: 3px; margin: 10px auto 0 auto; }
+    .panel-header { padding: 12px 16px 8px; display: flex; justify-content: space-between; align-items: center; }
+    .panel-header h2 { font-size: 18px; font-weight: 700; color: #333; margin: 0; }
+    .panel-close {
+      width: 36px; height: 36px; border: none; background: #f0f0f0; border-radius: 50%;
+      font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #666;
+    }
+    .panel-body { padding: 0 16px 16px; }
+    .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #888; min-width: 80px; flex-shrink: 0; }
+    .info-value { font-weight: 600; color: #333; text-align: right; }
+
+    .nav-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .nav-btn {
+      display: block; padding: 14px; text-align: center; background: #e65100; color: white;
+      text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600; transition: background 0.2s;
+    }
+    .nav-btn:hover, .nav-btn:active { background: #bf360c; color: white; text-decoration: none; }
+
+    .market-marker {
+      background: transparent; border: none;
+    }
+
+    .info-btn {
+      position: absolute; top: 10px; right: 12px; z-index: 1000;
+      width: 44px; height: 44px; background: white; border: none; border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #e65100; font-weight: 700;
+    }
+    .info-btn:active { background: #e8e8e8; }
+
+    .story-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); z-index: 2000;
+    }
+    .story-overlay.show { display: flex; align-items: center; justify-content: center; }
+
+    .story-panel {
+      background: white; border-radius: 12px; max-width: 640px; width: 92vw;
+      max-height: 85vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3); position: relative;
+    }
+    .story-close {
+      position: sticky; top: 0; float: right; margin: 12px 12px 0 0;
+      width: 36px; height: 36px; border: none; background: #f0f0f0; border-radius: 50%;
+      font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: #666; z-index: 1;
+    }
+    .story-content { padding: 24px 28px 28px; }
+    .story-content h1 { font-size: 22px; margin: 0 0 6px; color: #333; }
+    .story-content .subtitle { font-size: 14px; color: #888; margin-bottom: 20px; display: block; }
+    .story-content h2 { font-size: 16px; color: #e65100; margin: 20px 0 8px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+    .story-content h2:first-of-type { border-top: none; padding-top: 0; }
+    .story-content p { font-size: 15px; line-height: 1.75; color: #444; margin: 0 0 10px; }
+    .story-content .timeline { list-style: none; padding: 0; }
+    .story-content .timeline li { position: relative; padding: 0 0 14px 20px; font-size: 14px; line-height: 1.6; color: #555; }
+    .story-content .timeline li::before {
+      content: ''; position: absolute; left: 4px; top: 8px;
+      width: 8px; height: 8px; border-radius: 50%; background: #e65100;
+    }
+    .story-content .timeline li::after {
+      content: ''; position: absolute; left: 7px; top: 18px; bottom: 0;
+      width: 2px; background: #eee;
+    }
+    .story-content .timeline li:last-child::after { display: none; }
+    .story-content .timeline .year { font-weight: 700; color: #333; }
+    .story-content .sources { font-size: 12px; color: #999; margin-top: 16px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+    .story-content .sources a { color: #888; }
+
+    .credit {
+      position: fixed; bottom: 6px; left: 6px; z-index: 1000;
+      background: rgba(255,255,255,0.85); padding: 4px 10px; border-radius: 4px; font-size: 12px;
+    }
+    .credit a { color: #1e88e5; text-decoration: none; }
+
+    .marker-cluster-small { background-color: rgba(230, 81, 0, 0.4) !important; }
+    .marker-cluster-small div { background-color: rgba(230, 81, 0, 0.7) !important; color: #fff !important; font-weight: 700; }
+    .marker-cluster-medium { background-color: rgba(230, 81, 0, 0.5) !important; }
+    .marker-cluster-medium div { background-color: rgba(230, 81, 0, 0.8) !important; color: #fff !important; font-weight: 700; }
+    .marker-cluster-large { background-color: rgba(230, 81, 0, 0.6) !important; }
+    .marker-cluster-large div { background-color: rgba(230, 81, 0, 0.9) !important; color: #fff !important; font-weight: 700; }
+  </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FJ1JR851SJ');
+  </script>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="filter-bar" id="filterBar"></div>
+
+  <button class="info-btn" id="infoBtn" title="關於這個計畫">?</button>
+  <button class="locate-btn" id="locateBtn" title="定位">&#9737;</button>
+
+  <div class="story-overlay" id="storyOverlay">
+    <div class="story-panel">
+      <button class="story-close" id="storyClose">&times;</button>
+      <div class="story-content">
+        <h1>麻豆中央市場攤商新址地圖</h1>
+        <span class="subtitle">找回熟悉的味道，在新的地方繼續</span>
+
+        <h2>一座市場的七十年</h2>
+        <p>麻豆中央市場（正式名稱「麻豆市四公有零售市場」）建於民國39年（1950年），曾設有71間店鋪、超過百個攤位，是麻豆最熱鬧的商業中心。從清晨的魚肉叫賣到午後的碗粿飄香，幾代人的日常生活都繞著這座市場展開。百年老店龍泉冰店也在此營業，後來更成為偶像劇《想見你》中「莫奶奶冰店」的拍攝場景。</p>
+
+        <h2>為什麼要關？</h2>
+        <p>市場建築歷經七十餘年，鋼筋裸露、結構老化，存在嚴重公安疑慮。更複雜的是，市場基地內有 77.59% 是私有土地，台南市政府數十年來未辦理徵購，僅以租用或代繳地價稅方式使用，地主、市府、攤商三方糾紛不斷。2024年5月，監察院正式糾正台南市政府，指出市府公告停止使用後卻默許攤商繼續營業、未將私有土地返還地主等多項違失。</p>
+
+        <h2>十二年拉鋸</h2>
+        <ul class="timeline">
+          <li><span class="year">1950年</span> 麻豆中央市場建成啟用</li>
+          <li><span class="year">2014年4月</span> 台南市政府公告停止使用，但攤商持續營業，市場進入「廢而不用」狀態</li>
+          <li><span class="year">2018年1月</span> 市府規劃強制搬遷，攤商自救會約200人到場抗議。會長郭清竹帶領抗爭，向高等行政法院提起暫緩拆遷訴訟</li>
+          <li><span class="year">2024年5月</span> 監察院通過調查報告，糾正台南市政府處理方式</li>
+          <li><span class="year">2025年</span> 市府向經濟部爭取1,300萬元補助，完成麻豆市五市場改善工程作為安置場域。8月法院核發執行命令，要求攤商於10月底前騰空</li>
+          <li><span class="year">2026年3月</span> 法院強制斷水斷電執行完成，市場處受理53件攤商搬遷申請</li>
+          <li><span class="year">2026年4月</span> 攤商陸續搬遷中，本地圖持續更新新址資訊</li>
+        </ul>
+
+        <h2>這個地圖的用途</h2>
+        <p>市場關了，但攤商們還在。他們散落到麻豆各處繼續營業——有的搬進市五市場，有的在中正路、平等路、光復路一帶找到新店面，有的就搬到原址對面。這張地圖記錄了我們找到的每一家攤商的新地址，希望老顧客能循著地圖，找回那些熟悉的味道。</p>
+        <p>如果你知道某家攤商的新地址，歡迎透過 <a href="https://github.com/kiang/tainan.olc.tw/issues" target="_blank">GitHub</a> 或 <a href="https://facebook.com/k.olc.tw/" target="_blank">Facebook</a> 告訴我們。</p>
+
+        <div class="sources">
+          資料參考：<a href="https://udn.com/news/story/7326/9372642" target="_blank">聯合新聞網</a>、<a href="https://news.ltn.com.tw/news/Tainan/breakingnews/5228292" target="_blank">自由時報</a>、<a href="https://www.cy.gov.tw/News_Content.aspx?n=125&s=30018" target="_blank">監察院糾正案</a>、<a href="https://house.ettoday.net/news/3135917" target="_blank">ETtoday</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-overlay" id="panelOverlay"></div>
+  <div class="bottom-panel" id="bottomPanel">
+    <div class="panel-handle"></div>
+    <div class="panel-header">
+      <h2 id="panelTitle"></h2>
+      <button class="panel-close" id="panelClose">&times;</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+  </div>
+
+  <div class="credit">
+    <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script>
+  (function() {
+    var overlay = document.getElementById('storyOverlay');
+    document.getElementById('infoBtn').addEventListener('click', function() { overlay.classList.add('show'); });
+    document.getElementById('storyClose').addEventListener('click', function() { overlay.classList.remove('show'); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.classList.remove('show'); });
+    if (!localStorage.getItem('madou-story-seen')) {
+      overlay.classList.add('show');
+      localStorage.setItem('madou-story-seen', '1');
+    }
+  })();
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>
