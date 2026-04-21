@@ -78,16 +78,18 @@ function addStopsToMap() {
             : 0;
         if (routeCount === 0) continue;
 
-        var marker = L.circleMarker([stop.latitude, stop.longitude], {
-            radius: 6,
-            fillColor: '#3498db',
-            color: '#fff',
-            weight: 2,
-            fillOpacity: 0.8,
+        var size = routeCount >= 10 ? 24 : 20;
+        var marker = L.marker([stop.latitude, stop.longitude], {
+            icon: L.divIcon({
+                className: 'stop-icon',
+                html: '<div class="stop-count">' + routeCount + '</div>',
+                iconSize: [size, size],
+                iconAnchor: [size / 2, size / 2]
+            }),
             stopId: stop.stop_id
         });
 
-        marker.bindTooltip(stop.stop_name, { direction: 'top', offset: [0, -8] });
+        marker.bindTooltip(stop.stop_name + ' (' + routeCount + ' 條路線)', { direction: 'top', offset: [0, -size / 2] });
         marker.on('click', (function (stopId) {
             return function (e) {
                 L.DomEvent.stopPropagation(e);
