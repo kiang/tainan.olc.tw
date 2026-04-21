@@ -377,6 +377,30 @@ map.on('click', function () {
     }
 });
 
+var userMarker = null;
+var locateBtn = document.getElementById('locateBtn');
+
+locateBtn.addEventListener('click', function () {
+    locateBtn.classList.add('tracking');
+    map.locate({ setView: true, maxZoom: 17 });
+});
+
+map.on('locationfound', function (e) {
+    locateBtn.classList.remove('tracking');
+    if (userMarker) {
+        userMarker.setLatLng(e.latlng);
+    } else {
+        userMarker = L.circleMarker(e.latlng, {
+            radius: 8, fillColor: '#3399CC', color: '#fff', weight: 3, fillOpacity: 1
+        }).addTo(map);
+    }
+});
+
+map.on('locationerror', function () {
+    locateBtn.classList.remove('tracking');
+    alert('無法取得您的位置');
+});
+
 window.addEventListener('hashchange', checkHash);
 
 init();

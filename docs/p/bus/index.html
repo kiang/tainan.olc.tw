@@ -194,6 +194,49 @@
             opacity: 0.8;
             color: white;
         }
+
+        .locate-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 12px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .locate-btn:active {
+            background: #e8e8e8;
+        }
+
+        .locate-btn.tracking {
+            color: #0d6efd;
+        }
+
+        .credit {
+            position: fixed;
+            bottom: 6px;
+            left: 6px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.85);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .credit a {
+            color: #1e88e5;
+            text-decoration: none;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
@@ -215,6 +258,10 @@
         <span class="close-btn" id="info-panel-close">&times;</span>
         <h6 id="info-panel-title"></h6>
         <ul id="route-list"></ul>
+    </div>
+    <button class="locate-btn" id="locateBtn" title="定位">&#9737;</button>
+    <div class="credit">
+        <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗 製作</a>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
