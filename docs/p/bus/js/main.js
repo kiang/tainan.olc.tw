@@ -7,13 +7,22 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
 }).addTo(map);
 
 var routesData = [];
+var routesById = {};
 var stopsData = {};
 var routeStopsData = [];
-var routePolylines = L.layerGroup().addTo(map);
-var stopMarkers = L.layerGroup().addTo(map);
-var activeRouteId = null;
-var activeDirection = 'outbound';
+var routesByStop = {};
 var routeStopsByRoute = {};
+var routePolylines = L.layerGroup().addTo(map);
+var routeStopMarkers = L.layerGroup().addTo(map);
+var clusterGroup = L.markerClusterGroup({
+    maxClusterRadius: 50,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnBounds: false,
+    disableClusteringAtZoom: 16
+}).addTo(map);
+var activeStopId = null;
+var activeRouteIds = [];
+var routeColorMap = {};
 
 var routeColors = [
     '#e6194b', '#3cb44b', '#4363d8', '#f58231', '#911eb4',
@@ -28,12 +37,22 @@ function init() {
         fetch(dataBase + 'route_stops.json').then(function (r) { return r.json(); })
     ]).then(function (results) {
         routesData = results[0];
+        routesData.forEach(function (r) {
+            routesById[r.route_id] = r;
+        });
+
         results[1].forEach(function (s) {
             stopsData[s.stop_id] = s;
         });
+
         routeStopsData = results[2];
 
         routeStopsData.forEach(function (rs) {
+            if (!routesByStop[rs.stop_id]) {
+                routesByStop[rs.stop_id] = {};
+            }
+            routesByStop[rs.stop_id][rs.route_id] = true;
+
             if (!routeStopsByRoute[rs.route_id]) {
                 routeStopsByRoute[rs.route_id] = {};
             }
@@ -43,206 +62,317 @@ function init() {
             routeStopsByRoute[rs.route_id][rs.direction].push(rs);
         });
 
-        renderRouteList(routesData);
+        addStopsToMap();
         checkHash();
     });
 }
 
-function renderRouteList(routes) {
-    var list = document.getElementById('route-list');
-    list.innerHTML = '';
-    routes.forEach(function (r) {
-        var li = document.createElement('li');
-        li.dataset.routeId = r.route_id;
-        li.innerHTML = '<span class="route-name">' + r.route_name + '</span><br>' +
-            '<span class="route-dest">' + r.departure + ' → ' + r.destination + '</span>';
-        li.addEventListener('click', function () {
-            selectRoute(r.route_id);
-        });
-        if (r.route_id === activeRouteId) {
-            li.classList.add('active');
-        }
-        list.appendChild(li);
-    });
-}
+function addStopsToMap() {
+    var stopIds = Object.keys(stopsData);
+    for (var i = 0; i < stopIds.length; i++) {
+        var stop = stopsData[stopIds[i]];
+        if (!stop.latitude || !stop.longitude) continue;
 
-function selectRoute(routeId) {
-    activeRouteId = routeId;
-    activeDirection = 'outbound';
-    window.location.hash = routeId;
+        var routeCount = routesByStop[stop.stop_id]
+            ? Object.keys(routesByStop[stop.stop_id]).length
+            : 0;
+        if (routeCount === 0) continue;
 
-    document.querySelectorAll('#route-list li').forEach(function (li) {
-        li.classList.toggle('active', li.dataset.routeId === routeId);
-    });
-
-    var route = routesData.find(function (r) { return r.route_id === routeId; });
-    if (!route) return;
-
-    var panel = document.getElementById('stop-panel');
-    panel.style.display = 'flex';
-    document.getElementById('stop-panel-title').textContent = route.route_name;
-
-    var dirs = routeStopsByRoute[routeId] ? Object.keys(routeStopsByRoute[routeId]) : [];
-    renderDirectionTabs(dirs, route);
-    showDirection(routeId, activeDirection);
-}
-
-function renderDirectionTabs(dirs, route) {
-    var tabs = document.getElementById('direction-tabs');
-    tabs.innerHTML = '';
-    if (dirs.length <= 1) {
-        tabs.style.display = 'none';
-        return;
-    }
-    tabs.style.display = 'flex';
-    dirs.forEach(function (dir) {
-        var btn = document.createElement('button');
-        btn.textContent = dir === 'outbound'
-            ? '去程 (' + route.departure + '→' + route.destination + ')'
-            : '返程 (' + route.destination + '→' + route.departure + ')';
-        btn.classList.toggle('active', dir === activeDirection);
-        btn.addEventListener('click', function () {
-            activeDirection = dir;
-            tabs.querySelectorAll('button').forEach(function (b) {
-                b.classList.toggle('active', b === btn);
-            });
-            showDirection(activeRouteId, dir);
-        });
-        tabs.appendChild(btn);
-    });
-}
-
-function showDirection(routeId, direction) {
-    routePolylines.clearLayers();
-    stopMarkers.clearLayers();
-
-    var stops = routeStopsByRoute[routeId] && routeStopsByRoute[routeId][direction]
-        ? routeStopsByRoute[routeId][direction]
-        : [];
-
-    var list = document.getElementById('stop-list');
-    list.innerHTML = '';
-
-    var latlngs = [];
-    stops.forEach(function (rs, idx) {
-        var stop = stopsData[rs.stop_id];
-        if (!stop) return;
-
-        var ll = [stop.latitude, stop.longitude];
-        latlngs.push(ll);
-
-        var li = document.createElement('li');
-        li.innerHTML = '<span class="seq">' + rs.stop_sequence + '</span> ' + rs.stop_name;
-        li.addEventListener('click', function () {
-            map.setView(ll, 16);
-            stopMarkers.eachLayer(function (m) {
-                if (m.options.stopId === rs.stop_id) {
-                    m.openPopup();
-                }
-            });
-        });
-        list.appendChild(li);
-
-        var isFirst = idx === 0;
-        var isLast = idx === stops.length - 1;
-        var radius = (isFirst || isLast) ? 8 : 5;
-        var fillColor = isFirst ? '#2ecc71' : (isLast ? '#e74c3c' : '#3498db');
-
-        var marker = L.circleMarker(ll, {
-            radius: radius,
-            fillColor: fillColor,
+        var marker = L.circleMarker([stop.latitude, stop.longitude], {
+            radius: 6,
+            fillColor: '#3498db',
             color: '#fff',
             weight: 2,
-            fillOpacity: 0.9,
-            stopId: rs.stop_id
-        }).addTo(stopMarkers);
+            fillOpacity: 0.8,
+            stopId: stop.stop_id
+        });
 
-        var otherRoutes = findRoutesAtStop(rs.stop_id, routeId);
-        var popupHtml = '<b>' + rs.stop_name + '</b><br>第 ' + rs.stop_sequence + ' 站';
-        if (otherRoutes.length > 0) {
-            popupHtml += '<br><small style="color:#666">其他路線: ' +
-                otherRoutes.map(function (r) {
-                    return '<a href="#' + r.route_id + '" style="color:#0d6efd">' + r.route_name + '</a>';
-                }).join(', ') + '</small>';
-        }
-        marker.bindPopup(popupHtml);
-    });
+        marker.bindTooltip(stop.stop_name, { direction: 'top', offset: [0, -8] });
+        marker.on('click', (function (stopId) {
+            return function (e) {
+                L.DomEvent.stopPropagation(e);
+                selectStop(stopId);
+            };
+        })(stop.stop_id));
 
-    if (latlngs.length > 1) {
-        var color = routeColors[Math.abs(hashCode(routeId)) % routeColors.length];
-        L.polyline(latlngs, {
-            color: color,
-            weight: 4,
-            opacity: 0.8
-        }).addTo(routePolylines);
-
-        map.fitBounds(L.latLngBounds(latlngs).pad(0.1));
+        clusterGroup.addLayer(marker);
     }
 }
 
-function findRoutesAtStop(stopId, excludeRouteId) {
-    var found = {};
-    routeStopsData.forEach(function (rs) {
-        if (rs.stop_id === stopId && rs.route_id !== excludeRouteId && !found[rs.route_id]) {
-            var route = routesData.find(function (r) { return r.route_id === rs.route_id; });
-            if (route) {
-                found[rs.route_id] = route;
+function selectStop(stopId) {
+    var stop = stopsData[stopId];
+    if (!stop) return;
+
+    activeStopId = stopId;
+    window.location.hash = stopId;
+
+    routePolylines.clearLayers();
+    routeStopMarkers.clearLayers();
+    activeRouteIds = [];
+    routeColorMap = {};
+
+    map.removeLayer(clusterGroup);
+
+    var routeIdMap = routesByStop[stopId] || {};
+    var routeIdList = Object.keys(routeIdMap);
+
+    var panel = document.getElementById('info-panel');
+    panel.style.display = 'flex';
+    document.getElementById('info-panel-title').textContent =
+        stop.stop_name + ' (' + routeIdList.length + ' 條路線)';
+
+    var list = document.getElementById('route-list');
+    list.innerHTML = '';
+
+    routeIdList.forEach(function (routeId, idx) {
+        var route = routesById[routeId];
+        if (!route) return;
+
+        var color = routeColors[idx % routeColors.length];
+        routeColorMap[routeId] = color;
+
+        var li = document.createElement('li');
+        li.dataset.routeId = routeId;
+        li.innerHTML = '<span class="color-dot" style="background:' + color + '"></span>' +
+            '<span class="route-info"><span class="route-name">' + route.route_name + '</span><br>' +
+            '<span class="route-dest">' + route.departure + ' → ' + route.destination + '</span></span>';
+
+        li.addEventListener('click', function () {
+            toggleRoute(routeId, color, li);
+        });
+
+        list.appendChild(li);
+        showRoute(routeId, color);
+        li.classList.add('active');
+        activeRouteIds.push(routeId);
+    });
+
+    addSelectedStopMarker(stopId);
+
+    map.setView([stop.latitude, stop.longitude], Math.max(map.getZoom(), 15));
+}
+
+function addSelectedStopMarker(stopId) {
+    var stop = stopsData[stopId];
+    if (!stop) return;
+    L.circleMarker([stop.latitude, stop.longitude], {
+        radius: 10,
+        fillColor: '#e74c3c',
+        color: '#fff',
+        weight: 3,
+        fillOpacity: 1,
+        stopId: stopId,
+        isSelectedStop: true
+    }).bindTooltip(stop.stop_name, { direction: 'top', offset: [0, -10] })
+        .addTo(routeStopMarkers);
+}
+
+function toggleRoute(routeId, color, li) {
+    var idx = activeRouteIds.indexOf(routeId);
+    if (idx !== -1) {
+        activeRouteIds.splice(idx, 1);
+        li.classList.remove('active');
+        removeRouteFromMap(routeId);
+    } else {
+        activeRouteIds.push(routeId);
+        li.classList.add('active');
+        showRoute(routeId, color);
+    }
+}
+
+function removeRouteFromMap(routeId) {
+    var toRemove = [];
+    routePolylines.eachLayer(function (layer) {
+        if (layer.options.routeId === routeId) {
+            toRemove.push(layer);
+        }
+    });
+    toRemove.forEach(function (layer) {
+        routePolylines.removeLayer(layer);
+    });
+
+    toRemove = [];
+    routeStopMarkers.eachLayer(function (layer) {
+        if (layer.options.routeId === routeId) {
+            toRemove.push(layer);
+        }
+    });
+    toRemove.forEach(function (layer) {
+        routeStopMarkers.removeLayer(layer);
+    });
+}
+
+function showRoute(routeId, color) {
+    var routeStops = routeStopsByRoute[routeId];
+    if (!routeStops) return;
+
+    var directions = Object.keys(routeStops);
+    var addedStops = {};
+
+    directions.forEach(function (dir) {
+        var stops = routeStops[dir];
+        var latlngs = [];
+        stops.forEach(function (rs) {
+            var stop = stopsData[rs.stop_id];
+            if (!stop || !stop.latitude || !stop.longitude) return;
+            latlngs.push([stop.latitude, stop.longitude]);
+
+            if (!addedStops[rs.stop_id] && rs.stop_id !== activeStopId) {
+                addedStops[rs.stop_id] = true;
+                var marker = L.circleMarker([stop.latitude, stop.longitude], {
+                    radius: 5,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 1.5,
+                    fillOpacity: 0.8,
+                    routeId: routeId,
+                    stopId: rs.stop_id
+                });
+                marker.bindTooltip(stop.stop_name, { direction: 'top', offset: [0, -6] });
+                marker.on('click', function (e) {
+                    L.DomEvent.stopPropagation(e);
+                    selectStop(rs.stop_id);
+                });
+                marker.addTo(routeStopMarkers);
             }
+        });
+        if (latlngs.length > 1) {
+            var route = routesById[routeId];
+            var routeName = route ? route.route_name : routeId;
+            var dirLabel = dir === 'outbound' ? '去程' : '返程';
+            L.polyline(latlngs, {
+                color: color,
+                weight: 4,
+                opacity: 0.7,
+                routeId: routeId,
+                dashArray: dir === 'inbound' ? '8 6' : null
+            }).bindTooltip(routeName + ' ' + dirLabel, { sticky: true })
+                .addTo(routePolylines);
         }
     });
-    return Object.values(found);
 }
 
-function hashCode(str) {
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
+function resetToClusterView() {
+    document.getElementById('info-panel').style.display = 'none';
+    activeStopId = null;
+    activeRouteIds = [];
+    routeColorMap = {};
+    window.location.hash = '';
+    routePolylines.clearLayers();
+    routeStopMarkers.clearLayers();
+    if (!map.hasLayer(clusterGroup)) {
+        map.addLayer(clusterGroup);
     }
-    return hash;
 }
 
 function checkHash() {
     var hash = window.location.hash.replace('#', '');
-    if (hash) {
-        selectRoute(hash);
-        var el = document.querySelector('#route-list li[data-route-id="' + hash + '"]');
-        if (el) el.scrollIntoView({ block: 'center' });
+    if (hash && stopsData[hash]) {
+        selectStop(hash);
     }
 }
 
-document.getElementById('route-search').addEventListener('input', function () {
+document.getElementById('stop-search').addEventListener('input', function () {
     var keyword = this.value.trim().toLowerCase();
+    var resultsEl = document.getElementById('search-results');
+
     if (!keyword) {
-        renderRouteList(routesData);
+        resultsEl.style.display = 'none';
+        resultsEl.innerHTML = '';
         return;
     }
 
-    var stopRouteIds = {};
-    routeStopsData.forEach(function (rs) {
-        if (rs.stop_name.toLowerCase().indexOf(keyword) !== -1) {
-            stopRouteIds[rs.route_id] = true;
+    var matches = [];
+    var stopIds = Object.keys(stopsData);
+    for (var i = 0; i < stopIds.length; i++) {
+        var stop = stopsData[stopIds[i]];
+        if (stop.stop_name.toLowerCase().indexOf(keyword) !== -1) {
+            var routeCount = routesByStop[stop.stop_id]
+                ? Object.keys(routesByStop[stop.stop_id]).length
+                : 0;
+            if (routeCount > 0) {
+                matches.push({ stop: stop, routeCount: routeCount });
+            }
         }
-    });
+        if (matches.length >= 20) break;
+    }
 
-    var filtered = routesData.filter(function (r) {
-        return r.route_name.toLowerCase().indexOf(keyword) !== -1
-            || r.departure.toLowerCase().indexOf(keyword) !== -1
-            || r.destination.toLowerCase().indexOf(keyword) !== -1
-            || stopRouteIds[r.route_id];
+    if (matches.length === 0) {
+        var routeMatches = [];
+        routesData.forEach(function (r) {
+            if (r.route_name.toLowerCase().indexOf(keyword) !== -1 ||
+                r.departure.toLowerCase().indexOf(keyword) !== -1 ||
+                r.destination.toLowerCase().indexOf(keyword) !== -1) {
+                routeMatches.push(r);
+            }
+        });
+        if (routeMatches.length > 0) {
+            resultsEl.style.display = 'block';
+            resultsEl.innerHTML = '';
+            routeMatches.slice(0, 20).forEach(function (r) {
+                var li = document.createElement('li');
+                li.innerHTML = '<span class="stop-name">' + r.route_name + '</span><br>' +
+                    '<span class="route-count">' + r.departure + ' → ' + r.destination + '</span>';
+                li.addEventListener('click', function () {
+                    showRouteAndFocusFirstStop(r.route_id);
+                    resultsEl.style.display = 'none';
+                    document.getElementById('stop-search').value = '';
+                });
+                resultsEl.appendChild(li);
+            });
+            return;
+        }
+
+        resultsEl.style.display = 'none';
+        resultsEl.innerHTML = '';
+        return;
+    }
+
+    resultsEl.style.display = 'block';
+    resultsEl.innerHTML = '';
+    matches.forEach(function (m) {
+        var li = document.createElement('li');
+        li.innerHTML = '<span class="stop-name">' + m.stop.stop_name + '</span><br>' +
+            '<span class="route-count">' + m.routeCount + ' 條路線經過</span>';
+        li.addEventListener('click', function () {
+            selectStop(m.stop.stop_id);
+            resultsEl.style.display = 'none';
+            document.getElementById('stop-search').value = '';
+        });
+        resultsEl.appendChild(li);
     });
-    renderRouteList(filtered);
 });
 
-document.getElementById('stop-panel-close').addEventListener('click', function () {
-    document.getElementById('stop-panel').style.display = 'none';
-    activeRouteId = null;
-    window.location.hash = '';
-    routePolylines.clearLayers();
-    stopMarkers.clearLayers();
-    document.querySelectorAll('#route-list li').forEach(function (li) {
-        li.classList.remove('active');
-    });
+function showRouteAndFocusFirstStop(routeId) {
+    var routeStops = routeStopsByRoute[routeId];
+    if (!routeStops) return;
+    var dir = routeStops['outbound'] ? 'outbound' : Object.keys(routeStops)[0];
+    var stops = routeStops[dir];
+    if (!stops || stops.length === 0) return;
+    var firstStopId = stops[0].stop_id;
+    selectStop(firstStopId);
+}
+
+document.getElementById('info-panel-close').addEventListener('click', function () {
+    resetToClusterView();
+});
+
+document.getElementById('stop-search').addEventListener('blur', function () {
+    setTimeout(function () {
+        document.getElementById('search-results').style.display = 'none';
+    }, 200);
+});
+
+document.getElementById('stop-search').addEventListener('focus', function () {
+    if (document.getElementById('search-results').children.length > 0) {
+        document.getElementById('search-results').style.display = 'block';
+    }
+});
+
+map.on('click', function () {
+    if (activeStopId) {
+        resetToClusterView();
+    }
 });
 
 window.addEventListener('hashchange', checkHash);
