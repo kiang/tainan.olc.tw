@@ -377,6 +377,54 @@ map.on('click', function () {
     }
 });
 
+var youbikeLayer = L.layerGroup();
+var youbikeLoaded = false;
+var youbikeToggle = document.getElementById('youbikeToggle');
+var youbikeVisible = false;
+
+youbikeToggle.addEventListener('click', function () {
+    youbikeVisible = !youbikeVisible;
+    youbikeToggle.classList.toggle('active', youbikeVisible);
+    if (youbikeVisible) {
+        if (!youbikeLoaded) {
+            loadYoubike();
+        } else {
+            map.addLayer(youbikeLayer);
+        }
+    } else {
+        map.removeLayer(youbikeLayer);
+    }
+});
+
+function loadYoubike() {
+    fetch('https://tdx.transportdata.tw/api/basic/v2/Bike/Station/City/Tainan?%24format=JSON')
+        .then(function (r) { return r.json(); })
+        .then(function (stations) {
+            stations.forEach(function (s) {
+                var lat = s.StationPosition.PositionLat;
+                var lng = s.StationPosition.PositionLon;
+                var name = s.StationName.Zh_tw;
+                var capacity = s.BikesCapacity || 0;
+
+                var marker = L.marker([lat, lng], {
+                    icon: L.divIcon({
+                        className: 'youbike-icon',
+                        html: '<div class="youbike-dot">' + capacity + '</div>',
+                        iconSize: [22, 22],
+                        iconAnchor: [11, 11]
+                    })
+                });
+                marker.bindTooltip(name + ' (容量 ' + capacity + ')', { direction: 'top', offset: [0, -11] });
+                marker.on('click', function (e) {
+                    L.DomEvent.stopPropagation(e);
+                });
+                youbikeLayer.addLayer(marker);
+            });
+            youbikeLoaded = true;
+            map.addLayer(youbikeLayer);
+        });
+}
+
 var userMarker = null;
 var locateBtn = document.getElementById('locateBtn');
 
