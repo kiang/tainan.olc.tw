@@ -61,7 +61,7 @@ class EmergencyDashboard {
     
     async loadData() {
         try {
-            const response = await fetch('https://kiang.github.io/119dts.tncfd.gov.tw/list.json');
+            const response = await fetch('https://kiang.github.io/119dts.tncfd.gov.tw/list.json?_=' + Date.now());
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -229,7 +229,7 @@ class EmergencyDashboard {
             const [year, month, day] = datePart.split('/');
             
             // Fetch detailed case data using new structure: {year}/{month}{day}/{case_id}.json
-            const detailUrl = `https://kiang.github.io/119dts.tncfd.gov.tw/${year}/${month}${day}/${caseData.case_number}.json`;
+            const detailUrl = `https://kiang.github.io/119dts.tncfd.gov.tw/${year}/${month}${day}/${caseData.case_number}.json?_=${Date.now()}`;
             const response = await fetch(detailUrl);
             
             if (!response.ok) {
