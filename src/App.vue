@@ -275,6 +275,9 @@ onUnmounted(() => {
           </svg>
         </a>
       </div>
+      <div class="footer-links">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMEfdW_1AG7-OBxD_P0_qW0WEUOwxSvZoLWsVLxvrRY7A8eA/viewform" target="_blank" rel="noopener" class="footer-event-link">府城 AI 科技診療室 — 免費報名中</a>
+      </div>
       <p class="footer-copyright">© 2024 江明宗. All rights reserved.</p>
     </div>
   </footer>
@@ -513,6 +516,28 @@ header {
       background: #06c755;
       color: white;
     }
+  }
+}
+
+.footer-links {
+  margin-bottom: 12px;
+}
+
+.footer-event-link {
+  display: inline-block;
+  color: #ffc107;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffd54f;
+    border-color: #ffc107;
   }
 }
 
