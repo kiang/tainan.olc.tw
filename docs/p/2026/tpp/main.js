@@ -40,7 +40,7 @@
     }
     const nav = document.createElement('div');
     nav.className = 'nav-bar';
-    nav.innerHTML = `<a href="index.html" style="color:var(--tpp-dark);font-weight:600;text-decoration:none;margin-right:12px">← 全國總覽</a><label>選擇選區：</label><select id="zone-sel">${opts}</select>`;
+    nav.innerHTML = `<label>選擇選區：</label><select id="zone-sel">${opts}</select>`;
     document.body.insertBefore(nav, $('#app'));
     $('#zone-sel').addEventListener('change', function () {
       location.search = '?zone=' + this.value;

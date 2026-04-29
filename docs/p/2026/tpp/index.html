@@ -37,14 +37,7 @@
 .tab-bar button.active{border-bottom-color:var(--tpp);color:var(--tpp-dark);font-weight:700}
 .tab-content{display:none}.tab-content.active{display:block}
 </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-FJ1JR851SJ');
-</script>
+</head>
 <body>
 
 <div class="summary-header">
@@ -69,7 +62,7 @@
 <footer>
   資料來源：中央選舉委員會選舉資料庫 ｜ 涵蓋選舉：2020不分區、2022議員、2024不分區、2024總統<br>
   注意：提名建議僅供參考，實際決策需考量候選人人選、地方情勢、資源配置等因素。<br>
-  資料整理：<a href="https://docs.google.com/forms/d/e/1FAIpQLSeMEfdW_1AG7-OBxD_P0_qW0WEUOwxSvZoLWsVLxvrRY7A8eA/viewform" target="_blank" rel="noopener">府城 AI 科技診療室</a>
+  資料整理：<a href="https://facebook.com/k.olc.tw" target="_blank" rel="noopener">江明宗</a>
 </footer>
 
 <script>
@@ -177,7 +170,7 @@ function renderOverview() {
     const barH = Math.round(Math.min(ratio / maxRatio, 1) * chartH);
     const color = colors[z.rec];
     const tip = `${z.zone}\n基本盤: ${fmt(z.est)} / 門檻: ${fmt(z.threshold)}\n比值: ${ratio.toFixed(2)}`;
-    html += `<div title="${tip}" style="width:${barW}px;height:${barH}px;background:${color};border-radius:2px 2px 0 0;flex-shrink:0;cursor:pointer" onclick="location.href='zone.html?zone=${z.code}'"></div>`;
+    html += `<div title="${tip}" style="width:${barW}px;height:${barH}px;background:${color};border-radius:2px 2px 0 0;flex-shrink:0;cursor:pointer" onclick="location.href='index.html?zone=${z.code}'"></div>`;
   });
   html += '</div></div>';
   html += '<div style="display:flex;justify-content:space-between;font-size:.72em;color:var(--text2)"><span>← 高餘裕</span><span>低餘裕 / 未達門檻 →</span></div>';
@@ -191,7 +184,7 @@ function renderOverview() {
     html += '<table class="zone-table"><tr><th style="text-align:left">選區</th><th style="text-align:left">區域</th><th>2024政黨</th><th>成長</th><th>預估票</th><th>門檻</th><th>餘裕</th><th></th></tr>';
     g.forEach(z => {
       const surplusStr = z.threshold > 0 ? (z.surplus >= 0 ? `<span class="pos">+${fmt(z.surplus)}</span>` : `<span class="neg">${fmt(z.surplus)}</span>`) : '-';
-      html += `<tr><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td>${z.r2024}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td><a class="link-btn" href="zone.html?zone=${z.code}">詳細</a></td></tr>`;
+      html += `<tr><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td>${z.r2024}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td><a class="link-btn" href="index.html?zone=${z.code}">詳細</a></td></tr>`;
     });
     html += '</table></div>';
   });
@@ -214,7 +207,7 @@ function renderRecommend() {
     html += `<div class="tg tg-A" style="border-color:#00838F"><h3><span class="rec rec-defend">最高優先</span> 現任議員連任 — ${defend.length} 席</h3>`;
     html += '<p class="st">已有當選議員，應全力支持連任，維護既有席次。</p><ul>';
     defend.forEach(z => {
-      html += `<li><a class="link-btn" href="zone.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 現任：${h(z.elected_names.join('、'))}，預估 ${fmt(z.est)} 票，餘裕 +${fmt(z.surplus)}</li>`;
+      html += `<li><a class="link-btn" href="index.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 現任：${h(z.elected_names.join('、'))}，預估 ${fmt(z.est)} 票，餘裕 +${fmt(z.surplus)}</li>`;
     });
     html += '</ul></div>';
   }
@@ -227,7 +220,7 @@ function renderRecommend() {
       let note = '';
       if (z.had2022 && z.tpp_elected === 0) note = `（2022曾參選但落選，需檢討後重新出發）`;
       if (!z.had2022) note = `（2022未提名，首次參選需提早佈局）`;
-      html += `<li><a class="link-btn" href="zone.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票，門檻 ${fmt(z.threshold)}，餘裕 +${fmt(z.surplus)} ${note}</li>`;
+      html += `<li><a class="link-btn" href="index.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票，門檻 ${fmt(z.threshold)}，餘裕 +${fmt(z.surplus)} ${note}</li>`;
     });
     html += '</ul></div>';
   }
@@ -238,7 +231,7 @@ function renderRecommend() {
     html += '<p class="st">基本盤已過門檻但餘裕較小，需要強力候選人確保轉換率。</p><ul>';
     strong.forEach(z => {
       const convNote = z.conv > 0 ? `，2022轉換率 ${z.conv}%` : '';
-      html += `<li><a class="link-btn" href="zone.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票，門檻 ${fmt(z.threshold)}，餘裕 +${fmt(z.surplus)}${convNote}</li>`;
+      html += `<li><a class="link-btn" href="index.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票，門檻 ${fmt(z.threshold)}，餘裕 +${fmt(z.surplus)}${convNote}</li>`;
     });
     html += '</ul></div>';
   }
@@ -249,7 +242,7 @@ function renderRecommend() {
     html += '<p class="st">預估票數超過門檻兩倍，可考慮提名兩位候選人。需注意票源分配策略。</p><ul>';
     twoSeats.forEach(z => {
       const ratio = (z.est / z.threshold).toFixed(1);
-      html += `<li><a class="link-btn" href="zone.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票 ÷ 門檻 ${fmt(z.threshold)} = ${ratio} 倍${z.hasIncumbent ? '，含現任 ' + h(z.elected_names.join('、')) : ''}</li>`;
+      html += `<li><a class="link-btn" href="index.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 預估 ${fmt(z.est)} 票 ÷ 門檻 ${fmt(z.threshold)} = ${ratio} 倍${z.hasIncumbent ? '，含現任 ' + h(z.elected_names.join('、')) : ''}</li>`;
     });
     html += '</ul></div>';
   }
@@ -259,7 +252,7 @@ function renderRecommend() {
     html += `<div class="tg tg-D"><h3><span class="rec rec-grow">積極培養</span> 潛力選區 — ${grow.length} 區</h3>`;
     html += '<p class="st">基本盤未達門檻但樂觀預估可達，需提早佈局培養候選人。</p><ul>';
     grow.forEach(z => {
-      html += `<li><a class="link-btn" href="zone.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 基本盤 ${fmt(z.est)}，樂觀 ${fmt(z.estO)}，門檻 ${fmt(z.threshold)}，差距 ${fmt(Math.abs(z.surplus))}</li>`;
+      html += `<li><a class="link-btn" href="index.html?zone=${z.code}">${h(z.zone)}</a>（${h(z.areas)}）— 基本盤 ${fmt(z.est)}，樂觀 ${fmt(z.estO)}，門檻 ${fmt(z.threshold)}，差距 ${fmt(Math.abs(z.surplus))}</li>`;
     });
     html += '</ul></div>';
   }
@@ -298,7 +291,7 @@ function renderCity() {
     zs.forEach(z => {
       const surplusStr = z.threshold > 0 ? (z.surplus >= 0 ? `<span class="pos">+${fmt(z.surplus)}</span>` : `<span class="neg">${fmt(z.surplus)}</span>`) : '-';
       const incumbent = z.elected_names.length > 0 ? h(z.elected_names.join('、')) : '-';
-      html += `<tr><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td><span class="rec rec-${z.rec}">${z.recLabel}</span></td><td>${z.r2024}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td>${incumbent}</td><td><a class="link-btn" href="zone.html?zone=${z.code}">詳細</a></td></tr>`;
+      html += `<tr><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td><span class="rec rec-${z.rec}">${z.recLabel}</span></td><td>${z.r2024}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td>${incumbent}</td><td><a class="link-btn" href="index.html?zone=${z.code}">詳細</a></td></tr>`;
     });
     html += '</table></section>';
   }
@@ -353,7 +346,7 @@ function renderAllRows(zones) {
     const surplusStr = z.threshold > 0 ? (z.surplus >= 0 ? `<span class="pos">+${fmt(z.surplus)}</span>` : `<span class="neg">${fmt(z.surplus)}</span>`) : '-';
     const incumbent = z.elected_names.length > 0 ? h(z.elected_names.join('、')) : '';
     const convStr = z.conv > 0 ? z.conv + '%' : '-';
-    return `<tr data-rec="${z.rec}" data-city="${h(z.city)}"><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td><span class="rec rec-${z.rec}">${z.recLabel}</span></td><td>${z.seats}</td><td>${z.r2024}%</td><td>${z.r2024p}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td>${convStr}</td><td style="text-align:left">${incumbent}</td><td><a class="link-btn" href="zone.html?zone=${z.code}">詳細</a></td></tr>`;
+    return `<tr data-rec="${z.rec}" data-city="${h(z.city)}"><td style="text-align:left">${h(z.zone)}</td><td style="text-align:left">${h(z.areas)}</td><td><span class="rec rec-${z.rec}">${z.recLabel}</span></td><td>${z.seats}</td><td>${z.r2024}%</td><td>${z.r2024p}%</td><td class="${z.chg>=0?'pos':'neg'}">${z.chg>=0?'+':''}${z.chg}</td><td>${fmt(z.est)}</td><td>${fmt(z.threshold)}</td><td>${surplusStr}</td><td>${convStr}</td><td style="text-align:left">${incumbent}</td><td><a class="link-btn" href="index.html?zone=${z.code}">詳細</a></td></tr>`;
   }).join('');
 }
 
