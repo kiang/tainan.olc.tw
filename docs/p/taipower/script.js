@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const jsonUrl = 'https://kiang.github.io/taipower_data/genary.json';
     const emergencyApiBase = 'https://kiang.github.io/taipower_data/emergency';
+    const sessionTs = Date.now();
+    function cacheBust(url) {
+        const sep = url.includes('?') ? '&' : '?';
+        return url + sep + '_t=' + sessionTs;
+    }
     let updateTime;
     const dataCache = {};
     const pumpDataCache = {};
@@ -17,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let emergencyMonthsData = null; // Cache for monthly index
     let loadedMonths = new Set(); // Track which months have been loaded
 
-    fetch(jsonUrl)
+    fetch(cacheBust(jsonUrl))
         .then(response => {
             return response.json();
         })
@@ -88,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (Array.isArray(preloadedList)) {
             handleList(preloadedList);
         } else {
-            fetch(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`)
+            fetch(cacheBust(`https://kiang.github.io/taipower_data/genary/${Y}/${Ymd}/list.json`))
                 .then(response => response.json())
                 .then(list => handleList(list))
                 .catch(error => console.error('Error fetching list.json:', error));
@@ -177,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             loadPumpData(Y, Ymd, selectedHis);
             loadReserveData(Y, Ymd);
         } else {
-            fetch(newDataSource)
+            fetch(cacheBust(newDataSource))
                 .then(response => response.json())
                 .then(data => {
                     dataCache[cacheKey] = data;
@@ -210,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentPumpData = pumpDataCache[pumpCacheKey];
             loadYesterdayPumpData(yesterdayPumpUrl, yesterdayPumpCacheKey);
         } else {
-            fetch(todayPumpUrl)
+            fetch(cacheBust(todayPumpUrl))
                 .then(response => response.json())
                 .then(data => {
                     pumpDataCache[pumpCacheKey] = data;
@@ -230,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             yesterdayPumpData = pumpDataCache[yesterdayPumpCacheKey];
             calculateRemainingTime();
         } else {
-            fetch(yesterdayPumpUrl)
+            fetch(cacheBust(yesterdayPumpUrl))
                 .then(response => response.json())
                 .then(data => {
                     pumpDataCache[yesterdayPumpCacheKey] = data;
@@ -255,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (reserveDataCache[cacheKey]) {
             displayReserveData(reserveDataCache[cacheKey], formattedDate);
         } else {
-            fetch(reserveUrl)
+            fetch(cacheBust(reserveUrl))
                 .then(response => response.json())
                 .then(data => {
                     reserveDataCache[cacheKey] = data;
@@ -1565,7 +1570,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // no-op
         }
 
-        fetch(jsonUrl)
+        fetch(cacheBust(jsonUrl))
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: 此日期的資料不存在`);
@@ -1614,7 +1619,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Emergency Date Loading and Calendar Functions
     function loadEmergencyDates() {
-        return fetch(`${emergencyApiBase}/monthly_index.json`)
+        return fetch(cacheBust(`${emergencyApiBase}/monthly_index.json`))
             .then(response => response.json())
             .then(data => {
                 // Store monthly index data for on-demand loading
@@ -1691,7 +1696,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadEmergencyDatesFromMonthly(months) {
         // Load specified months and mark them as loaded
         const promises = months.map(month => 
-            fetch(`${emergencyApiBase}/${month.year_month.substring(0, 4)}/${month.year_month}.json`)
+            fetch(cacheBust(`${emergencyApiBase}/${month.year_month.substring(0, 4)}/${month.year_month}.json`))
                 .then(response => response.json())
                 .then(monthData => {
                     if (monthData && monthData.dates && Array.isArray(monthData.dates) && monthData.dates.length > 0) {
@@ -1896,7 +1901,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return Promise.resolve(); // Month not in emergency data
             }
             
-            return fetch(`${emergencyApiBase}/${yearMonth.substring(0, 4)}/${yearMonth}.json`)
+            return fetch(cacheBust(`${emergencyApiBase}/${yearMonth.substring(0, 4)}/${yearMonth}.json`))
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.dates && Array.isArray(data.dates) && data.dates.length > 0) {
@@ -1940,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const generatorFilter = document.getElementById('emergencyGeneratorFilter').value;
         const emergencyUrl = `${emergencyApiBase}/monthly_index.json`;
         
-        fetch(emergencyUrl)
+        fetch(cacheBust(emergencyUrl))
             .then(response => response.json())
             .then(data => {
                 // Process the emergency history data
@@ -1957,7 +1962,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.loadMonthDetails = function(yearMonth) {
         const monthUrl = `${emergencyApiBase}/${yearMonth.substring(0, 4)}/${yearMonth}.json`;
         
-        fetch(monthUrl)
+        fetch(cacheBust(monthUrl))
             .then(response => response.json())
             .then(data => {
                 displayMonthDetails(data);
@@ -2012,7 +2017,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if this date has any emergency data using daily index
         const dailyIndexUrl = `${emergencyApiBase}/${year}/${Ymd}/index.json`;
         
-        fetch(dailyIndexUrl)
+        fetch(cacheBust(dailyIndexUrl))
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -2024,7 +2029,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!Array.isArray(dailyIndex)) {
                     throw new Error('Invalid daily index format');
                 }
-                
+
                 // Check if there's ANY emergency activity during the entire date
                 if (dailyIndex.length > 0) {
                     // Collect all unique generators from the entire day
@@ -2071,7 +2076,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (currentTimeEntry && currentTimeEntry.generators && currentTimeEntry.generators.length > 0) {
                             // We have emergency data for the current time slot
-                            fetch(`${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`)
+                            fetch(cacheBust(`${emergencyApiBase}/${year}/${Ymd}/${currentTimeKey}.json`))
                                 .then(response => response.json())
                                 .then(data => {
                                     currentEmergencyData = data;
@@ -2233,7 +2238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Load daily index first
         const dailyIndexUrl = `${emergencyApiBase}/${year}/${Ymd}/index.json`;
         
-        fetch(dailyIndexUrl)
+        fetch(cacheBust(dailyIndexUrl))
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`No data for ${date}`);
@@ -2498,14 +2503,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Load each month's details and filter by generator
         const promises = months.map(month => 
-            fetch(`${emergencyApiBase}/${month.year_month.substring(0, 4)}/${month.year_month}.json`)
+            fetch(cacheBust(`${emergencyApiBase}/${month.year_month.substring(0, 4)}/${month.year_month}.json`))
                 .then(response => response.json())
                 .then(monthData => {
                     if (monthData && monthData.dates && Array.isArray(monthData.dates)) {
                         // Filter dates that contain the specified generator
                         const filteredDates = monthData.dates.filter(dateInfo => {
                             if (!dateInfo.unique_generators) return false;
-                            
+
                             let generators = [];
                             if (Array.isArray(dateInfo.unique_generators)) {
                                 generators = dateInfo.unique_generators;
