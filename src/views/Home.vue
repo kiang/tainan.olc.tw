@@ -19,9 +19,12 @@ const activeTab = ref('intro');
           <!-- Tab switcher -->
           <div class="hero-tabs">
             <button :class="['hero-tab', { active: activeTab === 'intro' }]" @click="activeTab = 'intro'">關於我</button>
+            <button :class="['hero-tab', { active: activeTab === 'donate' }]" @click="activeTab = 'donate'">
+              政治獻金
+              <span class="tab-badge">NEW</span>
+            </button>
             <button :class="['hero-tab', { active: activeTab === 'event' }]" @click="activeTab = 'event'">
               AI 科技診療室
-              <span class="tab-badge">NEW</span>
             </button>
           </div>
 
@@ -94,6 +97,24 @@ const activeTab = ref('intro');
                   <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
                 </svg>
               </a>
+            </div>
+          </div>
+
+          <!-- Tab: Donate -->
+          <div v-show="activeTab === 'donate'" class="hero-tab-panel">
+            <h2 class="event-title">支持江明宗</h2>
+            <p class="event-subtitle">您的每一筆捐款，都是推動台南進步的力量</p>
+            <div class="donate-card">
+              <div class="donate-info">
+                <div class="donate-row">
+                  <span class="donate-label">郵政劃撥</span>
+                  <span class="donate-value">31658725</span>
+                </div>
+                <div class="donate-row">
+                  <span class="donate-label">戶名</span>
+                  <span class="donate-value">115年臺南市議員擬參選人江明宗政治獻金專戶</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -689,6 +710,50 @@ const activeTab = ref('intro');
 
   @media (min-width: 768px) {
     text-align: left;
+  }
+}
+
+// Donate tab content
+.donate-card {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  backdrop-filter: blur(4px);
+  text-align: left;
+}
+
+.donate-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.donate-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+  }
+}
+
+.donate-label {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.donate-value {
+  font-size: 18px;
+  font-weight: 700;
+
+  @media (max-width: 575px) {
+    font-size: 16px;
   }
 }
 

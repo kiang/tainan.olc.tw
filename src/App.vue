@@ -275,6 +275,11 @@ onUnmounted(() => {
           </svg>
         </a>
       </div>
+      <div class="footer-donate">
+        <p class="footer-donate-title">支持江明宗 — 政治獻金專戶</p>
+        <p class="footer-donate-detail">郵政劃撥 <strong>31658725</strong></p>
+        <p class="footer-donate-detail">戶名：115年臺南市議員擬參選人江明宗政治獻金專戶</p>
+      </div>
       <div class="footer-links">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMEfdW_1AG7-OBxD_P0_qW0WEUOwxSvZoLWsVLxvrRY7A8eA/viewform" target="_blank" rel="noopener" class="footer-event-link">府城 AI 科技診療室 — 免費報名中</a>
       </div>
@@ -516,6 +521,35 @@ header {
       background: #06c755;
       color: white;
     }
+  }
+}
+
+.footer-donate {
+  margin-bottom: 16px;
+  padding: 12px 20px;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.footer-donate-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffc107;
+}
+
+.footer-donate-detail {
+  margin: 0;
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+
+  strong {
+    color: #ffd54f;
+    font-size: 15px;
+    letter-spacing: 1px;
   }
 }
 
