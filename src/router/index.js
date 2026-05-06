@@ -16,6 +16,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/Donate",
+      name: "Donate",
+      component: () => import("@/views/Donate.vue"),
+      meta: {
+        title: `政治獻金 | ${baseTitle}`,
+        description: "江明宗政治獻金劃撥程序說明，簡單 4 步驟輕鬆完成。",
+      },
+    },
+    {
       path: "/Politics",
       name: "Politics",
       component: () => import("@/views/Politics.vue"),

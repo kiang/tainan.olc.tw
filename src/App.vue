@@ -109,6 +109,15 @@ onUnmounted(() => {
                 <RouterLink
                   class="nav-link"
                   :to="{
+                    name: 'Donate',
+                  }"
+                  >政治獻金</RouterLink
+                >
+              </li>
+              <li class="nav-item">
+                <RouterLink
+                  class="nav-link"
+                  :to="{
                     name: 'PastWorks',
                   }"
                   :class="{
@@ -202,6 +211,15 @@ onUnmounted(() => {
             <RouterLink
               class="nav-link"
               :to="{
+                name: 'Donate',
+              }"
+              >政治獻金</RouterLink
+            >
+          </li>
+          <li class="nav-item">
+            <RouterLink
+              class="nav-link"
+              :to="{
                 name: 'PastWorks',
               }"
               :class="{
@@ -275,11 +293,13 @@ onUnmounted(() => {
           </svg>
         </a>
       </div>
-      <div class="footer-donate">
-        <p class="footer-donate-title">支持江明宗 — 政治獻金專戶</p>
-        <p class="footer-donate-detail">郵政劃撥 <strong>31658725</strong></p>
-        <p class="footer-donate-detail">戶名：115年臺南市議員擬參選人江明宗政治獻金專戶</p>
-      </div>
+      <RouterLink :to="{ name: 'Donate' }" class="footer-donate-link">
+        <div class="footer-donate">
+          <p class="footer-donate-title">支持江明宗 — 政治獻金專戶</p>
+          <p class="footer-donate-detail">郵政劃撥 <strong>31658725</strong></p>
+          <p class="footer-donate-detail">了解詳細劃撥步驟與收據寄送事宜 <i class="bi bi-arrow-right"></i></p>
+        </div>
+      </RouterLink>
       <div class="footer-links">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMEfdW_1AG7-OBxD_P0_qW0WEUOwxSvZoLWsVLxvrRY7A8eA/viewform" target="_blank" rel="noopener" class="footer-event-link">府城 AI 科技診療室 — 免費報名中</a>
       </div>
@@ -524,13 +544,27 @@ header {
   }
 }
 
-.footer-donate {
+.footer-donate-link {
+  text-decoration: none;
+  display: inline-block;
   margin-bottom: 16px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    .footer-donate {
+      background: rgba(255, 193, 7, 0.15);
+      border-color: rgba(255, 193, 7, 0.5);
+    }
+  }
+}
+
+.footer-donate {
   padding: 12px 20px;
   background: rgba(255, 193, 7, 0.1);
   border: 1px solid rgba(255, 193, 7, 0.3);
   border-radius: 12px;
-  display: inline-block;
+  transition: all 0.2s ease;
 }
 
 .footer-donate-title {
