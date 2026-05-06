@@ -1,5 +1,32 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import { RouterLink } from "vue-router";
+
+const reportFormUrl = ref('');
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+onMounted(() => {
+  const uuid = generateUUID();
+  const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdjxtlIlumA2pIiVpSm_ItW6ebaRhVBcZvj6PpaPUPWOTQGzg/viewform";
+  const params = new URLSearchParams({
+    "usp": "pp_url",
+    "entry.1683067847": "其他事項",
+    "entry.8069441": "no",
+    "entry.329095753": "no",
+    "entry.878731854": "no",
+    "entry.158869420": "no",
+    "entry.1608282544": "政治獻金匯款資料回報：\n身分證字號：\n戶籍地址：\n轉帳帳號末五碼：",
+    "entry.1072963415": uuid,
+  });
+  reportFormUrl.value = `${baseUrl}?${params.toString()}`;
+});
 </script>
 
 <template>
@@ -15,15 +42,63 @@ import { RouterLink } from "vue-router";
       <div class="content-container">
         <div class="intro-box">
           <p class="intro-text">
-            親愛的朋友們，謝謝您對江明宗的支持與鼓勵！💕 為了讓大家能更方便、更安心地為明宗助力，特別整理了最詳細的政治獻金劃撥程序說明。
+            親愛的朋友們，謝謝您對江明宗的支持與鼓勵！💕 為了讓大家能更方便、更安心地為明宗助力，特別整理了跨行轉帳與郵政劃撥的捐款方式說明。
           </p>
           <p class="intro-text mb-0">
-            即使沒有轉帳帳號也沒關係，簡簡單單幾分鐘，就能為台南的未來出一份力！💪
+            無論您習慣使用手機網銀轉帳，或是到郵局臨櫃辦理，簡簡單單幾分鐘，就能為台南的未來出一份力！💪
           </p>
         </div>
 
-        <h2 class="section-title">📝 政治獻金劃撥捐款 4 步驟完全攻略</h2>
-        <p class="steps-intro">請至全台各地郵局臨櫃辦理，參考下方範例，簡單 4 步驟輕鬆完成：</p>
+        <!-- Transfer Option -->
+        <h2 class="section-title">📱 ATM / 網路銀行 跨行轉帳捐款 (推薦)</h2>
+        <p class="steps-intro">使用手機網銀或實體 ATM，免出門也能輕鬆完成捐款：</p>
+        
+        <div class="transfer-card">
+          <div class="account-details">
+            <div class="detail-row">
+              <span class="label">銀行代碼</span>
+              <span class="value highlight-bank">700 (中華郵政)</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">轉帳帳號</span>
+              <span class="value account-number">700001031658725</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">戶名</span>
+              <span class="value account-name-text">115年臺南市議員擬參選人江明宗政治獻金專戶</span>
+            </div>
+          </div>
+          
+          <div class="transfer-guide">
+            <h3>💡 轉帳教學與注意事項</h3>
+            <ol>
+              <li>登入您的網路銀行 APP 或至實體 ATM，選擇<strong>「轉帳 / 跨行轉帳」</strong>功能。</li>
+              <li>輸入銀行代碼 <strong>700</strong> 及轉帳帳號 <strong>700001031658725</strong>。</li>
+              <li>確認戶名與金額無誤後，完成轉帳手續。</li>
+            </ol>
+            <div class="info-alert">
+              <strong>⚠️ 重要提醒：</strong><br>
+              依《政治獻金法》規定，完成轉帳後請務必與我們聯繫，提供您的<strong>姓名、身分證字號、戶籍地址、電話</strong>及<strong>轉帳帳號末五碼</strong>，以便開立正式收據。若單筆超過 1 萬元未能查明捐贈人身分，依規定視為匿名捐款，必須依法繳庫。
+            </div>
+            
+            <div class="report-action">
+              <a :href="reportFormUrl" target="_blank" class="report-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  <path d="M4.5 5.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0v-5zm7 0a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0v-5zm-5 8a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm4 0a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2z"/>
+                </svg>
+                前往填寫匯款回報表單
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider">
+          <span>或</span>
+        </div>
+
+        <h2 class="section-title">📝 郵局臨櫃劃撥捐款</h2>
+        <p class="steps-intro">請親至全台各地郵局臨櫃辦理，參考下方範例，簡單 4 步驟輕鬆完成：</p>
 
         <!-- Sample Postal Slip -->
         <div class="sample-slip-wrapper">
@@ -213,6 +288,163 @@ import { RouterLink } from "vue-router";
   
   @media (min-width: 768px) {
     font-size: 18px;
+  }
+}
+
+/* Transfer Card Styles */
+.transfer-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  margin-bottom: 40px;
+  border: 1px solid #eee;
+}
+
+.account-details {
+  background: #fdf2f1;
+  padding: 24px 30px;
+  border-bottom: 2px solid #e74c3c;
+  
+  @media (max-width: 575px) {
+    padding: 20px;
+  }
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 16px;
+  align-items: center;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  @media (max-width: 575px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.detail-row .label {
+  width: 100px;
+  font-size: 16px;
+  color: #666;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.detail-row .value {
+  font-size: 18px;
+  color: #333;
+  
+  &.highlight-bank {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e74c3c;
+  }
+  
+  &.account-number {
+    font-size: 28px;
+    font-weight: 800;
+    font-family: monospace;
+    color: #28c8c8;
+    letter-spacing: 2px;
+    background: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  &.account-name-text {
+    font-weight: 700;
+    color: #2c3e50;
+  }
+}
+
+.transfer-guide {
+  padding: 24px 30px;
+  
+  @media (max-width: 575px) {
+    padding: 20px;
+  }
+  
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 16px;
+  }
+  
+  ol {
+    margin: 0 0 20px;
+    padding-left: 24px;
+    
+    li {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      strong {
+        color: #e74c3c;
+      }
+    }
+  }
+}
+
+.report-action {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.report-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: #28c8c8;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 200, 200, 0.3);
+  
+  &:hover {
+    background: #1a9a9a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 200, 200, 0.4);
+    color: white;
+  }
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 40px 0;
+  color: #aaa;
+  
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  span {
+    padding: 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #888;
   }
 }
 
