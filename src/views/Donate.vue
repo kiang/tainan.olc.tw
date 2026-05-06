@@ -23,6 +23,49 @@ import { RouterLink } from "vue-router";
         </div>
 
         <h2 class="section-title">📝 政治獻金劃撥捐款 4 步驟完全攻略</h2>
+        <p class="steps-intro">請至全台各地郵局臨櫃辦理，參考下方範例，簡單 4 步驟輕鬆完成：</p>
+
+        <!-- Sample Postal Slip -->
+        <div class="sample-slip-wrapper">
+          <div class="postal-slip">
+            <div class="slip-header">
+              <div class="slip-title">郵政劃撥儲金存款單</div>
+            </div>
+            <div class="slip-body">
+              <div class="slip-row">
+                <div class="slip-label">帳號</div>
+                <div class="slip-boxes">
+                  <span class="box">3</span><span class="box">1</span><span class="box">6</span><span class="box">5</span><span class="box">8</span><span class="box">7</span><span class="box">2</span><span class="box">5</span>
+                </div>
+              </div>
+              <div class="slip-row">
+                <div class="slip-label">戶名</div>
+                <div class="slip-value account-name">115年臺南市議員擬參選人江明宗政治獻金專戶</div>
+              </div>
+              <div class="slip-row amount-row">
+                <div class="slip-label">金額</div>
+                <div class="slip-value amount-boxes">
+                  <span class="box empty"></span><span class="unit">億</span>
+                  <span class="box empty"></span><span class="unit">仟</span>
+                  <span class="box empty"></span><span class="unit">萬</span>
+                  <span class="box empty"></span><span class="unit">仟</span>
+                  <span class="box empty"></span><span class="unit">佰</span>
+                  <span class="box empty"></span><span class="unit">拾</span>
+                  <span class="box empty"></span><span class="unit">元</span>
+                </div>
+              </div>
+              <div class="slip-row sender-row">
+                <div class="slip-label">寄款人</div>
+                <div class="sender-fields">
+                  <div class="field">姓名：<span class="field-line"></span></div>
+                  <div class="field">身分證字號：<span class="field-line"></span></div>
+                  <div class="field">電話：<span class="field-line"></span></div>
+                  <div class="field">地址：<span class="field-line"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <p class="steps-intro">請至全台各地郵局臨櫃辦理，簡單 4 步驟輕鬆完成：</p>
 
         <div class="steps-container">
@@ -280,5 +323,175 @@ import { RouterLink } from "vue-router";
     background: #f0f0f0;
     color: #333;
   }
+}
+
+/* Sample Postal Slip Styles */
+.sample-slip-wrapper {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.postal-slip {
+  background: #fff;
+  border: 3px solid #e74c3c;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 600px;
+  font-family: "MingLiU", "PMingLiU", "Apple LiSung", serif; /* Use serif for that printed form look */
+  color: #e74c3c;
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.15);
+  position: relative;
+  overflow: hidden;
+
+  /* Watermark effect */
+  &::after {
+    content: "郵政劃撥";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 80px;
+    font-weight: bold;
+    color: rgba(231, 76, 60, 0.05);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 0;
+  }
+}
+
+.slip-header {
+  text-align: center;
+  padding: 16px 10px;
+  border-bottom: 2px solid #e74c3c;
+  background: #fdf2f1;
+}
+
+.slip-title {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+.slip-body {
+  position: relative;
+  z-index: 1;
+}
+
+.slip-row {
+  display: flex;
+  border-bottom: 1px solid #e74c3c;
+  min-height: 50px;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.slip-label {
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e74c3c;
+  font-weight: bold;
+  font-size: 18px;
+  background: #fdf2f1;
+  flex-shrink: 0;
+  writing-mode: horizontal-tb;
+  
+  @media (min-width: 576px) {
+    width: 100px;
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+}
+
+.slip-boxes {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.slip-value {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.account-name {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  
+  @media (max-width: 575px) {
+    font-size: 16px;
+  }
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 36px;
+  border: 1px solid #e74c3c;
+  font-size: 22px;
+  font-weight: bold;
+  font-family: monospace;
+  background: white;
+  
+  &.empty {
+    background: #fffafa;
+  }
+}
+
+.amount-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  
+  .unit {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 4px;
+  }
+}
+
+.sender-row {
+  min-height: 120px;
+  
+  .slip-label {
+    letter-spacing: 4px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+}
+
+.sender-fields {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  align-items: flex-end;
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.field-line {
+  flex-grow: 1;
+  border-bottom: 1px dotted #e74c3c;
+  margin-left: 8px;
+  height: 10px;
 }
 </style>
