@@ -1331,100 +1331,166 @@ function deleteCaseFromDetail(id) {
 }
 
 // ── Import case modal ──────────────────────────────────────────
+let importCaptchaData = null;
+
+async function loadImportCaptcha() {
+  try {
+    const res = await fetch(API + '/ValidationCode/');
+    importCaptchaData = await res.json();
+    document.getElementById('import-captcha-img').src =
+      'data:image/gif;base64,' + importCaptchaData.ValidationCode;
+    document.getElementById('import-captcha-input').value = '';
+    document.getElementById('import-captcha-audio').src =
+      'data:audio/mp3;base64,' + importCaptchaData.AudioMP3;
+  } catch {
+    alert('無法載入驗證碼，請檢查網路連線後重試');
+  }
+}
+
 function openImportModal() {
-  document.getElementById('import-json').value = '';
+  document.getElementById('import-case-code').value = '';
+  document.getElementById('import-captcha-input').value = '';
   document.getElementById('import-error').style.display = 'none';
+  document.getElementById('import-result').innerHTML = '';
   document.getElementById('modal-import').style.display = 'flex';
+
+  // Prefill email from saved profile
+  let savedEmail = '';
+  try {
+    const prof = JSON.parse(localStorage.getItem(KEY_PROFILE) || '{}');
+    savedEmail = prof.email || '';
+  } catch {}
+  document.getElementById('import-email').value = savedEmail;
+
+  loadImportCaptcha();
 }
 
 function closeImportModal() {
   document.getElementById('modal-import').style.display = 'none';
 }
 
-function importCase() {
+async function importCase() {
   const errEl = document.getElementById('import-error');
   errEl.style.display = 'none';
 
-  let data;
+  const email = document.getElementById('import-email').value.trim();
+  if (!email) {
+    errEl.textContent = '請填寫電子信箱';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const caseCodeRaw = document.getElementById('import-case-code').value.trim();
+  const match = caseCodeRaw.replace(/\s/g, '').match(/^([A-Za-z]+)-?(\d+)$/);
+  if (!match) {
+    errEl.textContent = '受理編號格式不正確，應如 B-358820';
+    errEl.style.display = 'block';
+    return;
+  }
+  const cLetter = match[1].toUpperCase();
+  const cNum = match[2];
+  const caseCode = `${cLetter}-${cNum}`;
+
+  const captchaInput = document.getElementById('import-captcha-input').value.trim();
+  if (!captchaInput) {
+    errEl.textContent = '請輸入驗證碼';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!importCaptchaData) {
+    errEl.textContent = '驗證碼尚未載入，請稍候再試';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('import-fetch-btn');
+  btn.disabled = true;
+  btn.textContent = '查詢中…';
+
   try {
-    data = JSON.parse(document.getElementById('import-json').value.trim());
-  } catch {
-    errEl.textContent = 'JSON 格式錯誤，請確認貼上的內容是否完整。';
-    errEl.style.display = 'block';
-    return;
-  }
+    const p3 = importCaptchaData.TimeStamp + captchaInput + encodeURIComponent(importCaptchaData.HashCode);
+    const url = `${API}/case/${encodeURIComponent(cLetter)}` +
+      `?p1=${encodeURIComponent(cNum)}` +
+      `&p2=${encodeURIComponent(email)}` +
+      `&p3=${p3}`;
+    const res = await fetch(url);
+    const data = await res.json();
 
-  const info = data?.Content?.[0];
-  if (!info) {
-    errEl.textContent = '找不到 Content 欄位，請確認 JSON 格式是否正確。';
-    errEl.style.display = 'block';
-    return;
-  }
+    const info = data?.Content?.[0];
+    if (!info) {
+      errEl.textContent = '查無資料，請確認受理編號與電子信箱是否正確，或驗證碼有誤。';
+      errEl.style.display = 'block';
+      loadImportCaptcha();
+      return;
+    }
 
-  // Build case code e.g. "B-358820"
-  const caseCode = info.case_no1 && info.case_no4
-    ? `${info.case_no1}-${info.case_no4}` : '';
+    // Deduplicate: if a case with the same caseCode already exists, update it
+    const existing = cases.find(c => c.caseCode === caseCode);
 
-  // Deduplicate: if a case with the same caseCode already exists, update it
-  const existing = caseCode ? cases.find(c => c.caseCode === caseCode) : null;
+    // Derive status from last ProcessStatus entry
+    let status = 'processing';
+    const processes = data.ProcessStatus || [];
+    const lastProc = processes[processes.length - 1];
+    if (lastProc) {
+      const desc = lastProc.CtrlId_Desc || '';
+      if (desc.includes('完成') || desc.includes('結案'))          status = 'done';
+      else if (desc.includes('不受理') || desc.includes('未受理')) status = 'rejected';
+    }
 
-  // Derive status from last ProcessStatus entry
-  let status = 'processing';
-  const processes = data.ProcessStatus || [];
-  const lastProc = processes[processes.length - 1];
-  if (lastProc) {
-    const desc = lastProc.CtrlId_Desc || '';
-    if (desc.includes('完成') || desc.includes('結案'))          status = 'done';
-    else if (desc.includes('不受理') || desc.includes('未受理')) status = 'rejected';
-  }
+    // Format subj_date "20260413" → ISO
+    let submittedAt = null;
+    if (info.subj_date && info.subj_date.length === 8) {
+      const d = info.subj_date;
+      const t = info.subj_time || '000000';
+      submittedAt = new Date(
+        `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}T${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}`
+      ).toISOString();
+    }
 
-  // Format subj_date "20260413" → ISO
-  let submittedAt = null;
-  if (info.subj_date && info.subj_date.length === 8) {
-    const d = info.subj_date;
-    const t = info.subj_time || '000000';
-    submittedAt = new Date(
-      `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}T${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}`
-    ).toISOString();
-  }
+    if (existing) {
+      existing.remoteData    = data;
+      existing.remoteQueried = new Date().toISOString();
+      existing.status        = status;
+      saveCases();
+      closeImportModal();
+      renderDashboard();
+      openCaseDetail(existing.id);
+      return;
+    }
 
-  if (existing) {
-    // Update remote data and status; preserve local edits
-    existing.remoteData    = data;
-    existing.remoteQueried = new Date().toISOString();
-    existing.status        = status;
+    const newCase = {
+      id:           randomToken(12),
+      title:        info.subject ? info.subject.slice(0, 40) + (info.subject.length > 40 ? '…' : '') : caseCode,
+      content:      info.subject || '',
+      caseCode,
+      status,
+      email:        info.e_mail || email,
+      mainItemName: lastProc?.item_name    || '',
+      subItemName:  lastProc?.sub_itemname || '',
+      locAddress:   info.subj_place || '',
+      locDistrict:  '',
+      locCounty:    '',
+      lat:          info.subj_latitude  ? parseFloat(info.subj_latitude)  : null,
+      lng:          info.subj_longitude ? parseFloat(info.subj_longitude) : null,
+      notes:        '',
+      submittedAt,
+      remoteData:    data,
+      remoteQueried: new Date().toISOString(),
+    };
+
+    cases.unshift(newCase);
     saveCases();
     closeImportModal();
     renderDashboard();
-    openCaseDetail(existing.id);
-    return;
+    openCaseDetail(newCase.id);
+  } catch (err) {
+    errEl.textContent = `查詢失敗：${String(err)}。請確認驗證碼後重試。`;
+    errEl.style.display = 'block';
+    loadImportCaptcha();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📥 匯入';
   }
-
-  const newCase = {
-    id:           randomToken(12),
-    title:        info.subject ? info.subject.slice(0, 40) + (info.subject.length > 40 ? '…' : '') : caseCode,
-    content:      info.subject || '',
-    caseCode,
-    status,
-    email:        info.e_mail || '',
-    mainItemName: lastProc?.item_name    || '',
-    subItemName:  lastProc?.sub_itemname || '',
-    locAddress:   info.subj_place || '',
-    locDistrict:  '',
-    locCounty:    '',
-    lat:          info.subj_latitude  ? parseFloat(info.subj_latitude)  : null,
-    lng:          info.subj_longitude ? parseFloat(info.subj_longitude) : null,
-    notes:        '',
-    submittedAt,
-    remoteData:    data,
-    remoteQueried: new Date().toISOString(),
-  };
-
-  cases.unshift(newCase);
-  saveCases();
-  closeImportModal();
-  renderDashboard();
-  openCaseDetail(newCase.id);
 }
 
 // ── Content char count ─────────────────────────────────────────

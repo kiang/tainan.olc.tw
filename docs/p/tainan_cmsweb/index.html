@@ -515,7 +515,7 @@
             </div>
             <div class="guide-step">
                 <div class="step-num">4</div>
-                <div class="step-body"><strong>匯入既有案件</strong>：點「匯入案件」，貼上官方查詢 API 回傳的 JSON，即可將案件加入追蹤清單，無需重新填寫。若受理編號已存在則自動更新資料。</div>
+                <div class="step-body"><strong>匯入既有案件</strong>：點「匯入案件」，輸入電子信箱、受理編號與驗證碼，即可從官方系統取回案件資料並加入追蹤清單。若受理編號已存在則自動更新資料。</div>
             </div>
         </div>
 
@@ -639,20 +639,34 @@
         </div>
         <div style="padding:20px;">
             <p style="font-size:13px; color:#555; margin-bottom:12px; line-height:1.6;">
-                貼上官方查詢 API 回傳的 JSON（包含 <code>Content</code> 與 <code>ProcessStatus</code> 欄位），
-                即可將此案件加入追蹤清單。
+                輸入受理編號與電子信箱，即可從官方系統取回案件資料並加入追蹤清單。
             </p>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label for="import-email">電子信箱</label>
+                <input type="email" id="import-email" placeholder="填報時使用的電子信箱">
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label for="import-case-code">受理編號（如 B-358817）</label>
+                <input type="text" id="import-case-code" placeholder="B-XXXXXX">
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                <img id="import-captcha-img" src="" alt="驗證碼"
+                     style="height:40px; border:1px solid #d0d7de; border-radius:4px; cursor:pointer;"
+                     title="點擊換一張" onclick="loadImportCaptcha()">
+                <audio id="import-captcha-audio" controls style="height:32px;"></audio>
+                <button type="button" class="btn-secondary btn-sm" onclick="loadImportCaptcha()">🔄 換一張</button>
+            </div>
             <div class="form-group" style="margin-bottom:16px;">
-                <label for="import-json">JSON 內容</label>
-                <textarea id="import-json" rows="10"
-                    style="font-family:monospace; font-size:12px;"
-                    placeholder='{"Content":[{"case_no1":"B","case_no4":358820,...}],"ProcessStatus":[...]}'></textarea>
+                <label for="import-captcha-input">驗證碼</label>
+                <input type="text" id="import-captcha-input" placeholder="請輸入圖片中的驗證碼" maxlength="10"
+                       style="max-width:200px;">
             </div>
             <div id="import-error" style="color:#e74c3c; font-size:13px; margin-bottom:12px; display:none;"></div>
             <div style="display:flex; gap:10px; justify-content:flex-end;">
                 <button class="btn-secondary" onclick="closeImportModal()">取消</button>
-                <button class="btn-primary" onclick="importCase()">匯入</button>
+                <button class="btn-primary" id="import-fetch-btn" onclick="importCase()">📥 匯入</button>
             </div>
+            <div id="import-result" style="margin-top:16px;"></div>
         </div>
     </div>
 </div>
