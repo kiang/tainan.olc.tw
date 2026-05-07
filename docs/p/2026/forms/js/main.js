@@ -397,9 +397,11 @@ const app = {
                     <td>${this.escHtml(addr || '')}</td>
                     <td>${count}</td>
                     <td>${total.toLocaleString()}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="app.editProfile(${id})"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteProfile(${id})"><i class="bi bi-trash"></i></button>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-success" onclick="app.newDonationFromProfile(${id})" title="新增捐款"><i class="bi bi-cash-coin"></i></button>
+                        <button class="btn btn-sm btn-outline-info" onclick="app.newLaborFromProfile(${id})" title="新增勞務報酬"><i class="bi bi-file-earmark-person"></i></button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="app.editProfile(${id})" title="編輯"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteProfile(${id})" title="刪除"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>`;
             });
@@ -491,6 +493,16 @@ const app = {
         this.db.run(`DELETE FROM profiles WHERE id = ?`, [id]);
         this.save();
         this.renderProfiles();
+    },
+
+    newDonationFromProfile(profileId) {
+        this.switchView('donation');
+        this.fillFromProfile(profileId);
+    },
+
+    newLaborFromProfile(profileId) {
+        this.switchView('labor');
+        this.fillLaborFromProfile(profileId);
     },
 
     renderRecords() {
