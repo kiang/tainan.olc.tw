@@ -608,8 +608,9 @@ const app = {
         const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
         const dateDisplay = dateParts ? `${dateParts[1]}年 ${dateParts[2]}月 ${dateParts[3]}日` : this.escHtml(date);
 
+        const copyLabel = isTop ? '存根聯' : '收執聯';
         let html = `<div class="print-half">
-            <h6 style="text-align:center;margin:0 0 4px">${this.escHtml(officeName)}現金捐款資料表</h6>
+            <h6 style="text-align:center;margin:0 0 4px">${this.escHtml(officeName)}現金捐款資料表<span style="font-size:0.8rem;margin-left:8px;font-weight:normal">（${copyLabel}）</span></h6>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px">
                 ${isTop ? '<span>一萬元以下專用</span>' : '<span></span>'}
                 <span>經手人：${this.escHtml(handler || '')} &nbsp;&nbsp; 捐款日期 &nbsp; ${dateDisplay}</span>
