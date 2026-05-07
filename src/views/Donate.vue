@@ -22,7 +22,7 @@ onMounted(() => {
     "entry.329095753": "no",
     "entry.878731854": "no",
     "entry.158869420": "no",
-    "entry.1608282544": "政治獻金匯款資料回報：\n身分證字號：\n戶籍地址：\n轉帳帳號末五碼：",
+    "entry.1608282544": "政治獻金匯款資料回報：\n身分證字號：\n戶籍地址：\n捐款金額：\n轉帳帳號末五碼：",
     "entry.1072963415": uuid,
   });
   reportFormUrl.value = `${baseUrl}?${params.toString()}`;
