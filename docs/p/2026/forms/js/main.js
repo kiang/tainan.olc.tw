@@ -50,6 +50,26 @@ const app = {
             )
         `);
         this.db.run(`CREATE UNIQUE INDEX IF NOT EXISTS idx_profiles_id_number ON profiles(id_number) WHERE id_number IS NOT NULL AND id_number != ''`);
+        this.db.run(`
+            CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        `);
+        const existing = this.db.exec(`SELECT value FROM settings WHERE key = 'office_name'`);
+        if (!existing.length || !existing[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('office_name', '○○○競選辦公室')`);
+        }
+        this.save();
+    },
+
+    getSetting(key) {
+        const r = this.db.exec(`SELECT value FROM settings WHERE key = ?`, [key]);
+        return (r.length && r[0].values.length) ? r[0].values[0][0] : '';
+    },
+
+    setSetting(key, value) {
+        this.db.run(`INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)`, [key, value]);
         this.save();
     },
 
@@ -64,7 +84,7 @@ const app = {
         document.querySelectorAll('.nav-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.view === view);
         });
-        ['donation', 'profiles', 'records'].forEach(v => {
+        ['donation', 'profiles', 'records', 'settings'].forEach(v => {
             document.getElementById(`view-${v}`).classList.toggle('d-none', v !== view);
         });
         this.renderCurrentView();
@@ -75,6 +95,7 @@ const app = {
             case 'donation': this.renderDonationForm(); break;
             case 'profiles': this.renderProfiles(); break;
             case 'records': this.renderRecords(); break;
+            case 'settings': this.renderSettings(); break;
         }
     },
 
@@ -85,10 +106,11 @@ const app = {
         const day = String(today.getDate()).padStart(2, '0');
         const defaultDate = `${rocYear}-${month}-${day}`;
 
+        const officeName = this.getSetting('office_name');
         const container = document.getElementById('view-donation');
         container.innerHTML = `
             <div class="form-section">
-                <div class="form-section-title">○○○競選辦公室現金捐款資料表</div>
+                <div class="form-section-title">${this.escHtml(officeName)}現金捐款資料表</div>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">捐款日期</label>
@@ -572,13 +594,14 @@ const app = {
             return;
         }
 
+        const officeName = this.getSetting('office_name');
         const printArea = document.getElementById('printArea');
         let html = '';
         results[0].values.forEach((row, i) => {
             const [amount, date, isAnon, preferEmail, name, idNum, address, email, mailAddr] = row;
             html += `
             <div class="print-form ${i < results[0].values.length - 1 ? 'print-page-break' : ''}">
-                <h5 style="text-align:center">○○○競選辦公室現金捐款資料表</h5>
+                <h5 style="text-align:center">${this.escHtml(officeName)}現金捐款資料表</h5>
                 <table style="margin-bottom:4px">
                     <tr>
                         <td colspan="4" style="text-align:right; border:none; padding:4px">
@@ -696,6 +719,39 @@ const app = {
         };
         reader.readAsArrayBuffer(file);
         event.target.value = '';
+    },
+
+    renderSettings() {
+        const officeName = this.getSetting('office_name');
+        const container = document.getElementById('view-settings');
+        container.innerHTML = `
+            <div class="form-section">
+                <div class="form-section-title">共用設定</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">競選辦公室名稱</label>
+                        <input type="text" class="form-control" id="s-office-name" value="${this.escAttr(officeName)}" placeholder="例如：王小明競選辦公室">
+                        <div class="form-text">此名稱會顯示在捐款資料表標題及列印表單上</div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary" onclick="app.saveSettings()">
+                        <i class="bi bi-save"></i> 儲存設定
+                    </button>
+                </div>
+            </div>
+        `;
+    },
+
+    saveSettings() {
+        const officeName = document.getElementById('s-office-name').value.trim();
+        if (!officeName) {
+            alert('請輸入競選辦公室名稱');
+            return;
+        }
+        this.setSetting('office_name', officeName);
+        alert('設定已儲存！');
+        this.renderSettings();
     },
 
     maskIdNumber(id) {
