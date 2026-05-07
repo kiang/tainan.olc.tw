@@ -302,9 +302,10 @@ const app = {
             `INSERT INTO profiles (name, id_number, address, email, mail_address) VALUES (?, ?, ?, ?, ?)`,
             [name, idNumber, address, email, mailAddress]
         );
-        this.save();
         const result = this.db.exec(`SELECT last_insert_rowid()`);
-        return result[0].values[0][0];
+        const newId = result[0].values[0][0];
+        this.save();
+        return newId;
     },
 
     resetDonationForm() {
