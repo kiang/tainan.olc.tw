@@ -91,7 +91,8 @@
         .print-form td,
         .print-form th {
             border: 1px solid #000;
-            padding: 8px 12px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
         }
 
         .print-form th {
@@ -99,7 +100,27 @@
             white-space: nowrap;
         }
 
+        .print-page {
+            page-break-after: always;
+        }
+
+        .print-half {
+            height: 48%;
+            box-sizing: border-box;
+        }
+
+        .print-cut-line {
+            border: none;
+            border-top: 1px dashed #999;
+            margin: 8px 0;
+        }
+
         @media print {
+            @page {
+                size: A4;
+                margin: 10mm 15mm;
+            }
+
             body * {
                 visibility: hidden;
             }
@@ -116,8 +137,10 @@
                 width: 100%;
             }
 
-            .print-page-break {
-                page-break-after: always;
+            .print-form th {
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
         }
 

@@ -441,9 +441,6 @@ const app = {
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="form-section-title mb-0">捐款紀錄</div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-primary btn-sm" onclick="app.printRecords()">
-                        <i class="bi bi-printer"></i> 列印表單
-                    </button>
                     <button class="btn btn-outline-success btn-sm" onclick="app.exportCSV()">
                         <i class="bi bi-filetype-csv"></i> 匯出 CSV
                     </button>
@@ -469,9 +466,10 @@ const app = {
                     <td>${isAnon ? '<span class="badge-anonymous">匿名</span>' : this.escHtml(name || '—')}</td>
                     <td>${isAnon ? '' : this.escHtml(this.maskIdNumber(idNum))}</td>
                     <td>${isAnon ? '是' : '否'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="app.editDonation(${id})"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteDonation(${id})"><i class="bi bi-trash"></i></button>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="app.printDonation(${id})" title="列印"><i class="bi bi-printer"></i></button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="app.editDonation(${id})" title="編輯"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteDonation(${id})" title="刪除"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>`;
             });
@@ -581,75 +579,76 @@ const app = {
         // handled by editProfile/editDonation deleteBtn.onclick
     },
 
-    printRecords() {
+    buildPrintHalf(officeName, row, isTop) {
+        const [amount, date, isAnon, preferEmail, name, idNum, address, email, mailAddr] = row;
+        const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        const dateDisplay = dateParts ? `${dateParts[1]}年 ${dateParts[2]}月 ${dateParts[3]}日` : this.escHtml(date);
+
+        let html = `<div class="print-half">
+            <h6 style="text-align:center;margin:0 0 4px">${this.escHtml(officeName)}現金捐款資料表</h6>
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px">
+                ${isTop ? '<span>一萬元以下專用</span>' : '<span></span>'}
+                <span>捐款日期 &nbsp; ${dateDisplay}</span>
+            </div>
+            <table>
+                <tr>
+                    <th>金額</th>
+                    <td>${amount.toLocaleString()}</td>
+                    ${isTop ? `
+                    <th>是否匿名捐款</th>
+                    <td>${isAnon ? '☑ 是（以下免填）' : '☐ 是（以下免填）&nbsp; ☑ 否'}</td>
+                    ` : '<td colspan="2"></td>'}
+                </tr>
+            </table>
+            <table style="margin-top:6px">
+                <tr>
+                    <th>姓名（必填）</th>
+                    <td>${this.escHtml((!isAnon ? name : '') || '')}</td>
+                    <th>身分證字號（必填）</th>
+                    <td>${this.escHtml((!isAnon ? idNum : '') || '')}</td>
+                </tr>
+                <tr>
+                    <th>戶籍地址（必填）</th>
+                    <td colspan="3">${this.escHtml((!isAnon ? address : '') || '')}</td>
+                </tr>
+            </table>
+            <table style="margin-top:6px">
+                <tr><th colspan="4" style="text-align:left">索取收據請填下方</th></tr>
+                <tr>
+                    <th>電子信箱</th>
+                    <td>${this.escHtml((!isAnon ? email : '') || '')}</td>
+                    <td colspan="2">${!isAnon && preferEmail ? '☑' : '☐'} 優先以電子方式寄件</td>
+                </tr>
+                <tr>
+                    <th>收件地址</th>
+                    <td colspan="3">${this.escHtml((!isAnon ? mailAddr : '') || '')}</td>
+                </tr>
+            </table>
+            <p style="font-size:0.8rem;margin:4px 0 0;color:#666">
+                此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。
+            </p>
+        </div>`;
+        return html;
+    },
+
+    printDonation(id) {
         const results = this.db.exec(`
             SELECT d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt,
                    p.name, p.id_number, p.address, p.email, p.mail_address
             FROM donations d
             LEFT JOIN profiles p ON d.profile_id = p.id
-            ORDER BY d.created_at DESC
-        `);
-        if (!results.length || !results[0].values.length) {
-            alert('無捐款紀錄可列印');
-            return;
-        }
+            WHERE d.id = ?
+        `, [id]);
+        if (!results.length || !results[0].values.length) return;
 
         const officeName = this.getSetting('office_name');
+        const row = results[0].values[0];
         const printArea = document.getElementById('printArea');
-        let html = '';
-        results[0].values.forEach((row, i) => {
-            const [amount, date, isAnon, preferEmail, name, idNum, address, email, mailAddr] = row;
-            html += `
-            <div class="print-form ${i < results[0].values.length - 1 ? 'print-page-break' : ''}">
-                <h5 style="text-align:center">${this.escHtml(officeName)}現金捐款資料表</h5>
-                <table style="margin-bottom:4px">
-                    <tr>
-                        <td colspan="4" style="text-align:right; border:none; padding:4px">
-                            捐款日期 &nbsp; ${this.escHtml(date)}
-                        </td>
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <th>金額</th>
-                        <td>${amount.toLocaleString()}</td>
-                        <th>是否匿名捐款</th>
-                        <td>${isAnon ? '☑ 是（以下免填）' : '☐ 是 &nbsp; ☑ 否'}</td>
-                    </tr>
-                </table>
-                ${!isAnon ? `
-                <table style="margin-top:8px">
-                    <tr>
-                        <th>姓名（必填）</th>
-                        <td>${this.escHtml(name || '')}</td>
-                        <th>身分證字號（必填）</th>
-                        <td>${this.escHtml(idNum || '')}</td>
-                    </tr>
-                    <tr>
-                        <th>戶籍地址（必填）</th>
-                        <td colspan="3">${this.escHtml(address || '')}</td>
-                    </tr>
-                </table>
-                <table style="margin-top:8px">
-                    <tr><th colspan="4" style="text-align:left">索取收據請填下方</th></tr>
-                    <tr>
-                        <th>電子信箱</th>
-                        <td>${this.escHtml(email || '')}</td>
-                        <td colspan="2">${preferEmail ? '☑' : '☐'} 優先以電子方式寄件</td>
-                    </tr>
-                    <tr>
-                        <th>收件地址</th>
-                        <td colspan="3">${this.escHtml(mailAddr || '')}</td>
-                    </tr>
-                </table>
-                <p style="font-size:0.85rem;margin-top:8px;color:#666">
-                    此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。
-                </p>
-                ` : ''}
-            </div>`;
-        });
-
-        printArea.innerHTML = html;
+        printArea.innerHTML = `<div class="print-form">
+            ${this.buildPrintHalf(officeName, row, true)}
+            <hr class="print-cut-line">
+            ${this.buildPrintHalf(officeName, row, false)}
+        </div>`;
         printArea.classList.remove('d-none');
         window.print();
         printArea.classList.add('d-none');
