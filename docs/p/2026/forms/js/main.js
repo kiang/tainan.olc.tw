@@ -110,12 +110,20 @@ const app = {
         }
     },
 
+    rocToIso(roc) {
+        const m = (roc || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        if (!m) return '';
+        return `${parseInt(m[1]) + 1911}-${m[2]}-${m[3]}`;
+    },
+
+    isoToRoc(iso) {
+        const m = (iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!m) return '';
+        return `${parseInt(m[1]) - 1911}-${m[2]}-${m[3]}`;
+    },
+
     renderDonationForm() {
-        const today = new Date();
-        const rocYear = today.getFullYear() - 1911;
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const defaultDate = `${rocYear}-${month}-${day}`;
+        const today = new Date().toISOString().slice(0, 10);
 
         const officeName = this.getSetting('office_name');
         const defaultHandler = this.getSetting('default_handler');
@@ -126,7 +134,7 @@ const app = {
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">捐款日期</label>
-                        <input type="text" class="form-control" id="d-date" value="${defaultDate}" placeholder="${rocYear}年MM月DD日">
+                        <input type="date" class="form-control" id="d-date" value="${today}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">金額</label>
@@ -265,7 +273,7 @@ const app = {
 
     saveDonation() {
         const amount = parseInt(document.getElementById('d-amount').value);
-        const date = document.getElementById('d-date').value.trim();
+        const date = this.isoToRoc(document.getElementById('d-date').value.trim());
         const isAnonymous = document.querySelector('input[name="anonymous"]:checked')?.value === '1';
 
         if (!amount || amount <= 0) {
@@ -514,7 +522,7 @@ const app = {
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">捐款日期</label>
-                    <input type="text" class="form-control" id="ed-date" value="${this.escAttr(date)}">
+                    <input type="date" class="form-control" id="ed-date" value="${this.escAttr(this.rocToIso(date))}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">金額</label>
@@ -555,7 +563,7 @@ const app = {
         const saveBtn = document.getElementById('editModalSave');
         saveBtn.onclick = () => {
             const newAmount = parseInt(document.getElementById('ed-amount').value);
-            const newDate = document.getElementById('ed-date').value.trim();
+            const newDate = this.isoToRoc(document.getElementById('ed-date').value.trim());
             const newAnon = document.getElementById('ed-anonymous').value === '1' ? 1 : 0;
             const newHandler = document.getElementById('ed-handler').value.trim();
 
