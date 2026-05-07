@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="表單管理系統">
+    <meta property="og:description" content="離線表單管理，資料儲存於瀏覽器本機">
+    <meta property="og:type" content="website">
+    <title>表單管理系統</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 12px 0;
+        }
+
+        .nav-tab {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .nav-tab:hover,
+        .nav-tab.active {
+            background: #e9ecef;
+        }
+
+        .form-section {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .record-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .record-card:hover {
+            background: #f8f9fa;
+        }
+
+        .profile-suggestion {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .profile-suggestion:hover {
+            background: #fff0b3;
+        }
+
+        .print-form {
+            background: #fff;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .print-form table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .print-form td,
+        .print-form th {
+            border: 1px solid #000;
+            padding: 8px 12px;
+        }
+
+        .print-form th {
+            background: #f0f0f0;
+            white-space: nowrap;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printArea,
+            #printArea * {
+                visibility: visible;
+            }
+
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
+            .print-page-break {
+                page-break-after: always;
+            }
+        }
+
+        .badge-anonymous {
+            background: #6c757d;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            z-index: 1050;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .autocomplete-item:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-header">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="mb-0"><i class="bi bi-file-earmark-text"></i> 表單管理系統</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="app.exportData()">
+                        <i class="bi bi-download"></i> 匯出
+                    </button>
+                    <label class="btn btn-outline-secondary btn-sm mb-0">
+                        <i class="bi bi-upload"></i> 匯入
+                        <input type="file" accept=".json" hidden onchange="app.importData(event)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-3">
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+            <div class="nav-tab active" data-view="donation" onclick="app.switchView('donation')">
+                <i class="bi bi-cash-coin"></i> 捐款資料表
+            </div>
+            <div class="nav-tab" data-view="profiles" onclick="app.switchView('profiles')">
+                <i class="bi bi-people"></i> 個人資料管理
+            </div>
+            <div class="nav-tab" data-view="records" onclick="app.switchView('records')">
+                <i class="bi bi-list-ul"></i> 捐款紀錄
+            </div>
+        </div>
+
+        <div id="view-donation"></div>
+        <div id="view-profiles" class="d-none"></div>
+        <div id="view-records" class="d-none"></div>
+    </div>
+
+    <div id="printArea" class="d-none"></div>
+
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">編輯</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="editModalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger d-none" id="editModalDelete" onclick="app.deleteCurrentRecord()">
+                        <i class="bi bi-trash"></i> 刪除
+                    </button>
+                    <button type="button" class="btn btn-primary" id="editModalSave">儲存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/sql-wasm.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
