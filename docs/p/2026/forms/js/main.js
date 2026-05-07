@@ -71,6 +71,18 @@ const app = {
             )
         `);
         this.db.run(`
+            CREATE TABLE IF NOT EXISTS expenses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                expense_date TEXT NOT NULL,
+                items TEXT NOT NULL,
+                total_amount INTEGER NOT NULL,
+                payment_method TEXT DEFAULT 'cash',
+                handler TEXT,
+                supervisor TEXT,
+                created_at TEXT DEFAULT (datetime('now','localtime'))
+            )
+        `);
+        this.db.run(`
             CREATE TABLE IF NOT EXISTS settings (
                 key TEXT PRIMARY KEY,
                 value TEXT
@@ -85,9 +97,17 @@ const app = {
         if (!handlerExists.length || !handlerExists[0].values.length) {
             this.db.run(`INSERT INTO settings (key, value) VALUES ('default_handler', '')`);
         }
+        const supervisorExists = this.db.exec(`SELECT value FROM settings WHERE key = 'default_supervisor'`);
+        if (!supervisorExists.length || !supervisorExists[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('default_supervisor', '')`);
+        }
         const donationNote = this.db.exec(`SELECT value FROM settings WHERE key = 'donation_note'`);
         if (!donationNote.length || !donationNote[0].values.length) {
             this.db.run(`INSERT INTO settings (key, value) VALUES ('donation_note', '此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。')`);
+        }
+        const expenseNote = this.db.exec(`SELECT value FROM settings WHERE key = 'expense_note'`);
+        if (!expenseNote.length || !expenseNote[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('expense_note', '1.本支出證明單，經核驗無誤後始得支付。\n2.發票或收據須有指定格式並留存聯。\n3.附件請黏貼於黏貼憑證用紙，黏貼時請對齊左邊。')`);
         }
         const laborNote = this.db.exec(`SELECT value FROM settings WHERE key = 'labor_note'`);
         if (!laborNote.length || !laborNote[0].values.length) {
@@ -123,7 +143,7 @@ const app = {
         document.querySelectorAll('.nav-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.view === view);
         });
-        ['donation', 'profiles', 'records', 'labor', 'labor-records', 'settings'].forEach(v => {
+        ['donation', 'profiles', 'records', 'labor', 'labor-records', 'expense', 'expense-records', 'settings'].forEach(v => {
             document.getElementById(`view-${v}`).classList.toggle('d-none', v !== view);
         });
         this.renderCurrentView();
@@ -136,6 +156,8 @@ const app = {
             case 'records': this.renderRecords(); break;
             case 'labor': this.renderLaborForm(); break;
             case 'labor-records': this.renderLaborRecords(); break;
+            case 'expense': this.renderExpenseForm(); break;
+            case 'expense-records': this.renderExpenseRecords(); break;
             case 'settings': this.renderSettings(); break;
         }
     },
@@ -1346,11 +1368,441 @@ const app = {
         URL.revokeObjectURL(url);
     },
 
+    renderExpenseForm() {
+        const today = new Date().toISOString().slice(0, 10);
+        const officeName = this.getSetting('office_name');
+        const defaultHandler = this.getSetting('default_handler');
+        const defaultSupervisor = this.getSetting('default_supervisor');
+        const container = document.getElementById('view-expense');
+        container.innerHTML = `
+            <div class="form-section">
+                <div class="form-section-title">${this.escHtml(officeName)}支出證明單</div>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">日期</label>
+                        <input type="date" class="form-control" id="e-date" value="${today}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">經手人</label>
+                        <input type="text" class="form-control" id="e-handler" value="${this.escAttr(defaultHandler)}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">主管</label>
+                        <input type="text" class="form-control" id="e-supervisor" value="${this.escAttr(defaultSupervisor)}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">支付方式</label>
+                        <select class="form-select" id="e-payment-method">
+                            <option value="cash">現金</option>
+                            <option value="transfer">匯款</option>
+                            <option value="bank_transfer">轉帳</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="form-section-title">支出項目 <span class="text-muted small">（單位：新台幣元）</span></div>
+                <div id="expense-items">
+                    <div class="row g-2 mb-2 expense-item-row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control form-control-sm" placeholder="用途說明">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control form-control-sm" placeholder="數量" min="1" value="1" onchange="app.calcExpenseTotal()">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control form-control-sm" placeholder="單價" min="0" onchange="app.calcExpenseTotal()">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control form-control-sm" placeholder="發票或收據號碼">
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-sm btn-outline-danger" onclick="app.removeExpenseItem(this)" title="刪除"><i class="bi bi-x"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary mt-1" onclick="app.addExpenseItem()">
+                    <i class="bi bi-plus"></i> 新增項目
+                </button>
+                <div class="mt-3 fs-5">
+                    合計：<strong id="e-total-display">0</strong> 元
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="app.saveExpense()">
+                    <i class="bi bi-save"></i> 儲存支出證明單
+                </button>
+                <button class="btn btn-outline-secondary" onclick="app.resetExpenseForm()">
+                    <i class="bi bi-arrow-counterclockwise"></i> 清除表單
+                </button>
+            </div>
+        `;
+    },
+
+    addExpenseItem() {
+        const row = document.createElement('div');
+        row.className = 'row g-2 mb-2 expense-item-row';
+        row.innerHTML = `
+            <div class="col-md-4">
+                <input type="text" class="form-control form-control-sm" placeholder="用途說明">
+            </div>
+            <div class="col-md-2">
+                <input type="number" class="form-control form-control-sm" placeholder="數量" min="1" value="1" onchange="app.calcExpenseTotal()">
+            </div>
+            <div class="col-md-2">
+                <input type="number" class="form-control form-control-sm" placeholder="單價" min="0" onchange="app.calcExpenseTotal()">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control form-control-sm" placeholder="發票或收據號碼">
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-sm btn-outline-danger" onclick="app.removeExpenseItem(this)" title="刪除"><i class="bi bi-x"></i></button>
+            </div>
+        `;
+        document.getElementById('expense-items').appendChild(row);
+    },
+
+    removeExpenseItem(btn) {
+        const rows = document.querySelectorAll('.expense-item-row');
+        if (rows.length <= 1) return;
+        btn.closest('.expense-item-row').remove();
+        this.calcExpenseTotal();
+    },
+
+    calcExpenseTotal() {
+        let total = 0;
+        document.querySelectorAll('.expense-item-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const qty = parseInt(inputs[1].value) || 0;
+            const price = parseInt(inputs[2].value) || 0;
+            total += qty * price;
+        });
+        document.getElementById('e-total-display').textContent = total.toLocaleString();
+    },
+
+    saveExpense() {
+        const date = this.isoToRoc(document.getElementById('e-date').value.trim());
+        if (!date) { alert('請選擇日期'); return; }
+
+        const items = [];
+        let total = 0;
+        document.querySelectorAll('.expense-item-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const purpose = inputs[0].value.trim();
+            const qty = parseInt(inputs[1].value) || 0;
+            const price = parseInt(inputs[2].value) || 0;
+            const invoice = inputs[3].value.trim();
+            if (purpose || price > 0) {
+                items.push({ purpose, qty, price, subtotal: qty * price, invoice });
+                total += qty * price;
+            }
+        });
+
+        if (!items.length || total <= 0) { alert('請輸入至少一筆支出項目'); return; }
+
+        const handler = document.getElementById('e-handler').value.trim();
+        const supervisor = document.getElementById('e-supervisor').value.trim();
+        const paymentMethod = document.getElementById('e-payment-method').value;
+
+        this.db.run(
+            `INSERT INTO expenses (expense_date, items, total_amount, payment_method, handler, supervisor) VALUES (?, ?, ?, ?, ?, ?)`,
+            [date, JSON.stringify(items), total, paymentMethod, handler, supervisor]
+        );
+        this.save();
+        alert('支出證明單已儲存！');
+        this.resetExpenseForm();
+    },
+
+    resetExpenseForm() {
+        this.renderExpenseForm();
+    },
+
+    renderExpenseRecords() {
+        const container = document.getElementById('view-expense-records');
+        const results = this.db.exec(`
+            SELECT id, expense_date, items, total_amount, payment_method, handler, supervisor
+            FROM expenses ORDER BY created_at DESC
+        `);
+
+        let html = `<div class="form-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-section-title mb-0">支出紀錄</div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-success btn-sm" onclick="app.exportExpenseCSV()">
+                        <i class="bi bi-filetype-csv"></i> 匯出 CSV
+                    </button>
+                </div>
+            </div>`;
+
+        if (!results.length || !results[0].values.length) {
+            html += `<p class="text-muted">尚無支出紀錄</p>`;
+        } else {
+            const totalAmount = results[0].values.reduce((sum, r) => sum + r[3], 0);
+            const totalCount = results[0].values.length;
+            html += `<div class="alert alert-info">共 ${totalCount} 筆，總金額 NT$ ${totalAmount.toLocaleString()}</div>`;
+            html += `<div class="table-responsive"><table class="table table-hover">
+                <thead><tr>
+                    <th>日期</th><th>用途摘要</th><th>合計</th><th>支付方式</th><th>經手人</th><th></th>
+                </tr></thead><tbody>`;
+            results[0].values.forEach(row => {
+                const [id, date, itemsJson, total, payMethod, handler] = row;
+                const items = JSON.parse(itemsJson);
+                const summary = items.map(i => i.purpose).filter(Boolean).join('、');
+                const payLabels = { cash: '現金', transfer: '匯款', bank_transfer: '轉帳' };
+                html += `<tr>
+                    <td>${this.escHtml(date)}</td>
+                    <td>${this.escHtml(summary || '—')}</td>
+                    <td class="text-end">${total.toLocaleString()}</td>
+                    <td>${payLabels[payMethod] || payMethod}</td>
+                    <td>${this.escHtml(handler || '')}</td>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="app.printExpense(${id})" title="列印"><i class="bi bi-printer"></i></button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="app.editExpense(${id})" title="編輯"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteExpense(${id})" title="刪除"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+            html += `</tbody></table></div>`;
+        }
+        html += `</div>`;
+        container.innerHTML = html;
+    },
+
+    editExpense(id) {
+        const results = this.db.exec(`SELECT expense_date, items, total_amount, payment_method, handler, supervisor FROM expenses WHERE id = ?`, [id]);
+        if (!results.length) return;
+        const [date, itemsJson, total, payMethod, handler, supervisor] = results[0].values[0];
+        const items = JSON.parse(itemsJson);
+
+        document.getElementById('editModalTitle').textContent = '編輯支出證明單';
+        let itemsHtml = items.map((item, i) => `
+            <div class="row g-2 mb-2">
+                <div class="col-md-4"><input type="text" class="form-control form-control-sm ee-purpose" value="${this.escAttr(item.purpose || '')}"></div>
+                <div class="col-md-2"><input type="number" class="form-control form-control-sm ee-qty" value="${item.qty}"></div>
+                <div class="col-md-2"><input type="number" class="form-control form-control-sm ee-price" value="${item.price}"></div>
+                <div class="col-md-4"><input type="text" class="form-control form-control-sm ee-invoice" value="${this.escAttr(item.invoice || '')}"></div>
+            </div>
+        `).join('');
+
+        document.getElementById('editModalBody').innerHTML = `
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">日期</label>
+                    <input type="date" class="form-control" id="ee-date" value="${this.escAttr(this.rocToIso(date))}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">經手人</label>
+                    <input type="text" class="form-control" id="ee-handler" value="${this.escAttr(handler || '')}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">主管</label>
+                    <input type="text" class="form-control" id="ee-supervisor" value="${this.escAttr(supervisor || '')}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">支付方式</label>
+                    <select class="form-select" id="ee-payment-method">
+                        <option value="cash" ${payMethod === 'cash' ? 'selected' : ''}>現金</option>
+                        <option value="transfer" ${payMethod === 'transfer' ? 'selected' : ''}>匯款</option>
+                        <option value="bank_transfer" ${payMethod === 'bank_transfer' ? 'selected' : ''}>轉帳</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label class="form-label">支出項目</label>
+                <div class="row g-2 mb-1">
+                    <div class="col-md-4"><small class="text-muted">用途說明</small></div>
+                    <div class="col-md-2"><small class="text-muted">數量</small></div>
+                    <div class="col-md-2"><small class="text-muted">單價</small></div>
+                    <div class="col-md-4"><small class="text-muted">發票或收據號碼</small></div>
+                </div>
+                ${itemsHtml}
+            </div>
+        `;
+
+        const deleteBtn = document.getElementById('editModalDelete');
+        deleteBtn.classList.remove('d-none');
+        this.editingRecordId = id;
+
+        const saveBtn = document.getElementById('editModalSave');
+        saveBtn.onclick = () => {
+            const newItems = [];
+            let newTotal = 0;
+            const purposes = document.querySelectorAll('.ee-purpose');
+            const qtys = document.querySelectorAll('.ee-qty');
+            const prices = document.querySelectorAll('.ee-price');
+            const invoices = document.querySelectorAll('.ee-invoice');
+            for (let i = 0; i < purposes.length; i++) {
+                const qty = parseInt(qtys[i].value) || 0;
+                const price = parseInt(prices[i].value) || 0;
+                newItems.push({ purpose: purposes[i].value.trim(), qty, price, subtotal: qty * price, invoice: invoices[i].value.trim() });
+                newTotal += qty * price;
+            }
+            this.db.run(
+                `UPDATE expenses SET expense_date=?, items=?, total_amount=?, payment_method=?, handler=?, supervisor=? WHERE id=?`,
+                [
+                    this.isoToRoc(document.getElementById('ee-date').value.trim()),
+                    JSON.stringify(newItems), newTotal,
+                    document.getElementById('ee-payment-method').value,
+                    document.getElementById('ee-handler').value.trim(),
+                    document.getElementById('ee-supervisor').value.trim(),
+                    id
+                ]
+            );
+            this.save();
+            this.editModal.hide();
+            this.renderExpenseRecords();
+        };
+
+        deleteBtn.onclick = () => {
+            if (confirm('確定刪除此支出證明單？')) {
+                this.db.run(`DELETE FROM expenses WHERE id = ?`, [id]);
+                this.save();
+                this.editModal.hide();
+                this.renderExpenseRecords();
+            }
+        };
+
+        this.editModal.show();
+    },
+
+    deleteExpense(id) {
+        if (!confirm('確定刪除此支出證明單？')) return;
+        this.db.run(`DELETE FROM expenses WHERE id = ?`, [id]);
+        this.save();
+        this.renderExpenseRecords();
+    },
+
+    buildExpensePrintHalf(officeName, row, isTop) {
+        const [date, itemsJson, total, payMethod, handler, supervisor] = row;
+        const items = JSON.parse(itemsJson);
+        const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        const dateDisplay = dateParts ? `${dateParts[1]}年&nbsp;&nbsp;${dateParts[2]}月&nbsp;&nbsp;${dateParts[3]}日` : this.escHtml(date);
+        const copyLabel = isTop ? '存根聯' : '收執聯';
+        const payLabels = { cash: '現金', transfer: '匯款', bank_transfer: '轉帳' };
+        const payCash = payMethod === 'cash' ? '☑' : '☐';
+        const payTransfer = payMethod === 'transfer' ? '☑' : '☐';
+        const payBank = payMethod === 'bank_transfer' ? '☑' : '☐';
+
+        let itemRows = items.map(item => `
+            <tr>
+                <td>${this.escHtml(item.purpose || '')}</td>
+                <td style="text-align:center">${item.qty}</td>
+                <td style="text-align:right">${item.price.toLocaleString()}</td>
+                <td style="text-align:right">${item.subtotal.toLocaleString()}</td>
+                <td>${this.escHtml(item.invoice || '')}</td>
+            </tr>
+        `).join('');
+        const emptyRows = Math.max(0, 3 - items.length);
+        for (let i = 0; i < emptyRows; i++) {
+            itemRows += `<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>`;
+        }
+
+        return `<div class="print-half" style="font-size:0.82rem">
+            <div style="text-align:center;font-weight:bold;font-size:0.9rem;margin-bottom:2px">
+                ${this.escHtml(officeName)}支出證明單<span style="font-size:0.75rem;font-weight:normal;margin-left:8px">（${copyLabel}）</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px">
+                <span>${dateDisplay}</span>
+                <span>單位：新台幣元</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:30%">用途說明</th>
+                        <th style="width:10%;text-align:center">數量</th>
+                        <th style="width:15%;text-align:right">單價</th>
+                        <th style="width:15%;text-align:right">複價</th>
+                        <th style="width:30%">統一發票或收據號碼</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${itemRows}
+                    <tr>
+                        <th style="text-align:center">合計</th>
+                        <td colspan="2"></td>
+                        <td style="text-align:right;font-weight:bold">${total.toLocaleString()}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="margin-top:4px">
+                <tr>
+                    <th style="width:20%">支付方式</th>
+                    <td colspan="3">${payCash} 現金 &nbsp; ${payTransfer} 匯款 &nbsp; ${payBank} 轉帳</td>
+                </tr>
+            </table>
+            ${isTop ? `
+            <div style="font-size:0.65rem;margin-top:3px;line-height:1.4">
+                <div>備註：</div>
+                ${this.getSetting('expense_note').split('\n').map(line => `<div>${this.escHtml(line)}</div>`).join('')}
+            </div>` : ''}
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.85rem">
+                <span>經手人：${this.escHtml(handler || '')}＿＿＿＿</span>
+                <span>主管：${this.escHtml(supervisor || '')}＿＿＿＿</span>
+            </div>
+        </div>`;
+    },
+
+    printExpense(id) {
+        const results = this.db.exec(`
+            SELECT expense_date, items, total_amount, payment_method, handler, supervisor
+            FROM expenses WHERE id = ?
+        `, [id]);
+        if (!results.length || !results[0].values.length) return;
+
+        const officeName = this.getSetting('office_name');
+        const row = results[0].values[0];
+        const printArea = document.getElementById('printArea');
+        printArea.innerHTML = `<div class="print-form">
+            ${this.buildExpensePrintHalf(officeName, row, true)}
+            <hr class="print-cut-line">
+            ${this.buildExpensePrintHalf(officeName, row, false)}
+        </div>`;
+        printArea.classList.remove('d-none');
+        window.print();
+        printArea.classList.add('d-none');
+    },
+
+    exportExpenseCSV() {
+        const results = this.db.exec(`
+            SELECT expense_date, items, total_amount, payment_method, handler, supervisor
+            FROM expenses ORDER BY created_at DESC
+        `);
+        if (!results.length || !results[0].values.length) {
+            alert('無資料可匯出');
+            return;
+        }
+        const payLabels = { cash: '現金', transfer: '匯款', bank_transfer: '轉帳' };
+        const headers = ['日期', '用途說明', '數量', '單價', '複價', '發票或收據號碼', '合計', '支付方式', '經手人', '主管'];
+        const rows = [];
+        results[0].values.forEach(row => {
+            const [date, itemsJson, total, payMethod, handler, supervisor] = row;
+            const items = JSON.parse(itemsJson);
+            items.forEach((item, i) => {
+                rows.push([date, item.purpose, item.qty, item.price, item.subtotal, item.invoice, i === 0 ? total : '', i === 0 ? (payLabels[payMethod] || payMethod) : '', i === 0 ? handler : '', i === 0 ? supervisor : '']);
+            });
+        });
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(','))
+        ].join('\n');
+        const bom = '﻿';
+        const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `expenses_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    },
+
     renderSettings() {
         const officeName = this.getSetting('office_name');
         const defaultHandler = this.getSetting('default_handler');
+        const defaultSupervisor = this.getSetting('default_supervisor');
         const donationNote = this.getSetting('donation_note');
         const laborNote = this.getSetting('labor_note');
+        const expenseNote = this.getSetting('expense_note');
         const container = document.getElementById('view-settings');
         container.innerHTML = `
             <div class="form-section">
@@ -1361,10 +1813,13 @@ const app = {
                         <input type="text" class="form-control" id="s-office-name" value="${this.escAttr(officeName)}" placeholder="例如：王小明競選辦公室">
                         <div class="form-text">此名稱會顯示在捐款資料表標題及列印表單上</div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label class="form-label">預設經手人</label>
                         <input type="text" class="form-control" id="s-default-handler" value="${this.escAttr(defaultHandler)}" placeholder="經手人姓名">
-                        <div class="form-text">新增捐款時自動帶入此經手人名稱</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">預設主管</label>
+                        <input type="text" class="form-control" id="s-default-supervisor" value="${this.escAttr(defaultSupervisor)}" placeholder="主管姓名">
                     </div>
                     <div class="col-12">
                         <label class="form-label">捐款資料表備註</label>
@@ -1375,6 +1830,11 @@ const app = {
                         <label class="form-label">勞務報酬單備註</label>
                         <textarea class="form-control" id="s-labor-note" rows="4">${this.escHtml(laborNote)}</textarea>
                         <div class="form-text">顯示在勞務報酬單列印表單底部，每行一條備註</div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">支出證明單備註</label>
+                        <textarea class="form-control" id="s-expense-note" rows="3">${this.escHtml(expenseNote)}</textarea>
+                        <div class="form-text">顯示在支出證明單列印表單底部，每行一條備註</div>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -1394,8 +1854,10 @@ const app = {
         }
         this.setSetting('office_name', officeName);
         this.setSetting('default_handler', document.getElementById('s-default-handler').value.trim());
+        this.setSetting('default_supervisor', document.getElementById('s-default-supervisor').value.trim());
         this.setSetting('donation_note', document.getElementById('s-donation-note').value.trim());
         this.setSetting('labor_note', document.getElementById('s-labor-note').value.trim());
+        this.setSetting('expense_note', document.getElementById('s-expense-note').value.trim());
         alert('設定已儲存！');
         this.renderSettings();
     },
