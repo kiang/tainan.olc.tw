@@ -85,6 +85,14 @@ const app = {
         if (!handlerExists.length || !handlerExists[0].values.length) {
             this.db.run(`INSERT INTO settings (key, value) VALUES ('default_handler', '')`);
         }
+        const donationNote = this.db.exec(`SELECT value FROM settings WHERE key = 'donation_note'`);
+        if (!donationNote.length || !donationNote[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('donation_note', '此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。')`);
+        }
+        const laborNote = this.db.exec(`SELECT value FROM settings WHERE key = 'labor_note'`);
+        if (!laborNote.length || !laborNote[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('labor_note', '1.勞務報酬單請確實並親筆填寫，文件內容不可塗改。\n2.請務必於115年度綜合所得稅申報時自行加計本筆所得，避免違反所得稅法規定，因競選辦公室依以個人名義無需辦理扣繳申報，故所得稅無法自動匯入。\n3.本人確保所提供之資料並無不實之情事，亦無侵害他人權益或偽造偽造，如遭受他人質疑，若有不實，願自負一切民、刑事責任及賠償責任。經本人簽名即代表確認資料填寫無誤。')`);
+        }
         this.save();
     },
 
@@ -220,7 +228,7 @@ const app = {
                         </div>
                     </div>
                     <div class="mt-2 text-muted small">
-                        此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。
+                        ${this.escHtml(this.getSetting('donation_note'))}
                     </div>
                 </div>
             </div>
@@ -690,7 +698,7 @@ const app = {
                 </tr>
             </table>
             <p style="font-size:0.8rem;margin:4px 0 0;color:#666">
-                此非捐款收據，如需捐款收據請填寫上方寄件資訊，因捐款仍需進行查證事宜，將盡速寄件予您，感謝您的支持與鼓勵。
+                ${this.escHtml(this.getSetting('donation_note'))}
             </p>
         </div>`;
         return html;
@@ -1231,9 +1239,7 @@ const app = {
             </table>
             <div style="font-size:0.65rem;margin-top:3px;line-height:1.4">
                 <div>備註：</div>
-                <div>1.勞務報酬單請確實並親筆填寫，文件內容不可塗改。</div>
-                <div>2.請務必於115年度綜合所得稅申報時自行加計本筆所得，避免違反所得稅法規定，因競選辦公室依以個人名義無需辦理扣繳申報，故所得稅無法自動匯入。</div>
-                <div>3.本人確保所提供之資料並無不實之情事，亦無侵害他人權益或偽造偽造，如遭受他人質疑，若有不實，願自負一切民、刑事責任及賠償責任。經本人簽名即代表確認資料填寫無誤。</div>
+                ${this.getSetting('labor_note').split('\n').map(line => `<div>${this.escHtml(line)}</div>`).join('')}
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:3px;font-size:0.85rem">
                 <table style="width:auto"><tr>
@@ -1331,6 +1337,8 @@ const app = {
     renderSettings() {
         const officeName = this.getSetting('office_name');
         const defaultHandler = this.getSetting('default_handler');
+        const donationNote = this.getSetting('donation_note');
+        const laborNote = this.getSetting('labor_note');
         const container = document.getElementById('view-settings');
         container.innerHTML = `
             <div class="form-section">
@@ -1345,6 +1353,16 @@ const app = {
                         <label class="form-label">預設經手人</label>
                         <input type="text" class="form-control" id="s-default-handler" value="${this.escAttr(defaultHandler)}" placeholder="經手人姓名">
                         <div class="form-text">新增捐款時自動帶入此經手人名稱</div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">捐款資料表備註</label>
+                        <textarea class="form-control" id="s-donation-note" rows="2">${this.escHtml(donationNote)}</textarea>
+                        <div class="form-text">顯示在捐款資料表及列印表單底部</div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">勞務報酬單備註</label>
+                        <textarea class="form-control" id="s-labor-note" rows="4">${this.escHtml(laborNote)}</textarea>
+                        <div class="form-text">顯示在勞務報酬單列印表單底部，每行一條備註</div>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -1364,6 +1382,8 @@ const app = {
         }
         this.setSetting('office_name', officeName);
         this.setSetting('default_handler', document.getElementById('s-default-handler').value.trim());
+        this.setSetting('donation_note', document.getElementById('s-donation-note').value.trim());
+        this.setSetting('labor_note', document.getElementById('s-labor-note').value.trim());
         alert('設定已儲存！');
         this.renderSettings();
     },
