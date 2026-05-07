@@ -56,11 +56,22 @@ const app = {
                 value TEXT
             )
         `);
+        this.migrateColumn('donations', 'handler', 'TEXT');
         const existing = this.db.exec(`SELECT value FROM settings WHERE key = 'office_name'`);
         if (!existing.length || !existing[0].values.length) {
             this.db.run(`INSERT INTO settings (key, value) VALUES ('office_name', '○○○競選辦公室')`);
         }
+        const handlerExists = this.db.exec(`SELECT value FROM settings WHERE key = 'default_handler'`);
+        if (!handlerExists.length || !handlerExists[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('default_handler', '')`);
+        }
         this.save();
+    },
+
+    migrateColumn(table, column, type) {
+        const cols = this.db.exec(`PRAGMA table_info(${table})`);
+        if (cols.length && cols[0].values.some(c => c[1] === column)) return;
+        this.db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
     },
 
     getSetting(key) {
@@ -107,20 +118,25 @@ const app = {
         const defaultDate = `${rocYear}-${month}-${day}`;
 
         const officeName = this.getSetting('office_name');
+        const defaultHandler = this.getSetting('default_handler');
         const container = document.getElementById('view-donation');
         container.innerHTML = `
             <div class="form-section">
                 <div class="form-section-title">${this.escHtml(officeName)}現金捐款資料表</div>
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">捐款日期</label>
                         <input type="text" class="form-control" id="d-date" value="${defaultDate}" placeholder="${rocYear}年MM月DD日">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">金額</label>
                         <input type="number" class="form-control" id="d-amount" min="1" placeholder="請輸入金額">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label">經手人</label>
+                        <input type="text" class="form-control" id="d-handler" value="${this.escAttr(defaultHandler)}" placeholder="經手人姓名">
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label">是否匿名捐款</label>
                         <div class="d-flex gap-3 mt-2">
                             <div class="form-check">
@@ -277,10 +293,11 @@ const app = {
         }
 
         const preferEmail = !isAnonymous && document.getElementById('d-prefer-email').checked ? 1 : 0;
+        const handler = document.getElementById('d-handler').value.trim();
 
         this.db.run(
-            `INSERT INTO donations (profile_id, amount, donation_date, is_anonymous, prefer_email_receipt) VALUES (?, ?, ?, ?, ?)`,
-            [profileId, amount, date, isAnonymous ? 1 : 0, preferEmail]
+            `INSERT INTO donations (profile_id, amount, donation_date, is_anonymous, prefer_email_receipt, handler) VALUES (?, ?, ?, ?, ?, ?)`,
+            [profileId, amount, date, isAnonymous ? 1 : 0, preferEmail, handler]
         );
         this.save();
         alert('捐款紀錄已儲存！');
@@ -432,7 +449,7 @@ const app = {
         const container = document.getElementById('view-records');
         const results = this.db.exec(`
             SELECT d.id, d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt,
-                   p.name, p.id_number, p.address, p.email, p.mail_address
+                   d.handler, p.name, p.id_number, p.address, p.email, p.mail_address
             FROM donations d
             LEFT JOIN profiles p ON d.profile_id = p.id
             ORDER BY d.created_at DESC
@@ -457,15 +474,16 @@ const app = {
 
             html += `<div class="table-responsive"><table class="table table-hover">
                 <thead><tr>
-                    <th>日期</th><th>金額</th><th>捐款人</th><th>身分證字號</th><th>匿名</th><th></th>
+                    <th>日期</th><th>金額</th><th>捐款人</th><th>身分證字號</th><th>經手人</th><th>匿名</th><th></th>
                 </tr></thead><tbody>`;
             results[0].values.forEach(row => {
-                const [id, amount, date, isAnon, preferEmail, name, idNum] = row;
+                const [id, amount, date, isAnon, preferEmail, handler, name, idNum] = row;
                 html += `<tr>
                     <td>${this.escHtml(date)}</td>
                     <td class="text-end">${amount.toLocaleString()}</td>
                     <td>${isAnon ? '<span class="badge-anonymous">匿名</span>' : this.escHtml(name || '—')}</td>
                     <td>${isAnon ? '' : this.escHtml(this.maskIdNumber(idNum))}</td>
+                    <td>${this.escHtml(handler || '')}</td>
                     <td>${isAnon ? '是' : '否'}</td>
                     <td class="text-nowrap">
                         <button class="btn btn-sm btn-outline-secondary" onclick="app.printDonation(${id})" title="列印"><i class="bi bi-printer"></i></button>
@@ -482,14 +500,14 @@ const app = {
 
     editDonation(id) {
         const results = this.db.exec(`
-            SELECT d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt, d.profile_id,
+            SELECT d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt, d.profile_id, d.handler,
                    p.name, p.id_number, p.address, p.email, p.mail_address
             FROM donations d
             LEFT JOIN profiles p ON d.profile_id = p.id
             WHERE d.id = ?
         `, [id]);
         if (!results.length) return;
-        const [amount, date, isAnon, preferEmail, profileId, name, idNum, address, email, mailAddr] = results[0].values[0];
+        const [amount, date, isAnon, preferEmail, profileId, handler, name, idNum, address, email, mailAddr] = results[0].values[0];
 
         document.getElementById('editModalTitle').textContent = '編輯捐款紀錄';
         document.getElementById('editModalBody').innerHTML = `
@@ -503,6 +521,10 @@ const app = {
                     <input type="number" class="form-control" id="ed-amount" value="${amount}">
                 </div>
                 <div class="col-md-4">
+                    <label class="form-label">經手人</label>
+                    <input type="text" class="form-control" id="ed-handler" value="${this.escAttr(handler || '')}">
+                </div>
+                <div class="col-md-4">
                     <label class="form-label">匿名捐款</label>
                     <select class="form-select" id="ed-anonymous">
                         <option value="0" ${!isAnon ? 'selected' : ''}>否</option>
@@ -510,11 +532,11 @@ const app = {
                     </select>
                 </div>
                 ${!isAnon ? `
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label">姓名</label>
                     <input type="text" class="form-control" id="ed-name" value="${this.escAttr(name || '')}">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label">身分證字號</label>
                     <input type="text" class="form-control" id="ed-idnumber" value="${this.escAttr(idNum || '')}">
                 </div>
@@ -535,10 +557,11 @@ const app = {
             const newAmount = parseInt(document.getElementById('ed-amount').value);
             const newDate = document.getElementById('ed-date').value.trim();
             const newAnon = document.getElementById('ed-anonymous').value === '1' ? 1 : 0;
+            const newHandler = document.getElementById('ed-handler').value.trim();
 
             this.db.run(
-                `UPDATE donations SET amount=?, donation_date=?, is_anonymous=? WHERE id=?`,
-                [newAmount, newDate, newAnon, id]
+                `UPDATE donations SET amount=?, donation_date=?, is_anonymous=?, handler=? WHERE id=?`,
+                [newAmount, newDate, newAnon, newHandler, id]
             );
 
             if (!newAnon && profileId) {
@@ -581,7 +604,7 @@ const app = {
     },
 
     buildPrintHalf(officeName, row, isTop) {
-        const [amount, date, isAnon, preferEmail, name, idNum, address, email, mailAddr] = row;
+        const [amount, date, isAnon, preferEmail, handler, name, idNum, address, email, mailAddr] = row;
         const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
         const dateDisplay = dateParts ? `${dateParts[1]}年 ${dateParts[2]}月 ${dateParts[3]}日` : this.escHtml(date);
 
@@ -589,7 +612,7 @@ const app = {
             <h6 style="text-align:center;margin:0 0 4px">${this.escHtml(officeName)}現金捐款資料表</h6>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px">
                 ${isTop ? '<span>一萬元以下專用</span>' : '<span></span>'}
-                <span>捐款日期 &nbsp; ${dateDisplay}</span>
+                <span>經手人：${this.escHtml(handler || '')} &nbsp;&nbsp; 捐款日期 &nbsp; ${dateDisplay}</span>
             </div>
             <table>
                 <tr>
@@ -634,7 +657,7 @@ const app = {
 
     printDonation(id) {
         const results = this.db.exec(`
-            SELECT d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt,
+            SELECT d.amount, d.donation_date, d.is_anonymous, d.prefer_email_receipt, d.handler,
                    p.name, p.id_number, p.address, p.email, p.mail_address
             FROM donations d
             LEFT JOIN profiles p ON d.profile_id = p.id
@@ -657,7 +680,7 @@ const app = {
 
     exportCSV() {
         const results = this.db.exec(`
-            SELECT d.donation_date, d.amount, d.is_anonymous, d.prefer_email_receipt,
+            SELECT d.donation_date, d.amount, d.is_anonymous, d.prefer_email_receipt, d.handler,
                    p.name, p.id_number, p.address, p.email, p.mail_address
             FROM donations d
             LEFT JOIN profiles p ON d.profile_id = p.id
@@ -668,7 +691,7 @@ const app = {
             return;
         }
 
-        const headers = ['捐款日期', '金額', '匿名', '電子收據', '姓名', '身分證字號', '戶籍地址', '電子信箱', '收件地址'];
+        const headers = ['捐款日期', '金額', '匿名', '電子收據', '經手人', '姓名', '身分證字號', '戶籍地址', '電子信箱', '收件地址'];
         const csvContent = [
             headers.join(','),
             ...results[0].values.map(row =>
@@ -723,6 +746,7 @@ const app = {
 
     renderSettings() {
         const officeName = this.getSetting('office_name');
+        const defaultHandler = this.getSetting('default_handler');
         const container = document.getElementById('view-settings');
         container.innerHTML = `
             <div class="form-section">
@@ -732,6 +756,11 @@ const app = {
                         <label class="form-label">競選辦公室名稱</label>
                         <input type="text" class="form-control" id="s-office-name" value="${this.escAttr(officeName)}" placeholder="例如：王小明競選辦公室">
                         <div class="form-text">此名稱會顯示在捐款資料表標題及列印表單上</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">預設經手人</label>
+                        <input type="text" class="form-control" id="s-default-handler" value="${this.escAttr(defaultHandler)}" placeholder="經手人姓名">
+                        <div class="form-text">新增捐款時自動帶入此經手人名稱</div>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -750,6 +779,7 @@ const app = {
             return;
         }
         this.setSetting('office_name', officeName);
+        this.setSetting('default_handler', document.getElementById('s-default-handler').value.trim());
         alert('設定已儲存！');
         this.renderSettings();
     },
