@@ -60,7 +60,7 @@ const app = {
                 service_type TEXT,
                 service_content TEXT,
                 amount INTEGER NOT NULL,
-                income_type TEXT DEFAULT '9B',
+                income_type TEXT DEFAULT '928Z',
                 payment_method TEXT DEFAULT 'cash',
                 bank_name TEXT,
                 bank_branch TEXT,
@@ -852,7 +852,7 @@ const app = {
                         <select class="form-select" id="l-income-type">
                             <option value="50">非固定薪資 (50)</option>
                             <option value="9A" selected>執行業務報酬 (9A)</option>
-                            <option value="9B">其他所得 (9B2)</option>
+                            <option value="928Z">其他所得 (928Z)</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -1103,7 +1103,7 @@ const app = {
                     <select class="form-select" id="el-income-type">
                         <option value="50" ${incType === '50' ? 'selected' : ''}>非固定薪資 (50)</option>
                         <option value="9A" ${incType === '9A' ? 'selected' : ''}>執行業務報酬 (9A)</option>
-                        <option value="9B" ${incType === '9B' ? 'selected' : ''}>其他所得 (9B2)</option>
+                        <option value="928Z" ${incType === '928Z' ? 'selected' : ''}>其他所得 (928Z)</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -1180,55 +1180,98 @@ const app = {
         this.renderLaborRecords();
     },
 
-    buildLaborPrintHalf(officeName, row, isTop) {
+    buildLaborPrintTop(officeName, row) {
         const [amount, date, sType, sContent, incType, payMethod, bankName, bankBranch, bankAccount, handler, name, idNum, address, email, phone, contactAddr] = row;
         const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
-        const dateDisplay = dateParts ? `${dateParts[1]}年 ${dateParts[2]}月 ${dateParts[3]}日` : this.escHtml(date);
-        const copyLabel = isTop ? '存根聯' : '收執聯';
+        const dateDisplay = dateParts ? `${dateParts[1]}年&nbsp;&nbsp;${dateParts[2]}月&nbsp;&nbsp;${dateParts[3]}日` : this.escHtml(date);
 
-        const incTypeLabels = { '50': '非固定薪資 (50)', '9A': '執行業務報酬 (9A)', '9B': '其他所得 (9B2)' };
-        const incLabel = incTypeLabels[incType] || incType || '';
+        const inc50 = incType === '50' ? '☑' : '☐';
+        const inc9A = incType === '9A' ? '☑' : '☐';
+        const inc9B = incType === '928Z' ? '☑' : '☐';
+        const payCash = payMethod === 'cash' ? '☑' : '☐';
+        const payTransfer = payMethod === 'transfer' ? '☑' : '☐';
 
-        let html = `<div class="print-half">
-            <h6 style="text-align:center;margin:0 0 4px">${this.escHtml(officeName)}勞務報酬單<span style="font-size:0.8rem;margin-left:8px;font-weight:normal">（${copyLabel}）</span></h6>
-            <div style="display:flex;justify-content:flex-end;font-size:0.85rem;margin-bottom:4px">
-                <span>經手人：${this.escHtml(handler || '')} &nbsp;&nbsp; 申請日期 &nbsp; ${dateDisplay}</span>
+        return `<div class="print-half" style="font-size:0.82rem">
+            <div style="text-align:center;background:#336;color:#fff;padding:3px 0;font-weight:bold;font-size:0.9rem;margin-bottom:0">
+                ${this.escHtml(officeName)}勞務報酬單
             </div>
+            <div style="text-align:right;font-size:0.8rem;padding:2px 4px">申請日期 &nbsp; ${dateDisplay}</div>
             <table>
-                <tr>
-                    <th>所得人姓名</th><td>${this.escHtml(name || '')}</td>
-                    <th>身分證字號</th><td>${this.escHtml(idNum || '')}</td>
-                </tr>
-                <tr>
-                    <th>連絡電話</th><td>${this.escHtml(phone || '')}</td>
-                    <th>電子郵件</th><td>${this.escHtml(email || '')}</td>
-                </tr>
-                <tr>
-                    <th>戶籍地址</th><td colspan="3">${this.escHtml(address || '')}</td>
-                </tr>
-                <tr>
-                    <th>通訊地址</th><td colspan="3">${this.escHtml(contactAddr || '')}</td>
-                </tr>
+                <tr><th>所得人姓名</th><td>${this.escHtml(name || '')}</td><th>身分證字號</th><td>${this.escHtml(idNum || '')}</td></tr>
+                <tr><th>連絡電話</th><td>${this.escHtml(phone || '')}</td><th>電子郵件</th><td>${this.escHtml(email || '')}</td></tr>
+                <tr><th>戶籍地址</th><td colspan="3">${this.escHtml(address || '')}</td></tr>
+                <tr><th>通訊地址</th><td colspan="3">${this.escHtml(contactAddr || '')}</td></tr>
             </table>
-            <table style="margin-top:6px">
+            <table style="margin-top:4px">
                 <tr>
-                    <th>服務類別</th><td>${this.escHtml(sType || '')}</td>
-                    <th>服務內容</th><td>${this.escHtml(sContent || '')}</td>
+                    <th style="width:15%">服務內容</th><td style="width:35%">${this.escHtml(sContent || '')}</td>
+                    <th style="width:15%">服務類別</th><td style="width:35%">${this.escHtml(sType || '')}</td>
                 </tr>
                 <tr>
                     <th>應領金額</th><td>${amount.toLocaleString()}</td>
-                    <th>所得類別</th><td>${this.escHtml(incLabel)}</td>
+                    <th>所得類別</th>
+                    <td style="font-size:0.75rem">${inc50} 非固定薪資(50)<br>${inc9A} 執行業務報酬(9A)<br>${inc9B} 其他所得(928Z)</td>
                 </tr>
                 <tr>
                     <th>付款方式</th>
-                    <td colspan="3">${payMethod === 'cash' ? '☑ 現金 &nbsp; ☐ 匯款' : '☐ 現金 &nbsp; ☑ 匯款'}${payMethod === 'transfer' ? ` &nbsp; ${this.escHtml(bankName || '')} ${this.escHtml(bankBranch || '')} 分行 &nbsp; 帳號：${this.escHtml(bankAccount || '')}` : ''}</td>
+                    <td colspan="3">${payCash} 現金 &nbsp; ${payTransfer} 匯款<span style="font-size:0.75rem">（未免扣繳得提供銀行存摺封面影本供核對）</span></td>
+                </tr>
+                <tr><th>銀行帳號</th><td colspan="3">${this.escHtml(bankName || '')} &nbsp; ${this.escHtml(bankBranch || '')}分行 &nbsp; 帳號：${this.escHtml(bankAccount || '')}</td></tr>
+            </table>
+            <table style="margin-top:4px">
+                <tr>
+                    <td style="border:1px solid #000;padding:6px;font-size:0.75rem;width:100%">
+                        <div style="text-align:center;margin-bottom:4px">身分證影本黏貼處（無法取得，115年＿月＿日經（簽名）查驗相符）</div>
+                        <div style="display:flex;height:100px">
+                            <div style="flex:1;border-right:1px dashed #999;display:flex;align-items:center;justify-content:center;color:#ccc">正面影本</div>
+                            <div style="flex:1;display:flex;align-items:center;justify-content:center;color:#ccc">反面影本</div>
+                        </div>
+                    </td>
                 </tr>
             </table>
-            <div style="display:flex;justify-content:flex-end;margin-top:8px;font-size:0.85rem">
-                <span>所得人簽章：＿＿＿＿＿＿＿＿</span>
+            <div style="font-size:0.65rem;margin-top:3px;line-height:1.4">
+                <div>備註：</div>
+                <div>1.勞務報酬單請確實並親筆填寫，文件內容不可塗改。</div>
+                <div>2.請務必於115年度綜合所得稅申報時自行加計本筆所得，避免違反所得稅法規定，因競選辦公室依以個人名義無需辦理扣繳申報，故所得稅無法自動匯入。</div>
+                <div>3.本人確保所提供之資料並無不實之情事，亦無侵害他人權益或偽造偽造，如遭受他人質疑，若有不實，願自負一切民、刑事責任及賠償責任。經本人簽名即代表確認資料填寫無誤。</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:3px;font-size:0.85rem">
+                <table style="width:auto"><tr>
+                    <th style="border:1px solid #000;padding:2px 8px">所得人<br>簽章</th>
+                    <td style="border:1px solid #000;padding:2px 8px;min-width:120px"></td>
+                </tr></table>
             </div>
         </div>`;
-        return html;
+    },
+
+    buildLaborPrintBottom(officeName, row) {
+        const [amount, date, sType, sContent, incType, payMethod, bankName, bankBranch, bankAccount, handler, name, idNum, address, email, phone, contactAddr] = row;
+        const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        const dateDisplay = dateParts ? `${dateParts[1]}年&nbsp;&nbsp;${dateParts[2]}月&nbsp;&nbsp;${dateParts[3]}日` : this.escHtml(date);
+
+        const inc50 = incType === '50' ? '☑' : '☐';
+        const inc9A = incType === '9A' ? '☑' : '☐';
+        const inc9B = incType === '928Z' ? '☑' : '☐';
+        const payCash = payMethod === 'cash' ? '☑' : '☐';
+        const payTransfer = payMethod === 'transfer' ? '☑' : '☐';
+
+        return `<div class="print-half" style="font-size:0.82rem">
+            <div style="text-align:center;font-size:0.75rem;margin-bottom:2px">
+                ${this.escHtml(officeName)}勞務報酬（收執聯）
+            </div>
+            <table>
+                <tr><th>服務內容</th><td>${this.escHtml(sContent || '')}</td><th>服務日期</th><td>${dateDisplay}</td></tr>
+                <tr>
+                    <th>應領金額</th><td>${amount.toLocaleString()}</td>
+                    <th>所得類別</th>
+                    <td style="font-size:0.75rem">${inc50} 非固定薪資(50) &nbsp; ${inc9A} 執行業務報酬(9A) &nbsp; ${inc9B} 其他所得(928Z)</td>
+                </tr>
+                <tr>
+                    <th>付款方式</th>
+                    <td colspan="3">${payCash} 現金 &nbsp; ${payTransfer} 匯款<span style="font-size:0.75rem">（未免扣繳得提供銀行存摺封面影本供核對）</span></td>
+                </tr>
+            </table>
+        </div>`;
     },
 
     printLaborPayment(id) {
@@ -1246,9 +1289,9 @@ const app = {
         const row = results[0].values[0];
         const printArea = document.getElementById('printArea');
         printArea.innerHTML = `<div class="print-form">
-            ${this.buildLaborPrintHalf(officeName, row, true)}
+            ${this.buildLaborPrintTop(officeName, row)}
             <hr class="print-cut-line">
-            ${this.buildLaborPrintHalf(officeName, row, false)}
+            ${this.buildLaborPrintBottom(officeName, row)}
         </div>`;
         printArea.classList.remove('d-none');
         window.print();

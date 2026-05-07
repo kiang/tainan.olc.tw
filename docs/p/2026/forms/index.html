@@ -137,10 +137,14 @@
                 width: 100%;
             }
 
-            .print-form th {
-                background: #f0f0f0 !important;
+            .print-form th,
+            .print-form [style*="background"] {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
+            }
+
+            .print-form th {
+                background: #f0f0f0 !important;
             }
         }
 
