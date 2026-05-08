@@ -175,7 +175,7 @@ const app = {
         document.querySelectorAll('.nav-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.view === view);
         });
-        ['donation', 'labor', 'expense', 'inkind', 'writeoff', 'profiles', 'settings'].forEach(v => {
+        ['donation', 'labor', 'expense', 'inkind', 'writeoff', 'docgen', 'profiles', 'settings'].forEach(v => {
             document.getElementById(`view-${v}`).classList.toggle('d-none', v !== view);
         });
         this.renderCurrentView();
@@ -188,6 +188,7 @@ const app = {
             case 'expense': this.renderExpenseView(); break;
             case 'inkind': this.renderInkindView(); break;
             case 'writeoff': this.renderWriteoffView(); break;
+            case 'docgen': this.renderDocGen(); break;
             case 'profiles': this.renderProfiles(); break;
             case 'settings': this.renderSettings(); break;
         }
@@ -2399,6 +2400,146 @@ const app = {
                     ${this.getSetting('writeoff_note').split('\n').map(l => `<div>&nbsp;&nbsp;${this.escHtml(l)}</div>`).join('')}
                 </div>
             </div>
+        </div>`;
+        printArea.classList.remove('d-none');
+        window.print();
+        printArea.classList.add('d-none');
+    },
+
+    // ── Document Generator (公文產生) ──
+
+    renderDocGen() {
+        const officeName = this.getSetting('office_name');
+        const today = new Date();
+        const rocYear = today.getFullYear() - 1911;
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const container = document.getElementById('view-docgen');
+        container.innerHTML = `
+            <div class="form-section">
+                <div class="form-section-title">政治獻金專戶申報公文產生器</div>
+                <p class="text-muted small">填寫以下欄位後產生公文，可直接列印。</p>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">參選類別</label>
+                        <select class="form-select" id="doc-election-type">
+                            <option value="直轄市議員">直轄市議員</option>
+                            <option value="直轄市長">直轄市長</option>
+                            <option value="縣市議員">縣市議員</option>
+                            <option value="縣市長">縣市長</option>
+                            <option value="立法委員">立法委員</option>
+                            <option value="總統副總統">總統副總統</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">擬參選人姓名</label>
+                        <input type="text" class="form-control" id="doc-candidate-name" placeholder="姓名">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">選舉區</label>
+                        <input type="text" class="form-control" id="doc-district" placeholder="例如：臺南市第一選舉區">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">受文者地址</label>
+                        <input type="text" class="form-control" id="doc-address" placeholder="受文者地址">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">承辦人</label>
+                        <input type="text" class="form-control" id="doc-contact-person">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">電話</label>
+                        <input type="text" class="form-control" id="doc-phone">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">電子信箱</label>
+                        <input type="email" class="form-control" id="doc-email">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">受文者（銀行及分行）</label>
+                        <input type="text" class="form-control" id="doc-bank" placeholder="例如：中華郵政○○分局">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">發文字號</label>
+                        <input type="text" class="form-control" id="doc-ref-number" placeholder="字第1150000XX號">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">發文日期</label>
+                        <input type="text" class="form-control" id="doc-date" value="${rocYear}年${month}月${day}日" placeholder="${rocYear}年MM月DD日">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">政治獻金專戶帳號</label>
+                        <input type="text" class="form-control" id="doc-account" placeholder="帳號">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">開戶日期</label>
+                        <input type="text" class="form-control" id="doc-open-date" placeholder="${rocYear}年MM月DD日">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">開戶起日</label>
+                        <input type="text" class="form-control" id="doc-start-date" placeholder="${rocYear}年MM月DD日">
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button class="btn btn-primary" onclick="app.printDoc()"><i class="bi bi-printer"></i> 預覽並列印</button>
+                </div>
+            </div>
+        `;
+    },
+
+    printDoc() {
+        const elType = document.getElementById('doc-election-type').value;
+        const name = document.getElementById('doc-candidate-name').value.trim();
+        const district = document.getElementById('doc-district').value.trim();
+        const addr = document.getElementById('doc-address').value.trim();
+        const contact = document.getElementById('doc-contact-person').value.trim();
+        const phone = document.getElementById('doc-phone').value.trim();
+        const email = document.getElementById('doc-email').value.trim();
+        const bank = document.getElementById('doc-bank').value.trim();
+        const refNum = document.getElementById('doc-ref-number').value.trim();
+        const docDate = document.getElementById('doc-date').value.trim();
+        const account = document.getElementById('doc-account').value.trim();
+        const openDate = document.getElementById('doc-open-date').value.trim();
+        const startDate = document.getElementById('doc-start-date').value.trim();
+
+        if (!name) { alert('請輸入擬參選人姓名'); return; }
+
+        const e = this.escHtml;
+        const printArea = document.getElementById('printArea');
+        printArea.innerHTML = `<div class="print-form" style="font-size:0.9rem;line-height:1.8;padding:30px 40px;max-width:none">
+            <div style="text-align:center;font-size:1.2rem;font-weight:bold;margin-bottom:16px">
+                (${e.call(this, elType)})擬參選人(${e.call(this, name)})　函
+            </div>
+            <table style="border:none;width:100%;margin-bottom:12px">
+                <tr><td style="border:none;width:50%">(${e.call(this, district)})</td><td style="border:none;text-align:right">地址：${e.call(this, addr)}</td></tr>
+                <tr><td style="border:none">(請填受文者地址)</td><td style="border:none;text-align:right">承辦人：${e.call(this, contact)}</td></tr>
+                <tr><td style="border:none">受文者:(${e.call(this, bank)})</td><td style="border:none;text-align:right">電話：${e.call(this, phone)}</td></tr>
+                <tr><td style="border:none"></td><td style="border:none;text-align:right">電子信箱：${e.call(this, email)}</td></tr>
+            </table>
+            <div style="margin-bottom:4px">發文日期：中華民國${e.call(this, docDate)}</div>
+            <div style="margin-bottom:4px">發文字號：${e.call(this, refNum)}</div>
+            <div style="margin-bottom:4px">類別：普通件</div>
+            <div style="margin-bottom:4px">密等及解密條件或保密期限：普通</div>
+            <div style="margin-bottom:4px">附件：一、監察院許可開立政治獻金專戶公文影本乙份</div>
+            <div style="margin-bottom:4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二、政治獻金專戶捐款者資料表乙份</div>
+            <div style="margin-bottom:12px"></div>
+            <div style="margin-bottom:8px"><strong>主旨：</strong>為辦理政治獻金申報向監察院登錄捐款人明細，請貴行協助提供本人政治獻金專戶捐款人詳細資料，請查照。</div>
+            <div style="margin-bottom:8px"><strong>說明：</strong></div>
+            <div style="padding-left:2em;margin-bottom:4px">
+                1、本擬參選人於中華郵政股份有限公司開立之「${e.call(this, String(parseInt(docDate) || ''))}(${e.call(this, elType)})擬參選人(${e.call(this, name)})政治獻金專戶」（帳號：${e.call(this, account)}），經監察院於中華民國${e.call(this, openDate)}許可開戶號函，許可自${e.call(this, startDate)}起，得受政治獻金。
+            </div>
+            <div style="padding-left:2em;margin-bottom:4px">
+                2、依政治獻金法第15條規定，政黨、政治團體及擬參選人收受匿名政治獻金之總額，不得逾該次申報政治獻金收入總額百分之三十，超過部分應於申報時繳交受理申報機關辦理繳庫。
+            </div>
+            <div style="padding-left:2em;margin-bottom:4px">
+                3、本擬參選人依政治獻金法第15條、第20條、第21條及第22條規定辦理政治獻金申報，另依金管銀（一）字第0951002020號函及政治獻金查核準則第15條規定，請貴行提供捐款人之相關資料(包含捐款銀行、分行別、銀行帳號、姓名、身分證字號、地址及連絡電話)，俾利向監察院辦理登錄。
+            </div>
+            <div style="padding-left:2em;margin-bottom:4px">
+                4、附件電子檔，煩請致電提供電子信箱，以利寄件貴行。
+            </div>
+            <div style="margin-top:20px">正本：(${e.call(this, bank)})</div>
+            <div>副本：</div>
+            <div style="text-align:center;margin-top:24px;font-size:0.8rem;color:#999">第 1 頁　共2頁</div>
         </div>`;
         printArea.classList.remove('d-none');
         window.print();
