@@ -83,6 +83,30 @@ const app = {
             )
         `);
         this.db.run(`
+            CREATE TABLE IF NOT EXISTS inkind_donations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                profile_id INTEGER,
+                donation_date TEXT NOT NULL,
+                items TEXT NOT NULL,
+                total_amount INTEGER NOT NULL,
+                acquirer TEXT,
+                prefer_email_receipt INTEGER DEFAULT 0,
+                handler TEXT,
+                created_at TEXT DEFAULT (datetime('now','localtime')),
+                FOREIGN KEY (profile_id) REFERENCES profiles(id)
+            )
+        `);
+        this.db.run(`
+            CREATE TABLE IF NOT EXISTS inkind_writeoffs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                writeoff_date TEXT NOT NULL,
+                items TEXT NOT NULL,
+                purpose TEXT,
+                handler TEXT,
+                created_at TEXT DEFAULT (datetime('now','localtime'))
+            )
+        `);
+        this.db.run(`
             CREATE TABLE IF NOT EXISTS settings (
                 key TEXT PRIMARY KEY,
                 value TEXT
@@ -108,6 +132,14 @@ const app = {
         const expenseNote = this.db.exec(`SELECT value FROM settings WHERE key = 'expense_note'`);
         if (!expenseNote.length || !expenseNote[0].values.length) {
             this.db.run(`INSERT INTO settings (key, value) VALUES ('expense_note', '1.本支出證明單，經核驗無誤後始得支付。\n2.發票或收據須有指定格式並留存聯。\n3.附件請黏貼於黏貼憑證用紙，黏貼時請對齊左邊。')`);
+        }
+        const inkindNote = this.db.exec(`SELECT value FROM settings WHERE key = 'inkind_note'`);
+        if (!inkindNote.length || !inkindNote[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('inkind_note', '1.依政治獻金法第7條第1項規定，擬參選人自選舉受理登記日之翌日起，不得收受政治獻金。\n2.匿名捐贈。\n3.同一捐贈者之捐贈，同日合併估算金額超過新臺幣伍萬元之政治獻金。\n4.因擬參選人死亡或選舉經費超出限額之剩餘款項而捐贈政治獻金者得按原方式退還之。\n5.非金錢(實物)捐贈物品，請於捐贈時即告知擬領取已核銷之物品以作為捐贈證據。\n6.非金錢(實物)捐贈應設帳冊登載，將作為政治獻金支出記載之依據。')`);
+        }
+        const writeoffNote = this.db.exec(`SELECT value FROM settings WHERE key = 'writeoff_note'`);
+        if (!writeoffNote.length || !writeoffNote[0].values.length) {
+            this.db.run(`INSERT INTO settings (key, value) VALUES ('writeoff_note', '1.非金錢(實物)捐贈，依實際使用情形辦理核銷(得一次或分批辦理核銷)。\n2.本「非金錢(實物)捐贈使用核銷單」，將作為政治獻金支出記載之依據。')`);
         }
         const laborNote = this.db.exec(`SELECT value FROM settings WHERE key = 'labor_note'`);
         if (!laborNote.length || !laborNote[0].values.length) {
@@ -143,7 +175,7 @@ const app = {
         document.querySelectorAll('.nav-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.view === view);
         });
-        ['donation', 'profiles', 'records', 'labor', 'labor-records', 'expense', 'expense-records', 'settings'].forEach(v => {
+        ['donation', 'profiles', 'records', 'labor', 'labor-records', 'expense', 'expense-records', 'inkind', 'inkind-records', 'writeoff', 'writeoff-records', 'settings'].forEach(v => {
             document.getElementById(`view-${v}`).classList.toggle('d-none', v !== view);
         });
         this.renderCurrentView();
@@ -158,6 +190,10 @@ const app = {
             case 'labor-records': this.renderLaborRecords(); break;
             case 'expense': this.renderExpenseForm(); break;
             case 'expense-records': this.renderExpenseRecords(); break;
+            case 'inkind': this.renderInkindForm(); break;
+            case 'inkind-records': this.renderInkindRecords(); break;
+            case 'writeoff': this.renderWriteoffForm(); break;
+            case 'writeoff-records': this.renderWriteoffRecords(); break;
             case 'settings': this.renderSettings(); break;
         }
     },
@@ -1796,6 +1832,494 @@ const app = {
         URL.revokeObjectURL(url);
     },
 
+    // ── In-kind Donation (實物捐贈) ──
+
+    renderInkindForm() {
+        const today = new Date().toISOString().slice(0, 10);
+        const officeName = this.getSetting('office_name');
+        const defaultHandler = this.getSetting('default_handler');
+        const container = document.getElementById('view-inkind');
+        container.innerHTML = `
+            <div class="form-section">
+                <div class="form-section-title">${this.escHtml(officeName)}非金錢(實物)捐贈資料表</div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">捐贈日期</label>
+                        <input type="date" class="form-control" id="ik-date" value="${today}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">經手人</label>
+                        <input type="text" class="form-control" id="ik-handler" value="${this.escAttr(defaultHandler)}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">取得人</label>
+                        <input type="text" class="form-control" id="ik-acquirer">
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="row g-3">
+                    <div class="col-md-6 position-relative">
+                        <label class="form-label">姓名（必填）</label>
+                        <input type="text" class="form-control" id="ik-name" autocomplete="off" placeholder="輸入姓名搜尋或新增">
+                        <div id="inkind-name-autocomplete" class="autocomplete-list d-none"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">身分證字號（必填）</label>
+                        <input type="text" class="form-control" id="ik-idnumber">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">戶籍地址（必填）</label>
+                        <input type="text" class="form-control" id="ik-address">
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="form-section-title">索取收據請填下方</div>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label">電子信箱</label>
+                        <input type="email" class="form-control" id="ik-email">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="ik-prefer-email">
+                            <label class="form-check-label" for="ik-prefer-email">優先以電子方式寄件</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">收件地址</label>
+                        <input type="text" class="form-control" id="ik-mail-address">
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="form-section-title">捐贈物品明細</div>
+                <div id="inkind-items">
+                    <div class="row g-2 mb-2 inkind-item-row">
+                        <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="品名/名稱"></div>
+                        <div class="col-md-1"><input type="number" class="form-control form-control-sm" placeholder="數量" min="1" value="1" onchange="app.calcInkindTotal()"></div>
+                        <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="金額(含稅)" min="0" onchange="app.calcInkindTotal()"></div>
+                        <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="估算基礎"></div>
+                        <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="項目"></div>
+                        <div class="col-md-1"><button class="btn btn-sm btn-outline-danger" onclick="app.removeInkindItem(this)"><i class="bi bi-x"></i></button></div>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary mt-1" onclick="app.addInkindItem()"><i class="bi bi-plus"></i> 新增項目</button>
+                <div class="mt-3 fs-5">合計：<strong id="ik-total-display">0</strong> 元</div>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="app.saveInkind()"><i class="bi bi-save"></i> 儲存</button>
+                <button class="btn btn-outline-secondary" onclick="app.renderInkindForm()"><i class="bi bi-arrow-counterclockwise"></i> 清除</button>
+            </div>
+        `;
+        const nameInput = document.getElementById('ik-name');
+        nameInput.addEventListener('input', () => this.onInkindNameInput());
+        nameInput.addEventListener('focus', () => this.onInkindNameInput());
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#ik-name') && !e.target.closest('#inkind-name-autocomplete'))
+                document.getElementById('inkind-name-autocomplete').classList.add('d-none');
+        });
+    },
+
+    onInkindNameInput() {
+        const val = document.getElementById('ik-name').value.trim();
+        const listEl = document.getElementById('inkind-name-autocomplete');
+        if (!val.length) { listEl.classList.add('d-none'); return; }
+        const results = this.db.exec(`SELECT id, name, id_number, address, email, mail_address FROM profiles WHERE name LIKE ? ORDER BY updated_at DESC LIMIT 10`, [`%${val}%`]);
+        if (!results.length || !results[0].values.length) { listEl.classList.add('d-none'); return; }
+        listEl.innerHTML = results[0].values.map(r => `<div class="autocomplete-item" data-profile-id="${r[0]}"><strong>${this.escHtml(r[1])}</strong> <span class="text-muted ms-2">${this.escHtml(r[2] || '')}</span></div>`).join('');
+        listEl.classList.remove('d-none');
+        listEl.querySelectorAll('.autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const pid = parseInt(item.dataset.profileId);
+                const pr = this.db.exec(`SELECT name, id_number, address, email, mail_address FROM profiles WHERE id = ?`, [pid]);
+                if (!pr.length) return;
+                const [n, id, a, e, m] = pr[0].values[0];
+                document.getElementById('ik-name').value = n || '';
+                document.getElementById('ik-idnumber').value = id || '';
+                document.getElementById('ik-address').value = a || '';
+                document.getElementById('ik-email').value = e || '';
+                document.getElementById('ik-mail-address').value = m || '';
+                document.getElementById('ik-name').dataset.profileId = pid;
+                listEl.classList.add('d-none');
+            });
+        });
+    },
+
+    addInkindItem() {
+        const row = document.createElement('div');
+        row.className = 'row g-2 mb-2 inkind-item-row';
+        row.innerHTML = `
+            <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="品名/名稱"></div>
+            <div class="col-md-1"><input type="number" class="form-control form-control-sm" placeholder="數量" min="1" value="1" onchange="app.calcInkindTotal()"></div>
+            <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="金額(含稅)" min="0" onchange="app.calcInkindTotal()"></div>
+            <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="估算基礎"></div>
+            <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="項目"></div>
+            <div class="col-md-1"><button class="btn btn-sm btn-outline-danger" onclick="app.removeInkindItem(this)"><i class="bi bi-x"></i></button></div>
+        `;
+        document.getElementById('inkind-items').appendChild(row);
+    },
+
+    removeInkindItem(btn) {
+        if (document.querySelectorAll('.inkind-item-row').length <= 1) return;
+        btn.closest('.inkind-item-row').remove();
+        this.calcInkindTotal();
+    },
+
+    calcInkindTotal() {
+        let total = 0;
+        document.querySelectorAll('.inkind-item-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const qty = parseInt(inputs[1].value) || 0;
+            const price = parseInt(inputs[2].value) || 0;
+            total += qty * price;
+        });
+        document.getElementById('ik-total-display').textContent = total.toLocaleString();
+    },
+
+    saveInkind() {
+        const date = this.isoToRoc(document.getElementById('ik-date').value.trim());
+        const name = document.getElementById('ik-name').value.trim();
+        const idNumber = document.getElementById('ik-idnumber').value.trim();
+        const address = document.getElementById('ik-address').value.trim();
+        if (!date) { alert('請選擇日期'); return; }
+        if (!name) { alert('請輸入姓名'); return; }
+        if (!idNumber) { alert('請輸入身分證字號'); return; }
+        if (!address) { alert('請輸入戶籍地址'); return; }
+
+        const email = document.getElementById('ik-email').value.trim();
+        const mailAddress = document.getElementById('ik-mail-address').value.trim();
+        const profileId = this.upsertProfile(name, idNumber, address, email, mailAddress);
+        const preferEmail = document.getElementById('ik-prefer-email').checked ? 1 : 0;
+        const handler = document.getElementById('ik-handler').value.trim();
+        const acquirer = document.getElementById('ik-acquirer').value.trim();
+
+        const items = [];
+        let total = 0;
+        document.querySelectorAll('.inkind-item-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const itemName = inputs[0].value.trim();
+            const qty = parseInt(inputs[1].value) || 0;
+            const amount = parseInt(inputs[2].value) || 0;
+            const basis = inputs[3].value.trim();
+            const category = inputs[4].value.trim();
+            if (itemName || amount > 0) {
+                items.push({ name: itemName, qty, amount, subtotal: qty * amount, basis, category });
+                total += qty * amount;
+            }
+        });
+        if (!items.length || total <= 0) { alert('請輸入至少一筆捐贈物品'); return; }
+
+        this.db.run(
+            `INSERT INTO inkind_donations (profile_id, donation_date, items, total_amount, acquirer, prefer_email_receipt, handler) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [profileId, date, JSON.stringify(items), total, acquirer, preferEmail, handler]
+        );
+        this.save();
+        alert('實物捐贈資料已儲存！');
+        this.renderInkindForm();
+    },
+
+    renderInkindRecords() {
+        const container = document.getElementById('view-inkind-records');
+        const results = this.db.exec(`
+            SELECT k.id, k.donation_date, k.items, k.total_amount, k.handler, k.acquirer,
+                   p.name, p.id_number
+            FROM inkind_donations k
+            LEFT JOIN profiles p ON k.profile_id = p.id
+            ORDER BY k.created_at DESC
+        `);
+        let html = `<div class="form-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-section-title mb-0">實物捐贈紀錄</div>
+            </div>`;
+        if (!results.length || !results[0].values.length) {
+            html += `<p class="text-muted">尚無紀錄</p>`;
+        } else {
+            const totalAmount = results[0].values.reduce((sum, r) => sum + r[3], 0);
+            html += `<div class="alert alert-info">共 ${results[0].values.length} 筆，總金額 NT$ ${totalAmount.toLocaleString()}</div>`;
+            html += `<div class="table-responsive"><table class="table table-hover">
+                <thead><tr><th>日期</th><th>捐贈人</th><th>物品摘要</th><th>合計</th><th>取得人</th><th></th></tr></thead><tbody>`;
+            results[0].values.forEach(row => {
+                const [id, date, itemsJson, total, handler, acquirer, name, idNum] = row;
+                const items = JSON.parse(itemsJson);
+                const summary = items.map(i => i.name).filter(Boolean).join('、');
+                html += `<tr>
+                    <td>${this.escHtml(date)}</td>
+                    <td>${this.escHtml(name || '—')}</td>
+                    <td>${this.escHtml(summary || '—')}</td>
+                    <td class="text-end">${total.toLocaleString()}</td>
+                    <td>${this.escHtml(acquirer || '')}</td>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="app.printInkind(${id})" title="列印"><i class="bi bi-printer"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteInkind(${id})" title="刪除"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+            html += `</tbody></table></div>`;
+        }
+        html += `</div>`;
+        container.innerHTML = html;
+    },
+
+    deleteInkind(id) {
+        if (!confirm('確定刪除？')) return;
+        this.db.run(`DELETE FROM inkind_donations WHERE id = ?`, [id]);
+        this.save();
+        this.renderInkindRecords();
+    },
+
+    printInkind(id) {
+        const results = this.db.exec(`
+            SELECT k.donation_date, k.items, k.total_amount, k.acquirer, k.handler, k.prefer_email_receipt,
+                   p.name, p.id_number, p.address, p.email, p.mail_address
+            FROM inkind_donations k
+            LEFT JOIN profiles p ON k.profile_id = p.id
+            WHERE k.id = ?
+        `, [id]);
+        if (!results.length || !results[0].values.length) return;
+        const officeName = this.getSetting('office_name');
+        const row = results[0].values[0];
+        const [date, itemsJson, total, acquirer, handler, preferEmail, name, idNum, address, email, mailAddr] = row;
+        const items = JSON.parse(itemsJson);
+        const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        const dateDisplay = dateParts ? `${dateParts[1]}年&nbsp;&nbsp;${dateParts[2]}月&nbsp;&nbsp;${dateParts[3]}日` : this.escHtml(date);
+
+        let itemRows = items.map(item => `<tr>
+            <td>${this.escHtml(item.name || '')}</td>
+            <td style="text-align:center">${item.qty}</td>
+            <td style="text-align:right">${item.amount.toLocaleString()}</td>
+            <td style="text-align:right">${item.subtotal.toLocaleString()}</td>
+            <td>${this.escHtml(item.basis || '')}</td>
+            <td>${this.escHtml(item.category || '')}</td>
+        </tr>`).join('');
+        const emptyRows = Math.max(0, 3 - items.length);
+        for (let i = 0; i < emptyRows; i++) itemRows += `<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>`;
+
+        const printArea = document.getElementById('printArea');
+        printArea.innerHTML = `<div class="print-form">
+            <div style="font-size:0.82rem">
+                <div style="text-align:center;font-weight:bold;font-size:0.9rem;margin-bottom:2px">${this.escHtml(officeName)}非金錢(實物)捐贈資料表</div>
+                <div style="text-align:right;font-size:0.8rem;margin-bottom:4px">捐贈日期 &nbsp; ${dateDisplay}</div>
+                <table>
+                    <tr><th>姓名（必填）</th><td>${this.escHtml(name || '')}</td><th>身分證字號（必填）</th><td>${this.escHtml(idNum || '')}</td></tr>
+                    <tr><th>戶籍地址（必填）</th><td colspan="3">${this.escHtml(address || '')}</td></tr>
+                </table>
+                <table style="margin-top:6px">
+                    <tr><th colspan="4" style="text-align:left">索取收據請填下方</th></tr>
+                    <tr>
+                        <th>電子信箱</th><td>${this.escHtml(email || '')}</td>
+                        <td colspan="2">${preferEmail ? '☑' : '☐'} 優先以電子方式寄件</td>
+                    </tr>
+                    <tr><th>收件地址</th><td colspan="3">${this.escHtml(mailAddr || '')}</td></tr>
+                </table>
+                <table style="margin-top:6px">
+                    <thead><tr>
+                        <th>品名/名稱</th><th style="text-align:center">數量</th><th style="text-align:right">金額(含稅)</th>
+                        <th style="text-align:right">小計</th><th>估算基礎</th><th>項目</th>
+                    </tr></thead>
+                    <tbody>${itemRows}</tbody>
+                    <tfoot><tr><th colspan="3" style="text-align:center">合計</th><td style="text-align:right;font-weight:bold">${total.toLocaleString()}</td><td colspan="2"></td></tr></tfoot>
+                </table>
+                <div style="display:flex;justify-content:flex-end;margin-top:6px;font-size:0.85rem">
+                    <span>取得人：${this.escHtml(acquirer || '')}＿＿＿＿ &nbsp;&nbsp; 經手人：${this.escHtml(handler || '')}＿＿＿＿</span>
+                </div>
+                <div style="font-size:0.6rem;margin-top:6px;line-height:1.4">
+                    <div>備註：</div>
+                    ${this.getSetting('inkind_note').split('\n').map(l => `<div>${this.escHtml(l)}</div>`).join('')}
+                </div>
+            </div>
+        </div>`;
+        printArea.classList.remove('d-none');
+        window.print();
+        printArea.classList.add('d-none');
+    },
+
+    // ── In-kind Write-off (核銷單) ──
+
+    renderWriteoffForm() {
+        const today = new Date().toISOString().slice(0, 10);
+        const officeName = this.getSetting('office_name');
+        const defaultHandler = this.getSetting('default_handler');
+        const container = document.getElementById('view-writeoff');
+        container.innerHTML = `
+            <div class="form-section">
+                <div class="form-section-title">${this.escHtml(officeName)}非金錢(實物)捐贈使用核銷單</div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">核銷日期</label>
+                        <input type="date" class="form-control" id="wo-date" value="${today}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">經手人</label>
+                        <input type="text" class="form-control" id="wo-handler" value="${this.escAttr(defaultHandler)}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="form-section-title">核銷物品明細</div>
+                <div id="writeoff-items">
+                    <div class="row g-2 mb-2 writeoff-item-row">
+                        <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="品名(型號)"></div>
+                        <div class="col-md-1"><input type="number" class="form-control form-control-sm" placeholder="使用數量" min="1" value="1"></div>
+                        <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="受贈單價" min="0"></div>
+                        <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="受贈數量" min="0"></div>
+                        <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="剩餘數量" min="0"></div>
+                        <div class="col-md-1"><button class="btn btn-sm btn-outline-danger" onclick="app.removeWriteoffItem(this)"><i class="bi bi-x"></i></button></div>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary mt-1" onclick="app.addWriteoffItem()"><i class="bi bi-plus"></i> 新增項目</button>
+            </div>
+            <div class="form-section">
+                <label class="form-label">用途說明</label>
+                <textarea class="form-control" id="wo-purpose" rows="2"></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="app.saveWriteoff()"><i class="bi bi-save"></i> 儲存</button>
+                <button class="btn btn-outline-secondary" onclick="app.renderWriteoffForm()"><i class="bi bi-arrow-counterclockwise"></i> 清除</button>
+            </div>
+        `;
+    },
+
+    addWriteoffItem() {
+        const row = document.createElement('div');
+        row.className = 'row g-2 mb-2 writeoff-item-row';
+        row.innerHTML = `
+            <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="品名(型號)"></div>
+            <div class="col-md-1"><input type="number" class="form-control form-control-sm" placeholder="使用數量" min="1" value="1"></div>
+            <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="受贈單價" min="0"></div>
+            <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="受贈數量" min="0"></div>
+            <div class="col-md-2"><input type="number" class="form-control form-control-sm" placeholder="剩餘數量" min="0"></div>
+            <div class="col-md-1"><button class="btn btn-sm btn-outline-danger" onclick="app.removeWriteoffItem(this)"><i class="bi bi-x"></i></button></div>
+        `;
+        document.getElementById('writeoff-items').appendChild(row);
+    },
+
+    removeWriteoffItem(btn) {
+        if (document.querySelectorAll('.writeoff-item-row').length <= 1) return;
+        btn.closest('.writeoff-item-row').remove();
+    },
+
+    saveWriteoff() {
+        const date = this.isoToRoc(document.getElementById('wo-date').value.trim());
+        if (!date) { alert('請選擇核銷日期'); return; }
+        const handler = document.getElementById('wo-handler').value.trim();
+        const purpose = document.getElementById('wo-purpose').value.trim();
+
+        const items = [];
+        document.querySelectorAll('.writeoff-item-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const itemName = inputs[0].value.trim();
+            const usedQty = parseInt(inputs[1].value) || 0;
+            const unitPrice = parseInt(inputs[2].value) || 0;
+            const donatedQty = parseInt(inputs[3].value) || 0;
+            const remainQty = parseInt(inputs[4].value) || 0;
+            if (itemName || usedQty > 0) {
+                items.push({ name: itemName, usedQty, unitPrice, writeoffAmount: usedQty * unitPrice, donatedQty, remainQty });
+            }
+        });
+        if (!items.length) { alert('請輸入至少一筆核銷物品'); return; }
+
+        this.db.run(
+            `INSERT INTO inkind_writeoffs (writeoff_date, items, purpose, handler) VALUES (?, ?, ?, ?)`,
+            [date, JSON.stringify(items), purpose, handler]
+        );
+        this.save();
+        alert('核銷單已儲存！');
+        this.renderWriteoffForm();
+    },
+
+    renderWriteoffRecords() {
+        const container = document.getElementById('view-writeoff-records');
+        const results = this.db.exec(`SELECT id, writeoff_date, items, purpose, handler FROM inkind_writeoffs ORDER BY created_at DESC`);
+        let html = `<div class="form-section">
+            <div class="form-section-title">核銷紀錄</div>`;
+        if (!results.length || !results[0].values.length) {
+            html += `<p class="text-muted">尚無紀錄</p>`;
+        } else {
+            html += `<div class="table-responsive"><table class="table table-hover">
+                <thead><tr><th>日期</th><th>物品摘要</th><th>用途</th><th>經手人</th><th></th></tr></thead><tbody>`;
+            results[0].values.forEach(row => {
+                const [id, date, itemsJson, purpose, handler] = row;
+                const items = JSON.parse(itemsJson);
+                const summary = items.map(i => i.name).filter(Boolean).join('、');
+                html += `<tr>
+                    <td>${this.escHtml(date)}</td>
+                    <td>${this.escHtml(summary || '—')}</td>
+                    <td>${this.escHtml(purpose || '')}</td>
+                    <td>${this.escHtml(handler || '')}</td>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="app.printWriteoff(${id})" title="列印"><i class="bi bi-printer"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="app.deleteWriteoff(${id})" title="刪除"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+            html += `</tbody></table></div>`;
+        }
+        html += `</div>`;
+        container.innerHTML = html;
+    },
+
+    deleteWriteoff(id) {
+        if (!confirm('確定刪除？')) return;
+        this.db.run(`DELETE FROM inkind_writeoffs WHERE id = ?`, [id]);
+        this.save();
+        this.renderWriteoffRecords();
+    },
+
+    printWriteoff(id) {
+        const results = this.db.exec(`SELECT writeoff_date, items, purpose, handler FROM inkind_writeoffs WHERE id = ?`, [id]);
+        if (!results.length || !results[0].values.length) return;
+        const officeName = this.getSetting('office_name');
+        const [date, itemsJson, purpose, handler] = results[0].values[0];
+        const items = JSON.parse(itemsJson);
+        const dateParts = (date || '').match(/^(\d+)-(\d+)-(\d+)$/);
+        const dateDisplay = dateParts ? `${dateParts[1]}年&nbsp;&nbsp;${dateParts[2]}月&nbsp;&nbsp;${dateParts[3]}日` : this.escHtml(date);
+
+        let itemRows = items.map(item => `<tr>
+            <td>${this.escHtml(item.name || '')}</td>
+            <td style="text-align:center">${item.usedQty}</td>
+            <td style="text-align:right">${item.unitPrice.toLocaleString()}</td>
+            <td style="text-align:right">${item.writeoffAmount.toLocaleString()}</td>
+            <td style="text-align:center">${item.donatedQty}</td>
+            <td style="text-align:center">${item.remainQty}</td>
+        </tr>`).join('');
+        const emptyRows = Math.max(0, 3 - items.length);
+        for (let i = 0; i < emptyRows; i++) itemRows += `<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>`;
+
+        const printArea = document.getElementById('printArea');
+        printArea.innerHTML = `<div class="print-form">
+            <div style="font-size:0.85rem">
+                <div style="text-align:center;font-weight:bold;font-size:1rem;margin-bottom:6px">${this.escHtml(officeName)}非金錢(實物)捐贈使用核銷單</div>
+                <div style="text-align:right;font-size:0.85rem;margin-bottom:6px">核銷日期 &nbsp; ${dateDisplay}</div>
+                <table>
+                    <thead><tr>
+                        <th style="width:25%">品名(型號)</th>
+                        <th style="width:10%;text-align:center">使用<br>數量</th>
+                        <th style="width:15%;text-align:center">受贈<br>單價</th>
+                        <th style="width:20%;text-align:center">使用(核銷)金額</th>
+                        <th style="width:15%;text-align:center">受贈<br>數量</th>
+                        <th style="width:15%;text-align:center">剩餘<br>數量</th>
+                    </tr></thead>
+                    <tbody>${itemRows}</tbody>
+                </table>
+                <table style="margin-top:12px">
+                    <tr><th style="width:15%">用途說明</th><td>${this.escHtml(purpose || '')}</td></tr>
+                </table>
+                <div style="display:flex;justify-content:flex-end;margin-top:16px;font-size:0.9rem">
+                    <span>經手人：${this.escHtml(handler || '')}＿＿＿＿＿＿</span>
+                </div>
+                <div style="font-size:0.7rem;margin-top:16px;line-height:1.5">
+                    <div>註：</div>
+                    ${this.getSetting('writeoff_note').split('\n').map(l => `<div>&nbsp;&nbsp;${this.escHtml(l)}</div>`).join('')}
+                </div>
+            </div>
+        </div>`;
+        printArea.classList.remove('d-none');
+        window.print();
+        printArea.classList.add('d-none');
+    },
+
     renderSettings() {
         const officeName = this.getSetting('office_name');
         const defaultHandler = this.getSetting('default_handler');
@@ -1803,6 +2327,8 @@ const app = {
         const donationNote = this.getSetting('donation_note');
         const laborNote = this.getSetting('labor_note');
         const expenseNote = this.getSetting('expense_note');
+        const inkindNote = this.getSetting('inkind_note');
+        const writeoffNote = this.getSetting('writeoff_note');
         const container = document.getElementById('view-settings');
         container.innerHTML = `
             <div class="form-section">
@@ -1836,6 +2362,16 @@ const app = {
                         <textarea class="form-control" id="s-expense-note" rows="3">${this.escHtml(expenseNote)}</textarea>
                         <div class="form-text">顯示在支出證明單列印表單底部，每行一條備註</div>
                     </div>
+                    <div class="col-12">
+                        <label class="form-label">實物捐贈備註</label>
+                        <textarea class="form-control" id="s-inkind-note" rows="4">${this.escHtml(inkindNote)}</textarea>
+                        <div class="form-text">顯示在實物捐贈資料表列印底部</div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">核銷單備註</label>
+                        <textarea class="form-control" id="s-writeoff-note" rows="2">${this.escHtml(writeoffNote)}</textarea>
+                        <div class="form-text">顯示在核銷單列印底部</div>
+                    </div>
                 </div>
                 <div class="mt-3">
                     <button class="btn btn-primary" onclick="app.saveSettings()">
@@ -1858,6 +2394,8 @@ const app = {
         this.setSetting('donation_note', document.getElementById('s-donation-note').value.trim());
         this.setSetting('labor_note', document.getElementById('s-labor-note').value.trim());
         this.setSetting('expense_note', document.getElementById('s-expense-note').value.trim());
+        this.setSetting('inkind_note', document.getElementById('s-inkind-note').value.trim());
+        this.setSetting('writeoff_note', document.getElementById('s-writeoff-note').value.trim());
         alert('設定已儲存！');
         this.renderSettings();
     },
