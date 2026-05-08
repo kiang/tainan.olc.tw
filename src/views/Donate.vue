@@ -42,15 +42,38 @@ onMounted(() => {
       <div class="content-container">
         <div class="intro-box">
           <p class="intro-text">
-            親愛的朋友們，謝謝您對江明宗的支持與鼓勵！💕 為了讓大家能更方便、更安心地為明宗助力，特別整理了跨行轉帳與郵政劃撥的捐款方式說明。
+            親愛的朋友們，謝謝您對江明宗的支持與鼓勵！💕 為了讓大家能更方便、更安心地為明宗助力，特別整理了信用卡、跨行轉帳與郵政劃撥的捐款方式說明。
           </p>
           <p class="intro-text mb-0">
-            無論您習慣使用手機網銀轉帳，或是到郵局臨櫃辦理，簡簡單單幾分鐘，就能為台南的未來出一份力！💪
+            無論您習慣使用信用卡線上捐款、手機網銀轉帳，或是到郵局臨櫃辦理，簡簡單單幾分鐘，就能為台南的未來出一份力！💪
           </p>
         </div>
 
+        <!-- Credit Card Option -->
+        <h2 class="section-title">💳 信用卡線上捐款 (最方便)</h2>
+        <p class="steps-intro">免出門、免填單，線上刷卡幾分鐘即可完成捐款：</p>
+
+        <div class="transfer-card">
+          <div class="credit-card-content">
+            <p>透過綠界科技安全金流平台，使用信用卡即可輕鬆完成政治獻金捐款。系統將引導您填寫基本資料與捐款金額，全程安全加密，讓您捐款更安心。</p>
+            <div class="report-action">
+              <a href="https://donate.ecpay.com.tw/home/finjonkiang/350004820260508165155" target="_blank" rel="noopener noreferrer" class="report-btn credit-card-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
+                  <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+                </svg>
+                前往信用卡捐款頁面
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider">
+          <span>或</span>
+        </div>
+
         <!-- Transfer Option -->
-        <h2 class="section-title">📱 ATM / 網路銀行 跨行轉帳捐款 (推薦)</h2>
+        <h2 class="section-title">📱 ATM / 網路銀行 跨行轉帳捐款</h2>
         <p class="steps-intro">使用手機網銀或實體 ATM，免出門也能輕鬆完成捐款：</p>
         
         <div class="transfer-card">
@@ -395,6 +418,35 @@ onMounted(() => {
         color: #e74c3c;
       }
     }
+  }
+}
+
+.credit-card-content {
+  padding: 30px;
+
+  @media (max-width: 575px) {
+    padding: 20px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #555;
+    margin: 0 0 24px;
+
+    @media (min-width: 768px) {
+      font-size: 18px;
+    }
+  }
+}
+
+.credit-card-btn {
+  background: #e74c3c !important;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+
+  &:hover {
+    background: #c0392b !important;
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4) !important;
   }
 }
 
