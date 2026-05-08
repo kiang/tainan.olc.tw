@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "build": "rm -rf docs/assets docs/index.html && vite build",
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
