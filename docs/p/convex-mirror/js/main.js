@@ -13,11 +13,11 @@ var STATUS_CLUSTER_CLASS = {
     '缺失': 'marker-cluster-missing'
 };
 
-// Google Sheets URLs (replace with actual URLs when sheets are created)
-var DATA_CSV_URL = 'REPLACE_WITH_GOOGLE_SHEETS_CSV_URL';
-var ADDITIONAL_IMAGES_CSV_URL = 'REPLACE_WITH_ADDITIONAL_IMAGES_CSV_URL';
-var REPORT_FORM_URL = 'REPLACE_WITH_GOOGLE_FORM_URL';
-var ADD_IMAGE_FORM_URL = 'REPLACE_WITH_ADD_IMAGE_FORM_URL';
+// Google Sheets & Forms URLs
+var DATA_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOS9lxm6qX6mt-B21YUekFllFK3zlRkPzQJvzcrrKJoWz9m0ANgHWXtKLucwulgfZFY3JX7gCkHLmQ/pub?output=csv';
+var ADDITIONAL_IMAGES_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRThi7eeQcxIr3P09clG1TRi8nd2mxqXAnL_ti2slOuYHZDJYk_nmMjF1omIa6Lskt8JuG_B1AYSrhq/pub?output=csv';
+var REPORT_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfDKVhKr4oqlvb30l64hXHBpWktwfnRyif5guqwk9ARHFnMXQ/viewform?usp=pp_url';
+var ADD_IMAGE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdmlxWIGLjyRFMTs9p27JpwUoPL1H_XPkjH383rANyw5lQR6w/viewform?usp=pp_url';
 
 // State
 var map;
@@ -166,10 +166,9 @@ function addMarkersFromCSV() {
                         lon: lon,
                         lat: lat,
                         uuid: row[7],
-                        hasLocal: row[8] == '1',
-                        address: row[9] || '',
-                        notes: row[10] || '',
-                        reply: row[14] || ''
+                        hasLocal: false,
+                        address: row[8] || '',
+                        notes: row[9] || ''
                     };
 
                     var fileId = '';
@@ -247,12 +246,11 @@ function showPanel(data) {
     // Add image button
     if (ADD_IMAGE_FORM_URL.indexOf('REPLACE') !== 0) {
         var imgFormUrl = ADD_IMAGE_FORM_URL +
-            '&entry.465818780=' + encodeURIComponent(data.status) +
-            '&entry.1588782081=' + encodeURIComponent(data.city) +
-            '&entry.1966779823=' + encodeURIComponent(data.town) +
-            '&entry.1998738256=' + data.lon.toFixed(6) +
-            '&entry.1387778236=' + data.lat.toFixed(6) +
-            '&entry.2072773208=' + data.uuid;
+            '&entry.282491100=' + encodeURIComponent(data.city) +
+            '&entry.2011060178=' + encodeURIComponent(data.town) +
+            '&entry.1755310223=' + data.lon.toFixed(6) +
+            '&entry.1416473723=' + data.lat.toFixed(6) +
+            '&entry.122195793=' + data.uuid;
         html += '<div class="d-grid mb-2"><a class="btn btn-outline-primary btn-sm" href="' + imgFormUrl + '" target="_blank"><i class="bi bi-plus-circle"></i> 新增照片</a></div>';
     }
 
@@ -309,9 +307,9 @@ map.on('click', function (e) {
     if (REPORT_FORM_URL.indexOf('REPLACE') === 0) return;
 
     var formUrl = REPORT_FORM_URL +
-        '&entry.1998738256=' + lon +
-        '&entry.1387778236=' + lat +
-        '&entry.2072773208=' + uuidv4();
+        '&entry.914392718=' + lon +
+        '&entry.2078651376=' + lat +
+        '&entry.1915251208=' + uuidv4();
 
     var popup = L.popup()
         .setLatLng(e.latlng)

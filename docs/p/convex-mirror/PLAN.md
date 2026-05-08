@@ -45,10 +45,8 @@ docs/p/convex-mirror/
 | longitude | 5 | 經度座標 |
 | latitude | 6 | 緯度座標 |
 | uuid | 7 | 唯一識別碼（UUID v4） |
-| hasLocal | 8 | 是否有本地圖片（0/1） |
-| address | 9 | 街道地址或地標描述 |
-| notes | 10 | 道路反光鏡狀態的額外備註 |
-| reply | 14 | 政府／管理單位回覆 |
+| address | 8 | 街道地址或地標描述 |
+| notes | 9 | 道路反光鏡狀態的額外備註 |
 
 ## 狀態分類與配色
 
@@ -173,10 +171,10 @@ Map Layer（依狀態動態著色）
 
 ## 待辦事項（上線前）
 
-- [ ] 建立 Google Sheets 並發布為 CSV
-- [ ] 建立 Google Forms（主回報表單）
-- [ ] 建立 Google Forms（補充照片表單）
-- [ ] 將 Google Sheets/Forms URL 填入 main.js
+- [x] 建立 Google Sheets 並發布為 CSV
+- [x] 建立 Google Forms（主回報表單）
+- [x] 建立 Google Forms（補充照片表單）
+- [x] 將 Google Sheets/Forms URL 填入 main.js
 - [ ] 製作 og_image.png 社群預覽圖
 - [ ] 測試完整功能流程
 - [ ] 收集初始種子資料
@@ -208,11 +206,13 @@ Map Layer（依狀態動態著色）
 - 複製 CSV 發布網址，填入 `main.js` 的 `DATA_CSV_URL`
 - 複製表單的預填連結網址，填入 `main.js` 的 `REPORT_FORM_URL`
 - 預填連結的 entry ID 對應：
-  - `entry.1588782081` → 縣市
-  - `entry.1966779823` → 鄉鎮市區
-  - `entry.1998738256` → 經度
-  - `entry.1387778236` → 緯度
-  - `entry.2072773208` → UUID
+  - `entry.535072750` → 縣市
+  - `entry.879606880` → 鄉鎮市區
+  - `entry.914392718` → 經度
+  - `entry.2078651376` → 緯度
+  - `entry.1915251208` → UUID
+  - `entry.1428385044` → 地址
+  - `entry.321436433` → 備註
 
 ---
 
@@ -239,16 +239,16 @@ Map Layer（依狀態動態著色）
 - 複製 CSV 發布網址，填入 `main.js` 的 `ADDITIONAL_IMAGES_CSV_URL`
 - 複製表單的預填連結網址，填入 `main.js` 的 `ADD_IMAGE_FORM_URL`
 - 預填連結的 entry ID 對應：
-  - `entry.465818780` → 狀態
-  - `entry.1588782081` → 縣市
-  - `entry.1966779823` → 鄉鎮市區
-  - `entry.1998738256` → 經度
-  - `entry.1387778236` → 緯度
-  - `entry.2072773208` → UUID
+  - `entry.282491100` → 縣市
+  - `entry.2011060178` → 鄉鎮市區
+  - `entry.1755310223` → 經度
+  - `entry.1416473723` → 緯度
+  - `entry.122195793` → UUID
+  - `entry.1621262525` → 備註
 
 ---
 
-**重要提醒：** 建立表單後，實際的 entry ID 會由 Google Forms 自動產生，與上方列出的 ID 不同。請在建立表單後取得實際的預填連結，並更新 `main.js` 中對應的 entry ID。取得方式：在表單編輯頁面點選右上角「⋮」→「取得預先填入的連結」→ 填入範例值 → 取得連結 → 從 URL 中擷取各欄位的 entry ID。
+**備註：** 以上 entry ID 已與實際建立的 Google Forms 對應，並已填入 `main.js`。
 
 ## 相關法規與參考資料
 
