@@ -209,6 +209,47 @@ onMounted(() => {
           </div>
         </div>
 
+        <!-- Comparison Table -->
+        <h2 class="section-title compare-title">📊 三種捐款方式比較</h2>
+        <div class="compare-table-wrapper">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>💳 信用卡</th>
+                <th>📱 跨行轉帳</th>
+                <th>📝 郵局劃撥</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="row-label">便利性</td>
+                <td><span class="badge badge-high">最方便</span></td>
+                <td><span class="badge badge-mid">方便</span></td>
+                <td><span class="badge badge-low">需臨櫃</span></td>
+              </tr>
+              <tr>
+                <td class="row-label">手續費</td>
+                <td>手續費最高（由明宗負擔）</td>
+                <td>NT$0 ~ 15（捐款人負擔）</td>
+                <td>固定 NT$20（由明宗負擔）</td>
+              </tr>
+              <tr>
+                <td class="row-label">額外步驟</td>
+                <td>線上填寫即完成</td>
+                <td>需填寫匯款回報表單</td>
+                <td>臨櫃填寫劃撥單</td>
+              </tr>
+              <tr>
+                <td class="row-label">適合對象</td>
+                <td>追求快速方便</td>
+                <td>習慣網銀操作</td>
+                <td>習慣臨櫃辦理</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="action-container">
           <RouterLink to="/" class="btn-back">回到首頁</RouterLink>
         </div>
@@ -583,6 +624,101 @@ onMounted(() => {
   strong {
     color: #664d03;
     font-weight: 700;
+  }
+}
+
+.compare-title {
+  margin-top: 48px;
+}
+
+.compare-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.compare-table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+  min-width: 500px;
+
+  th, td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+
+    @media (min-width: 768px) {
+      padding: 18px 20px;
+      font-size: 16px;
+    }
+  }
+
+  thead th {
+    background: #f8f9fa;
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 16px;
+    border-bottom: 2px solid #dee2e6;
+
+    &:first-child {
+      border-top-left-radius: 16px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 16px;
+    }
+  }
+
+  tbody {
+    td {
+      color: #555;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+
+      &:first-child {
+        border-bottom-left-radius: 16px;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 16px;
+      }
+    }
+  }
+
+  .row-label {
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: left;
+    background: #fafafa;
+    white-space: nowrap;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+
+  &.badge-high {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  &.badge-mid {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  &.badge-low {
+    background: #f0f0f0;
+    color: #666;
   }
 }
 
