@@ -381,8 +381,12 @@ header {
       height: 100%;
     }
 
-    .candidate-logo {
-      width: 130px;
+    &.candidate-logo {
+      img {
+        height: 100%;
+        width: auto;
+        border-radius: 50%;
+      }
     }
 
     .party-logo {
