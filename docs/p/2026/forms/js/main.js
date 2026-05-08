@@ -868,7 +868,7 @@ const app = {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `forms_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        a.download = `forms_backup_${new Date().toISOString().slice(0, 10)}.db`;
         a.click();
         URL.revokeObjectURL(url);
     },
