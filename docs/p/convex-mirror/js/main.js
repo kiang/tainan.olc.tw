@@ -223,13 +223,13 @@ function showPanel(data) {
     var overlay = document.getElementById('panelOverlay');
 
     document.getElementById('panelTitle').innerHTML =
-        '<span class="status-badge status-' + data.status + '">' + data.status + '</span> 凸面鏡';
+        '<span class="status-badge status-' + data.status + '">' + data.status + '</span> 道路反光鏡';
 
     var html = '';
 
     // Photo
     if (data.hasLocal) {
-        html += '<div class="photo-container"><img src="pic/' + data.uuid + '.jpg" alt="凸面鏡照片"></div>';
+        html += '<div class="photo-container"><img src="pic/' + data.uuid + '.jpg" alt="道路反光鏡照片"></div>';
     } else if (data.fileId) {
         html += '<div class="photo-container"><iframe src="https://drive.google.com/file/d/' + data.fileId + '/preview" allow="autoplay"></iframe></div>';
     }
@@ -319,7 +319,7 @@ map.on('click', function (e) {
             '<div style="text-align:center;min-width:180px;">' +
             '<p style="margin:0 0 8px;font-size:13px;color:#666;">經度: ' + lon + '<br>緯度: ' + lat + '</p>' +
             '<a href="' + formUrl + '" target="_blank" style="display:inline-block;padding:8px 16px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">' +
-            '<i class="bi bi-plus-circle"></i> 回報凸面鏡</a></div>'
+            '<i class="bi bi-plus-circle"></i> 回報道路反光鏡</a></div>'
         )
         .openOn(map);
 });
@@ -445,7 +445,7 @@ function showCheckinSummary() {
         .setContent(
             '<div style="text-align:center;">' +
             '<h5 style="margin:0 0 8px;">巡檢完成！</h5>' +
-            '<p style="margin:4px 0;">已巡檢 <strong>' + checkedMarkers.size + '</strong> 個凸面鏡</p>' +
+            '<p style="margin:4px 0;">已巡檢 <strong>' + checkedMarkers.size + '</strong> 個道路反光鏡</p>' +
             '<p style="margin:4px 0;">使用時間：' + minutes + '分' + seconds + '秒</p>' +
             '</div>'
         )
