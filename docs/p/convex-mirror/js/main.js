@@ -29,6 +29,8 @@ var statusCounts = { '正常': 0, '損壞': 0, '遮蔽': 0, '缺失': 0 };
 var activeStatusFilter = 'all';
 var activeTextFilter = '';
 var userMarker = null;
+var adminLayer = null;
+var adminFeatures = null;
 
 // Check-in mode
 var isCheckinMode = false;
@@ -46,6 +48,69 @@ L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}
     maxZoom: 19,
     attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
 }).addTo(map);
+
+// Administration boundary layer
+fetch('https://kiang.github.io/taiwan_basecode/city/topo/20230317.json')
+    .then(function (res) { return res.json(); })
+    .then(function (topoData) {
+        var geojson = topojson.feature(topoData, topoData.objects['20230317']);
+        adminFeatures = geojson.features;
+        adminLayer = L.geoJSON(geojson, {
+            style: {
+                fill: true,
+                fillColor: '#ffffff',
+                fillOpacity: 0.1,
+                stroke: true,
+                color: '#319FD3',
+                weight: 1
+            },
+            interactive: false
+        }).addTo(map);
+    });
+
+function getAdminArea(latlng) {
+    if (!adminFeatures) return { city: '', town: '' };
+    var pt = [latlng.lng, latlng.lat];
+    for (var i = 0; i < adminFeatures.length; i++) {
+        var feature = adminFeatures[i];
+        if (pointInPolygon(pt, feature.geometry)) {
+            return {
+                city: feature.properties.COUNTYNAME || '',
+                town: feature.properties.TOWNNAME || ''
+            };
+        }
+    }
+    return { city: '', town: '' };
+}
+
+function pointInPolygon(point, geometry) {
+    var coords;
+    if (geometry.type === 'Polygon') {
+        coords = [geometry.coordinates];
+    } else if (geometry.type === 'MultiPolygon') {
+        coords = geometry.coordinates;
+    } else {
+        return false;
+    }
+    for (var p = 0; p < coords.length; p++) {
+        var ring = coords[p][0];
+        if (raycast(point, ring)) return true;
+    }
+    return false;
+}
+
+function raycast(point, ring) {
+    var x = point[0], y = point[1];
+    var inside = false;
+    for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        var xi = ring[i][0], yi = ring[i][1];
+        var xj = ring[j][0], yj = ring[j][1];
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
 
 // Marker cluster group with custom cluster class
 markersLayer = L.markerClusterGroup({
@@ -306,16 +371,27 @@ map.on('click', function (e) {
 
     if (REPORT_FORM_URL.indexOf('REPLACE') === 0) return;
 
+    var area = getAdminArea(e.latlng);
+
     var formUrl = REPORT_FORM_URL +
         '&entry.914392718=' + lon +
         '&entry.2078651376=' + lat +
         '&entry.1915251208=' + uuidv4();
+    if (area.city) {
+        formUrl += '&entry.535072750=' + encodeURIComponent(area.city);
+    }
+    if (area.town) {
+        formUrl += '&entry.879606880=' + encodeURIComponent(area.town);
+    }
+
+    var locationInfo = '經度: ' + lon + '<br>緯度: ' + lat;
+    if (area.city) locationInfo += '<br>' + area.city + ' ' + area.town;
 
     var popup = L.popup()
         .setLatLng(e.latlng)
         .setContent(
             '<div style="text-align:center;min-width:180px;">' +
-            '<p style="margin:0 0 8px;font-size:13px;color:#666;">經度: ' + lon + '<br>緯度: ' + lat + '</p>' +
+            '<p style="margin:0 0 8px;font-size:13px;color:#666;">' + locationInfo + '</p>' +
             '<a href="' + formUrl + '" target="_blank" style="display:inline-block;padding:8px 16px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">' +
             '<i class="bi bi-plus-circle"></i> 回報道路反光鏡</a></div>'
         )
