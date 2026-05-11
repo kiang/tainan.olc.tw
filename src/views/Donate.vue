@@ -216,7 +216,7 @@ onMounted(() => {
             <thead>
               <tr>
                 <th></th>
-                <th>💳 信用卡</th>
+                <th><a href="https://donate.ecpay.com.tw/home/finjonkiang/350004820260508165155" target="_blank" rel="noopener noreferrer" class="table-link">💳 信用卡</a></th>
                 <th>📱 跨行轉帳</th>
                 <th>📝 郵局劃撥</th>
               </tr>
@@ -237,7 +237,7 @@ onMounted(() => {
               <tr>
                 <td class="row-label">額外步驟</td>
                 <td>線上填寫即完成</td>
-                <td>需填寫匯款回報表單</td>
+                <td><a :href="reportFormUrl" target="_blank" class="table-link">需填寫匯款回報表單</a></td>
                 <td>臨櫃填寫劃撥單</td>
               </tr>
               <tr>
@@ -696,6 +696,17 @@ onMounted(() => {
     text-align: left;
     background: #fafafa;
     white-space: nowrap;
+  }
+
+  .table-link {
+    color: #28c8c8;
+    text-decoration: none;
+    font-weight: 700;
+
+    &:hover {
+      color: #1a9a9a;
+      text-decoration: underline;
+    }
   }
 }
 
