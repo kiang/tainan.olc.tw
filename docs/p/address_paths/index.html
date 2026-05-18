@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台南掃街地圖</title>
+    <meta name="description" content="台南市各行政區門牌掃街路線規劃，將門牌座標以最短路徑串連，每段約一小時自行車可完成的距離">
+    <meta name="keywords" content="台南,掃街,門牌,路線規劃,自行車,地圖">
+    <meta property="og:title" content="台南掃街地圖">
+    <meta property="og:description" content="台南市37區門牌掃街路線，每段路線約15公里，騎自行車約一小時可完成">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        #map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; }
+        #panel {
+            position: absolute; top: 10px; left: 10px; z-index: 1000;
+            background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            width: 280px; max-height: calc(100vh - 20px); display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+        #panel-header {
+            padding: 12px 14px; border-bottom: 1px solid #e0e0e0;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        #panel-header:hover { background: #f5f5f5; }
+        #panel-toggle { font-size: 12px; color: #888; }
+        #panel-body { overflow-y: auto; flex: 1; }
+        .district-item {
+            padding: 8px 14px; cursor: pointer; border-bottom: 1px solid #f0f0f0;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 13px;
+        }
+        .district-item:hover { background: #f0f7ff; }
+        .district-item.active { background: #e3f0ff; font-weight: 600; }
+        .district-item .meta { color: #888; font-size: 11px; }
+        #segment-nav {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 1000; background: white; border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25); padding: 10px 16px;
+            display: none; align-items: center; gap: 12px; font-size: 14px;
+        }
+        #segment-nav button {
+            border: none; background: #4a90d9; color: white; border-radius: 4px;
+            padding: 6px 14px; cursor: pointer; font-size: 13px;
+        }
+        #segment-nav button:hover { background: #3a7bc8; }
+        #segment-nav button:disabled { background: #ccc; cursor: default; }
+        #segment-info { min-width: 120px; text-align: center; }
+        .collapsed #panel-body, .collapsed #panel-search { display: none; }
+        #panel-search {
+            padding: 8px 10px; border-bottom: 1px solid #e0e0e0;
+        }
+        #search-input {
+            width: 100%; padding: 6px 10px; border: 1px solid #ddd;
+            border-radius: 4px; font-size: 13px; outline: none;
+        }
+        #search-input:focus { border-color: #4a90d9; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="panel">
+        <div id="panel-header">
+            <span>台南掃街地圖</span>
+            <span id="panel-toggle">▼</span>
+        </div>
+        <div id="panel-search">
+            <input type="text" id="search-input" placeholder="搜尋區域..." />
+        </div>
+        <div id="panel-body"></div>
+    </div>
+    <div id="segment-nav">
+        <button id="btn-prev">◀ 上一段</button>
+        <div id="segment-info"></div>
+        <button id="btn-next">下一段 ▶</button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        L.polylineDecorator = function(paths, options) { return new L.PolylineDecorator(paths, options); };
+        L.PolylineDecorator = L.FeatureGroup.extend({
+            options: { patterns: [] },
+            initialize: function(paths, options) {
+                L.FeatureGroup.prototype.initialize.call(this);
+                L.setOptions(this, options);
+                this._paths = paths;
+            },
+            onAdd: function(map) {
+                this._map = map;
+                this._draw();
+                map.on('zoomend', this._draw, this);
+            },
+            onRemove: function(map) {
+                this.clearLayers();
+                map.off('zoomend', this._draw, this);
+            },
+            _draw: function() {
+                this.clearLayers();
+                var latlngs = this._paths instanceof L.Polyline ? this._paths.getLatLngs() : this._paths;
+                if (!latlngs || latlngs.length < 2) return;
+                this.options.patterns.forEach(function(pattern) {
+                    this._drawPattern(latlngs, pattern);
+                }, this);
+            },
+            _drawPattern: function(latlngs, pattern) {
+                var offset = pattern.offset || '50%';
+                var repeat = pattern.repeat || 100;
+                var symbol = pattern.symbol;
+                if (!symbol) return;
+
+                var totalDist = 0;
+                var segDists = [];
+                for (var i = 1; i < latlngs.length; i++) {
+                    var d = this._map.latLngToLayerPoint(latlngs[i]).distanceTo(
+                        this._map.latLngToLayerPoint(latlngs[i-1]));
+                    segDists.push(d);
+                    totalDist += d;
+                }
+
+                var repeatPx = typeof repeat === 'string' && repeat.endsWith('%')
+                    ? totalDist * parseFloat(repeat) / 100 : repeat;
+                if (repeatPx < 1) repeatPx = 1;
+
+                var startOffset = typeof offset === 'string' && offset.endsWith('%')
+                    ? totalDist * parseFloat(offset) / 100 : offset;
+
+                for (var dist = startOffset; dist < totalDist; dist += repeatPx) {
+                    var pos = this._getPointAtDistance(latlngs, segDists, dist);
+                    if (pos) {
+                        var marker = symbol.buildSymbol(pos.pt, pos.angle, this._map);
+                        if (marker) this.addLayer(marker);
+                    }
+                }
+            },
+            _getPointAtDistance: function(latlngs, segDists, targetDist) {
+                var accum = 0;
+                for (var i = 0; i < segDists.length; i++) {
+                    if (accum + segDists[i] >= targetDist) {
+                        var ratio = (targetDist - accum) / segDists[i];
+                        var p1 = this._map.latLngToLayerPoint(latlngs[i]);
+                        var p2 = this._map.latLngToLayerPoint(latlngs[i+1]);
+                        var pt = L.point(p1.x + (p2.x - p1.x) * ratio, p1.y + (p2.y - p1.y) * ratio);
+                        var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+                        return { pt: this._map.layerPointToLatLng(pt), angle: angle };
+                    }
+                    accum += segDists[i];
+                }
+                return null;
+            }
+        });
+
+        L.Symbol = L.Symbol || {};
+        L.Symbol.arrowHead = function(options) { return new L.Symbol.ArrowHead(options); };
+        L.Symbol.ArrowHead = L.Class.extend({
+            options: { pixelSize: 14, headAngle: 50, pathOptions: {} },
+            initialize: function(options) { L.setOptions(this, options); },
+            buildSymbol: function(latlng, angle, map) {
+                var s = this.options.pixelSize;
+                var ha = this.options.headAngle * Math.PI / 180 / 2;
+                var center = map.latLngToLayerPoint(latlng);
+                var tip = L.point(center.x + s * 0.4 * Math.cos(angle), center.y + s * 0.4 * Math.sin(angle));
+                var p1 = L.point(center.x - s * Math.cos(angle - ha), center.y - s * Math.sin(angle - ha));
+                var p2 = L.point(center.x - s * Math.cos(angle + ha), center.y - s * Math.sin(angle + ha));
+                return L.polygon([
+                    map.layerPointToLatLng(tip),
+                    map.layerPointToLatLng(p1),
+                    map.layerPointToLatLng(p2)
+                ], L.extend({ stroke: true, weight: 1, fill: true, fillOpacity: 0.85 }, this.options.pathOptions));
+            }
+        });
+        L.Symbol.dot = function(options) { return new L.Symbol.Dot(options); };
+        L.Symbol.Dot = L.Class.extend({
+            options: { radius: 3, pathOptions: {} },
+            initialize: function(options) { L.setOptions(this, options); },
+            buildSymbol: function(latlng, angle, map) {
+                return L.circleMarker(latlng, L.extend({
+                    radius: this.options.radius, stroke: true, weight: 1,
+                    fill: true, fillOpacity: 0.9
+                }, this.options.pathOptions));
+            }
+        });
+    </script>
+    <script>
+        const districtNames = {
+            '6700100': '新營區', '6700200': '鹽水區', '6700300': '白河區',
+            '6700400': '柳營區', '6700500': '後壁區', '6700600': '東山區',
+            '6700700': '麻豆區', '6700800': '下營區', '6700900': '六甲區',
+            '6701000': '官田區', '6701100': '大內區', '6701200': '佳里區',
+            '6701300': '學甲區', '6701400': '西港區', '6701500': '七股區',
+            '6701600': '將軍區', '6701700': '北門區', '6701800': '新化區',
+            '6701900': '善化區', '6702000': '新市區', '6702100': '安定區',
+            '6702200': '山上區', '6702300': '玉井區', '6702400': '楠西區',
+            '6702500': '南化區', '6702600': '左鎮區', '6702700': '仁德區',
+            '6702800': '歸仁區', '6702900': '關廟區', '6703000': '龍崎區',
+            '6703100': '永康區', '6703200': '東區', '6703300': '南區',
+            '6703400': '北區', '6703500': '安南區', '6703600': '安平區',
+            '6703700': '中西區'
+        };
+
+        const districtCodes = Object.keys(districtNames).sort();
+
+        const map = L.map('map').setView([23.0, 120.2], 11);
+        L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+            attribution: '© 內政部國土測繪中心',
+            maxZoom: 20
+        }).addTo(map);
+
+        const colors = [
+            '#e6194b', '#3cb44b', '#4363d8', '#f58231', '#911eb4',
+            '#42d4f4', '#f032e6', '#bfef45', '#fabed4', '#469990',
+            '#dcbeff', '#9A6324', '#800000', '#aaffc3', '#808000',
+            '#000075', '#a9a9a9'
+        ];
+
+        let currentData = null;
+        let currentSegment = 0;
+        let segmentLayers = [];
+        let allSegmentsLayer = null;
+
+        const panelBody = document.getElementById('panel-body');
+        const panelHeader = document.getElementById('panel-header');
+        const panel = document.getElementById('panel');
+        const segNav = document.getElementById('segment-nav');
+        const segInfo = document.getElementById('segment-info');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        panelHeader.addEventListener('click', () => {
+            panel.classList.toggle('collapsed');
+            document.getElementById('panel-toggle').textContent =
+                panel.classList.contains('collapsed') ? '▶' : '▼';
+        });
+
+        districtCodes.forEach(code => {
+            const item = document.createElement('div');
+            item.className = 'district-item';
+            item.dataset.code = code;
+            item.innerHTML = `<span>${districtNames[code]}</span><span class="meta" id="meta-${code}"></span>`;
+            item.addEventListener('click', () => loadDistrict(code));
+            panelBody.appendChild(item);
+            fetch(`output/${code}.geojson`).then(r => r.json()).then(data => {
+                document.getElementById(`meta-${code}`).textContent = `${data.features.length} 段`;
+            });
+        });
+
+        document.getElementById('search-input').addEventListener('input', function() {
+            const q = this.value.trim().toLowerCase();
+            document.querySelectorAll('.district-item').forEach(item => {
+                const code = item.dataset.code;
+                const name = districtNames[code];
+                item.style.display = (!q || name.includes(q) || code.includes(q)) ? '' : 'none';
+            });
+        });
+
+        function clearMap() {
+            segmentLayers.forEach(l => map.removeLayer(l));
+            segmentLayers = [];
+            if (allSegmentsLayer) {
+                map.removeLayer(allSegmentsLayer);
+                allSegmentsLayer = null;
+            }
+        }
+
+        async function loadDistrict(code) {
+            document.querySelectorAll('.district-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.code === code);
+            });
+
+            clearMap();
+
+            const resp = await fetch(`output/${code}.geojson`);
+            currentData = await resp.json();
+            currentSegment = 0;
+
+            allSegmentsLayer = L.layerGroup().addTo(map);
+            currentData.features.forEach((feat, i) => {
+                const coords = feat.geometry.coordinates.map(c => [c[1], c[0]]);
+                const line = L.polyline(coords, {
+                    color: '#999',
+                    weight: 2,
+                    opacity: 0.5
+                });
+                line.on('click', () => showSegment(i));
+                line.addTo(allSegmentsLayer);
+            });
+
+            const allBounds = allSegmentsLayer.getLayers().reduce((bounds, layer) => {
+                return bounds.extend(layer.getBounds());
+            }, L.latLngBounds([]));
+            map.fitBounds(allBounds, { padding: [50, 50] });
+
+            segNav.style.display = 'flex';
+            showSegment(0);
+        }
+
+        function showSegment(idx) {
+            currentSegment = idx;
+            const total = currentData.features.length;
+            const feat = currentData.features[idx];
+
+            segmentLayers.forEach(l => map.removeLayer(l));
+            segmentLayers = [];
+
+            allSegmentsLayer.getLayers().forEach((layer, i) => {
+                layer.setStyle({
+                    color: '#999',
+                    weight: i === idx ? 0 : 2,
+                    opacity: i === idx ? 0 : 0.4
+                });
+            });
+
+            const coords = feat.geometry.coordinates.map(c => [c[1], c[0]]);
+
+            const halo = L.polyline(coords, {
+                color: '#fff', weight: 10, opacity: 0.9
+            }).addTo(map);
+            segmentLayers.push(halo);
+
+            const line = L.polyline(coords, {
+                color: '#1a3a6b', weight: 5, opacity: 0.9
+            }).addTo(map);
+            segmentLayers.push(line);
+
+            const arrows = L.polylineDecorator(line, {
+                patterns: [{
+                    offset: 20,
+                    repeat: 80,
+                    symbol: L.Symbol.arrowHead({
+                        pixelSize: 20,
+                        headAngle: 45,
+                        pathOptions: {
+                            color: '#fff',
+                            fillColor: '#1a3a6b',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 1
+                        }
+                    })
+                }]
+            }).addTo(map);
+            segmentLayers.push(arrows);
+
+            const startMarker = L.circleMarker(coords[0], {
+                radius: 7, color: '#fff', fillColor: '#2ecc40',
+                fillOpacity: 1, weight: 2
+            }).bindTooltip('起點', { permanent: false }).addTo(map);
+            segmentLayers.push(startMarker);
+
+            const endMarker = L.circleMarker(coords[coords.length - 1], {
+                radius: 7, color: '#fff', fillColor: '#e74c3c',
+                fillOpacity: 1, weight: 2
+            }).bindTooltip('終點', { permanent: false }).addTo(map);
+            segmentLayers.push(endMarker);
+
+            map.fitBounds(line.getBounds(), { padding: [60, 60] });
+
+            const distName = districtNames[feat.properties.district] || feat.properties.district;
+            segInfo.innerHTML = `<strong>${distName}</strong><br>第 ${idx + 1} / ${total} 段 (${feat.properties.km} km)`;
+
+            btnPrev.disabled = idx === 0;
+            btnNext.disabled = idx === total - 1;
+        }
+
+        btnPrev.addEventListener('click', () => {
+            if (currentSegment > 0) showSegment(currentSegment - 1);
+        });
+        btnNext.addEventListener('click', () => {
+            if (currentSegment < currentData.features.length - 1) showSegment(currentSegment + 1);
+        });
+    </script>
+</body>
+</html>
