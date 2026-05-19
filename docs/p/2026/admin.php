@@ -707,16 +707,6 @@ function populateDistrictDropdown(elType, areaCode) {
     sel.innerHTML = '<option value="">-- 選擇選區 --</option>';
     if (!areaCode) return;
 
-    // Try zones.json first (has townCodes/villCodes detail)
-    const zoneKey = getZoneKey(elType);
-    if (zoneKey && appData.districts?.[zoneKey]?.[areaCode]) {
-        appData.districts[zoneKey][areaCode].forEach(d => {
-            sel.innerHTML += `<option value="${d.name}">${d.name}</option>`;
-        });
-        return;
-    }
-
-    // Fallback: use zoneDistricts from list.csv
     const prefix = getZonePrefix(elType);
     if (!prefix) return;
     const districts = appData.areaCodes?.zoneDistricts?.[prefix]?.[areaCode];
