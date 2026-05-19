@@ -37,13 +37,11 @@ function loadAreaCodes() {
     $towns = [];
     if (!file_exists($listCsv)) return ['counties' => $counties, 'towns' => $towns];
 
-    $municipalCodes = ['63000', '64000', '65000', '66000', '67000', '68000'];
-
-    $fh = fopen($listCsv, 'r');
-    fgetcsv($fh); // skip header
-    while ($row = fgetcsv($fh)) {
-        // row: type, code, name, type_name
-        // e.g. R1, R1-10002010-01, 宜蘭縣宜蘭市第01選區, 鄉鎮市民代表(區域)
+    $lines = file($listCsv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    array_shift($lines); // skip header
+    foreach ($lines as $line) {
+        $row = str_getcsv($line);
+        if (count($row) < 4) continue;
         $code = $row[1];
         $name = $row[2];
         $parts = explode('-', $code);
@@ -52,36 +50,18 @@ function loadAreaCodes() {
         $areaCode = $parts[1];
 
         if ($prefix === 'T1') {
-            // T1-{countyCode}-{num}: county level
             $countyCode = $areaCode;
-            // Extract county name from zone name (remove 第XX選區)
-            $countyName = preg_replace('/第\d+選區$/', '', $name);
+            $countyName = mb_ereg_replace('第\d+選區$', '', $name);
             if (!isset($counties[$countyCode])) {
                 $counties[$countyCode] = $countyName;
             }
         } elseif ($prefix === 'R1') {
-            // R1-{townCode}-{num}: town level
             $townCode = $areaCode;
-            $countyCode = substr($townCode, 0, 5);
-            // Extract county+town name
-            $townFullName = preg_replace('/第\d+選區$/', '', $name);
+            $townFullName = mb_ereg_replace('第\d+選區$', '', $name);
             if (!isset($towns[$townCode])) {
                 $towns[$townCode] = $townFullName;
             }
-            // Also ensure county is registered
-            if (!isset($counties[$countyCode]) && !in_array($countyCode, $municipalCodes)) {
-                // Extract county name from town name (first 2-3 chars before 縣/市)
-                if (preg_match('/^(.+?[縣市])/', $townFullName, $m)) {
-                    $counties[$countyCode] = $m[1];
-                }
-            }
         }
-    }
-    fclose($fh);
-
-    // Add municipal codes from T1
-    foreach ($counties as $cc => $cn) {
-        if (in_array($cc, $municipalCodes)) continue;
     }
 
     ksort($counties);
