@@ -222,8 +222,6 @@ function showZoneInfo(props) {
     }
 
     document.getElementById('modalBody').innerHTML = html;
-    document.getElementById('modalBodyHistory').innerHTML = '';
-    switchModalTab('candidates');
     infoModal.show();
 }
 
@@ -268,15 +266,6 @@ function findTppZoneInfo(zoneCode) {
         if (tppZonesData[i].code === shortCode) return tppZonesData[i];
     }
     return null;
-}
-
-function switchModalTab(tab) {
-    var tabs = document.querySelectorAll('#modalTabs a');
-    tabs.forEach(function (a) {
-        a.classList.toggle('active', a.getAttribute('data-mtab') === tab);
-    });
-    document.getElementById('modalBody').classList.toggle('d-none', tab !== 'candidates');
-    document.getElementById('modalBodyHistory').classList.toggle('d-none', tab !== 'history');
 }
 
 function locateUser() {
