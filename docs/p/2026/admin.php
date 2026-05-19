@@ -89,6 +89,24 @@ if (isset($_GET['action'])) {
         exit;
     }
 
+    if ($action === 'generate_zones') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['error' => 'POST required']);
+            exit;
+        }
+        $script = __DIR__ . '/generate_zones.py';
+        $cmd = 'python3 ' . escapeshellarg($script) . ' 2>&1';
+        exec($cmd, $output, $code);
+        $result = implode("\n", $output);
+        $json = json_decode($result, true);
+        if ($code === 0 && $json && isset($json['ok'])) {
+            echo $result;
+        } else {
+            echo json_encode(['error' => 'Zone generation failed', 'output' => $result, 'code' => $code]);
+        }
+        exit;
+    }
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['error' => 'POST required']);
         exit;
@@ -234,10 +252,15 @@ if (isset($_GET['action'])) {
 <body>
 <div class="container-fluid py-3">
     <h4>2026 選舉候選人管理</h4>
-    <ul class="nav nav-tabs mb-3" id="mainTabs">
-        <li class="nav-item"><a class="nav-link active" href="#" data-tab="candidates">候選人 Candidates</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-tab="districts">選區 Districts</a></li>
-    </ul>
+    <div class="d-flex align-items-center mb-3">
+        <ul class="nav nav-tabs flex-grow-1" id="mainTabs">
+            <li class="nav-item"><a class="nav-link active" href="#" data-tab="candidates">候選人 Candidates</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="districts">選區 Districts</a></li>
+        </ul>
+        <button class="btn btn-success btn-sm ms-2 flex-shrink-0" id="generateZonesBtn" onclick="generateZones()">
+            ⚙ 產生地圖 Generate Zones
+        </button>
+    </div>
 
     <!-- Candidates Tab -->
     <div id="tab-candidates">
@@ -976,6 +999,24 @@ document.getElementById('districtModal').addEventListener('hidden.bs.modal', () 
         mapDataLayer = null;
     }
 });
+
+async function generateZones() {
+    const btn = document.getElementById('generateZonesBtn');
+    btn.disabled = true;
+    btn.textContent = '產生中...';
+    try {
+        const r = await api('generate_zones', {});
+        if (r.ok) {
+            alert(`產生完成！\nDetail: ${r.detail_files} 檔\nOverview: ${r.overview_types} 類 ${r.overview_features} 選區\nSkipped: ${r.skipped}`);
+        } else {
+            alert('產生失敗: ' + (r.error || JSON.stringify(r)));
+        }
+    } catch (e) {
+        alert('產生失敗: ' + e.message);
+    }
+    btn.disabled = false;
+    btn.textContent = '⚙ 產生地圖 Generate Zones';
+}
 
 load().then(() => {
     // Handle URL parameters for direct editing
