@@ -83,18 +83,18 @@ function getZoneStyle(feature) {
     var count = feature.properties.candidateCount || 0;
     if (count > 0) {
         return {
-            fillColor: '#F5811F',
+            fillColor: '#0ABAB5',
             weight: 2,
             opacity: 1,
-            color: '#D4690E',
+            color: '#089E9A',
             fillOpacity: 0.5
         };
     }
     return {
-        fillColor: '#cccccc',
+        fillColor: '#0ABAB5',
         weight: 1,
         opacity: 0.8,
-        color: '#999999',
+        color: '#089E9A',
         fillOpacity: 0.25
     };
 }
@@ -147,10 +147,10 @@ function loadDetail(code) {
         .then(function (fc) {
             detailLayer = L.geoJSON(fc, {
                 style: {
-                    fillColor: '#F5811F',
+                    fillColor: '#0ABAB5',
                     weight: 1,
                     opacity: 0.6,
-                    color: '#D4690E',
+                    color: '#089E9A',
                     fillOpacity: 0.15
                 },
                 onEachFeature: function (feature, layer) {
