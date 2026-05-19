@@ -115,23 +115,24 @@ docs/p/2026/
    c. 合併 cunli polygon 為單一 MultiPolygon，寫入 `zones/overview/`
 4. 產生 `zones/index.json`：所有選區的清單（code, name, type, 候選人數, centroid）
 
-### 合併 Polygon 方法（geoPHP union）
+### 合併 Polygon 方法（Python shapely）
 
-geoPHP 已安裝在 `/home/kiang/public_html/tainan.olc.tw/scripts/vendor/`，admin.php 直接 require：
+使用 Python `shapely`（已安裝，底層為 GEOS）做真正的幾何聯集。
+
+admin.php 的 `generate_zones` action 透過 `exec()` 呼叫 Python 腳本：
 
 ```php
-require __DIR__ . '/../scripts/vendor/autoload.php';
-// 路徑：docs/p/2026/admin.php → scripts/vendor/autoload.php
+// admin.php
+exec('python3 ' . escapeshellarg(__DIR__ . '/generate_zones.py') . ' 2>&1', $output, $code);
 ```
 
-合併流程：
-1. 讀取 zone 內所有 cunli feature 的 GeoJSON geometry
-2. 用 `geoPHP::load($geojson, 'json')` 解析每個 cunli geometry
-3. 逐一 `$union = $union->union($next)` 做真正的幾何聯集
-4. 輸出為單一 Polygon 或 MultiPolygon（消除內部邊界，保留外輪廓與真正的洞）
-5. `$union->out('json')` 輸出 GeoJSON geometry
-
-這樣 overview 層的每個選區只有一個精簡的 Polygon/MultiPolygon，檔案更小、渲染更快。
+Python 腳本 `generate_zones.py` 負責：
+1. 讀取 `data/candidates.json` 和 `data/zones.json`
+2. 讀取 `db.cec.gov.tw/data/elections/2026/` 的 cunli 級 GeoJSON
+3. 對每個選區用 `shapely.ops.unary_union()` 合併所有 cunli polygon
+4. 輸出合併後的 Polygon/MultiPolygon（消除內部邊界，保留外輪廓與洞）
+5. 寫入 `zones/overview/{選舉類型}.json` 和 `zones/detail/{code}.json`
+6. 產生 `zones/index.json`
 
 ### index.html 地圖改造
 
@@ -163,14 +164,13 @@ require __DIR__ . '/../scripts/vendor/autoload.php';
    - 合併寫入 `zones/overview/{group}.json`（合併 polygon）
    - 產生 `zones/index.json`
 
-3. **overview polygon 合併邏輯（geoPHP union）**
-   - 每個 zone 的所有 cunli geometry → `geoPHP::load()` 解析 → 逐一 `->union()` 合併
+3. **overview polygon 合併邏輯（shapely unary_union）**
+   - 每個 zone 的所有 cunli geometry → `shapely.ops.unary_union()` 合併
    - 產出單一 Polygon/MultiPolygon，消除 cunli 間的內部邊界
    - 附帶 properties：zone code, zone name, 候選人數, centroid
    - **同一選舉類型的所有選區合併到同一個 FeatureCollection 檔案**
      - 例：`zones/overview/直轄市議員.json` 包含全台所有直轄市議員選區（~80 feature）
      - 共產生 9 個 overview 檔案，對應 9 種選舉類型
-   - 若 GEOS 未安裝導致 union 結果為 GeometryCollection，fallback 為 MultiPolygon（收集外環）
 
 ### Phase 2：index.html 地圖改造
 
@@ -223,12 +223,12 @@ require __DIR__ . '/../scripts/vendor/autoload.php';
 每個 feature 的 properties 已包含完整資訊（code, name, candidateCount, centroid），
 不需要額外的 zones 清單。地圖切換選舉類型時直接載入對應的 overview 檔即可。
 
-### geoPHP union 注意事項
+### shapely union 細節
 
-- geoPHP 的 `union()` 底層依賴 GEOS PHP extension（若有安裝）或 fallback
-- 若 GEOS 未安裝，`union()` 可能回退為簡單的 GeometryCollection — 仍可用，只是不會消除內部邊界
-- 可用 `geoPHP::geosInstalled()` 檢查
-- 若 union 結果不理想，fallback 策略：收集所有 cunli 外環組成 MultiPolygon（不消除邊界但堪用）
+- `shapely.ops.unary_union(polygons)` 一次合併所有 polygon，效率優於逐一 union
+- 自動消除相鄰 cunli 之間的內部邊界，產出乾淨的外輪廓
+- 結果可能是 Polygon 或 MultiPolygon（離島、飛地等情況）
+- 使用 `shapely.geometry.mapping()` 轉回 GeoJSON geometry
 - 每個 overview feature 附帶 properties：`{ code, name, type, candidateCount, centroid }`
 
 ### 底圖
