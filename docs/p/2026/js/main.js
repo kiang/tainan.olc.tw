@@ -1,4 +1,4 @@
-var map, overviewLayer, detailLayer, locateMarker;
+var map, overviewLayer, detailLayer, locateMarker, selectedLayer;
 var candidatesData = null;
 var indexData = null;
 var tppZonesData = null;
@@ -59,6 +59,7 @@ function buildElectionTypeSelector() {
 function selectElectionType(et) {
     currentElType = et;
     document.getElementById('electionTypeSelect').value = et;
+    selectedLayer = null;
     clearDetail();
     loadOverview(et);
 }
@@ -104,6 +105,10 @@ function highlightStyle() {
     return { weight: 3, fillOpacity: 0.7 };
 }
 
+function selectedStyle() {
+    return { fillColor: '#FFD700', weight: 3, color: '#E53935', fillOpacity: 0.6 };
+}
+
 function renderOverview(fc) {
     if (overviewLayer) map.removeLayer(overviewLayer);
 
@@ -119,8 +124,12 @@ function renderOverview(fc) {
             }
             layer.bindTooltip(tip, { sticky: true });
             layer.on({
-                mouseover: function (e) { e.target.setStyle(highlightStyle()); },
-                mouseout: function (e) { overviewLayer.resetStyle(e.target); },
+                mouseover: function (e) {
+                    if (e.target !== selectedLayer) e.target.setStyle(highlightStyle());
+                },
+                mouseout: function (e) {
+                    if (e.target !== selectedLayer) overviewLayer.resetStyle(e.target);
+                },
                 click: function (e) {
                     L.DomEvent.stopPropagation(e);
                     onZoneClick(props, layer);
@@ -135,6 +144,12 @@ function renderOverview(fc) {
 }
 
 function onZoneClick(props, layer) {
+    if (selectedLayer && overviewLayer) {
+        overviewLayer.resetStyle(selectedLayer);
+    }
+    selectedLayer = layer;
+    layer.setStyle(selectedStyle());
+    layer.bringToFront();
     map.fitBounds(layer.getBounds());
     showZoneInfo(props);
     loadDetail(props.code);
