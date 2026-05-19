@@ -35,7 +35,8 @@ function loadAreaCodes() {
     $listCsv = '/home/kiang/public_html/db.cec.gov.tw/data/elections/2026/list.csv';
     $counties = [];
     $towns = [];
-    if (!file_exists($listCsv)) return ['counties' => $counties, 'towns' => $towns];
+    $zoneDistricts = [];
+    if (!file_exists($listCsv)) return ['counties' => $counties, 'towns' => $towns, 'zoneDistricts' => $zoneDistricts];
 
     $lines = file($listCsv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     array_shift($lines); // skip header
@@ -48,6 +49,7 @@ function loadAreaCodes() {
         if (count($parts) < 3) continue;
         $prefix = $parts[0];
         $areaCode = $parts[1];
+        $districtNum = $parts[2];
 
         if ($prefix === 'T1') {
             $countyCode = $areaCode;
@@ -55,18 +57,23 @@ function loadAreaCodes() {
             if (!isset($counties[$countyCode])) {
                 $counties[$countyCode] = $countyName;
             }
-        } elseif ($prefix === 'R1') {
+            $zoneDistricts[$prefix][$countyCode][] = '第' . ltrim($districtNum, '0') . '選舉區';
+        } elseif ($prefix === 'R1' || $prefix === 'R2' || $prefix === 'R3') {
             $townCode = $areaCode;
             $townFullName = mb_ereg_replace('第\d+選區$', '', $name);
             if (!isset($towns[$townCode])) {
                 $towns[$townCode] = $townFullName;
             }
+            $zoneDistricts[$prefix][$townCode][] = '第' . ltrim($districtNum, '0') . '選舉區';
+        } elseif ($prefix === 'T2' || $prefix === 'T3') {
+            $countyCode = $areaCode;
+            $zoneDistricts[$prefix][$countyCode][] = '第' . ltrim($districtNum, '0') . '選舉區';
         }
     }
 
     ksort($counties);
     ksort($towns);
-    return ['counties' => $counties, 'towns' => $towns];
+    return ['counties' => $counties, 'towns' => $towns, 'zoneDistricts' => $zoneDistricts];
 }
 
 // Photo upload/delete (multipart, before JSON parsing)
@@ -698,16 +705,24 @@ function onTownChange() {
 function populateDistrictDropdown(elType, areaCode) {
     const sel = document.getElementById('c_districtSelect');
     sel.innerHTML = '<option value="">-- 選擇選區 --</option>';
-    if (!appData.districts || !areaCode) return;
+    if (!areaCode) return;
 
-    // Map election type to zones.json key
+    // Try zones.json first (has townCodes/villCodes detail)
     const zoneKey = getZoneKey(elType);
-    if (!zoneKey || !appData.districts[zoneKey]) return;
-    const areaDistricts = appData.districts[zoneKey][areaCode];
-    if (!areaDistricts) return;
+    if (zoneKey && appData.districts?.[zoneKey]?.[areaCode]) {
+        appData.districts[zoneKey][areaCode].forEach(d => {
+            sel.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+        });
+        return;
+    }
 
-    areaDistricts.forEach(d => {
-        sel.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+    // Fallback: use zoneDistricts from list.csv
+    const prefix = getZonePrefix(elType);
+    if (!prefix) return;
+    const districts = appData.areaCodes?.zoneDistricts?.[prefix]?.[areaCode];
+    if (!districts) return;
+    districts.forEach(name => {
+        sel.innerHTML += `<option value="${name}">${name}</option>`;
     });
 }
 
@@ -715,6 +730,15 @@ function getZoneKey(elType) {
     if (elType === '直轄市議員' || elType === '縣市議員') return elType;
     if (elType === '直轄市山地原住民區區民代表' || elType === '鄉鎮市民代表') return elType;
     return null;
+}
+
+function getZonePrefix(elType) {
+    const map = {
+        '直轄市議員': 'T1', '縣市議員': 'T1',
+        '直轄市山地原住民區區民代表': 'R3',
+        '鄉鎮市民代表': 'R1',
+    };
+    return map[elType] || null;
 }
 
 function onDistrictChange() {
