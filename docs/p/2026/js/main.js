@@ -106,6 +106,8 @@ function highlightStyle() {
 function renderOverview(fc) {
     if (overviewLayer) map.removeLayer(overviewLayer);
 
+    clearDetail();
+
     overviewLayer = L.geoJSON(fc, {
         style: getZoneStyle,
         onEachFeature: function (feature, layer) {
@@ -125,6 +127,10 @@ function renderOverview(fc) {
             });
         }
     }).addTo(map);
+
+    if (overviewLayer.getLayers().length > 0) {
+        map.fitBounds(overviewLayer.getBounds());
+    }
 }
 
 function onZoneClick(props, layer) {
