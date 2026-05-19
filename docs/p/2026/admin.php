@@ -603,7 +603,7 @@ function populateCountyDropdown(elType) {
     }
 }
 
-function onCountyChange() {
+async function onCountyChange() {
     const code = document.getElementById('c_county').value;
     const sel = document.getElementById('c_county');
     const name = sel.options[sel.selectedIndex]?.textContent || '';
@@ -612,9 +612,6 @@ function onCountyChange() {
 
     const elType = document.getElementById('c_election').value;
     const rules = electionFieldRules[elType] || {};
-
-    if (rules.town) populateTownDropdown(code);
-    if (rules.district && !rules.town) populateDistrictDropdown(elType, code);
 
     // Clear downstream
     document.getElementById('c_town').innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
@@ -626,22 +623,52 @@ function onCountyChange() {
     document.getElementById('c_villCode').value = '';
     document.getElementById('c_villName').value = '';
 
-    if (rules.town) populateTownDropdown(code);
+    if (rules.town) await populateTownDropdown(code);
     else if (rules.district) populateDistrictDropdown(elType, code);
 }
 
-function populateTownDropdown(countyCode) {
+async function populateTownDropdown(countyCode) {
     const sel = document.getElementById('c_town');
     sel.innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
-    if (!appData.areaCodes || !countyCode) return;
-    const towns = appData.areaCodes.towns;
-    for (const [code, name] of Object.entries(towns)) {
+    if (!countyCode) return;
+
+    // Try static towns from list.csv first (non-municipal counties)
+    const staticTowns = appData.areaCodes?.towns || {};
+    let found = false;
+    for (const [code, name] of Object.entries(staticTowns)) {
         if (code.startsWith(countyCode)) {
-            // Show just the town part (remove county prefix from name)
             const countyName = appData.areaCodes.counties[countyCode] || '';
             const shortName = name.startsWith(countyName) ? name.substring(countyName.length) : name;
             sel.innerHTML += `<option value="${code}" data-fullname="${name}">${shortName}</option>`;
+            found = true;
         }
+    }
+    if (found) return;
+
+    // For 直轄市 or missing towns: extract from cunli topo
+    const countyName = appData.areaCodes?.counties[countyCode] || '';
+    if (!countyName) return;
+    sel.innerHTML = '<option value="">載入中...</option>';
+    try {
+        if (!cunliCache[countyName]) {
+            const url = 'https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/' + encodeURIComponent(countyName) + '.json';
+            const resp = await fetch(url);
+            const topo = await resp.json();
+            const objKey = Object.keys(topo.objects)[0];
+            cunliCache[countyName] = topojson.feature(topo, topo.objects[objKey]);
+        }
+        const geojson = cunliCache[countyName];
+        const towns = {};
+        geojson.features.forEach(f => {
+            const tc = f.properties.TOWNCODE;
+            if (tc && !towns[tc]) towns[tc] = f.properties.TOWNNAME;
+        });
+        sel.innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
+        Object.entries(towns).sort((a, b) => a[0].localeCompare(b[0])).forEach(([code, name]) => {
+            sel.innerHTML += `<option value="${code}" data-fullname="${countyName}${name}">${name}</option>`;
+        });
+    } catch (e) {
+        sel.innerHTML = '<option value="">載入失敗</option>';
     }
 }
 
@@ -766,7 +793,7 @@ async function restoreDropdowns(c, elType) {
 
     // Town
     if (rules.town && c.countyCode) {
-        populateTownDropdown(c.countyCode);
+        await populateTownDropdown(c.countyCode);
         if (c.townCode) {
             document.getElementById('c_town').value = c.townCode;
         }
