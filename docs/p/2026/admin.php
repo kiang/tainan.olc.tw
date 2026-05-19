@@ -582,8 +582,9 @@ function applyFieldRules(elType) {
 function getApplicableCounties(elType) {
     if (!appData.areaCodes) return {};
     const all = appData.areaCodes.counties;
+    if (elType === '村里長') return all;
     const isMunicipal = ['直轄市市長', '直轄市議員', '直轄市山地原住民區區長', '直轄市山地原住民區區民代表'].includes(elType);
-    const isCounty = ['縣市首長', '縣市議員', '鄉鎮市長', '鄉鎮市民代表', '村里長'].includes(elType);
+    const isCounty = ['縣市首長', '縣市議員', '鄉鎮市長', '鄉鎮市民代表'].includes(elType);
     const result = {};
     for (const [code, name] of Object.entries(all)) {
         const isMun = municipalCodes.includes(code);
