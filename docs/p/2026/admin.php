@@ -128,24 +128,6 @@ if (isset($_GET['action'])) {
         exit;
     }
 
-    if ($action === 'generate_zones') {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['error' => 'POST required']);
-            exit;
-        }
-        $script = __DIR__ . '/generate_zones.py';
-        $cmd = 'python3 ' . escapeshellarg($script) . ' 2>&1';
-        exec($cmd, $output, $code);
-        $result = implode("\n", $output);
-        $json = json_decode($result, true);
-        if ($code === 0 && $json && isset($json['ok'])) {
-            echo $result;
-        } else {
-            echo json_encode(['error' => 'Zone generation failed', 'output' => $result, 'code' => $code]);
-        }
-        exit;
-    }
-
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['error' => 'POST required']);
         exit;
@@ -1245,22 +1227,10 @@ document.getElementById('districtModal').addEventListener('hidden.bs.modal', () 
     }
 });
 
-async function generateZones() {
-    const btn = document.getElementById('generateZonesBtn');
-    btn.disabled = true;
-    btn.textContent = '產生中...';
-    try {
-        const r = await api('generate_zones', {});
-        if (r.ok) {
-            alert(`產生完成！\nDetail: ${r.detail_files} 檔\nOverview: ${r.overview_types} 類 ${r.overview_features} 選區\nSkipped: ${r.skipped}`);
-        } else {
-            alert('產生失敗: ' + (r.error || JSON.stringify(r)));
-        }
-    } catch (e) {
-        alert('產生失敗: ' + e.message);
-    }
-    btn.disabled = false;
-    btn.textContent = '⚙ 產生地圖 Generate Zones';
+function generateZones() {
+    const script = location.pathname.replace(/admin\.php$/, 'generate_zones.py');
+    const absPath = '/home/kiang/public_html/tainan.olc.tw/docs/p/2026/generate_zones.py';
+    prompt('請在終端機執行以下指令產生地圖資料：', 'python3 ' + absPath);
 }
 
 load().then(() => {
