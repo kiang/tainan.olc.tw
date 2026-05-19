@@ -31,6 +31,64 @@ function saveZones($zones) {
     file_put_contents($zonesFile, json_encode($zones, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
 }
 
+function loadAreaCodes() {
+    $listCsv = '/home/kiang/public_html/db.cec.gov.tw/data/elections/2026/list.csv';
+    $counties = [];
+    $towns = [];
+    if (!file_exists($listCsv)) return ['counties' => $counties, 'towns' => $towns];
+
+    $municipalCodes = ['63000', '64000', '65000', '66000', '67000', '68000'];
+
+    $fh = fopen($listCsv, 'r');
+    fgetcsv($fh); // skip header
+    while ($row = fgetcsv($fh)) {
+        // row: type, code, name, type_name
+        // e.g. R1, R1-10002010-01, 宜蘭縣宜蘭市第01選區, 鄉鎮市民代表(區域)
+        $code = $row[1];
+        $name = $row[2];
+        $parts = explode('-', $code);
+        if (count($parts) < 3) continue;
+        $prefix = $parts[0];
+        $areaCode = $parts[1];
+
+        if ($prefix === 'T1') {
+            // T1-{countyCode}-{num}: county level
+            $countyCode = $areaCode;
+            // Extract county name from zone name (remove 第XX選區)
+            $countyName = preg_replace('/第\d+選區$/', '', $name);
+            if (!isset($counties[$countyCode])) {
+                $counties[$countyCode] = $countyName;
+            }
+        } elseif ($prefix === 'R1') {
+            // R1-{townCode}-{num}: town level
+            $townCode = $areaCode;
+            $countyCode = substr($townCode, 0, 5);
+            // Extract county+town name
+            $townFullName = preg_replace('/第\d+選區$/', '', $name);
+            if (!isset($towns[$townCode])) {
+                $towns[$townCode] = $townFullName;
+            }
+            // Also ensure county is registered
+            if (!isset($counties[$countyCode]) && !in_array($countyCode, $municipalCodes)) {
+                // Extract county name from town name (first 2-3 chars before 縣/市)
+                if (preg_match('/^(.+?[縣市])/', $townFullName, $m)) {
+                    $counties[$countyCode] = $m[1];
+                }
+            }
+        }
+    }
+    fclose($fh);
+
+    // Add municipal codes from T1
+    foreach ($counties as $cc => $cn) {
+        if (in_array($cc, $municipalCodes)) continue;
+    }
+
+    ksort($counties);
+    ksort($towns);
+    return ['counties' => $counties, 'towns' => $towns];
+}
+
 // Photo upload/delete (multipart, before JSON parsing)
 if (isset($_GET['action']) && $_GET['action'] === 'upload_photo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json; charset=utf-8');
@@ -85,6 +143,7 @@ if (isset($_GET['action'])) {
 
     if ($action === 'load') {
         $data['districts'] = loadZones();
+        $data['areaCodes'] = loadAreaCodes();
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -308,32 +367,27 @@ if (isset($_GET['action'])) {
                 <select id="c_election" class="form-select form-select-sm"></select>
             </div>
             <div class="col-md-4">
-                <label class="form-label">countyCode</label>
-                <input id="c_countyCode" class="form-control form-control-sm">
+                <label class="form-label">縣市</label>
+                <select id="c_county" class="form-select form-select-sm" onchange="onCountyChange()"></select>
+                <input type="hidden" id="c_countyCode">
+                <input type="hidden" id="c_countyName">
             </div>
             <div class="col-md-4">
-                <label class="form-label">countyName</label>
-                <input id="c_countyName" class="form-control form-control-sm">
+                <label class="form-label">鄉鎮市區</label>
+                <select id="c_town" class="form-select form-select-sm" onchange="onTownChange()"></select>
+                <input type="hidden" id="c_townCode">
+                <input type="hidden" id="c_townName">
             </div>
             <div class="col-md-4">
-                <label class="form-label">district</label>
-                <input id="c_district" class="form-control form-control-sm">
+                <label class="form-label">選區</label>
+                <select id="c_districtSelect" class="form-select form-select-sm" onchange="onDistrictChange()"></select>
+                <input type="hidden" id="c_district">
             </div>
             <div class="col-md-4">
-                <label class="form-label">townCode</label>
-                <input id="c_townCode" class="form-control form-control-sm">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">townName</label>
-                <input id="c_townName" class="form-control form-control-sm">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">villCode</label>
-                <input id="c_villCode" class="form-control form-control-sm">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">villName</label>
-                <input id="c_villName" class="form-control form-control-sm">
+                <label class="form-label">村里</label>
+                <select id="c_vill" class="form-select form-select-sm" onchange="onVillChange()"></select>
+                <input type="hidden" id="c_villCode">
+                <input type="hidden" id="c_villName">
             </div>
             <div class="col-md-2">
                 <label class="form-label">號次</label>
@@ -535,27 +589,186 @@ function renderCandidates() {
 
 // Field visibility per election type
 const electionFieldRules = {
-    '直轄市市長':               { district: false, townCode: false, townName: false, villCode: false, villName: false },
-    '縣市首長':                 { district: false, townCode: false, townName: false, villCode: false, villName: false },
-    '直轄市議員':               { district: true,  townCode: false, townName: false, villCode: false, villName: false },
-    '縣市議員':                 { district: true,  townCode: false, townName: false, villCode: false, villName: false },
-    '直轄市山地原住民區區長':     { district: false, townCode: true,  townName: true,  villCode: false, villName: false },
-    '鄉鎮市長':                 { district: false, townCode: true,  townName: true,  villCode: false, villName: false },
-    '直轄市山地原住民區區民代表': { district: true,  townCode: true,  townName: true,  villCode: false, villName: false },
-    '鄉鎮市民代表':             { district: true,  townCode: true,  townName: true,  villCode: false, villName: false },
-    '村里長':                   { district: false, townCode: true,  townName: true,  villCode: true,  villName: true  },
+    '直轄市市長':               { county: true, town: false, district: false, vill: false },
+    '縣市首長':                 { county: true, town: false, district: false, vill: false },
+    '直轄市議員':               { county: true, town: false, district: true,  vill: false },
+    '縣市議員':                 { county: true, town: false, district: true,  vill: false },
+    '直轄市山地原住民區區長':     { county: true, town: true,  district: false, vill: false },
+    '鄉鎮市長':                 { county: true, town: true,  district: false, vill: false },
+    '直轄市山地原住民區區民代表': { county: true, town: true,  district: true,  vill: false },
+    '鄉鎮市民代表':             { county: true, town: true,  district: true,  vill: false },
+    '村里長':                   { county: true, town: true,  district: false, vill: true  },
 };
+
+const municipalCodes = ['63000', '64000', '65000', '66000', '67000', '68000'];
+
+// Cached cunli data per county for village dropdowns
+let cunliCache = {};
 
 function applyFieldRules(elType) {
     const rules = electionFieldRules[elType] || {};
-    ['district', 'townCode', 'townName', 'villCode', 'villName'].forEach(f => {
+    ['county', 'town', 'districtSelect', 'vill'].forEach(f => {
+        const key = f === 'districtSelect' ? 'district' : f;
         const wrap = document.getElementById('c_' + f)?.closest('.col-md-4');
         if (wrap) {
-            const show = rules[f] !== false;
-            wrap.style.display = show ? '' : 'none';
-            if (!show) document.getElementById('c_' + f).value = '';
+            wrap.style.display = rules[key] !== false ? '' : 'none';
         }
     });
+    populateCountyDropdown(elType);
+}
+
+function getApplicableCounties(elType) {
+    if (!appData.areaCodes) return {};
+    const all = appData.areaCodes.counties;
+    const isMunicipal = ['直轄市市長', '直轄市議員', '直轄市山地原住民區區長', '直轄市山地原住民區區民代表'].includes(elType);
+    const isCounty = ['縣市首長', '縣市議員', '鄉鎮市長', '鄉鎮市民代表', '村里長'].includes(elType);
+    const result = {};
+    for (const [code, name] of Object.entries(all)) {
+        const isMun = municipalCodes.includes(code);
+        if (isMunicipal && isMun) result[code] = name;
+        else if (isCounty && !isMun) result[code] = name;
+    }
+    return result;
+}
+
+function populateCountyDropdown(elType) {
+    const sel = document.getElementById('c_county');
+    const counties = getApplicableCounties(elType);
+    sel.innerHTML = '<option value="">-- 選擇縣市 --</option>';
+    for (const [code, name] of Object.entries(counties)) {
+        sel.innerHTML += `<option value="${code}">${name}</option>`;
+    }
+}
+
+function onCountyChange() {
+    const code = document.getElementById('c_county').value;
+    const sel = document.getElementById('c_county');
+    const name = sel.options[sel.selectedIndex]?.textContent || '';
+    document.getElementById('c_countyCode').value = code;
+    document.getElementById('c_countyName').value = name;
+
+    const elType = document.getElementById('c_election').value;
+    const rules = electionFieldRules[elType] || {};
+
+    if (rules.town) populateTownDropdown(code);
+    if (rules.district && !rules.town) populateDistrictDropdown(elType, code);
+
+    // Clear downstream
+    document.getElementById('c_town').innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
+    document.getElementById('c_districtSelect').innerHTML = '<option value="">-- 選擇選區 --</option>';
+    document.getElementById('c_vill').innerHTML = '<option value="">-- 選擇村里 --</option>';
+    document.getElementById('c_townCode').value = '';
+    document.getElementById('c_townName').value = '';
+    document.getElementById('c_district').value = '';
+    document.getElementById('c_villCode').value = '';
+    document.getElementById('c_villName').value = '';
+
+    if (rules.town) populateTownDropdown(code);
+    else if (rules.district) populateDistrictDropdown(elType, code);
+}
+
+function populateTownDropdown(countyCode) {
+    const sel = document.getElementById('c_town');
+    sel.innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
+    if (!appData.areaCodes || !countyCode) return;
+    const towns = appData.areaCodes.towns;
+    for (const [code, name] of Object.entries(towns)) {
+        if (code.startsWith(countyCode)) {
+            // Show just the town part (remove county prefix from name)
+            const countyName = appData.areaCodes.counties[countyCode] || '';
+            const shortName = name.startsWith(countyName) ? name.substring(countyName.length) : name;
+            sel.innerHTML += `<option value="${code}" data-fullname="${name}">${shortName}</option>`;
+        }
+    }
+}
+
+function onTownChange() {
+    const code = document.getElementById('c_town').value;
+    const sel = document.getElementById('c_town');
+    const opt = sel.options[sel.selectedIndex];
+    const fullName = opt?.dataset.fullname || opt?.textContent || '';
+    const shortName = opt?.textContent || '';
+    document.getElementById('c_townCode').value = code;
+    document.getElementById('c_townName').value = shortName;
+
+    const elType = document.getElementById('c_election').value;
+    const rules = electionFieldRules[elType] || {};
+
+    // Clear downstream
+    document.getElementById('c_districtSelect').innerHTML = '<option value="">-- 選擇選區 --</option>';
+    document.getElementById('c_vill').innerHTML = '<option value="">-- 選擇村里 --</option>';
+    document.getElementById('c_district').value = '';
+    document.getElementById('c_villCode').value = '';
+    document.getElementById('c_villName').value = '';
+
+    if (rules.district) populateDistrictDropdown(elType, code);
+    if (rules.vill) populateVillDropdown(code);
+}
+
+function populateDistrictDropdown(elType, areaCode) {
+    const sel = document.getElementById('c_districtSelect');
+    sel.innerHTML = '<option value="">-- 選擇選區 --</option>';
+    if (!appData.districts || !areaCode) return;
+
+    // Map election type to zones.json key
+    const zoneKey = getZoneKey(elType);
+    if (!zoneKey || !appData.districts[zoneKey]) return;
+    const areaDistricts = appData.districts[zoneKey][areaCode];
+    if (!areaDistricts) return;
+
+    areaDistricts.forEach(d => {
+        sel.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+    });
+}
+
+function getZoneKey(elType) {
+    if (elType === '直轄市議員' || elType === '縣市議員') return elType;
+    if (elType === '直轄市山地原住民區區民代表' || elType === '鄉鎮市民代表') return elType;
+    return null;
+}
+
+function onDistrictChange() {
+    const val = document.getElementById('c_districtSelect').value;
+    document.getElementById('c_district').value = val;
+}
+
+async function populateVillDropdown(townCode) {
+    const sel = document.getElementById('c_vill');
+    sel.innerHTML = '<option value="">載入中...</option>';
+    if (!townCode) { sel.innerHTML = '<option value="">-- 選擇村里 --</option>'; return; }
+
+    const countyCode = townCode.substring(0, 5);
+    const countyName = appData.areaCodes?.counties[countyCode] || '';
+    if (!countyName) { sel.innerHTML = '<option value="">-- 選擇村里 --</option>'; return; }
+
+    try {
+        if (!cunliCache[countyName]) {
+            const url = 'https://kiang.github.io/taiwan_basecode/cunli/topo/city/20240807/' + encodeURIComponent(countyName) + '.json';
+            const resp = await fetch(url);
+            const topo = await resp.json();
+            const objKey = Object.keys(topo.objects)[0];
+            cunliCache[countyName] = topojson.feature(topo, topo.objects[objKey]);
+        }
+        const geojson = cunliCache[countyName];
+        sel.innerHTML = '<option value="">-- 選擇村里 --</option>';
+        geojson.features
+            .filter(f => f.properties.TOWNCODE === townCode)
+            .sort((a, b) => (a.properties.VILLNAME || '').localeCompare(b.properties.VILLNAME || ''))
+            .forEach(f => {
+                const p = f.properties;
+                sel.innerHTML += `<option value="${p.VILLCODE}" data-name="${p.VILLNAME}">${p.VILLNAME}</option>`;
+            });
+    } catch (e) {
+        sel.innerHTML = '<option value="">載入失敗</option>';
+    }
+}
+
+function onVillChange() {
+    const sel = document.getElementById('c_vill');
+    const code = sel.value;
+    const opt = sel.options[sel.selectedIndex];
+    document.getElementById('c_villCode').value = code;
+    document.getElementById('c_villName').value = opt?.dataset.name || opt?.textContent || '';
 }
 
 function editCandidate(index) {
@@ -565,13 +778,55 @@ function editCandidate(index) {
         const el = document.getElementById('c_' + f);
         if (el) el.value = c[f] ?? '';
     });
-    applyFieldRules(c.election || Object.keys(appData.elections)[0]);
+    const elType = c.election || Object.keys(appData.elections)[0];
+    document.getElementById('c_election').value = elType;
+    applyFieldRules(elType);
+
+    // Restore dropdown selections from existing candidate data
+    restoreDropdowns(c, elType);
+
     // Sync photo UI
     const photoUrl = c.photo || '';
     document.getElementById('c_photoUrl').value = photoUrl;
     updatePhotoPreview(photoUrl);
     document.getElementById('photoFileInput').value = '';
     new bootstrap.Modal(document.getElementById('candidateModal')).show();
+}
+
+async function restoreDropdowns(c, elType) {
+    const rules = electionFieldRules[elType] || {};
+
+    // County
+    if (c.countyCode) {
+        document.getElementById('c_county').value = c.countyCode;
+    }
+
+    // Town
+    if (rules.town && c.countyCode) {
+        populateTownDropdown(c.countyCode);
+        if (c.townCode) {
+            document.getElementById('c_town').value = c.townCode;
+        }
+    }
+
+    // District
+    if (rules.district) {
+        const areaCode = rules.town ? c.townCode : c.countyCode;
+        if (areaCode) {
+            populateDistrictDropdown(elType, areaCode);
+            if (c.district) {
+                document.getElementById('c_districtSelect').value = c.district;
+            }
+        }
+    }
+
+    // Village
+    if (rules.vill && c.townCode) {
+        await populateVillDropdown(c.townCode);
+        if (c.villCode) {
+            document.getElementById('c_vill').value = c.villCode;
+        }
+    }
 }
 
 async function saveCandidate() {
@@ -771,8 +1026,18 @@ document.querySelectorAll('#mainTabs a').forEach(a => {
 document.getElementById('filterElection').addEventListener('change', renderCandidates);
 document.getElementById('filterCounty').addEventListener('change', renderCandidates);
 
-// Update field visibility when election type changes in candidate form
-document.getElementById('c_election').addEventListener('change', e => applyFieldRules(e.target.value));
+// Update field visibility and reset cascading dropdowns when election type changes
+document.getElementById('c_election').addEventListener('change', e => {
+    applyFieldRules(e.target.value);
+    // Clear all downstream selections
+    document.getElementById('c_county').value = '';
+    document.getElementById('c_town').innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
+    document.getElementById('c_districtSelect').innerHTML = '<option value="">-- 選擇選區 --</option>';
+    document.getElementById('c_vill').innerHTML = '<option value="">-- 選擇村里 --</option>';
+    ['countyCode', 'countyName', 'townCode', 'townName', 'district', 'villCode', 'villName'].forEach(f => {
+        document.getElementById('c_' + f).value = '';
+    });
+});
 
 // === District Map Picker ===
 let districtMap = null;
@@ -1028,15 +1293,18 @@ load().then(() => {
             editCandidate(index);
         } else if (!isNaN(index) && index === -1) {
             // New candidate with pre-filled fields from URL
-            editCandidate(-1);
-            const prefillFields = ['election', 'countyCode', 'countyName', 'district', 'townCode', 'townName', 'villCode', 'villName'];
-            prefillFields.forEach(f => {
+            const prefill = {};
+            ['election', 'countyCode', 'countyName', 'district', 'townCode', 'townName', 'villCode', 'villName'].forEach(f => {
                 const val = params.get(f);
-                if (val) {
-                    const el = document.getElementById('c_' + f);
-                    if (el) el.value = val;
-                }
+                if (val) prefill[f] = val;
             });
+            editCandidate(-1);
+            // After editCandidate initializes the form, restore from URL params
+            if (prefill.election) {
+                document.getElementById('c_election').value = prefill.election;
+                applyFieldRules(prefill.election);
+            }
+            restoreDropdowns(prefill, prefill.election || Object.keys(appData.elections)[0]);
         }
     } else if (editType === 'district') {
         const elType = params.get('electionType');
