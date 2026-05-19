@@ -185,10 +185,10 @@ function showZoneInfo(props) {
     // Candidates section
     if (candidates.length > 0) {
         candidates.forEach(function (c) {
-            html += '<div class="candidate-card d-flex align-items-center">';
-            html += '<div class="candidate-photo me-3">';
+            html += '<div class="candidate-card">';
+            html += '<div class="candidate-photo mb-2">';
             if (c.photo) {
-                html += '<img src="' + c.photo + '" class="rounded-circle" width="60" height="60" alt="' + c.name + '">';
+                html += '<img src="' + c.photo + '" alt="' + c.name + '">';
             } else {
                 html += c.name ? c.name.charAt(0) : '?';
             }
