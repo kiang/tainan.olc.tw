@@ -33,6 +33,46 @@
             z-index: 1000;
         }
 
+        .gallery-btn {
+            position: absolute;
+            top: 115px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        .gallery-item {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .gallery-item:hover {
+            border-color: #0ABAB5;
+            transform: scale(1.03);
+        }
+        .gallery-item img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-item .gallery-label {
+            padding: 6px;
+            text-align: center;
+            font-size: 0.85rem;
+            background: #f8f9fa;
+        }
+        .gallery-item .gallery-label small {
+            display: block;
+            color: #6c757d;
+        }
+
         .candidate-card {
             border: 1px solid #dee2e6;
             border-radius: 8px;
@@ -71,6 +111,25 @@
     <button class="btn btn-light btn-sm locate-btn shadow" onclick="locateUser()">
         <i class="bi bi-geo-alt-fill"></i>
     </button>
+
+    <button class="btn btn-light btn-sm gallery-btn shadow" onclick="openGallery()">
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+    </button>
+
+    <!-- Gallery Modal -->
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title mb-0">候選人總覽</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="gallery-grid" id="galleryGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Info Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">

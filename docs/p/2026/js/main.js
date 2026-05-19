@@ -4,7 +4,7 @@ var indexData = null;
 var tppZonesData = null;
 var currentElType = '';
 var overviewCache = {};
-var infoModal;
+var infoModal, galleryModal;
 
 var NLSC_TILE = 'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}';
 
@@ -21,6 +21,7 @@ function initMap() {
     map = L.map('map', { center: [23.5, 121], zoom: 7, zoomControl: true });
     L.tileLayer(NLSC_TILE, { maxZoom: 18, attribution: '&copy; NLSC' }).addTo(map);
     infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
 
     Promise.all([
         fetch('zones/index.json').then(function (r) { return r.json(); }),
@@ -65,10 +66,10 @@ function selectElectionType(et) {
 function loadOverview(et) {
     if (overviewCache[et]) {
         renderOverview(overviewCache[et]);
-        return;
+        return Promise.resolve();
     }
     var url = 'zones/overview/' + encodeURIComponent(et) + '.json';
-    fetch(url)
+    return fetch(url)
         .then(function (r) { return r.json(); })
         .then(function (fc) {
             overviewCache[et] = fc;
@@ -266,6 +267,98 @@ function findTppZoneInfo(zoneCode) {
         if (tppZonesData[i].code === shortCode) return tppZonesData[i];
     }
     return null;
+}
+
+function candidateSortKey(c) {
+    var key = c.election + '-' + (c.countyCode || '') + '-' + (c.townCode || '') + '-';
+    if (c.district) {
+        var num = parseInt(c.district.replace(/[^\d]/g, ''), 10);
+        key += (isNaN(num) ? '000' : ('000' + num).slice(-3));
+    }
+    key += '-' + (c.villCode || '');
+    return key;
+}
+
+function openGallery() {
+    if (!candidatesData) return;
+    var grid = document.getElementById('galleryGrid');
+    var sorted = candidatesData.candidates.map(function (c, idx) {
+        return { c: c, idx: idx, key: candidateSortKey(c) };
+    });
+    sorted.sort(function (a, b) { return a.key < b.key ? -1 : a.key > b.key ? 1 : 0; });
+    var html = '';
+    sorted.forEach(function (item) {
+        var c = item.c;
+        html += '<div class="gallery-item" onclick="onGallerySelect(' + item.idx + ')">';
+        if (c.photo) {
+            html += '<img src="' + c.photo + '" alt="' + c.name + '" loading="lazy">';
+        } else {
+            html += '<div style="width:100%;aspect-ratio:1;background:#e9ecef;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#6c757d">' + (c.name ? c.name.charAt(0) : '?') + '</div>';
+        }
+        html += '<div class="gallery-label"><strong>' + c.name + '</strong>';
+        html += '<small>' + c.election + (c.district ? ' ' + c.district : '') + '</small></div>';
+        html += '</div>';
+    });
+    grid.innerHTML = html;
+    galleryModal.show();
+}
+
+function onGallerySelect(idx) {
+    var c = candidatesData.candidates[idx];
+    galleryModal.hide();
+
+    function navigateToZone() {
+        var zoneCode = findZoneCodeForCandidate(c);
+        if (!zoneCode || !overviewLayer) return;
+        overviewLayer.eachLayer(function (layer) {
+            if (layer.feature && layer.feature.properties.code === zoneCode) {
+                onZoneClick(layer.feature.properties, layer);
+            }
+        });
+    }
+
+    if (c.election !== currentElType) {
+        currentElType = c.election;
+        document.getElementById('electionTypeSelect').value = c.election;
+        clearDetail();
+        loadOverview(c.election).then(navigateToZone);
+    } else {
+        navigateToZone();
+    }
+}
+
+function findZoneCodeForCandidate(c) {
+    if (!overviewLayer) return null;
+    var found = null;
+    overviewLayer.eachLayer(function (layer) {
+        if (found) return;
+        var code = layer.feature && layer.feature.properties.code;
+        if (!code) return;
+
+        if (code.startsWith('mayor-')) {
+            var areaCode = code.substring(6);
+            if ((areaCode.length === 5 && c.countyCode === areaCode) ||
+                (areaCode.length === 8 && c.townCode === areaCode)) {
+                found = code;
+            }
+            return;
+        }
+        if (code.startsWith('village-')) {
+            if (c.villCode === code.substring(8)) found = code;
+            return;
+        }
+        var parts = code.split('-');
+        if (parts.length === 3) {
+            var districtNum = parseInt(parts[2], 10);
+            var districtMatch = c.district && parseInt(c.district.replace(/[^\d]/g, ''), 10) === districtNum;
+            if (parts[0].startsWith('R')) {
+                if (c.townCode === parts[1] && districtMatch) found = code;
+            } else {
+                if (c.countyCode === parts[1] && districtMatch) found = code;
+            }
+        }
+    });
+    return found;
 }
 
 function locateUser() {
