@@ -1,4 +1,4 @@
-var map, overviewLayer, detailLayer, locateMarker, selectedLayer;
+var map, overviewLayer, detailLayer, locateMarker, selectedLayer, selectedCunliLayer, cunliLabel;
 var candidatesData = null;
 var indexData = null;
 var tppZonesData = null;
@@ -109,6 +109,31 @@ function selectedStyle() {
     return { fillColor: '#FFD700', weight: 3, color: '#E53935', fillOpacity: 0.6 };
 }
 
+function cunliSelectedStyle() {
+    return { fillColor: '#FF6F00', weight: 3, color: '#E53935', fillOpacity: 0.5 };
+}
+
+function cunliDefaultStyle() {
+    return {
+        fillColor: '#0ABAB5',
+        weight: 1,
+        opacity: 0.6,
+        color: '#089E9A',
+        fillOpacity: 0.15
+    };
+}
+
+function clearCunliSelection() {
+    if (selectedCunliLayer && detailLayer) {
+        selectedCunliLayer.setStyle(cunliDefaultStyle());
+    }
+    selectedCunliLayer = null;
+    if (cunliLabel) {
+        map.removeLayer(cunliLabel);
+        cunliLabel = null;
+    }
+}
+
 function renderOverview(fc) {
     if (overviewLayer) map.removeLayer(overviewLayer);
 
@@ -162,23 +187,54 @@ function loadDetail(code) {
         .then(function (r) { return r.json(); })
         .then(function (fc) {
             detailLayer = L.geoJSON(fc, {
-                style: {
-                    fillColor: '#0ABAB5',
-                    weight: 1,
-                    opacity: 0.6,
-                    color: '#089E9A',
-                    fillOpacity: 0.15
-                },
+                style: cunliDefaultStyle,
                 onEachFeature: function (feature, layer) {
                     var p = feature.properties;
-                    layer.bindTooltip((p.TOWNNAME || '') + (p.VILLNAME || ''), { sticky: true });
+                    var name = (p.TOWNNAME || '') + (p.VILLNAME || '');
+                    layer.bindTooltip(name, { sticky: true });
+                    layer.on({
+                        mouseover: function (e) {
+                            if (e.target !== selectedCunliLayer) {
+                                e.target.setStyle({ weight: 2, fillOpacity: 0.3 });
+                            }
+                        },
+                        mouseout: function (e) {
+                            if (e.target !== selectedCunliLayer) {
+                                e.target.setStyle(cunliDefaultStyle());
+                            }
+                        },
+                        click: function (e) {
+                            L.DomEvent.stopPropagation(e);
+                            onCunliClick(feature, layer);
+                        }
+                    });
                 }
             }).addTo(map);
         })
         .catch(function () {});
 }
 
+function onCunliClick(feature, layer) {
+    clearCunliSelection();
+    selectedCunliLayer = layer;
+    layer.setStyle(cunliSelectedStyle());
+    layer.bringToFront();
+
+    var p = feature.properties;
+    var name = (p.TOWNNAME || '') + (p.VILLNAME || '');
+    var center = layer.getBounds().getCenter();
+    cunliLabel = L.marker(center, {
+        icon: L.divIcon({
+            className: 'cunli-label',
+            html: '<span>' + name + '</span>',
+            iconSize: null
+        }),
+        interactive: false
+    }).addTo(map);
+}
+
 function clearDetail() {
+    clearCunliSelection();
     if (detailLayer) {
         map.removeLayer(detailLayer);
         detailLayer = null;
