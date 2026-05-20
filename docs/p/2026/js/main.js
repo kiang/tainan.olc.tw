@@ -353,6 +353,8 @@ function candidateSortKey(c) {
 function openGallery() {
     if (!candidatesData) return;
     var grid = document.getElementById('galleryGrid');
+    var searchInput = document.getElementById('gallerySearch');
+    searchInput.value = '';
     var sorted = candidatesData.candidates.map(function (c, idx) {
         return { c: c, idx: idx, key: candidateSortKey(c) };
     });
@@ -360,7 +362,8 @@ function openGallery() {
     var html = '';
     sorted.forEach(function (item) {
         var c = item.c;
-        html += '<div class="gallery-item" onclick="onGallerySelect(' + item.idx + ')">';
+        var searchText = [c.name, c.election, c.party, c.district, c.countyName].filter(Boolean).join(' ');
+        html += '<div class="gallery-item" data-search="' + searchText + '" onclick="onGallerySelect(' + item.idx + ')">';
         if (c.photo) {
             html += '<img src="' + c.photo + '" alt="' + c.name + '" loading="lazy">';
         } else {
@@ -372,6 +375,15 @@ function openGallery() {
     });
     grid.innerHTML = html;
     galleryModal.show();
+}
+
+function filterGallery(keyword) {
+    var items = document.querySelectorAll('#galleryGrid .gallery-item');
+    var kw = keyword.trim().toLowerCase();
+    items.forEach(function (el) {
+        var text = (el.getAttribute('data-search') || '').toLowerCase();
+        el.style.display = (!kw || text.indexOf(kw) !== -1) ? '' : 'none';
+    });
 }
 
 function onGallerySelect(idx) {
