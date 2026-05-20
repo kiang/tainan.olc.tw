@@ -41,24 +41,36 @@ function initMap() {
 }
 
 function buildElectionTypeSelector() {
-    var sel = document.getElementById('electionTypeSelect');
-    sel.innerHTML = '';
+    var container = document.getElementById('electionBtns');
+    container.innerHTML = '';
     indexData.types.forEach(function (et) {
         var count = indexData.counts[et] || 0;
         if (count === 0) return;
-        var opt = document.createElement('option');
-        opt.value = et;
-        opt.textContent = et + ' (' + count + ')';
-        sel.appendChild(opt);
+        var btn = document.createElement('button');
+        btn.className = 'btn btn-outline-dark btn-sm shadow-sm';
+        btn.setAttribute('data-et', et);
+        btn.textContent = et + ' (' + count + ')';
+        btn.addEventListener('click', function () {
+            selectElectionType(et);
+        });
+        container.appendChild(btn);
     });
-    sel.addEventListener('change', function () {
-        selectElectionType(this.value);
+}
+
+function updateElectionBtns(et) {
+    var btns = document.querySelectorAll('#electionBtns .btn');
+    btns.forEach(function (btn) {
+        if (btn.getAttribute('data-et') === et) {
+            btn.className = 'btn btn-dark btn-sm shadow-sm';
+        } else {
+            btn.className = 'btn btn-outline-dark btn-sm shadow-sm';
+        }
     });
 }
 
 function selectElectionType(et) {
     currentElType = et;
-    document.getElementById('electionTypeSelect').value = et;
+    updateElectionBtns(et);
     selectedLayer = null;
     clearDetail();
     loadOverview(et);
@@ -402,7 +414,7 @@ function onGallerySelect(idx) {
 
     if (c.election !== currentElType) {
         currentElType = c.election;
-        document.getElementById('electionTypeSelect').value = c.election;
+        updateElectionBtns(c.election);
         clearDetail();
         loadOverview(c.election).then(navigateToZone);
     } else {
