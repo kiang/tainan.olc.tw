@@ -187,6 +187,8 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>資料管理 - 掃街/街講</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }
@@ -227,6 +229,8 @@ form.edit-form textarea { min-height: 100px; }
 .filter-bar input { flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
 .filter-bar .count { font-size: 12px; color: #888; white-space: nowrap; }
 tr.editing { background: #e0f7f7; }
+#pickerMap { height: 300px; border-radius: 6px; margin-top: 6px; border: 1px solid #ccc; }
+.map-hint { font-size: 12px; color: #888; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -326,10 +330,13 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="old_key" value="<?= htmlspecialchars($eKey) ?>">
         <label>地點名稱 (key)</label>
         <input type="text" name="key" value="<?= htmlspecialchars($eKey) ?>" required id="editFocus">
-        <label>經度 (lng)</label>
-        <input type="text" name="lng" value="<?= $ef['geometry']['coordinates'][0] ?? 0 ?>" required>
-        <label>緯度 (lat)</label>
-        <input type="text" name="lat" value="<?= $ef['geometry']['coordinates'][1] ?? 0 ?>" required>
+        <label>座標（點擊地圖或手動輸入）</label>
+        <div style="display:flex;gap:8px;margin-bottom:6px">
+            <input type="text" name="lng" value="<?= $ef['geometry']['coordinates'][0] ?? 0 ?>" required placeholder="經度" id="inputLng">
+            <input type="text" name="lat" value="<?= $ef['geometry']['coordinates'][1] ?? 0 ?>" required placeholder="緯度" id="inputLat">
+        </div>
+        <div id="pickerMap"></div>
+        <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
         <label>影片列表</label>
         <div id="editVideos">
             <?php foreach ($eVideos as $v): ?>
@@ -358,10 +365,13 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="action" value="create">
         <label>地點名稱 (key)</label>
         <input type="text" name="key" placeholder="北區和緯路四段/文賢路" required>
-        <label>經度 (lng)</label>
-        <input type="text" name="lng" placeholder="120.193953" required>
-        <label>緯度 (lat)</label>
-        <input type="text" name="lat" placeholder="23.009592" required>
+        <label>座標（點擊地圖或手動輸入）</label>
+        <div style="display:flex;gap:8px;margin-bottom:6px">
+            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
+            <input type="text" name="lat" placeholder="23.009592" required id="inputLat">
+        </div>
+        <div id="pickerMap"></div>
+        <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
         <label>影片列表</label>
         <div id="createVideos">
             <div class="video-row">
@@ -452,6 +462,68 @@ function addVideoRow(containerId) {
         + '<span class="remove-video" onclick="this.parentElement.remove()">✕</span>';
     div.appendChild(row);
 }
+
+(function() {
+    var mapDiv = document.getElementById('pickerMap');
+    if (!mapDiv) return;
+    var lngInput = document.getElementById('inputLng');
+    var latInput = document.getElementById('inputLat');
+    var initLng = parseFloat(lngInput.value) || 120.198;
+    var initLat = parseFloat(latInput.value) || 23.004582;
+    var hasCoord = lngInput.value && latInput.value && parseFloat(lngInput.value) !== 0;
+
+    var map = L.map('pickerMap').setView([initLat, initLng], hasCoord ? 16 : 14);
+    L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+        maxZoom: 20,
+        attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+    }).addTo(map);
+
+    var marker = null;
+    if (hasCoord) {
+        marker = L.marker([initLat, initLng], { draggable: true }).addTo(map);
+        marker.on('dragend', function() {
+            var pos = marker.getLatLng();
+            lngInput.value = pos.lng.toFixed(6);
+            latInput.value = pos.lat.toFixed(6);
+        });
+    }
+
+    map.on('click', function(e) {
+        lngInput.value = e.latlng.lng.toFixed(6);
+        latInput.value = e.latlng.lat.toFixed(6);
+        if (marker) {
+            marker.setLatLng(e.latlng);
+        } else {
+            marker = L.marker(e.latlng, { draggable: true }).addTo(map);
+            marker.on('dragend', function() {
+                var pos = marker.getLatLng();
+                lngInput.value = pos.lng.toFixed(6);
+                latInput.value = pos.lat.toFixed(6);
+            });
+        }
+    });
+
+    function updateFromInputs() {
+        var lng = parseFloat(lngInput.value);
+        var lat = parseFloat(latInput.value);
+        if (!isNaN(lng) && !isNaN(lat) && lng !== 0 && lat !== 0) {
+            var pos = L.latLng(lat, lng);
+            map.setView(pos, map.getZoom());
+            if (marker) {
+                marker.setLatLng(pos);
+            } else {
+                marker = L.marker(pos, { draggable: true }).addTo(map);
+                marker.on('dragend', function() {
+                    var p = marker.getLatLng();
+                    lngInput.value = p.lng.toFixed(6);
+                    latInput.value = p.lat.toFixed(6);
+                });
+            }
+        }
+    }
+    lngInput.addEventListener('change', updateFromInputs);
+    latInput.addEventListener('change', updateFromInputs);
+})();
 </script>
 </body>
 </html>
