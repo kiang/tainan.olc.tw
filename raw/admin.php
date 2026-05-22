@@ -14,6 +14,12 @@ function saveJson($path, $data) {
     file_put_contents($path, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
+function sortVideosByTitleDesc(&$videos) {
+    usort($videos, function($a, $b) {
+        return strcmp(mb_substr($b['title'], 0, 8), mb_substr($a['title'], 0, 8));
+    });
+}
+
 $tab = $_GET['tab'] ?? 'lines';
 $action = $_POST['action'] ?? '';
 $message = '';
@@ -91,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $videos[] = ['id' => $vid, 'title' => $vtitle];
                 }
             }
+            sortVideosByTitleDesc($videos);
             if ($key !== '' && $lng != 0 && $lat != 0) {
                 $youtube['features'][] = [
                     'type' => 'Feature',
@@ -129,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $videos[] = ['id' => $vid, 'title' => $vtitle];
                     }
                 }
+                sortVideosByTitleDesc($videos);
                 $youtube['features'][$idx]['properties']['key'] = $key;
                 $youtube['features'][$idx]['properties']['count'] = count($videos);
                 $youtube['features'][$idx]['geometry']['coordinates'] = [$lng, $lat];
