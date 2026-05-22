@@ -218,6 +218,7 @@ form.edit-form textarea { min-height: 100px; }
 .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .filter-bar input { flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
 .filter-bar .count { font-size: 12px; color: #888; white-space: nowrap; }
+tr.editing { background: #e0f7f7; }
 </style>
 </head>
 <body>
@@ -235,7 +236,28 @@ form.edit-form textarea { min-height: 100px; }
 
 <?php if ($tab === 'lines'): ?>
 <!-- Lines Tab -->
-<div class="card">
+<div class="card" id="formCard">
+    <?php if ($editIndex >= 0 && isset($lines['features'][$editIndex])):
+        $ef = $lines['features'][$editIndex];
+    ?>
+    <h2>編輯掃街路線 #<?= $editIndex ?></h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="index" value="<?= $editIndex ?>">
+        <label>日期時間 (ymdh)</label>
+        <input type="text" name="ymdh" value="<?= htmlspecialchars($ef['properties']['ymdh'] ?? '') ?>" required id="editFocus">
+        <label>YouTube 影片 ID</label>
+        <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required>
+        <label>座標 (每行一組 lng,lat)</label>
+        <textarea name="coordinates" required><?php
+            foreach (($ef['geometry']['coordinates'] ?? []) as $c) {
+                echo $c[0] . ',' . $c[1] . "\n";
+            }
+        ?></textarea>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
+        <a href="?tab=lines" class="btn btn-secondary" style="margin-top:10px">取消</a>
+    </form>
+    <?php else: ?>
     <h2>新增掃街路線</h2>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="create">
@@ -247,6 +269,7 @@ form.edit-form textarea { min-height: 100px; }
         <textarea name="coordinates" placeholder="120.19837595,22.99293332&#10;120.19743906,22.99314248&#10;120.19738947,22.99341597" required></textarea>
         <button type="submit" class="btn btn-primary" style="margin-top:10px">新增</button>
     </form>
+    <?php endif; ?>
 </div>
 
 <div class="card">
@@ -261,29 +284,7 @@ form.edit-form textarea { min-height: 100px; }
         </thead>
         <tbody>
         <?php foreach (($lines['features'] ?? []) as $i => $feature): ?>
-            <?php if ($editIndex === $i): ?>
-            <tr>
-                <td colspan="5">
-                    <form method="post" class="edit-form">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="index" value="<?= $i ?>">
-                        <label>日期時間 (ymdh)</label>
-                        <input type="text" name="ymdh" value="<?= htmlspecialchars($feature['properties']['ymdh'] ?? '') ?>" required>
-                        <label>YouTube 影片 ID</label>
-                        <input type="text" name="v" value="<?= htmlspecialchars($feature['properties']['v'] ?? '') ?>" required>
-                        <label>座標 (每行一組 lng,lat)</label>
-                        <textarea name="coordinates" required><?php
-                            foreach (($feature['geometry']['coordinates'] ?? []) as $c) {
-                                echo $c[0] . ',' . $c[1] . "\n";
-                            }
-                        ?></textarea>
-                        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
-                        <a href="?tab=lines" class="btn btn-secondary" style="margin-top:10px">取消</a>
-                    </form>
-                </td>
-            </tr>
-            <?php else: ?>
-            <tr>
+            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($feature['properties']['ymdh'] ?? '') ?></td>
                 <td><a href="https://www.youtube.com/watch?v=<?= htmlspecialchars($feature['properties']['v'] ?? '') ?>" target="_blank"><?= htmlspecialchars($feature['properties']['v'] ?? '') ?></a></td>
@@ -297,7 +298,6 @@ form.edit-form textarea { min-height: 100px; }
                     </form>
                 </td>
             </tr>
-            <?php endif; ?>
         <?php endforeach; ?>
         </tbody>
     </table>
@@ -305,7 +305,46 @@ form.edit-form textarea { min-height: 100px; }
 
 <?php elseif ($tab === 'youtube'): ?>
 <!-- YouTube/StreetTalk Tab -->
-<div class="card">
+<div class="card" id="formCard">
+    <?php if ($editIndex >= 0 && isset($youtube['features'][$editIndex])):
+        $ef = $youtube['features'][$editIndex];
+        $eKey = $ef['properties']['key'] ?? '';
+        $eVideos = $youtubeList[$eKey] ?? [];
+    ?>
+    <h2>編輯街講地點 #<?= $editIndex ?></h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="index" value="<?= $editIndex ?>">
+        <input type="hidden" name="old_key" value="<?= htmlspecialchars($eKey) ?>">
+        <label>地點名稱 (key)</label>
+        <input type="text" name="key" value="<?= htmlspecialchars($eKey) ?>" required id="editFocus">
+        <label>經度 (lng)</label>
+        <input type="text" name="lng" value="<?= $ef['geometry']['coordinates'][0] ?? 0 ?>" required>
+        <label>緯度 (lat)</label>
+        <input type="text" name="lat" value="<?= $ef['geometry']['coordinates'][1] ?? 0 ?>" required>
+        <label>影片列表</label>
+        <div id="editVideos">
+            <?php foreach ($eVideos as $v): ?>
+            <div class="video-row">
+                <input type="text" name="video_id[]" value="<?= htmlspecialchars($v['id'] ?? '') ?>" placeholder="影片 ID">
+                <input type="text" name="video_title[]" value="<?= htmlspecialchars($v['title'] ?? '') ?>" placeholder="影片標題">
+                <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
+            </div>
+            <?php endforeach; ?>
+            <?php if (empty($eVideos)): ?>
+            <div class="video-row">
+                <input type="text" name="video_id[]" placeholder="影片 ID">
+                <input type="text" name="video_title[]" placeholder="影片標題">
+                <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
+            </div>
+            <?php endif; ?>
+        </div>
+        <span class="add-video-btn" onclick="addVideoRow('editVideos')">+ 新增影片</span>
+        <br>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
+        <a href="?tab=youtube" class="btn btn-secondary" style="margin-top:10px">取消</a>
+    </form>
+    <?php else: ?>
     <h2>新增街講地點</h2>
     <form method="post" class="edit-form" id="createForm">
         <input type="hidden" name="action" value="create">
@@ -327,6 +366,7 @@ form.edit-form textarea { min-height: 100px; }
         <br>
         <button type="submit" class="btn btn-primary" style="margin-top:10px">新增</button>
     </form>
+    <?php endif; ?>
 </div>
 
 <div class="card">
@@ -344,45 +384,7 @@ form.edit-form textarea { min-height: 100px; }
             $key = $feature['properties']['key'] ?? '';
             $videos = $youtubeList[$key] ?? [];
         ?>
-            <?php if ($editIndex === $i): ?>
-            <tr>
-                <td colspan="5">
-                    <form method="post" class="edit-form">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="index" value="<?= $i ?>">
-                        <input type="hidden" name="old_key" value="<?= htmlspecialchars($key) ?>">
-                        <label>地點名稱 (key)</label>
-                        <input type="text" name="key" value="<?= htmlspecialchars($key) ?>" required>
-                        <label>經度 (lng)</label>
-                        <input type="text" name="lng" value="<?= $feature['geometry']['coordinates'][0] ?? 0 ?>" required>
-                        <label>緯度 (lat)</label>
-                        <input type="text" name="lat" value="<?= $feature['geometry']['coordinates'][1] ?? 0 ?>" required>
-                        <label>影片列表</label>
-                        <div id="editVideos">
-                            <?php foreach ($videos as $v): ?>
-                            <div class="video-row">
-                                <input type="text" name="video_id[]" value="<?= htmlspecialchars($v['id'] ?? '') ?>" placeholder="影片 ID">
-                                <input type="text" name="video_title[]" value="<?= htmlspecialchars($v['title'] ?? '') ?>" placeholder="影片標題">
-                                <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
-                            </div>
-                            <?php endforeach; ?>
-                            <?php if (empty($videos)): ?>
-                            <div class="video-row">
-                                <input type="text" name="video_id[]" placeholder="影片 ID">
-                                <input type="text" name="video_title[]" placeholder="影片標題">
-                                <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-                        <span class="add-video-btn" onclick="addVideoRow('editVideos')">+ 新增影片</span>
-                        <br>
-                        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
-                        <a href="?tab=youtube" class="btn btn-secondary" style="margin-top:10px">取消</a>
-                    </form>
-                </td>
-            </tr>
-            <?php else: ?>
-            <tr>
+            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
                 <td class="truncate" title="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($key) ?></td>
                 <td><?= ($feature['geometry']['coordinates'][0] ?? '') . ', ' . ($feature['geometry']['coordinates'][1] ?? '') ?></td>
@@ -396,7 +398,6 @@ form.edit-form textarea { min-height: 100px; }
                     </form>
                 </td>
             </tr>
-            <?php endif; ?>
         <?php endforeach; ?>
         </tbody>
     </table>
@@ -426,6 +427,12 @@ function filterTable(tableId, query, countId) {
     if (countEl) {
         countEl.textContent = q ? (shown + ' / ' + total + ' 筆') : '';
     }
+}
+
+var ef = document.getElementById('editFocus');
+if (ef) {
+    ef.closest('.card').scrollIntoView({ behavior: 'smooth' });
+    ef.focus();
 }
 
 function addVideoRow(containerId) {
