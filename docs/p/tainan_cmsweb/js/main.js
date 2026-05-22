@@ -1493,6 +1493,61 @@ async function importCase() {
   }
 }
 
+// ── JSON export/import ────────────────────────────────────────
+function exportCasesJSON() {
+  if (cases.length === 0) {
+    alert('目前沒有案件紀錄可匯出');
+    return;
+  }
+  const payload = { version: 1, exportedAt: new Date().toISOString(), cases };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cmsweb_cases_' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importCasesJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = '';
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    let data;
+    try {
+      data = JSON.parse(e.target.result);
+    } catch {
+      alert('JSON 檔案格式錯誤，無法解析');
+      return;
+    }
+    const incoming = Array.isArray(data) ? data : (Array.isArray(data.cases) ? data.cases : null);
+    if (!incoming || incoming.length === 0) {
+      alert('找不到有效的案件資料');
+      return;
+    }
+    let added = 0, updated = 0;
+    incoming.forEach(c => {
+      if (!c.id) return;
+      const existing = cases.find(e => e.id === c.id || (c.caseCode && e.caseCode === c.caseCode));
+      if (existing) {
+        Object.assign(existing, c);
+        updated++;
+      } else {
+        cases.push(c);
+        added++;
+      }
+    });
+    saveCases();
+    renderDashboard();
+    alert(`匯入完成：新增 ${added} 筆，更新 ${updated} 筆`);
+  };
+  reader.readAsText(file);
+}
+
 // ── Content char count ─────────────────────────────────────────
 function updateContentCount() {
   const len = document.getElementById('f-content').value.length;

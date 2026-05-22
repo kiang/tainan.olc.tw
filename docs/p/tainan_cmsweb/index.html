@@ -440,7 +440,12 @@
 
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
             <h2 style="margin:0; font-size:18px; color:#1a5c3a;">📋 我的案件紀錄</h2>
-            <button class="btn-secondary btn-sm" onclick="openImportModal()">📥 匯入案件</button>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn-secondary btn-sm" onclick="exportCasesJSON()">📤 匯出 JSON</button>
+                <button class="btn-secondary btn-sm" onclick="document.getElementById('json-import-input').click()">📥 匯入 JSON</button>
+                <input type="file" id="json-import-input" accept=".json" style="display:none;" onchange="importCasesJSON(this)">
+                <button class="btn-secondary btn-sm" onclick="openImportModal()">📥 匯入案件</button>
+            </div>
         </div>
 
         <!-- Filters -->
