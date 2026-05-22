@@ -449,12 +449,19 @@
         </div>
 
         <!-- Filters -->
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
             <button class="filter-btn active" id="filter-all" onclick="filterCases('all')">全部</button>
             <button class="filter-btn" id="filter-pending" onclick="filterCases('pending')">待確認</button>
             <button class="filter-btn" id="filter-processing" onclick="filterCases('processing')">處理中</button>
             <button class="filter-btn" id="filter-done" onclick="filterCases('done')">已完成</button>
             <button class="filter-btn" id="filter-rejected" onclick="filterCases('rejected')">未受理</button>
+            <span style="margin-left:auto;">
+                <button class="filter-btn" id="btn-toggle-map" onclick="toggleDashboardMap()">🗺️ 地圖</button>
+            </span>
+        </div>
+
+        <div id="dashboard-map-container" style="display:none; margin-bottom:16px;">
+            <div id="dashboard-map" style="height:400px; border-radius:8px; border:1px solid #d0d7de;"></div>
         </div>
 
         <div id="case-list-container"></div>

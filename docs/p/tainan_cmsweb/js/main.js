@@ -960,6 +960,8 @@ function renderDashboard() {
     }).join('') + '</div>';
 
   container.innerHTML = draftHtml + casesHtml;
+
+  if (dashboardMapVisible) renderDashboardMarkers();
 }
 
 // ── Case edit modal ────────────────────────────────────────────
@@ -1181,6 +1183,82 @@ function renderQueryResult(data, c, fromCache = false) {
   if (detailEl && detailEl.classList.contains('active')) renderCaseDetail(c);
 }
 
+// ── Dashboard map view ─────────────────────────────────────────
+let dashboardMap = null;
+let dashboardMapVisible = false;
+let dashboardMarkers = [];
+
+const STATUS_COLOR = {
+  pending: '#f39c12', processing: '#0d6efd', done: '#198754', rejected: '#dc3545'
+};
+
+function toggleDashboardMap() {
+  dashboardMapVisible = !dashboardMapVisible;
+  const container = document.getElementById('dashboard-map-container');
+  const btn = document.getElementById('btn-toggle-map');
+  if (dashboardMapVisible) {
+    container.style.display = 'block';
+    btn.classList.add('active');
+    if (!dashboardMap) {
+      dashboardMap = L.map('dashboard-map').setView([23.0, 120.2], 12);
+      L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+      }).addTo(dashboardMap);
+    }
+    setTimeout(() => dashboardMap.invalidateSize(), 100);
+    renderDashboardMarkers();
+  } else {
+    container.style.display = 'none';
+    btn.classList.remove('active');
+  }
+}
+
+function renderDashboardMarkers() {
+  if (!dashboardMap) return;
+  dashboardMarkers.forEach(m => dashboardMap.removeLayer(m));
+  dashboardMarkers = [];
+
+  const filtered = currentFilter === 'all'
+    ? cases
+    : cases.filter(c => c.status === currentFilter);
+
+  const bounds = [];
+  filtered.forEach(c => {
+    const lat = parseFloat(c.lat);
+    const lng = parseFloat(c.lng);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    const color = STATUS_COLOR[c.status] || '#666';
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    });
+
+    const sl = STATUS_LABEL[c.status] || c.status;
+    const title = esc(c.title || '');
+    const code = c.caseCode ? esc(c.caseCode) : '尚無編號';
+    const popup = `<div style="font-size:13px;max-width:240px;">
+      <div style="font-weight:bold;margin-bottom:4px;">${title}</div>
+      <div style="font-size:12px;color:#666;margin-bottom:6px;">
+        <span class="status-badge ${STATUS_CLASS[c.status] || ''}" style="font-size:10px;">${sl}</span>
+        　${code}
+      </div>
+      <a href="javascript:void(0)" onclick="openCaseDetail('${c.id}')" style="color:#1a5c3a;font-size:12px;">查看詳情 →</a>
+    </div>`;
+
+    const m = L.marker([lat, lng], { icon }).addTo(dashboardMap).bindPopup(popup);
+    dashboardMarkers.push(m);
+    bounds.push([lat, lng]);
+  });
+
+  if (bounds.length > 0) {
+    dashboardMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 16 });
+  }
+}
+
 // ── Tab switching ──────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -1196,7 +1274,10 @@ function switchTab(name) {
   if (name === 'guide')     document.getElementById('btn-goto-guide').classList.add('active');
 
   if (name === 'form') setTimeout(() => map && map.invalidateSize(), 100);
-  if (name === 'dashboard') renderDashboard();
+  if (name === 'dashboard') {
+    renderDashboard();
+    if (dashboardMapVisible && dashboardMap) setTimeout(() => dashboardMap.invalidateSize(), 100);
+  }
 }
 
 // ── Case detail view ───────────────────────────────────────────
