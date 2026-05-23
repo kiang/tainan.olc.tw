@@ -50,6 +50,8 @@ var rtStations = {};  // keyed by StationNo
 var rtRealtime = [];  // raw realtime array
 var rtMerged = [];    // merged station+realtime
 var rtMarkers = {};   // map markers keyed by StationNo
+var userLat = null;
+var userLon = null;
 
 function getStorageLevel(pct) {
   if (pct === null || pct === undefined) return 'normal';
@@ -231,6 +233,9 @@ function sortAndRenderRtGrid() {
         return a.name.localeCompare(b.name, 'zh-Hant');
       case 'capacity-desc':
         return (b.effectiveCapacity || 0) - (a.effectiveCapacity || 0);
+      case 'nearby':
+        if (userLat === null || userLon === null) return 0;
+        return getDistance(userLat, userLon, a.lat, a.lon) - getDistance(userLat, userLon, b.lat, b.lon);
       default:
         return 0;
     }
@@ -293,6 +298,38 @@ function renderRtGrid(data) {
     card.innerHTML = html;
     grid.appendChild(card);
   });
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371;
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function getUserLocation() {
+  var btn = document.getElementById('rtGpsBtn');
+  if (!navigator.geolocation) {
+    alert('您的瀏覽器不支援定位功能');
+    return;
+  }
+  btn.textContent = '定位中...';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(function (pos) {
+    userLat = pos.coords.latitude;
+    userLon = pos.coords.longitude;
+    btn.innerHTML = '&#x1F4CD; 已定位';
+    btn.disabled = false;
+    document.getElementById('rtSortSelect').value = 'nearby';
+    sortAndRenderRtGrid();
+  }, function () {
+    btn.innerHTML = '&#x1F4CD; 定位附近';
+    btn.disabled = false;
+    alert('無法取得您的位置，請確認已允許定位權限');
+  }, { enableHighAccuracy: false, timeout: 10000 });
 }
 
 document.getElementById('rtSearchInput').addEventListener('input', function () {
