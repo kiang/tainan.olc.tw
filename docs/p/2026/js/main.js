@@ -365,10 +365,21 @@ function findCandidatesForZone(zoneCode, elType) {
     });
 }
 
+// 新竹縣 2026 redistricting: 11 zones (竹北市 split into 2), TPP data still uses old 10-zone layout
+var tppZoneRemap = {
+    '10004-01': '10004-01', '10004-02': '10004-01',
+    '10004-03': '10004-02', '10004-04': '10004-03',
+    '10004-05': '10004-04', '10004-06': '10004-05',
+    '10004-07': '10004-06', '10004-08': '10004-07',
+    '10004-09': '10004-08', '10004-10': '10004-09',
+    '10004-11': '10004-10'
+};
+
 function findTppZoneInfo(zoneCode) {
     if (!tppZonesData || !Array.isArray(tppZonesData)) return null;
     // tpp zones.json uses code like "67000-07", zone code is "T1-67000-07"
     var shortCode = zoneCode.replace(/^[A-Z]\d-/, '');
+    if (tppZoneRemap[shortCode]) shortCode = tppZoneRemap[shortCode];
     for (var i = 0; i < tppZonesData.length; i++) {
         if (tppZonesData[i].code === shortCode) return tppZonesData[i];
     }
