@@ -223,7 +223,7 @@ def generate():
     zone_list = load_list_csv()
 
     candidates = candidates_data['candidates']
-    election_types = list(candidates_data['elections'].keys())
+    election_types = list(candidates_data['elections'].keys()) + ['平地原住民議員', '山地原住民議員']
 
     # Group candidates by zone
     zone_candidates = {}
@@ -232,6 +232,11 @@ def generate():
         if not zone_code:
             print(f'WARNING: cannot map candidate {c["name"]} ({c["election"]}, {c.get("countyName","")}, {c.get("district","")})')
             continue
+        # Remap T2/T3 zones to separate display types
+        if zone_code.startswith('T2-'):
+            et = '平地原住民議員'
+        elif zone_code.startswith('T3-'):
+            et = '山地原住民議員'
         if zone_code not in zone_candidates:
             zone_candidates[zone_code] = {
                 'election_type': et,

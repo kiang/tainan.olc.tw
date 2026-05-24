@@ -32,6 +32,10 @@ function initMap() {
         candidatesData = results[1];
         tppZonesData = results[2];
         buildElectionTypeSelector();
+        // Preload indigenous overview caches for gallery type detection
+        ['平地原住民議員', '山地原住民議員'].forEach(function (t) {
+            if (indexData.counts[t]) loadOverviewCache(t);
+        });
         // Default to first type that has zones
         var types = indexData.types.filter(function (t) { return indexData.counts[t]; });
         if (types.length > 0) {
@@ -79,6 +83,15 @@ function selectElectionType(et) {
     selectedLayer = null;
     clearDetail();
     loadOverview(et);
+}
+
+function loadOverviewCache(et) {
+    if (overviewCache[et]) return Promise.resolve();
+    var url = 'zones/overview/' + encodeURIComponent(et) + '.json';
+    return fetch(url)
+        .then(function (r) { return r.json(); })
+        .then(function (fc) { overviewCache[et] = fc; })
+        .catch(function () {});
 }
 
 function loadOverview(et) {
@@ -317,8 +330,13 @@ function showZoneInfo(props) {
 function findCandidatesForZone(zoneCode, elType) {
     if (!candidatesData) return [];
 
+    var matchElTypes = [elType];
+    if (elType === '平地原住民議員' || elType === '山地原住民議員') {
+        matchElTypes = ['直轄市議員', '縣市議員'];
+    }
+
     return candidatesData.candidates.filter(function (c) {
-        if (c.election !== elType) return false;
+        if (matchElTypes.indexOf(c.election) === -1) return false;
 
         // Match based on zone code pattern
         // Zone codes: T1-67000-07, R1-10002010-01, mayor-67000, village-67000180001
@@ -403,6 +421,31 @@ function filterGallery(keyword) {
     });
 }
 
+function getDisplayElType(candidate) {
+    var et = candidate.election;
+    if (et === '直轄市議員' || et === '縣市議員') {
+        var district = candidate.district || '';
+        var num = parseInt(district.replace(/[^\d]/g, ''), 10);
+        if (!isNaN(num)) {
+            var code = candidate.countyCode;
+            var numStr = (num < 10 ? '0' : '') + num;
+            // Check if this zone exists in the preloaded overview caches
+            var types = ['平地原住民議員', '山地原住民議員'];
+            var prefixes = ['T2', 'T3'];
+            for (var i = 0; i < types.length; i++) {
+                if (overviewCache[types[i]]) {
+                    var zc = prefixes[i] + '-' + code + '-' + numStr;
+                    var found = overviewCache[types[i]].features.some(function (f) {
+                        return f.properties.code === zc;
+                    });
+                    if (found) return types[i];
+                }
+            }
+        }
+    }
+    return et;
+}
+
 function onGallerySelect(idx) {
     var c = candidatesData.candidates[idx];
     galleryModal.hide();
@@ -417,11 +460,12 @@ function onGallerySelect(idx) {
         });
     }
 
-    if (c.election !== currentElType) {
-        currentElType = c.election;
-        updateElectionBtns(c.election);
+    var displayEt = getDisplayElType(c);
+    if (displayEt !== currentElType) {
+        currentElType = displayEt;
+        updateElectionBtns(displayEt);
         clearDetail();
-        loadOverview(c.election).then(navigateToZone);
+        loadOverview(displayEt).then(navigateToZone);
     } else {
         navigateToZone();
     }
