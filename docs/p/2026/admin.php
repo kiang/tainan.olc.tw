@@ -707,12 +707,19 @@ function populateDistrictDropdown(elType, areaCode) {
     sel.innerHTML = '<option value="">-- 選擇選區 --</option>';
     if (!areaCode) return;
 
-    const prefix = getZonePrefix(elType);
-    if (!prefix) return;
-    const districts = appData.areaCodes?.zoneDistricts?.[prefix]?.[areaCode];
-    if (!districts) return;
-    districts.forEach(name => {
-        sel.innerHTML += `<option value="${name}">${name}</option>`;
+    const prefixes = getZonePrefixes(elType);
+    if (!prefixes) return;
+    const prefixLabels = { 'T1': '', 'T2': ' (平地原住民)', 'T3': ' (山地原住民)', 'R1': '', 'R2': ' (平原原住民)', 'R3': '' };
+    const seen = new Set();
+    prefixes.forEach(prefix => {
+        const districts = appData.areaCodes?.zoneDistricts?.[prefix]?.[areaCode];
+        if (!districts) return;
+        districts.forEach(name => {
+            if (seen.has(name)) return;
+            seen.add(name);
+            const label = name + (prefixLabels[prefix] || '');
+            sel.innerHTML += `<option value="${name}">${label}</option>`;
+        });
     });
 }
 
@@ -722,11 +729,12 @@ function getZoneKey(elType) {
     return null;
 }
 
-function getZonePrefix(elType) {
+function getZonePrefixes(elType) {
     const map = {
-        '直轄市議員': 'T1', '縣市議員': 'T1',
-        '直轄市山地原住民區區民代表': 'R3',
-        '鄉鎮市民代表': 'R1',
+        '直轄市議員': ['T1', 'T2', 'T3'],
+        '縣市議員': ['T1', 'T2', 'T3'],
+        '直轄市山地原住民區區民代表': ['R3'],
+        '鄉鎮市民代表': ['R1'],
     };
     return map[elType] || null;
 }

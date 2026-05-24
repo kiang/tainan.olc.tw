@@ -16,8 +16,8 @@ DETAIL_DIR = os.path.join(ZONES_DIR, 'detail')
 ELECTION_GEOJSON_DIR = '/home/kiang/public_html/db.cec.gov.tw/data/elections/2026'
 
 ELECTION_TYPE_TO_ZONE_PREFIX = {
-    '直轄市議員': ['T1'],
-    '縣市議員': ['T1'],
+    '直轄市議員': ['T1', 'T2', 'T3'],
+    '縣市議員': ['T1', 'T2', 'T3'],
     '直轄市山地原住民區區民代表': ['R3'],
     '鄉鎮市民代表': ['R1', 'R2'],
 }
@@ -73,7 +73,7 @@ def find_zone_code(election_type, county_code, district_name, town_code=None, vi
         return None
 
     if election_type in ('直轄市議員', '縣市議員'):
-        prefixes = ['T1']
+        prefixes = ['T1', 'T2', 'T3']
     elif election_type == '直轄市山地原住民區區民代表':
         prefixes = ['R3']
     elif election_type == '鄉鎮市民代表':
