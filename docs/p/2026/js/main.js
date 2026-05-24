@@ -55,6 +55,11 @@ function buildElectionTypeSelector() {
         });
         container.appendChild(btn);
     });
+    var galleryBtn = document.createElement('button');
+    galleryBtn.className = 'btn btn-outline-secondary btn-sm shadow-sm';
+    galleryBtn.textContent = '全部參選人';
+    galleryBtn.addEventListener('click', openGallery);
+    container.appendChild(galleryBtn);
 }
 
 function updateElectionBtns(et) {
