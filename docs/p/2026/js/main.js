@@ -405,7 +405,7 @@ function openGallery() {
             html += '<div style="width:100%;aspect-ratio:1;background:#e9ecef;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#6c757d">' + (c.name ? c.name.charAt(0) : '?') + '</div>';
         }
         html += '<div class="gallery-label"><strong>' + c.name + '</strong>';
-        html += '<small>' + c.election + (c.district ? ' ' + c.district : '') + '</small></div>';
+        html += '<small>' + (c.countyName || '') + ' ' + c.election + (c.district ? ' ' + c.district : '') + '</small></div>';
         html += '</div>';
     });
     grid.innerHTML = html;
