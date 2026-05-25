@@ -393,7 +393,10 @@ function openGallery() {
     var sorted = candidatesData.candidates.map(function (c, idx) {
         return { c: c, idx: idx, key: candidateSortKey(c) };
     });
-    sorted.sort(function (a, b) { return a.key < b.key ? -1 : a.key > b.key ? 1 : 0; });
+    for (var i = sorted.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = sorted[i]; sorted[i] = sorted[j]; sorted[j] = tmp;
+    }
     var html = '';
     sorted.forEach(function (item) {
         var c = item.c;
