@@ -1,0 +1,46 @@
+{
+  "reservoirs": [
+    {
+      "name": "曾文水庫",
+      "status": "已完成",
+      "capacity_kw": 2000,
+      "area_hectares": 28,
+      "completed_year": 2021,
+      "description": "台灣首座水庫浮動太陽能設施"
+    },
+    {
+      "name": "虎頭埤",
+      "status": "已完成",
+      "capacity_kw": 600,
+      "area_hectares": 8.5,
+      "completed_year": 2020,
+      "description": "虎頭埤浮動太陽能發電系統"
+    },
+    {
+      "name": "烏樹林水庫",
+      "status": "已完成",
+      "capacity_kw": 1000,
+      "area_hectares": 15,
+      "completed_year": 2022,
+      "description": "烏樹林水庫浮動太陽能設施"
+    },
+    {
+      "name": "南化水庫",
+      "status": "已完成",
+      "capacity_kw": 1500,
+      "area_hectares": 22,
+      "completed_year": 2023,
+      "description": "南化水庫浮動太陽能發電系統"
+    },
+    {
+      "name": "白河水庫",
+      "status": "規劃中",
+      "capacity_kw": 1200,
+      "area_hectares": 18,
+      "completed_year": null,
+      "description": "白河水庫浮動太陽能規劃案"
+    }
+  ],
+  "last_updated": "2026-05-30",
+  "source": "https://www.wra.gov.tw/cp.aspx?n=45013"
+}
