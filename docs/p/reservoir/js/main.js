@@ -1308,8 +1308,11 @@ var supplyMap = null;
 var supplyData = null;
 var supplyTopoData = null;
 var supplyPlantsData = null;
+var supplyStations = {};
 var supplyGeoLayer = null;
 var supplyPlantMarkers = [];
+var supplyReservoirMarker = null;
+var supplyLines = [];
 var supplyLoaded = false;
 
 function initSupplyTab() {
@@ -1330,11 +1333,15 @@ function initSupplyTab() {
   Promise.all([
     fetch('data/supply.json').then(function (r) { return r.json(); }),
     fetch('data/plants.json').then(function (r) { return r.json(); }),
-    fetch('https://kiang.github.io/taiwan_basecode/city/city.topo.json').then(function (r) { return r.json(); })
+    fetch('https://kiang.github.io/taiwan_basecode/city/city.topo.json').then(function (r) { return r.json(); }),
+    fetch('https://fhy.wra.gov.tw/WraApi/v1/Reservoir/Station').then(function (r) { return r.json(); })
   ]).then(function (results) {
     supplyData = results[0];
     supplyPlantsData = results[1];
     supplyTopoData = results[2];
+    results[3].forEach(function (s) {
+      supplyStations[s.StationName] = { lat: s.Latitude, lng: s.Longitude };
+    });
 
     var select = document.getElementById('supplyReservoirSelect');
     Object.keys(supplyData.reservoirs).forEach(function (name) {
@@ -1373,9 +1380,15 @@ function renderSupplyBase() {
   }).addTo(supplyMap);
 }
 
-function clearPlantMarkers() {
+function clearSupplyOverlays() {
   supplyPlantMarkers.forEach(function (m) { supplyMap.removeLayer(m); });
   supplyPlantMarkers = [];
+  supplyLines.forEach(function (l) { supplyMap.removeLayer(l); });
+  supplyLines = [];
+  if (supplyReservoirMarker) {
+    supplyMap.removeLayer(supplyReservoirMarker);
+    supplyReservoirMarker = null;
+  }
 }
 
 function renderSupplyForReservoir(name) {
@@ -1419,12 +1432,30 @@ function renderSupplyForReservoir(name) {
     }
   });
 
-  // Show plant markers
-  clearPlantMarkers();
+  // Show reservoir marker, plant markers, and connecting lines
+  clearSupplyOverlays();
+
+  var reservoirLatLng = null;
+  var station = supplyStations[name];
+  if (station && station.lat && station.lng) {
+    reservoirLatLng = [station.lat, station.lng];
+    var rIcon = L.divIcon({
+      className: 'supply-reservoir-marker',
+      html: '<div style="background:#0d47a1;color:#fff;padding:4px 8px;border-radius:6px;font-size:13px;font-weight:700;white-space:nowrap;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.4)">' + name + '</div>',
+      iconSize: null,
+      iconAnchor: [0, 0]
+    });
+    supplyReservoirMarker = L.marker(reservoirLatLng, { icon: rIcon, zIndexOffset: 1000 })
+      .bindPopup('<strong>' + name + '</strong>')
+      .addTo(supplyMap);
+  }
+
   if (supplyPlantsData && supplyPlantsData.plants) {
     supplyPlantsData.plants.forEach(function (plant) {
       if (plantNames.indexOf(plant.name) === -1) return;
       if (!plant.lat || !plant.lng) return;
+
+      var plantLatLng = [plant.lat, plant.lng];
 
       var icon = L.divIcon({
         className: 'supply-plant-marker',
@@ -1439,20 +1470,33 @@ function renderSupplyForReservoir(name) {
         popupHtml += '<br>供水區域：' + plant.areas.towns.length + ' 個鄉鎮市區';
       }
 
-      var marker = L.marker([plant.lat, plant.lng], { icon: icon })
+      var marker = L.marker(plantLatLng, { icon: icon })
         .bindPopup(popupHtml)
         .addTo(supplyMap);
       supplyPlantMarkers.push(marker);
+
+      if (reservoirLatLng) {
+        var line = L.polyline([reservoirLatLng, plantLatLng], {
+          color: '#1565c0',
+          weight: 2,
+          opacity: 0.7,
+          dashArray: '6, 8'
+        }).addTo(supplyMap);
+        supplyLines.push(line);
+      }
     });
   }
 
-  // Fit map to highlighted areas and plant markers
+  // Fit map to highlighted areas, reservoir, and plant markers
   var bounds = [];
   supplyGeoLayer.eachLayer(function (layer) {
     if (areaCodes.indexOf(layer.feature.properties.TOWNCODE) !== -1) {
       bounds.push(layer.getBounds());
     }
   });
+  if (supplyReservoirMarker) {
+    bounds.push(supplyReservoirMarker.getLatLng().toBounds(100));
+  }
   supplyPlantMarkers.forEach(function (m) {
     bounds.push(m.getLatLng().toBounds(100));
   });
@@ -1477,7 +1521,7 @@ document.getElementById('supplyReservoirSelect').addEventListener('change', func
   var plantsDiv = document.getElementById('supplyPlants');
   if (!name) {
     plantsDiv.innerHTML = '';
-    clearPlantMarkers();
+    clearSupplyOverlays();
     if (supplyGeoLayer) {
       supplyGeoLayer.eachLayer(function (layer) {
         layer.setStyle({
