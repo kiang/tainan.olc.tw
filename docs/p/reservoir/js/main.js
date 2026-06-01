@@ -57,6 +57,14 @@ document.querySelectorAll('.main-tab').forEach(function (btn) {
     if (tab === 'realtime' && rtMap) {
       setTimeout(function () { rtMap.invalidateSize(); }, 100);
     }
+
+    if (tab === 'supply') {
+      if (!supplyLoaded) {
+        initSupplyTab();
+      } else if (supplyMap) {
+        setTimeout(function () { supplyMap.invalidateSize(); }, 100);
+      }
+    }
   });
 });
 
@@ -1292,3 +1300,196 @@ function openReservoirByName(name) {
   var reservoir = allReservoirsData.find(function (r) { return r.name === name; });
   if (reservoir) showReservoirDetail(reservoir);
 }
+
+// ============================================================
+// Supply Area tab
+// ============================================================
+var supplyMap = null;
+var supplyData = null;
+var supplyTopoData = null;
+var supplyPlantsData = null;
+var supplyGeoLayer = null;
+var supplyPlantMarkers = [];
+var supplyLoaded = false;
+
+function initSupplyTab() {
+  if (supplyLoaded) return;
+  supplyLoaded = true;
+
+  supplyMap = L.map('supplyMap', {
+    center: [23.7, 121],
+    zoom: 8,
+    zoomControl: true
+  });
+
+  L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+  }).addTo(supplyMap);
+
+  Promise.all([
+    fetch('data/supply.json').then(function (r) { return r.json(); }),
+    fetch('data/plants.json').then(function (r) { return r.json(); }),
+    fetch('https://kiang.github.io/taiwan_basecode/city/city.topo.json').then(function (r) { return r.json(); })
+  ]).then(function (results) {
+    supplyData = results[0];
+    supplyPlantsData = results[1];
+    supplyTopoData = results[2];
+
+    var select = document.getElementById('supplyReservoirSelect');
+    Object.keys(supplyData.reservoirs).forEach(function (name) {
+      if (supplyData.reservoirs[name].plants.length === 0) return;
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+
+    renderSupplyBase();
+  }).catch(function (err) {
+    console.error('Failed to load supply data:', err);
+  });
+}
+
+function renderSupplyBase() {
+  if (!supplyTopoData) return;
+
+  var objectName = Object.keys(supplyTopoData.objects)[0];
+  var geojson = topojson.feature(supplyTopoData, supplyTopoData.objects[objectName]);
+
+  supplyGeoLayer = L.geoJSON(geojson, {
+    style: function () {
+      return {
+        fillColor: '#e0e0e0',
+        fillOpacity: 0.3,
+        color: '#999',
+        weight: 1
+      };
+    },
+    onEachFeature: function (feature, layer) {
+      var props = feature.properties;
+      layer.bindTooltip(props.COUNTYNAME + props.TOWNNAME, { sticky: true });
+    }
+  }).addTo(supplyMap);
+}
+
+function clearPlantMarkers() {
+  supplyPlantMarkers.forEach(function (m) { supplyMap.removeLayer(m); });
+  supplyPlantMarkers = [];
+}
+
+function renderSupplyForReservoir(name) {
+  if (!supplyData || !supplyTopoData || !supplyGeoLayer) return;
+
+  var reservoir = supplyData.reservoirs[name];
+  if (!reservoir) return;
+
+  var plantNames = reservoir.plants;
+
+  // Aggregate area codes from plants.json
+  var areaCodes = [];
+  if (supplyPlantsData && supplyPlantsData.plants) {
+    supplyPlantsData.plants.forEach(function (plant) {
+      if (plantNames.indexOf(plant.name) === -1) return;
+      if (plant.areas && plant.areas.towns) {
+        plant.areas.towns.forEach(function (code) {
+          if (areaCodes.indexOf(code) === -1) areaCodes.push(code);
+        });
+      }
+    });
+  }
+
+  // Highlight supply areas
+  supplyGeoLayer.eachLayer(function (layer) {
+    var code = layer.feature.properties.TOWNCODE;
+    if (areaCodes.indexOf(code) !== -1) {
+      layer.setStyle({
+        fillColor: '#1e88e5',
+        fillOpacity: 0.6,
+        color: '#0d47a1',
+        weight: 2
+      });
+    } else {
+      layer.setStyle({
+        fillColor: '#e0e0e0',
+        fillOpacity: 0.3,
+        color: '#999',
+        weight: 1
+      });
+    }
+  });
+
+  // Show plant markers
+  clearPlantMarkers();
+  if (supplyPlantsData && supplyPlantsData.plants) {
+    supplyPlantsData.plants.forEach(function (plant) {
+      if (plantNames.indexOf(plant.name) === -1) return;
+      if (!plant.lat || !plant.lng) return;
+
+      var icon = L.divIcon({
+        className: 'supply-plant-marker',
+        html: '<div style="background:#e65100;color:#fff;padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3)">' + plant.name + '</div>',
+        iconSize: null,
+        iconAnchor: [0, 0]
+      });
+
+      var popupHtml = '<strong>' + plant.name + '</strong>';
+      if (plant.source) popupHtml += '<br>原水來源：' + plant.source;
+      if (plant.areas && plant.areas.towns && plant.areas.towns.length > 0) {
+        popupHtml += '<br>供水區域：' + plant.areas.towns.length + ' 個鄉鎮市區';
+      }
+
+      var marker = L.marker([plant.lat, plant.lng], { icon: icon })
+        .bindPopup(popupHtml)
+        .addTo(supplyMap);
+      supplyPlantMarkers.push(marker);
+    });
+  }
+
+  // Fit map to highlighted areas and plant markers
+  var bounds = [];
+  supplyGeoLayer.eachLayer(function (layer) {
+    if (areaCodes.indexOf(layer.feature.properties.TOWNCODE) !== -1) {
+      bounds.push(layer.getBounds());
+    }
+  });
+  supplyPlantMarkers.forEach(function (m) {
+    bounds.push(m.getLatLng().toBounds(100));
+  });
+
+  if (bounds.length > 0) {
+    var combined = bounds[0];
+    for (var i = 1; i < bounds.length; i++) {
+      combined.extend(bounds[i]);
+    }
+    supplyMap.fitBounds(combined, { padding: [30, 30] });
+  }
+
+  // Show plant tags
+  var plantsDiv = document.getElementById('supplyPlants');
+  plantsDiv.innerHTML = plantNames.map(function (p) {
+    return '<span class="supply-plant-tag">' + p + '</span>';
+  }).join('');
+}
+
+document.getElementById('supplyReservoirSelect').addEventListener('change', function () {
+  var name = this.value;
+  var plantsDiv = document.getElementById('supplyPlants');
+  if (!name) {
+    plantsDiv.innerHTML = '';
+    clearPlantMarkers();
+    if (supplyGeoLayer) {
+      supplyGeoLayer.eachLayer(function (layer) {
+        layer.setStyle({
+          fillColor: '#e0e0e0',
+          fillOpacity: 0.3,
+          color: '#999',
+          weight: 1
+        });
+      });
+    }
+    if (supplyMap) supplyMap.setView([23.7, 121], 8);
+    return;
+  }
+  renderSupplyForReservoir(name);
+});
