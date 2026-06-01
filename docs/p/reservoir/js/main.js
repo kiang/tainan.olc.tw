@@ -1380,6 +1380,25 @@ function renderSupplyBase() {
   }).addTo(supplyMap);
 }
 
+function findClosestPlant(plantName, refLat, refLng) {
+  if (!supplyPlantsData || !supplyPlantsData.plants) return null;
+  var candidates = supplyPlantsData.plants.filter(function (p) {
+    return p.name === plantName && p.lat && p.lng;
+  });
+  if (candidates.length === 0) return null;
+  if (candidates.length === 1 || !refLat || !refLng) return candidates[0];
+  var best = null;
+  var bestDist = Infinity;
+  candidates.forEach(function (p) {
+    var d = getDistance(refLat, refLng, p.lat, p.lng);
+    if (d < bestDist) {
+      bestDist = d;
+      best = p;
+    }
+  });
+  return best;
+}
+
 function clearSupplyOverlays() {
   supplyPlantMarkers.forEach(function (m) { supplyMap.removeLayer(m); });
   supplyPlantMarkers = [];
@@ -1399,18 +1418,25 @@ function renderSupplyForReservoir(name) {
 
   var plantNames = reservoir.plants;
 
-  // Aggregate area codes from plants.json
+  // Resolve each plant name to closest match, then aggregate area codes
+  var station = supplyStations[name];
+  var refLat = station ? station.lat : null;
+  var refLng = station ? station.lng : null;
+
+  var resolvedPlants = [];
+  plantNames.forEach(function (pn) {
+    var plant = findClosestPlant(pn, refLat, refLng);
+    if (plant) resolvedPlants.push(plant);
+  });
+
   var areaCodes = [];
-  if (supplyPlantsData && supplyPlantsData.plants) {
-    supplyPlantsData.plants.forEach(function (plant) {
-      if (plantNames.indexOf(plant.name) === -1) return;
-      if (plant.areas && plant.areas.towns) {
-        plant.areas.towns.forEach(function (code) {
-          if (areaCodes.indexOf(code) === -1) areaCodes.push(code);
-        });
-      }
-    });
-  }
+  resolvedPlants.forEach(function (plant) {
+    if (plant.areas && plant.areas.towns) {
+      plant.areas.towns.forEach(function (code) {
+        if (areaCodes.indexOf(code) === -1) areaCodes.push(code);
+      });
+    }
+  });
 
   // Highlight supply areas
   supplyGeoLayer.eachLayer(function (layer) {
@@ -1436,7 +1462,6 @@ function renderSupplyForReservoir(name) {
   clearSupplyOverlays();
 
   var reservoirLatLng = null;
-  var station = supplyStations[name];
   if (station && station.lat && station.lng) {
     reservoirLatLng = [station.lat, station.lng];
     var rIcon = L.divIcon({
@@ -1450,11 +1475,7 @@ function renderSupplyForReservoir(name) {
       .addTo(supplyMap);
   }
 
-  if (supplyPlantsData && supplyPlantsData.plants) {
-    supplyPlantsData.plants.forEach(function (plant) {
-      if (plantNames.indexOf(plant.name) === -1) return;
-      if (!plant.lat || !plant.lng) return;
-
+  resolvedPlants.forEach(function (plant) {
       var plantLatLng = [plant.lat, plant.lng];
 
       var icon = L.divIcon({
@@ -1484,8 +1505,7 @@ function renderSupplyForReservoir(name) {
         }).addTo(supplyMap);
         supplyLines.push(line);
       }
-    });
-  }
+  });
 
   // Fit map to highlighted areas, reservoir, and plant markers
   var bounds = [];
