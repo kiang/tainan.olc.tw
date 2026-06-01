@@ -397,8 +397,11 @@ function renderCandidateLinks(name) {
     if (links.line) {
         html += '<a href="' + links.line + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-success"><i class="bi bi-line"></i></a>';
     }
-    if (links.website) {
-        html += '<a href="' + links.website + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary"><i class="bi bi-globe"></i></a>';
+    for (var wi = 0; wi <= 9; wi++) {
+        var wkey = wi === 0 ? 'website' : 'website' + wi;
+        if (links[wkey]) {
+            html += '<a href="' + links[wkey] + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary"><i class="bi bi-globe"></i></a>';
+        }
     }
     html += '</div>';
     return html;
