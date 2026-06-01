@@ -654,8 +654,16 @@ let captchaData = null;   // { HashCode, TimeStamp, ValidationCode (img), AudioM
 let caseToken = null;
 
 // ── File upload state ─────────────────────────────────────────
-const MAX_FILE_SIZE = 30 * 1024 * 1024; // 30MB
-let uploadedFiles = []; // { id, originalName, safeName, size, status, file }
+const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 30MB total
+let uploadedFiles = []; // { id, originalName, safeName, size, status, file, thumbUrl }
+
+function getTotalFileSize() {
+  return uploadedFiles.reduce((sum, f) => sum + f.size, 0);
+}
+
+function isImageFile(file) {
+  return file.type.startsWith('image/');
+}
 
 function sanitizeFileName(name) {
   const dotIdx = name.lastIndexOf('.');
@@ -677,11 +685,14 @@ function formatFileSize(bytes) {
 
 function addFiles(fileList) {
   for (const file of fileList) {
-    if (file.size > MAX_FILE_SIZE) {
-      alert(`檔案「${file.name}」超過 30MB 限制，無法上傳。`);
+    const currentTotal = getTotalFileSize();
+    if (currentTotal + file.size > MAX_TOTAL_SIZE) {
+      const remaining = MAX_TOTAL_SIZE - currentTotal;
+      alert(`附件總大小不得超過 30MB。目前已使用 ${formatFileSize(currentTotal)}，剩餘 ${formatFileSize(remaining)}，無法加入「${file.name}」(${formatFileSize(file.size)})。`);
       continue;
     }
     const safeName = sanitizeFileName(file.name);
+    const thumbUrl = isImageFile(file) ? URL.createObjectURL(file) : null;
     const entry = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       originalName: file.name,
@@ -689,6 +700,7 @@ function addFiles(fileList) {
       size: file.size,
       status: 'pending',
       file,
+      thumbUrl,
     };
     uploadedFiles.push(entry);
     uploadFile(entry);
@@ -721,6 +733,8 @@ async function uploadFile(entry) {
 }
 
 function removeFile(id) {
+  const entry = uploadedFiles.find(f => f.id === id);
+  if (entry && entry.thumbUrl) URL.revokeObjectURL(entry.thumbUrl);
   uploadedFiles = uploadedFiles.filter(f => f.id !== id);
   renderFileList();
 }
@@ -737,17 +751,25 @@ function renderFileList() {
     container.innerHTML = '';
     return;
   }
-  container.innerHTML = uploadedFiles.map(f => {
+  const totalUsed = getTotalFileSize();
+  let html = `<div style="font-size:12px;color:#888;margin-bottom:4px;">已使用 ${formatFileSize(totalUsed)} / ${formatFileSize(MAX_TOTAL_SIZE)}</div>`;
+  html += uploadedFiles.map(f => {
     const statusLabel = f.status === 'uploading' ? '上傳中…'
       : f.status === 'done' ? '✓ 完成'
       : f.status === 'error' ? '✗ 失敗' : '等待中';
     const statusClass = f.status === 'uploading' ? 'uploading'
       : f.status === 'done' ? 'done' : f.status === 'error' ? 'error' : '';
+    const renamed = f.originalName !== f.safeName;
+    const thumb = f.thumbUrl
+      ? `<img src="${f.thumbUrl}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid #e0e0e0;flex-shrink:0;">`
+      : `<div style="width:48px;height:48px;background:#f0f2f5;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid #e0e0e0;">📄</div>`;
     return `
       <div class="file-item">
+        ${thumb}
         <div class="file-info">
-          <div class="file-name">${esc(f.safeName)}</div>
-          <div class="file-size">${formatFileSize(f.size)}${f.originalName !== f.safeName ? ' (原始: ' + esc(f.originalName) + ')' : ''}</div>
+          <div class="file-name">${esc(f.originalName)}</div>
+          ${renamed ? `<div style="font-size:11px;color:#1a5c3a;">→ 重新命名為 ${esc(f.safeName)}</div>` : ''}
+          <div class="file-size">${formatFileSize(f.size)}</div>
           ${f.status === 'uploading' ? '<div class="file-progress"><div class="file-progress-bar" style="width:50%"></div></div>' : ''}
         </div>
         <span class="file-status ${statusClass}">${statusLabel}</span>
@@ -755,6 +777,7 @@ function renderFileList() {
         <button class="file-remove" onclick="removeFile('${f.id}')" title="移除">✕</button>
       </div>`;
   }).join('');
+  container.innerHTML = html;
 }
 
 function getUploadedFileNames() {
@@ -929,6 +952,7 @@ async function handleSubmit(e) {
       cases.unshift(newCase);
       saveCases();
       clearContentFields();
+      uploadedFiles.forEach(f => { if (f.thumbUrl) URL.revokeObjectURL(f.thumbUrl); });
       uploadedFiles = [];
       renderFileList();
       caseToken = randomToken(12);
