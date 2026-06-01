@@ -1,4 +1,22 @@
 // ============================================================
+// Floating solar panel data
+// ============================================================
+var floatingSolarNames = [];
+
+fetch('data/floating_solar.json')
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    floatingSolarNames = data.reservoirs.map(function (r) { return r.name; });
+  })
+  .catch(function () { });
+
+function hasFloatingSolar(name) {
+  return floatingSolarNames.some(function (s) {
+    return name.indexOf(s) !== -1;
+  });
+}
+
+// ============================================================
 // Tab switching
 // ============================================================
 var activeMainTab = 'realtime';
@@ -268,8 +286,9 @@ function renderRtGrid(data) {
       }
     };
 
+    var solarTag = hasFloatingSolar(d.name) ? '<span class="rt-solar-tag" title="設有浮動式太陽光電">&#9728;&#65039; 浮動光電</span>' : '';
     var html = '<div class="rt-card-header">' +
-      '<h5>' + d.name + '</h5>' +
+      '<h5>' + d.name + solarTag + '</h5>' +
       '<span class="rt-badge level-' + d.level + '">' + getLevelLabel(d.level) + '</span>' +
       '</div>' +
       '<div class="rt-bar-track">' +
@@ -567,7 +586,8 @@ function renderReservoirsGrid(reservoirs) {
       showReservoirDetail(reservoir);
     };
 
-    var cardHTML = '<h5>' + reservoir.name + '</h5>';
+    var solarBadge = hasFloatingSolar(reservoir.name) ? ' <span class="wq-solar-tag" title="設有浮動式太陽光電">&#9728;&#65039; 浮動光電</span>' : '';
+    var cardHTML = '<h5>' + reservoir.name + solarBadge + '</h5>';
 
     if (reservoir.svg) {
       cardHTML += '<div class="reservoir-svg">' + reservoir.svg + '</div>';
