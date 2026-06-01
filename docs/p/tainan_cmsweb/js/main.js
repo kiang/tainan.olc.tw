@@ -1122,6 +1122,7 @@ function renderDashboard() {
           ${date ? `<span>📅 ${date}</span>` : ''}
           ${c.mainItemName ? `<span>🏷️ ${esc(c.mainItemName)}</span>` : ''}
           ${c.caseCode ? `<span>🔢 <strong>${esc(c.caseCode)}</strong></span>` : '<span style="color:#e74c3c;">⚠️ 尚無受理編號</span>'}
+          ${Array.isArray(c.remoteData?.Content?.[0]?.Atth_FileNames) && c.remoteData.Content[0].Atth_FileNames.length ? `<span>📎 ${c.remoteData.Content[0].Atth_FileNames.length} 個附件</span>` : ''}
           ${Array.isArray(c.caseNotes) && c.caseNotes.length ? `<span>📝 ${c.caseNotes.length} 則筆記</span>` : ''}
         </div>
         ${c.content ? `
@@ -1509,6 +1510,34 @@ function renderCaseDetail(c) {
       <div class="card-title">📄 反映事項</div>
       <div style="font-size:14px;color:#333;line-height:1.8;white-space:pre-wrap;">${esc(c.content)}</div>
     </div>`;
+  }
+
+  // ── Attachments (from official API response) ──
+  const remoteInfo = c.remoteData?.Content?.[0];
+  const remoteFiles = Array.isArray(remoteInfo?.Atth_FileNames) ? remoteInfo.Atth_FileNames : [];
+  if (remoteFiles.length) {
+    const caseNo = `${remoteInfo.case_no1}-${remoteInfo.case_no2}-${remoteInfo.case_no3}-${remoteInfo.case_no4}`;
+    const suggName = encodeURIComponent(remoteInfo.sugg_name || '');
+    html += `<div class="card">
+      <div class="card-title">📎 附件 <span class="badge">${remoteFiles.length}</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;">`;
+    remoteFiles.forEach(f => {
+      const fileType = (f.FileType || '').toLowerCase();
+      const isImage = fileType.startsWith('image/');
+      const isVideo = fileType.startsWith('video/');
+      const icon = isImage ? '🖼️' : isVideo ? '🎬' : '📄';
+      const downloadUrl = `${API}/attachfile/${encodeURIComponent(f.SerialNo)}?fileName=${encodeURIComponent(f.FileName)}&caseNo=${encodeURIComponent(caseNo)}&suggName=${suggName}`;
+      html += `<div class="file-item">
+        <div style="font-size:20px;flex-shrink:0;">${icon}</div>
+        <div class="file-info">
+          <div class="file-name">${esc(f.FileName)}</div>
+          <div class="file-size" style="color:#888;">${esc(f.FileType || '')}</div>
+        </div>
+        <a href="${esc(downloadUrl)}" target="_blank" rel="noopener" class="btn-secondary btn-sm"
+           style="text-decoration:none;">⬇ 下載</a>
+      </div>`;
+    });
+    html += `</div></div>`;
   }
 
   // ── Location ──
