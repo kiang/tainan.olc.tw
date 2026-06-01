@@ -653,6 +653,140 @@ const API = 'https://cmsweb.tainan.gov.tw/webapi/api';
 let captchaData = null;   // { HashCode, TimeStamp, ValidationCode (img), AudioMP3 }
 let caseToken = null;
 
+// ── File upload state ─────────────────────────────────────────
+const MAX_FILE_SIZE = 30 * 1024 * 1024; // 30MB
+let uploadedFiles = []; // { id, originalName, safeName, size, status, file }
+
+function sanitizeFileName(name) {
+  const dotIdx = name.lastIndexOf('.');
+  const ext = dotIdx > 0 ? name.slice(dotIdx) : '';
+  const base = dotIdx > 0 ? name.slice(0, dotIdx) : name;
+  const safeBase = base.replace(/[^A-Za-z0-9]/g, '');
+  const safeExt = ext.replace(/[^A-Za-z0-9.]/g, '');
+  if (!safeBase) {
+    return crypto.randomUUID().replace(/-/g, '') + safeExt;
+  }
+  return safeBase + safeExt;
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function addFiles(fileList) {
+  for (const file of fileList) {
+    if (file.size > MAX_FILE_SIZE) {
+      alert(`檔案「${file.name}」超過 30MB 限制，無法上傳。`);
+      continue;
+    }
+    const safeName = sanitizeFileName(file.name);
+    const entry = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      originalName: file.name,
+      safeName,
+      size: file.size,
+      status: 'pending',
+      file,
+    };
+    uploadedFiles.push(entry);
+    uploadFile(entry);
+  }
+  renderFileList();
+}
+
+async function uploadFile(entry) {
+  entry.status = 'uploading';
+  renderFileList();
+
+  const formData = new FormData();
+  const blob = entry.file;
+  formData.append('uploads[]', blob, entry.safeName);
+
+  try {
+    const res = await fetch(API + '/AttachFile/Upload/' + caseToken, {
+      method: 'POST',
+      body: formData,
+    });
+    if (res.ok) {
+      entry.status = 'done';
+    } else {
+      entry.status = 'error';
+    }
+  } catch {
+    entry.status = 'error';
+  }
+  renderFileList();
+}
+
+function removeFile(id) {
+  uploadedFiles = uploadedFiles.filter(f => f.id !== id);
+  renderFileList();
+}
+
+function retryFile(id) {
+  const entry = uploadedFiles.find(f => f.id === id);
+  if (entry) uploadFile(entry);
+}
+
+function renderFileList() {
+  const container = document.getElementById('file-list');
+  if (!container) return;
+  if (uploadedFiles.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = uploadedFiles.map(f => {
+    const statusLabel = f.status === 'uploading' ? '上傳中…'
+      : f.status === 'done' ? '✓ 完成'
+      : f.status === 'error' ? '✗ 失敗' : '等待中';
+    const statusClass = f.status === 'uploading' ? 'uploading'
+      : f.status === 'done' ? 'done' : f.status === 'error' ? 'error' : '';
+    return `
+      <div class="file-item">
+        <div class="file-info">
+          <div class="file-name">${esc(f.safeName)}</div>
+          <div class="file-size">${formatFileSize(f.size)}${f.originalName !== f.safeName ? ' (原始: ' + esc(f.originalName) + ')' : ''}</div>
+          ${f.status === 'uploading' ? '<div class="file-progress"><div class="file-progress-bar" style="width:50%"></div></div>' : ''}
+        </div>
+        <span class="file-status ${statusClass}">${statusLabel}</span>
+        ${f.status === 'error' ? `<button class="btn-secondary btn-sm" onclick="retryFile('${f.id}')" style="padding:3px 8px;font-size:11px;">重試</button>` : ''}
+        <button class="file-remove" onclick="removeFile('${f.id}')" title="移除">✕</button>
+      </div>`;
+  }).join('');
+}
+
+function getUploadedFileNames() {
+  return uploadedFiles.filter(f => f.status === 'done').map(f => f.safeName);
+}
+
+function initFileUpload() {
+  const area = document.getElementById('file-upload-area');
+  const input = document.getElementById('file-input');
+  if (!area || !input) return;
+
+  area.addEventListener('click', () => input.click());
+
+  area.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    area.classList.add('dragover');
+  });
+  area.addEventListener('dragleave', () => {
+    area.classList.remove('dragover');
+  });
+  area.addEventListener('drop', (e) => {
+    e.preventDefault();
+    area.classList.remove('dragover');
+    if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+  });
+
+  input.addEventListener('change', () => {
+    if (input.files.length) addFiles(input.files);
+    input.value = '';
+  });
+}
+
 function randomToken(len) {
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
   let s = '';
@@ -710,12 +844,26 @@ async function handleSubmit(e) {
     return;
   }
 
+  // Check if any files are still uploading
+  const stillUploading = uploadedFiles.some(f => f.status === 'uploading');
+  if (stillUploading) {
+    alert('尚有檔案正在上傳中，請等待上傳完成後再送出。');
+    return;
+  }
+
+  const failedFiles = uploadedFiles.filter(f => f.status === 'error');
+  if (failedFiles.length > 0) {
+    if (!confirm(`有 ${failedFiles.length} 個檔案上傳失敗，是否仍要送出？（失敗的檔案將不會包含在案件中）`)) return;
+  }
+
+  const successFiles = getUploadedFileNames();
+
   // Build POST body exactly as the official Angular app does
   let body = 'Case_Token=' + caseToken;
-  body += '&Atth_FileNames=';
+  body += '&Atth_FileNames=' + encodeURIComponent(successFiles.join(','));
   body += '&Subj_Content=' + encodeURIComponent(get('f-content').replace(/&/g, '＆'));
   body += '&Subj_District=' + encodeURIComponent(locDistrictCode);
-  body += '&Subj_FileCount=0';
+  body += '&Subj_FileCount=' + successFiles.length;
   body += '&Subj_Item=' + encodeURIComponent(mainItemCode);
   body += '&Subj_Security=2';
   body += '&Subj_Subitem=' + encodeURIComponent(subItemCode);
@@ -781,6 +929,9 @@ async function handleSubmit(e) {
       cases.unshift(newCase);
       saveCases();
       clearContentFields();
+      uploadedFiles = [];
+      renderFileList();
+      caseToken = randomToken(12);
 
       resultBody.innerHTML = `
         <p style="font-size:13px; margin-bottom:10px;">
@@ -1657,6 +1808,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await restoreProfile();
   await restoreDraft();
   loadCaptcha();
+  initFileUpload();
 
   // Auto-save on input/change
   ALL_FIELDS.forEach(f => {

@@ -193,6 +193,44 @@
         .step-body { font-size: 14px; color: #333; }
         .step-body strong { color: #1a5c3a; }
 
+        /* ── File upload ── */
+        .file-upload-area {
+            border: 2px dashed #d0d7de; border-radius: 8px; padding: 24px;
+            text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+            margin-top: 8px;
+        }
+        .file-upload-area:hover, .file-upload-area.dragover {
+            border-color: #1a5c3a; background: #f0fff6;
+        }
+        .file-upload-area .upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .file-upload-area .upload-text { font-size: 13px; color: #555; }
+        .file-upload-area .upload-hint { font-size: 11px; color: #999; margin-top: 4px; }
+        .file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .file-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+            background: #f8f9fa; border-radius: 6px; border: 1px solid #e8ecf0;
+        }
+        .file-item .file-info { flex: 1; min-width: 0; }
+        .file-item .file-name { font-size: 13px; color: #333; word-break: break-all; }
+        .file-item .file-size { font-size: 11px; color: #888; }
+        .file-item .file-status { font-size: 12px; font-weight: bold; }
+        .file-item .file-status.uploading { color: #0d6efd; }
+        .file-item .file-status.done { color: #198754; }
+        .file-item .file-status.error { color: #e74c3c; }
+        .file-item .file-remove {
+            background: none; border: none; color: #e74c3c; cursor: pointer;
+            font-size: 16px; padding: 2px 6px; border-radius: 4px;
+        }
+        .file-item .file-remove:hover { background: #fdf0ef; }
+        .file-progress {
+            width: 100%; height: 4px; background: #e8ecf0; border-radius: 2px;
+            margin-top: 4px; overflow: hidden;
+        }
+        .file-progress-bar {
+            height: 100%; background: #1a5c3a; border-radius: 2px;
+            transition: width 0.3s;
+        }
+
         /* ── Misc ── */
         .divider { border: none; border-top: 1px solid #e8ecf0; margin: 20px 0; }
         .text-muted { color: #888; font-size: 13px; }
@@ -243,7 +281,7 @@
             <strong>📌 填報須知</strong>
             <ol>
                 <li>此工具自動儲存填寫進度，下次開啟自動帶入上次資料</li>
-                <li>填妥後點「前往官方頁面送出」，資料將自動帶入至台南市政府線上服務平台</li>
+                <li>可上傳附件（圖片、影片等），每個檔案最大 30MB</li>
                 <li>請務必填寫真實個人資料及具體明確的陳情事由</li>
                 <li>案件送出後，系統將寄發確認信至您的電子信箱，請於 7 日內點選確認</li>
             </ol>
@@ -385,6 +423,21 @@
                 </div>
             </div>
 
+            <!-- ── 附件上傳 ── -->
+            <div class="card">
+                <div class="card-title">📎 附件上傳</div>
+                <div class="tip-box" style="margin-bottom:12px;">
+                    每個檔案最大 30MB，檔名僅允許英數字（A-Z、a-z、0-9）及副檔名中的點號。不符規定的檔名會自動重新命名。
+                </div>
+                <div class="file-upload-area" id="file-upload-area">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">點擊選擇檔案，或將檔案拖曳至此處</div>
+                    <div class="upload-hint">支援圖片、影片、PDF 等常見格式</div>
+                </div>
+                <input type="file" id="file-input" multiple style="display:none;">
+                <div class="file-list" id="file-list"></div>
+            </div>
+
             <!-- ── 送出 ── -->
             <div class="card">
                 <div class="confirm-row">
@@ -503,10 +556,14 @@
             </div>
             <div class="guide-step">
                 <div class="step-num">3</div>
-                <div class="step-body"><strong>送出案件</strong>：按下「送出」後，系統將資料直接 POST 至官方 API。送出成功後會取得受理編號，自動儲存至「我的案件」。</div>
+                <div class="step-body"><strong>附件上傳</strong>：可上傳圖片、影片等附件（每個檔案最大 30MB）。檔名僅允許英數字，不符規定的檔名會自動重新命名。檔案會在選取後立即上傳至官方伺服器。</div>
             </div>
             <div class="guide-step">
                 <div class="step-num">4</div>
+                <div class="step-body"><strong>送出案件</strong>：按下「送出」後，系統將資料直接 POST 至官方 API。送出成功後會取得受理編號，自動儲存至「我的案件」。</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">5</div>
                 <div class="step-body"><strong>確認信件</strong>：官方系統受理後會寄發確認信至您的電子信箱，請於 7 日內點選確認連結，案件才正式受理。</div>
             </div>
         </div>
