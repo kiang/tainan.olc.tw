@@ -2,6 +2,7 @@ var map, overviewLayer, detailLayer, locateMarker, selectedLayer, selectedCunliL
 var candidatesData = null;
 var indexData = null;
 var tppZonesData = null;
+var linksData = null;
 var currentElType = '';
 var overviewCache = {};
 var infoModal, galleryModal;
@@ -26,11 +27,13 @@ function initMap() {
     Promise.all([
         fetch('zones/index.json').then(function (r) { return r.json(); }),
         fetch('data/candidates.json').then(function (r) { return r.json(); }),
-        fetch('tpp/zones.json').then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch('tpp/zones.json').then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch('data/links.json').then(function (r) { return r.json(); }).catch(function () { return {}; })
     ]).then(function (results) {
         indexData = results[0];
         candidatesData = results[1];
         tppZonesData = results[2];
+        linksData = results[3];
         buildElectionTypeSelector();
         // Preload indigenous overview caches for gallery type detection
         ['平地原住民議員', '山地原住民議員'].forEach(function (t) {
@@ -301,6 +304,7 @@ function showZoneInfo(props) {
             if (c.platform) {
                 html += '<p class="mb-0 mt-1 small">' + c.platform + '</p>';
             }
+            html += renderCandidateLinks(c.name);
             html += '</div></div>';
         });
     } else {
@@ -363,6 +367,41 @@ function findCandidatesForZone(zoneCode, elType) {
         }
         return false;
     });
+}
+
+function renderCandidateLinks(name) {
+    var links = linksData && linksData[name];
+    if (!links) return '';
+    var html = '<div class="mt-2 d-flex flex-wrap gap-1">';
+    if (links.donate) {
+        html += '<a href="' + links.donate + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger"><i class="bi bi-heart-fill"></i> 捐款</a>';
+    }
+    if (links.facebook) {
+        html += '<a href="' + links.facebook + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"><i class="bi bi-facebook"></i></a>';
+    }
+    if (links.instagram) {
+        html += '<a href="' + links.instagram + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger"><i class="bi bi-instagram"></i></a>';
+    }
+    if (links.youtube) {
+        html += '<a href="' + links.youtube + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger"><i class="bi bi-youtube"></i></a>';
+    }
+    if (links.threads) {
+        html += '<a href="' + links.threads + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark"><i class="bi bi-threads"></i></a>';
+    }
+    if (links.x) {
+        html += '<a href="' + links.x + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark"><i class="bi bi-twitter-x"></i></a>';
+    }
+    if (links.tiktok) {
+        html += '<a href="' + links.tiktok + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark"><i class="bi bi-tiktok"></i></a>';
+    }
+    if (links.line) {
+        html += '<a href="' + links.line + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-success"><i class="bi bi-line"></i></a>';
+    }
+    if (links.website) {
+        html += '<a href="' + links.website + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary"><i class="bi bi-globe"></i></a>';
+    }
+    html += '</div>';
+    return html;
 }
 
 function findTppZoneInfo(zoneCode) {
