@@ -1122,6 +1122,7 @@ function renderDashboard() {
           ${date ? `<span>📅 ${date}</span>` : ''}
           ${c.mainItemName ? `<span>🏷️ ${esc(c.mainItemName)}</span>` : ''}
           ${c.caseCode ? `<span>🔢 <strong>${esc(c.caseCode)}</strong></span>` : '<span style="color:#e74c3c;">⚠️ 尚無受理編號</span>'}
+          ${Array.isArray(c.caseNotes) && c.caseNotes.length ? `<span>📝 ${c.caseNotes.length} 則筆記</span>` : ''}
         </div>
         ${c.content ? `
         <div style="font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(c.content)}</div>` : ''}
@@ -1562,6 +1563,27 @@ function renderCaseDetail(c) {
     html += '</div>';
   }
 
+  // ── Notes ──
+  const caseNotes = Array.isArray(c.caseNotes) ? c.caseNotes : [];
+  html += `<div class="card">
+    <div class="card-title">📝 筆記 <span class="badge">${caseNotes.length}</span></div>`;
+  if (caseNotes.length) {
+    caseNotes.slice().reverse().forEach(n => {
+      const t = n.createdAt ? new Date(n.createdAt).toLocaleString('zh-TW') : '';
+      html += `<div class="note-item">
+        <div class="note-time">${t}</div>
+        <div class="note-text">${esc(n.text)}</div>
+        <button class="note-remove" onclick="deleteCaseNote('${c.id}','${n.id}')" title="刪除">✕</button>
+      </div>`;
+    });
+  } else {
+    html += `<div style="font-size:13px;color:#aaa;margin-bottom:12px;">尚無筆記</div>`;
+  }
+  html += `<div style="margin-top:12px;">
+    <textarea id="new-note-text" rows="3" placeholder="新增筆記…" style="width:100%;"></textarea>
+    <button class="btn-primary btn-sm" onclick="addCaseNote('${c.id}')" style="margin-top:8px;">💬 新增筆記</button>
+  </div></div>`;
+
   document.getElementById('detail-container').innerHTML = html;
 
   // Init detail map after DOM is ready; use setTimeout so the tab is visible
@@ -1584,6 +1606,32 @@ function deleteCaseFromDetail(id) {
   cases = cases.filter(c => c.id !== id);
   saveCases();
   closeCaseDetail();
+}
+
+// ── Case notes ────────────────────────────────────────────────
+function addCaseNote(id) {
+  const textarea = document.getElementById('new-note-text');
+  const text = textarea.value.trim();
+  if (!text) return;
+  const c = cases.find(c => c.id === id);
+  if (!c) return;
+  if (!Array.isArray(c.caseNotes)) c.caseNotes = [];
+  c.caseNotes.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    text,
+    createdAt: new Date().toISOString(),
+  });
+  saveCases();
+  renderCaseDetail(c);
+}
+
+function deleteCaseNote(caseId, noteId) {
+  if (!confirm('確定刪除此筆記？')) return;
+  const c = cases.find(c => c.id === caseId);
+  if (!c || !Array.isArray(c.caseNotes)) return;
+  c.caseNotes = c.caseNotes.filter(n => n.id !== noteId);
+  saveCases();
+  renderCaseDetail(c);
 }
 
 // ── Import case modal ──────────────────────────────────────────
