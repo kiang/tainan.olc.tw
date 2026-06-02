@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我是人，我反水庫光電 - 大頭貼產生器</title>
+  <meta property="og:title" content="我是人，我反水庫光電 - 大頭貼產生器">
+  <meta property="og:description" content="上傳你的照片，產生反水庫光電大頭貼，一起加入運動！">
+  <meta property="og:image" content="https://tainan.olc.tw/p/movement/og_image.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 512px;
+      margin: 0 auto;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #2a2a3e;
+      touch-action: none;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-area {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 3px dashed #666;
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: #ffc107;
+    }
+
+    .upload-area.hidden {
+      display: none;
+    }
+
+    .upload-area i {
+      font-size: 3rem;
+      color: #888;
+    }
+
+    .controls {
+      max-width: 512px;
+      margin: 0 auto;
+    }
+
+    .btn-action {
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-weight: 600;
+    }
+
+    #downloadBtn:disabled {
+      opacity: 0.5;
+    }
+
+    .upload-option {
+      cursor: pointer;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+
+    .upload-option:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-4">
+    <div class="text-center mb-4">
+      <h1 class="h3 fw-bold">我是人，我反水庫光電</h1>
+      <p class="text-secondary mb-0">上傳照片，產生你的專屬大頭貼</p>
+    </div>
+
+    <div class="canvas-container mb-3" id="canvasContainer">
+      <canvas id="canvas" width="1024" height="1024"></canvas>
+      <div class="upload-area" id="uploadArea">
+        <div class="d-flex gap-4 align-items-center">
+          <div class="text-center upload-option" id="uploadPhoto">
+            <i class="bi bi-image"></i>
+            <p class="mt-1 mb-0 small">上傳照片</p>
+          </div>
+          <div class="text-center upload-option" id="takePhoto">
+            <i class="bi bi-camera"></i>
+            <p class="mt-1 mb-0 small">拍照</p>
+          </div>
+        </div>
+        <small class="text-secondary mt-2">或拖曳圖片到此處</small>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="d-flex gap-2 justify-content-center mb-3" id="zoomControls" style="display:none!important">
+        <button class="btn btn-outline-light btn-sm" id="zoomOutBtn" title="縮小"><i class="bi bi-dash-lg"></i></button>
+        <input type="range" id="zoomRange" class="form-range flex-grow-1" min="10" max="300" value="100" style="max-width:200px">
+        <button class="btn btn-outline-light btn-sm" id="zoomInBtn" title="放大"><i class="bi bi-plus-lg"></i></button>
+      </div>
+
+      <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <label class="btn btn-outline-warning btn-action" id="changePhotoBtn" style="display:none">
+          <i class="bi bi-arrow-repeat me-1"></i>換張照片
+          <input type="file" accept="image/*" id="fileInputChange" hidden>
+        </label>
+        <label class="btn btn-outline-info btn-action" id="retakePhotoBtn" style="display:none">
+          <i class="bi bi-camera me-1"></i>重新拍照
+          <input type="file" accept="image/*" capture="user" id="fileInputCamera2" hidden>
+        </label>
+        <button class="btn btn-success btn-action" id="downloadBtn" disabled>
+          <i class="bi bi-download me-1"></i>下載圖片
+        </button>
+        <button class="btn btn-primary btn-action" id="shareBtn" style="display:none">
+          <i class="bi bi-share me-1"></i>分享
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <small class="text-secondary">提示：上傳後可拖曳移動照片，滑鼠滾輪或雙指縮放調整大小</small>
+    </div>
+  </div>
+
+  <input type="file" accept="image/*" id="fileInput" hidden>
+  <input type="file" accept="image/*" capture="user" id="fileInputCamera" hidden>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileInputCamera = document.getElementById('fileInputCamera');
+    const fileInputChange = document.getElementById('fileInputChange');
+    const fileInputCamera2 = document.getElementById('fileInputCamera2');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const changePhotoBtn = document.getElementById('changePhotoBtn');
+    const retakePhotoBtn = document.getElementById('retakePhotoBtn');
+    const zoomControls = document.getElementById('zoomControls');
+    const zoomRange = document.getElementById('zoomRange');
+    const zoomInBtn = document.getElementById('zoomInBtn');
+    const zoomOutBtn = document.getElementById('zoomOutBtn');
+    const container = document.getElementById('canvasContainer');
+
+    const SIZE = 1024;
+    let frameImg = null;
+    let userImg = null;
+    let photo = { x: 0, y: 0, scale: 1, baseScale: 1 };
+    let dragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let lastTouchDist = 0;
+
+    const framePromise = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => { frameImg = img; resolve(); };
+      img.src = 'frame.png';
+    });
+
+    function fitPhoto() {
+      if (!userImg) return;
+      const scale = Math.max(SIZE / userImg.width, SIZE / userImg.height);
+      photo.baseScale = scale;
+      photo.scale = 1;
+      photo.x = (SIZE - userImg.width * scale) / 2;
+      photo.y = (SIZE - userImg.height * scale) / 2;
+      zoomRange.value = 100;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      if (userImg) {
+        const s = photo.baseScale * photo.scale;
+        ctx.drawImage(userImg, photo.x, photo.y, userImg.width * s, userImg.height * s);
+      }
+      if (frameImg) {
+        ctx.drawImage(frameImg, 0, 0, SIZE, SIZE);
+      }
+    }
+
+    function loadImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          userImg = img;
+          fitPhoto();
+          draw();
+          uploadArea.classList.add('hidden');
+          changePhotoBtn.style.display = '';
+          retakePhotoBtn.style.display = '';
+          zoomControls.style.cssText = '';
+          downloadBtn.disabled = false;
+          if (navigator.canShare) {
+            shareBtn.style.display = '';
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('uploadPhoto').addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInput.click();
+    });
+
+    document.getElementById('takePhoto').addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInputCamera.click();
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) loadImage(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) loadImage(e.target.files[0]);
+      e.target.value = '';
+    });
+
+    fileInputCamera.addEventListener('change', (e) => {
+      if (e.target.files.length) loadImage(e.target.files[0]);
+      e.target.value = '';
+    });
+
+    fileInputChange.addEventListener('change', (e) => {
+      if (e.target.files.length) loadImage(e.target.files[0]);
+      e.target.value = '';
+    });
+
+    fileInputCamera2.addEventListener('change', (e) => {
+      if (e.target.files.length) loadImage(e.target.files[0]);
+      e.target.value = '';
+    });
+
+    function getCanvasCoords(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (clientX - rect.left) / rect.width * SIZE,
+        y: (clientY - rect.top) / rect.height * SIZE
+      };
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (!userImg) return;
+      dragging = true;
+      const p = getCanvasCoords(e.clientX, e.clientY);
+      dragStart = { x: p.x - photo.x, y: p.y - photo.y };
+      canvas.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const p = getCanvasCoords(e.clientX, e.clientY);
+      photo.x = p.x - dragStart.x;
+      photo.y = p.y - dragStart.y;
+      draw();
+    });
+
+    window.addEventListener('mouseup', () => {
+      dragging = false;
+      canvas.style.cursor = userImg ? 'grab' : 'default';
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+      if (!userImg) return;
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.95 : 1.05;
+      applyZoom(delta, e.clientX, e.clientY);
+    }, { passive: false });
+
+    function applyZoom(factor, clientX, clientY) {
+      const p = getCanvasCoords(clientX, clientY);
+      const oldScale = photo.scale;
+      photo.scale = Math.max(0.1, Math.min(3, photo.scale * factor));
+      const ratio = photo.scale / oldScale;
+      photo.x = p.x - (p.x - photo.x) * ratio;
+      photo.y = p.y - (p.y - photo.y) * ratio;
+      zoomRange.value = Math.round(photo.scale * 100);
+      draw();
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (!userImg) return;
+      if (e.touches.length === 1) {
+        dragging = true;
+        const p = getCanvasCoords(e.touches[0].clientX, e.touches[0].clientY);
+        dragStart = { x: p.x - photo.x, y: p.y - photo.y };
+      } else if (e.touches.length === 2) {
+        dragging = false;
+        lastTouchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!userImg) return;
+      e.preventDefault();
+      if (e.touches.length === 1 && dragging) {
+        const p = getCanvasCoords(e.touches[0].clientX, e.touches[0].clientY);
+        photo.x = p.x - dragStart.x;
+        photo.y = p.y - dragStart.y;
+        draw();
+      } else if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        if (lastTouchDist) {
+          const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+          applyZoom(dist / lastTouchDist, midX, midY);
+        }
+        lastTouchDist = dist;
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
+      dragging = false;
+      lastTouchDist = 0;
+    });
+
+    zoomRange.addEventListener('input', () => {
+      if (!userImg) return;
+      const newScale = parseInt(zoomRange.value) / 100;
+      const cx = SIZE / 2, cy = SIZE / 2;
+      const ratio = newScale / photo.scale;
+      photo.x = cx - (cx - photo.x) * ratio;
+      photo.y = cy - (cy - photo.y) * ratio;
+      photo.scale = newScale;
+      draw();
+    });
+
+    zoomInBtn.addEventListener('click', () => {
+      zoomRange.value = Math.min(300, parseInt(zoomRange.value) + 10);
+      zoomRange.dispatchEvent(new Event('input'));
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+      zoomRange.value = Math.max(10, parseInt(zoomRange.value) - 10);
+      zoomRange.dispatchEvent(new Event('input'));
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '反水庫光電大頭貼.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    });
+
+    shareBtn.addEventListener('click', async () => {
+      try {
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        const file = new File([blob], '反水庫光電大頭貼.png', { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: '我是人，我反水庫光電',
+            text: '守護家園，拒絕滅絕。環境正義，全民覺醒！',
+            files: [file]
+          });
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') console.error(err);
+      }
+    });
+
+    framePromise.then(draw);
+  </script>
+</body>
+
+</html>
