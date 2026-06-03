@@ -1,7 +1,6 @@
 <?php
 
 $basePath = __DIR__ . '/../../';
-$cunliPath = '/home/kiang/public_html/taiwan_basecode/cunli/geo/20260407.json';
 $cityPath = '/home/kiang/public_html/taiwan_basecode/city/city.geo.json';
 $csvPath = $basePath . 'docs/p/reservoir/data/supp7.csv';
 $outputPath = $basePath . 'docs/p/reservoir/data/plants.json';
@@ -10,12 +9,10 @@ $outputPath = $basePath . 'docs/p/reservoir/data/plants.json';
 echo "Loading administrative area data...\n";
 
 $cityGeo = json_decode(file_get_contents($cityPath), true);
-$cunliGeo = json_decode(file_get_contents($cunliPath), true);
 
 // Build lookup tables
 $counties = []; // name => COUNTYCODE
 $towns = [];    // name => [TOWNCODE => full_info]
-$villages = []; // name => [VILLCODE => full_info]
 
 // County names from city.geo.json
 foreach ($cityGeo['features'] as $f) {
@@ -31,22 +28,7 @@ foreach ($cityGeo['features'] as $f) {
     ];
 }
 
-foreach ($cunliGeo['features'] as $f) {
-    $p = $f['properties'];
-    if (empty($p['VILLNAME'])) continue;
-    $key = $p['VILLNAME'];
-    if (!isset($villages[$key])) {
-        $villages[$key] = [];
-    }
-    $villages[$key][$p['VILLCODE']] = [
-        'county' => $p['COUNTYNAME'],
-        'town' => $p['TOWNNAME'],
-        'village' => $p['VILLNAME'],
-        'towncode' => $p['TOWNCODE'],
-    ];
-}
-
-echo "Loaded: " . count($counties) . " counties, " . count($towns) . " towns, " . count($villages) . " villages\n";
+echo "Loaded: " . count($counties) . " counties, " . count($towns) . " towns\n";
 
 // TWD97 TM2 -> WGS84
 function twd97ToWgs84($x, $y) {
@@ -143,46 +125,6 @@ function parseTowns($text, $towns, $countyHint) {
     return $found;
 }
 
-function parseVillages($text, $villages, $townCodes) {
-    $found = [];
-    foreach ($villages as $name => $entries) {
-        if (mb_strpos($text, $name) !== false) {
-            foreach ($entries as $code => $info) {
-                if (!empty($townCodes)) {
-                    if (isset($townCodes[$info['towncode']])) {
-                        $found[$code] = $info;
-                    }
-                } else {
-                    $found[$code] = $info;
-                }
-            }
-        }
-    }
-    return $found;
-}
-
-// Also try to find village names without 里/村 suffix
-// e.g. "宋屋、廣仁、平興" under a known town context
-function parseShortVillageNames($text, $villages, $townCodes) {
-    if (empty($townCodes)) return [];
-    $found = [];
-
-    foreach ($townCodes as $townCode => $townInfo) {
-        // Get all villages in this town
-        foreach ($villages as $villName => $entries) {
-            foreach ($entries as $villCode => $info) {
-                if ($info['towncode'] !== $townCode) continue;
-                // Try matching without 里/村 suffix
-                $shortName = preg_replace('/[里村]$/', '', $villName);
-                if (mb_strlen($shortName) >= 2 && mb_strpos($text, $shortName) !== false) {
-                    $found[$villCode] = $info;
-                }
-            }
-        }
-    }
-    return $found;
-}
-
 // Parse CSV
 echo "Parsing CSV...\n";
 
@@ -208,7 +150,6 @@ while (($row = fgetcsv($handle)) !== false) {
     $lines = preg_split('/\n/', $supplyArea);
 
     $matchedTowns = [];
-    $matchedVillages = [];
 
     foreach ($lines as $line) {
         $line = trim($line);
@@ -223,18 +164,6 @@ while (($row = fgetcsv($handle)) !== false) {
         foreach ($lineTowns as $code => $info) {
             $matchedTowns[$code] = $info;
         }
-
-        // Find villages in this line, scoped to found towns
-        $lineVillages = parseVillages($line, $villages, $lineTowns ?: $matchedTowns);
-        foreach ($lineVillages as $code => $info) {
-            $matchedVillages[$code] = $info;
-        }
-
-        // Try short village names if we have town context
-        $shortVillages = parseShortVillageNames($line, $villages, $lineTowns ?: $matchedTowns);
-        foreach ($shortVillages as $code => $info) {
-            $matchedVillages[$code] = $info;
-        }
     }
 
     // If no towns found, try the whole text
@@ -244,15 +173,8 @@ while (($row = fgetcsv($handle)) !== false) {
 
     // Determine resolution level
     $level = 'unknown';
-    if (!empty($matchedVillages)) {
-        $level = 'village';
-    } elseif (!empty($matchedTowns)) {
-        // Check if it says "全區" for some towns
-        if (preg_match('/全[區鄉鎮市]/', $supplyArea)) {
-            $level = 'town';
-        } else {
-            $level = 'town';
-        }
+    if (!empty($matchedTowns)) {
+        $level = 'town';
     } elseif ($countyHint) {
         $level = 'county';
     }
@@ -264,7 +186,6 @@ while (($row = fgetcsv($handle)) !== false) {
         'areas' => [
             'county' => $countyHint,
             'towns' => array_keys($matchedTowns),
-            'villages' => array_keys($matchedVillages),
         ],
     ];
 
@@ -303,9 +224,6 @@ foreach ($plants as $p) {
         echo "  Source: {$p['source']}\n";
         echo "  County: {$p['areas']['county']}\n";
         echo "  Towns: " . implode(', ', $p['areas']['towns']) . "\n";
-        if (!empty($p['areas']['villages'])) {
-            echo "  Villages: " . implode(', ', array_slice($p['areas']['villages'], 0, 10)) . "\n";
-        }
         $shown++;
     }
 }

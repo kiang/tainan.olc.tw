@@ -22,7 +22,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['action'])) {
             $plant['level'] = $_POST['level'];
             $plant['areas']['county'] = $_POST['county'] ?: null;
             $plant['areas']['towns'] = array_values(array_filter(array_map('intval', explode(',', $_POST['towns']))));
-            $plant['areas']['villages'] = array_values(array_filter(array_map('intval', explode(',', $_POST['villages']))));
             if ($_POST['lat'] !== '' && $_POST['lng'] !== '') {
                 $plant['lat'] = round(floatval($_POST['lat']), 6);
                 $plant['lng'] = round(floatval($_POST['lng']), 6);
@@ -34,6 +33,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['action'])) {
         } else {
             echo json_encode(['ok' => false, 'error' => 'Invalid index']);
         }
+    } elseif ($_POST['action'] === 'add_plant') {
+        $plant = [
+            'name' => $_POST['name'],
+            'source' => $_POST['source'],
+            'level' => $_POST['level'],
+            'areas' => [
+                'county' => $_POST['county'] ?: null,
+                'towns' => array_values(array_filter(array_map('intval', explode(',', $_POST['towns'])))),
+            ],
+        ];
+        if ($_POST['lat'] !== '' && $_POST['lng'] !== '') {
+            $plant['lat'] = round(floatval($_POST['lat']), 6);
+            $plant['lng'] = round(floatval($_POST['lng']), 6);
+        }
+        $plantsData['plants'][] = $plant;
+        file_put_contents($plantsFile, json_encode($plantsData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n");
+        echo json_encode(['ok' => true, 'index' => count($plantsData['plants']) - 1]);
     } elseif ($_POST['action'] === 'save_all_areas') {
         $updates = json_decode($_POST['updates'], true);
         foreach ($updates as $u) {
@@ -42,7 +58,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['action'])) {
             $plant = &$plantsData['plants'][$idx];
             $plant['areas']['county'] = $u['county'] ?: null;
             $plant['areas']['towns'] = array_values(array_map('intval', $u['towns']));
-            $plant['areas']['villages'] = array_values(array_map('intval', $u['villages']));
             $plant['level'] = $u['level'];
         }
         file_put_contents($plantsFile, json_encode($plantsData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n");
@@ -105,7 +120,6 @@ tr.level-unknown { background: #fff3e0; }
 tr.level-unknown:hover { background: #ffe0b2; }
 .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; margin: 1px; }
 .tag-town { background: #e3f2fd; color: #1565c0; }
-.tag-village { background: #e8f5e9; color: #2e7d32; }
 .tag-county { background: #fce4ec; color: #c62828; }
 .tag-unknown { background: #fff3e0; color: #e65100; }
 .btn { padding: 4px 10px; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; }
@@ -173,7 +187,7 @@ tr.level-unknown:hover { background: #ffe0b2; }
     <option value="unknown">unknown (待確認)</option>
     <option value="county">county</option>
     <option value="town">town</option>
-    <option value="village">village</option>
+
   </select>
   <select id="countyFilter">
     <option value="">全部縣市</option>
@@ -182,6 +196,7 @@ tr.level-unknown:hover { background: #ffe0b2; }
     <?php endforeach; ?>
   </select>
   <label><input type="checkbox" id="noCoordFilter"> 無座標</label>
+  <?php if ($fileWritable): ?><button class="btn btn-save" onclick="openNew()" style="margin-left:auto">+ 新增淨水場</button><?php endif; ?>
   <span class="plant-count" id="plantCount"></span>
 </div>
 
@@ -227,7 +242,7 @@ tr.level-unknown:hover { background: #ffe0b2; }
           <option value="unknown">unknown</option>
           <option value="county">county</option>
           <option value="town">town</option>
-          <option value="village">village</option>
+      
         </select>
       </div>
       <div class="form-row">
@@ -323,8 +338,6 @@ function renderTable() {
     var levelClass = 'tag-' + p.level;
     var rowClass = p.level === 'unknown' ? ' class="level-unknown"' : '';
     var towns = (p.areas.towns || []).map(function(c) { return '<span class="tag tag-town">' + areaName(c) + '</span>'; }).join('');
-    var villages = (p.areas.villages || []).slice(0, 5).map(function(c) { return '<span class="tag tag-village">' + c + '</span>'; }).join('');
-    if (p.areas.villages && p.areas.villages.length > 5) villages += '<span class="tag">...+' + (p.areas.villages.length - 5) + '</span>';
     var coord = p.lat ? p.lat.toFixed(4) + ', ' + p.lng.toFixed(4) : '<span style="color:#c62828">無</span>';
     html += '<tr' + rowClass + '>'
       + '<td>' + i + '</td>'
@@ -332,7 +345,7 @@ function renderTable() {
       + '<td>' + (p.source || '') + '</td>'
       + '<td><span class="tag ' + levelClass + '">' + p.level + '</span></td>'
       + '<td>' + (p.areas.county || '') + '</td>'
-      + '<td>' + (towns || '<span style="color:#aaa">—</span>') + ' ' + villages + '</td>'
+      + '<td>' + (towns || '<span style="color:#aaa">—</span>') + '</td>'
       + '<td style="font-size:11px">' + coord + '</td>'
       + '<td>' + (fileWritable ? '<button class="btn btn-edit" onclick="openEdit(' + i + ')">編輯</button>' : '') + '</td>'
       + '</tr>';
@@ -361,6 +374,38 @@ document.getElementById('countyFilter').addEventListener('change', function() { 
 document.getElementById('noCoordFilter').addEventListener('change', function() { currentPage = 1; renderTable(); });
 
 // Modal
+function openNew() {
+  document.getElementById('editIndex').value = '-1';
+  document.getElementById('editName').value = '';
+  document.getElementById('editSource').value = '';
+  document.getElementById('editLevel').value = 'unknown';
+  document.getElementById('editLat').value = '';
+  document.getElementById('editLng').value = '';
+  document.getElementById('editCounty').value = '';
+  document.getElementById('modalTitle').textContent = '新增淨水場';
+  selectedTowns = {};
+  renderTownGrid();
+  renderSelectedAreas();
+  document.getElementById('editModal').classList.add('active');
+  setTimeout(function() {
+    if (!modalMap) {
+      modalMap = L.map('modal-map').setView([23.7, 120.9], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18, attribution: '© OpenStreetMap'
+      }).addTo(modalMap);
+      modalMap.on('click', function(e) {
+        document.getElementById('editLat').value = e.latlng.lat.toFixed(6);
+        document.getElementById('editLng').value = e.latlng.lng.toFixed(6);
+        updateMapMarker(e.latlng.lat, e.latlng.lng);
+      });
+    } else {
+      modalMap.invalidateSize();
+      modalMap.setView([23.7, 120.9], 7);
+      if (modalMarker) { modalMap.removeLayer(modalMarker); modalMarker = null; }
+    }
+  }, 200);
+}
+
 function openEdit(idx) {
   var p = plants[idx];
   document.getElementById('editIndex').value = idx;
@@ -508,17 +553,20 @@ function closeModal() {
 }
 
 function savePlant() {
-  var idx = document.getElementById('editIndex').value;
+  var idx = parseInt(document.getElementById('editIndex').value);
+  var isNew = (idx === -1);
   var townCodes = Object.keys(selectedTowns);
+  var name = document.getElementById('editName').value.trim();
+  if (!name) { alert('請輸入淨水場名稱'); return; }
+
   var data = new FormData();
-  data.append('action', 'save_plant');
-  data.append('index', idx);
-  data.append('name', document.getElementById('editName').value);
+  data.append('action', isNew ? 'add_plant' : 'save_plant');
+  if (!isNew) data.append('index', idx);
+  data.append('name', name);
   data.append('source', document.getElementById('editSource').value);
   data.append('level', document.getElementById('editLevel').value);
   data.append('county', document.getElementById('editCounty').value);
   data.append('towns', townCodes.join(','));
-  data.append('villages', (plants[idx].areas.villages || []).join(','));
   data.append('lat', document.getElementById('editLat').value);
   data.append('lng', document.getElementById('editLng').value);
 
@@ -526,17 +574,27 @@ function savePlant() {
     .then(function(r) { return r.json(); })
     .then(function(res) {
       if (res.ok) {
-        // Update local data
-        var p = plants[idx];
-        p.name = document.getElementById('editName').value;
-        p.source = document.getElementById('editSource').value;
-        p.level = document.getElementById('editLevel').value;
-        p.areas.county = document.getElementById('editCounty').value || null;
-        p.areas.towns = townCodes.map(Number);
         var lat = document.getElementById('editLat').value;
         var lng = document.getElementById('editLng').value;
-        if (lat && lng) { p.lat = parseFloat(lat); p.lng = parseFloat(lng); }
-        else { delete p.lat; delete p.lng; }
+        if (isNew) {
+          var newPlant = {
+            name: name,
+            source: document.getElementById('editSource').value,
+            level: document.getElementById('editLevel').value,
+            areas: { county: document.getElementById('editCounty').value || null, towns: townCodes.map(Number) }
+          };
+          if (lat && lng) { newPlant.lat = parseFloat(lat); newPlant.lng = parseFloat(lng); }
+          plants.push(newPlant);
+        } else {
+          var p = plants[idx];
+          p.name = name;
+          p.source = document.getElementById('editSource').value;
+          p.level = document.getElementById('editLevel').value;
+          p.areas.county = document.getElementById('editCounty').value || null;
+          p.areas.towns = townCodes.map(Number);
+          if (lat && lng) { p.lat = parseFloat(lat); p.lng = parseFloat(lng); }
+          else { delete p.lat; delete p.lng; }
+        }
         closeModal();
         renderTable();
       } else {
