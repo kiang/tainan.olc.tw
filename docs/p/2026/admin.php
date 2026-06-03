@@ -639,18 +639,20 @@ async function populateTownDropdown(countyCode) {
     sel.innerHTML = '<option value="">-- 選擇鄉鎮市區 --</option>';
     if (!countyCode) return;
 
-    // Try static towns from list.csv first (non-municipal counties)
-    const staticTowns = appData.areaCodes?.towns || {};
-    let found = false;
-    for (const [code, name] of Object.entries(staticTowns)) {
-        if (code.startsWith(countyCode)) {
-            const countyName = appData.areaCodes.counties[countyCode] || '';
-            const shortName = name.startsWith(countyName) ? name.substring(countyName.length) : name;
-            sel.innerHTML += `<option value="${code}" data-fullname="${name}">${shortName}</option>`;
-            found = true;
+    // Use static towns from list.csv for non-municipal counties only
+    if (!municipalCodes.includes(countyCode)) {
+        const staticTowns = appData.areaCodes?.towns || {};
+        let found = false;
+        for (const [code, name] of Object.entries(staticTowns)) {
+            if (code.startsWith(countyCode)) {
+                const countyName = appData.areaCodes.counties[countyCode] || '';
+                const shortName = name.startsWith(countyName) ? name.substring(countyName.length) : name;
+                sel.innerHTML += `<option value="${code}" data-fullname="${name}">${shortName}</option>`;
+                found = true;
+            }
         }
+        if (found) return;
     }
-    if (found) return;
 
     // For 直轄市 or missing towns: extract from cunli topo
     const countyName = appData.areaCodes?.counties[countyCode] || '';
