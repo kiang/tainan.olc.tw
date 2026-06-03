@@ -2,10 +2,15 @@
 $dataDir = __DIR__ . '/data/';
 $plantsFile = $dataDir . 'plants.json';
 $areasFile = $dataDir . 'areas.json';
+$fileWritable = is_writable($plantsFile);
 
 // Handle save
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json; charset=utf-8');
+    if (!$fileWritable) {
+        echo json_encode(['ok' => false, 'error' => '檔案無法寫入: ' . $plantsFile]);
+        exit;
+    }
     $plantsData = json_decode(file_get_contents($plantsFile), true);
 
     if ($_POST['action'] === 'save_plant') {
@@ -86,13 +91,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
 .top-bar { background: #1565c0; color: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 1000; }
 .top-bar h1 { font-size: 18px; font-weight: 600; }
 .top-bar .stats { font-size: 13px; opacity: .85; }
+.warn-banner { background: #c62828; color: #fff; padding: 10px 20px; font-size: 14px; text-align: center; }
 .filters { padding: 12px 20px; background: #fff; border-bottom: 1px solid #ddd; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; position: sticky; top: 44px; z-index: 999; }
 .filters input, .filters select { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 .filters input[type=text] { width: 240px; }
 .filters label { font-size: 13px; display: flex; align-items: center; gap: 4px; }
 .container { max-width: 1400px; margin: 0 auto; padding: 12px; }
 table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); font-size: 13px; }
-th { background: #f5f5f5; padding: 8px 6px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; position: sticky; top: 88px; z-index: 10; }
+th { background: #f5f5f5; padding: 8px 6px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
 td { padding: 6px; border-bottom: 1px solid #eee; vertical-align: top; }
 tr:hover { background: #f8f9ff; }
 tr.level-unknown { background: #fff3e0; }
@@ -155,6 +161,10 @@ tr.level-unknown:hover { background: #ffe0b2; }
   <h1>淨水場資料編輯</h1>
   <span class="stats"><?= count($plants) ?> 筆資料 · <?= count(array_filter($plants, fn($p) => $p['level'] === 'unknown')) ?> 筆待確認</span>
 </div>
+
+<?php if (!$fileWritable): ?>
+<div class="warn-banner">plants.json 無法寫入，編輯功能已停用。請確認檔案權限: <?= htmlspecialchars($plantsFile) ?></div>
+<?php endif; ?>
 
 <div class="filters">
   <input type="text" id="searchBox" placeholder="搜尋淨水場名稱或水源...">
@@ -263,6 +273,7 @@ tr.level-unknown:hover { background: #ffe0b2; }
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 var plants = <?= json_encode($plants, JSON_UNESCAPED_UNICODE) ?>;
+var fileWritable = <?= $fileWritable ? 'true' : 'false' ?>;
 var areaLookup = <?= json_encode($areaLookup, JSON_UNESCAPED_UNICODE) ?>;
 var townsByCounty = <?= json_encode($townsByCounty, JSON_UNESCAPED_UNICODE) ?>;
 var counties = <?= json_encode($counties, JSON_UNESCAPED_UNICODE) ?>;
@@ -323,7 +334,7 @@ function renderTable() {
       + '<td>' + (p.areas.county || '') + '</td>'
       + '<td>' + (towns || '<span style="color:#aaa">—</span>') + ' ' + villages + '</td>'
       + '<td style="font-size:11px">' + coord + '</td>'
-      + '<td><button class="btn btn-edit" onclick="openEdit(' + i + ')">編輯</button></td>'
+      + '<td>' + (fileWritable ? '<button class="btn btn-edit" onclick="openEdit(' + i + ')">編輯</button>' : '') + '</td>'
       + '</tr>';
   });
   document.getElementById('plantTable').innerHTML = html;
