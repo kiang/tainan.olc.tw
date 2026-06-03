@@ -143,6 +143,22 @@ def build_zone_for_candidate(candidate, zones_def, zone_list):
         if features:
             return zone_code, features, et
 
+    # For T2/T3 zones without their own GeoJSON, build from all T1 zone cunli features
+    if zone_code.startswith('T2-') or zone_code.startswith('T3-'):
+        county_code = zone_code.split('-')[1]
+        pattern = os.path.join(ELECTION_GEOJSON_DIR, f'T1-{county_code}-*.json')
+        all_features = []
+        seen_villcodes = set()
+        for path in sorted(glob.glob(pattern)):
+            fc = load_json(path)
+            for f in fc['features']:
+                vc = f['properties'].get('VILLCODE', '')
+                if vc not in seen_villcodes:
+                    seen_villcodes.add(vc)
+                    all_features.append(f)
+        if all_features:
+            return zone_code, all_features, et
+
     return zone_code, None, et
 
 
