@@ -1433,7 +1433,8 @@ function renderSupplyForReservoir(name) {
   resolvedPlants.forEach(function (plant) {
     if (plant.areas && plant.areas.towns) {
       plant.areas.towns.forEach(function (code) {
-        if (areaCodes.indexOf(code) === -1) areaCodes.push(code);
+        var s = String(code);
+        if (areaCodes.indexOf(s) === -1) areaCodes.push(s);
       });
     }
   });
