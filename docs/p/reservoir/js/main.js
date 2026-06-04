@@ -44,8 +44,8 @@ document.querySelectorAll('.main-tab').forEach(function (btn) {
         var params = parseHash();
         if (params.year) {
           currentYear = params.year;
-          document.getElementById('yearSelect').value = currentYear;
         }
+        populateYearSelect(currentYear);
         loadReservoirs(currentYear).then(function () {
           if (params.reservoir) openReservoirByName(params.reservoir);
         });
@@ -375,11 +375,26 @@ loadRealtimeData();
 // Water Quality (existing code)
 // ============================================================
 var wqLoaded = false;
-var currentYear = '2025';
+var currentYear = String(new Date().getFullYear());
 var reservoirsList = [];
 var reservoirsData = {};
 var allReservoirsData = [];
 var waterUsageData = {};
+
+function populateYearSelect(selectedYear) {
+  var select = document.getElementById('yearSelect');
+  var startYear = 2019;
+  var nowYear = new Date().getFullYear();
+  var endYear = Math.max(nowYear, parseInt(selectedYear, 10));
+  select.innerHTML = '';
+  for (var y = endYear; y >= startYear; y--) {
+    var opt = document.createElement('option');
+    opt.value = String(y);
+    opt.textContent = String(y);
+    if (String(y) === selectedYear) opt.selected = true;
+    select.appendChild(opt);
+  }
+}
 
 // Process SVG to color-code monitoring points based on Carlson Index
 function processSVG(svgContent, data) {
@@ -497,6 +512,13 @@ function loadReservoirs(year) {
       return fetch('https://kiang.github.io/reservoir_data/json/' + year + '/list.json');
     })
     .then(function (response) {
+      if (!response.ok) {
+        var fallback = String(parseInt(year, 10) - 1);
+        currentYear = fallback;
+        populateYearSelect(currentYear);
+        return fetch('https://kiang.github.io/reservoir_data/json/' + fallback + '/list.json')
+          .then(function (r) { return r.json(); });
+      }
       return response.json();
     })
     .then(function (list) {
@@ -1253,7 +1275,7 @@ function parseHash() {
   var parsedYear = currentYear;
 
   if (parts.length >= 1 && parts[0]) {
-    if (['2019', '2020', '2021', '2022', '2023', '2024', '2025'].includes(parts[0])) {
+    if (/^20\d{2}$/.test(parts[0])) {
       parsedYear = parts[0];
     }
   }
@@ -1276,7 +1298,7 @@ window.addEventListener('hashchange', function () {
   var params = parseHash();
   if (params.year !== currentYear) {
     currentYear = params.year;
-    document.getElementById('yearSelect').value = currentYear;
+    populateYearSelect(currentYear);
     document.getElementById('detailModal').classList.remove('show');
     loadReservoirs(currentYear).then(function () {
       var searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
