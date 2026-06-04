@@ -688,6 +688,7 @@ var usageChartInstance = null;
 var itemChartInstances = {};
 var chartIdCounter = 0;
 var chartClickInProgress = false;
+var multiYearCache = {};
 
 // Show reservoir detail in modal
 function showReservoirDetail(reservoir) {
@@ -969,73 +970,48 @@ function showReservoirDetail(reservoir) {
 }
 
 // Show line chart for selected monitoring item
-function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
-  if (chartClickInProgress) return;
-  chartClickInProgress = true;
-  setTimeout(function () { chartClickInProgress = false; }, 500);
-
-  if (!currentReservoirData) return;
-
-  var locationData = currentReservoirData.data[locationKey];
-  if (!locationData || !locationData.data) return;
-
-  var existingChart = clickedRow.nextElementSibling;
-  if (existingChart && existingChart.classList.contains('chart-row')) {
-    var existingChartId = existingChart.getAttribute('data-chart-id');
-    if (existingChartId && itemChartInstances[existingChartId]) {
-      itemChartInstances[existingChartId].destroy();
-      delete itemChartInstances[existingChartId];
-    }
-    existingChart.remove();
-    return;
-  }
-
-  var chartId = 'chart-' + (chartIdCounter++) + '-' + locationKey + '-' + itemName.replace(/[^a-zA-Z0-9]/g, '');
-
+function extractItemData(locationData, locationKey, itemName, depth, layer) {
+  if (!locationData || !locationData.data) return [];
   var dates = Object.keys(locationData.data).sort();
-  var chartData = [];
-
+  var result = [];
   dates.forEach(function (date) {
     var dateData = locationData.data[date];
     var item = dateData.find(function (d) {
       return d.itemname === itemName && (d.sampledepth || 'default') === depth && (d.samplelayer || 'default') === layer;
     });
-    if (item && item.itemvalue !== null && item.itemvalue !== undefined) {
-      chartData.push({ date: date, value: parseFloat(item.itemvalue) });
+    if (item && item.itemvalue !== null && item.itemvalue !== undefined && item.itemvalue !== '-') {
+      var v = parseFloat(item.itemvalue);
+      if (!isNaN(v)) result.push({ date: date, value: v });
     }
   });
+  return result;
+}
 
-  if (chartData.length === 0) return;
+function fetchReservoirYear(reservoirName, year) {
+  var cacheKey = year + '/' + reservoirName;
+  if (multiYearCache[cacheKey]) return Promise.resolve(multiYearCache[cacheKey]);
+  return fetch('https://kiang.github.io/reservoir_data/json/' + year + '/' + encodeURIComponent(reservoirName) + '.json')
+    .then(function (r) {
+      if (!r.ok) return null;
+      return r.json();
+    })
+    .then(function (data) {
+      if (data) multiYearCache[cacheKey] = data;
+      return data;
+    })
+    .catch(function () { return null; });
+}
 
-  var depthLabel = depth !== 'default' ? ' (深度: ' + depth + (layer !== 'default' ? ' ' + layer : '') + ')' : '';
-  var chartTitle = itemName + depthLabel + ' 歷史趨勢';
+var multiYearColors = [
+  { border: '#667eea', bg: 'rgba(102, 126, 234, 0.1)' },
+  { border: '#e6574e', bg: 'rgba(230, 87, 78, 0.1)' },
+  { border: '#27ae60', bg: 'rgba(39, 174, 96, 0.1)' },
+  { border: '#f39c12', bg: 'rgba(243, 156, 18, 0.1)' },
+  { border: '#8e44ad', bg: 'rgba(142, 68, 173, 0.1)' }
+];
 
-  var chartRow = document.createElement('tr');
-  chartRow.className = 'chart-row';
-  chartRow.setAttribute('data-chart-id', chartId);
-  chartRow.innerHTML = '<td colspan="4"><div class="chart-container"><span class="chart-close">&times;</span>' +
-    '<h6 style="margin: 0 0 15px 0; color: #667eea;">' + chartTitle + '</h6>' +
-    '<canvas id="' + chartId + '"></canvas></div></td>';
-
-  if (clickedRow && clickedRow.parentNode) {
-    clickedRow.parentNode.insertBefore(chartRow, clickedRow.nextSibling);
-  } else {
-    return;
-  }
-
-  chartRow.querySelector('.chart-close').addEventListener('click', function () {
-    if (itemChartInstances[chartId]) {
-      itemChartInstances[chartId].destroy();
-      delete itemChartInstances[chartId];
-    }
-    chartRow.remove();
-  });
-
-  var canvas = chartRow.querySelector('canvas');
-  if (!canvas) return;
-
+function renderSingleYearChart(chartId, canvas, chartData, itemName, unit, chartTitle) {
   if (itemChartInstances[chartId]) itemChartInstances[chartId].destroy();
-
   try {
     itemChartInstances[chartId] = new Chart(canvas.getContext('2d'), {
       type: 'line',
@@ -1065,6 +1041,174 @@ function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
   } catch (error) {
     console.error('Error creating chart:', error);
   }
+}
+
+function renderMultiYearChart(chartId, canvas, yearDatasets, itemName, unit) {
+  if (itemChartInstances[chartId]) itemChartInstances[chartId].destroy();
+
+  var allDates = {};
+  yearDatasets.forEach(function (yd) {
+    yd.data.forEach(function (d) { allDates[d.date] = true; });
+  });
+  var labels = Object.keys(allDates).sort();
+
+  var datasets = yearDatasets.map(function (yd, i) {
+    var color = multiYearColors[i % multiYearColors.length];
+    var valueMap = {};
+    yd.data.forEach(function (d) { valueMap[d.date] = d.value; });
+    return {
+      label: yd.year + ' ' + itemName + ' (' + unit + ')',
+      data: labels.map(function (date) { return valueMap[date] !== undefined ? valueMap[date] : null; }),
+      borderColor: color.border,
+      backgroundColor: color.bg,
+      tension: 0.4,
+      fill: false,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      spanGaps: false
+    };
+  });
+
+  try {
+    itemChartInstances[chartId] = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          y: { beginAtZero: false, title: { display: true, text: unit } },
+          x: { title: { display: true, text: '監測日期' }, ticks: { maxRotation: 45, minRotation: 45 } }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error creating multi-year chart:', error);
+  }
+}
+
+function showItemChart(locationKey, itemName, depth, layer, unit, clickedRow) {
+  if (chartClickInProgress) return;
+  chartClickInProgress = true;
+  setTimeout(function () { chartClickInProgress = false; }, 500);
+
+  if (!currentReservoirData) return;
+
+  var locationData = currentReservoirData.data[locationKey];
+  if (!locationData || !locationData.data) return;
+
+  var existingChart = clickedRow.nextElementSibling;
+  if (existingChart && existingChart.classList.contains('chart-row')) {
+    var existingChartId = existingChart.getAttribute('data-chart-id');
+    if (existingChartId && itemChartInstances[existingChartId]) {
+      itemChartInstances[existingChartId].destroy();
+      delete itemChartInstances[existingChartId];
+    }
+    existingChart.remove();
+    return;
+  }
+
+  var chartData = extractItemData(locationData, locationKey, itemName, depth, layer);
+  if (chartData.length === 0) return;
+
+  var chartId = 'chart-' + (chartIdCounter++) + '-' + locationKey + '-' + itemName.replace(/[^a-zA-Z0-9]/g, '');
+  var depthLabel = depth !== 'default' ? ' (深度: ' + depth + (layer !== 'default' ? ' ' + layer : '') + ')' : '';
+  var chartTitle = itemName + depthLabel + ' 歷史趨勢';
+
+  var chartRow = document.createElement('tr');
+  chartRow.className = 'chart-row';
+  chartRow.setAttribute('data-chart-id', chartId);
+  chartRow.innerHTML = '<td colspan="4"><div class="chart-container"><span class="chart-close">&times;</span>' +
+    '<h6 style="margin: 0 0 10px 0; color: #667eea;">' + chartTitle + '</h6>' +
+    '<div class="multi-year-toggle" style="margin-bottom:10px;text-align:right;">' +
+    '<button class="multi-year-btn" style="padding:4px 12px;border:1px solid #667eea;background:#fff;color:#667eea;border-radius:4px;cursor:pointer;font-size:13px;">近5年趨勢</button>' +
+    '</div>' +
+    '<canvas id="' + chartId + '"></canvas></div></td>';
+
+  if (clickedRow && clickedRow.parentNode) {
+    clickedRow.parentNode.insertBefore(chartRow, clickedRow.nextSibling);
+  } else {
+    return;
+  }
+
+  chartRow.querySelector('.chart-close').addEventListener('click', function () {
+    if (itemChartInstances[chartId]) {
+      itemChartInstances[chartId].destroy();
+      delete itemChartInstances[chartId];
+    }
+    chartRow.remove();
+  });
+
+  var canvas = chartRow.querySelector('canvas');
+  if (!canvas) return;
+
+  renderSingleYearChart(chartId, canvas, chartData, itemName, unit, chartTitle);
+
+  var multiYearBtn = chartRow.querySelector('.multi-year-btn');
+  var showingMultiYear = false;
+
+  multiYearBtn.addEventListener('click', function () {
+    if (showingMultiYear) {
+      showingMultiYear = false;
+      multiYearBtn.textContent = '近5年趨勢';
+      multiYearBtn.style.background = '#fff';
+      multiYearBtn.style.color = '#667eea';
+      renderSingleYearChart(chartId, canvas, chartData, itemName, unit, chartTitle);
+      return;
+    }
+
+    multiYearBtn.disabled = true;
+    multiYearBtn.textContent = '載入中...';
+
+    var baseYear = parseInt(currentYear, 10);
+    var years = [];
+    for (var y = baseYear; y >= baseYear - 4 && y >= 2019; y--) {
+      years.push(String(y));
+    }
+
+    var reservoirName = currentReservoirData.name;
+
+    multiYearCache[currentYear + '/' + reservoirName] = currentReservoirData.data;
+
+    var fetches = years.map(function (yr) {
+      if (yr === currentYear) return Promise.resolve({ year: yr, data: currentReservoirData.data });
+      return fetchReservoirYear(reservoirName, yr).then(function (data) {
+        return { year: yr, data: data };
+      });
+    });
+
+    Promise.all(fetches).then(function (results) {
+      var yearDatasets = [];
+      results.forEach(function (r) {
+        if (!r.data || !r.data[locationKey]) return;
+        var items = extractItemData(r.data[locationKey], locationKey, itemName, depth, layer);
+        if (items.length > 0) yearDatasets.push({ year: r.year, data: items });
+      });
+
+      yearDatasets.sort(function (a, b) { return a.year.localeCompare(b.year); });
+
+      if (yearDatasets.length === 0) {
+        multiYearBtn.textContent = '無歷史資料';
+        multiYearBtn.disabled = false;
+        return;
+      }
+
+      showingMultiYear = true;
+      multiYearBtn.textContent = '僅顯示' + currentYear;
+      multiYearBtn.style.background = '#667eea';
+      multiYearBtn.style.color = '#fff';
+      multiYearBtn.disabled = false;
+
+      renderMultiYearChart(chartId, canvas, yearDatasets, itemName, unit);
+    }).catch(function () {
+      multiYearBtn.textContent = '載入失敗';
+      multiYearBtn.disabled = false;
+    });
+  });
 }
 
 // Map for water quality modal
