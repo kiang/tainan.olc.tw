@@ -47,7 +47,7 @@
             "type": "Feature",
             "properties": {
                 "key": "北區中華西路二段/和緯路四段",
-                "count": 7
+                "count": 8
             },
             "geometry": {
                 "type": "Point",
@@ -481,7 +481,7 @@
             "type": "Feature",
             "properties": {
                 "key": "仁德區中山路/中正路三段",
-                "count": 6
+                "count": 8
             },
             "geometry": {
                 "type": "Point",
@@ -635,7 +635,7 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中央路/中華路",
-                "count": 1
+                "count": 2
             },
             "geometry": {
                 "type": "Point",
@@ -684,6 +684,20 @@
                 "coordinates": [
                     120.190131,
                     22.967278
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "安平區中華西路一段/健康路二段",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.185933,
+                    22.982341
                 ]
             }
         }
