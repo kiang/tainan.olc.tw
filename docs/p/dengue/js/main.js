@@ -280,6 +280,12 @@ btnLegend.className = 'bar-btn';
 btnLegend.textContent = '圖例';
 bar.appendChild(btnLegend);
 
+// Coordinates button
+var btnCoords = document.createElement('button');
+btnCoords.className = 'bar-btn';
+btnCoords.textContent = '座標';
+bar.appendChild(btnCoords);
+
 // Menu toggle
 var btnMenu = document.createElement('button');
 btnMenu.className = 'bar-btn';
@@ -360,6 +366,48 @@ btnImported.addEventListener('click', function () { if (currentSource !== 'cunli
 yearSelect.addEventListener('change', function () {
     currentYear = parseInt(this.value);
     loadData();
+});
+
+// ── Coordinates input ────────────────────────────────────────────────────────
+var coordMarker = null;
+var coordinatesInput = document.getElementById('coordinatesInput');
+var latitudeInput = document.getElementById('latitude');
+var longitudeInput = document.getElementById('longitude');
+
+btnCoords.addEventListener('click', function (e) {
+    e.stopPropagation();
+    closeAll();
+    coordinatesInput.value = '';
+    latitudeInput.value = '';
+    longitudeInput.value = '';
+    $('#coordinatesModal').modal('show');
+});
+
+coordinatesInput.addEventListener('input', function () {
+    var val = this.value.trim();
+    var parts = val.split(/[,\s]+/);
+    if (parts.length === 2) {
+        var lat = parseFloat(parts[0]);
+        var lon = parseFloat(parts[1]);
+        if (!isNaN(lat) && !isNaN(lon)) {
+            latitudeInput.value = lat;
+            longitudeInput.value = lon;
+        }
+    }
+});
+
+document.getElementById('zoomToCoordinates').addEventListener('click', function () {
+    var lat = parseFloat(latitudeInput.value);
+    var lon = parseFloat(longitudeInput.value);
+    if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+        alert('請輸入有效的座標');
+        return;
+    }
+    if (coordMarker) map.removeLayer(coordMarker);
+    coordMarker = L.marker([lat, lon]).addTo(map);
+    coordMarker.bindPopup('座標: ' + lat + ', ' + lon).openPopup();
+    map.setView([lat, lon], 16);
+    $('#coordinatesModal').modal('hide');
 });
 
 // ── Data loading ──────────────────────────────────────────────────────────────
