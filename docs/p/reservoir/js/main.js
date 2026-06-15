@@ -10,6 +10,22 @@ fetch('data/floating_solar.json')
   })
   .catch(function () { });
 
+// ============================================================
+// Coordinate overrides for stations missing coords in the API
+// ============================================================
+var coordOverrides = {};
+
+var coordOverridesReady = fetch('data/missing_coordinates.json')
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    (data.stations || []).forEach(function (s) {
+      if (s.Latitude != null && s.Longitude != null) {
+        coordOverrides[s.StationNo] = { lat: s.Latitude, lon: s.Longitude };
+      }
+    });
+  })
+  .catch(function () { });
+
 function hasFloatingSolar(name) {
   return floatingSolarNames.some(function (s) {
     return name.indexOf(s) !== -1;
@@ -150,7 +166,8 @@ function fetchFhy(path) {
 function loadRealtimeData() {
   Promise.all([
     fetchFhy('/Reservoir/Station'),
-    fetchFhy('/Reservoir/Info/RealTime')
+    fetchFhy('/Reservoir/Info/RealTime'),
+    coordOverridesReady
   ]).then(function (results) {
     var stations = results[0];
     var realtime = results[1];
@@ -173,8 +190,8 @@ function loadRealtimeData() {
       rtMerged.push({
         stationNo: rt.StationNo,
         name: st.StationName,
-        lat: st.Point ? st.Point.Latitude : null,
-        lon: st.Point ? st.Point.Longitude : null,
+        lat: (st.Point && st.Point.Latitude) || (coordOverrides[rt.StationNo] ? coordOverrides[rt.StationNo].lat : null),
+        lon: (st.Point && st.Point.Longitude) || (coordOverrides[rt.StationNo] ? coordOverrides[rt.StationNo].lon : null),
         effectiveCapacity: st.EffectiveCapacity,
         fullWaterHeight: st.FullWaterHeight,
         deadWaterHeight: st.DeadWaterHeight,
