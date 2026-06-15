@@ -1,0 +1,328 @@
+{
+  "_description": "水庫站點缺少座標資料，需手動補充。HasRealtimeData 為 true 表示有即時水情但無法顯示在地圖上。",
+  "_updated": "2026-06-15",
+  "stations": [
+    {
+      "StationNo": "20508",
+      "StationName": "明湖下池水庫",
+      "HasRealtimeData": true,
+      "Latitude": 23.860987,
+      "Longitude": 120.871378
+    },
+    {
+      "StationNo": "30306",
+      "StationName": "內埔子",
+      "HasRealtimeData": true,
+      "Latitude": 23.533160,
+      "Longitude": 120.494026
+    },
+    {
+      "StationNo": "40701",
+      "StationName": "酬勤水庫",
+      "HasRealtimeData": true,
+      "Latitude": 22.671720,
+      "Longitude": 121.500657
+    },
+    {
+      "StationNo": "50108",
+      "StationName": "小池水庫",
+      "HasRealtimeData": true,
+      "Latitude": 23.610158,
+      "Longitude": 119.509488
+    },
+    {
+      "StationNo": "50109",
+      "StationName": "烏溝蓄水塘",
+      "HasRealtimeData": true,
+      "Latitude": 23.366641,
+      "Longitude": 119.536126
+    },
+    {
+      "StationNo": "50201",
+      "StationName": "太湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": 24.439302,
+      "Longitude": 118.425155
+    },
+    {
+      "StationNo": "50202",
+      "StationName": "田浦水庫",
+      "HasRealtimeData": true,
+      "Latitude": 24.476779,
+      "Longitude": 118.457676
+    },
+    {
+      "StationNo": "50203",
+      "StationName": "陽明湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": 24.460276,
+      "Longitude": 118.431609
+    },
+    {
+      "StationNo": "50204",
+      "StationName": "山西水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50205",
+      "StationName": "榮湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50206",
+      "StationName": "擎天水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50207",
+      "StationName": "金沙水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50208",
+      "StationName": "蓮湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50209",
+      "StationName": "菱湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50210",
+      "StationName": "西湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50212",
+      "StationName": "金湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50213",
+      "StationName": "瓊林水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50214",
+      "StationName": "蘭湖水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50301",
+      "StationName": "勝利水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50302",
+      "StationName": "秋桂山水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50303",
+      "StationName": "珠螺水壩",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50304",
+      "StationName": "儲水沃上壩",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50305",
+      "StationName": "儲水沃水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50306",
+      "StationName": "津沙水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50307",
+      "StationName": "津沙一號水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50308",
+      "StationName": "坂里水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50309",
+      "StationName": "東湧水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50310",
+      "StationName": "后沃水庫",
+      "HasRealtimeData": true,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10208",
+      "StationName": "六堵攔河堰",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10210",
+      "StationName": "三峽攔河堰",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10213",
+      "StationName": "羅好壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10214",
+      "StationName": "阿玉壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10215",
+      "StationName": "木瓜壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "10216",
+      "StationName": "中庄調整池",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "20207",
+      "StationName": "青山壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "20505",
+      "StationName": "明潭下池水庫",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "20506",
+      "StationName": "銃櫃壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "20507",
+      "StationName": "武界壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "30304",
+      "StationName": "東口攔河堰",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "30603",
+      "StationName": "玉峰堰",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "30804",
+      "StationName": "觀音湖水庫",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "30805",
+      "StationName": "美濃湖水庫",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "40201",
+      "StationName": "溪畔壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "40202",
+      "StationName": "水簾壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "40203",
+      "StationName": "龍溪壩",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    },
+    {
+      "StationNo": "50107",
+      "StationName": "澎湖海水淡化廠",
+      "HasRealtimeData": false,
+      "Latitude": null,
+      "Longitude": null
+    }
+  ]
+}
