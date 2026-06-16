@@ -42,7 +42,7 @@ function initMap() {
         // Default to first type that has zones
         var types = indexData.types.filter(function (t) { return indexData.counts[t]; });
         if (types.length > 0) {
-            selectElectionType(types[0]);
+            selectElectionType(types[Math.floor(Math.random() * types.length)]);
         }
     });
 }
