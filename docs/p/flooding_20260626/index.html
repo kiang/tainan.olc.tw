@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>台南淹水災情回報地圖 2026/06/26</title>
+  <title>台灣淹水災情回報地圖 2026/06/26</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -175,7 +177,7 @@
       <span class="flood-icon">&#x1F30A;</span>
       <h2>淹水災情回報地圖</h2>
     </div>
-    <div class="subtitle">2026/06/26 台南地區</div>
+    <div class="subtitle">2026/06/26 全台灣</div>
     <div class="count" id="count">載入中...</div>
   </div>
   <div class="legend">
@@ -185,11 +187,12 @@
     </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRvxzQTuFHbKAnrOPMiWRhTn8Zhsacurl-HExuyLoXtrevVd-PLIBQq3gJwcEKaBwYhoFMEzRyhn5ip/pub?output=csv';
 
-    const map = L.map('map').setView([23.0, 120.2], 12);
+    const map = L.map('map').setView([23.7, 120.9], 8);
 
     L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
       maxZoom: 18,
@@ -240,6 +243,8 @@
       return html;
     }
 
+    const clusterGroup = L.markerClusterGroup();
+
     Papa.parse(CSV_URL, {
       download: true,
       header: true,
@@ -250,16 +255,18 @@
           const lng = parseFloat(row['經度']);
           if (isNaN(lat) || isNaN(lng)) return;
 
-          const marker = L.marker([lat, lng], { icon: floodIcon }).addTo(map);
+          const marker = L.marker([lat, lng], { icon: floodIcon });
           marker.bindPopup(buildPopup(row), { maxWidth: 300 });
           markers.push(marker);
         });
 
+        clusterGroup.addLayers(markers);
+        map.addLayer(clusterGroup);
+
         document.getElementById('count').innerHTML = '已收集 <strong>' + markers.length + '</strong> 筆淹水回報';
 
         if (markers.length > 0) {
-          const group = L.featureGroup(markers);
-          map.fitBounds(group.getBounds().pad(0.1));
+          map.fitBounds(clusterGroup.getBounds().pad(0.1));
         }
       }
     });
