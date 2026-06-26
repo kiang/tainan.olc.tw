@@ -9,49 +9,146 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     #map { width: 100%; height: 100vh; }
+
     .info-panel {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 8px;
-      padding: 12px 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      font-size: 14px;
-      max-width: 280px;
+      background: linear-gradient(135deg, #1a5276, #2471a3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      color: #fff;
+      max-width: 300px;
+    }
+    .info-panel .title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .info-panel .flood-icon {
+      font-size: 24px;
+      line-height: 1;
     }
     .info-panel h2 {
-      font-size: 16px;
-      margin-bottom: 4px;
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .info-panel .subtitle {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 10px;
     }
     .info-panel .count {
-      color: #666;
-      font-size: 13px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 6px 10px;
+      text-align: center;
     }
+    .info-panel .count strong {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .legend {
+      position: absolute;
+      bottom: 24px;
+      right: 12px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      font-size: 12px;
+      color: #333;
+    }
+    .legend .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1e88e5;
+      border: 2px solid #0d47a1;
+      box-shadow: 0 0 6px rgba(30,136,229,0.5);
+    }
+
+    .flood-marker {
+      position: relative;
+    }
+    .flood-marker .pulse {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(30, 136, 229, 0.3);
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .flood-marker .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #42a5f5, #0d47a1);
+      border: 2.5px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
     .popup-card {
       font-size: 13px;
-      line-height: 1.5;
-      min-width: 200px;
+      line-height: 1.6;
+      min-width: 220px;
+    }
+    .popup-card .popup-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0d47a1;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e3f2fd;
     }
     .popup-card .time {
       color: #666;
       margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .popup-card .time span {
+      color: #333;
+      font-weight: 500;
     }
     .popup-card .notes {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      color: #444;
     }
     .popup-card .threads-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 7px 14px;
       background: #000;
       color: #fff;
       border-radius: 8px;
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
+      transition: background 0.2s;
     }
     .popup-card .threads-link:hover {
       background: #333;
@@ -61,13 +158,31 @@
       height: 16px;
       fill: #fff;
     }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .leaflet-popup-tip {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
   <div class="info-panel">
-    <h2>台南淹水災情回報</h2>
+    <div class="title-row">
+      <span class="flood-icon">&#x1F30A;</span>
+      <h2>淹水災情回報地圖</h2>
+    </div>
+    <div class="subtitle">2026/06/26 台南地區</div>
     <div class="count" id="count">載入中...</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot"></div>
+      <span>淹水回報地點</span>
+    </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
@@ -80,6 +195,14 @@
       maxZoom: 18,
       attribution: '&copy; NLSC'
     }).addTo(map);
+
+    const floodIcon = L.divIcon({
+      className: 'flood-marker',
+      html: '<div class="pulse"></div><div class="dot"></div>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -10]
+    });
 
     const threadsSvg = '<svg viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"><path d="M141.537 88.988C140.71 88.592 139.87 88.21 139.019 87.845C137.537 60.538 122.616 44.905 97.562 44.745C97.448 44.744 97.336 44.744 97.222 44.744C82.236 44.744 69.773 51.141 62.102 62.781L75.881 72.233C81.612 63.538 90.605 61.685 97.229 61.685C97.305 61.685 97.382 61.685 97.458 61.686C105.707 61.738 111.932 64.137 115.961 68.814C118.893 72.219 120.854 76.925 121.825 82.864C114.511 81.621 106.601 81.239 98.145 81.723C74.325 83.095 59.011 96.988 60.04 116.292C60.562 126.084 65.44 134.508 73.775 140.011C80.822 144.663 89.899 146.938 99.332 146.423C111.79 145.74 121.563 140.987 128.381 132.296C133.559 125.696 136.834 117.143 138.28 106.366C144.217 109.949 148.617 114.664 151.047 120.332C155.179 129.967 155.42 145.8 142.501 158.708C131.182 170.016 117.576 174.908 97.014 175.059C74.204 174.89 56.954 167.575 45.738 153.317C35.236 139.966 29.808 120.682 29.605 96C29.808 71.318 35.236 52.034 45.738 38.683C56.954 24.425 74.204 17.11 97.013 16.941C119.988 17.111 137.539 24.461 149.184 38.788C154.894 45.814 159.199 54.649 162.037 64.95L178.184 60.642C174.744 47.962 169.331 37.036 161.965 27.974C147.036 9.607 125.202 0.195 97.07 0H96.957C68.882 0.194 47.292 9.642 32.788 28.079C19.882 44.486 13.224 67.316 13.001 95.933L13 96L13.001 96.068C13.224 124.684 19.882 147.514 32.788 163.921C47.292 182.358 68.882 191.806 96.957 192H97.07C122.03 191.827 139.624 185.292 154.118 170.811C173.081 151.866 172.51 128.119 166.26 113.541C161.776 103.087 153.227 94.596 141.537 88.988ZM98.441 129.507C88.001 130.095 77.154 125.409 76.62 115.372C76.223 107.93 81.916 99.626 99.081 98.637C101.047 98.523 102.976 98.468 104.871 98.468C111.106 98.468 116.939 99.074 122.242 100.233C120.264 124.935 108.662 128.946 98.441 129.507Z"/></svg>';
 
@@ -102,8 +225,9 @@
       const notes = row['災情說明'] || '';
 
       let html = '<div class="popup-card">';
+      html += '<div class="popup-header">&#x1F4CD; 淹水回報</div>';
       if (postTime) {
-        html += '<div class="time">發文時間：' + formatTime(postTime) + '</div>';
+        html += '<div class="time">&#x1F552; 發文時間：<span>' + formatTime(postTime) + '</span></div>';
       }
       if (notes) {
         html += '<div class="notes">' + escapeHtml(notes) + '</div>';
@@ -126,12 +250,12 @@
           const lng = parseFloat(row['經度']);
           if (isNaN(lat) || isNaN(lng)) return;
 
-          const marker = L.marker([lat, lng]).addTo(map);
+          const marker = L.marker([lat, lng], { icon: floodIcon }).addTo(map);
           marker.bindPopup(buildPopup(row), { maxWidth: 300 });
           markers.push(marker);
         });
 
-        document.getElementById('count').textContent = '共 ' + markers.length + ' 筆回報';
+        document.getElementById('count').innerHTML = '已收集 <strong>' + markers.length + '</strong> 筆淹水回報';
 
         if (markers.length > 0) {
           const group = L.featureGroup(markers);
