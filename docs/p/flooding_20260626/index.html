@@ -73,6 +73,50 @@
     .info-panel .report-btn:hover {
       background: #c0392b;
     }
+    .info-panel .report-btn.active {
+      background: #f39c12;
+      animation: btn-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes btn-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .info-panel .report-hint {
+      display: none;
+      margin-top: 8px;
+      font-size: 13px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .info-panel .report-hint.visible {
+      display: block;
+    }
+    .report-popup-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .report-popup-btn:hover {
+      background: #a93226;
+    }
+    .leaflet-popup-content .report-popup-btn {
+      color: #fff !important;
+    }
+    .map-crosshair {
+      cursor: crosshair !important;
+    }
 
     .legend {
       position: absolute;
@@ -197,7 +241,8 @@
     </div>
     <div class="subtitle">2026/06/26 全台灣</div>
     <div class="count" id="count">載入中...</div>
-    <a class="report-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScnSn_6D1VplTpzORFP82yWQXbGnTLfKYjn-J3WvcvREVix9Q/viewform?usp=dialog" target="_blank" rel="noopener">&#x1F4E2; 我要回報淹水</a>
+    <button class="report-btn" id="reportBtn">&#x1F4E2; 我要回報淹水</button>
+    <div class="report-hint" id="reportHint">&#x1F449; 請點擊地圖上的淹水位置</div>
   </div>
   <div class="legend">
     <div class="legend-item">
@@ -263,6 +308,58 @@
     }
 
     const clusterGroup = L.markerClusterGroup();
+
+    let reportMode = false;
+    let reportMarker = null;
+    const reportBtn = document.getElementById('reportBtn');
+    const reportHint = document.getElementById('reportHint');
+    const mapEl = document.getElementById('map');
+
+    reportBtn.addEventListener('click', function() {
+      reportMode = !reportMode;
+      reportBtn.classList.toggle('active', reportMode);
+      reportHint.classList.toggle('visible', reportMode);
+      mapEl.classList.toggle('map-crosshair', reportMode);
+      if (!reportMode && reportMarker) {
+        map.removeLayer(reportMarker);
+        reportMarker = null;
+      }
+    });
+
+    function buildReportFormUrl(lat, lng) {
+      const now = new Date();
+      const datetime = now.getFullYear() + '/'
+        + String(now.getMonth() + 1).padStart(2, '0') + '/'
+        + String(now.getDate()).padStart(2, '0') + ' '
+        + String(now.getHours()).padStart(2, '0') + ':'
+        + String(now.getMinutes()).padStart(2, '0');
+      const params = new URLSearchParams({
+        'usp': 'pp_url',
+        'entry.774493740': '',
+        'entry.882830027': datetime,
+        'entry.1120375502': lat.toFixed(6),
+        'entry.151812353': lng.toFixed(6),
+        'entry.2102224195': ''
+      });
+      return 'https://docs.google.com/forms/d/e/1FAIpQLScnSn_6D1VplTpzORFP82yWQXbGnTLfKYjn-J3WvcvREVix9Q/viewform?' + params.toString();
+    }
+
+    map.on('click', function(e) {
+      if (!reportMode) return;
+      if (reportMarker) {
+        map.removeLayer(reportMarker);
+      }
+      var lat = e.latlng.lat;
+      var lng = e.latlng.lng;
+      var formUrl = buildReportFormUrl(lat, lng);
+      var popupHtml = '<div class="popup-card">'
+        + '<div class="popup-header">&#x1F4E2; 回報淹水地點</div>'
+        + '<div class="time">&#x1F4CD; 座標：<span>' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '</span></div>'
+        + '<a class="report-popup-btn" href="' + formUrl + '" target="_blank" rel="noopener">前往填寫回報表單</a>'
+        + '</div>';
+      reportMarker = L.marker([lat, lng], { icon: floodIcon }).addTo(map);
+      reportMarker.bindPopup(popupHtml, { maxWidth: 300 }).openPopup();
+    });
 
     Papa.parse(CSV_URL, {
       download: true,
