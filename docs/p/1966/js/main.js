@@ -1,5 +1,6 @@
 (function () {
-  var map = L.map('map', { preferCanvas: true }).setView([23.7, 121.0], 7);
+  var map = L.map('map', { preferCanvas: true, zoomControl: false }).setView([23.7, 121.0], 7);
+  L.control.zoom({ position: 'topright' }).addTo(map);
 
   L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
     maxZoom: 18,
