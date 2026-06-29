@@ -38,6 +38,7 @@
   };
 
   var cityNames = {};
+  var cityCenters = {};
   var userLocationMarker = null;
 
   var defaultStyle = {
@@ -78,6 +79,7 @@
       .then(function (r) { return r.json(); })
       .then(function (topo) {
         var geojson = topojson.feature(topo, topo.objects['20230317']);
+        var cityBounds = {};
         townLayer = L.geoJSON(geojson, {
           style: defaultStyle,
           interactive: false,
@@ -87,8 +89,15 @@
             if (!cityNames[p.COUNTYCODE]) {
               cityNames[p.COUNTYCODE] = p.COUNTYNAME;
             }
+            if (!cityBounds[p.COUNTYCODE]) {
+              cityBounds[p.COUNTYCODE] = L.latLngBounds([]);
+            }
+            cityBounds[p.COUNTYCODE].extend(layer.getBounds());
           }
         }).addTo(map);
+        for (var code in cityBounds) {
+          cityCenters[code] = cityBounds[code].getCenter();
+        }
       });
   }
 
@@ -127,11 +136,25 @@
     return vals;
   }
 
-  function buildCityFilter() {
+  function buildCityFilter(sortByDistanceFrom) {
     var container = document.getElementById('city-filter');
-    var codes = Object.keys(cityNames).sort(function (a, b) {
-      return cityNames[a].localeCompare(cityNames[b], 'zh-TW');
-    });
+    container.innerHTML = '';
+    var codes = Object.keys(cityNames);
+    if (sortByDistanceFrom) {
+      var refLat = sortByDistanceFrom.lat;
+      var refLng = sortByDistanceFrom.lng;
+      codes.sort(function (a, b) {
+        var ca = cityCenters[a], cb = cityCenters[b];
+        if (!ca || !cb) return 0;
+        var da = (ca.lat - refLat) * (ca.lat - refLat) + (ca.lng - refLng) * (ca.lng - refLng);
+        var db = (cb.lat - refLat) * (cb.lat - refLat) + (cb.lng - refLng) * (cb.lng - refLng);
+        return da - db;
+      });
+    } else {
+      codes.sort(function (a, b) {
+        return cityNames[a].localeCompare(cityNames[b], 'zh-TW');
+      });
+    }
     codes.forEach(function (code) {
       var label = document.createElement('label');
       var cb = document.createElement('input');
@@ -397,6 +420,12 @@
     }
   }
 
+  function sortCityFilterByDistance(lat, lng) {
+    var checked = getCheckedCities();
+    buildCityFilter({ lat: lat, lng: lng });
+    checked.forEach(function (code) { setCityChecked(code, true); });
+  }
+
   function goToUserLocation() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(function (pos) {
@@ -418,6 +447,7 @@
       }
 
       map.setView([lat, lng], 13);
+      sortCityFilterByDistance(lat, lng);
 
       var county = findCountyAtPoint(lat, lng);
       if (county) {
@@ -442,6 +472,8 @@
         }),
         zIndexOffset: 2000
       }).addTo(map);
+
+      sortCityFilterByDistance(lat, lng);
 
       var county = findCountyAtPoint(lat, lng);
       if (county) {
