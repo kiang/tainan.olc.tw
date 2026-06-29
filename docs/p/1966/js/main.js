@@ -234,7 +234,9 @@
           if (d.type.charAt(0) !== typeVal) return;
         } else if (d.type !== typeVal) return;
       }
-      if (keyword && d.name.toLowerCase().indexOf(keyword) === -1) return;
+      if (keyword && d.name.toLowerCase().indexOf(keyword) === -1 &&
+        (!d.phone || d.phone.indexOf(keyword) === -1) &&
+        (!d.addr || d.addr.toLowerCase().indexOf(keyword) === -1)) return;
       if (bedsOnly && !d.beds) return;
 
       var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
