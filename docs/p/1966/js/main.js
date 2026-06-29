@@ -34,6 +34,7 @@
   };
 
   var cityNames = {};
+  var userLocationMarker = null;
 
   var defaultStyle = {
     weight: 1,
@@ -258,5 +259,112 @@
     document.getElementById('sidebar').classList.toggle('open');
   });
 
-  loadTopoJSON().then(loadPoints);
+  function findCountyAtPoint(lat, lng) {
+    var pt = L.latLng(lat, lng);
+    var found = null;
+    if (townLayer) {
+      townLayer.eachLayer(function (layer) {
+        if (!found && layer.getBounds().contains(pt)) {
+          var polys = layer.feature.geometry;
+          if (leafletPip(polys, pt)) {
+            found = layer.feature.properties.COUNTYCODE;
+          }
+        }
+      });
+    }
+    return found;
+  }
+
+  function leafletPip(geometry, pt) {
+    var coords = geometry.type === 'MultiPolygon' ? geometry.coordinates : [geometry.coordinates];
+    for (var i = 0; i < coords.length; i++) {
+      if (pointInPolygon(pt.lng, pt.lat, coords[i][0])) return true;
+    }
+    return false;
+  }
+
+  function pointInPolygon(x, y, ring) {
+    var inside = false;
+    for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      var xi = ring[i][0], yi = ring[i][1];
+      var xj = ring[j][0], yj = ring[j][1];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  function goToUserLocation() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+
+      if (userLocationMarker) {
+        userLocationMarker.setLatLng([lat, lng]);
+      } else {
+        userLocationMarker = L.marker([lat, lng], {
+          icon: L.divIcon({
+            className: '',
+            html: '<div class="user-location-marker"></div>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+          }),
+          zIndexOffset: 2000
+        }).addTo(map);
+      }
+
+      map.setView([lat, lng], 13);
+
+      var county = findCountyAtPoint(lat, lng);
+      if (county) {
+        var select = document.getElementById('city-filter');
+        if (select.value !== county) {
+          select.value = county;
+          applyFilters();
+        }
+      }
+    });
+  }
+
+  function autoLocate() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+
+      userLocationMarker = L.marker([lat, lng], {
+        icon: L.divIcon({
+          className: '',
+          html: '<div class="user-location-marker"></div>',
+          iconSize: [18, 18],
+          iconAnchor: [9, 9]
+        }),
+        zIndexOffset: 2000
+      }).addTo(map);
+
+      var county = findCountyAtPoint(lat, lng);
+      if (county) {
+        var select = document.getElementById('city-filter');
+        select.value = county;
+        applyFilters();
+        var bounds = L.latLngBounds([]);
+        townLayer.eachLayer(function (layer) {
+          if (layer.feature.properties.COUNTYCODE === county) {
+            bounds.extend(layer.getBounds());
+          }
+        });
+        if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+      }
+    });
+  }
+
+  document.getElementById('geolocate-btn').addEventListener('click', goToUserLocation);
+
+  loadTopoJSON().then(function () {
+    return loadPoints();
+  }).then(function () {
+    autoLocate();
+  });
 })();

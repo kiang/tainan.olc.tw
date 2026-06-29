@@ -148,6 +148,34 @@ input[type="text"] {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
 }
 
+#geolocate-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+#geolocate-btn:hover {
+  background: #f0f0f0;
+}
+
+.user-location-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4285f4;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #4285f4, 0 0 8px rgba(66, 133, 244, 0.5);
+}
+
 .circle-marker.active {
   width: 24px;
   height: 24px;
