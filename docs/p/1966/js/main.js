@@ -250,6 +250,10 @@
 
     markerCluster.addLayers(markers);
     updateStats(total, counts);
+
+    if (keyword && total > 0 && window.innerWidth <= 768) {
+      closeSidebar();
+    }
   }
 
   function updateStats(total, counts) {
