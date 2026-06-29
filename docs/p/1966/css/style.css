@@ -61,6 +61,14 @@ body {
   margin-right: 4px;
 }
 
+.city-checkboxes {
+  max-height: 160px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
 .filter-btn {
   display: inline-block;
   margin-top: 4px;

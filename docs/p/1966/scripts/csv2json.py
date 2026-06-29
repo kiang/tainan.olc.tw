@@ -6,9 +6,12 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_dir = os.path.dirname(script_dir)
 csv_path = os.path.join(project_dir, 'raw', 'abc.csv')
-out_path = os.path.join(project_dir, 'data', 'points.json')
+data_dir = os.path.join(project_dir, 'data')
+county_dir = os.path.join(data_dir, 'county')
 
-results = []
+os.makedirs(county_dir, exist_ok=True)
+
+by_city = {}
 skipped = 0
 
 with open(csv_path, encoding='utf-8-sig') as f:
@@ -61,10 +64,17 @@ with open(csv_path, encoding='utf-8-sig') as f:
         if residents:
             entry['residents'] = residents
 
-        results.append(entry)
+        city = row['縣市']
+        if city not in by_city:
+            by_city[city] = []
+        by_city[city].append(entry)
 
-os.makedirs(os.path.dirname(out_path), exist_ok=True)
-with open(out_path, 'w', encoding='utf-8') as f:
-    json.dump(results, f, ensure_ascii=False, separators=(',', ':'))
+total = 0
+for city, records in by_city.items():
+    out_path = os.path.join(county_dir, f'{city}.json')
+    with open(out_path, 'w', encoding='utf-8') as f:
+        json.dump(records, f, ensure_ascii=False, separators=(',', ':'))
+    total += len(records)
+    print(f'  {city}: {len(records)} records')
 
-print(f'Converted {len(results)} records, skipped {skipped}')
+print(f'Converted {total} records across {len(by_city)} counties, skipped {skipped}')

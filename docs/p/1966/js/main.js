@@ -16,7 +16,7 @@
 
   var townLayer = null;
   var townMap = {};
-  var allData = [];
+  var cityData = {};
   var markers = [];
   var highlightedZones = [];
   var activeMarker = null;
@@ -102,8 +102,9 @@
       });
   }
 
-  function loadPoints() {
-    return fetch('data/points.json')
+  function loadCityData(cityCode) {
+    if (cityData[cityCode]) return Promise.resolve(cityData[cityCode]);
+    return fetch('data/county/' + cityCode + '.json')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         data.forEach(function (d) {
@@ -114,29 +115,57 @@
             }
           }
         });
-        allData = data;
-        buildCityFilter();
-        applyFilters();
+        cityData[cityCode] = data;
+        return data;
       });
   }
 
+  function getCheckedCities() {
+    var boxes = document.querySelectorAll('input[name="city"]');
+    var vals = [];
+    boxes.forEach(function (b) { if (b.checked) vals.push(b.value); });
+    return vals;
+  }
+
   function buildCityFilter() {
-    var cities = {};
-    allData.forEach(function (d) {
-      if (d.city && !cities[d.city]) {
-        cities[d.city] = cityNames[d.city] || d.city;
-      }
+    var container = document.getElementById('city-filter');
+    var codes = Object.keys(cityNames).sort(function (a, b) {
+      return cityNames[a].localeCompare(cityNames[b], 'zh-TW');
     });
-    var select = document.getElementById('city-filter');
-    var sorted = Object.keys(cities).sort(function (a, b) {
-      return cities[a].localeCompare(cities[b], 'zh-TW');
+    codes.forEach(function (code) {
+      var label = document.createElement('label');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.name = 'city';
+      cb.value = code;
+      cb.addEventListener('change', onCityChange);
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(' ' + cityNames[code]));
+      container.appendChild(label);
     });
-    sorted.forEach(function (code) {
-      var opt = document.createElement('option');
-      opt.value = code;
-      opt.textContent = cities[code];
-      select.appendChild(opt);
-    });
+  }
+
+  function onCityChange() {
+    var cities = getCheckedCities();
+    if (!cities.length) {
+      markerCluster.clearLayers();
+      markers = [];
+      document.getElementById('stats').innerHTML = '請先選擇縣市';
+      return;
+    }
+    applyFilters();
+
+    if (townLayer) {
+      var bounds = L.latLngBounds([]);
+      cities.forEach(function (code) {
+        townLayer.eachLayer(function (layer) {
+          if (layer.feature.properties.COUNTYCODE === code) {
+            bounds.extend(layer.getBounds());
+          }
+        });
+      });
+      if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+    }
   }
 
   function getCheckedABC() {
@@ -147,9 +176,26 @@
   }
 
   function applyFilters() {
+    var cities = getCheckedCities();
+
+    if (!cities.length) {
+      markerCluster.clearLayers();
+      markers = [];
+      document.getElementById('stats').innerHTML = '請先選擇縣市';
+      return;
+    }
+
+    Promise.all(cities.map(function (c) { return loadCityData(c); }))
+      .then(function (arrays) {
+        var allData = [];
+        arrays.forEach(function (arr) { allData = allData.concat(arr); });
+        renderPoints(allData);
+      });
+  }
+
+  function renderPoints(data) {
     var abcVals = getCheckedABC();
     var typeVal = document.getElementById('type-filter').value;
-    var cityVal = document.getElementById('city-filter').value;
     var keyword = document.getElementById('keyword').value.trim().toLowerCase();
 
     markerCluster.clearLayers();
@@ -158,14 +204,13 @@
     var counts = { A: 0, B: 0, C: 0 };
     var total = 0;
 
-    allData.forEach(function (d) {
+    data.forEach(function (d) {
       if (abcVals.length && abcVals.indexOf(d.abc) === -1) return;
       if (typeVal) {
         if (typeVal.length === 1 && /^[AB]$/.test(typeVal)) {
           if (d.type.charAt(0) !== typeVal) return;
         } else if (d.type !== typeVal) return;
       }
-      if (cityVal && d.city !== cityVal) return;
       if (keyword && d.name.toLowerCase().indexOf(keyword) === -1) return;
       if (bedsOnly && !d.beds) return;
 
@@ -283,19 +328,6 @@
     el.addEventListener('change', applyFilters);
   });
   document.getElementById('type-filter').addEventListener('change', applyFilters);
-  document.getElementById('city-filter').addEventListener('change', function () {
-    applyFilters();
-    var code = this.value;
-    if (code && townLayer) {
-      var bounds = L.latLngBounds([]);
-      townLayer.eachLayer(function (layer) {
-        if (layer.feature.properties.COUNTYCODE === code) {
-          bounds.extend(layer.getBounds());
-        }
-      });
-      if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-    }
-  });
 
   var keywordTimer;
   document.getElementById('keyword').addEventListener('input', function () {
@@ -343,6 +375,13 @@
     return inside;
   }
 
+  function setCityChecked(code, checked) {
+    var cb = document.querySelector('input[name="city"][value="' + code + '"]');
+    if (cb && cb.checked !== checked) {
+      cb.checked = checked;
+    }
+  }
+
   function goToUserLocation() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(function (pos) {
@@ -367,11 +406,8 @@
 
       var county = findCountyAtPoint(lat, lng);
       if (county) {
-        var select = document.getElementById('city-filter');
-        if (select.value !== county) {
-          select.value = county;
-          applyFilters();
-        }
+        setCityChecked(county, true);
+        applyFilters();
       }
     });
   }
@@ -394,8 +430,7 @@
 
       var county = findCountyAtPoint(lat, lng);
       if (county) {
-        var select = document.getElementById('city-filter');
-        select.value = county;
+        setCityChecked(county, true);
         applyFilters();
         var bounds = L.latLngBounds([]);
         townLayer.eachLayer(function (layer) {
@@ -418,8 +453,7 @@
   document.getElementById('geolocate-btn').addEventListener('click', goToUserLocation);
 
   Promise.all([loadTopoJSON(), loadPunishment()]).then(function () {
-    return loadPoints();
-  }).then(function () {
+    buildCityFilter();
     autoLocate();
   });
 })();
