@@ -19,6 +19,7 @@
   var markers = [];
   var highlightedZones = [];
   var activeMarker = null;
+  var activeOverlay = null;
 
   var abcColors = { A: '#27ae60', B: '#2980b9', C: '#e67e22' };
   var abcLabels = { A: '個案管理服務', B: '直接照護服務', C: '巷弄長照站' };
@@ -164,9 +165,11 @@
     clearHighlight();
 
     if (marker) {
-      marker.setIcon(makeIcon(d.abc, true));
-      marker.setZIndexOffset(1000);
       activeMarker = marker;
+      activeOverlay = L.marker([d.lat, d.lng], {
+        icon: makeIcon(d.abc, true),
+        zIndexOffset: 2000
+      }).addTo(map);
     }
 
     document.getElementById('detail').classList.remove('hidden');
@@ -211,10 +214,9 @@
   }
 
   function clearHighlight() {
-    if (activeMarker) {
-      var ad = activeMarker._pointData;
-      activeMarker.setIcon(makeIcon(ad.abc, false));
-      activeMarker.setZIndexOffset(0);
+    if (activeOverlay) {
+      map.removeLayer(activeOverlay);
+      activeOverlay = null;
       activeMarker = null;
     }
     highlightedZones.forEach(function (layer) {
