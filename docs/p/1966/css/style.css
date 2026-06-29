@@ -306,17 +306,35 @@ input[type="text"] {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3), 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
 @media (max-width: 768px) {
   #sidebar {
     position: fixed;
     top: 0;
     left: 0;
+    width: 85vw;
+    min-width: 0;
+    max-width: 320px;
     transform: translateX(-100%);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
 
   #sidebar.open {
     transform: translateX(0);
+  }
+
+  #sidebar.open ~ #sidebar-overlay {
+    display: block;
   }
 
   #sidebar-toggle {

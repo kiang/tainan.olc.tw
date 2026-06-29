@@ -296,6 +296,12 @@
     }
 
     document.getElementById('detail-content').innerHTML = html;
+
+    if (window.innerWidth <= 768) {
+      document.getElementById('sidebar').classList.add('open');
+      var detailEl = document.getElementById('detail');
+      setTimeout(function () { detailEl.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
   }
 
   function clearHighlight() {
@@ -319,9 +325,14 @@
     return div.innerHTML;
   }
 
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
   map.on('click', function () {
     clearHighlight();
     document.getElementById('detail').classList.add('hidden');
+    closeSidebar();
   });
 
   document.querySelectorAll('input[name="abc"]').forEach(function (el) {
@@ -337,6 +348,10 @@
 
   document.getElementById('sidebar-toggle').addEventListener('click', function () {
     document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  document.getElementById('sidebar-overlay').addEventListener('click', function () {
+    closeSidebar();
   });
 
   function findCountyAtPoint(lat, lng) {
