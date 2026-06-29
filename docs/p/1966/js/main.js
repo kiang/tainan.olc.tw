@@ -277,11 +277,19 @@
     document.getElementById('detail-name').textContent = d.name;
 
     var html = '';
+    if (d.phone) {
+      html += '<div class="detail-phone"><a href="tel:' + escapeHtml(d.phone) + '">' + escapeHtml(d.phone) + '</a></div>';
+    }
+    var navName = encodeURIComponent(d.name);
+    html += '<div class="detail-nav">';
+    html += '<a class="nav-btn" href="https://www.google.com/maps/dir/?api=1&destination=' + d.lat + ',' + d.lng + '&destination_place_id=' + navName + '" target="_blank">Google 地圖</a>';
+    html += '<a class="nav-btn" href="https://www.bing.com/maps?rtp=~pos.' + d.lat + '_' + d.lng + '_' + navName + '" target="_blank">Bing 地圖</a>';
+    html += '<a class="nav-btn" href="https://wego.here.com/directions/drive/mylocation/' + d.lat + ',' + d.lng + '," target="_blank">HERE 地圖</a>';
+    html += '</div>';
     html += '<div><span class="label">地址:</span>' + escapeHtml(d.addr) + '</div>';
     html += '<div><span class="label">服務類型:</span>' + d.abc + ' - ' + (abcLabels[d.abc] || '') + '</div>';
     html += '<div><span class="label">機構種類:</span>' + (typeLabels[d.type] || d.type) + '</div>';
     html += '<div><span class="label">服務項目:</span>' + escapeHtml(d.service) + '</div>';
-    if (d.phone) html += '<div><span class="label">電話:</span>' + escapeHtml(d.phone) + '</div>';
     if (d.owner) html += '<div><span class="label">負責人:</span>' + escapeHtml(d.owner) + '</div>';
     if (d.start) html += '<div><span class="label">特約期間:</span>' + d.start + ' ~ ' + d.end + '</div>';
     if (d.beds) html += '<div><span class="label">開放床數:</span>' + d.beds + '</div>';

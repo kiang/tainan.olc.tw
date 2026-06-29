@@ -124,6 +124,44 @@ input[type="text"] {
   color: #333;
 }
 
+.detail-phone {
+  margin-bottom: 8px;
+}
+
+.detail-phone a {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2980b9;
+  text-decoration: none;
+}
+
+.detail-phone a:hover {
+  text-decoration: underline;
+}
+
+.detail-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.nav-btn {
+  flex: 1;
+  display: inline-block;
+  padding: 5px 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2980b9;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.nav-btn:hover {
+  background: #2471a3;
+}
+
 #detail-content .label {
   color: #777;
   margin-right: 4px;
