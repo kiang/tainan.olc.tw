@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>長照機構 ABC 地圖</title>
+  <meta property="og:title" content="長照機構 ABC 地圖">
+  <meta property="og:description" content="全台長照機構地圖，顯示各機構服務類型與特約涵蓋區域">
+  <meta property="og:image" content="https://tainan.olc.tw/p/1966/og_image.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="sidebar">
+    <h2>長照機構 ABC 地圖</h2>
+    <div id="stats"></div>
+
+    <div class="filter-group">
+      <label class="filter-label">服務類型</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="abc" value="A" checked> A - 個案管理服務</label>
+        <label><input type="checkbox" name="abc" value="B" checked> B - 直接照護服務</label>
+        <label><input type="checkbox" name="abc" value="C" checked> C - 巷弄長照站</label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">機構種類</label>
+      <select id="type-filter">
+        <option value="">全部</option>
+        <option value="1">居家式</option>
+        <option value="2">社區式</option>
+        <option value="3">機構住宿式</option>
+        <option value="4">綜合式</option>
+        <option value="A">老人福利機構</option>
+        <option value="B">身障機構</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">縣市</label>
+      <select id="city-filter">
+        <option value="">全部</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">關鍵字搜尋</label>
+      <input type="text" id="keyword" placeholder="搜尋機構名稱...">
+    </div>
+
+    <div id="detail" class="hidden">
+      <h3 id="detail-name"></h3>
+      <div id="detail-content"></div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <button id="sidebar-toggle" title="切換側邊欄">☰</button>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
