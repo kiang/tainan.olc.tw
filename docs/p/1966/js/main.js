@@ -18,6 +18,7 @@
   var allData = [];
   var markers = [];
   var highlightedZones = [];
+  var activeMarker = null;
 
   var abcColors = { A: '#27ae60', B: '#2980b9', C: '#e67e22' };
   var abcLabels = { A: '個案管理服務', B: '直接照護服務', C: '巷弄長照站' };
@@ -47,6 +48,18 @@
     fillColor: '#f39c12',
     fillOpacity: 0.3
   };
+
+  function makeIcon(abc, active) {
+    var color = abcColors[abc] || '#888';
+    var size = active ? 24 : 14;
+    var cls = active ? 'circle-marker active' : 'circle-marker';
+    return L.divIcon({
+      className: '',
+      html: '<div class="' + cls + '" style="background:' + color + '"></div>',
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2]
+    });
+  }
 
   function loadTopoJSON() {
     return fetch('https://kiang.github.io/taiwan_basecode/city/topo/20230317.json')
@@ -125,17 +138,9 @@
       if (cityVal && d.city !== cityVal) return;
       if (keyword && d.name.toLowerCase().indexOf(keyword) === -1) return;
 
-      var color = abcColors[d.abc] || '#888';
-      var icon = L.divIcon({
-        className: '',
-        html: '<div class="circle-marker" style="background:' + color + '"></div>',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7]
-      });
-
-      var marker = L.marker([d.lat, d.lng], { icon: icon });
+      var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false) });
       marker._pointData = d;
-      marker.on('click', function () { showDetail(d); });
+      marker.on('click', function () { showDetail(d, marker); });
       markers.push(marker);
 
       if (counts[d.abc] !== undefined) counts[d.abc]++;
@@ -154,8 +159,14 @@
       '<span style="color:' + abcColors.C + '">●</span> C ' + counts.C.toLocaleString();
   }
 
-  function showDetail(d) {
+  function showDetail(d, marker) {
     clearHighlight();
+
+    if (marker) {
+      marker.setIcon(makeIcon(d.abc, true));
+      marker.setZIndexOffset(1000);
+      activeMarker = marker;
+    }
 
     document.getElementById('detail').classList.remove('hidden');
     document.getElementById('detail-name').textContent = d.name;
@@ -193,6 +204,12 @@
   }
 
   function clearHighlight() {
+    if (activeMarker) {
+      var ad = activeMarker._pointData;
+      activeMarker.setIcon(makeIcon(ad.abc, false));
+      activeMarker.setZIndexOffset(0);
+      activeMarker = null;
+    }
     highlightedZones.forEach(function (layer) {
       layer.setStyle(defaultStyle);
       layer.options.interactive = false;

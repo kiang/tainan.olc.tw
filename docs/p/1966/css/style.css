@@ -148,6 +148,13 @@ input[type="text"] {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
 }
 
+.circle-marker.active {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3), 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
 @media (max-width: 768px) {
   #sidebar {
     position: fixed;
