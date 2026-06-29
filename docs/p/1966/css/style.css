@@ -168,19 +168,24 @@ input[type="text"] {
 }
 
 .user-location-marker {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #4285f4;
-  border: 3px solid #fff;
-  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.8);
-  animation: pulse 2s ease-out infinite;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid #e74c3c;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+  position: relative;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.8); }
-  70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
-  100% { box-shadow: 0 0 0 2px rgba(66, 133, 244, 0); }
+.user-location-marker::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
 }
 
 .circle-marker.active {

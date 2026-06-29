@@ -308,8 +308,8 @@
           icon: L.divIcon({
             className: '',
             html: '<div class="user-location-marker"></div>',
-            iconSize: [18, 18],
-            iconAnchor: [9, 9]
+            iconSize: [20, 20],
+            iconAnchor: [10, 20]
           }),
           zIndexOffset: 2000
         }).addTo(map);
