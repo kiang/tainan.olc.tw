@@ -21,6 +21,7 @@
   var activeMarker = null;
   var activeOverlay = null;
   var bedsOnly = false;
+  var punishmentMap = {};
 
   var abcColors = { A: '#27ae60', B: '#2980b9', C: '#e67e22' };
   var abcLabels = { A: '個案管理服務', B: '直接照護服務', C: '巷弄長照站' };
@@ -52,10 +53,11 @@
     fillOpacity: 0.3
   };
 
-  function makeIcon(abc, active, avail) {
+  function makeIcon(abc, active, avail, punished) {
     var color = abcColors[abc] || '#888';
     var size = active ? 24 : 14;
     var cls = active ? 'circle-marker active' : 'circle-marker';
+    if (punished) cls += ' punished';
     var html = '<div class="marker-wrap">';
     if (typeof avail === 'number') {
       html += '<span class="avail-badge">' + avail + '</span>';
@@ -89,10 +91,28 @@
       });
   }
 
+  function loadPunishment() {
+    return fetch('data/punishment.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        data.forEach(function (rec) {
+          punishmentMap[rec.name] = rec.punishments;
+        });
+      });
+  }
+
   function loadPoints() {
     return fetch('data/points.json')
       .then(function (r) { return r.json(); })
       .then(function (data) {
+        data.forEach(function (d) {
+          for (var pname in punishmentMap) {
+            if (d.name.indexOf(pname) !== -1) {
+              d._punishments = punishmentMap[pname];
+              break;
+            }
+          }
+        });
         allData = data;
         buildCityFilter();
         applyFilters();
@@ -149,7 +169,8 @@
       if (bedsOnly && !d.beds) return;
 
       var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
-      var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false, avail) });
+      var punished = !!d._punishments;
+      var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false, avail, punished) });
       marker._pointData = d;
       marker.on('click', function () { showDetail(d, marker); });
       markers.push(marker);
@@ -176,8 +197,9 @@
     if (marker) {
       activeMarker = marker;
       var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
+      var punished = !!d._punishments;
       activeOverlay = L.marker([d.lat, d.lng], {
-        icon: makeIcon(d.abc, true, avail),
+        icon: makeIcon(d.abc, true, avail, punished),
         zIndexOffset: 2000
       }).addTo(map);
     }
@@ -195,6 +217,19 @@
     if (d.start) html += '<div><span class="label">特約期間:</span>' + d.start + ' ~ ' + d.end + '</div>';
     if (d.beds) html += '<div><span class="label">開放床數:</span>' + d.beds + '</div>';
     if (d.residents) html += '<div><span class="label">現有住民:</span>' + d.residents + '</div>';
+
+    if (d._punishments) {
+      html += '<div class="punishment-info">';
+      html += '<span class="label punishment-label">裁罰紀錄 (' + d._punishments.length + '筆):</span>';
+      d._punishments.forEach(function (p) {
+        html += '<div class="punishment-item">';
+        html += '<div>' + escapeHtml(p.date) + ' 罰鍰 ' + escapeHtml(p.fine) + '</div>';
+        if (p.reason) html += '<div class="punishment-reason">' + escapeHtml(p.reason) + '</div>';
+        if (p.law) html += '<div class="punishment-law">' + escapeHtml(p.law) + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
 
     if (d.zones && d.zones.length) {
       var zoneNames = [];
@@ -381,7 +416,7 @@
 
   document.getElementById('geolocate-btn').addEventListener('click', goToUserLocation);
 
-  loadTopoJSON().then(function () {
+  Promise.all([loadTopoJSON(), loadPunishment()]).then(function () {
     return loadPoints();
   }).then(function () {
     autoLocate();

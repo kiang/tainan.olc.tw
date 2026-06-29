@@ -12,5 +12,8 @@ if [ $? -ne 0 ]; then
 fi
 echo "Downloaded to $RAW_DIR/abc.csv"
 
-echo "Converting to JSON..."
+echo "Converting CSV to JSON..."
 python3 "$SCRIPT_DIR/csv2json.py"
+
+echo "Converting punishment PDF to JSON..."
+python3 "$SCRIPT_DIR/pdf2json.py"

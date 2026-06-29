@@ -121,6 +121,39 @@ input[type="text"] {
   margin-right: 4px;
 }
 
+.punishment-info {
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: rgba(231, 76, 60, 0.08);
+  border-radius: 4px;
+  border-left: 3px solid #e74c3c;
+}
+
+.punishment-label {
+  color: #e74c3c !important;
+  font-weight: 700;
+}
+
+.punishment-item {
+  margin-top: 4px;
+  padding: 4px 0;
+  border-top: 1px solid rgba(231, 76, 60, 0.15);
+  font-size: 0.8rem;
+}
+
+.punishment-item:first-of-type {
+  border-top: none;
+}
+
+.punishment-reason {
+  color: #555;
+}
+
+.punishment-law {
+  color: #888;
+  font-size: 0.75rem;
+}
+
 #detail-content .zones-info {
   margin-top: 8px;
   padding: 6px 8px;
@@ -227,6 +260,12 @@ input[type="text"] {
   height: 10px;
   border-radius: 50%;
   background: #fff;
+}
+
+.circle-marker.punished {
+  border-color: #e74c3c;
+  border-width: 2.5px;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.5), 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
 .circle-marker.active {
