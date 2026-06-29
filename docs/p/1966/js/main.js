@@ -185,6 +185,7 @@
 
     if (d.zones && d.zones.length) {
       var zoneNames = [];
+      var zoneBounds = L.latLngBounds([]);
       d.zones.forEach(function (code) {
         var layer = townMap[code];
         if (layer) {
@@ -195,8 +196,13 @@
           layer.bindTooltip(p.COUNTYNAME + p.TOWNNAME, { sticky: true });
           layer.bringToFront();
           highlightedZones.push(layer);
+          zoneBounds.extend(layer.getBounds());
         }
       });
+      zoneBounds.extend([d.lat, d.lng]);
+      if (zoneBounds.isValid()) {
+        map.fitBounds(zoneBounds, { padding: [50, 50] });
+      }
       html += '<div class="zones-info"><span class="label">特約涵蓋區域 (' + d.zones.length + '區):</span><br>' +
         escapeHtml(zoneNames.join('、')) + '</div>';
     }
