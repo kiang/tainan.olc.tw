@@ -48,9 +48,9 @@
 
   var highlightStyle = {
     weight: 2.5,
-    color: '#e74c3c',
-    fillColor: '#f39c12',
-    fillOpacity: 0.3
+    color: '#1e8449',
+    fillColor: '#27ae60',
+    fillOpacity: 0.2
   };
 
   function makeIcon(abc, active, avail, punished) {
