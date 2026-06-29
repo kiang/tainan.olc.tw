@@ -20,6 +20,7 @@
   var highlightedZones = [];
   var activeMarker = null;
   var activeOverlay = null;
+  var bedsOnly = false;
 
   var abcColors = { A: '#27ae60', B: '#2980b9', C: '#e67e22' };
   var abcLabels = { A: '個案管理服務', B: '直接照護服務', C: '巷弄長照站' };
@@ -145,6 +146,7 @@
       }
       if (cityVal && d.city !== cityVal) return;
       if (keyword && d.name.toLowerCase().indexOf(keyword) === -1) return;
+      if (bedsOnly && !d.beds) return;
 
       var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
       var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false, avail) });
@@ -369,6 +371,13 @@
       }
     });
   }
+
+  document.getElementById('find-beds-btn').addEventListener('click', function () {
+    bedsOnly = !bedsOnly;
+    this.classList.toggle('active', bedsOnly);
+    this.textContent = bedsOnly ? '顯示全部' : '找床位';
+    applyFilters();
+  });
 
   document.getElementById('geolocate-btn').addEventListener('click', goToUserLocation);
 
