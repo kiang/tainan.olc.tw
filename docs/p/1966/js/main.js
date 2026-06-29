@@ -51,15 +51,21 @@
     fillOpacity: 0.3
   };
 
-  function makeIcon(abc, active) {
+  function makeIcon(abc, active, avail) {
     var color = abcColors[abc] || '#888';
     var size = active ? 24 : 14;
     var cls = active ? 'circle-marker active' : 'circle-marker';
+    var html = '<div class="marker-wrap">';
+    if (typeof avail === 'number') {
+      html += '<span class="avail-badge">' + avail + '</span>';
+    }
+    html += '<div class="' + cls + '" style="background:' + color + '"></div></div>';
+    var h = (typeof avail === 'number') ? size + 16 : size;
     return L.divIcon({
       className: '',
-      html: '<div class="' + cls + '" style="background:' + color + '"></div>',
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size / 2]
+      html: html,
+      iconSize: [Math.max(size, 28), h],
+      iconAnchor: [Math.max(size, 28) / 2, h]
     });
   }
 
@@ -140,7 +146,8 @@
       if (cityVal && d.city !== cityVal) return;
       if (keyword && d.name.toLowerCase().indexOf(keyword) === -1) return;
 
-      var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false) });
+      var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
+      var marker = L.marker([d.lat, d.lng], { icon: makeIcon(d.abc, false, avail) });
       marker._pointData = d;
       marker.on('click', function () { showDetail(d, marker); });
       markers.push(marker);
@@ -166,8 +173,9 @@
 
     if (marker) {
       activeMarker = marker;
+      var avail = (d.beds && d.beds > 0) ? d.beds - (d.residents || 0) : undefined;
       activeOverlay = L.marker([d.lat, d.lng], {
-        icon: makeIcon(d.abc, true),
+        icon: makeIcon(d.abc, true, avail),
         zIndexOffset: 2000
       }).addTo(map);
     }
