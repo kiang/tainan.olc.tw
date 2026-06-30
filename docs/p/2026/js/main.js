@@ -298,8 +298,11 @@ function showZoneInfo(props) {
             html += '<div class="flex-grow-1">';
             html += '<h6 class="mb-1">' + (c.number || '') + (c.number ? '. ' : '') + c.name + '</h6>';
             html += '<small class="text-muted">' + (c.party || '') + '</small>';
+            if (c.experience) {
+                html += '<details class="mt-1 small"><summary>經歷</summary><div class="text-pre-wrap">' + c.experience + '</div></details>';
+            }
             if (c.platform) {
-                html += '<p class="mb-0 mt-1 small">' + c.platform + '</p>';
+                html += '<details class="mt-1 small"><summary>政見</summary><div class="text-pre-wrap">' + c.platform + '</div></details>';
             }
             html += renderCandidateLinks(c);
             html += '</div></div>';
