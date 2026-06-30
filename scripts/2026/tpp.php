@@ -5,7 +5,6 @@ $photosPath = $dataPath . '/photos';
 $tppJsonPath = $basePath . '/scripts/2026/tpp_candidates_2026.json';
 $tppPhotosPath = $basePath . '/scripts/2026/photos';
 $tppDonatePath = $basePath . '/scripts/2026/tpp_donate_links.json';
-$linksJsonPath = $dataPath . '/links.json';
 
 if (!file_exists($tppJsonPath)) {
     echo "Please place tpp_candidates_2026.json in scripts/2026/\n";
@@ -14,7 +13,6 @@ if (!file_exists($tppJsonPath)) {
 
 $tppCandidates = json_decode(file_get_contents($tppJsonPath), true);
 $candidatesData = json_decode(file_get_contents($dataPath . '/candidates.json'), true);
-$linksData = file_exists($linksJsonPath) ? json_decode(file_get_contents($linksJsonPath), true) : [];
 $tppDonate = file_exists($tppDonatePath) ? json_decode(file_get_contents($tppDonatePath), true) : [];
 
 $variantMap = [
@@ -159,27 +157,22 @@ foreach ($tppCandidates as $tpp) {
     unset($candidate);
 }
 
-// Merge donate links into links.json (TPP data only fills if not already set)
+// Merge donate links into candidates (only fills if not already set)
 $donateAdded = 0;
 foreach ($tppDonate as $rawName => $donateUrl) {
     $name = normalizeName($rawName);
-    if (!isset($linksData[$name])) {
-        $linksData[$name] = [];
-    }
-    if (empty($linksData[$name]['donate'])) {
-        $linksData[$name]['donate'] = $donateUrl;
-        $donateAdded++;
+    if (isset($existingByName[$name])) {
+        $idx = $existingByName[$name];
+        if (empty($candidatesData['candidates'][$idx]['donate'])) {
+            $candidatesData['candidates'][$idx]['donate'] = $donateUrl;
+            $donateAdded++;
+        }
     }
 }
 
 file_put_contents(
     $dataPath . '/candidates.json',
     json_encode($candidatesData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-);
-
-file_put_contents(
-    $linksJsonPath,
-    json_encode($linksData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n"
 );
 
 echo "\nDone!\n";

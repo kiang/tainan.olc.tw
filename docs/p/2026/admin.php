@@ -9,8 +9,6 @@ if ($ip !== '127.0.0.1' && $ip !== '::1') {
 
 $dataFile = __DIR__ . '/data/candidates.json';
 $zonesFile = __DIR__ . '/data/zones.json';
-$linksFile = __DIR__ . '/data/links.json';
-
 function loadData() {
     global $dataFile;
     return json_decode(file_get_contents($dataFile), true);
@@ -19,17 +17,6 @@ function loadData() {
 function saveData($data) {
     global $dataFile;
     file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
-}
-
-function loadLinks() {
-    global $linksFile;
-    if (!file_exists($linksFile)) return [];
-    return json_decode(file_get_contents($linksFile), true) ?: [];
-}
-
-function saveLinks($links) {
-    global $linksFile;
-    file_put_contents($linksFile, json_encode($links, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
 }
 
 function loadZones() {
@@ -143,7 +130,6 @@ if (isset($_GET['action'])) {
     if ($action === 'load') {
         $data['districts'] = loadZones();
         $data['areaCodes'] = loadAreaCodes();
-        $data['links'] = loadLinks();
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -163,23 +149,8 @@ if (isset($_GET['action'])) {
         foreach (['district', 'townCode', 'townName', 'villCode', 'villName'] as $f) {
             if (isset($candidate[$f]) && $candidate[$f] === '') unset($candidate[$f]);
         }
-        foreach (['facebook', 'instagram', 'youtube', 'threads', 'x', 'tiktok', 'line', 'website'] as $f) {
+        foreach (['facebook', 'instagram', 'youtube', 'threads', 'x', 'tiktok', 'line', 'website', 'donate'] as $f) {
             if (isset($candidate[$f]) && $candidate[$f] === '') unset($candidate[$f]);
-        }
-        // Extract donate — stored in links.json, not candidates.json
-        $donate = $candidate['donate'] ?? '';
-        unset($candidate['donate']);
-        $name = $candidate['name'] ?? '';
-        if ($name) {
-            $links = loadLinks();
-            if ($donate) {
-                if (!isset($links[$name])) $links[$name] = [];
-                $links[$name]['donate'] = $donate;
-            } elseif (isset($links[$name]['donate'])) {
-                unset($links[$name]['donate']);
-                if (empty($links[$name])) unset($links[$name]);
-            }
-            saveLinks($links);
         }
         if ($index >= 0 && $index < count($data['candidates'])) {
             $oldPhoto = $data['candidates'][$index]['photo'] ?? '';
@@ -571,8 +542,7 @@ const socialLinkFields = ['facebook','instagram','youtube','threads','x','tiktok
 
 const socialLabels = {facebook:'FB',instagram:'IG',youtube:'YT',threads:'Th',x:'X',tiktok:'TT',line:'Li',website:'W',donate:'$'};
 function socialBadges(c) {
-    const linksEntry = appData.links && appData.links[c.name] || {};
-    return socialLinkFields.filter(f => c[f] || linksEntry[f]).map(f => `<span class="badge bg-secondary" title="${f}">${socialLabels[f]}</span>`).join(' ');
+    return socialLinkFields.filter(f => c[f]).map(f => `<span class="badge bg-secondary" title="${f}">${socialLabels[f]}</span>`).join(' ');
 }
 
 async function api(action, body) {
@@ -868,10 +838,6 @@ function editCandidate(index) {
         const el = document.getElementById('c_' + f);
         if (el) el.value = c[f] ?? '';
     });
-    // Load donate from links.json
-    if (c.name && appData.links && appData.links[c.name] && appData.links[c.name].donate) {
-        document.getElementById('c_donate').value = appData.links[c.name].donate;
-    }
     const elType = c.election || Object.keys(appData.elections)[0];
     document.getElementById('c_election').value = elType;
     applyFieldRules(elType);
