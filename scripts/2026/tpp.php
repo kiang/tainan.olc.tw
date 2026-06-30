@@ -32,6 +32,35 @@ function normalizeName($name)
     return $name;
 }
 
+function cleanSocialUrl($url)
+{
+    $parsed = parse_url($url);
+    if (!isset($parsed['query'])) {
+        return rtrim($url, '?');
+    }
+
+    parse_str($parsed['query'], $params);
+
+    $trackingKeys = [
+        'fbclid', 'mibextid', 'igsh', 'igshid',
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+        'si', 'invite', 'locale', 'sk',
+    ];
+    foreach ($trackingKeys as $key) {
+        unset($params[$key]);
+    }
+
+    $base = $parsed['scheme'] . '://' . $parsed['host'];
+    if (!empty($parsed['path'])) {
+        $base .= $parsed['path'];
+    }
+    if (!empty($params)) {
+        $base .= '?' . http_build_query($params);
+    }
+
+    return $base;
+}
+
 $existingByName = [];
 foreach ($candidatesData['candidates'] as $idx => $c) {
     $normalized = normalizeName($c['name']);
@@ -102,7 +131,7 @@ foreach ($tppCandidates as $tpp) {
             $srcKey = $destKey;
         }
         if (!empty($tpp['socialLinks'][$srcKey])) {
-            $candidate[$destKey] = $tpp['socialLinks'][$srcKey];
+            $candidate[$destKey] = cleanSocialUrl($tpp['socialLinks'][$srcKey]);
         }
     }
 
