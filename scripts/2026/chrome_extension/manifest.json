@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "TPP Photo Downloader",
+  "version": "1.0",
+  "description": "Download TPP 2026 candidate photos",
+  "permissions": ["downloads", "activeTab", "scripting"],
+  "host_permissions": ["https://tpp.org.tw/*", "https://www.tpp.org.tw/*"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
