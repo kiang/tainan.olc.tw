@@ -542,7 +542,7 @@ const socialLinkFields = ['facebook','instagram','youtube','threads','x','tiktok
 
 const socialLabels = {facebook:'FB',instagram:'IG',youtube:'YT',threads:'Th',x:'X',tiktok:'TT',line:'Li',website:'W',donate:'$'};
 function socialBadges(c) {
-    return socialLinkFields.filter(f => c[f]).map(f => `<span class="badge bg-secondary" title="${f}">${socialLabels[f]}</span>`).join(' ');
+    return socialLinkFields.filter(f => c[f]).map(f => `<a href="${c[f]}" target="_blank" rel="noopener" class="badge bg-secondary text-decoration-none" title="${c[f]}">${socialLabels[f]}</a>`).join(' ');
 }
 
 async function api(action, body) {
