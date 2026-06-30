@@ -96,6 +96,13 @@ foreach ($tppCandidates as $tpp) {
         $candidate['platform'] = $tpp['platform'];
     }
 
+    $socialKeys = ['facebook', 'instagram', 'youtube', 'thread'];
+    foreach ($socialKeys as $key) {
+        if (!empty($tpp['socialLinks'][$key])) {
+            $candidate[$key] = $tpp['socialLinks'][$key];
+        }
+    }
+
     if (!empty($tpp['photo'])) {
         $ext = pathinfo(parse_url($tpp['photo'], PHP_URL_PATH), PATHINFO_EXTENSION);
         if (empty($ext)) {
