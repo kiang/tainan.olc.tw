@@ -304,7 +304,7 @@ function showZoneInfo(props) {
             if (c.platform) {
                 html += '<p class="mb-0 mt-1 small">' + c.platform + '</p>';
             }
-            html += renderCandidateLinks(c.name);
+            html += renderCandidateLinks(c.name, c);
             html += '</div></div>';
         });
     } else {
@@ -369,9 +369,15 @@ function findCandidatesForZone(zoneCode, elType) {
     });
 }
 
-function renderCandidateLinks(name) {
-    var links = linksData && linksData[name];
-    if (!links) return '';
+function renderCandidateLinks(name, candidate) {
+    var cLinks = {};
+    if (candidate) {
+        ['facebook', 'instagram', 'youtube', 'threads', 'x', 'tiktok', 'line'].forEach(function (k) {
+            if (candidate[k]) cLinks[k] = candidate[k];
+        });
+    }
+    var links = Object.assign({}, cLinks, linksData && linksData[name] || {});
+    if (Object.keys(links).length === 0) return '';
     var html = '<div class="mt-2 d-flex flex-wrap gap-1">';
     if (links.donate) {
         html += '<a href="' + links.donate + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger"><i class="bi bi-heart-fill"></i> 捐款</a>';

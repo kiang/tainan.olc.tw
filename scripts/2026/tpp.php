@@ -96,10 +96,13 @@ foreach ($tppCandidates as $tpp) {
         $candidate['platform'] = $tpp['platform'];
     }
 
-    $socialKeys = ['facebook', 'instagram', 'youtube', 'thread'];
-    foreach ($socialKeys as $key) {
-        if (!empty($tpp['socialLinks'][$key])) {
-            $candidate[$key] = $tpp['socialLinks'][$key];
+    $socialKeys = ['facebook', 'instagram', 'youtube', 'thread' => 'threads'];
+    foreach ($socialKeys as $srcKey => $destKey) {
+        if (is_int($srcKey)) {
+            $srcKey = $destKey;
+        }
+        if (!empty($tpp['socialLinks'][$srcKey])) {
+            $candidate[$destKey] = $tpp['socialLinks'][$srcKey];
         }
     }
 
