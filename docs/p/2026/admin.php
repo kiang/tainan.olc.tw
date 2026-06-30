@@ -9,6 +9,7 @@ if ($ip !== '127.0.0.1' && $ip !== '::1') {
 
 $dataFile = __DIR__ . '/data/candidates.json';
 $zonesFile = __DIR__ . '/data/zones.json';
+$linksFile = __DIR__ . '/data/links.json';
 
 function loadData() {
     global $dataFile;
@@ -18,6 +19,17 @@ function loadData() {
 function saveData($data) {
     global $dataFile;
     file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
+}
+
+function loadLinks() {
+    global $linksFile;
+    if (!file_exists($linksFile)) return [];
+    return json_decode(file_get_contents($linksFile), true) ?: [];
+}
+
+function saveLinks($links) {
+    global $linksFile;
+    file_put_contents($linksFile, json_encode($links, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
 }
 
 function loadZones() {
@@ -131,6 +143,7 @@ if (isset($_GET['action'])) {
     if ($action === 'load') {
         $data['districts'] = loadZones();
         $data['areaCodes'] = loadAreaCodes();
+        $data['links'] = loadLinks();
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -147,9 +160,26 @@ if (isset($_GET['action'])) {
         $candidate = $post['candidate'] ?? [];
         if (isset($candidate['number'])) $candidate['number'] = (int)$candidate['number'];
         if (isset($candidate['age'])) $candidate['age'] = (int)$candidate['age'];
-        // Remove empty optional fields
         foreach (['district', 'townCode', 'townName', 'villCode', 'villName'] as $f) {
             if (isset($candidate[$f]) && $candidate[$f] === '') unset($candidate[$f]);
+        }
+        foreach (['facebook', 'instagram', 'youtube', 'threads', 'x', 'tiktok', 'line', 'website'] as $f) {
+            if (isset($candidate[$f]) && $candidate[$f] === '') unset($candidate[$f]);
+        }
+        // Extract donate — stored in links.json, not candidates.json
+        $donate = $candidate['donate'] ?? '';
+        unset($candidate['donate']);
+        $name = $candidate['name'] ?? '';
+        if ($name) {
+            $links = loadLinks();
+            if ($donate) {
+                if (!isset($links[$name])) $links[$name] = [];
+                $links[$name]['donate'] = $donate;
+            } elseif (isset($links[$name]['donate'])) {
+                unset($links[$name]['donate']);
+                if (empty($links[$name])) unset($links[$name]);
+            }
+            saveLinks($links);
         }
         if ($index >= 0 && $index < count($data['candidates'])) {
             $oldPhoto = $data['candidates'][$index]['photo'] ?? '';
@@ -275,6 +305,7 @@ if (isset($_GET['action'])) {
         .photo-preview { max-width: 120px; max-height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; }
         .photo-drop-zone { border: 2px dashed #dee2e6; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
         .photo-drop-zone:hover, .photo-drop-zone.drag-over { border-color: #0d6efd; background: #f8f9fa; }
+        .badge { font-size: 0.65rem; padding: 2px 4px; }
     </style>
 </head>
 <body>
@@ -307,7 +338,7 @@ if (isset($_GET['action'])) {
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm">
                 <thead><tr>
-                    <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th><th>#</th><th>照片</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>操作</th>
+                    <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th><th>#</th><th>照片</th><th>選舉類型</th><th>縣市</th><th>選區</th><th>號次</th><th>姓名</th><th>政黨</th><th>性別</th><th>年齡</th><th>社群</th><th>操作</th>
                 </tr></thead>
                 <tbody id="candidateTable"></tbody>
             </table>
@@ -404,6 +435,43 @@ if (isset($_GET['action'])) {
                 <label class="form-label">platformEn</label>
                 <textarea id="c_platformEn" class="form-control form-control-sm" rows="2"></textarea>
             </div>
+            <div class="col-12"><hr class="my-2"><label class="form-label fw-bold">社群連結 Social Links</label></div>
+            <div class="col-md-4">
+                <label class="form-label">Facebook</label>
+                <input id="c_facebook" class="form-control form-control-sm" placeholder="https://facebook.com/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Instagram</label>
+                <input id="c_instagram" class="form-control form-control-sm" placeholder="https://instagram.com/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">YouTube</label>
+                <input id="c_youtube" class="form-control form-control-sm" placeholder="https://youtube.com/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Threads</label>
+                <input id="c_threads" class="form-control form-control-sm" placeholder="https://threads.net/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">X (Twitter)</label>
+                <input id="c_x" class="form-control form-control-sm" placeholder="https://x.com/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">TikTok</label>
+                <input id="c_tiktok" class="form-control form-control-sm" placeholder="https://tiktok.com/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">LINE</label>
+                <input id="c_line" class="form-control form-control-sm" placeholder="https://line.me/...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Website</label>
+                <input id="c_website" class="form-control form-control-sm" placeholder="https://...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Donate</label>
+                <input id="c_donate" class="form-control form-control-sm" placeholder="https://...">
+            </div>
             <div class="col-md-12">
                 <label class="form-label">照片</label>
                 <input type="hidden" id="c_photo">
@@ -498,7 +566,14 @@ if (isset($_GET['action'])) {
 <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
 let appData = null;
-const candidateFields = ['election','countyCode','countyName','district','townCode','townName','villCode','villName','number','name','nameEn','party','partyEn','gender','age','education','experience','platform','platformEn','photo'];
+const candidateFields = ['election','countyCode','countyName','district','townCode','townName','villCode','villName','number','name','nameEn','party','partyEn','gender','age','education','experience','platform','platformEn','photo','facebook','instagram','youtube','threads','x','tiktok','line','website','donate'];
+const socialLinkFields = ['facebook','instagram','youtube','threads','x','tiktok','line','website','donate'];
+
+const socialLabels = {facebook:'FB',instagram:'IG',youtube:'YT',threads:'Th',x:'X',tiktok:'TT',line:'Li',website:'W',donate:'$'};
+function socialBadges(c) {
+    const linksEntry = appData.links && appData.links[c.name] || {};
+    return socialLinkFields.filter(f => c[f] || linksEntry[f]).map(f => `<span class="badge bg-secondary" title="${f}">${socialLabels[f]}</span>`).join(' ');
+}
 
 async function api(action, body) {
     const opts = body ? { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) } : {};
@@ -547,6 +622,7 @@ function renderCandidates() {
         <td>${c.party}</td>
         <td>${c.gender}</td>
         <td>${c.age}</td>
+        <td>${socialBadges(c)}</td>
         <td>
             <button class="btn btn-outline-primary btn-sm" onclick="editCandidate(${c._i})">編輯</button>
             <button class="btn btn-outline-danger btn-sm" onclick="deleteCandidate(${c._i})">刪除</button>
@@ -792,6 +868,10 @@ function editCandidate(index) {
         const el = document.getElementById('c_' + f);
         if (el) el.value = c[f] ?? '';
     });
+    // Load donate from links.json
+    if (c.name && appData.links && appData.links[c.name] && appData.links[c.name].donate) {
+        document.getElementById('c_donate').value = appData.links[c.name].donate;
+    }
     const elType = c.election || Object.keys(appData.elections)[0];
     document.getElementById('c_election').value = elType;
     applyFieldRules(elType);
@@ -850,8 +930,8 @@ async function saveCandidate() {
         const el = document.getElementById('c_' + f);
         if (el) candidate[f] = el.value;
     });
-    // Remove empty photo field
     if (!candidate.photo) delete candidate.photo;
+    socialLinkFields.forEach(f => { if (!candidate[f]) delete candidate[f]; });
     await api('save_candidate', { index, candidate });
     bootstrap.Modal.getInstance(document.getElementById('candidateModal')).hide();
     await load();
