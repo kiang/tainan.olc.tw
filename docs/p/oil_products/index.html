@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福懋、福壽及泰山油品下游業者地圖</title>
+    <meta name="description" content="福懋、福壽及泰山油品下游業者清單地圖與列表，地址取自商工登記資料">
+    <meta property="og:title" content="福懋、福壽及泰山油品下游業者地圖">
+    <meta property="og:description" content="福懋、福壽及泰山油品下游業者清單地圖與列表，地址取自商工登記資料">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://kiang.github.io/tainan.olc.tw/p/oil_products/og_image.png">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            background: #78350f;
+            color: #fff;
+            padding: 8px 12px;
+            z-index: 1100;
+        }
+        .top-bar .form-select,
+        .top-bar .form-control {
+            max-width: 160px;
+            display: inline-block;
+        }
+        .top-bar h1 {
+            font-size: 1.05rem;
+            margin: 0;
+            font-weight: 700;
+        }
+        .top-bar .small a {
+            color: #fde68a;
+        }
+        #map {
+            flex: 1;
+            width: 100%;
+        }
+        #tableView {
+            flex: 1;
+            overflow: auto;
+            display: none;
+            background: #fff;
+        }
+        #tableView table {
+            font-size: 0.9rem;
+        }
+        #tableView td {
+            vertical-align: middle;
+        }
+        .row-located {
+            cursor: pointer;
+        }
+        .product-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #78350f;
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin: 1px 2px 1px 0;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        .popup-table {
+            width: 100%;
+        }
+        .popup-table td {
+            padding: 4px 6px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        .popup-table td:first-child {
+            font-weight: bold;
+            white-space: nowrap;
+            color: #333;
+            background: #f8f9fa;
+        }
+        .leaflet-popup-content {
+            margin: 10px 12px;
+            max-width: 320px;
+        }
+        .stat-note {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <h1>福懋、福壽及泰山油品下游業者地圖</h1>
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-warning" id="btnMap">地圖</button>
+                <button type="button" class="btn btn-outline-warning" id="btnTable">列表</button>
+            </div>
+            <select class="form-select form-select-sm" id="countyFilter">
+                <option value="">全部縣市</option>
+            </select>
+            <input type="search" class="form-control form-control-sm" id="searchInput" placeholder="搜尋業者 / 品項 / 地址">
+            <span class="stat-note" id="statNote"></span>
+        </div>
+        <div class="small stat-note mt-1">
+            地點為商工登記地址，可能與實際營業地點不同；未能定位的業者請切換「列表」檢視。
+            資料來源：<a href="raw.pdf" target="_blank">福懋、福壽及泰山油品下游業者清單(1150705)</a> |
+            <a href="https://facebook.com/k.olc.tw/" target="_blank">與我聯絡</a> |
+            <a href="https://tainan.olc.tw/p/" target="_blank">更多專案</a>
+        </div>
+    </div>
+    <div id="map"></div>
+    <div id="tableView">
+        <table class="table table-striped table-hover mb-0">
+            <thead class="table-dark" style="position: sticky; top: 0;">
+                <tr>
+                    <th>序號</th>
+                    <th>縣市</th>
+                    <th>業者</th>
+                    <th>登記地址</th>
+                    <th>購買品項</th>
+                    <th>狀態</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
