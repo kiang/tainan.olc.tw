@@ -127,7 +127,13 @@ function showTable() {
 
 document.getElementById('btnMap').addEventListener('click', showMap);
 document.getElementById('btnTable').addEventListener('click', showTable);
-document.getElementById('countyFilter').addEventListener('change', render);
+document.getElementById('countyFilter').addEventListener('change', function () {
+    render();
+    const bounds = cluster.getBounds();
+    if (bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+    }
+});
 document.getElementById('searchInput').addEventListener('input', render);
 
 fetch('data/points.json')
