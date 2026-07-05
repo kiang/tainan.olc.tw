@@ -1,0 +1,31 @@
+{
+    "query": "臺北市文山區樟新街56巷3號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市文山區樟新里6鄰樟新街５６巷3號",
+            "score": 396.5,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "文山區",
+                "village": "樟新里",
+                "neighbor": "006",
+                "road": "樟新街",
+                "section": "",
+                "lane": "５６巷",
+                "alley": null,
+                "number": "3號"
+            },
+            "geometry": {
+                "lat": 24.9775736,
+                "lng": 121.5557438
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺中市太平區建國里精美路301巷30號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市太平區建國里10鄰精美路３０１巷30號",
+            "score": 348.14,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "太平區",
+                "village": "建國里",
+                "neighbor": "010",
+                "road": "精美路",
+                "section": "",
+                "lane": "３０１巷",
+                "alley": null,
+                "number": "30號"
+            },
+            "geometry": {
+                "lat": 24.1257934,
+                "lng": 120.7263277
+            }
+        }
+    ]
+}

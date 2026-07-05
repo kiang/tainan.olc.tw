@@ -1,0 +1,31 @@
+{
+    "query": "新北市蘆洲區三民路200號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市蘆洲區保新里4鄰三民路200號",
+            "score": 81.41,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "新北市",
+                "town": "蘆洲區",
+                "village": "保新里",
+                "neighbor": "004",
+                "road": "三民路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "200號"
+            },
+            "geometry": {
+                "lat": 25.0889815,
+                "lng": 121.4692755
+            }
+        }
+    ]
+}

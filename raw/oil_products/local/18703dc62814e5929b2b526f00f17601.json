@@ -1,0 +1,31 @@
+{
+    "query": "雲林縣莿桐鄉義和村三和29之3號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "雲林縣莿桐鄉高林村13鄰三和10之3號",
+            "score": 78.88,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "雲林縣",
+                "town": "莿桐鄉",
+                "village": "高林村",
+                "neighbor": "13",
+                "road": "",
+                "section": "三和",
+                "lane": null,
+                "alley": null,
+                "number": "10之3號"
+            },
+            "geometry": {
+                "lat": 23.6689957,
+                "lng": 120.5686355
+            }
+        }
+    ]
+}

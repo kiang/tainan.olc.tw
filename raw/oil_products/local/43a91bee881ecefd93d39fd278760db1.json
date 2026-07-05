@@ -1,0 +1,31 @@
+{
+    "query": "桃園市桃園區中和里北新街44號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市桃園區中和里8鄰北新街44號",
+            "score": 318.63,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "桃園區",
+                "village": "中和里",
+                "neighbor": "008",
+                "road": "北新街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "44號"
+            },
+            "geometry": {
+                "lat": 24.9980978,
+                "lng": 121.3098456
+            }
+        }
+    ]
+}

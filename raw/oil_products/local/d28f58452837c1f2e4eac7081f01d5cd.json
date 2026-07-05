@@ -1,0 +1,31 @@
+{
+    "query": "桃園市桃園區龍壽街191號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市桃園區龍山里1鄰龍壽街191號",
+            "score": 344.27,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "桃園區",
+                "village": "龍山里",
+                "neighbor": "001",
+                "road": "龍壽街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "191號"
+            },
+            "geometry": {
+                "lat": 24.9833489,
+                "lng": 121.2678232
+            }
+        }
+    ]
+}

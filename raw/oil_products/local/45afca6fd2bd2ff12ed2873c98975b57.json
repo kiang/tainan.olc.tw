@@ -1,0 +1,31 @@
+{
+    "query": "桃園市龍潭區烏林里工五路62巷21號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市龍潭區烏林里7鄰工五路６２巷21號",
+            "score": 71.14,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "龍潭區",
+                "village": "烏林里",
+                "neighbor": "007",
+                "road": "工五路",
+                "section": "",
+                "lane": "６２巷",
+                "alley": null,
+                "number": "21號"
+            },
+            "geometry": {
+                "lat": 24.889505,
+                "lng": 121.2104384
+            }
+        }
+    ]
+}

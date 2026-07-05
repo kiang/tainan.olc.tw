@@ -1,0 +1,31 @@
+{
+    "query": "桃園市中壢區三民里民權路3段75巷77號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市中壢區三民里1鄰民權路三段７５巷77號",
+            "score": 349.52,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "中壢區",
+                "village": "三民里",
+                "neighbor": "001",
+                "road": "民權路三段",
+                "section": "",
+                "lane": "７５巷",
+                "alley": null,
+                "number": "77號"
+            },
+            "geometry": {
+                "lat": 24.9719118,
+                "lng": 121.2130295
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣秀水鄉安溪村花秀路246號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣秀水鄉同仁村10鄰東畔路246號",
+            "score": 134.02,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "秀水鄉",
+                "village": "同仁村",
+                "neighbor": "10",
+                "road": "東畔路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "246號"
+            },
+            "geometry": {
+                "lat": 23.9315551,
+                "lng": 120.532947
+            }
+        }
+    ]
+}

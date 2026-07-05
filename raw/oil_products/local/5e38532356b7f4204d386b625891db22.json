@@ -1,0 +1,31 @@
+{
+    "query": "高雄市大寮區溪寮路2段37號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市大寮區溪州里27鄰溪州二路２５５巷37號",
+            "score": 177.11,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "大寮區",
+                "village": "溪州里",
+                "neighbor": "027",
+                "road": "溪州二路",
+                "section": "",
+                "lane": "２５５巷",
+                "alley": null,
+                "number": "37號"
+            },
+            "geometry": {
+                "lat": 22.5101072,
+                "lng": 120.4025518
+            }
+        }
+    ]
+}

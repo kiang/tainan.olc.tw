@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣田中鎮北路里中山街378巷16號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣田中鎮福安村1鄰中山路４０２巷16號",
+            "score": 176.83,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "田中鎮",
+                "village": "福安村",
+                "neighbor": "1",
+                "road": "中山路",
+                "section": "",
+                "lane": "４０２巷",
+                "alley": null,
+                "number": "16號"
+            },
+            "geometry": {
+                "lat": 24.0333409,
+                "lng": 120.4968453
+            }
+        }
+    ]
+}

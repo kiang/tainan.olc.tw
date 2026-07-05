@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣北斗鎮大道里中山路2段527巷118號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣北斗鎮長沙村20鄰中山路二段118號",
+            "score": 386.43,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "北斗鎮",
+                "village": "長沙村",
+                "neighbor": "20",
+                "road": "中山路二段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "118號"
+            },
+            "geometry": {
+                "lat": 24.0281015,
+                "lng": 120.5387696
+            }
+        }
+    ]
+}

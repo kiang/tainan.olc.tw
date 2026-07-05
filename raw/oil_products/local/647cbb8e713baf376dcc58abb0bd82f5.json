@@ -1,0 +1,31 @@
+{
+    "query": "臺北市士林區延平北路8段2巷151弄41號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市士林區富洲里6鄰延平北路八段９６巷41號",
+            "score": 470.19,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "士林區",
+                "village": "富洲里",
+                "neighbor": "006",
+                "road": "延平北路八段",
+                "section": "",
+                "lane": "９６巷",
+                "alley": null,
+                "number": "41號"
+            },
+            "geometry": {
+                "lat": 25.1066832,
+                "lng": 121.4832771
+            }
+        }
+    ]
+}

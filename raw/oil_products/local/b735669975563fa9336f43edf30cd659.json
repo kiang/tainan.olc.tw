@@ -1,0 +1,31 @@
+{
+    "query": "臺南市後壁區後壁里後壁42之20號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺南市後壁區後壁里2鄰後壁42之20號",
+            "score": 108.98,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺南市",
+                "town": "後壁區",
+                "village": "後壁里",
+                "neighbor": "002",
+                "road": "",
+                "section": "後壁",
+                "lane": null,
+                "alley": null,
+                "number": "42之20號"
+            },
+            "geometry": {
+                "lat": 23.3601914,
+                "lng": 120.3590181
+            }
+        }
+    ]
+}

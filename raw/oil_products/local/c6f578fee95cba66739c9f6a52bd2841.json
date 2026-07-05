@@ -1,0 +1,31 @@
+{
+    "query": "臺中市西屯區西安里西屯路二段297之8巷20號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市西屯區西安里15鄰西屯路二段２９７之８巷20號",
+            "score": 405.64,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "西屯區",
+                "village": "西安里",
+                "neighbor": "015",
+                "road": "西屯路二段",
+                "section": "",
+                "lane": "２９７之８巷",
+                "alley": null,
+                "number": "20號"
+            },
+            "geometry": {
+                "lat": 24.1780687,
+                "lng": 120.6405521
+            }
+        }
+    ]
+}

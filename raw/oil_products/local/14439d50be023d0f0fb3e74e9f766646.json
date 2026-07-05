@@ -1,0 +1,31 @@
+{
+    "query": "桃園市桃園區中路里延壽街159號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市桃園區中路里11鄰延壽街159號",
+            "score": 417.45,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "桃園區",
+                "village": "中路里",
+                "neighbor": "011",
+                "road": "延壽街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "159號"
+            },
+            "geometry": {
+                "lat": 24.9941593,
+                "lng": 121.2892638
+            }
+        }
+    ]
+}

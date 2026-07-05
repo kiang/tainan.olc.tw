@@ -1,0 +1,31 @@
+{
+    "query": "臺中市后里區墩南里南村路333巷38之5號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市后里區東安里13鄰第五橫街38之5號",
+            "score": 54.73,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "后里區",
+                "village": "東安里",
+                "neighbor": "013",
+                "road": "第五橫街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "38之5號"
+            },
+            "geometry": {
+                "lat": 24.2573624,
+                "lng": 120.8289853
+            }
+        }
+    ]
+}

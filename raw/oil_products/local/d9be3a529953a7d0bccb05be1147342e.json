@@ -1,0 +1,31 @@
+{
+    "query": "雲林縣斗南鎮北銘里永安街17號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "雲林縣斗南鎮北銘里14鄰永安街17號",
+            "score": 436.49,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "雲林縣",
+                "town": "斗南鎮",
+                "village": "北銘里",
+                "neighbor": "14",
+                "road": "永安街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "17號"
+            },
+            "geometry": {
+                "lat": 23.6793452,
+                "lng": 120.4848548
+            }
+        }
+    ]
+}

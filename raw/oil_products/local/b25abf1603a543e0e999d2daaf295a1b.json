@@ -1,0 +1,31 @@
+{
+    "query": "高雄市仁武區竹後里水管路101號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市仁武區大社里20鄰大吉路101號",
+            "score": 107.99,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "仁武區",
+                "village": "大社里",
+                "neighbor": "020",
+                "road": "大吉路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "101號"
+            },
+            "geometry": {
+                "lat": 22.733565,
+                "lng": 120.3541274
+            }
+        }
+    ]
+}

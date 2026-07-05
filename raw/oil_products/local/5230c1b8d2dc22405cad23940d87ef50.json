@@ -1,0 +1,31 @@
+{
+    "query": "屏東縣東港鎮船頭里船頭路25之260號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "屏東縣東港鎮船頭里9鄰船頭路25之260號",
+            "score": 844.74,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "屏東縣",
+                "town": "東港鎮",
+                "village": "船頭里",
+                "neighbor": "9",
+                "road": "船頭路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "25之260號"
+            },
+            "geometry": {
+                "lat": 22.4620004,
+                "lng": 120.4656803
+            }
+        }
+    ]
+}

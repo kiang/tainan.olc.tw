@@ -1,0 +1,31 @@
+{
+    "query": "新北市土城區中興路17號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市土城區沛陂里16鄰中興路17號",
+            "score": 235.52,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "土城區",
+                "village": "沛陂里",
+                "neighbor": "016",
+                "road": "中興路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "17號"
+            },
+            "geometry": {
+                "lat": 24.9665925,
+                "lng": 121.4250869
+            }
+        }
+    ]
+}

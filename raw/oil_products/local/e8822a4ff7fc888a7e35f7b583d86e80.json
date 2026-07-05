@@ -1,0 +1,31 @@
+{
+    "query": "桃園市大園區田心里和平西路75之3號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市大園區田心里28鄰和平西路75之3號",
+            "score": 546.31,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "大園區",
+                "village": "田心里",
+                "neighbor": "028",
+                "road": "和平西路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "75之3號"
+            },
+            "geometry": {
+                "lat": 25.0577839,
+                "lng": 121.1976889
+            }
+        }
+    ]
+}

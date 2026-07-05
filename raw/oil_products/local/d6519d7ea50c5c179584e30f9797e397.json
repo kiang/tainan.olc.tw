@@ -1,0 +1,31 @@
+{
+    "query": "臺東縣臺東市建國里臨海路一段167號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺東縣臺東市建國里3鄰臨海路一段167號",
+            "score": 458.75,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺東縣",
+                "town": "臺東市",
+                "village": "建國里",
+                "neighbor": "3",
+                "road": "臨海路一段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "167號"
+            },
+            "geometry": {
+                "lat": 22.7525936,
+                "lng": 121.1589468
+            }
+        }
+    ]
+}

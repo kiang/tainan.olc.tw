@@ -1,0 +1,31 @@
+{
+    "query": "臺北市萬華區內江街55巷3號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市萬華區西門里16鄰內江街５５巷3號",
+            "score": 382.22,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "萬華區",
+                "village": "西門里",
+                "neighbor": "016",
+                "road": "內江街",
+                "section": "",
+                "lane": "５５巷",
+                "alley": null,
+                "number": "3號"
+            },
+            "geometry": {
+                "lat": 25.0419226,
+                "lng": 121.5052353
+            }
+        }
+    ]
+}

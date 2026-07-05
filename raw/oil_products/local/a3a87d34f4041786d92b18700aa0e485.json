@@ -1,0 +1,31 @@
+{
+    "query": "臺中市東區東興里大智路302號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市東區東興里8鄰大智路302號",
+            "score": 299.41,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "東區",
+                "village": "東興里",
+                "neighbor": "008",
+                "road": "大智路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "302號"
+            },
+            "geometry": {
+                "lat": 24.1303747,
+                "lng": 120.6900227
+            }
+        }
+    ]
+}

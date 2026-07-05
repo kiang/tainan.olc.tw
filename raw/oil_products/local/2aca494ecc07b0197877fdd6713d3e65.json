@@ -1,0 +1,31 @@
+{
+    "query": "臺北市文山區木柵路1段378巷19號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市文山區華興里28鄰木柵路一段３７８巷19號",
+            "score": 432.79,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "文山區",
+                "village": "華興里",
+                "neighbor": "028",
+                "road": "木柵路一段",
+                "section": "",
+                "lane": "３７８巷",
+                "alley": null,
+                "number": "19號"
+            },
+            "geometry": {
+                "lat": 24.9877759,
+                "lng": 121.5578481
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "高雄市苓雅區尚武路42號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市苓雅區文昌里15鄰尚武路42號",
+            "score": 367.48,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "苓雅區",
+                "village": "文昌里",
+                "neighbor": "015",
+                "road": "尚武路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "42號"
+            },
+            "geometry": {
+                "lat": 22.6336004,
+                "lng": 120.3400947
+            }
+        }
+    ]
+}

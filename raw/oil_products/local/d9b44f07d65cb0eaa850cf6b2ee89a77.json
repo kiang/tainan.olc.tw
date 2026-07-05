@@ -1,0 +1,31 @@
+{
+    "query": "桃園市中壢區普忠里新中北路469巷122號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市中壢區普忠里18鄰新中北路４６９巷122號",
+            "score": 463.88,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "中壢區",
+                "village": "普忠里",
+                "neighbor": "018",
+                "road": "新中北路",
+                "section": "",
+                "lane": "４６９巷",
+                "alley": null,
+                "number": "122號"
+            },
+            "geometry": {
+                "lat": 24.9600336,
+                "lng": 121.2453033
+            }
+        }
+    ]
+}

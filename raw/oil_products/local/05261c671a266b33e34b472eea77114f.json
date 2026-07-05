@@ -1,0 +1,31 @@
+{
+    "query": "新竹縣湖口鄉信勢村成功路454巷78弄10號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新竹縣湖口鄉信勢村27鄰成功路４５４G-巷７８H-弄10I-號",
+            "score": 217.16,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": false
+            },
+            "components": {
+                "county": "新竹縣",
+                "town": "湖口鄉",
+                "village": "信勢村",
+                "neighbor": "27",
+                "road": "成功路",
+                "section": "",
+                "lane": "４５４G-",
+                "alley": "７８H-",
+                "number": "10I-"
+            },
+            "geometry": {
+                "lat": 24.899157,
+                "lng": 121.0340813
+            }
+        }
+    ]
+}

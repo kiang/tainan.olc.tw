@@ -1,0 +1,31 @@
+{
+    "query": "高雄市路竹區智仁街82號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市路竹區仕隆里24鄰隆智街2號",
+            "score": 227.37,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "路竹區",
+                "village": "仕隆里",
+                "neighbor": "024",
+                "road": "隆智街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "2號"
+            },
+            "geometry": {
+                "lat": 22.7538379,
+                "lng": 120.3076124
+            }
+        }
+    ]
+}

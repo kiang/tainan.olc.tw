@@ -1,0 +1,31 @@
+{
+    "query": "臺中市太平區宜欣里富平路38巷8－2號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市太平區宜欣里13鄰富平路３８巷8之2號",
+            "score": 392.58,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "太平區",
+                "village": "宜欣里",
+                "neighbor": "013",
+                "road": "富平路",
+                "section": "",
+                "lane": "３８巷",
+                "alley": null,
+                "number": "8之2號"
+            },
+            "geometry": {
+                "lat": 24.1416003,
+                "lng": 120.7170686
+            }
+        }
+    ]
+}

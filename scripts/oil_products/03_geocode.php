@@ -10,11 +10,38 @@ $missingFile = $basePath . '/raw/oil_products/missing.json';
 $cachePath = $basePath . '/raw/oil_products/nlsc';
 $outFile = $basePath . '/docs/p/oil_products/data/points.json';
 
-if (!file_exists($cachePath)) {
-    mkdir($cachePath, 0777, true);
+$localCachePath = $basePath . '/raw/oil_products/local';
+$localApi = 'http://localhost:8000/api/v1/geocode';
+
+foreach ([$cachePath, $localCachePath, dirname($outFile)] as $path) {
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
 }
-if (!file_exists(dirname($outFile))) {
-    mkdir(dirname($outFile), 0777, true);
+
+/**
+ * Cut the address right after the first 號 and normalize numerals, since
+ * anything after 號 (floors, notes) only confuses the geocoders.
+ */
+function cleanAddress($address)
+{
+    $address = strtr($address, [
+        '０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',
+        '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',
+    ]);
+    $pos = mb_strpos($address, '號');
+    if (false !== $pos) {
+        $address = mb_substr($address, 0, $pos + 1);
+    }
+    // digit-style Chinese numerals in number segments, e.g. 二四號 -> 24號
+    $address = preg_replace_callback('/([0-9一二三四五六七八九○〇OＯ零之、]+)(號|巷|弄)/u', function ($matches) {
+        return strtr($matches[1], [
+            '一' => '1', '二' => '2', '三' => '3', '四' => '4', '五' => '5',
+            '六' => '6', '七' => '7', '八' => '8', '九' => '9',
+            '○' => '0', '〇' => '0', 'O' => '0', 'Ｏ' => '0', '零' => '0',
+        ]) . $matches[2];
+    }, $address);
+    return $address;
 }
 
 function nlscCurl($url, $postData = null)
@@ -80,6 +107,45 @@ function nlscGeocode($address, $cachePath)
     return ['address' => $address, 'point' => $point];
 }
 
+/**
+ * Fallback geocoder backed by the local address service. Fuzzy by nature,
+ * so only accept a hit when the county matches and the house-number token
+ * of the query shows up in the matched address.
+ */
+function localGeocode($address, $cachePath, $api)
+{
+    $cacheFile = $cachePath . '/' . md5($address) . '.json';
+    if (file_exists($cacheFile)) {
+        $json = json_decode(file_get_contents($cacheFile), true);
+    } else {
+        $content = @file_get_contents($api . '?q=' . urlencode($address) . '&limit=1', false, stream_context_create([
+            'http' => ['timeout' => 30],
+        ]));
+        $json = json_decode($content, true);
+        if (!is_array($json)) {
+            return null;
+        }
+        file_put_contents($cacheFile, json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+    if (empty($json['results'][0]['geometry'])) {
+        return null;
+    }
+    $result = $json['results'][0];
+    if (empty($result['match_details']['county_match'])) {
+        return null;
+    }
+    if (preg_match('/([0-9之、]+號)/u', $address, $matches)) {
+        $formatted = cleanAddress($result['formatted_address']);
+        if (false === mb_strpos($formatted, $matches[1])) {
+            return null;
+        }
+    }
+    return [
+        'lng' => floatval($result['geometry']['lng']),
+        'lat' => floatval($result['geometry']['lat']),
+    ];
+}
+
 $list = json_decode(file_get_contents($listFile), true);
 $addresses = json_decode(file_get_contents($addrFile), true);
 
@@ -121,16 +187,20 @@ foreach ($list as $entry) {
         if (!empty($manual[$seq]['address'])) {
             $properties['address'] = $manual[$seq]['address'];
         }
-    } elseif (isset($manual[$seq]) && !empty($manual[$seq]['address'])
-        && $manual[$seq]['address'] !== ($properties['address'] ?? null)) {
-        $properties['address'] = $manual[$seq]['address'];
-        $geo = nlscGeocode($manual[$seq]['address'], $cachePath);
-        $point = $geo['point'];
-    } elseif (!empty($properties['address'])) {
-        $geo = nlscGeocode($properties['address'], $cachePath);
-        $point = $geo['point'];
-        if (null === $point) {
-            echo "{$seq} {$entry['name']} geocode failed: {$properties['address']}\n";
+    } else {
+        if (isset($manual[$seq]) && !empty($manual[$seq]['address'])) {
+            $properties['address'] = $manual[$seq]['address'];
+        }
+        if (!empty($properties['address'])) {
+            $queryAddr = cleanAddress($properties['address']);
+            $geo = nlscGeocode($queryAddr, $cachePath);
+            $point = $geo['point'];
+            if (null === $point) {
+                $point = localGeocode($queryAddr, $localCachePath, $localApi);
+            }
+            if (null === $point) {
+                echo "{$seq} {$entry['name']} geocode failed: {$queryAddr}\n";
+            }
         }
     }
     if (null !== $point) {
@@ -148,9 +218,21 @@ foreach ($list as $entry) {
     }
 }
 
-// refresh the manual-fix worksheet: add newly missing entries, keep
-// everything already there (including rows the user has filled in).
+// refresh the manual-fix worksheet: keep rows the user has filled in
+// (coordinates or a corrected address), drop rows that locate fine now,
+// then add newly missing entries. masked personal names (蔡O彤...) are
+// persons, not mappable businesses, so they stay out of the worksheet.
+foreach ($manual as $seq => $item) {
+    $userFilled = (!empty($item['lng']) && !empty($item['lat']))
+        || (!empty($item['address']) && $item['address'] !== ($addresses[$seq]['address'] ?? ''));
+    if ('anonymized' === ($addresses[$seq]['status'] ?? '') || !$userFilled) {
+        unset($manual[$seq]);
+    }
+}
 foreach ($unlocated as $properties) {
+    if ('anonymized' === $properties['status']) {
+        continue;
+    }
     if (!isset($manual[$properties['seq']])) {
         $manual[$properties['seq']] = [
             'seq' => $properties['seq'],

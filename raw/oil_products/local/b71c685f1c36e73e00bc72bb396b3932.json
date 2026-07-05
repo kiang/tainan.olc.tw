@@ -1,0 +1,31 @@
+{
+    "query": "臺南市永康區大灣東路330巷35號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺南市永康區東灣里24鄰大灣東路３３０巷35號",
+            "score": 354.02,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺南市",
+                "town": "永康區",
+                "village": "東灣里",
+                "neighbor": "024",
+                "road": "大灣東路",
+                "section": "",
+                "lane": "３３０巷",
+                "alley": null,
+                "number": "35號"
+            },
+            "geometry": {
+                "lat": 22.9999226,
+                "lng": 120.2691573
+            }
+        }
+    ]
+}

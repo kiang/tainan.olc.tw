@@ -1,0 +1,31 @@
+{
+    "query": "桃園市觀音區中山路一段815號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市觀音區廣興里10鄰中山路一段815號",
+            "score": 457.49,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "觀音區",
+                "village": "廣興里",
+                "neighbor": "010",
+                "road": "中山路一段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "815號"
+            },
+            "geometry": {
+                "lat": 25.0317464,
+                "lng": 121.1034124
+            }
+        }
+    ]
+}

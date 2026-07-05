@@ -1,0 +1,31 @@
+{
+    "query": "雲林縣西螺鎮漢光里平和南路326巷8號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "雲林縣西螺鎮漢光里17鄰平和南路３２６巷8號",
+            "score": 477.58,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "雲林縣",
+                "town": "西螺鎮",
+                "village": "漢光里",
+                "neighbor": "17",
+                "road": "平和南路",
+                "section": "",
+                "lane": "３２６巷",
+                "alley": null,
+                "number": "8號"
+            },
+            "geometry": {
+                "lat": 23.7935307,
+                "lng": 120.4561704
+            }
+        }
+    ]
+}

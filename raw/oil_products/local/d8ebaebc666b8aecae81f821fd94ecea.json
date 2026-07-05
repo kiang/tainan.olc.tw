@@ -1,0 +1,31 @@
+{
+    "query": "新北市板橋區福德街15號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市板橋區留侯里2鄰福德街15號",
+            "score": 273.92,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "板橋區",
+                "village": "留侯里",
+                "neighbor": "002",
+                "road": "福德街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "15號"
+            },
+            "geometry": {
+                "lat": 25.0089179,
+                "lng": 121.4558856
+            }
+        }
+    ]
+}

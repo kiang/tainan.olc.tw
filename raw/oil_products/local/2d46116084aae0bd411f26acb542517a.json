@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣員林市員東路二段仁愛巷6弄8號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣員林市東崎里18鄰鹿東路二段２６２巷8號",
+            "score": 234.04,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "員林市",
+                "village": "東崎里",
+                "neighbor": "18",
+                "road": "鹿東路二段",
+                "section": "",
+                "lane": "２６２巷",
+                "alley": null,
+                "number": "8號"
+            },
+            "geometry": {
+                "lat": 24.0557926,
+                "lng": 120.4546878
+            }
+        }
+    ]
+}

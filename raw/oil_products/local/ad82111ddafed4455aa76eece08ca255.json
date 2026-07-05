@@ -1,0 +1,31 @@
+{
+    "query": "桃園市平鎮區延平路三段640巷151之8號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市平鎮區宋屋里2鄰延平路三段６４０巷151之8號",
+            "score": 548.61,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "平鎮區",
+                "village": "宋屋里",
+                "neighbor": "002",
+                "road": "延平路三段",
+                "section": "",
+                "lane": "６４０巷",
+                "alley": null,
+                "number": "151之8號"
+            },
+            "geometry": {
+                "lat": 24.9320229,
+                "lng": 121.1949757
+            }
+        }
+    ]
+}

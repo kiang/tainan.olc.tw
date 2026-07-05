@@ -1,0 +1,31 @@
+{
+    "query": "臺中市神岡區岸裡里中山路228號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市神岡區岸裡里9鄰中山路228號",
+            "score": 393.5,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "神岡區",
+                "village": "岸裡里",
+                "neighbor": "009",
+                "road": "中山路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "228號"
+            },
+            "geometry": {
+                "lat": 24.2486304,
+                "lng": 120.6930309
+            }
+        }
+    ]
+}

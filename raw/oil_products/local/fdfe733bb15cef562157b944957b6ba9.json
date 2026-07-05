@@ -1,0 +1,31 @@
+{
+    "query": "高雄市岡山區河堤路二段128號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市岡山區仁義里10鄰河堤路二段128號",
+            "score": 410.39,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "岡山區",
+                "village": "仁義里",
+                "neighbor": "010",
+                "road": "河堤路二段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "128號"
+            },
+            "geometry": {
+                "lat": 22.785897,
+                "lng": 120.2956265
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣彰化市阿夷里學前街10號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣彰化市阿夷里13鄰學前街10號",
+            "score": 378.88,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "彰化市",
+                "village": "阿夷里",
+                "neighbor": "13",
+                "road": "學前街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "10號"
+            },
+            "geometry": {
+                "lat": 24.0912622,
+                "lng": 120.5518732
+            }
+        }
+    ]
+}

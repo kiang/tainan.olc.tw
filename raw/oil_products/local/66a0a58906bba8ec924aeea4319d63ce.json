@@ -1,0 +1,31 @@
+{
+    "query": "雲林縣崙背鄉崙前村崙前路110號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "雲林縣崙背鄉崙西村1鄰中山路110號",
+            "score": 135.71,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "雲林縣",
+                "town": "崙背鄉",
+                "village": "崙西村",
+                "neighbor": "1",
+                "road": "中山路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "110號"
+            },
+            "geometry": {
+                "lat": 23.770254,
+                "lng": 120.4129993
+            }
+        }
+    ]
+}

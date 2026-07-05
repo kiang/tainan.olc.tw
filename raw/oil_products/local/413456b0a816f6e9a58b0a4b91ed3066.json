@@ -1,0 +1,31 @@
+{
+    "query": "高雄市大寮區鳳屏二路38號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市大寮區鳳芸里19鄰鳳芸二路38號",
+            "score": 61.91,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "大寮區",
+                "village": "鳳芸里",
+                "neighbor": "019",
+                "road": "鳳芸二路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "38號"
+            },
+            "geometry": {
+                "lat": 22.4870852,
+                "lng": 120.3978212
+            }
+        }
+    ]
+}

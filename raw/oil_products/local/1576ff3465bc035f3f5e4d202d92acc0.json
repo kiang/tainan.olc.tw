@@ -1,0 +1,31 @@
+{
+    "query": "臺中市大里區國中路483巷3號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市大里區夏田里2鄰國中路４８３巷3號",
+            "score": 294.91,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "大里區",
+                "village": "夏田里",
+                "neighbor": "002",
+                "road": "國中路",
+                "section": "",
+                "lane": "４８３巷",
+                "alley": null,
+                "number": "3號"
+            },
+            "geometry": {
+                "lat": 24.0899697,
+                "lng": 120.6736257
+            }
+        }
+    ]
+}

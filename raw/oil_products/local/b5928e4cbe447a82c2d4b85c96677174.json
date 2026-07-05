@@ -1,0 +1,31 @@
+{
+    "query": "新北市板橋區民治街81巷5號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市板橋區文翠里12鄰民治街5號",
+            "score": 306.92,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "板橋區",
+                "village": "文翠里",
+                "neighbor": "012",
+                "road": "民治街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "5號"
+            },
+            "geometry": {
+                "lat": 25.0345298,
+                "lng": 121.4773553
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺北市大安區樂業街127號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市大安區黎孝里7鄰樂業街127號",
+            "score": 384.15,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "大安區",
+                "village": "黎孝里",
+                "neighbor": "007",
+                "road": "樂業街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "127號"
+            },
+            "geometry": {
+                "lat": 25.0202339,
+                "lng": 121.5529782
+            }
+        }
+    ]
+}

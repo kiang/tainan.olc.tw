@@ -1,0 +1,31 @@
+{
+    "query": "苗栗縣竹南鎮大埔里19鄰五福街67號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "苗栗縣竹南鎮新埔里9鄰新埔67之5號",
+            "score": 70.29,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "苗栗縣",
+                "town": "竹南鎮",
+                "village": "新埔里",
+                "neighbor": "9",
+                "road": "",
+                "section": "新埔",
+                "lane": null,
+                "alley": null,
+                "number": "67之5號"
+            },
+            "geometry": {
+                "lat": 24.54348,
+                "lng": 120.694927
+            }
+        }
+    ]
+}

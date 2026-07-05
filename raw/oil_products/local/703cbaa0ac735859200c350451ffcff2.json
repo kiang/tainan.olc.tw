@@ -1,0 +1,31 @@
+{
+    "query": "新北市板橋區僑中二街88巷6之4號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市板橋區僑中里13鄰僑中二街118之6號",
+            "score": 81.42,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "新北市",
+                "town": "板橋區",
+                "village": "僑中里",
+                "neighbor": "013",
+                "road": "僑中二街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "118之6號"
+            },
+            "geometry": {
+                "lat": 25.006355,
+                "lng": 121.4441661
+            }
+        }
+    ]
+}

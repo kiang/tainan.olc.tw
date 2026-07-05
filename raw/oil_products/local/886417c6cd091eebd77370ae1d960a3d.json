@@ -1,0 +1,31 @@
+{
+    "query": "桃園市楊梅區中山里4鄰環東路293號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市楊梅區中山里4鄰環東路293號",
+            "score": 68.49,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "楊梅區",
+                "village": "中山里",
+                "neighbor": "004",
+                "road": "環東路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "293號"
+            },
+            "geometry": {
+                "lat": 24.907189,
+                "lng": 121.1573971
+            }
+        }
+    ]
+}

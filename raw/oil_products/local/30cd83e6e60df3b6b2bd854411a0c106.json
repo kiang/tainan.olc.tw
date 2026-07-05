@@ -1,0 +1,31 @@
+{
+    "query": "新北市樹林區田尾街232號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市樹林區東園里9鄰田尾街232號",
+            "score": 396.04,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "樹林區",
+                "village": "東園里",
+                "neighbor": "009",
+                "road": "田尾街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "232號"
+            },
+            "geometry": {
+                "lat": 24.948596,
+                "lng": 121.398196
+            }
+        }
+    ]
+}

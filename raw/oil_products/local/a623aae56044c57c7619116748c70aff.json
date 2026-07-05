@@ -1,0 +1,31 @@
+{
+    "query": "高雄市楠梓區土庫五路112巷30號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市楠梓區中山里5鄰新興街112號",
+            "score": 62.07,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "楠梓區",
+                "village": "中山里",
+                "neighbor": "005",
+                "road": "新興街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "112號"
+            },
+            "geometry": {
+                "lat": 22.6265592,
+                "lng": 120.2818063
+            }
+        }
+    ]
+}

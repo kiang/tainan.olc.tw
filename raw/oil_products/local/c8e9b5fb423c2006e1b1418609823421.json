@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣員林市新生里莒光路384、386號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣員林市鹿東里11鄰新生街186號",
+            "score": 191.66,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "員林市",
+                "village": "鹿東里",
+                "neighbor": "11",
+                "road": "新生街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "186號"
+            },
+            "geometry": {
+                "lat": 24.0559958,
+                "lng": 120.4432204
+            }
+        }
+    ]
+}

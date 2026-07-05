@@ -1,0 +1,31 @@
+{
+    "query": "臺中市沙鹿區竹林里福田北街442號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市沙鹿區大雅里15鄰中清北街70號",
+            "score": 166.83,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "沙鹿區",
+                "village": "大雅里",
+                "neighbor": "015",
+                "road": "中清北街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "70號"
+            },
+            "geometry": {
+                "lat": 24.2249676,
+                "lng": 120.646004
+            }
+        }
+    ]
+}

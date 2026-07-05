@@ -1,0 +1,31 @@
+{
+    "query": "桃園市龜山區樂善里文安街35號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市龜山區樂善里7鄰樂善街79號",
+            "score": 340.72,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "龜山區",
+                "village": "樂善里",
+                "neighbor": "007",
+                "road": "樂善街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "79號"
+            },
+            "geometry": {
+                "lat": 25.0502062,
+                "lng": 121.3843906
+            }
+        }
+    ]
+}

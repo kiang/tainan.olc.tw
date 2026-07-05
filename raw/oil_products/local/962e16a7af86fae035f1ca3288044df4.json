@@ -1,0 +1,31 @@
+{
+    "query": "桃園市大園區內海里濱海路三段185巷95號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市大園區內海里4鄰濱海路三段１８５巷95號",
+            "score": 486.2,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "大園區",
+                "village": "內海里",
+                "neighbor": "004",
+                "road": "濱海路三段",
+                "section": "",
+                "lane": "１８５巷",
+                "alley": null,
+                "number": "95號"
+            },
+            "geometry": {
+                "lat": 25.0828793,
+                "lng": 121.1891393
+            }
+        }
+    ]
+}

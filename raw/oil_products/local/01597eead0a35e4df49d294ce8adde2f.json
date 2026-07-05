@@ -1,0 +1,31 @@
+{
+    "query": "桃園市桃園區東埔里大華九街35-1號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "桃園市桃園區東埔里15鄰大華九街35之1號",
+            "score": 70.6,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "桃園市",
+                "town": "桃園區",
+                "village": "東埔里",
+                "neighbor": "015",
+                "road": "大華九街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "35之1號"
+            },
+            "geometry": {
+                "lat": 25.0042225,
+                "lng": 121.307166
+            }
+        }
+    ]
+}

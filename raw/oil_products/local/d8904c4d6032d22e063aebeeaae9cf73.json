@@ -1,0 +1,31 @@
+{
+    "query": "新北市中和區興南路2段128巷7弄1之1號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市中和區頂南里14鄰興南路二段1之1號",
+            "score": 303.7,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "中和區",
+                "village": "頂南里",
+                "neighbor": "014",
+                "road": "興南路二段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "1之1號"
+            },
+            "geometry": {
+                "lat": 24.9835374,
+                "lng": 121.5051693
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺中市大肚區自強里遊園路二段194號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市大肚區潭陽里2鄰潭興路二段194號",
+            "score": 236.26,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "大肚區",
+                "village": "潭陽里",
+                "neighbor": "002",
+                "road": "潭興路二段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "194號"
+            },
+            "geometry": {
+                "lat": 24.2073711,
+                "lng": 120.7109547
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "花蓮縣新城鄉順安村草林98號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "花蓮縣新城鄉順安村13鄰草林98號",
+            "score": 86.06,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "花蓮縣",
+                "town": "新城鄉",
+                "village": "順安村",
+                "neighbor": "13",
+                "road": "",
+                "section": "草林",
+                "lane": null,
+                "alley": null,
+                "number": "98號"
+            },
+            "geometry": {
+                "lat": 24.1178504,
+                "lng": 121.6387952
+            }
+        }
+    ]
+}

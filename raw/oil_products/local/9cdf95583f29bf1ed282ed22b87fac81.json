@@ -1,0 +1,31 @@
+{
+    "query": "花蓮縣花蓮市國興五街70號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "花蓮縣花蓮市國聯里20鄰國興五街70號",
+            "score": 80.06,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "花蓮縣",
+                "town": "花蓮市",
+                "village": "國聯里",
+                "neighbor": "20",
+                "road": "國興五街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "70號"
+            },
+            "geometry": {
+                "lat": 23.9889748,
+                "lng": 121.6054133
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "新北市三峽區大仁路65號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市三峽區鳶山里8鄰大仁路65號",
+            "score": 288.47,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "三峽區",
+                "village": "鳶山里",
+                "neighbor": "008",
+                "road": "大仁路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "65號"
+            },
+            "geometry": {
+                "lat": 24.9373273,
+                "lng": 121.3650627
+            }
+        }
+    ]
+}

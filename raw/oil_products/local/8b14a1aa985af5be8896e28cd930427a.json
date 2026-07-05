@@ -1,0 +1,31 @@
+{
+    "query": "臺中市南屯區文山里工業區23路24號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市南屯區寶山里17鄰工業區十九路23號",
+            "score": 60.01,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "南屯區",
+                "village": "寶山里",
+                "neighbor": "017",
+                "road": "工業區十九路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "23號"
+            },
+            "geometry": {
+                "lat": 24.1585083,
+                "lng": 120.6095276
+            }
+        }
+    ]
+}

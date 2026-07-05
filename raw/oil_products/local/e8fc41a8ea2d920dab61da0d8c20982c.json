@@ -1,0 +1,31 @@
+{
+    "query": "臺北市中正區重慶南路1段100號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市中正區光復里8鄰重慶南路一段100號",
+            "score": 409.16,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "中正區",
+                "village": "光復里",
+                "neighbor": "008",
+                "road": "重慶南路一段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "100號"
+            },
+            "geometry": {
+                "lat": 25.0426,
+                "lng": 121.5130858
+            }
+        }
+    ]
+}

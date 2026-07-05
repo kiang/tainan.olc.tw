@@ -1,0 +1,31 @@
+{
+    "query": "臺中市大雅區中清路四段841號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市大雅區義德里8鄰中興街四段4號",
+            "score": 273.42,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "大雅區",
+                "village": "義德里",
+                "neighbor": "008",
+                "road": "中興街四段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "4號"
+            },
+            "geometry": {
+                "lat": 24.30595,
+                "lng": 120.7265146
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺中市烏日區湖日里光華街38之1號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市烏日區田中里8鄰觀光路１３５巷38號",
+            "score": 147.08,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "烏日區",
+                "village": "田中里",
+                "neighbor": "008",
+                "road": "觀光路",
+                "section": "",
+                "lane": "１３５巷",
+                "alley": null,
+                "number": "38號"
+            },
+            "geometry": {
+                "lat": 24.1923481,
+                "lng": 120.5385541
+            }
+        }
+    ]
+}

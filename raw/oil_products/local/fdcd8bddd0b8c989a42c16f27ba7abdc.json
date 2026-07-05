@@ -1,0 +1,31 @@
+{
+    "query": "新北市深坑區北深路1段110巷12號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市深坑區土庫里4鄰北深路一段12號",
+            "score": 403.18,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "深坑區",
+                "village": "土庫里",
+                "neighbor": "004",
+                "road": "北深路一段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "12號"
+            },
+            "geometry": {
+                "lat": 25.0098689,
+                "lng": 121.6377251
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺南市安南區工業一路58號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺南市安南區媽祖宮里3鄰工業一路58號",
+            "score": 61.4,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺南市",
+                "town": "安南區",
+                "village": "媽祖宮里",
+                "neighbor": "003",
+                "road": "工業一路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "58號"
+            },
+            "geometry": {
+                "lat": 23.0448574,
+                "lng": 120.1508434
+            }
+        }
+    ]
+}

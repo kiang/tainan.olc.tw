@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣北斗鎮中寮里光前路9-6號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣北斗鎮長沙村29鄰學前路３１８巷９弄6號",
+            "score": 216.38,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "北斗鎮",
+                "village": "長沙村",
+                "neighbor": "29",
+                "road": "學前路",
+                "section": "",
+                "lane": "３１８巷",
+                "alley": "９弄",
+                "number": "6號"
+            },
+            "geometry": {
+                "lat": 24.0297463,
+                "lng": 120.5391028
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "金門縣烈嶼鄉林湖村西宅廿1之4號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "金門縣烈嶼鄉林湖村11鄰西宅4號",
+            "score": 105.48,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "金門縣",
+                "town": "烈嶼鄉",
+                "village": "林湖村",
+                "neighbor": "11",
+                "road": "",
+                "section": "西宅",
+                "lane": null,
+                "alley": null,
+                "number": "4號"
+            },
+            "geometry": {
+                "lat": 24.4295232,
+                "lng": 120.2479491
+            }
+        }
+    ]
+}

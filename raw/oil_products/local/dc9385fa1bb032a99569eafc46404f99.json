@@ -1,0 +1,31 @@
+{
+    "query": "新北市板橋區中正路325巷3弄8號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市板橋區中正里16鄰中正路8號",
+            "score": 391.15,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "板橋區",
+                "village": "中正里",
+                "neighbor": "016",
+                "road": "中正路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "8號"
+            },
+            "geometry": {
+                "lat": 25.0236738,
+                "lng": 121.4548737
+            }
+        }
+    ]
+}

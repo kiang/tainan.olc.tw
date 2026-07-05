@@ -1,0 +1,31 @@
+{
+    "query": "臺中市大里區中新街16號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺中市大里區內新里9鄰中新街16號",
+            "score": 301.87,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺中市",
+                "town": "大里區",
+                "village": "內新里",
+                "neighbor": "009",
+                "road": "中新街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "16號"
+            },
+            "geometry": {
+                "lat": 24.1130464,
+                "lng": 120.691017
+            }
+        }
+    ]
+}
