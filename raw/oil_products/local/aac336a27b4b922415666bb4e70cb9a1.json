@@ -1,0 +1,31 @@
+{
+    "query": "新竹市北區中山里中央路57巷27號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新竹市北區中央里5鄰",
+            "score": 85.23,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "新竹市",
+                "town": "北區",
+                "village": "中央里",
+                "neighbor": "5",
+                "road": "",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": ""
+            },
+            "geometry": {
+                "lat": 24.8035212,
+                "lng": 120.9664711
+            }
+        }
+    ]
+}

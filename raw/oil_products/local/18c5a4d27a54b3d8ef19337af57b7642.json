@@ -1,0 +1,31 @@
+{
+    "query": "花蓮縣吉安鄉宜昌村荳蘭三街1號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "花蓮縣吉安鄉宜昌村5鄰荳蘭三街1號",
+            "score": 88.11,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "花蓮縣",
+                "town": "吉安鄉",
+                "village": "宜昌村",
+                "neighbor": "5",
+                "road": "荳蘭三街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "1號"
+            },
+            "geometry": {
+                "lat": 23.9731828,
+                "lng": 121.5861391
+            }
+        }
+    ]
+}

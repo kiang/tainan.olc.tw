@@ -1,0 +1,31 @@
+{
+    "query": "屏東縣潮州鎮三共里四維路73號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "屏東縣潮州鎮三共里35鄰四維路73號",
+            "score": 77.09,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "屏東縣",
+                "town": "潮州鎮",
+                "village": "三共里",
+                "neighbor": "35",
+                "road": "四維路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "73號"
+            },
+            "geometry": {
+                "lat": 22.5518803,
+                "lng": 120.5448686
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "新北市三重區光復路1段61巷24弄16號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市三重區中興里21鄰光復路一段16號",
+            "score": 311.48,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "三重區",
+                "village": "中興里",
+                "neighbor": "021",
+                "road": "光復路一段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "16號"
+            },
+            "geometry": {
+                "lat": 25.0469728,
+                "lng": 121.4718959
+            }
+        }
+    ]
+}

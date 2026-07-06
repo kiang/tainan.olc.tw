@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣田中鎮興工路6號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣田中鎮義興村1鄰義興街6號",
+            "score": 147.67,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "田中鎮",
+                "village": "義興村",
+                "neighbor": "1",
+                "road": "義興街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "6號"
+            },
+            "geometry": {
+                "lat": 24.0665151,
+                "lng": 120.491292
+            }
+        }
+    ]
+}

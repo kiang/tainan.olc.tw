@@ -1,0 +1,31 @@
+{
+    "query": "新北市中和區景平路632號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市中和區新南里3鄰景平路632號",
+            "score": 395.48,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "新北市",
+                "town": "中和區",
+                "village": "新南里",
+                "neighbor": "003",
+                "road": "景平路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "632號"
+            },
+            "geometry": {
+                "lat": 24.9980625,
+                "lng": 121.5002633
+            }
+        }
+    ]
+}

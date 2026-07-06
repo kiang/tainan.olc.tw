@@ -1,0 +1,31 @@
+{
+    "query": "高雄市鳳山區甲智路56號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "高雄市鳳山區二甲里28鄰甲智路56號",
+            "score": 378.08,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "高雄市",
+                "town": "鳳山區",
+                "village": "二甲里",
+                "neighbor": "028",
+                "road": "甲智路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "56號"
+            },
+            "geometry": {
+                "lat": 22.5966461,
+                "lng": 120.3422266
+            }
+        }
+    ]
+}

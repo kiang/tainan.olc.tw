@@ -1,0 +1,31 @@
+{
+    "query": "臺南市永康區北灣里永大路二段1080號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺南市永康區北興里9鄰永大路二段1080號",
+            "score": 443.42,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺南市",
+                "town": "永康區",
+                "village": "北興里",
+                "neighbor": "009",
+                "road": "永大路二段",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "1080號"
+            },
+            "geometry": {
+                "lat": 23.0184339,
+                "lng": 120.2626879
+            }
+        }
+    ]
+}

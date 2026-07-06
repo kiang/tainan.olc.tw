@@ -170,8 +170,16 @@ foreach ($list as $entry) {
         'name' => $entry['name'],
         'counties' => $entry['counties'],
         'products' => $entry['products'],
+        'batches' => $entry['batches'] ?? [],
+        'expiries' => $entry['expiries'] ?? [],
         'status' => $addr['status'],
     ];
+    if (!empty($entry['new'])) {
+        $properties['new'] = true;
+    }
+    if (!empty($entry['note'])) {
+        $properties['note'] = $entry['note'];
+    }
     if ('found' === $addr['status']) {
         $properties['address'] = $addr['address'];
         $properties['gcis_name'] = $addr['name'];

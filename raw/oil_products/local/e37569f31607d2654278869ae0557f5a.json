@@ -1,0 +1,31 @@
+{
+    "query": "雲林縣西螺鎮福田里社口68-19號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "雲林縣西螺鎮福田里5鄰社口68之19號",
+            "score": 81.19,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "雲林縣",
+                "town": "西螺鎮",
+                "village": "福田里",
+                "neighbor": "5",
+                "road": "",
+                "section": "社口",
+                "lane": null,
+                "alley": null,
+                "number": "68之19號"
+            },
+            "geometry": {
+                "lat": 23.7890937,
+                "lng": 120.4336163
+            }
+        }
+    ]
+}

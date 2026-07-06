@@ -1,0 +1,31 @@
+{
+    "query": "新北市五股區五工路132號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新北市五股區興珍里33鄰五工路132號",
+            "score": 82.22,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "新北市",
+                "town": "五股區",
+                "village": "興珍里",
+                "neighbor": "033",
+                "road": "五工路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "132號"
+            },
+            "geometry": {
+                "lat": 25.0682344,
+                "lng": 121.452524
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "query": "臺北市士林區中正路601號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺北市士林區葫東里13鄰中正路601號",
+            "score": 419.46,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": true,
+                "road_phonetic_match": true,
+                "number_match": true
+            },
+            "components": {
+                "county": "臺北市",
+                "town": "士林區",
+                "village": "葫東里",
+                "neighbor": "013",
+                "road": "中正路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "601號"
+            },
+            "geometry": {
+                "lat": 25.0864407,
+                "lng": 121.5099841
+            }
+        }
+    ]
+}

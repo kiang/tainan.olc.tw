@@ -1,0 +1,31 @@
+{
+    "query": "臺南市歸仁區中山九街35號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "臺南市歸仁區南保里29鄰中山九街35號",
+            "score": 67.4,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "臺南市",
+                "town": "歸仁區",
+                "village": "南保里",
+                "neighbor": "029",
+                "road": "中山九街",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "35號"
+            },
+            "geometry": {
+                "lat": 22.9661481,
+                "lng": 120.2827189
+            }
+        }
+    ]
+}

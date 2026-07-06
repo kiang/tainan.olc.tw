@@ -1,0 +1,31 @@
+{
+    "query": "彰化縣員林市源潭里源潭路42-20號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "彰化縣員林市菜園里8鄰菜園路42號",
+            "score": 104.13,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "彰化縣",
+                "town": "員林市",
+                "village": "菜園里",
+                "neighbor": "8",
+                "road": "菜園路",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": "42號"
+            },
+            "geometry": {
+                "lat": 24.0518055,
+                "lng": 120.4323539
+            }
+        }
+    ]
+}

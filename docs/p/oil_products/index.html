@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中聯油脂問題油品流向地圖 - 257家受影響業者查詢</title>
-    <meta name="description" content="中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署公布福懋、福壽及泰山油品257家下游業者名單。提供地圖與列表查詢，業者地點取自商工登記資料。">
-    <meta name="keywords" content="中聯油脂,苯駢芘,BaP,大豆沙拉油,福懋,福壽,泰山,問題油品,下架,食安,食藥署">
-    <meta property="og:title" content="中聯油脂問題油品流向地圖 - 257家受影響業者查詢">
-    <meta property="og:description" content="中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署公布福懋、福壽及泰山油品257家下游業者名單。提供地圖與列表查詢，業者地點取自商工登記資料。">
+    <title>中聯油脂問題油品流向地圖 - 360家受影響業者查詢</title>
+    <meta name="description" content="中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署公布福懋、福壽及泰山油品360家下游業者名單（7/6更新新增103家）。提供地圖、列表、批號與產品照片查詢，業者地點取自商工登記資料。">
+    <meta name="keywords" content="中聯油脂,苯駢芘,BaP,大豆沙拉油,福懋,福壽,泰山,問題油品,批號,下架,食安,食藥署">
+    <meta property="og:title" content="中聯油脂問題油品流向地圖 - 360家受影響業者查詢">
+    <meta property="og:description" content="中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署公布福懋、福壽及泰山油品360家下游業者名單（7/6更新新增103家）。提供地圖、列表、批號與產品照片查詢，業者地點取自商工登記資料。">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://tainan.olc.tw/p/oil_products/og_image.png">
     <!-- Google tag (gtag.js) -->
@@ -102,6 +102,38 @@
             font-size: 0.8rem;
             opacity: 0.85;
         }
+        .badge-new {
+            display: inline-block;
+            background: #ffc000;
+            color: #78350f;
+            border-radius: 4px;
+            padding: 0 5px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+        .batch-line {
+            white-space: nowrap;
+            font-size: 0.8rem;
+        }
+        .batch-line code {
+            color: #b45309;
+        }
+        .note-text {
+            font-size: 0.75rem;
+            color: #6c757d;
+            max-width: 260px;
+            white-space: normal;
+        }
+        .product-photo {
+            max-height: 160px;
+            max-width: 100%;
+            margin: 2px 4px 2px 0;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background: #fff;
+        }
     </style>
 </head>
 <body>
@@ -119,9 +151,9 @@
             <span class="stat-note" id="statNote"></span>
         </div>
         <div class="small stat-note mt-1">
-            中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署 2026-07-05 公布經福懋、福壽及泰山油品流向的 257 家下游業者名單。
+            中聯油脂大豆沙拉油檢出苯(a)駢芘（BaP）超標，食藥署公布經福懋、福壽及泰山油品流向的 360 家下游業者名單（7/6 更新，新增 103 家以「新增」標示）。
             地點為商工登記地址，可能與實際營業地點不同；未能定位的業者請切換「列表」檢視。
-            資料來源：<a href="https://www.fda.gov.tw/TC/newsContent.aspx?cid=4&id=t634418" target="_blank">福懋、福壽及泰山油品下游業者清單(1150705)</a> |
+            資料來源：<a href="https://www.fda.gov.tw/TC/newsContent.aspx?cid=4&id=t634418" target="_blank">福懋、福壽及泰山油品下游業者清單(1150706)</a> |
             <a href="https://facebook.com/k.olc.tw/" target="_blank">江明宗</a> 製作
         </div>
     </div>
@@ -135,6 +167,7 @@
                     <th>業者</th>
                     <th>登記地址</th>
                     <th>購買品項</th>
+                    <th>批號 / 有效日期</th>
                     <th>狀態</th>
                 </tr>
             </thead>

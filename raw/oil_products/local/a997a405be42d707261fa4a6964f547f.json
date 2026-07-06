@@ -1,0 +1,31 @@
+{
+    "query": "新竹市東區復中里民主路186號",
+    "status": "OK",
+    "results": [
+        {
+            "formatted_address": "新竹市東區三民里17鄰",
+            "score": 76.42,
+            "match_details": {
+                "county_match": true,
+                "road_exact_match": false,
+                "road_phonetic_match": false,
+                "number_match": false
+            },
+            "components": {
+                "county": "新竹市",
+                "town": "東區",
+                "village": "三民里",
+                "neighbor": "17",
+                "road": "",
+                "section": "",
+                "lane": null,
+                "alley": null,
+                "number": ""
+            },
+            "geometry": {
+                "lat": 24.8070437,
+                "lng": 120.9733363
+            }
+        }
+    ]
+}
