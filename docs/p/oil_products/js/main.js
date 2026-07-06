@@ -17,6 +17,7 @@ const statusLabels = {
 
 let allRows = [];
 let productByAlias = {};
+let productById = {};
 
 function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, function (c) {
@@ -82,6 +83,35 @@ function popupHtml(p) {
     return html;
 }
 
+function toggleProductRow(tr, pid) {
+    const next = tr.nextElementSibling;
+    if (next && next.classList.contains('product-detail-row')) {
+        const samePid = next.getAttribute('data-pid') === pid;
+        next.remove();
+        if (samePid) {
+            return;
+        }
+    }
+    const prod = productById[pid];
+    if (!prod) {
+        return;
+    }
+    const detail = document.createElement('tr');
+    detail.className = 'product-detail-row';
+    detail.setAttribute('data-pid', pid);
+    const td = document.createElement('td');
+    td.colSpan = 7;
+    td.innerHTML = '<div class="product-detail">' +
+        '<a href="' + prod.image + '" target="_blank"><img src="' + prod.image + '" alt="' + escapeHtml(prod.name) + '"></a>' +
+        '<div class="product-detail-caption">' + escapeHtml(prod.company) + '<br><strong>' + escapeHtml(prod.name) + '</strong><br>' +
+        prod.batches.map(function (b) {
+            return '<span class="batch-line"><code>' + escapeHtml(b.code) + '</code> <span class="text-muted">' + escapeHtml(b.expiry) + '</span></span>';
+        }).join('<br>') +
+        '</div></div>';
+    detail.appendChild(td);
+    tr.parentNode.insertBefore(detail, tr.nextSibling);
+}
+
 function rowMatches(row, county, keyword) {
     const p = row.properties;
     if (county && p.counties.indexOf(county) === -1) {
@@ -130,6 +160,10 @@ function render() {
             '<td>' + escapeHtml(p.name) + (p.note ? '<div class="note-text">' + escapeHtml(p.note) + '</div>' : '') + '</td>' +
             '<td>' + escapeHtml(p.address || '') + '</td>' +
             '<td>' + p.products.map(function (x) {
+                const prod = productByAlias[x];
+                if (prod) {
+                    return '<span class="product-badge clickable" data-pid="' + prod.id + '" title="點擊顯示產品照片">' + escapeHtml(x) + ' 📷</span>';
+                }
                 return '<span class="product-badge">' + escapeHtml(x) + '</span>';
             }).join('') + '</td>' +
             '<td>' + batchHtml(p) + '</td>' +
@@ -142,6 +176,12 @@ function render() {
                 row.marker.openPopup();
             });
         }
+        tr.querySelectorAll('.product-badge.clickable').forEach(function (badge) {
+            badge.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleProductRow(tr, badge.getAttribute('data-pid'));
+            });
+        });
         tbody.appendChild(tr);
     });
 
@@ -181,6 +221,7 @@ Promise.all([
 ]).then(function (results) {
     const json = results[0];
     results[1].products.forEach(function (prod) {
+        productById[prod.id] = prod;
         prod.aliases.forEach(function (alias) {
             productByAlias[alias] = prod;
         });
