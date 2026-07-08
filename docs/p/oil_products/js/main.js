@@ -156,6 +156,7 @@ function renderTerminal(county, keyword) {
         const tr = document.createElement('tr');
         tr.innerHTML = '<td>' + item.pseq + '</td>' +
             '<td>' + escapeHtml(item.pname) + '</td>' +
+            '<td>' + escapeHtml(item.expiry || '') + '</td>' +
             '<td>' + escapeHtml(item.vendor) + '</td>' +
             '<td>' + escapeHtml(item.county) + '</td>' +
             '<td>' + item.seq + '</td>';
@@ -344,7 +345,8 @@ Promise.all([
                 county: vendor.county,
                 vendor: vendor.name,
                 pseq: prod.seq,
-                pname: prod.name
+                pname: prod.name,
+                expiry: prod.expiry
             });
         });
     });
