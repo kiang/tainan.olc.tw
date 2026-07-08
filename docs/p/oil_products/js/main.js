@@ -18,6 +18,10 @@ const statusLabels = {
 let allRows = [];
 let productByAlias = {};
 let productById = {};
+let terminalRows = [];
+let terminalBySeq = {};
+let rowBySeq = {};
+let currentView = 'map';
 
 function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, function (c) {
@@ -75,6 +79,9 @@ function popupHtml(p) {
     if (p.note) {
         html += '<tr><td>備註</td><td>' + escapeHtml(p.note) + '</td></tr>';
     }
+    if (terminalBySeq[p.seq]) {
+        html += '<tr><td>終端產品</td><td>' + terminalBySeq[p.seq].products.length + ' 項（見「終端產品」）</td></tr>';
+    }
     if (p.gcis_id) {
         html += '<tr><td>商工登記</td><td><a href="https://company.g0v.ronny.tw/id/' + escapeHtml(p.gcis_id) + '" target="_blank">' + escapeHtml(p.gcis_id) + '</a></td></tr>';
     }
@@ -118,13 +125,53 @@ function rowMatches(row, county, keyword) {
         return false;
     }
     if (keyword) {
+        const terminal = terminalBySeq[p.seq]
+            ? terminalBySeq[p.seq].products.map(function (x) { return x.name; }).join(' ')
+            : '';
         const haystack = (p.name + ' ' + (p.gcis_name || '') + ' ' + (p.address || '') + ' '
-            + p.products.join(' ') + ' ' + p.batches.join(' ')).toLowerCase();
+            + p.products.join(' ') + ' ' + p.batches.join(' ') + ' ' + terminal).toLowerCase();
         if (haystack.indexOf(keyword) === -1) {
             return false;
         }
     }
     return true;
+}
+
+function renderTerminal(county, keyword) {
+    const tbody = document.getElementById('terminalBody');
+    tbody.innerHTML = '';
+    let shown = 0;
+    terminalRows.forEach(function (item) {
+        if (county && item.county !== county) {
+            return;
+        }
+        if (keyword) {
+            const haystack = (item.vendor + ' ' + item.pname).toLowerCase();
+            if (haystack.indexOf(keyword) === -1) {
+                return;
+            }
+        }
+        shown++;
+        const row = rowBySeq[item.seq];
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + item.pseq + '</td>' +
+            '<td>' + escapeHtml(item.pname) + '</td>' +
+            '<td>' + escapeHtml(item.vendor) + '</td>' +
+            '<td>' + escapeHtml(item.county) + '</td>' +
+            '<td>' + item.seq + '</td>';
+        if (row && row.latlng) {
+            tr.className = 'row-located';
+            tr.addEventListener('click', function () {
+                showMap();
+                map.setView(row.latlng, 16);
+                if (row.marker) {
+                    row.marker.openPopup();
+                }
+            });
+        }
+        tbody.appendChild(tr);
+    });
+    return shown;
 }
 
 function render() {
@@ -157,7 +204,9 @@ function render() {
         const status = statusLabels[row.latlng ? p.status : (p.status === 'found' ? 'geocode_failed' : p.status)] || ['-', 'secondary'];
         tr.innerHTML = '<td>' + p.seq + (p.new ? ' <span class="badge-new">新增</span>' : '') + '</td>' +
             '<td>' + escapeHtml(p.counties.join('、')) + '</td>' +
-            '<td>' + escapeHtml(p.name) + (p.note ? '<div class="note-text">' + escapeHtml(p.note) + '</div>' : '') + '</td>' +
+            '<td>' + escapeHtml(p.name) +
+            (terminalBySeq[p.seq] ? ' <span class="terminal-badge" data-seq="' + p.seq + '" title="檢視終端產品">' + terminalBySeq[p.seq].products.length + ' 項終端產品</span>' : '') +
+            (p.note ? '<div class="note-text">' + escapeHtml(p.note) + '</div>' : '') + '</td>' +
             '<td>' + escapeHtml(p.address || '') + '</td>' +
             '<td>' + p.products.map(function (x) {
                 const prod = productByAlias[x];
@@ -182,30 +231,43 @@ function render() {
                 toggleProductRow(tr, badge.getAttribute('data-pid'));
             });
         });
+        tr.querySelectorAll('.terminal-badge').forEach(function (badge) {
+            badge.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.getElementById('searchInput').value = p.name;
+                showTerminal();
+            });
+        });
         tbody.appendChild(tr);
     });
 
-    document.getElementById('statNote').textContent =
-        '顯示 ' + shown + ' 筆，其中 ' + locatedCount + ' 筆可定位';
+    const terminalShown = renderTerminal(county, keyword);
+    document.getElementById('statNote').textContent = currentView === 'terminal'
+        ? '顯示 ' + terminalShown + ' 項終端產品'
+        : '顯示 ' + shown + ' 筆，其中 ' + locatedCount + ' 筆可定位';
 }
 
-function showMap() {
-    document.getElementById('map').style.display = 'block';
-    document.getElementById('tableView').style.display = 'none';
-    document.getElementById('btnMap').className = 'btn btn-warning';
-    document.getElementById('btnTable').className = 'btn btn-outline-warning';
-    map.invalidateSize();
+function setView(view) {
+    currentView = view;
+    document.getElementById('map').style.display = view === 'map' ? 'block' : 'none';
+    document.getElementById('tableView').style.display = view === 'table' ? 'block' : 'none';
+    document.getElementById('terminalView').style.display = view === 'terminal' ? 'block' : 'none';
+    document.getElementById('btnMap').className = view === 'map' ? 'btn btn-warning' : 'btn btn-outline-warning';
+    document.getElementById('btnTable').className = view === 'table' ? 'btn btn-warning' : 'btn btn-outline-warning';
+    document.getElementById('btnTerminal').className = view === 'terminal' ? 'btn btn-warning' : 'btn btn-outline-warning';
+    if (view === 'map') {
+        map.invalidateSize();
+    }
+    render();
 }
 
-function showTable() {
-    document.getElementById('map').style.display = 'none';
-    document.getElementById('tableView').style.display = 'block';
-    document.getElementById('btnMap').className = 'btn btn-outline-warning';
-    document.getElementById('btnTable').className = 'btn btn-warning';
-}
+function showMap() { setView('map'); }
+function showTable() { setView('table'); }
+function showTerminal() { setView('terminal'); }
 
 document.getElementById('btnMap').addEventListener('click', showMap);
 document.getElementById('btnTable').addEventListener('click', showTable);
+document.getElementById('btnTerminal').addEventListener('click', showTerminal);
 document.getElementById('countyFilter').addEventListener('change', function () {
     render();
     const bounds = cluster.getBounds();
@@ -217,13 +279,26 @@ document.getElementById('searchInput').addEventListener('input', render);
 
 Promise.all([
     fetch('data/points.json').then(function (res) { return res.json(); }),
-    fetch('data/products.json').then(function (res) { return res.json(); })
+    fetch('data/products.json').then(function (res) { return res.json(); }),
+    fetch('data/terminal_products.json').then(function (res) { return res.json(); })
 ]).then(function (results) {
     const json = results[0];
     results[1].products.forEach(function (prod) {
         productById[prod.id] = prod;
         prod.aliases.forEach(function (alias) {
             productByAlias[alias] = prod;
+        });
+    });
+    results[2].vendors.forEach(function (vendor) {
+        terminalBySeq[vendor.seq] = vendor;
+        vendor.products.forEach(function (prod) {
+            terminalRows.push({
+                seq: vendor.seq,
+                county: vendor.county,
+                vendor: vendor.name,
+                pseq: prod.seq,
+                pname: prod.name
+            });
         });
     });
 
@@ -235,6 +310,9 @@ Promise.all([
     });
     json.unlocated.forEach(function (p) {
         allRows.push({ properties: p, latlng: null });
+    });
+    allRows.forEach(function (row) {
+        rowBySeq[row.properties.seq] = row;
     });
     allRows.sort(function (a, b) {
         return a.properties.seq - b.properties.seq;
