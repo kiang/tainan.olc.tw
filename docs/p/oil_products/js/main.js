@@ -287,6 +287,29 @@ document.getElementById('barToggle').addEventListener('click', expandBar);
 document.getElementById('btnMap').addEventListener('click', showMap);
 document.getElementById('btnTable').addEventListener('click', showTable);
 document.getElementById('btnTerminal').addEventListener('click', showTerminal);
+
+const infoModal = document.getElementById('infoModal');
+document.getElementById('btnInfo').addEventListener('click', function () {
+    infoModal.style.display = 'flex';
+});
+document.getElementById('infoClose').addEventListener('click', function () {
+    infoModal.style.display = 'none';
+});
+infoModal.addEventListener('click', function (e) {
+    if (e.target === infoModal) {
+        infoModal.style.display = 'none';
+    }
+});
+
+// on small screens the bar competes with the content, so any button
+// click in it collapses the bar; the floating button restores it
+document.querySelectorAll('.top-bar .btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+            collapseBar();
+        }
+    });
+});
 document.getElementById('countyFilter').addEventListener('change', function () {
     render();
     // on small screens the wrapped top bar covers most of the map, so
