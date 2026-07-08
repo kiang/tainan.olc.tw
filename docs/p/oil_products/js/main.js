@@ -163,6 +163,9 @@ function renderTerminal(county, keyword) {
             tr.className = 'row-located';
             tr.addEventListener('click', function () {
                 showMap();
+                if (window.innerWidth <= 768) {
+                    collapseBar();
+                }
                 map.setView(row.latlng, 16);
                 if (row.marker) {
                     row.marker.openPopup();
@@ -221,6 +224,9 @@ function render() {
             tr.className = 'row-located';
             tr.addEventListener('click', function () {
                 showMap();
+                if (window.innerWidth <= 768) {
+                    collapseBar();
+                }
                 map.setView(row.latlng, 16);
                 row.marker.openPopup();
             });
@@ -265,11 +271,29 @@ function showMap() { setView('map'); }
 function showTable() { setView('table'); }
 function showTerminal() { setView('terminal'); }
 
+function collapseBar() {
+    document.querySelector('.top-bar').style.display = 'none';
+    document.getElementById('barToggle').style.display = 'block';
+    map.invalidateSize();
+}
+
+function expandBar() {
+    document.querySelector('.top-bar').style.display = '';
+    document.getElementById('barToggle').style.display = 'none';
+    map.invalidateSize();
+}
+
+document.getElementById('barToggle').addEventListener('click', expandBar);
 document.getElementById('btnMap').addEventListener('click', showMap);
 document.getElementById('btnTable').addEventListener('click', showTable);
 document.getElementById('btnTerminal').addEventListener('click', showTerminal);
 document.getElementById('countyFilter').addEventListener('change', function () {
     render();
+    // on small screens the wrapped top bar covers most of the map, so
+    // hide it before fitting bounds and leave a button to bring it back
+    if (currentView === 'map' && window.innerWidth <= 768) {
+        collapseBar();
+    }
     const bounds = cluster.getBounds();
     if (bounds.isValid()) {
         map.fitBounds(bounds, { padding: [30, 30] });
