@@ -72,7 +72,7 @@ PAGES = [
              'aliases': ['泰山歐式果實精華調合油1.5L*6入']},
             {'id': 'ts_haoli_06', 'name': '泰山好理調合油 0.6L*24', 'cols': [4, 5],
              'batches': [{'code': '20270725f', 'expiry': '2027.07.25'}],
-             'aliases': []},
+             'aliases': ['泰山好理調合油0.6L*24']},
             {'id': 'ts_peanut_2l', 'name': '泰山花生風味調和油 2L*6', 'cols': [5, 6],
              'batches': [{'code': '20271009', 'expiry': '2027.10.09'}],
              'aliases': ['泰山花生風味調和油2L*6入']},

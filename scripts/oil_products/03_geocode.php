@@ -174,8 +174,8 @@ foreach ($list as $entry) {
         'expiries' => $entry['expiries'] ?? [],
         'status' => $addr['status'],
     ];
-    if (!empty($entry['new'])) {
-        $properties['new'] = true;
+    if (!empty($entry['tag'])) {
+        $properties['tag'] = $entry['tag'];
     }
     if (!empty($entry['note'])) {
         $properties['note'] = $entry['note'];

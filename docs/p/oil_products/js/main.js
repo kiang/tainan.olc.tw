@@ -55,7 +55,7 @@ function batchHtml(p) {
 
 function popupHtml(p) {
     let html = '<table class="popup-table">';
-    html += '<tr><td>序號</td><td>' + p.seq + (p.new ? ' <span class="badge-new">7/6 新增</span>' : '') + '</td></tr>';
+    html += '<tr><td>序號</td><td>' + p.seq + (p.tag ? ' <span class="badge-new">' + escapeHtml(p.tag) + '</span>' : '') + '</td></tr>';
     html += '<tr><td>業者</td><td>' + escapeHtml(p.name) + '</td></tr>';
     if (p.gcis_name && p.gcis_name !== p.name) {
         html += '<tr><td>登記名稱</td><td>' + escapeHtml(p.gcis_name) + '</td></tr>';
@@ -206,7 +206,7 @@ function render() {
 
         const tr = document.createElement('tr');
         const status = statusLabels[row.latlng ? p.status : (p.status === 'found' ? 'geocode_failed' : p.status)] || ['-', 'secondary'];
-        tr.innerHTML = '<td>' + p.seq + (p.new ? ' <span class="badge-new">新增</span>' : '') + '</td>' +
+        tr.innerHTML = '<td>' + p.seq + (p.tag ? ' <span class="badge-new">' + escapeHtml(p.tag) + '</span>' : '') + '</td>' +
             '<td>' + escapeHtml(p.counties.join('、')) + '</td>' +
             '<td>' + escapeHtml(p.name) +
             (terminalBySeq[p.seq] ? ' <span class="terminal-badge" data-seq="' + p.seq + '" title="檢視終端產品">' + terminalBySeq[p.seq].products.length + ' 項終端產品</span>' : '') +
