@@ -1,5 +1,15 @@
 [
     {
+        "seq": 1,
+        "name": "三和行",
+        "counties": [
+            "基隆市"
+        ],
+        "address": "基隆市仁愛區精一路二四號一樓",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 2,
         "name": "三和行",
         "counties": [
@@ -8,6 +18,26 @@
         "address": "基隆市仁愛區精一路二四號一樓",
         "lng": 121.741236,
         "lat": 25.126377
+    },
+    {
+        "seq": 3,
+        "name": "好樂迪基隆店",
+        "counties": [
+            "基隆市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 4,
+        "name": "佑錡國際有限公司",
+        "counties": [
+            "基隆市"
+        ],
+        "address": "基隆市仁愛區光華里華三街15號一樓",
+        "lng": null,
+        "lat": null
     },
     {
         "seq": 5,
@@ -20,20 +50,120 @@
         "lat": 25.126284
     },
     {
-        "seq": 6,
-        "name": "佑錡國際有限公司",
+        "seq": 7,
+        "name": "信興油行",
         "counties": [
             "基隆市"
         ],
-        "address": "基隆市仁愛區光華里華三街15號一樓",
-        "lng": 121.736879,
-        "lat": 25.126419
+        "address": "基隆市仁愛區光華里華三街三一號一樓",
+        "lng": null,
+        "lat": null
     },
     {
-        "seq": 13,
-        "name": "國防部福利事業管理處",
+        "seq": 15,
+        "name": "六張犁饅頭有限公司",
         "counties": [
-            "臺北市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 19,
+        "name": "合泰什糧行",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 22,
+        "name": "好樂迪中興店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 23,
+        "name": "好樂迪內湖店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 24,
+        "name": "好樂迪石牌店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 25,
+        "name": "好樂迪通化店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 26,
+        "name": "好樂迪錦州店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 27,
+        "name": "好樂迪館前店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 35,
+        "name": "忠青商行-大遠百信義A13店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 36,
+        "name": "忠青商行-台北101店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 37,
+        "name": "忠青商行-微風北車",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -50,20 +180,50 @@
         "lat": 25.027068
     },
     {
-        "seq": 39,
-        "name": "全台物流 林口全台",
+        "seq": 40,
+        "name": "炒湘湘-9000微風信義店",
         "counties": [
-            "新北市"
+            "台北市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 52,
-        "name": "谷倉倉庫",
+        "seq": 46,
+        "name": "桂莉香擔仔麵股份有限公司",
         "counties": [
-            "新北市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 49,
+        "name": "國防部福利事業管理處",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 66,
+        "name": "貳虎-台北慶城店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 67,
+        "name": "貳虎-F104 中山南西店",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -71,9 +231,29 @@
     },
     {
         "seq": 68,
-        "name": "瑔盛-油脂",
+        "name": "貳虎永吉門店",
         "counties": [
-            "新北市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 69,
+        "name": "貳樓-中山南西店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 70,
+        "name": "貳樓-台北仁愛店",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -81,9 +261,19 @@
     },
     {
         "seq": 71,
-        "name": "豐益糧行",
+        "name": "貳樓-台北公館店",
         "counties": [
-            "新北市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 72,
+        "name": "貳樓-台北西湖店",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -100,6 +290,56 @@
         "lat": 25.009525
     },
     {
+        "seq": 74,
+        "name": "貳樓-台北敦南店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 75,
+        "name": "貳樓-台北微風店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 76,
+        "name": "貳樓-師大店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 77,
+        "name": "貳樓-微風南山店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 78,
+        "name": "貳樓餐飲-央廚",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 80,
         "name": "安穀食品行",
         "counties": [
@@ -110,10 +350,30 @@
         "lat": 25.055677
     },
     {
-        "seq": 93,
-        "name": "大全聯(觀音)中法鑫",
+        "seq": 83,
+        "name": "新加坡商蝦皮娛樂電商有限公司台灣分公司",
         "counties": [
-            "桃園市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 93,
+        "name": "酷澎",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 96,
+        "name": "樂雅樂-內湖店",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -121,9 +381,9 @@
     },
     {
         "seq": 97,
-        "name": "景輝商行",
+        "name": "樂雅樂-北投店",
         "counties": [
-            "桃園市"
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -131,29 +391,79 @@
     },
     {
         "seq": 98,
-        "name": "建樹-桃園",
+        "name": "樂雅樂-生技園區店",
         "counties": [
-            "桃園市"
+            "台北市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 110,
-        "name": "來來物流大溪",
+        "seq": 99,
+        "name": "樂雅樂-西湖店",
         "counties": [
-            "桃園市"
+            "台北市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 115,
-        "name": "明星商行",
+        "seq": 100,
+        "name": "樂雅樂-南港園區",
         "counties": [
-            "桃園市"
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 101,
+        "name": "樂雅樂-站前店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 102,
+        "name": "樂雅樂-敦化店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 103,
+        "name": "錢唐村小吃店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 108,
+        "name": "點點心-信義ATT店",
+        "counties": [
+            "台北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 112,
+        "name": "Local Local Park 敦南",
+        "counties": [
+            "台北市"
         ],
         "address": "",
         "lng": null,
@@ -161,29 +471,9 @@
     },
     {
         "seq": 120,
-        "name": "家樂福環東倉",
+        "name": "五股-直購客人",
         "counties": [
-            "桃園市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 122,
-        "name": "惠康百貨股份有限公司-Y廠編",
-        "counties": [
-            "桃園市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 123,
-        "name": "茂榮食品行",
-        "counties": [
-            "桃園市"
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -191,29 +481,9 @@
     },
     {
         "seq": 124,
-        "name": "宅配通北倉",
+        "name": "北海福座",
         "counties": [
-            "桃園市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 129,
-        "name": "泰山公司北配倉(調撥用)",
-        "counties": [
-            "桃園市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 130,
-        "name": "泰山北倉-宏大(大園)",
-        "counties": [
-            "桃園市"
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -240,10 +510,40 @@
         "lat": 24.813164
     },
     {
-        "seq": 142,
-        "name": "屏榮食品新豐廠",
+        "seq": 137,
+        "name": "全台物流 林口全台",
         "counties": [
-            "新竹縣"
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 140,
+        "name": "名陽食品有限公司",
+        "counties": [
+            "新北市"
+        ],
+        "address": "新北市板橋區僑中二街88巷6之4號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 141,
+        "name": "吕品企業股有限公司",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 145,
+        "name": "好樂迪三重店",
+        "counties": [
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -270,6 +570,36 @@
         "lat": 24.899104
     },
     {
+        "seq": 148,
+        "name": "好樂迪中和店",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 149,
+        "name": "好樂迪汐止店",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 150,
+        "name": "好樂迪淡水店",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 151,
         "name": "好樂迪頭份店",
         "counties": [
@@ -290,6 +620,16 @@
         "lat": 24.716135
     },
     {
+        "seq": 153,
+        "name": "安穀食品行",
+        "counties": [
+            "新北市"
+        ],
+        "address": "桃園市龜山區樂善里文安街35號",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 158,
         "name": "好樂迪大里店",
         "counties": [
@@ -300,10 +640,10 @@
         "lat": 24.10914
     },
     {
-        "seq": 160,
-        "name": "津華食品有限公司",
+        "seq": 161,
+        "name": "谷倉倉庫",
         "counties": [
-            "臺中市"
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -320,12 +660,22 @@
         "lat": 24.219004
     },
     {
-        "seq": 174,
-        "name": "美升鮮台中倉",
+        "seq": 173,
+        "name": "忠青商行-新莊宏匯",
         "counties": [
-            "臺中市"
+            "新北市"
         ],
         "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 177,
+        "name": "松和食品有限公司",
+        "counties": [
+            "新北市"
+        ],
+        "address": "新北市新莊區中正路871巷9弄25之4號",
         "lng": null,
         "lat": null
     },
@@ -350,6 +700,16 @@
         "lat": 24.06535
     },
     {
+        "seq": 183,
+        "name": "⾧福食品有限公司",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 191,
         "name": "頂裕食品股份有限公司",
         "counties": [
@@ -358,6 +718,16 @@
         "address": "臺中市南屯區文山里工業區23路24號",
         "lng": 120.604633,
         "lat": 24.161151
+    },
+    {
+        "seq": 192,
+        "name": "香繼光北倉",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
     },
     {
         "seq": 196,
@@ -370,40 +740,20 @@
         "lat": 24.244683
     },
     {
-        "seq": 204,
-        "name": "鼎鎂國際企業有限公司",
+        "seq": 205,
+        "name": "盛泰雜糧行",
         "counties": [
-            "臺中市"
+            "新北市"
         ],
-        "address": "臺中市烏日區湖日里光華街38之1號",
-        "lng": 120.620196,
-        "lat": 24.110149
+        "address": "",
+        "lng": null,
+        "lat": null
     },
     {
         "seq": 209,
-        "name": "溢鼎鱻海鮮館漁港店",
+        "name": "普新生技-新莊區自信街",
         "counties": [
-            "臺中市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 213,
-        "name": "員林-廖小姐(員林會址)",
-        "counties": [
-            "彰化縣"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 214,
-        "name": "旺旺商行",
-        "counties": [
-            "彰化縣"
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -420,6 +770,16 @@
         "lat": 23.963046
     },
     {
+        "seq": 217,
+        "name": "貳樓-林口店",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 218,
         "name": "好樂迪彰化店",
         "counties": [
@@ -430,10 +790,20 @@
         "lat": 24.074512
     },
     {
-        "seq": 230,
-        "name": "花盒子北斗倉",
+        "seq": 224,
+        "name": "新隆發",
         "counties": [
-            "彰化縣"
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 228,
+        "name": "瑔盛-油脂",
+        "counties": [
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -441,9 +811,19 @@
     },
     {
         "seq": 240,
-        "name": "漢寶增豐牧場",
+        "name": "福壽事業股份有限公司台北營業中心",
         "counties": [
-            "彰化縣"
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 241,
+        "name": "福壽實業有限公司(台北)",
+        "counties": [
+            "新北市"
         ],
         "address": "",
         "lng": null,
@@ -458,26 +838,6 @@
         "address": "彰化縣員林市新生里莒光路３８４、３８６號１樓",
         "lng": 120.566761,
         "lat": 23.960816
-    },
-    {
-        "seq": 248,
-        "name": "大之禹總匯商行林森營業所",
-        "counties": [
-            "彰化縣"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
-        "seq": 250,
-        "name": "金福華",
-        "counties": [
-            "南投縣"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
     },
     {
         "seq": 252,
@@ -501,9 +861,49 @@
     },
     {
         "seq": 259,
-        "name": "松鼎",
+        "name": "點點心-5400環球中和店",
         "counties": [
-            "雲林縣"
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 260,
+        "name": "點點心-資運中心-央廚",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 261,
+        "name": "豐益糧行",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 267,
+        "name": "F103 貳虎-板橋中山店",
+        "counties": [
+            "新北市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 273,
+        "name": "大全聯(觀音)中法鑫",
+        "counties": [
+            "桃園市"
         ],
         "address": "",
         "lng": null,
@@ -520,16 +920,6 @@
         "lat": 23.770992
     },
     {
-        "seq": 277,
-        "name": "萬泰大貴倉",
-        "counties": [
-            "嘉義市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
         "seq": 279,
         "name": "升誠有限公司",
         "counties": [
@@ -540,20 +930,30 @@
         "lat": 23.469171
     },
     {
-        "seq": 285,
-        "name": "大全聯(柳營)中法鑫",
+        "seq": 287,
+        "name": "全台物流 大溪全台",
         "counties": [
-            "臺南市"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 294,
-        "name": "樂豐 台南物流倉庫",
+        "seq": 293,
+        "name": "宅配通北倉",
         "counties": [
-            "臺南市"
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 297,
+        "name": "來來物流大溪",
+        "counties": [
+            "桃園市"
         ],
         "address": "",
         "lng": null,
@@ -570,16 +970,6 @@
         "lat": 24.430615
     },
     {
-        "seq": 300,
-        "name": "鴻達鑫企業",
-        "counties": [
-            "臺南市"
-        ],
-        "address": "",
-        "lng": null,
-        "lat": null
-    },
-    {
         "seq": 301,
         "name": "新農科技股份有限公司",
         "counties": [
@@ -590,40 +980,80 @@
         "lat": 23.206753
     },
     {
-        "seq": 305,
-        "name": "秝禾企業倉庫",
+        "seq": 304,
+        "name": "明星商行",
         "counties": [
-            "高雄市"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 306,
-        "name": "現兌-大社營業所",
+        "seq": 314,
+        "name": "屏榮食品桃園廠",
         "counties": [
-            "高雄市"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 309,
-        "name": "鈞友企業社",
+        "seq": 316,
+        "name": "建樹-桃園",
         "counties": [
-            "高雄市"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 325,
-        "name": "家福--油脂F393岡山倉",
+        "seq": 319,
+        "name": "茂榮食品行",
         "counties": [
-            "高雄市"
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 321,
+        "name": "家樂福環東倉",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 323,
+        "name": "泰山公司北配倉(調撥用)",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 324,
+        "name": "泰山北倉-宏大(大園)",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 327,
+        "name": "海霸王-航空館",
+        "counties": [
+            "桃園市"
         ],
         "address": "",
         "lng": null,
@@ -641,29 +1071,29 @@
     },
     {
         "seq": 331,
-        "name": "建樹-高雄",
+        "name": "康達盛通股份有限公司-Y廠編",
         "counties": [
-            "高雄市"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
         "lat": null
     },
     {
-        "seq": 332,
-        "name": "巧竺商行",
+        "seq": 341,
+        "name": "惠康百貨股份有限公司-Y廠編",
         "counties": [
-            "高雄市"
+            "桃園市"
         ],
-        "address": "高雄市路竹區智仁街82號1樓",
-        "lng": 120.262538,
-        "lat": 22.860978
+        "address": "",
+        "lng": null,
+        "lat": null
     },
     {
-        "seq": 335,
-        "name": "宏興行",
+        "seq": 342,
+        "name": "惠農有限公司",
         "counties": [
-            "屏東縣"
+            "桃園市"
         ],
         "address": "",
         "lng": null,
@@ -681,9 +1111,19 @@
     },
     {
         "seq": 344,
-        "name": "昱誠-油脂",
+        "name": "景輝商行",
         "counties": [
-            "宜蘭縣"
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 346,
+        "name": "貳樓-桃園台茂店",
+        "counties": [
+            "桃園市"
         ],
         "address": "",
         "lng": null,
@@ -710,6 +1150,16 @@
         "lat": 24.630936
     },
     {
+        "seq": 353,
+        "name": "聖香食品行",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
         "seq": 359,
         "name": "澎湖縣農會農民購物中心",
         "counties": [
@@ -718,5 +1168,1175 @@
         "address": "澎湖縣馬公市陽明里大勇街30號（地下室）",
         "lng": 119.572204,
         "lat": 23.57187
+    },
+    {
+        "seq": 363,
+        "name": "蝦皮桃園-觀音倉",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 375,
+        "name": "豐輝食品餐具行",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 378,
+        "name": "PChome 15庫",
+        "counties": [
+            "桃園市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 379,
+        "name": "大富食品行",
+        "counties": [
+            "新竹市"
+        ],
+        "address": "新竹市北區中山里中央路５７巷２７號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 385,
+        "name": "忠青商行-巨城新竹",
+        "counties": [
+            "新竹市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 387,
+        "name": "香山食品廠",
+        "counties": [
+            "新竹市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 395,
+        "name": "龍江興南北商行",
+        "counties": [
+            "新竹市"
+        ],
+        "address": "新竹市東區復中里民主路１８６號１樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 400,
+        "name": "加昇企業社",
+        "counties": [
+            "新竹縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 402,
+        "name": "竹琦食品股份有限公司",
+        "counties": [
+            "新竹縣"
+        ],
+        "address": "新竹縣竹北市中華路368號6樓之1",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 408,
+        "name": "屏榮食品新豐廠",
+        "counties": [
+            "新竹縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 416,
+        "name": "寶發商行",
+        "counties": [
+            "新竹縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 417,
+        "name": "鑫邑商行",
+        "counties": [
+            "新竹縣"
+        ],
+        "address": "新竹縣湖口鄉信勢村成功路454巷78弄10號1樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 422,
+        "name": "好樂迪頭份店",
+        "counties": [
+            "苗栗縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 431,
+        "name": "聯有企業股份有限公司",
+        "counties": [
+            "苗栗縣"
+        ],
+        "address": "苗栗縣竹南鎮大埔里19鄰五福街67號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 440,
+        "name": "今春企業股份有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市霧峰區四德路307巷10號1樓  ",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 446,
+        "name": "弘光科技大學",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 449,
+        "name": "永大商行",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 456,
+        "name": "禾迦歡",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 459,
+        "name": "好樂迪三民店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 460,
+        "name": "好樂迪大里店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 461,
+        "name": "好樂迪文心店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 462,
+        "name": "宇豐商行",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 469,
+        "name": "吳建泩倉庫",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 487,
+        "name": "明昱商行",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市潭子區嘉仁里福林路三段６６之７號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 497,
+        "name": "⾧弘開發有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 498,
+        "name": "⾧鑫商行",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 502,
+        "name": "昶昕貿易",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 503,
+        "name": "津華食品有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 505,
+        "name": "洪林玉鳳",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 511,
+        "name": "美升鮮台中倉",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 522,
+        "name": "茗洋企業有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市大雅區中清路四段841號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 535,
+        "name": "頂裕食品股份有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市南屯區文山里工業區23路24號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 536,
+        "name": "凱蒂餐飲調理食品(有)公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 543,
+        "name": "貳樓-台中公益店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 549,
+        "name": "溢鼎鱻海鮮館漁港店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 556,
+        "name": "鼎鎂國際企業有限公司",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市烏日區湖日里光華街38之1號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 561,
+        "name": "豪運商行",
+        "counties": [
+            "台中市"
+        ],
+        "address": "臺中市沙鹿區竹林里福田北街４４２號１樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 565,
+        "name": "樂雅樂-台中文心店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 566,
+        "name": "樂雅樂-台中高鐵",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 578,
+        "name": "點點心-三井中港店",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 579,
+        "name": "點點心-台中Lalaport",
+        "counties": [
+            "台中市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 591,
+        "name": "大之禹總匯商行林森營業所",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 599,
+        "name": "好好免洗餐具",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 600,
+        "name": "好樂迪彰化店",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 603,
+        "name": "江秀品倉庫",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 610,
+        "name": "李國明 送吳老師豆漿店(要先聯絡)",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 613,
+        "name": "佳吉商行",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 614,
+        "name": "佳順免洗餐具商行",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "彰化縣員林市新生里莒光路３８４、３８６號１樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 616,
+        "name": "和多利企業股份有限公司",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "彰化縣員林市源潭里源潭路42-20號1樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 619,
+        "name": "旺旺商行",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 622,
+        "name": "花盒子北斗倉",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 624,
+        "name": "金萬泰貿易有限公司",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 628,
+        "name": "員林-廖小姐(員林會址)",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 652,
+        "name": "新發雜貨行",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 654,
+        "name": "源通倉庫",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 658,
+        "name": "漢寶增豐牧場",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 661,
+        "name": "劉權輝-源",
+        "counties": [
+            "彰化縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 672,
+        "name": "李世傳",
+        "counties": [
+            "南投縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 676,
+        "name": "良美商行",
+        "counties": [
+            "南投縣"
+        ],
+        "address": "南投縣南投市軍功里中興路396-1號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 678,
+        "name": "旺真久企業商行",
+        "counties": [
+            "南投縣"
+        ],
+        "address": "南投縣草屯鎮北投里北投路文教巷26弄8號2樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 680,
+        "name": "金福華",
+        "counties": [
+            "南投縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 683,
+        "name": "春滿福食材有限公司",
+        "counties": [
+            "南投縣"
+        ],
+        "address": "南投縣草屯鎮北投里北投路文教巷26弄8號1樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 696,
+        "name": "久代商行",
+        "counties": [
+            "雲林縣"
+        ],
+        "address": "雲林縣莿桐鄉義和村三和二九之三號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 710,
+        "name": "松鼎",
+        "counties": [
+            "雲林縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 711,
+        "name": "林 O 林",
+        "counties": [
+            "雲林縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 712,
+        "name": "林松藤畜牧場",
+        "counties": [
+            "雲林縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 752,
+        "name": "萬泰大貴倉",
+        "counties": [
+            "嘉義市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 753,
+        "name": "萬泰商行",
+        "counties": [
+            "嘉義市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 756,
+        "name": "升誠有限公司",
+        "counties": [
+            "嘉義縣"
+        ],
+        "address": "嘉義市西區劉厝里劉厝路415號1樓  ",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 757,
+        "name": "升誠行銷有限公司",
+        "counties": [
+            "嘉義縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 768,
+        "name": "陳冠宏",
+        "counties": [
+            "嘉義縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 779,
+        "name": "大全聯(柳營)中法鑫",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 785,
+        "name": "⾧瀛商行",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 790,
+        "name": "貳樓-台南店",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 792,
+        "name": "鴻達鑫企業",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 793,
+        "name": "點點心-三井台南店",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 794,
+        "name": "點點心-南紡台南",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 795,
+        "name": "點點心-新光台南店",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 798,
+        "name": "大全聯(柳營)中法鑫",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 801,
+        "name": "日盛",
+        "counties": [
+            "台南市"
+        ],
+        "address": "金門縣烈嶼鄉林湖村西宅廿一之四號（限建築物第一層使用）",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 802,
+        "name": "古福公司",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 812,
+        "name": "林 O 池",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 814,
+        "name": "⾧瀛商行",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 831,
+        "name": "新農科技股份有限公司",
+        "counties": [
+            "台南市"
+        ],
+        "address": "臺南市官田區二鎮里官田工業區富強路27號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 833,
+        "name": "樂雅樂-台南西門店",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 834,
+        "name": "樂雅樂-台南高鐵店",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 835,
+        "name": "樂豐 台南物流倉庫",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 837,
+        "name": "鴻達鑫企業",
+        "counties": [
+            "台南市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 840,
+        "name": "224貳樓-高雄夢時代店",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 850,
+        "name": "台灣第一家自立店",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 851,
+        "name": "巧竺商行",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "高雄市路竹區智仁街82號1樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 854,
+        "name": "合富食品有限公司",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 857,
+        "name": "好樂迪高雄建工店",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 862,
+        "name": "沅新-大寮倉庫",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 866,
+        "name": "定芳食品有限公司",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 886,
+        "name": "威淳食品有限公司",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "高雄市楠梓區土庫五路112巷30號1樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 887,
+        "name": "建樹-高雄",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 894,
+        "name": "家福--油脂F393岡山倉",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 896,
+        "name": "晉欣食品-外倉(日翊-聖森路)",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 899,
+        "name": "秝禾企業倉庫",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 904,
+        "name": "現兌-大社營業所",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 909,
+        "name": "貳樓-高雄店",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 910,
+        "name": "鈞友企業社",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 930,
+        "name": "福壽事業股份有限公司大社營業所",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 931,
+        "name": "福壽實業有限公司(大社營業所)",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 941,
+        "name": "點點心-高雄夢時代店",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 942,
+        "name": "點點心-漢神巨蛋",
+        "counties": [
+            "高雄市"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 947,
+        "name": "宏興行",
+        "counties": [
+            "屏東縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 951,
+        "name": "⾧興材料工業股份有限公司",
+        "counties": [
+            "屏東縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 960,
+        "name": "瓦城-宜蘭新月店",
+        "counties": [
+            "宜蘭縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 966,
+        "name": "昱誠-油脂",
+        "counties": [
+            "宜蘭縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 969,
+        "name": "惠眾食品工業股份有限公司",
+        "counties": [
+            "宜蘭縣"
+        ],
+        "address": "宜蘭縣蘇澳鎮信義路270巷12弄6號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 971,
+        "name": "隆盛食品冷凍股份有限公司",
+        "counties": [
+            "宜蘭縣"
+        ],
+        "address": "宜蘭縣蘇澳鎮德興六路11號",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 974,
+        "name": "誠毅商行",
+        "counties": [
+            "宜蘭縣"
+        ],
+        "address": "宜蘭縣宜蘭市建軍里泰山路211巷15號一樓",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 996,
+        "name": "時時香-宜蘭新月店",
+        "counties": [
+            "台東縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 997,
+        "name": "順發商行",
+        "counties": [
+            "台東縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
+    },
+    {
+        "seq": 1006,
+        "name": "澎湖縣農會農民購物中心",
+        "counties": [
+            "澎湖縣"
+        ],
+        "address": "",
+        "lng": null,
+        "lat": null
     }
 ]
