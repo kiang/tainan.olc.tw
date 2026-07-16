@@ -58,7 +58,7 @@ function buildElectionTypeSelector() {
         var count = indexData.counts[et] || 0;
         if (count === 0) return;
         var btn = document.createElement('button');
-        btn.className = 'btn btn-outline-dark btn-sm shadow-sm';
+        btn.className = 'btn btn-sm tpp-tab';
         btn.setAttribute('data-et', et);
         btn.textContent = et + ' (' + count + ')';
         btn.addEventListener('click', function () {
@@ -67,19 +67,19 @@ function buildElectionTypeSelector() {
         container.appendChild(btn);
     });
     var galleryBtn = document.createElement('button');
-    galleryBtn.className = 'btn btn-outline-secondary btn-sm shadow-sm';
+    galleryBtn.className = 'btn btn-sm tpp-tab tpp-tab-gallery';
     galleryBtn.textContent = '全部參選人';
     galleryBtn.addEventListener('click', openGallery);
     container.appendChild(galleryBtn);
 }
 
 function updateElectionBtns(et) {
-    var btns = document.querySelectorAll('#electionBtns .btn');
+    var btns = document.querySelectorAll('#electionBtns .btn[data-et]');
     btns.forEach(function (btn) {
         if (btn.getAttribute('data-et') === et) {
-            btn.className = 'btn btn-dark btn-sm shadow-sm';
+            btn.classList.add('active');
         } else {
-            btn.className = 'btn btn-outline-dark btn-sm shadow-sm';
+            btn.classList.remove('active');
         }
     });
 }
@@ -143,11 +143,11 @@ function highlightStyle() {
 }
 
 function selectedStyle() {
-    return { fillColor: '#FFD700', weight: 3, color: '#E53935', fillOpacity: 0.6 };
+    return { fillColor: '#FFD700', weight: 3, color: '#F26649', fillOpacity: 0.6 };
 }
 
 function cunliSelectedStyle() {
-    return { fillColor: '#FF6F00', weight: 3, color: '#E53935', fillOpacity: 0.5 };
+    return { fillColor: '#FF6F00', weight: 3, color: '#F26649', fillOpacity: 0.5 };
 }
 
 function cunliDefaultStyle() {
@@ -311,7 +311,7 @@ function onCunliClick(feature, layer) {
     var center = layer.getBounds().getCenter();
     var html = '<div class="cunli-label-inner">';
     html += '<span>' + name + '</span>';
-    html += '<button type="button" class="btn btn-danger btn-sm" onclick="showSelectedZoneCandidates(event)"><i class="bi bi-person-lines-fill"></i> 查看候選人</button>';
+    html += '<button type="button" class="btn btn-sm tpp-btn" onclick="showSelectedZoneCandidates(event)"><i class="bi bi-person-lines-fill"></i> 查看候選人</button>';
     html += '</div>';
     cunliLabel = L.marker(center, {
         icon: L.divIcon({
@@ -351,7 +351,7 @@ function showZoneInfo(props, cunliName) {
     var tppInfo = findTppZoneInfo(code);
 
     var bc = '<ol class="breadcrumb mb-0">';
-    bc += '<li class="breadcrumb-item">' + currentElType + '</li>';
+    bc += '<li class="breadcrumb-item"><span class="tpp-badge-logo">眾</span>' + currentElType + '</li>';
     if (cunliName) {
         bc += '<li class="breadcrumb-item">' + props.name + '</li>';
         bc += '<li class="breadcrumb-item active">' + cunliName + '</li>';
@@ -457,7 +457,7 @@ function renderCandidateLinks(candidate) {
     if (!hasAny) return '';
     var html = '<div class="mt-2 d-flex flex-wrap gap-1">';
     if (candidate.donate) {
-        html += '<a href="' + candidate.donate + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger"><i class="bi bi-heart-fill"></i> 捐款</a>';
+        html += '<a href="' + candidate.donate + '" target="_blank" rel="noopener" class="btn btn-sm tpp-donate"><i class="bi bi-heart-fill"></i> 捐款支持</a>';
     }
     if (candidate.facebook) {
         html += '<a href="' + candidate.facebook + '" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"><i class="bi bi-facebook"></i></a>';

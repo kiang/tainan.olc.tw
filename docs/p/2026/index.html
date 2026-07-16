@@ -11,24 +11,156 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        html, body { height: 100%; margin: 0; padding: 0; }
-        #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        :root {
+            --tpp-teal: #2fbdb5;
+            --tpp-teal-dark: #0b8a84;
+            --tpp-teal-deep: #045f5a;
+            --tpp-teal-light: #d8f5f3;
+            --tpp-red: #e60012;
+            --tpp-orange: #f26649;
+        }
 
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: "Noto Sans TC", 微軟正黑體, "Microsoft JhengHei", sans-serif;
+        }
+
+        /* TPP-style header */
+        .tpp-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 6px 14px;
+            background: linear-gradient(90deg, #eafcfb 0%, #bfeeea 30%, #63cfc8 70%, var(--tpp-teal) 100%);
+        }
+        .tpp-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .tpp-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid var(--tpp-teal);
+            color: var(--tpp-teal-dark);
+            font-weight: 900;
+            font-size: 19px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tpp-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+        .tpp-brand-text strong {
+            color: var(--tpp-teal-deep);
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        .tpp-brand-text small {
+            color: var(--tpp-teal-deep);
+            font-size: 0.55rem;
+            letter-spacing: 0.5px;
+        }
+        .tpp-slogan {
+            margin-left: auto;
+            color: #fff;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 1.25rem;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            text-shadow: 2px 2px 0 rgba(4, 95, 90, 0.45);
+        }
+
+        /* Red countdown strip */
+        .tpp-countdown {
+            background: var(--tpp-red);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 3px 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+        .tpp-countdown .cd-digit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #fff;
+            min-width: 22px;
+            height: 26px;
+            font-family: Roboto, "Noto Sans TC", sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0 1px;
+        }
+        .tpp-countdown .cd-unit {
+            margin: 0 4px 0 2px;
+            font-size: 0.8rem;
+        }
+
+        /* Map area */
+        .map-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+        #map { position: absolute; inset: 0; }
+        .leaflet-container {
+            font-family: "Noto Sans TC", 微軟正黑體, "Microsoft JhengHei", sans-serif;
+        }
+
+        /* Election type tabs (TPP trapezoid style) */
         .election-btns {
             position: absolute;
             top: 10px;
             left: 55px;
             z-index: 1000;
             display: flex;
-            gap: 4px;
+            gap: 2px;
             flex-wrap: wrap;
             max-width: calc(100% - 65px);
         }
-        .election-btns .btn {
+        .election-btns .tpp-tab {
+            border: none;
+            border-radius: 0;
+            color: #fff;
+            font-weight: 700;
             font-size: 0.8rem;
-            padding: 4px 10px;
+            padding: 5px 16px;
             white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(180deg, var(--tpp-teal-light) 0%, #7fd9d3 35%, var(--tpp-teal) 75%, #29aca5 100%);
+            clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 100%, 0 100%);
+        }
+        .election-btns .tpp-tab:hover {
+            filter: brightness(1.08);
+            color: #fff;
+        }
+        .election-btns .tpp-tab.active {
+            background: linear-gradient(180deg, #7a7f83 0%, #303539 45%, #0c0f11 100%);
+            color: #fff;
+        }
+        .election-btns .tpp-tab-gallery {
+            background: linear-gradient(180deg, #ffd9b3 0%, #f89d5e 40%, var(--tpp-orange) 100%);
         }
 
         .locate-btn {
@@ -36,8 +168,51 @@
             top: 80px;
             left: 10px;
             z-index: 1000;
+            color: var(--tpp-teal-dark);
         }
 
+        .leaflet-tooltip {
+            white-space: pre-line;
+            width: max-content;
+            max-width: 280px;
+            border-color: var(--tpp-teal);
+        }
+
+        /* Modals */
+        .modal-content {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .modal-header {
+            background: linear-gradient(90deg, var(--tpp-teal) 0%, #63cfc8 70%, #9fe3de 100%);
+            color: #fff;
+            border-bottom: none;
+        }
+        .modal-header .breadcrumb-item,
+        .modal-header .breadcrumb-item.active,
+        .modal-header .breadcrumb-item + .breadcrumb-item::before {
+            color: #fff;
+            font-weight: 700;
+        }
+        .tpp-badge-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--tpp-teal-dark);
+            font-weight: 900;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .modal-header .breadcrumb-item:first-child {
+            display: inline-flex;
+            align-items: center;
+        }
 
         .gallery-grid {
             display: grid;
@@ -52,7 +227,7 @@
             transition: border-color 0.2s, transform 0.2s;
         }
         .gallery-item:hover {
-            border-color: #0ABAB5;
+            border-color: var(--tpp-teal);
             transform: scale(1.03);
         }
         .gallery-item img {
@@ -75,29 +250,32 @@
         .text-pre-wrap { white-space: pre-wrap; }
 
         .candidate-card {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
+            border: 1px solid #bfe9e6;
+            border-radius: 12px;
             padding: 12px;
             margin-bottom: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #f0fbfa 100%);
+        }
+        .candidate-card h6 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #222;
+        }
+        .candidate-card details summary {
+            color: var(--tpp-teal-dark);
+            font-weight: 700;
+            cursor: pointer;
         }
 
-        .candidate-photo {
-            width: 300px;
-            background-color: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #6c757d;
+        .tpp-donate {
+            background: var(--tpp-orange);
+            border: none;
+            color: #fff;
+            font-weight: 700;
         }
-        .candidate-photo img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        .leaflet-tooltip {
-            white-space: pre-line;
+        .tpp-donate:hover {
+            background: #d94f33;
+            color: #fff;
         }
 
         .cunli-label {
@@ -114,7 +292,7 @@
         }
         .cunli-label span {
             display: inline-block;
-            background: rgba(229, 57, 53, 0.85);
+            background: rgba(11, 138, 132, 0.9);
             color: #fff;
             padding: 2px 8px;
             border-radius: 4px;
@@ -128,26 +306,58 @@
             padding: 2px 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
+        .cunli-label .tpp-btn {
+            background: linear-gradient(180deg, #3ec9c1 0%, #1fa39c 100%);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+        }
+        .cunli-label .tpp-btn:hover {
+            filter: brightness(1.08);
+            color: #fff;
+        }
+
+        @media (max-width: 576px) {
+            .tpp-slogan { font-size: 0.95rem; letter-spacing: 1px; }
+            .tpp-brand-text strong { font-size: 0.85rem; }
+            .tpp-countdown { font-size: 0.75rem; }
+            .tpp-countdown .cd-digit { min-width: 18px; height: 22px; font-size: 0.9rem; }
+            .election-btns .tpp-tab { font-size: 0.72rem; padding: 4px 12px; }
+        }
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+    <header class="tpp-header">
+        <div class="tpp-brand">
+            <span class="tpp-logo">眾</span>
+            <span class="tpp-brand-text">
+                <strong>台灣民眾黨</strong>
+                <small>TAIWAN PEOPLE'S PARTY</small>
+            </span>
+        </div>
+        <div class="tpp-slogan">2026 為台灣拚到底</div>
+    </header>
+    <div class="tpp-countdown" id="tppCountdown"></div>
 
-    <div class="election-btns" id="electionBtns"></div>
+    <div class="map-wrap">
+        <div id="map"></div>
 
-    <button class="btn btn-light btn-sm locate-btn shadow" onclick="locateUser()">
-        <i class="bi bi-geo-alt-fill"></i>
-    </button>
+        <div class="election-btns" id="electionBtns"></div>
+
+        <button class="btn btn-light btn-sm locate-btn shadow" onclick="locateUser()">
+            <i class="bi bi-geo-alt-fill"></i>
+        </button>
+    </div>
 
     <!-- Gallery Modal -->
     <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title mb-0">候選人總覽</h6>
+                    <h6 class="modal-title mb-0"><span class="tpp-badge-logo">眾</span>候選人總覽</h6>
                     <input type="text" id="gallerySearch" class="form-control form-control-sm ms-3" placeholder="搜尋姓名、選區、政黨..." style="max-width:250px;" oninput="filterGallery(this.value)">
-                    <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="gallery-grid" id="galleryGrid"></div>
@@ -162,7 +372,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <nav aria-label="breadcrumb" class="w-100" id="modalBreadcrumb"></nav>
-                    <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalBody"></div>
             </div>
@@ -172,6 +382,38 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        (function () {
+            var target = new Date('2026-11-28T08:00:00+08:00').getTime();
+            var el = document.getElementById('tppCountdown');
+            function digits(num, minLen) {
+                var s = String(num);
+                while (s.length < minLen) s = '0' + s;
+                return s.split('').map(function (d) {
+                    return '<span class="cd-digit">' + d + '</span>';
+                }).join('');
+            }
+            function tick() {
+                var diff = target - Date.now();
+                if (diff <= 0) {
+                    el.innerHTML = '<span class="cd-unit">2026/11/28 投票日，記得去投票！</span>';
+                    return;
+                }
+                var sec = Math.floor(diff / 1000);
+                var d = Math.floor(sec / 86400);
+                var h = Math.floor((sec % 86400) / 3600);
+                var m = Math.floor((sec % 3600) / 60);
+                var s = sec % 60;
+                el.innerHTML = '<span class="cd-unit">距離 2026/11/28 投票日</span>' +
+                    digits(d, 3) + '<span class="cd-unit">天</span>' +
+                    digits(h, 2) + '<span class="cd-unit">時</span>' +
+                    digits(m, 2) + '<span class="cd-unit">分</span>' +
+                    digits(s, 2) + '<span class="cd-unit">秒</span>';
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+    </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
