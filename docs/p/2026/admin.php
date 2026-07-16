@@ -75,6 +75,33 @@ function loadAreaCodes() {
     return ['counties' => $counties, 'towns' => $towns, 'zoneDistricts' => $zoneDistricts];
 }
 
+function loadAreaNames() {
+    $cacheFile = __DIR__ . '/data/area_names.json';
+    if (file_exists($cacheFile)) {
+        return json_decode(file_get_contents($cacheFile), true);
+    }
+    $names = ['towns' => [], 'villages' => []];
+    // Same cunli version as the client-side topo (kiang.github.io/taiwan_basecode)
+    $topoFile = '/home/kiang/public_html/taiwan_basecode/cunli/s_topo/20240807.json';
+    if (!file_exists($topoFile)) return $names;
+    $topo = json_decode(file_get_contents($topoFile), true);
+    if (!$topo || empty($topo['objects'])) return $names;
+    $objKey = array_key_first($topo['objects']);
+    foreach ($topo['objects'][$objKey]['geometries'] as $g) {
+        $p = $g['properties'] ?? [];
+        if (!empty($p['TOWNCODE']) && !isset($names['towns'][$p['TOWNCODE']])) {
+            $names['towns'][$p['TOWNCODE']] = $p['TOWNNAME'] ?? '';
+        }
+        if (!empty($p['VILLCODE'])) {
+            $names['villages'][$p['VILLCODE']] = $p['VILLNAME'] ?? '';
+        }
+    }
+    ksort($names['towns']);
+    ksort($names['villages']);
+    file_put_contents($cacheFile, json_encode($names, JSON_UNESCAPED_UNICODE) . "\n");
+    return $names;
+}
+
 // Photo upload/delete (multipart, before JSON parsing)
 if (isset($_GET['action']) && $_GET['action'] === 'upload_photo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json; charset=utf-8');
@@ -130,6 +157,7 @@ if (isset($_GET['action'])) {
     if ($action === 'load') {
         $data['districts'] = loadZones();
         $data['areaCodes'] = loadAreaCodes();
+        $data['areaNames'] = loadAreaNames();
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -750,6 +778,29 @@ function onTownChange() {
     if (rules.vill) populateVillDropdown(code);
 }
 
+function shortAreaName(name) {
+    // 台西鄉 -> 台西, 安平區 -> 安平, 頂洲里 -> 頂洲; keep 2-char names like 東區 as-is
+    if (name.length > 2 && '鄉鎮市區村里'.includes(name.slice(-1))) return name.slice(0, -1);
+    return name;
+}
+
+function districtCoverageLabel(elType, areaCode, districtName) {
+    const defs = appData.districts?.[elType]?.[areaCode];
+    if (!defs) return '';
+    const d = defs.find(x => x.name === districtName);
+    if (!d) return '';
+    const names = [];
+    (d.townCodes || []).forEach(c => {
+        const n = appData.areaNames?.towns?.[c];
+        if (n) names.push(shortAreaName(n));
+    });
+    (d.villCodes || []).forEach(c => {
+        const n = appData.areaNames?.villages?.[c];
+        if (n) names.push(shortAreaName(n));
+    });
+    return names.length ? `(${names.join('、')})` : '';
+}
+
 function populateDistrictDropdown(elType, areaCode) {
     const sel = document.getElementById('c_districtSelect');
     sel.innerHTML = '<option value="">-- 選擇選區 --</option>';
@@ -765,7 +816,11 @@ function populateDistrictDropdown(elType, areaCode) {
         districts.forEach(name => {
             if (seen.has(name)) return;
             seen.add(name);
-            const label = name + (prefixLabels[prefix] || '');
+            let label = name + (prefixLabels[prefix] || '');
+            // Region zones (T1/R1) carry town/village coverage from zones.json
+            if (prefix === 'T1' || prefix === 'R1') {
+                label += districtCoverageLabel(elType, areaCode, name);
+            }
             sel.innerHTML += `<option value="${name}">${label}</option>`;
         });
     });
