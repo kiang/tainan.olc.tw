@@ -95,6 +95,22 @@ def find_zone_code(election_type, county_code, district_name, town_code=None, vi
     return None
 
 
+def fallback_zone_name(zone_code, candidate):
+    """Build a human-readable zone name from candidate area fields
+    for synthetic codes (mayor-*, village-*) missing from list.csv"""
+    county = candidate.get('countyName', '')
+    town = candidate.get('townName', '')
+    vill = candidate.get('villName', '')
+    if zone_code.startswith('village-'):
+        return county + town + vill or zone_code
+    if zone_code.startswith('mayor-'):
+        area = zone_code.split('-', 1)[1]
+        if len(area) == 5:
+            return county or zone_code
+        return (county + town) or zone_code
+    return zone_code
+
+
 def union_features(features):
     """Union all feature geometries into a single polygon/multipolygon"""
     polys = []
@@ -291,7 +307,8 @@ def generate():
             stats['skipped'] += 1
             continue
 
-        zone_name = zone_list.get(zone_code, {}).get('name', zone_code)
+        zone_name = zone_list.get(zone_code, {}).get('name') or \
+            fallback_zone_name(zone_code, candidates[cand_indices[0]])
         centroid = get_centroid(merged_geom)
 
         # Candidate names for tooltip
