@@ -1,4 +1,5 @@
 var map, overviewLayer, detailLayer, locateMarker, selectedLayer, selectedCunliLayer, cunliLabel;
+var autoTourTimer = null, autoTourZones = [], autoTourIndex = 0, autoTourTooltipLayer = null;
 var candidatesData = null;
 var indexData = null;
 var tppZonesData = null;
@@ -22,6 +23,12 @@ function initMap() {
     L.tileLayer(NLSC_TILE, { maxZoom: 18, attribution: '&copy; NLSC' }).addTo(map);
     infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
     galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
+
+    // Any real user interaction on the map terminates the auto tour
+    var mapEl = document.getElementById('map');
+    ['pointerdown', 'touchstart', 'wheel'].forEach(function (evt) {
+        mapEl.addEventListener(evt, stopAutoTour, { passive: true });
+    });
 
     Promise.all([
         fetch('zones/index.json').then(function (r) { return r.json(); }),
@@ -196,9 +203,52 @@ function renderOverview(fc) {
     if (overviewLayer.getLayers().length > 0) {
         map.fitBounds(overviewLayer.getBounds());
     }
+
+    startAutoTour();
 }
 
-function onZoneClick(props, layer) {
+function startAutoTour() {
+    stopAutoTour();
+    if (!overviewLayer) return;
+    var layers = overviewLayer.getLayers().filter(function (l) { return l.feature; });
+    if (layers.length === 0) return;
+    for (var i = layers.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = layers[i]; layers[i] = layers[j]; layers[j] = tmp;
+    }
+    autoTourZones = layers;
+    autoTourIndex = 0;
+    autoTourTimer = setInterval(autoTourStep, 3000);
+}
+
+function autoTourStep() {
+    if (autoTourZones.length === 0) {
+        stopAutoTour();
+        return;
+    }
+    if (autoTourIndex >= autoTourZones.length) autoTourIndex = 0;
+    var layer = autoTourZones[autoTourIndex++];
+    onZoneClick(layer.feature.properties, layer, { auto: true });
+}
+
+function stopAutoTour() {
+    if (autoTourTimer) {
+        clearInterval(autoTourTimer);
+        autoTourTimer = null;
+    }
+    closeAutoTourTooltip();
+}
+
+function closeAutoTourTooltip() {
+    if (autoTourTooltipLayer) {
+        autoTourTooltipLayer.closeTooltip();
+        autoTourTooltipLayer = null;
+    }
+}
+
+function onZoneClick(props, layer, opts) {
+    opts = opts || {};
+    if (!opts.auto) stopAutoTour();
     if (selectedLayer && overviewLayer) {
         overviewLayer.resetStyle(selectedLayer);
     }
@@ -206,7 +256,13 @@ function onZoneClick(props, layer) {
     layer.setStyle(selectedStyle());
     layer.bringToFront();
     map.fitBounds(layer.getBounds());
-    showZoneInfo(props);
+    if (opts.auto) {
+        closeAutoTourTooltip();
+        layer.openTooltip(layer.getBounds().getCenter());
+        autoTourTooltipLayer = layer;
+    } else {
+        showZoneInfo(props);
+    }
     loadDetail(props.code);
 }
 
@@ -433,6 +489,7 @@ function candidateSortKey(c) {
 
 function openGallery() {
     if (!candidatesData) return;
+    stopAutoTour();
     var grid = document.getElementById('galleryGrid');
     var searchInput = document.getElementById('gallerySearch');
     searchInput.value = '';
@@ -557,6 +614,7 @@ function findZoneCodeForCandidate(c) {
 }
 
 function locateUser() {
+    stopAutoTour();
     if (!navigator.geolocation) {
         alert('無法取得您的位置');
         return;
