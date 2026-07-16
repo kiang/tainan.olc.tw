@@ -105,6 +105,13 @@
             border: none;
             white-space: nowrap;
         }
+        .cunli-label .cunli-label-inner {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transform: translate(-50%, -50%);
+        }
         .cunli-label span {
             display: inline-block;
             background: rgba(229, 57, 53, 0.85);
@@ -114,7 +121,12 @@
             font-size: 13px;
             font-weight: bold;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            transform: translate(-50%, -50%);
+        }
+        .cunli-label button {
+            pointer-events: auto;
+            font-size: 12px;
+            padding: 2px 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
     </style>
 </head>

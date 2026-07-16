@@ -309,14 +309,32 @@ function onCunliClick(feature, layer) {
     var p = feature.properties;
     var name = (p.TOWNNAME || '') + (p.VILLNAME || '');
     var center = layer.getBounds().getCenter();
+    var html = '<div class="cunli-label-inner">';
+    html += '<span>' + name + '</span>';
+    html += '<button type="button" class="btn btn-danger btn-sm" onclick="showSelectedZoneCandidates(event)"><i class="bi bi-person-lines-fill"></i> 查看候選人</button>';
+    html += '</div>';
     cunliLabel = L.marker(center, {
         icon: L.divIcon({
             className: 'cunli-label',
-            html: '<span>' + name + '</span>',
+            html: html,
             iconSize: null
         }),
         interactive: false
     }).addTo(map);
+}
+
+function showSelectedZoneCandidates(e) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    if (!selectedLayer || !selectedLayer.feature) return;
+    var cunliName = '';
+    if (selectedCunliLayer && selectedCunliLayer.feature) {
+        var p = selectedCunliLayer.feature.properties;
+        cunliName = (p.TOWNNAME || '') + (p.VILLNAME || '');
+    }
+    showZoneInfo(selectedLayer.feature.properties, cunliName);
 }
 
 function clearDetail() {
@@ -327,14 +345,19 @@ function clearDetail() {
     }
 }
 
-function showZoneInfo(props) {
+function showZoneInfo(props, cunliName) {
     var code = props.code;
     var candidates = findCandidatesForZone(code, currentElType);
     var tppInfo = findTppZoneInfo(code);
 
     var bc = '<ol class="breadcrumb mb-0">';
     bc += '<li class="breadcrumb-item">' + currentElType + '</li>';
-    bc += '<li class="breadcrumb-item active">' + props.name + '</li>';
+    if (cunliName) {
+        bc += '<li class="breadcrumb-item">' + props.name + '</li>';
+        bc += '<li class="breadcrumb-item active">' + cunliName + '</li>';
+    } else {
+        bc += '<li class="breadcrumb-item active">' + props.name + '</li>';
+    }
     bc += '</ol>';
     document.getElementById('modalBreadcrumb').innerHTML = bc;
 
