@@ -12,8 +12,9 @@ if (!is_dir($dataDir)) {
     mkdir($dataDir, 0755, true);
 }
 
-// Load existing data to preserve manually set coordinates and nicknames
+// Load existing data to preserve manually set coordinates, nicknames, and fallback on fetch failure
 $existingManual = [];
+$existingByCity = [];
 if (file_exists($dataFile)) {
     $existing = json_decode(file_get_contents($dataFile), true);
     if (is_array($existing)) {
@@ -30,6 +31,7 @@ if (file_exists($dataFile)) {
             if (!empty($manual)) {
                 $existingManual[$key] = $manual;
             }
+            $existingByCity[$item['city']][] = $item;
         }
     }
 }
@@ -161,40 +163,44 @@ $allData = [];
 foreach ($cities as $city) {
     echo "Fetching data for {$city}...\n";
 
+    $fetchSuccess = false;
+
     // GET main page to extract fresh form tokens
     $html = fetchUrl($url, null, $cookieFile);
     if (!$html) {
         echo "  Failed to fetch main page\n";
-        continue;
+    } else {
+        $tokens = extractFormTokens($html);
+        if (empty($tokens['__VIEWSTATE']) || empty($tokens['__EVENTVALIDATION'])) {
+            echo "  Failed to extract form tokens\n";
+        } else {
+            // POST to select city
+            $postData = [
+                '__VIEWSTATE' => $tokens['__VIEWSTATE'],
+                '__VIEWSTATEGENERATOR' => $tokens['__VIEWSTATEGENERATOR'] ?? '',
+                '__VIEWSTATEENCRYPTED' => '',
+                '__EVENTVALIDATION' => $tokens['__EVENTVALIDATION'],
+                'hfCity' => $city,
+                'hfMode' => 'City',
+                'btnChooseCity' => '選取',
+            ];
+
+            $response = fetchUrl($url, $postData, $cookieFile);
+            if (!$response) {
+                echo "  Failed to fetch data\n";
+            } else {
+                $items = parseTableData($response, $city);
+                echo "  Found " . count($items) . " items\n";
+                $allData = array_merge($allData, $items);
+                $fetchSuccess = true;
+            }
+        }
     }
 
-    $tokens = extractFormTokens($html);
-    if (empty($tokens['__VIEWSTATE']) || empty($tokens['__EVENTVALIDATION'])) {
-        echo "  Failed to extract form tokens\n";
-        continue;
+    if (!$fetchSuccess && isset($existingByCity[$city])) {
+        echo "  Keeping " . count($existingByCity[$city]) . " existing records for {$city}\n";
+        $allData = array_merge($allData, $existingByCity[$city]);
     }
-
-    // POST to select city
-    $postData = [
-        '__VIEWSTATE' => $tokens['__VIEWSTATE'],
-        '__VIEWSTATEGENERATOR' => $tokens['__VIEWSTATEGENERATOR'] ?? '',
-        '__VIEWSTATEENCRYPTED' => '',
-        '__EVENTVALIDATION' => $tokens['__EVENTVALIDATION'],
-        'hfCity' => $city,
-        'hfMode' => 'City',
-        'btnChooseCity' => '選取',
-    ];
-
-    $response = fetchUrl($url, $postData, $cookieFile);
-    if (!$response) {
-        echo "  Failed to fetch data\n";
-        continue;
-    }
-
-    $items = parseTableData($response, $city);
-    echo "  Found " . count($items) . " items\n";
-
-    $allData = array_merge($allData, $items);
 
     usleep(500000); // 0.5s delay between requests
 }
