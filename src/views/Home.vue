@@ -23,9 +23,6 @@ const activeTab = ref('intro');
               政治獻金
               <span class="tab-badge">NEW</span>
             </RouterLink>
-            <button :class="['hero-tab', { active: activeTab === 'event' }]" @click="activeTab = 'event'">
-              AI 科技診療室
-            </button>
           </div>
 
           <!-- Tab: Intro -->
@@ -100,46 +97,6 @@ const activeTab = ref('intro');
             </div>
           </div>
 
-
-
-          <!-- Tab: Event -->
-          <div v-show="activeTab === 'event'" class="hero-tab-panel">
-            <h2 class="event-title">府城 AI 科技診療室</h2>
-            <p class="event-subtitle">AI 到底怎麼用？我直接「弄」給你看！</p>
-            <div class="event-details">
-              <div class="event-detail-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-                <span>每週三晚上（歡迎預約報名）</span>
-              </div>
-              <div class="event-detail-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                </svg>
-                <span>台南市安平區建平路 254 號（蕭漍華服務處）</span>
-              </div>
-              <div class="event-detail-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
-                  <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
-                </svg>
-                <span>全程免費服務</span>
-              </div>
-            </div>
-            <ul class="event-features">
-              <li><strong>免專業背景：</strong>只要你會用手機，就聽得懂</li>
-              <li><strong>現場實作：</strong>帶著筆電或手機，現場示範下指令、解 Bug</li>
-              <li><strong>1 對 1 諮詢：</strong>針對公司需求或孩子教育，面對面聊</li>
-            </ul>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMEfdW_1AG7-OBxD_P0_qW0WEUOwxSvZoLWsVLxvrRY7A8eA/viewform" target="_blank" rel="noopener" class="event-cta">
-              <span>立即報名</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-              </svg>
-            </a>
-          </div>
         </div>
       </div>
     </section>
@@ -699,101 +656,4 @@ const activeTab = ref('intro');
 
 
 
-// Event tab content
-.event-title {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 0 0 6px;
-
-  @media (min-width: 768px) {
-    font-size: 28px;
-  }
-}
-
-.event-subtitle {
-  font-size: 15px;
-  opacity: 0.9;
-  margin: 0 0 16px;
-
-  @media (min-width: 768px) {
-    font-size: 17px;
-  }
-}
-
-.event-details {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.event-detail-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  opacity: 0.9;
-
-  svg {
-    flex-shrink: 0;
-    opacity: 0.8;
-  }
-
-  @media (min-width: 768px) {
-    font-size: 14px;
-  }
-}
-
-.event-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: left;
-
-  li {
-    font-size: 13px;
-    opacity: 0.9;
-    padding-left: 18px;
-    position: relative;
-
-    &::before {
-      content: '\2714';
-      position: absolute;
-      left: 0;
-      font-weight: 700;
-    }
-
-    strong {
-      color: white;
-    }
-
-    @media (min-width: 768px) {
-      font-size: 14px;
-    }
-  }
-}
-
-.event-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  background: white;
-  color: #1a9a9a;
-  font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    color: #1a9a9a;
-  }
-}
 </style>
