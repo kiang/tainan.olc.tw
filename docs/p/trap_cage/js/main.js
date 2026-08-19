@@ -94,29 +94,31 @@ function addMarkersFromCSV() {
                     var reply = row[11];
 
                     if (!isNaN(lon) && !isNaN(lat)) {
-                        var props = {
-                            name: name,
-                            timestamp: timestamp,
-                            city: city,
-                            town: town,
-                            uuid: uuid,
-                            description: description,
-                            contact: contact,
-                            hours: hours,
-                            fee: fee,
-                            reply: reply,
-                            lon: lon,
-                            lat: lat
-                        };
+                        (function () {
+                            var props = {
+                                name: name,
+                                timestamp: timestamp,
+                                city: city,
+                                town: town,
+                                uuid: uuid,
+                                description: description,
+                                contact: contact,
+                                hours: hours,
+                                fee: fee,
+                                reply: reply,
+                                lon: lon,
+                                lat: lat
+                            };
 
-                        var marker = L.marker([lat, lon], { icon: createMarkerIcon() });
-                        marker.bindPopup(function () {
-                            return buildPopupContent(props);
-                        }, { maxWidth: 300 });
-                        marker.properties = props;
-                        markers[uuid] = marker;
-                        allMarkers.push(marker);
-                        markerClusterGroup.addLayer(marker);
+                            var marker = L.marker([lat, lon], { icon: createMarkerIcon() });
+                            marker.bindPopup(function () {
+                                return buildPopupContent(props);
+                            }, { maxWidth: 300 });
+                            marker.properties = props;
+                            markers[props.uuid] = marker;
+                            allMarkers.push(marker);
+                            markerClusterGroup.addLayer(marker);
+                        })();
 
                         var cityKey = city || '未知';
                         cityCounts[cityKey] = (cityCounts[cityKey] || 0) + 1;
