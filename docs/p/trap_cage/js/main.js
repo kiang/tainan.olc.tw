@@ -19,9 +19,9 @@ function createMarkerIcon() {
     return L.divIcon({
         html: '<div class="marker-icon">🐱</div>',
         className: '',
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        popupAnchor: [0, -16]
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -18]
     });
 }
 
@@ -33,35 +33,35 @@ function escapeHtml(text) {
 }
 
 function buildPopupContent(props) {
-    var content = '<div class="card border-0">';
+    var content = '<div class="popup-card card border-0">';
     content += '<div class="card-body p-2">';
-    content += '<h6 class="card-title">' + escapeHtml(props.name || '') + '</h6>';
+    content += '<h6 class="card-title">🐾 ' + escapeHtml(props.name || '') + '</h6>';
     if (props.timestamp) {
         content += '<p class="card-text mb-1"><small class="text-muted"><i class="bi bi-clock"></i> ' + escapeHtml(props.timestamp) + '</small></p>';
     }
     if (props.city) {
-        content += '<p class="card-text mb-1"><i class="bi bi-geo"></i> ' + escapeHtml(props.city) + ' ' + escapeHtml(props.town || '') + '</p>';
+        content += '<p class="card-text mb-1"><i class="bi bi-geo-alt-fill" style="color:#e8834a;"></i> ' + escapeHtml(props.city) + ' ' + escapeHtml(props.town || '') + '</p>';
     }
     if (props.description) {
         content += '<p class="card-text mb-1">' + escapeHtml(props.description) + '</p>';
     }
     if (props.contact) {
-        content += '<p class="card-text mb-1"><i class="bi bi-telephone"></i> ' + escapeHtml(props.contact) + '</p>';
+        content += '<p class="card-text mb-1"><i class="bi bi-telephone-fill" style="color:#e8834a;"></i> ' + escapeHtml(props.contact) + '</p>';
     }
     if (props.hours) {
-        content += '<p class="card-text mb-1"><i class="bi bi-clock-history"></i> ' + escapeHtml(props.hours) + '</p>';
+        content += '<p class="card-text mb-1"><i class="bi bi-clock-fill" style="color:#e8834a;"></i> ' + escapeHtml(props.hours) + '</p>';
     }
     if (props.fee) {
-        content += '<p class="card-text mb-1"><i class="bi bi-cash"></i> ' + escapeHtml(props.fee) + '</p>';
+        content += '<p class="card-text mb-1"><i class="bi bi-cash-stack" style="color:#e8834a;"></i> ' + escapeHtml(props.fee) + '</p>';
     }
     if (props.reply) {
-        content += '<div class="mt-2 p-2 bg-light rounded"><small><strong>回覆：</strong>' + escapeHtml(props.reply) + '</small></div>';
+        content += '<div class="mt-2 p-2 rounded" style="background:#fff8f0;border:1px solid #f4a261;"><small><strong>💬 回覆：</strong>' + escapeHtml(props.reply) + '</small></div>';
     }
     content += '</div>';
 
-    content += '<div class="card-footer p-2">';
+    content += '<div class="card-footer p-2 border-0" style="background:transparent;">';
     content += '<div class="d-grid">';
-    content += '<button class="btn btn-primary btn-sm" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + props.lat + ',' + props.lon + '\', \'_blank\')"><i class="bi bi-google"></i> Google Maps 導航</button>';
+    content += '<button class="btn btn-nav btn-sm" onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination=' + props.lat + ',' + props.lon + '\', \'_blank\')"><i class="bi bi-sign-turn-right-fill"></i> Google Maps 導航</button>';
     content += '</div>';
     content += '</div>';
     content += '</div>';
@@ -178,8 +178,8 @@ function createStatsChart(data) {
             datasets: [{
                 label: '租借點數量',
                 data: values,
-                backgroundColor: '#ff6b35',
-                borderColor: '#e55a2b',
+                backgroundColor: '#e8834a',
+                borderColor: '#d4845e',
                 borderWidth: 1
             }]
         },
@@ -280,7 +280,7 @@ function initMap() {
             var count = cluster.getChildCount();
             var size = Math.min(50, 30 + Math.sqrt(count) * 3);
             return L.divIcon({
-                html: '<div style="background-color:#ff6b35;color:#fff;border-radius:50%;width:' + size + 'px;height:' + size + 'px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.3);">' + count + '</div>',
+                html: '<div style="background:linear-gradient(135deg,#e8834a,#f4a261);color:#fff;border-radius:50%;width:' + size + 'px;height:' + size + 'px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;border:2px solid #fff;box-shadow:0 3px 8px rgba(90,62,43,0.35);">' + count + '</div>',
                 className: '',
                 iconSize: [size, size]
             });
@@ -299,17 +299,16 @@ function initMap() {
         L.popup()
             .setLatLng(e.latlng)
             .setContent(
-                '<div class="card border-0">' +
+                '<div class="popup-card card border-0">' +
                 '<div class="card-body p-2">' +
-                '<h6>此位置</h6>' +
-                (locationStr.trim() ? '<p class="mb-1"><i class="bi bi-geo"></i> ' + escapeHtml(locationStr.trim()) + '</p>' : '') +
-                '<p class="mb-1">緯度: ' + lat.toFixed(6) + '</p>' +
-                '<p class="mb-1">經度: ' + lon.toFixed(6) + '</p>' +
+                '<h6>📍 此位置</h6>' +
+                (locationStr.trim() ? '<p class="mb-1"><i class="bi bi-geo-alt-fill" style="color:#e8834a;"></i> ' + escapeHtml(locationStr.trim()) + '</p>' : '') +
+                '<p class="mb-1"><small class="text-muted">' + lat.toFixed(6) + ', ' + lon.toFixed(6) + '</small></p>' +
                 '</div>' +
-                '<div class="card-footer p-2">' +
+                '<div class="card-footer p-2 border-0" style="background:transparent;">' +
                 '<div class="d-grid">' +
-                '<button class="btn btn-primary btn-sm" onclick="openFormInModal(' + lat + ',' + lon + ')">' +
-                '<i class="bi bi-plus-circle"></i> 新增租借點資訊</button>' +
+                '<button class="btn btn-form btn-sm" onclick="openFormInModal(' + lat + ',' + lon + ')">' +
+                '🐾 新增租借點資訊</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>'
@@ -333,9 +332,9 @@ function initMap() {
 
     document.getElementById('add-point-hint').addEventListener('click', function () {
         var toast = document.createElement('div');
-        toast.className = 'alert alert-info alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+        toast.className = 'cat-toast alert alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
         toast.style.zIndex = '3000';
-        toast.innerHTML = '<i class="bi bi-hand-index"></i> 請點選地圖上的位置來新增租借點 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+        toast.innerHTML = '🐾 請點選地圖上的位置來新增租借點 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
         document.body.appendChild(toast);
         setTimeout(function () { if (toast.parentNode) toast.remove(); }, 4000);
     });

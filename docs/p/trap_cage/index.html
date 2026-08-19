@@ -13,16 +13,26 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
     <style>
+        :root {
+            --cat-primary: #e8834a;
+            --cat-secondary: #f4a261;
+            --cat-warm: #fff8f0;
+            --cat-dark: #5a3e2b;
+            --cat-accent: #d4845e;
+            --cat-pink: #f2a7b3;
+            --cat-cream: #fdf6ec;
+        }
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
         #map {
             position: absolute;
             top: 0;
-            bottom: 60px;
+            bottom: 56px;
             left: 0;
             right: 0;
             z-index: 1;
@@ -32,13 +42,73 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(248, 249, 250, 0.95);
+            background: linear-gradient(135deg, var(--cat-warm) 0%, var(--cat-cream) 100%);
+            border-top: 2px solid var(--cat-secondary);
             z-index: 1000;
+            padding: 8px 0;
+        }
+        .navbar .btn-cat {
+            background-color: var(--cat-primary);
+            border-color: var(--cat-primary);
+            color: #fff;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .navbar .btn-cat:hover {
+            background-color: var(--cat-accent);
+            border-color: var(--cat-accent);
+            color: #fff;
+        }
+        .navbar .btn-cat-outline {
+            border-color: var(--cat-primary);
+            color: var(--cat-dark);
+            border-radius: 20px;
+        }
+        .navbar .btn-cat-outline:hover {
+            background-color: var(--cat-primary);
+            color: #fff;
+        }
+        .navbar .form-control {
+            border-radius: 20px;
+            border-color: var(--cat-secondary);
+        }
+        .navbar .form-control:focus {
+            border-color: var(--cat-primary);
+            box-shadow: 0 0 0 0.2rem rgba(232, 131, 74, 0.25);
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            border: 2px solid var(--cat-secondary);
         }
         .leaflet-popup-content {
             max-width: 300px;
             max-height: 60vh;
             overflow-y: auto;
+            margin: 8px 12px;
+        }
+        .leaflet-popup-tip {
+            border-top-color: var(--cat-secondary);
+        }
+        .popup-card .card-title {
+            color: var(--cat-dark);
+        }
+        .popup-card .btn-nav {
+            background-color: var(--cat-primary);
+            border-color: var(--cat-primary);
+            color: #fff;
+            border-radius: 20px;
+        }
+        .popup-card .btn-nav:hover {
+            background-color: var(--cat-accent);
+        }
+        .popup-card .btn-form {
+            background-color: var(--cat-pink);
+            border-color: var(--cat-pink);
+            color: var(--cat-dark);
+            border-radius: 20px;
+        }
+        .popup-card .btn-form:hover {
+            background-color: #e8939f;
         }
         .readme-popup {
             display: none;
@@ -46,33 +116,51 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(180deg, var(--cat-warm) 0%, #fff 30%);
+            padding: 24px;
+            border-radius: 16px;
+            border: 2px solid var(--cat-secondary);
+            box-shadow: 0 8px 32px rgba(90, 62, 43, 0.2);
             min-width: 90%;
             max-height: 70%;
             overflow-y: auto;
             z-index: 2000;
         }
+        .readme-popup h5 {
+            color: var(--cat-dark);
+        }
         .readme-closer {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px;
+            right: 14px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 22px;
+            color: var(--cat-dark);
         }
         .marker-icon {
-            background-color: #ff6b35;
+            background: linear-gradient(135deg, var(--cat-primary), var(--cat-secondary));
             border: 2px solid #fff;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(90, 62, 43, 0.35);
+        }
+        #form-modal .modal-content {
+            border-radius: 16px;
+            border: 2px solid var(--cat-secondary);
+            overflow: hidden;
+        }
+        #form-modal .modal-header {
+            background: linear-gradient(135deg, var(--cat-warm) 0%, var(--cat-cream) 100%);
+            border-bottom: 1px solid var(--cat-secondary);
+        }
+        #form-modal .modal-title {
+            color: var(--cat-dark);
+            font-weight: 600;
         }
         #form-modal .modal-body {
             padding: 0;
@@ -81,6 +169,25 @@
             width: 100%;
             height: 70vh;
             border: none;
+        }
+        .cat-toast {
+            background: linear-gradient(135deg, var(--cat-warm), var(--cat-cream));
+            border: 2px solid var(--cat-secondary);
+            color: var(--cat-dark);
+            border-radius: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(90, 62, 43, 0.2);
+        }
+        .cat-badge {
+            background-color: var(--cat-cream);
+            color: var(--cat-dark);
+            border: 1px solid var(--cat-secondary);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+        }
+        .leaflet-control-zoom a {
+            color: var(--cat-dark) !important;
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -94,26 +201,28 @@
 </head>
 <body>
     <div id="map"></div>
-    <nav class="navbar navbar-light">
+    <nav class="navbar">
         <div class="container-fluid">
-            <div class="row w-100">
+            <div class="row w-100 align-items-center">
                 <div class="col-md-8 mb-2 mb-md-0">
                     <div class="input-group">
-                        <input type="text" id="filter-input" class="form-control" placeholder="輸入名稱或地址過濾...">
-                        <button class="btn btn-outline-secondary" type="button" id="locate-me">
-                            <i class="bi bi-geo-alt"></i> 定位
+                        <span class="input-group-text" style="border-radius:20px 0 0 20px;background:var(--cat-cream);border-color:var(--cat-secondary);">&#x1F43E;</span>
+                        <input type="text" id="filter-input" class="form-control" placeholder="搜尋租借點名稱或地址..." style="border-radius:0;">
+                        <button class="btn btn-cat-outline" type="button" id="locate-me">
+                            <i class="bi bi-geo-alt-fill"></i> 找附近
                         </button>
-                        <button class="btn btn-outline-primary" type="button" id="add-point-hint">
-                            <i class="bi bi-plus-circle"></i> 新增租借點
+                        <button class="btn btn-cat" type="button" id="add-point-hint" style="border-radius:0 20px 20px 0;">
+                            <i class="bi bi-plus-circle-fill"></i> 新增租借點
                         </button>
                     </div>
                 </div>
                 <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                    <span class="me-2" style="font-size:1.2em;">&#x1F431;</span>
                     <small class="text-muted me-2">
-                        <a href="https://tainan.olc.tw" target="_blank" class="text-decoration-none">江明宗</a>
+                        <a href="https://tainan.olc.tw" target="_blank" class="text-decoration-none" style="color:var(--cat-dark);">江明宗</a>
                     </small>
-                    <button id="readme-icon" class="btn btn-outline-info">
-                        <i class="bi bi-question-circle"></i>
+                    <button id="readme-icon" class="btn btn-cat-outline btn-sm" style="border-radius:50%;width:32px;height:32px;padding:0;">
+                        <i class="bi bi-question-lg"></i>
                     </button>
                 </div>
             </div>
@@ -122,16 +231,16 @@
     <div id="readme-popup" class="readme-popup">
         <span class="readme-closer" id="readme-closer">&times;</span>
         <div id="readme-content">
-            <h5>流浪貓誘捕籠租借地圖</h5>
-            <p>本地圖收集各地提供流浪貓誘捕籠租借服務的地點，方便民眾找到最近的租借點進行 TNR（捕捉、絕育、放回）。</p>
-            <h6>如何使用</h6>
+            <h5>&#x1F43E; 流浪貓誘捕籠租借地圖</h5>
+            <p>本地圖收集各地提供流浪貓誘捕籠租借服務的地點，方便民眾找到最近的租借點進行 <strong>TNR</strong>（捕捉、絕育、放回），一起守護街頭的毛孩！</p>
+            <h6>&#x1F431; 如何使用</h6>
             <ul>
-                <li>點選地圖上的標記查看租借點資訊</li>
-                <li>使用「定位」按鈕找到你附近的租借點</li>
-                <li>點選「新增租借點」回報新的租借地點</li>
-                <li>點選地圖空白處也可以新增該位置的租借點</li>
+                <li>&#x1F43E; 點選地圖上的標記查看租借點資訊</li>
+                <li>&#x1F4CD; 使用「找附近」按鈕定位你附近的租借點</li>
+                <li>&#x2795; 點選地圖空白處可以新增該位置的租借點</li>
+                <li>&#x1F4F1; 分享連結給需要的朋友吧！</li>
             </ul>
-            <h6>統計資訊</h6>
+            <h6>&#x1F4CA; 統計資訊</h6>
             <canvas id="statsChart" width="400" height="300"></canvas>
         </div>
     </div>
@@ -139,7 +248,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">新增租借點</h5>
+                    <h5 class="modal-title">&#x1F43E; 新增租借點</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
