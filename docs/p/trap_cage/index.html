@@ -211,6 +211,9 @@
                         <button class="btn btn-cat-outline" type="button" id="locate-me">
                             <i class="bi bi-geo-alt-fill"></i> 找附近
                         </button>
+                        <button class="btn btn-cat-outline" type="button" id="input-coordinates">
+                            <i class="bi bi-pin-map-fill"></i> 座標
+                        </button>
                         <button class="btn btn-cat" type="button" id="add-point-hint" style="border-radius:0 20px 20px 0;">
                             <i class="bi bi-plus-circle-fill"></i> 新增租借點
                         </button>
@@ -242,6 +245,36 @@
             </ul>
             <h6>&#x1F4CA; 統計資訊</h6>
             <canvas id="statsChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+    <div class="modal fade" id="coordinates-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:16px;border:2px solid var(--cat-secondary);">
+                <div class="modal-header" style="background:linear-gradient(135deg,var(--cat-warm),var(--cat-cream));border-bottom:1px solid var(--cat-secondary);">
+                    <h5 class="modal-title" style="color:var(--cat-dark);font-weight:600;">📍 輸入座標</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="coordinatesInput" class="form-label">座標 (緯度,經度)</label>
+                        <input type="text" class="form-control" id="coordinatesInput" placeholder="例如: 23.000694,120.221507" style="border-radius:12px;border-color:var(--cat-secondary);">
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="latInput" class="form-label">緯度</label>
+                            <input type="number" class="form-control" id="latInput" step="any" style="border-radius:12px;border-color:var(--cat-secondary);">
+                        </div>
+                        <div class="col-6">
+                            <label for="lonInput" class="form-label">經度</label>
+                            <input type="number" class="form-control" id="lonInput" step="any" style="border-radius:12px;border-color:var(--cat-secondary);">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:1px solid var(--cat-secondary);">
+                    <button type="button" class="btn btn-cat-outline" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-cat" id="zoomToCoordinates">🐾 前往座標</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="form-modal" tabindex="-1" aria-hidden="true">

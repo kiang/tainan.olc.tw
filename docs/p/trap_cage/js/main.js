@@ -339,6 +339,64 @@ function initMap() {
         setTimeout(function () { if (toast.parentNode) toast.remove(); }, 4000);
     });
 
+    var coordinatesModal = new bootstrap.Modal(document.getElementById('coordinates-modal'));
+    var coordinatesInput = document.getElementById('coordinatesInput');
+    var latInput = document.getElementById('latInput');
+    var lonInput = document.getElementById('lonInput');
+
+    document.getElementById('input-coordinates').addEventListener('click', function () {
+        coordinatesInput.value = '';
+        latInput.value = '';
+        lonInput.value = '';
+        coordinatesModal.show();
+    });
+
+    coordinatesInput.addEventListener('input', function () {
+        var parts = this.value.split(',').map(function (s) { return s.trim(); });
+        if (parts.length === 2) {
+            var lat = parseFloat(parts[0]);
+            var lon = parseFloat(parts[1]);
+            if (!isNaN(lat) && !isNaN(lon)) {
+                latInput.value = lat;
+                lonInput.value = lon;
+            }
+        }
+    });
+
+    document.getElementById('zoomToCoordinates').addEventListener('click', function () {
+        var lat = parseFloat(latInput.value);
+        var lon = parseFloat(lonInput.value);
+        if (isNaN(lat) || isNaN(lon)) return;
+
+        var latlng = L.latLng(lat, lon);
+        map.setView(latlng, 18);
+        coordinatesModal.hide();
+
+        setTimeout(function () {
+            var townInfo = getTownInfo(latlng);
+            var locationStr = (townInfo.county || '') + ' ' + (townInfo.town || '');
+
+            L.popup()
+                .setLatLng(latlng)
+                .setContent(
+                    '<div class="popup-card card border-0">' +
+                    '<div class="card-body p-2">' +
+                    '<h6>📍 此位置</h6>' +
+                    (locationStr.trim() ? '<p class="mb-1"><i class="bi bi-geo-alt-fill" style="color:#e8834a;"></i> ' + escapeHtml(locationStr.trim()) + '</p>' : '') +
+                    '<p class="mb-1"><small class="text-muted">' + lat.toFixed(6) + ', ' + lon.toFixed(6) + '</small></p>' +
+                    '</div>' +
+                    '<div class="card-footer p-2 border-0" style="background:transparent;">' +
+                    '<div class="d-grid">' +
+                    '<button class="btn btn-form btn-sm" onclick="openFormInModal(' + lat + ',' + lon + ')">' +
+                    '🐾 新增租借點資訊</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                )
+                .openOn(map);
+        }, 500);
+    });
+
     document.getElementById('filter-input').addEventListener('input', filterMarkers);
 
     document.getElementById('readme-icon').addEventListener('click', function () {
