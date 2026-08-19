@@ -114,6 +114,9 @@ function addMarkersFromCSV() {
                             marker.bindPopup(function () {
                                 return buildPopupContent(props);
                             }, { maxWidth: 300 });
+                            marker.on('click', function () {
+                                window.location.hash = 'point/' + props.uuid;
+                            });
                             marker.properties = props;
                             markers[props.uuid] = marker;
                             allMarkers.push(marker);
