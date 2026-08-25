@@ -5,6 +5,16 @@ var carRoutesData = {};
 var currentTab = 'routes';
 var activeRoute = null;
 var highlightedVehicles = [];
+var stopMarkers = [];
+var highlightedStop = null;
+
+function setSidebarContent(html) {
+    var content = document.getElementById('sidebar-content');
+    content.classList.remove('fade-in');
+    content.innerHTML = html;
+    void content.offsetWidth;
+    content.classList.add('fade-in');
+}
 
 function init() {
     map = L.map('map', { zoomControl: false }).setView([23.0, 120.2], 12);
@@ -70,6 +80,36 @@ function vehicleIcon(status, direction) {
 }
 
 var vehicleMarkers = {};
+
+function stopNumberIcon(num, color) {
+    var size = num > 99 ? 20 : 16;
+    return L.divIcon({
+        className: '',
+        html: '<div class="stop-number" style="background:' + color + ';width:' + size + 'px;height:' + size + 'px;font-size:' + (num > 99 ? 8 : 9) + 'px">' + num + '</div>',
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2]
+    });
+}
+
+function addArrows(coords, color) {
+    for (var i = 0; i < coords.length - 1; i++) {
+        var from = coords[i];
+        var to = coords[i + 1];
+        var midLat = (from[0] + to[0]) / 2;
+        var midLng = (from[1] + to[1]) / 2;
+        var angle = Math.atan2(to[1] - from[1], to[0] - from[0]) * 180 / Math.PI;
+        var arrow = L.marker([midLat, midLng], {
+            icon: L.divIcon({
+                className: '',
+                html: '<div class="route-arrow" style="color:' + color + ';transform:rotate(' + (90 - angle) + 'deg)">▲</div>',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            }),
+            interactive: false
+        });
+        routeLayer.addLayer(arrow);
+    }
+}
 
 function showVehicles(geojson) {
     vehicleLayer.clearLayers();
@@ -162,8 +202,9 @@ function renderRouteList(container, search) {
         html = '<div style="padding:20px;text-align:center;color:#888">找不到符合的路線</div>';
     }
 
-    container.innerHTML = html;
+    setSidebarContent(html);
 
+    var container = document.getElementById('sidebar-content');
     container.querySelectorAll('.route-item').forEach(function (el) {
         el.addEventListener('click', function () {
             loadRoute(this.dataset.linename);
@@ -207,8 +248,9 @@ function renderVehicleList(container, search) {
         html = '<div style="padding:20px;text-align:center;color:#888">找不到符合的車輛</div>';
     }
 
-    container.innerHTML = html;
+    setSidebarContent(html);
 
+    var container = document.getElementById('sidebar-content');
     container.querySelectorAll('.vehicle-item').forEach(function (el) {
         el.addEventListener('click', function (e) {
             if (e.target.classList.contains('vehicle-route-link')) return;
@@ -265,7 +307,11 @@ function loadRoute(linename) {
     stopLayer.clearLayers();
     clearHighlightedVehicles();
 
+    setSidebarContent('<div style="padding:20px;text-align:center;color:#888">載入路線中...</div>');
+
     var allStops = [];
+    stopMarkers = [];
+    highlightedStop = null;
     var loaded = 0;
 
     var colors = ['#0d6efd', '#dc3545', '#28a745', '#fd7e14', '#6f42c1', '#20c997'];
@@ -280,22 +326,6 @@ function loadRoute(linename) {
                     allStops.push(s);
                     if (!carGroups[s.car_licence]) carGroups[s.car_licence] = [];
                     carGroups[s.car_licence].push(s);
-                    var marker = L.marker([s.lat, s.lng], {
-                        icon: L.divIcon({
-                            className: 'stop-marker',
-                            iconSize: [10, 10],
-                            iconAnchor: [5, 5]
-                        })
-                    });
-                    marker.bindPopup(
-                        '<b>' + s.caption + '</b><br>' +
-                        s.area + ' ' + s.village + '<br>' +
-                        '車牌: ' + s.car_licence + '<br>' +
-                        '類型: ' + s.task_type + '<br>' +
-                        '時間: ' + s.estimated_time + '<br>' +
-                        '收運日: ' + s.days
-                    );
-                    stopLayer.addLayer(marker);
                 }
             });
 
@@ -305,10 +335,28 @@ function loadRoute(linename) {
                     colorIndex++;
                 }
                 var lineColor = carColors[licence];
-                var coords = carGroups[licence].map(function (s) { return [s.lat, s.lng]; });
-                if (coords.length > 0) {
+                var stops = carGroups[licence];
+                stops.forEach(function (s, i) {
+                    var num = i + 1;
+                    var icon = stopNumberIcon(num, lineColor);
+                    var marker = L.marker([s.lat, s.lng], { icon: icon });
+                    marker.bindPopup(
+                        '<b>#' + num + ' ' + s.caption + '</b><br>' +
+                        s.area + ' ' + s.village + '<br>' +
+                        '車牌: ' + s.car_licence + '<br>' +
+                        '類型: ' + s.task_type + '<br>' +
+                        '時間: ' + s.estimated_time + '<br>' +
+                        '收運日: ' + s.days
+                    );
+                    stopLayer.addLayer(marker);
+                    stopMarkers.push({ marker: marker, num: num, originalIcon: icon });
+                });
+
+                var coords = stops.map(function (s) { return [s.lat, s.lng]; });
+                if (coords.length > 1) {
                     var line = L.polyline(coords, { color: lineColor, weight: 3, opacity: 0.7 });
                     routeLayer.addLayer(line);
+                    addArrows(coords, lineColor);
                 }
                 highlightVehicle(licence, lineColor);
             });
@@ -330,22 +378,54 @@ function renderRouteDetail(linename, stops) {
         '<div style="margin-bottom:8px;font-size:12px;color:#666">' + stops.length + ' 個收運點</div>' +
         '<ul class="stop-list">';
 
-    stops.forEach(function (s) {
-        html += '<li>' +
-            '<div>' + s.caption + ' <small>(' + s.village + ')</small></div>' +
+    stops.forEach(function (s, i) {
+        var sm = stopMarkers[i];
+        var num = sm ? sm.num : i + 1;
+        html += '<li class="stop-item" data-index="' + i + '">' +
+            '<div><span class="stop-num">' + num + '</span> ' + s.caption + ' <small>(' + s.village + ')</small></div>' +
             '<div class="stop-time">' + s.task_type + ' ' + s.estimated_time + ' | ' + s.days + '</div>' +
             '</li>';
     });
 
     html += '</ul></div>';
-    content.innerHTML = html;
+    setSidebarContent(html);
 
     document.getElementById('back-to-list').addEventListener('click', function () {
         activeRoute = null;
         routeLayer.clearLayers();
         stopLayer.clearLayers();
         clearHighlightedVehicles();
+        stopMarkers = [];
+        highlightedStop = null;
         renderSidebar();
+    });
+
+    content.querySelectorAll('.stop-item').forEach(function (el) {
+        el.addEventListener('click', function () {
+            var idx = parseInt(this.dataset.index);
+            var sm = stopMarkers[idx];
+            if (!sm) return;
+
+            if (highlightedStop) {
+                var prev = highlightedStop;
+                prev.marker.setIcon(prev.originalIcon);
+                prev.el.classList.remove('active');
+            }
+
+            var activeIcon = L.divIcon({
+                className: '',
+                html: '<div class="stop-number stop-number-active" style="background:#fd7e14;width:24px;height:24px;font-size:11px">' + sm.num + '</div>',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+            sm.marker.setIcon(activeIcon);
+            sm.marker.setZIndexOffset(1000);
+            this.classList.add('active');
+            highlightedStop = { marker: sm.marker, el: this, originalIcon: sm.originalIcon };
+
+            map.setView(sm.marker.getLatLng(), Math.max(map.getZoom(), 16));
+            sm.marker.openPopup();
+        });
     });
 }
 

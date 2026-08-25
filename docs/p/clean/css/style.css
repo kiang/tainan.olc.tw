@@ -89,6 +89,15 @@ body,
     overflow-y: auto;
 }
 
+#sidebar-content.fade-in {
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .route-item {
     padding: 8px 12px;
     border-bottom: 1px solid #f0f0f0;
@@ -127,6 +136,30 @@ body,
     width: 10px;
     height: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.stop-number {
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+}
+
+.route-arrow {
+    font-size: 10px;
+    text-shadow: 0 0 2px white;
+    line-height: 1;
+    text-align: center;
+}
+
+.stop-number-active {
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .status-dot {
@@ -176,14 +209,38 @@ body,
 }
 
 .stop-list li {
-    padding: 4px 0;
+    padding: 4px 8px;
     border-bottom: 1px solid #f0f0f0;
     font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.stop-list li:hover {
+    background: #f8f9fa;
+}
+
+.stop-list li.active {
+    background: #e7f1ff;
 }
 
 .stop-list .stop-time {
     color: #0d6efd;
     font-size: 11px;
+}
+
+.stop-num {
+    display: inline-block;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 10px;
+    font-weight: bold;
+    vertical-align: middle;
 }
 
 .back-btn {
