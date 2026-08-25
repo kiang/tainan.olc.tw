@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026/8/22 災情回報地圖</title>
+    <meta property="og:title" content="2026/8/22 災情回報地圖">
+    <meta property="og:description" content="2026年8月22日起災情回報彙整地圖">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tainan.olc.tw/p/20260822/">
+    <meta name="description" content="2026年8月22日起災情回報彙整地圖">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+    <style>
+        :root {
+            --primary: #dc3545;
+            --primary-dark: #b02a37;
+            --secondary: #fd7e14;
+            --warm: #fff5f5;
+            --dark: #2c1810;
+            --cream: #fef9f0;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 56px;
+            left: 0;
+            right: 0;
+            z-index: 1;
+        }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--warm) 0%, var(--cream) 100%);
+            border-top: 2px solid var(--secondary);
+            z-index: 1000;
+            padding: 8px 0;
+        }
+        .navbar .btn-primary-custom {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .navbar .btn-primary-custom:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: #fff;
+        }
+        .navbar .btn-outline-custom {
+            border-color: var(--primary);
+            color: var(--dark);
+            border-radius: 20px;
+        }
+        .navbar .btn-outline-custom:hover {
+            background-color: var(--primary);
+            color: #fff;
+        }
+        .navbar .form-control {
+            border-radius: 20px;
+            border-color: var(--secondary);
+        }
+        .navbar .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            border: 2px solid var(--secondary);
+        }
+        .leaflet-popup-content {
+            max-width: 350px;
+            min-width: 320px;
+            max-height: 70vh;
+            overflow-y: auto;
+            margin: 8px 12px;
+        }
+        .leaflet-popup-content .text-post-media {
+            max-width: 100%;
+        }
+        .leaflet-popup-content iframe {
+            max-width: 100% !important;
+        }
+        .popup-card .card-title {
+            color: var(--dark);
+        }
+        .popup-card .btn-nav {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            border-radius: 20px;
+        }
+        .popup-card .btn-nav:hover {
+            background-color: var(--primary-dark);
+        }
+        .popup-card .btn-threads {
+            background-color: #000;
+            border-color: #000;
+            color: #fff;
+            border-radius: 20px;
+        }
+        .popup-card .btn-threads:hover {
+            background-color: #333;
+        }
+        .marker-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(44, 24, 16, 0.35);
+        }
+        .leaflet-control-zoom a {
+            color: var(--dark) !important;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="row w-100 align-items-center">
+                <div class="col-md-8 mb-2 mb-md-0">
+                    <div class="input-group">
+                        <span class="input-group-text" style="border-radius:20px 0 0 20px;background:var(--cream);border-color:var(--secondary);">&#x26a0;&#xfe0f;</span>
+                        <input type="text" id="filter-input" class="form-control" placeholder="搜尋災情說明..." style="border-radius:0 20px 20px 0;">
+                        <button class="btn btn-outline-custom ms-2" type="button" id="locate-me">
+                            <i class="bi bi-geo-alt-fill"></i> 找附近
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-md-end align-items-center">
+                    <small class="text-muted me-2">
+                        <a href="https://tainan.olc.tw" target="_blank" class="text-decoration-none" style="color:var(--dark);">江明宗</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
