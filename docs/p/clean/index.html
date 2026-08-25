@@ -264,7 +264,7 @@
             });
             map.addLayer(vehicleLayer);
 
-            routeLayer = L.layerGroup().addTo(map);
+            routeLayer = L.featureGroup().addTo(map);
             stopLayer = L.layerGroup().addTo(map);
 
             loadData();
@@ -436,11 +436,15 @@
             var allStops = [];
             var loaded = 0;
 
-            routeFiles.forEach(function (rf) {
+            var colors = ['#0d6efd', '#dc3545', '#28a745', '#fd7e14', '#6f42c1', '#20c997'];
+
+            routeFiles.forEach(function (rf, rfIndex) {
                 fetch(dataBase + rf.file).then(function (r) { return r.json(); }).then(function (data) {
+                    var segCoords = [];
                     data.stops.forEach(function (s) {
                         if (s.lng && s.lat) {
                             allStops.push(s);
+                            segCoords.push([s.lat, s.lng]);
                             var marker = L.marker([s.lat, s.lng], {
                                 icon: L.divIcon({
                                     className: 'stop-marker',
@@ -460,13 +464,15 @@
                         }
                     });
 
+                    if (segCoords.length > 0) {
+                        var lineColor = colors[rfIndex % colors.length];
+                        var line = L.polyline(segCoords, { color: lineColor, weight: 3, opacity: 0.7 });
+                        routeLayer.addLayer(line);
+                    }
+
                     loaded++;
                     if (loaded === routeFiles.length && allStops.length > 0) {
-                        var coords = allStops.map(function (s) { return [s.lat, s.lng]; });
-                        var line = L.polyline(coords, { color: '#0d6efd', weight: 3, opacity: 0.7 });
-                        routeLayer.addLayer(line);
-                        map.fitBounds(line.getBounds(), { padding: [50, 50] });
-
+                        map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
                         renderRouteDetail(linename, allStops);
                     }
                 });
