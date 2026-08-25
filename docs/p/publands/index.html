@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>臺南市國有土地地圖</title>
+  <meta property="og:title" content="臺南市國有土地地圖">
+  <meta property="og:description" content="臺南市國有土地分佈地圖，依行政區與地段顯示國有土地範圍">
+  <meta property="og:image" content="https://tainan.olc.tw/p/publands/og_image.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FJ1JR851SJ');
+  </script>
+</head>
+
+<body>
+  <div id="sidebar">
+    <h2>臺南市國有土地地圖</h2>
+    <div id="stats"></div>
+    <div id="info" class="info-panel"></div>
+    <div id="district-list" class="district-list"></div>
+  </div>
+  <div id="map"></div>
+  <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
