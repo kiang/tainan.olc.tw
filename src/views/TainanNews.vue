@@ -81,7 +81,7 @@ onMounted(fetchNews);
 <template>
   <div class="tainan-news">
     <div class="background-figure">
-      <img src="@/assets/images/kiang-with-name-big.png" alt="" aria-hidden="true" />
+      <img src="@/assets/images/kiang.png" alt="" aria-hidden="true" />
     </div>
 
     <div class="news-body">
@@ -136,22 +136,22 @@ onMounted(fetchNews);
 
 .background-figure {
   position: fixed;
-  left: 0;
-  bottom: 0;
+  left: -50px;
+  bottom: -30px;
   z-index: 0;
   pointer-events: none;
   opacity: 0.12;
 
   img {
-    width: 350px;
+    width: 450px;
     height: auto;
 
     @media (min-width: 768px) {
-      width: 450px;
+      width: 550px;
     }
 
     @media (min-width: 1200px) {
-      width: 550px;
+      width: 700px;
     }
   }
 }

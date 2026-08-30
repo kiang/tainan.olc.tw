@@ -13,7 +13,7 @@ const activeTab = ref('intro');
     <section class="hero-section">
       <div class="hero-content">
         <div class="hero-photo">
-          <img src="@/assets/images/kiang-with-name-big.png" alt="江明宗" />
+          <img src="@/assets/images/kiang.png" alt="江明宗" />
         </div>
         <div class="hero-text">
           <!-- Tab switcher -->
@@ -191,52 +191,59 @@ const activeTab = ref('intro');
 
 // Hero Section
 .hero-section {
-  padding: 40px 20px;
   background: linear-gradient(135deg, #28c8c8 0%, #1a9a9a 100%);
   color: white;
-
-  @media (min-width: 768px) {
-    padding: 60px 40px;
-  }
+  padding: 0;
 }
 
 .hero-content {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+  align-items: flex-end;
+  min-height: 400px;
 
   @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: center;
-    gap: 60px;
+    min-height: 480px;
+  }
+
+  @media (min-width: 992px) {
+    min-height: 520px;
   }
 }
 
 .hero-photo {
-  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 55%;
+  max-width: 600px;
+
+  @media (max-width: 767px) {
+    width: 45%;
+    max-width: 300px;
+    opacity: 0.85;
+  }
 
   img {
-    width: 200px;
+    width: 100%;
     height: auto;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
-
-    @media (min-width: 768px) {
-      width: 280px;
-    }
-
-    @media (min-width: 992px) {
-      width: 350px;
-    }
+    display: block;
   }
 }
 
 .hero-text {
-  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  text-align: left;
+  padding: 40px 20px 40px 0;
+  max-width: 50%;
 
-  @media (min-width: 768px) {
+  @media (max-width: 767px) {
+    max-width: 100%;
+    padding: 30px 20px 30px 40%;
     text-align: left;
   }
 }
