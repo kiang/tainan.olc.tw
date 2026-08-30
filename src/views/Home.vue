@@ -1,10 +1,88 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { RouterLink } from "vue-router";
 import PetitionModal from "@/components/PetitionModal.vue";
 
 const showPetitionModal = ref(false);
 const activeTab = ref('intro');
+
+const scheduleEvents = ref([]);
+const weekOffset = ref(0);
+
+const googleFormBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdjxtlIlumA2pIiVpSm_ItW6ebaRhVBcZvj6PpaPUPWOTQGzg/viewform";
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function buildVolunteerUrl(event) {
+  const params = new URLSearchParams({
+    "usp": "pp_url",
+    "entry.1683067847": "志工報名",
+    "entry.8069441": event.location,
+    "entry.329095753": `${event.date} ${event.time} ${event.type}`,
+    "entry.878731854": String(event.lng || "no"),
+    "entry.158869420": String(event.lat || "no"),
+    "entry.1072963415": generateUUID(),
+  });
+  return `${googleFormBaseUrl}?${params.toString()}`;
+}
+
+function getMonday(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+const weekDays = computed(() => {
+  const today = new Date();
+  const monday = getMonday(today);
+  monday.setDate(monday.getDate() + weekOffset.value * 7);
+  const days = [];
+  const dayNames = ['一', '二', '三', '四', '五', '六', '日'];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dateStr = d.toISOString().slice(0, 10);
+    const isToday = dateStr === today.toISOString().slice(0, 10);
+    days.push({
+      date: dateStr,
+      dayName: dayNames[i],
+      dayNum: d.getDate(),
+      month: d.getMonth() + 1,
+      isToday,
+      events: scheduleEvents.value.filter(e => e.date === dateStr),
+    });
+  }
+  return days;
+});
+
+const weekLabel = computed(() => {
+  if (weekDays.value.length === 0) return '';
+  const first = weekDays.value[0];
+  const last = weekDays.value[6];
+  return `${first.month}/${first.dayNum} - ${last.month}/${last.dayNum}`;
+});
+
+const hasEvents = computed(() => weekDays.value.some(d => d.events.length > 0));
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/json/schedule.json');
+    if (res.ok) {
+      scheduleEvents.value = await res.json();
+    }
+  } catch {
+    // silent fail
+  }
+});
 </script>
 
 <template>
@@ -98,6 +176,48 @@ const activeTab = ref('intro');
           </div>
 
         </div>
+      </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section v-if="scheduleEvents.length > 0" class="schedule-section">
+      <div class="schedule-container">
+        <div class="schedule-header">
+          <h2>行程預告</h2>
+          <div class="week-nav">
+            <button class="week-nav-btn" @click="weekOffset--" aria-label="上一週">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+              </svg>
+            </button>
+            <span class="week-label">{{ weekLabel }}</span>
+            <button class="week-nav-btn" @click="weekOffset++" aria-label="下一週">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="week-grid">
+          <div v-for="day in weekDays" :key="day.date" class="day-column" :class="{ today: day.isToday }">
+            <div class="day-header">
+              <span class="day-name">{{ day.dayName }}</span>
+              <span class="day-num" :class="{ 'today-num': day.isToday }">{{ day.dayNum }}</span>
+            </div>
+            <div class="day-events">
+              <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :class="'event-' + event.type">
+                <span class="event-type-badge">{{ event.type }}</span>
+                <span class="event-time">{{ event.time }}</span>
+                <span class="event-location">{{ event.location }}</span>
+                <a :href="buildVolunteerUrl(event)" target="_blank" rel="noopener" class="event-join-btn">我要參加</a>
+              </div>
+              <div v-if="day.events.length === 0" class="no-events">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="!hasEvents" class="no-week-events">本週暫無行程安排</div>
       </div>
     </section>
 
@@ -430,6 +550,246 @@ const activeTab = ref('intro');
       background: #06c755;
     }
   }
+}
+
+// Schedule Section
+.schedule-section {
+  padding: 30px 20px 40px;
+  background: white;
+
+  @media (min-width: 768px) {
+    padding: 40px 40px 50px;
+  }
+}
+
+.schedule-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.schedule-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+  }
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.week-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #28c8c8;
+    color: #28c8c8;
+  }
+}
+
+.week-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
+  min-width: 100px;
+  text-align: center;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+.day-column {
+  min-height: 80px;
+  border-radius: 10px;
+  background: #f8f9fa;
+  overflow: hidden;
+
+  &.today {
+    background: rgba(40, 200, 200, 0.06);
+    border: 1px solid rgba(40, 200, 200, 0.2);
+  }
+
+  @media (max-width: 767px) {
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+
+    .day-header {
+      flex-shrink: 0;
+      width: 50px;
+      padding: 0;
+      border-bottom: none;
+      text-align: center;
+    }
+
+    .day-events {
+      flex: 1;
+      padding: 0;
+    }
+  }
+}
+
+.day-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border-bottom: 1px solid #e9ecef;
+
+  .day-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+  }
+
+  .day-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+
+    &.today-num {
+      color: white;
+      background: #28c8c8;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+  }
+}
+
+.day-events {
+  padding: 6px;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  background: white;
+  border-left: 3px solid #28c8c8;
+  margin-bottom: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+
+  &.event-街講 {
+    border-left-color: #f0a030;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+}
+
+.event-type-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(40, 200, 200, 0.1);
+  color: #1a9a9a;
+  align-self: flex-start;
+
+  .event-街講 & {
+    background: rgba(240, 160, 48, 0.1);
+    color: #c08020;
+  }
+
+  @media (max-width: 767px) {
+    flex-shrink: 0;
+  }
+}
+
+.event-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+.event-location {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.3;
+
+  @media (max-width: 767px) {
+    flex: 1;
+  }
+}
+
+.event-join-btn {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #28c8c8;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #20b0b0;
+    color: white;
+  }
+}
+
+.no-events {
+  text-align: center;
+  font-size: 13px;
+  color: #ccc;
+  padding: 8px 0;
+}
+
+.no-week-events {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 15px;
 }
 
 // Quick Navigation Section

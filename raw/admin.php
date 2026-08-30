@@ -3,6 +3,7 @@ $dataFiles = [
     'lines' => __DIR__ . '/../docs/json/lines.json',
     'youtube' => __DIR__ . '/../docs/json/youtube.json',
     'youtube_list' => __DIR__ . '/../docs/json/youtube_list.json',
+    'schedule' => __DIR__ . '/../docs/json/schedule.json',
 ];
 
 function loadJson($path) {
@@ -77,6 +78,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 array_splice($lines['features'], $idx, 1);
                 saveJson($dataFiles['lines'], $lines);
                 $message = '已刪除掃街路線 #' . $idx;
+                $messageType = 'success';
+            }
+        }
+    } elseif ($tab === 'schedule') {
+        $schedule = loadJson($dataFiles['schedule']) ?: [];
+        if ($action === 'create') {
+            $date = trim($_POST['date'] ?? '');
+            $time = trim($_POST['time'] ?? '');
+            $location = trim($_POST['location'] ?? '');
+            $type = trim($_POST['type'] ?? '掃街');
+            $lng = floatval($_POST['lng'] ?? 0);
+            $lat = floatval($_POST['lat'] ?? 0);
+            if ($date !== '' && $time !== '' && $location !== '') {
+                $schedule[] = [
+                    'date' => $date,
+                    'time' => $time,
+                    'location' => $location,
+                    'type' => $type,
+                    'lng' => $lng,
+                    'lat' => $lat,
+                ];
+                usort($schedule, function($a, $b) {
+                    return strcmp($a['date'] . $a['time'], $b['date'] . $b['time']);
+                });
+                saveJson($dataFiles['schedule'], $schedule);
+                $message = '已新增行程：' . htmlspecialchars($date . ' ' . $time . ' ' . $location);
+                $messageType = 'success';
+            } else {
+                $message = '請填寫完整資料（日期、時間、地點）';
+                $messageType = 'error';
+            }
+        } elseif ($action === 'update') {
+            $idx = intval($_POST['index']);
+            if (isset($schedule[$idx])) {
+                $schedule[$idx] = [
+                    'date' => trim($_POST['date'] ?? ''),
+                    'time' => trim($_POST['time'] ?? ''),
+                    'location' => trim($_POST['location'] ?? ''),
+                    'type' => trim($_POST['type'] ?? '掃街'),
+                    'lng' => floatval($_POST['lng'] ?? 0),
+                    'lat' => floatval($_POST['lat'] ?? 0),
+                ];
+                usort($schedule, function($a, $b) {
+                    return strcmp($a['date'] . $a['time'], $b['date'] . $b['time']);
+                });
+                saveJson($dataFiles['schedule'], $schedule);
+                $message = '已更新行程 #' . $idx;
+                $messageType = 'success';
+            }
+        } elseif ($action === 'delete') {
+            $idx = intval($_POST['index']);
+            if (isset($schedule[$idx])) {
+                $info = $schedule[$idx]['date'] . ' ' . $schedule[$idx]['location'];
+                array_splice($schedule, $idx, 1);
+                saveJson($dataFiles['schedule'], $schedule);
+                $message = '已刪除行程：' . htmlspecialchars($info);
                 $messageType = 'success';
             }
         }
@@ -178,6 +235,7 @@ if (isset($_GET['msg'])) {
 $lines = loadJson($dataFiles['lines']);
 $youtube = loadJson($dataFiles['youtube']);
 $youtubeList = loadJson($dataFiles['youtube_list']);
+$schedule = loadJson($dataFiles['schedule']) ?: [];
 
 $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 ?>
@@ -186,7 +244,7 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>資料管理 - 掃街/街講</title>
+<title>資料管理 - 掃街/街講/行程</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -235,7 +293,7 @@ tr.editing { background: #e0f7f7; }
 </head>
 <body>
 <div class="container">
-<h1>資料管理 - 掃街紀錄 / 街講地點</h1>
+<h1>資料管理 - 掃街紀錄 / 街講地點 / 行程</h1>
 
 <?php if ($message): ?>
 <div class="msg <?= $messageType ?>"><?= htmlspecialchars($message) ?></div>
@@ -244,6 +302,7 @@ tr.editing { background: #e0f7f7; }
 <div class="tabs">
     <a href="?tab=lines" class="<?= $tab === 'lines' ? 'active' : '' ?>">掃街路線 (lines.json)</a>
     <a href="?tab=youtube" class="<?= $tab === 'youtube' ? 'active' : '' ?>">街講地點 (youtube.json)</a>
+    <a href="?tab=schedule" class="<?= $tab === 'schedule' ? 'active' : '' ?>">行程 (schedule.json)</a>
 </div>
 
 <?php if ($tab === 'lines'): ?>
@@ -410,6 +469,96 @@ tr.editing { background: #e0f7f7; }
                 <td class="actions">
                     <a href="?tab=youtube&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <form method="post" onsubmit="return confirm('確定刪除此地點及所有影片？')">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="index" value="<?= $i ?>">
+                        <button type="submit" class="btn btn-sm btn-danger">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<?php elseif ($tab === 'schedule'): ?>
+<!-- Schedule Tab -->
+<div class="card" id="formCard">
+    <?php if ($editIndex >= 0 && isset($schedule[$editIndex])):
+        $ef = $schedule[$editIndex];
+    ?>
+    <h2>編輯行程 #<?= $editIndex ?></h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="index" value="<?= $editIndex ?>">
+        <label>日期</label>
+        <input type="date" name="date" value="<?= htmlspecialchars($ef['date'] ?? '') ?>" required id="editFocus">
+        <label>時間 (HH:MM)</label>
+        <input type="text" name="time" value="<?= htmlspecialchars($ef['time'] ?? '') ?>" placeholder="17:20" required>
+        <label>地點</label>
+        <input type="text" name="location" value="<?= htmlspecialchars($ef['location'] ?? '') ?>" required>
+        <label>類型</label>
+        <select name="type" style="width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px">
+            <option value="掃街"<?= ($ef['type'] ?? '') === '掃街' ? ' selected' : '' ?>>掃街</option>
+            <option value="街講"<?= ($ef['type'] ?? '') === '街講' ? ' selected' : '' ?>>街講</option>
+        </select>
+        <label>座標（點擊地圖或手動輸入）</label>
+        <div style="display:flex;gap:8px;margin-bottom:6px">
+            <input type="text" name="lng" value="<?= $ef['lng'] ?? 0 ?>" required placeholder="經度" id="inputLng">
+            <input type="text" name="lat" value="<?= $ef['lat'] ?? 0 ?>" required placeholder="緯度" id="inputLat">
+        </div>
+        <div id="pickerMap"></div>
+        <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
+        <a href="?tab=schedule" class="btn btn-secondary" style="margin-top:10px">取消</a>
+    </form>
+    <?php else: ?>
+    <h2>新增行程</h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="create">
+        <label>日期</label>
+        <input type="date" name="date" required>
+        <label>時間 (HH:MM)</label>
+        <input type="text" name="time" placeholder="17:20" required>
+        <label>地點</label>
+        <input type="text" name="location" placeholder="和緯黃昏市場" required>
+        <label>類型</label>
+        <select name="type" style="width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px">
+            <option value="掃街">掃街</option>
+            <option value="街講">街講</option>
+        </select>
+        <label>座標（點擊地圖或手動輸入）</label>
+        <div style="display:flex;gap:8px;margin-bottom:6px">
+            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
+            <input type="text" name="lat" placeholder="23.009592" required id="inputLat">
+        </div>
+        <div id="pickerMap"></div>
+        <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">新增</button>
+    </form>
+    <?php endif; ?>
+</div>
+
+<div class="card">
+    <h2>行程列表 (<?= count($schedule) ?> 筆)</h2>
+    <div class="filter-bar">
+        <input type="text" id="scheduleFilter" placeholder="搜尋日期、地點或類型..." oninput="filterTable('scheduleTable', this.value, 'scheduleCount')">
+        <span class="count" id="scheduleCount"></span>
+    </div>
+    <table id="scheduleTable">
+        <thead>
+            <tr><th>#</th><th>日期</th><th>時間</th><th>地點</th><th>類型</th><th>座標</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        <?php foreach ($schedule as $i => $item): ?>
+            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
+                <td><?= $i ?></td>
+                <td><?= htmlspecialchars($item['date'] ?? '') ?></td>
+                <td><?= htmlspecialchars($item['time'] ?? '') ?></td>
+                <td><?= htmlspecialchars($item['location'] ?? '') ?></td>
+                <td><?= htmlspecialchars($item['type'] ?? '') ?></td>
+                <td><?= ($item['lng'] ?? '') . ', ' . ($item['lat'] ?? '') ?></td>
+                <td class="actions">
+                    <a href="?tab=schedule&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
+                    <form method="post" onsubmit="return confirm('確定刪除此行程？')">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="index" value="<?= $i ?>">
                         <button type="submit" class="btn btn-sm btn-danger">刪除</button>
