@@ -9,9 +9,15 @@ const showPetitionModal = ref(false);
 const activeTab = ref('intro');
 
 const scheduleEvents = ref([]);
+const scheduleTypes = ref([]);
 const weekOffset = ref(0);
 
 const googleFormBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdjxtlIlumA2pIiVpSm_ItW6ebaRhVBcZvj6PpaPUPWOTQGzg/viewform";
+
+function getTypeColor(typeName) {
+  const t = scheduleTypes.value.find(t => t.name === typeName);
+  return t?.color || '#28c8c8';
+}
 
 function buildVolunteerUrl(event) {
   const eventText = `我要參加 ${event.date} ${event.time} ${event.location} ${event.type}`;
@@ -96,7 +102,7 @@ function updateScheduleMap() {
 
   const bounds = [];
   events.forEach(event => {
-    const color = event.type === '街講' ? '#f0a030' : '#28c8c8';
+    const color = getTypeColor(event.type);
     const marker = L.circleMarker([event.lat, event.lng], {
       radius: 10,
       fillColor: color,
@@ -154,9 +160,15 @@ watch(weekEvents, async () => {
 
 onMounted(async () => {
   try {
-    const res = await fetch('/json/schedule.json');
-    if (res.ok) {
-      scheduleEvents.value = await res.json();
+    const [schedRes, typesRes] = await Promise.all([
+      fetch('/json/schedule.json'),
+      fetch('/json/schedule_types.json'),
+    ]);
+    if (schedRes.ok) {
+      scheduleEvents.value = await schedRes.json();
+    }
+    if (typesRes.ok) {
+      scheduleTypes.value = await typesRes.json();
     }
   } catch {
     // silent fail
@@ -292,8 +304,8 @@ onUnmounted(() => {
               <span class="day-num" :class="{ 'today-num': day.isToday }">{{ day.dayNum }}</span>
             </div>
             <div class="day-events">
-              <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :class="'event-' + event.type">
-                <span class="event-type-badge">{{ event.type }}</span>
+              <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :style="{ borderLeftColor: getTypeColor(event.type) }">
+                <span class="event-type-badge" :style="{ background: getTypeColor(event.type) + '1a', color: getTypeColor(event.type) }">{{ event.type }}</span>
                 <span class="event-time">{{ event.time }}</span>
                 <span class="event-location">{{ event.location }}</span>
                 <a :href="buildVolunteerUrl(event)" target="_blank" rel="noopener" class="event-join-btn">我要參加</a>
@@ -800,10 +812,6 @@ onUnmounted(() => {
   margin-bottom: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 
-  &.event-街講 {
-    border-left-color: #f0a030;
-  }
-
   @media (max-width: 767px) {
     flex-direction: row;
     align-items: center;
@@ -818,14 +826,7 @@ onUnmounted(() => {
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 4px;
-  background: rgba(40, 200, 200, 0.1);
-  color: #1a9a9a;
   align-self: flex-start;
-
-  .event-街講 & {
-    background: rgba(240, 160, 48, 0.1);
-    color: #c08020;
-  }
 
   @media (max-width: 767px) {
     flex-shrink: 0;

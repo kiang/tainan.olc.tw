@@ -4,6 +4,7 @@ $dataFiles = [
     'youtube' => __DIR__ . '/../docs/json/youtube.json',
     'youtube_list' => __DIR__ . '/../docs/json/youtube_list.json',
     'schedule' => __DIR__ . '/../docs/json/schedule.json',
+    'schedule_types' => __DIR__ . '/../docs/json/schedule_types.json',
 ];
 
 function loadJson($path) {
@@ -137,6 +138,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $messageType = 'success';
             }
         }
+    } elseif ($tab === 'schedule_types') {
+        $types = loadJson($dataFiles['schedule_types']) ?: [];
+        if ($action === 'create') {
+            $name = trim($_POST['name'] ?? '');
+            $color = trim($_POST['color'] ?? '#28c8c8');
+            if ($name !== '') {
+                $types[] = ['name' => $name, 'color' => $color];
+                saveJson($dataFiles['schedule_types'], $types);
+                $message = '已新增類型：' . htmlspecialchars($name);
+                $messageType = 'success';
+            } else {
+                $message = '請填寫類型名稱';
+                $messageType = 'error';
+            }
+        } elseif ($action === 'update') {
+            $idx = intval($_POST['index']);
+            if (isset($types[$idx])) {
+                $types[$idx] = [
+                    'name' => trim($_POST['name'] ?? ''),
+                    'color' => trim($_POST['color'] ?? '#28c8c8'),
+                ];
+                saveJson($dataFiles['schedule_types'], $types);
+                $message = '已更新類型 #' . $idx;
+                $messageType = 'success';
+            }
+        } elseif ($action === 'delete') {
+            $idx = intval($_POST['index']);
+            if (isset($types[$idx])) {
+                $info = $types[$idx]['name'];
+                array_splice($types, $idx, 1);
+                saveJson($dataFiles['schedule_types'], $types);
+                $message = '已刪除類型：' . htmlspecialchars($info);
+                $messageType = 'success';
+            }
+        }
     } elseif ($tab === 'youtube') {
         $youtube = loadJson($dataFiles['youtube']);
         $youtubeList = loadJson($dataFiles['youtube_list']);
@@ -236,6 +272,7 @@ $lines = loadJson($dataFiles['lines']);
 $youtube = loadJson($dataFiles['youtube']);
 $youtubeList = loadJson($dataFiles['youtube_list']);
 $schedule = loadJson($dataFiles['schedule']) ?: [];
+$scheduleTypes = loadJson($dataFiles['schedule_types']) ?: [['name' => '掃街', 'color' => '#28c8c8'], ['name' => '街講', 'color' => '#f0a030']];
 
 $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 ?>
@@ -303,6 +340,7 @@ tr.editing { background: #e0f7f7; }
     <a href="?tab=lines" class="<?= $tab === 'lines' ? 'active' : '' ?>">掃街路線 (lines.json)</a>
     <a href="?tab=youtube" class="<?= $tab === 'youtube' ? 'active' : '' ?>">街講地點 (youtube.json)</a>
     <a href="?tab=schedule" class="<?= $tab === 'schedule' ? 'active' : '' ?>">行程 (schedule.json)</a>
+    <a href="?tab=schedule_types" class="<?= $tab === 'schedule_types' ? 'active' : '' ?>">行程類型</a>
 </div>
 
 <?php if ($tab === 'lines'): ?>
@@ -497,8 +535,9 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="location" value="<?= htmlspecialchars($ef['location'] ?? '') ?>" required>
         <label>類型</label>
         <select name="type" style="width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px">
-            <option value="掃街"<?= ($ef['type'] ?? '') === '掃街' ? ' selected' : '' ?>>掃街</option>
-            <option value="街講"<?= ($ef['type'] ?? '') === '街講' ? ' selected' : '' ?>>街講</option>
+            <?php foreach ($scheduleTypes as $st): ?>
+            <option value="<?= htmlspecialchars($st['name']) ?>"<?= ($ef['type'] ?? '') === $st['name'] ? ' selected' : '' ?>><?= htmlspecialchars($st['name']) ?></option>
+            <?php endforeach; ?>
         </select>
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
@@ -522,8 +561,9 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="location" placeholder="和緯黃昏市場" required>
         <label>類型</label>
         <select name="type" style="width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px">
-            <option value="掃街">掃街</option>
-            <option value="街講">街講</option>
+            <?php foreach ($scheduleTypes as $st): ?>
+            <option value="<?= htmlspecialchars($st['name']) ?>"><?= htmlspecialchars($st['name']) ?></option>
+            <?php endforeach; ?>
         </select>
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
@@ -569,6 +609,68 @@ tr.editing { background: #e0f7f7; }
         </tbody>
     </table>
 </div>
+<?php elseif ($tab === 'schedule_types'): ?>
+<!-- Schedule Types Tab -->
+<div class="card" id="formCard">
+    <?php if ($editIndex >= 0 && isset($scheduleTypes[$editIndex])):
+        $ef = $scheduleTypes[$editIndex];
+    ?>
+    <h2>編輯行程類型 #<?= $editIndex ?></h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="index" value="<?= $editIndex ?>">
+        <label>類型名稱</label>
+        <input type="text" name="name" value="<?= htmlspecialchars($ef['name'] ?? '') ?>" required id="editFocus">
+        <label>標記顏色</label>
+        <div style="display:flex;gap:8px;align-items:center">
+            <input type="color" name="color" value="<?= htmlspecialchars($ef['color'] ?? '#28c8c8') ?>" style="width:50px;height:36px;border:1px solid #ccc;border-radius:4px;cursor:pointer">
+            <input type="text" name="color_text" value="<?= htmlspecialchars($ef['color'] ?? '#28c8c8') ?>" style="width:100px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px;font-family:monospace" oninput="this.previousElementSibling.value=this.value" id="colorText">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
+        <a href="?tab=schedule_types" class="btn btn-secondary" style="margin-top:10px">取消</a>
+    </form>
+    <?php else: ?>
+    <h2>新增行程類型</h2>
+    <form method="post" class="edit-form">
+        <input type="hidden" name="action" value="create">
+        <label>類型名稱</label>
+        <input type="text" name="name" placeholder="掃街" required>
+        <label>標記顏色</label>
+        <div style="display:flex;gap:8px;align-items:center">
+            <input type="color" name="color" value="#28c8c8" style="width:50px;height:36px;border:1px solid #ccc;border-radius:4px;cursor:pointer">
+            <input type="text" name="color_text" value="#28c8c8" style="width:100px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px;font-family:monospace" oninput="this.previousElementSibling.value=this.value" id="colorText">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">新增</button>
+    </form>
+    <?php endif; ?>
+</div>
+
+<div class="card">
+    <h2>行程類型列表 (<?= count($scheduleTypes) ?> 筆)</h2>
+    <table>
+        <thead>
+            <tr><th>#</th><th>名稱</th><th>顏色</th><th>預覽</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        <?php foreach ($scheduleTypes as $i => $st): ?>
+            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
+                <td><?= $i ?></td>
+                <td><?= htmlspecialchars($st['name'] ?? '') ?></td>
+                <td style="font-family:monospace;font-size:12px"><?= htmlspecialchars($st['color'] ?? '') ?></td>
+                <td><span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:<?= htmlspecialchars($st['color'] ?? '#ccc') ?>;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.2)"></span></td>
+                <td class="actions">
+                    <a href="?tab=schedule_types&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
+                    <form method="post" onsubmit="return confirm('確定刪除此類型？')">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="index" value="<?= $i ?>">
+                        <button type="submit" class="btn btn-sm btn-danger">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php endif; ?>
 
 </div>
@@ -601,6 +703,16 @@ if (ef) {
     ef.closest('.card').scrollIntoView({ behavior: 'smooth' });
     ef.focus();
 }
+
+// Sync color picker with text input
+document.querySelectorAll('input[type="color"]').forEach(function(picker) {
+    var textInput = picker.nextElementSibling;
+    if (textInput && textInput.tagName === 'INPUT') {
+        picker.addEventListener('input', function() {
+            textInput.value = picker.value;
+        });
+    }
+});
 
 function addVideoRow(containerId) {
     var div = document.getElementById(containerId);
