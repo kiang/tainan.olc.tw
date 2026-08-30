@@ -28,6 +28,13 @@ function buildVolunteerUrl(event) {
   return `${googleFormBaseUrl}?${params.toString()}`;
 }
 
+function formatLocalDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function getMonday(date) {
   const d = new Date(date);
   const day = d.getDay();
@@ -39,6 +46,7 @@ function getMonday(date) {
 
 const weekDays = computed(() => {
   const today = new Date();
+  const todayStr = formatLocalDate(today);
   const monday = getMonday(today);
   monday.setDate(monday.getDate() + weekOffset.value * 7);
   const days = [];
@@ -46,8 +54,8 @@ const weekDays = computed(() => {
   for (let i = 0; i < 7; i++) {
     const d = new Date(monday);
     d.setDate(monday.getDate() + i);
-    const dateStr = d.toISOString().slice(0, 10);
-    const isToday = dateStr === today.toISOString().slice(0, 10);
+    const dateStr = formatLocalDate(d);
+    const isToday = dateStr === todayStr;
     days.push({
       date: dateStr,
       dayName: dayNames[i],
