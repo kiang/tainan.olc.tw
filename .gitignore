@@ -13,6 +13,9 @@ node_modules/
 *.swo
 *~
 
+# Dev symlinks
+public/json
+
 # OS files
 .DS_Store
 Thumbs.db
