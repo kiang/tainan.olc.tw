@@ -100,10 +100,18 @@ function updateScheduleMap() {
   const events = weekEvents.value.filter(e => e.lng && e.lat);
   if (events.length === 0) return;
 
-  const bounds = [];
+  const grouped = {};
   events.forEach(event => {
-    const color = getTypeColor(event.type);
-    const marker = L.circleMarker([event.lat, event.lng], {
+    const key = `${event.lat.toFixed(5)},${event.lng.toFixed(5)}`;
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(event);
+  });
+
+  const bounds = [];
+  Object.values(grouped).forEach(group => {
+    const first = group[0];
+    const color = getTypeColor(first.type);
+    const marker = L.circleMarker([first.lat, first.lng], {
       radius: 10,
       fillColor: color,
       color: '#fff',
@@ -111,19 +119,24 @@ function updateScheduleMap() {
       fillOpacity: 0.9,
     }).addTo(scheduleMap);
 
-    const volunteerUrl = buildVolunteerUrl(event);
-    const popupHtml = `
-      <div style="text-align:center;padding:4px">
-        <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
-        <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
-        <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${color}20;color:${color};font-weight:600;margin:4px 0">${event.type}</div>
-        <br>
-        <a href="${volunteerUrl}" target="_blank" rel="noopener"
-           style="display:inline-block;margin-top:6px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>
-      </div>`;
-    marker.bindPopup(popupHtml, { closeButton: false });
+    const popupItems = group.map(event => {
+      const c = getTypeColor(event.type);
+      const volunteerUrl = buildVolunteerUrl(event);
+      return `
+        <div style="text-align:center;padding:6px 4px;border-bottom:1px solid #eee">
+          <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
+          <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
+          <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${c}20;color:${c};font-weight:600;margin:4px 0">${event.type}</div>
+          <br>
+          <a href="${volunteerUrl}" target="_blank" rel="noopener"
+             style="display:inline-block;margin-top:4px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>
+        </div>`;
+    }).join('');
+
+    const popupHtml = `<div style="max-height:250px;overflow-y:auto">${popupItems}</div>`;
+    marker.bindPopup(popupHtml, { closeButton: false, maxWidth: 280 });
     scheduleMarkers.push(marker);
-    bounds.push([event.lat, event.lng]);
+    bounds.push([first.lat, first.lng]);
   });
 
   if (bounds.length > 0) {
