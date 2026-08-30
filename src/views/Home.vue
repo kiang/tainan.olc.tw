@@ -1,7 +1,9 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch, nextTick, onUnmounted } from "vue";
 import { RouterLink } from "vue-router";
 import PetitionModal from "@/components/PetitionModal.vue";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const showPetitionModal = ref(false);
 const activeTab = ref('intro');
@@ -11,23 +13,17 @@ const weekOffset = ref(0);
 
 const googleFormBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdjxtlIlumA2pIiVpSm_ItW6ebaRhVBcZvj6PpaPUPWOTQGzg/viewform";
 
-function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
 function buildVolunteerUrl(event) {
+  const eventText = `我要參加 ${event.date} ${event.time} ${event.location} ${event.type}`;
   const params = new URLSearchParams({
     "usp": "pp_url",
-    "entry.1683067847": "志工報名",
-    "entry.8069441": event.location,
-    "entry.329095753": `${event.date} ${event.time} ${event.type}`,
+    "entry.1683067847": "其他事項",
+    "entry.1608282544": eventText,
+    "entry.8069441": "no",
+    "entry.329095753": "no",
     "entry.878731854": String(event.lng || "no"),
     "entry.158869420": String(event.lat || "no"),
-    "entry.1072963415": generateUUID(),
+    "entry.1072963415": "no",
   });
   return `${googleFormBaseUrl}?${params.toString()}`;
 }
@@ -73,6 +69,81 @@ const weekLabel = computed(() => {
 
 const hasEvents = computed(() => weekDays.value.some(d => d.events.length > 0));
 
+const scheduleMapContainer = ref(null);
+let scheduleMap = null;
+let scheduleMarkers = [];
+
+const weekEvents = computed(() => {
+  return weekDays.value.flatMap(d => d.events);
+});
+
+function updateScheduleMap() {
+  if (!scheduleMap) return;
+
+  scheduleMarkers.forEach(m => scheduleMap.removeLayer(m));
+  scheduleMarkers = [];
+
+  const events = weekEvents.value.filter(e => e.lng && e.lat);
+  if (events.length === 0) return;
+
+  const bounds = [];
+  events.forEach(event => {
+    const color = event.type === '街講' ? '#f0a030' : '#28c8c8';
+    const marker = L.circleMarker([event.lat, event.lng], {
+      radius: 10,
+      fillColor: color,
+      color: '#fff',
+      weight: 2,
+      fillOpacity: 0.9,
+    }).addTo(scheduleMap);
+
+    const volunteerUrl = buildVolunteerUrl(event);
+    const popupHtml = `
+      <div style="text-align:center;padding:4px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
+        <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
+        <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${color}20;color:${color};font-weight:600;margin:4px 0">${event.type}</div>
+        <br>
+        <a href="${volunteerUrl}" target="_blank" rel="noopener"
+           style="display:inline-block;margin-top:6px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>
+      </div>`;
+    marker.bindPopup(popupHtml, { closeButton: false });
+    scheduleMarkers.push(marker);
+    bounds.push([event.lat, event.lng]);
+  });
+
+  if (bounds.length > 0) {
+    scheduleMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
+  }
+}
+
+function initScheduleMap() {
+  if (!scheduleMapContainer.value || scheduleMap) return;
+
+  scheduleMap = L.map(scheduleMapContainer.value, {
+    center: [23.004582, 120.198],
+    zoom: 14,
+    zoomControl: true,
+    scrollWheelZoom: false,
+  });
+
+  L.tileLayer("https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}", {
+    attribution: '<a href="https://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>',
+    maxZoom: 20,
+  }).addTo(scheduleMap);
+
+  updateScheduleMap();
+}
+
+watch(weekEvents, async () => {
+  if (scheduleMap) {
+    updateScheduleMap();
+  } else {
+    await nextTick();
+    initScheduleMap();
+  }
+});
+
 onMounted(async () => {
   try {
     const res = await fetch('/json/schedule.json');
@@ -81,6 +152,13 @@ onMounted(async () => {
     }
   } catch {
     // silent fail
+  }
+});
+
+onUnmounted(() => {
+  if (scheduleMap) {
+    scheduleMap.remove();
+    scheduleMap = null;
   }
 });
 </script>
@@ -183,7 +261,7 @@ onMounted(async () => {
     <section v-if="scheduleEvents.length > 0" class="schedule-section">
       <div class="schedule-container">
         <div class="schedule-header">
-          <h2>行程預告</h2>
+          <h2>行程</h2>
           <div class="week-nav">
             <button class="week-nav-btn" @click="weekOffset--" aria-label="上一週">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -218,6 +296,8 @@ onMounted(async () => {
         </div>
 
         <div v-if="!hasEvents" class="no-week-events">本週暫無行程安排</div>
+
+        <div v-if="hasEvents" ref="scheduleMapContainer" class="schedule-map"></div>
       </div>
     </section>
 
@@ -790,6 +870,17 @@ onMounted(async () => {
   padding: 20px;
   color: #999;
   font-size: 15px;
+}
+
+.schedule-map {
+  height: 300px;
+  border-radius: 12px;
+  margin-top: 20px;
+  border: 1px solid #e9ecef;
+
+  @media (min-width: 768px) {
+    height: 350px;
+  }
 }
 
 // Quick Navigation Section
