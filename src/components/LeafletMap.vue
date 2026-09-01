@@ -222,52 +222,30 @@ async function loadGeoJson() {
         },
       }).addTo(map);
     } else {
-      geoJsonLayer = L.geoJSON(data, {
+      // Separate Point features for grouping when mapType is lines
+      const pointFeatures = props.mapType === "lines"
+        ? data.features.filter(f => f.geometry.type === "Point")
+        : [];
+      const nonPointData = props.mapType === "lines"
+        ? { ...data, features: data.features.filter(f => f.geometry.type !== "Point") }
+        : data;
+
+      geoJsonLayer = L.geoJSON(nonPointData, {
         style: (feature) => getFeatureStyle(feature),
-        pointToLayer: (feature, latlng) => {
-          return L.circleMarker(latlng, {
-            radius: 8,
-            fillColor: '#ff6b6b',
-            color: '#fff',
-            weight: 2,
-            fillOpacity: 0.9,
-          });
-        },
         onEachFeature: (feature, layer) => {
-          // Popup
           const popupContent = createPopupContent(feature);
           if (popupContent) {
-            layer.bindPopup(popupContent, {
-              className: "custom-popup",
-            });
+            layer.bindPopup(popupContent, { className: "custom-popup" });
           }
-
-          const isPoint = feature.geometry.type === 'Point';
-
-          // Hover effects
           layer.on({
             mouseover: (e) => {
-              const layer = e.target;
-              if (isPoint) {
-                layer.setStyle({ fillColor: '#cc4444', radius: 10 });
-              } else {
-                layer.setStyle(getFeatureStyle(feature, true));
-              }
-              if (props.mapType === "district") {
-                layer.bringToFront();
-              }
+              e.target.setStyle(getFeatureStyle(feature, true));
+              if (props.mapType === "district") e.target.bringToFront();
             },
             mouseout: (e) => {
-              const layer = e.target;
-              if (isPoint) {
-                layer.setStyle({ fillColor: '#ff6b6b', radius: 8 });
-              } else {
-                layer.setStyle(getFeatureStyle(feature, false));
-              }
+              e.target.setStyle(getFeatureStyle(feature, false));
             },
-            click: (e) => {
-              emit("featureClick", feature);
-            },
+            click: () => emit("featureClick", feature),
           });
 
           // Add label for district
@@ -290,6 +268,42 @@ async function loadGeoJson() {
           }
         },
       }).addTo(map);
+
+      // Group point features at same location into single markers
+      if (pointFeatures.length > 0) {
+        const grouped = {};
+        pointFeatures.forEach(f => {
+          const c = f.geometry.coordinates;
+          const key = `${c[0].toFixed(5)},${c[1].toFixed(5)}`;
+          if (!grouped[key]) grouped[key] = { coords: c, features: [] };
+          grouped[key].features.push(f);
+        });
+
+        Object.values(grouped).forEach(group => {
+          const [lng, lat] = group.coords;
+          const count = group.features.length;
+          const radius = Math.min(8 + count, 14);
+          const marker = L.circleMarker([lat, lng], {
+            radius,
+            fillColor: '#ff6b6b',
+            color: '#fff',
+            weight: 2,
+            fillOpacity: 0.9,
+          }).addTo(map);
+
+          const popupItems = group.features.map(f => createPopupContent(f)).join('<hr style="margin:4px 0;border-color:#eee">');
+          const popupHtml = `<div style="max-height:250px;overflow-y:auto">${popupItems}</div>`;
+          marker.bindPopup(popupHtml, { className: "custom-popup", maxWidth: 300 });
+
+          marker.on({
+            mouseover: () => marker.setStyle({ fillColor: '#cc4444', radius: radius + 2 }),
+            mouseout: () => marker.setStyle({ fillColor: '#ff6b6b', radius }),
+            click: () => {
+              if (count === 1) emit("featureClick", group.features[0]);
+            },
+          });
+        });
+      }
     }
   } catch (error) {
     console.error("Failed to load GeoJSON:", error);
