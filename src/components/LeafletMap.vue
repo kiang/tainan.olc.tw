@@ -224,6 +224,15 @@ async function loadGeoJson() {
     } else {
       geoJsonLayer = L.geoJSON(data, {
         style: (feature) => getFeatureStyle(feature),
+        pointToLayer: (feature, latlng) => {
+          return L.circleMarker(latlng, {
+            radius: 8,
+            fillColor: '#ff6b6b',
+            color: '#fff',
+            weight: 2,
+            fillOpacity: 0.9,
+          });
+        },
         onEachFeature: (feature, layer) => {
           // Popup
           const popupContent = createPopupContent(feature);
@@ -233,18 +242,28 @@ async function loadGeoJson() {
             });
           }
 
+          const isPoint = feature.geometry.type === 'Point';
+
           // Hover effects
           layer.on({
             mouseover: (e) => {
               const layer = e.target;
-              layer.setStyle(getFeatureStyle(feature, true));
+              if (isPoint) {
+                layer.setStyle({ fillColor: '#cc4444', radius: 10 });
+              } else {
+                layer.setStyle(getFeatureStyle(feature, true));
+              }
               if (props.mapType === "district") {
                 layer.bringToFront();
               }
             },
             mouseout: (e) => {
               const layer = e.target;
-              layer.setStyle(getFeatureStyle(feature, false));
+              if (isPoint) {
+                layer.setStyle({ fillColor: '#ff6b6b', radius: 8 });
+              } else {
+                layer.setStyle(getFeatureStyle(feature, false));
+              }
             },
             click: (e) => {
               emit("featureClick", feature);

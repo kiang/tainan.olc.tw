@@ -37,23 +37,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return count($parts) === 2 ? [$parts[0], $parts[1]] : null;
             }, array_filter(explode("\n", trim($_POST['coordinates'] ?? ''))));
             $coords = array_values(array_filter($coords));
-            if (!empty($coords) && !empty($_POST['v'])) {
+            if (!empty($_POST['v'])) {
+                if (count($coords) === 1) {
+                    $geometry = ['type' => 'Point', 'coordinates' => $coords[0]];
+                } elseif (count($coords) > 1) {
+                    $geometry = ['type' => 'LineString', 'coordinates' => $coords];
+                } else {
+                    $geometry = ['type' => 'Point', 'coordinates' => [0, 0]];
+                }
                 $lines['features'][] = [
                     'type' => 'Feature',
                     'properties' => [
                         'ymdh' => intval($_POST['ymdh']),
                         'v' => $_POST['v'],
                     ],
-                    'geometry' => [
-                        'type' => 'LineString',
-                        'coordinates' => $coords,
-                    ],
+                    'geometry' => $geometry,
                 ];
                 saveJson($dataFiles['lines'], $lines);
                 $message = '已新增掃街路線';
                 $messageType = 'success';
             } else {
-                $message = '請填寫完整資料（座標與影片ID）';
+                $message = '請填寫影片ID';
                 $messageType = 'error';
             }
         } elseif ($action === 'update') {
@@ -64,14 +68,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     return count($parts) === 2 ? [$parts[0], $parts[1]] : null;
                 }, array_filter(explode("\n", trim($_POST['coordinates'] ?? ''))));
                 $coords = array_values(array_filter($coords));
-                if (!empty($coords)) {
-                    $lines['features'][$idx]['properties']['ymdh'] = intval($_POST['ymdh']);
-                    $lines['features'][$idx]['properties']['v'] = $_POST['v'];
-                    $lines['features'][$idx]['geometry']['coordinates'] = $coords;
-                    saveJson($dataFiles['lines'], $lines);
-                    $message = '已更新掃街路線 #' . $idx;
-                    $messageType = 'success';
+                $lines['features'][$idx]['properties']['ymdh'] = intval($_POST['ymdh']);
+                $lines['features'][$idx]['properties']['v'] = $_POST['v'];
+                if (count($coords) === 1) {
+                    $lines['features'][$idx]['geometry'] = ['type' => 'Point', 'coordinates' => $coords[0]];
+                } elseif (count($coords) > 1) {
+                    $lines['features'][$idx]['geometry'] = ['type' => 'LineString', 'coordinates' => $coords];
                 }
+                saveJson($dataFiles['lines'], $lines);
+                $message = '已更新掃街路線 #' . $idx;
+                $messageType = 'success';
             }
         } elseif ($action === 'delete') {
             $idx = intval($_POST['index']);
@@ -357,10 +363,16 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="ymdh" value="<?= htmlspecialchars($ef['properties']['ymdh'] ?? '') ?>" required id="editFocus">
         <label>YouTube 影片 ID</label>
         <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required>
-        <label>座標 (每行一組 lng,lat)</label>
-        <textarea name="coordinates" required><?php
-            foreach (($ef['geometry']['coordinates'] ?? []) as $c) {
-                echo $c[0] . ',' . $c[1] . "\n";
+        <label>座標 (每行一組 lng,lat，可只填一個點)</label>
+        <textarea name="coordinates"><?php
+            $geomType = $ef['geometry']['type'] ?? 'LineString';
+            $geomCoords = $ef['geometry']['coordinates'] ?? [];
+            if ($geomType === 'Point' && count($geomCoords) === 2 && !is_array($geomCoords[0])) {
+                echo $geomCoords[0] . ',' . $geomCoords[1] . "\n";
+            } else {
+                foreach ($geomCoords as $c) {
+                    if (is_array($c)) echo $c[0] . ',' . $c[1] . "\n";
+                }
             }
         ?></textarea>
         <button type="submit" class="btn btn-primary" style="margin-top:10px">儲存</button>
@@ -374,8 +386,9 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="ymdh" placeholder="2022080315" value="<?= htmlspecialchars($_GET['pre_ymdh'] ?? '') ?>" required>
         <label>YouTube 影片 ID</label>
         <input type="text" name="v" placeholder="XbQ5lpJo910" required>
-        <label>座標 (每行一組 lng,lat)</label>
-        <textarea name="coordinates" placeholder="120.19837595,22.99293332&#10;120.19743906,22.99314248&#10;120.19738947,22.99341597" required></textarea>
+        <label>座標 (每行一組 lng,lat，可只填一個點)</label>
+        <?php $preCoord = (isset($_GET['pre_lng']) && isset($_GET['pre_lat']) && floatval($_GET['pre_lng']) != 0) ? $_GET['pre_lng'] . ',' . $_GET['pre_lat'] : ''; ?>
+        <textarea name="coordinates" placeholder="120.19837595,22.99293332&#10;120.19743906,22.99314248&#10;（可只填一個點或留空）"><?= htmlspecialchars($preCoord) ?></textarea>
         <button type="submit" class="btn btn-primary" style="margin-top:10px">新增</button>
     </form>
     <?php endif; ?>
@@ -389,15 +402,19 @@ tr.editing { background: #e0f7f7; }
     </div>
     <table id="linesTable">
         <thead>
-            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>座標點數</th><th>操作</th></tr>
+            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>類型/座標</th><th>操作</th></tr>
         </thead>
         <tbody>
-        <?php foreach (($lines['features'] ?? []) as $i => $feature): ?>
+        <?php foreach (($lines['features'] ?? []) as $i => $feature):
+            $gType = $feature['geometry']['type'] ?? 'LineString';
+            $gCoords = $feature['geometry']['coordinates'] ?? [];
+            $coordInfo = $gType === 'Point' ? '點' : count($gCoords) . '點路線';
+        ?>
             <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($feature['properties']['ymdh'] ?? '') ?></td>
                 <td><a href="https://www.youtube.com/watch?v=<?= htmlspecialchars($feature['properties']['v'] ?? '') ?>" target="_blank"><?= htmlspecialchars($feature['properties']['v'] ?? '') ?></a></td>
-                <td><?= count($feature['geometry']['coordinates'] ?? []) ?></td>
+                <td><?= $coordInfo ?></td>
                 <td class="actions">
                     <a href="?tab=lines&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <form method="post" onsubmit="return confirm('確定刪除此路線？')">
@@ -600,7 +617,7 @@ tr.editing { background: #e0f7f7; }
                     <a href="?tab=schedule&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <?php
                         $ymdh = str_replace('-', '', $item['date'] ?? '') . str_replace(':', '', substr($item['time'] ?? '00:00', 0, 2));
-                        $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh]);
+                        $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                         $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => '1', 'pre_key' => $item['location'] ?? '', 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                     ?>
                     <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街路線">+路線</a>

@@ -10,8 +10,8 @@ const zoom = computed(() => {
 });
 
 const center = [23.004582, 120.198];
-const geoJsonUrl = "https://tainan.olc.tw/json/lines.json";
-const boundaryUrl = "https://tainan.olc.tw/json/67000-08.json";
+const geoJsonUrl = "/json/lines.json";
+const boundaryUrl = "/json/67000-08.json";
 
 // Video player state
 const showPlayer = ref(false);
