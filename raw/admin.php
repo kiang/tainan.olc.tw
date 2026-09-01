@@ -367,11 +367,11 @@ tr.editing { background: #e0f7f7; }
         <a href="?tab=lines" class="btn btn-secondary" style="margin-top:10px">取消</a>
     </form>
     <?php else: ?>
-    <h2>新增掃街路線</h2>
+    <h2>新增掃街路線<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="create">
         <label>日期時間 (ymdh 格式，如 2022080315)</label>
-        <input type="text" name="ymdh" placeholder="2022080315" required>
+        <input type="text" name="ymdh" placeholder="2022080315" value="<?= htmlspecialchars($_GET['pre_ymdh'] ?? '') ?>" required>
         <label>YouTube 影片 ID</label>
         <input type="text" name="v" placeholder="XbQ5lpJo910" required>
         <label>座標 (每行一組 lng,lat)</label>
@@ -457,15 +457,15 @@ tr.editing { background: #e0f7f7; }
         <a href="?tab=youtube" class="btn btn-secondary" style="margin-top:10px">取消</a>
     </form>
     <?php else: ?>
-    <h2>新增街講地點</h2>
+    <h2>新增街講地點<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
     <form method="post" class="edit-form" id="createForm">
         <input type="hidden" name="action" value="create">
         <label>地點名稱 (key)</label>
-        <input type="text" name="key" placeholder="北區和緯路四段/文賢路" required>
+        <input type="text" name="key" placeholder="北區和緯路四段/文賢路" value="<?= htmlspecialchars($_GET['pre_key'] ?? '') ?>" required>
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
-            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
-            <input type="text" name="lat" placeholder="23.009592" required id="inputLat">
+            <input type="text" name="lng" placeholder="120.193953" value="<?= htmlspecialchars($_GET['pre_lng'] ?? '') ?>" required id="inputLng">
+            <input type="text" name="lat" placeholder="23.009592" value="<?= htmlspecialchars($_GET['pre_lat'] ?? '') ?>" required id="inputLat">
         </div>
         <div id="pickerMap"></div>
         <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
@@ -598,6 +598,13 @@ tr.editing { background: #e0f7f7; }
                 <td><?= ($item['lng'] ?? '') . ', ' . ($item['lat'] ?? '') ?></td>
                 <td class="actions">
                     <a href="?tab=schedule&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
+                    <?php
+                        $ymdh = str_replace('-', '', $item['date'] ?? '') . str_replace(':', '', substr($item['time'] ?? '00:00', 0, 2));
+                        $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh]);
+                        $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => '1', 'pre_key' => $item['location'] ?? '', 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
+                    ?>
+                    <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街路線">+路線</a>
+                    <a href="?<?= $prefillYt ?>" class="btn btn-sm btn-secondary" title="以此行程建立街講地點">+街講</a>
                     <form method="post" onsubmit="return confirm('確定刪除此行程？')">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="index" value="<?= $i ?>">
