@@ -539,7 +539,10 @@ tr.editing { background: #e0f7f7; }
             $key = $feature['properties']['key'] ?? '';
             $videos = $youtubeList[$key] ?? [];
         ?>
-            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
+            <?php
+                $videoMeta = array_map(function($v) { return ($v['id'] ?? '') . ' ' . ($v['title'] ?? ''); }, $videos);
+            ?>
+            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?> data-videos="<?= htmlspecialchars(implode(' ', $videoMeta)) ?>">
                 <td><?= $i ?></td>
                 <td class="truncate" title="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($key) ?></td>
                 <td><?= ($feature['geometry']['coordinates'][0] ?? '') . ', ' . ($feature['geometry']['coordinates'][1] ?? '') ?></td>
@@ -772,7 +775,8 @@ function filterTable(tableId, query, countId) {
     for (var i = 0; i < rows.length; i++) {
         var row = rows[i];
         total++;
-        if (!q || row.textContent.toLowerCase().indexOf(q) !== -1) {
+        var searchText = row.textContent + ' ' + (row.dataset.videos || '');
+        if (!q || searchText.toLowerCase().indexOf(q) !== -1) {
             row.style.display = '';
             shown++;
         } else {
