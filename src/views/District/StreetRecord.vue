@@ -17,6 +17,7 @@ const boundaryUrl = "/json/67000-08.json";
 const showPlayer = ref(false);
 const currentVideoId = ref("");
 const currentDateTime = ref("");
+const currentTitle = ref("");
 
 // Format date from ymdh
 function formatDate(ymdh) {
@@ -32,6 +33,7 @@ function handleFeatureClick(feature) {
   if (feature.properties.v) {
     currentVideoId.value = feature.properties.v;
     currentDateTime.value = feature.properties.ymdh ? formatDate(feature.properties.ymdh) : "";
+    currentTitle.value = feature.properties.title || "";
     showPlayer.value = true;
   }
 }
@@ -40,6 +42,7 @@ function closePlayer() {
   showPlayer.value = false;
   currentVideoId.value = "";
   currentDateTime.value = "";
+  currentTitle.value = "";
 }
 </script>
 
@@ -75,7 +78,7 @@ function closePlayer() {
               <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
               <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
             </svg>
-            <span>{{ currentDateTime || "掃街紀錄" }}</span>
+            <span>{{ currentTitle || currentDateTime || "掃街紀錄" }}</span>
           </div>
           <button class="close-btn" @click="closePlayer" aria-label="關閉">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">

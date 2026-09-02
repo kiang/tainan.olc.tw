@@ -45,12 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $geometry = ['type' => 'Point', 'coordinates' => [0, 0]];
                 }
+                $props = [
+                    'ymdh' => intval($_POST['ymdh']),
+                    'v' => $_POST['v'],
+                ];
+                $title = trim($_POST['title'] ?? '');
+                if ($title !== '') $props['title'] = $title;
                 $lines['features'][] = [
                     'type' => 'Feature',
-                    'properties' => [
-                        'ymdh' => intval($_POST['ymdh']),
-                        'v' => $_POST['v'],
-                    ],
+                    'properties' => $props,
                     'geometry' => $geometry,
                 ];
                 saveJson($dataFiles['lines'], $lines);
@@ -70,6 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $coords = array_values(array_filter($coords));
                 $lines['features'][$idx]['properties']['ymdh'] = intval($_POST['ymdh']);
                 $lines['features'][$idx]['properties']['v'] = $_POST['v'];
+                $title = trim($_POST['title'] ?? '');
+                if ($title !== '') {
+                    $lines['features'][$idx]['properties']['title'] = $title;
+                } else {
+                    unset($lines['features'][$idx]['properties']['title']);
+                }
                 if (count($coords) === 1) {
                     $lines['features'][$idx]['geometry'] = ['type' => 'Point', 'coordinates' => $coords[0]];
                 } elseif (count($coords) > 1) {
@@ -363,6 +372,8 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="ymdh" value="<?= htmlspecialchars($ef['properties']['ymdh'] ?? '') ?>" required id="editFocus">
         <label>YouTube 影片 ID</label>
         <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required>
+        <label>標題</label>
+        <input type="text" name="title" value="<?= htmlspecialchars($ef['properties']['title'] ?? '') ?>">
         <label>座標 (每行一組 lng,lat，可只填一個點)</label>
         <textarea name="coordinates"><?php
             $geomType = $ef['geometry']['type'] ?? 'LineString';
@@ -386,6 +397,8 @@ tr.editing { background: #e0f7f7; }
         <input type="text" name="ymdh" placeholder="2022080315" value="<?= htmlspecialchars($_GET['pre_ymdh'] ?? '') ?>" required>
         <label>YouTube 影片 ID</label>
         <input type="text" name="v" placeholder="XbQ5lpJo910" required>
+        <label>標題</label>
+        <input type="text" name="title" placeholder="影片標題（選填）">
         <label>座標 (每行一組 lng,lat，可只填一個點)</label>
         <?php $preCoord = (isset($_GET['pre_lng']) && isset($_GET['pre_lat']) && floatval($_GET['pre_lng']) != 0) ? $_GET['pre_lng'] . ',' . $_GET['pre_lat'] : ''; ?>
         <textarea name="coordinates" placeholder="120.19837595,22.99293332&#10;120.19743906,22.99314248&#10;（可只填一個點或留空）"><?= htmlspecialchars($preCoord) ?></textarea>
@@ -402,7 +415,7 @@ tr.editing { background: #e0f7f7; }
     </div>
     <table id="linesTable">
         <thead>
-            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>類型/座標</th><th>操作</th></tr>
+            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>標題</th><th>類型/座標</th><th>操作</th></tr>
         </thead>
         <tbody>
         <?php foreach (($lines['features'] ?? []) as $i => $feature):
@@ -414,6 +427,7 @@ tr.editing { background: #e0f7f7; }
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($feature['properties']['ymdh'] ?? '') ?></td>
                 <td><a href="https://www.youtube.com/watch?v=<?= htmlspecialchars($feature['properties']['v'] ?? '') ?>" target="_blank"><?= htmlspecialchars($feature['properties']['v'] ?? '') ?></a></td>
+                <td class="truncate" title="<?= htmlspecialchars($feature['properties']['title'] ?? '') ?>"><?= htmlspecialchars($feature['properties']['title'] ?? '') ?></td>
                 <td><?= $coordInfo ?></td>
                 <td class="actions">
                     <a href="?tab=lines&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>

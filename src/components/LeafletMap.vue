@@ -153,6 +153,10 @@ function createPopupContent(feature) {
   } else if (props.mapType === "lines") {
     let content = `<div class="map-popup">`;
 
+    if (p.title) {
+      content += `<h4>${p.title}</h4>`;
+    }
+
     if (p.ymdh) {
       content += `<p><strong>時間：</strong>${formatDate(p.ymdh)}</p>`;
     }
