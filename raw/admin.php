@@ -373,7 +373,7 @@ tr.editing { background: #e0f7f7; }
         <label>YouTube 網址或影片 ID</label>
         <div style="display:flex;gap:8px">
             <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required id="editVideoInput" placeholder="貼上 YouTube 網址或影片 ID" style="flex:1">
-            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('editVideoInput','editTitleInput')">取得標題</button>
+            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('editVideoInput','editTitleInput',this)">取得標題</button>
         </div>
         <label>標題</label>
         <input type="text" name="title" value="<?= htmlspecialchars($ef['properties']['title'] ?? '') ?>" id="editTitleInput">
@@ -401,7 +401,7 @@ tr.editing { background: #e0f7f7; }
         <label>YouTube 網址或影片 ID</label>
         <div style="display:flex;gap:8px">
             <input type="text" name="v" placeholder="貼上 YouTube 網址或影片 ID" required id="createVideoInput" style="flex:1">
-            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('createVideoInput','createTitleInput')">取得標題</button>
+            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('createVideoInput','createTitleInput',this)">取得標題</button>
         </div>
         <label>標題</label>
         <input type="text" name="title" placeholder="影片標題（自動取得或手動輸入）" id="createTitleInput">
@@ -728,26 +728,24 @@ function extractYoutubeId(input) {
     return null;
 }
 
-function fetchYoutubeInfo(inputId, titleId) {
+function fetchYoutubeInfo(inputId, titleId, btnEl) {
     var input = document.getElementById(inputId);
     var titleInput = document.getElementById(titleId);
     var vid = extractYoutubeId(input.value);
-    if (!vid) { alert('無法辨識 YouTube 影片 ID'); return; }
+    if (!vid) { if (btnEl) alert('無法辨識 YouTube 影片 ID'); return; }
     input.value = vid;
-    var btn = event.target;
-    btn.textContent = '取得中...';
-    btn.disabled = true;
+    if (btnEl) {
+        btnEl.textContent = '取得中...';
+        btnEl.disabled = true;
+    }
     fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + vid + '&format=json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.title) titleInput.value = data.title;
-            btn.textContent = '取得標題';
-            btn.disabled = false;
+            if (btnEl) { btnEl.textContent = '取得標題'; btnEl.disabled = false; }
         })
         .catch(function() {
-            alert('無法取得影片資訊，請確認影片 ID 是否正確');
-            btn.textContent = '取得標題';
-            btn.disabled = false;
+            if (btnEl) { alert('無法取得影片資訊，請確認影片 ID 是否正確'); btnEl.textContent = '取得標題'; btnEl.disabled = false; }
         });
 }
 
