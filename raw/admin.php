@@ -475,15 +475,17 @@ tr.editing { background: #e0f7f7; }
         <div id="editVideos">
             <?php foreach ($eVideos as $v): ?>
             <div class="video-row">
-                <input type="text" name="video_id[]" value="<?= htmlspecialchars($v['id'] ?? '') ?>" placeholder="影片 ID">
+                <input type="text" name="video_id[]" value="<?= htmlspecialchars($v['id'] ?? '') ?>" placeholder="網址或影片 ID" onpaste="autoFetchVideoRow(this)">
                 <input type="text" name="video_title[]" value="<?= htmlspecialchars($v['title'] ?? '') ?>" placeholder="影片標題">
+                <button type="button" class="btn btn-sm btn-primary" onclick="fetchVideoRow(this)" style="flex-shrink:0">取得</button>
                 <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
             </div>
             <?php endforeach; ?>
             <?php if (empty($eVideos)): ?>
             <div class="video-row">
-                <input type="text" name="video_id[]" placeholder="影片 ID">
+                <input type="text" name="video_id[]" placeholder="網址或影片 ID" onpaste="autoFetchVideoRow(this)">
                 <input type="text" name="video_title[]" placeholder="影片標題">
+                <button type="button" class="btn btn-sm btn-primary" onclick="fetchVideoRow(this)" style="flex-shrink:0">取得</button>
                 <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
             </div>
             <?php endif; ?>
@@ -509,8 +511,9 @@ tr.editing { background: #e0f7f7; }
         <label>影片列表</label>
         <div id="createVideos">
             <div class="video-row">
-                <input type="text" name="video_id[]" placeholder="影片 ID (如 _o6Gsei4kp0)">
+                <input type="text" name="video_id[]" placeholder="網址或影片 ID" onpaste="autoFetchVideoRow(this)">
                 <input type="text" name="video_title[]" placeholder="影片標題">
+                <button type="button" class="btn btn-sm btn-primary" onclick="fetchVideoRow(this)" style="flex-shrink:0">取得</button>
                 <span class="remove-video" onclick="this.parentElement.remove()">✕</span>
             </div>
         </div>
@@ -802,10 +805,45 @@ function addVideoRow(containerId) {
     var div = document.getElementById(containerId);
     var row = document.createElement('div');
     row.className = 'video-row';
-    row.innerHTML = '<input type="text" name="video_id[]" placeholder="影片 ID">'
+    row.innerHTML = '<input type="text" name="video_id[]" placeholder="網址或影片 ID" onpaste="autoFetchVideoRow(this)">'
         + '<input type="text" name="video_title[]" placeholder="影片標題">'
+        + '<button type="button" class="btn btn-sm btn-primary" onclick="fetchVideoRow(this)" style="flex-shrink:0">取得</button>'
         + '<span class="remove-video" onclick="this.parentElement.remove()">✕</span>';
     div.appendChild(row);
+}
+
+function fetchVideoRow(btn) {
+    var row = btn.closest('.video-row');
+    var idInput = row.querySelector('input[name="video_id[]"]');
+    var titleInput = row.querySelector('input[name="video_title[]"]');
+    var vid = extractYoutubeId(idInput.value);
+    if (!vid) { alert('無法辨識 YouTube 影片 ID'); return; }
+    idInput.value = vid;
+    btn.textContent = '...';
+    btn.disabled = true;
+    fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + vid + '&format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.title) titleInput.value = data.title;
+            btn.textContent = '取得'; btn.disabled = false;
+        })
+        .catch(function() {
+            alert('無法取得影片資訊'); btn.textContent = '取得'; btn.disabled = false;
+        });
+}
+
+function autoFetchVideoRow(idInput) {
+    setTimeout(function() {
+        var row = idInput.closest('.video-row');
+        var titleInput = row.querySelector('input[name="video_title[]"]');
+        var vid = extractYoutubeId(idInput.value);
+        if (!vid) return;
+        idInput.value = vid;
+        fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + vid + '&format=json')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { if (data.title) titleInput.value = data.title; })
+            .catch(function() {});
+    }, 100);
 }
 
 (function() {
