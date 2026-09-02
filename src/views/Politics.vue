@@ -322,8 +322,8 @@ onUnmounted(() => {
       <section class="policy-image-section">
         <div class="container">
           <img
-            src="@/assets/images/politics.jpg"
-            alt="政見圖"
+            src="@/assets/images/politics-platform.png"
+            alt="北中西區台南議員參選人江明宗政見稿"
             class="policy-image"
           />
         </div>
