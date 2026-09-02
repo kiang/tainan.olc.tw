@@ -34,6 +34,15 @@ function buildVolunteerUrl(event) {
   return `${googleFormBaseUrl}?${params.toString()}`;
 }
 
+function isEventFuture(event) {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const gmt8 = new Date(utc + 8 * 3600000);
+  const nowStr = `${gmt8.getFullYear()}-${String(gmt8.getMonth() + 1).padStart(2, '0')}-${String(gmt8.getDate()).padStart(2, '0')} ${String(gmt8.getHours()).padStart(2, '0')}:${String(gmt8.getMinutes()).padStart(2, '0')}`;
+  const eventStr = `${event.date} ${event.time}`;
+  return eventStr >= nowStr;
+}
+
 function formatLocalDate(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -122,14 +131,16 @@ function updateScheduleMap() {
     const popupItems = group.map(event => {
       const c = getTypeColor(event.type);
       const volunteerUrl = buildVolunteerUrl(event);
+      const joinBtn = isEventFuture(event)
+        ? `<br><a href="${volunteerUrl}" target="_blank" rel="noopener"
+             style="display:inline-block;margin-top:4px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>`
+        : '';
       return `
         <div style="text-align:center;padding:6px 4px;border-bottom:1px solid #eee">
           <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
           <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
           <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${c}20;color:${c};font-weight:600;margin:4px 0">${event.type}</div>
-          <br>
-          <a href="${volunteerUrl}" target="_blank" rel="noopener"
-             style="display:inline-block;margin-top:4px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>
+          ${joinBtn}
         </div>`;
     }).join('');
 
@@ -321,7 +332,7 @@ onUnmounted(() => {
                 <span class="event-type-badge" :style="{ background: getTypeColor(event.type) + '1a', color: getTypeColor(event.type) }">{{ event.type }}</span>
                 <span class="event-time">{{ event.time }}</span>
                 <span class="event-location">{{ event.location }}</span>
-                <a :href="buildVolunteerUrl(event)" target="_blank" rel="noopener" class="event-join-btn">我要參加</a>
+                <a v-if="isEventFuture(event)" :href="buildVolunteerUrl(event)" target="_blank" rel="noopener" class="event-join-btn">我要參加</a>
               </div>
               <div v-if="day.events.length === 0" class="no-events">-</div>
             </div>
