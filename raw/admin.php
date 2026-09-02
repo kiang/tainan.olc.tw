@@ -370,10 +370,13 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="index" value="<?= $editIndex ?>">
         <label>日期時間 (ymdh)</label>
         <input type="text" name="ymdh" value="<?= htmlspecialchars($ef['properties']['ymdh'] ?? '') ?>" required id="editFocus">
-        <label>YouTube 影片 ID</label>
-        <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required>
+        <label>YouTube 網址或影片 ID</label>
+        <div style="display:flex;gap:8px">
+            <input type="text" name="v" value="<?= htmlspecialchars($ef['properties']['v'] ?? '') ?>" required id="editVideoInput" placeholder="貼上 YouTube 網址或影片 ID" style="flex:1">
+            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('editVideoInput','editTitleInput')">取得標題</button>
+        </div>
         <label>標題</label>
-        <input type="text" name="title" value="<?= htmlspecialchars($ef['properties']['title'] ?? '') ?>">
+        <input type="text" name="title" value="<?= htmlspecialchars($ef['properties']['title'] ?? '') ?>" id="editTitleInput">
         <label>座標 (每行一組 lng,lat，可只填一個點)</label>
         <textarea name="coordinates"><?php
             $geomType = $ef['geometry']['type'] ?? 'LineString';
@@ -395,10 +398,13 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="action" value="create">
         <label>日期時間 (ymdh 格式，如 2022080315)</label>
         <input type="text" name="ymdh" placeholder="2022080315" value="<?= htmlspecialchars($_GET['pre_ymdh'] ?? '') ?>" required>
-        <label>YouTube 影片 ID</label>
-        <input type="text" name="v" placeholder="XbQ5lpJo910" required>
+        <label>YouTube 網址或影片 ID</label>
+        <div style="display:flex;gap:8px">
+            <input type="text" name="v" placeholder="貼上 YouTube 網址或影片 ID" required id="createVideoInput" style="flex:1">
+            <button type="button" class="btn btn-primary" onclick="fetchYoutubeInfo('createVideoInput','createTitleInput')">取得標題</button>
+        </div>
         <label>標題</label>
-        <input type="text" name="title" placeholder="影片標題（選填）">
+        <input type="text" name="title" placeholder="影片標題（自動取得或手動輸入）" id="createTitleInput">
         <label>座標 (每行一組 lng,lat，可只填一個點)</label>
         <?php $preCoord = (isset($_GET['pre_lng']) && isset($_GET['pre_lat']) && floatval($_GET['pre_lng']) != 0) ? $_GET['pre_lng'] . ',' . $_GET['pre_lat'] : ''; ?>
         <textarea name="coordinates" placeholder="120.19837595,22.99293332&#10;120.19743906,22.99314248&#10;（可只填一個點或留空）"><?= htmlspecialchars($preCoord) ?></textarea>
@@ -714,6 +720,48 @@ tr.editing { background: #e0f7f7; }
 </div>
 
 <script>
+function extractYoutubeId(input) {
+    input = input.trim();
+    var m;
+    if ((m = input.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|live\/|embed\/|shorts\/))([A-Za-z0-9_-]{11})/))) return m[1];
+    if (/^[A-Za-z0-9_-]{11}$/.test(input)) return input;
+    return null;
+}
+
+function fetchYoutubeInfo(inputId, titleId) {
+    var input = document.getElementById(inputId);
+    var titleInput = document.getElementById(titleId);
+    var vid = extractYoutubeId(input.value);
+    if (!vid) { alert('無法辨識 YouTube 影片 ID'); return; }
+    input.value = vid;
+    var btn = event.target;
+    btn.textContent = '取得中...';
+    btn.disabled = true;
+    fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + vid + '&format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.title) titleInput.value = data.title;
+            btn.textContent = '取得標題';
+            btn.disabled = false;
+        })
+        .catch(function() {
+            alert('無法取得影片資訊，請確認影片 ID 是否正確');
+            btn.textContent = '取得標題';
+            btn.disabled = false;
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    ['createVideoInput', 'editVideoInput'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('paste', function() {
+            var titleId = id === 'createVideoInput' ? 'createTitleInput' : 'editTitleInput';
+            setTimeout(function() { fetchYoutubeInfo(id, titleId); }, 100);
+        });
+    });
+});
+
 function filterTable(tableId, query, countId) {
     var table = document.getElementById(tableId);
     if (!table) return;
