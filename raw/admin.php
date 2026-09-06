@@ -104,17 +104,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $time = trim($_POST['time'] ?? '');
             $location = trim($_POST['location'] ?? '');
             $type = trim($_POST['type'] ?? '掃街');
+            $endTime = trim($_POST['end_time'] ?? '');
             $lng = floatval($_POST['lng'] ?? 0);
             $lat = floatval($_POST['lat'] ?? 0);
             if ($date !== '' && $time !== '' && $location !== '') {
-                $schedule[] = [
+                $item = [
                     'date' => $date,
                     'time' => $time,
+                    'end_time' => $endTime,
                     'location' => $location,
                     'type' => $type,
                     'lng' => $lng,
                     'lat' => $lat,
                 ];
+                if ($endTime === '') unset($item['end_time']);
+                $schedule[] = $item;
                 usort($schedule, function($a, $b) {
                     return strcmp($a['date'] . $a['time'], $b['date'] . $b['time']);
                 });
@@ -128,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($action === 'update') {
             $idx = intval($_POST['index']);
             if (isset($schedule[$idx])) {
+                $endTime = trim($_POST['end_time'] ?? '');
                 $schedule[$idx] = [
                     'date' => trim($_POST['date'] ?? ''),
                     'time' => trim($_POST['time'] ?? ''),
@@ -136,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'lng' => floatval($_POST['lng'] ?? 0),
                     'lat' => floatval($_POST['lat'] ?? 0),
                 ];
+                if ($endTime !== '') $schedule[$idx]['end_time'] = $endTime;
                 usort($schedule, function($a, $b) {
                     return strcmp($a['date'] . $a['time'], $b['date'] . $b['time']);
                 });
@@ -572,8 +578,10 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="index" value="<?= $editIndex ?>">
         <label>日期</label>
         <input type="date" name="date" value="<?= htmlspecialchars($ef['date'] ?? '') ?>" required id="editFocus">
-        <label>時間 (HH:MM)</label>
+        <label>開始時間 (HH:MM)</label>
         <input type="text" name="time" value="<?= htmlspecialchars($ef['time'] ?? '') ?>" placeholder="17:20" required>
+        <label>結束時間 (HH:MM，可留空)</label>
+        <input type="text" name="end_time" value="<?= htmlspecialchars($ef['end_time'] ?? '') ?>" placeholder="18:30">
         <label>地點</label>
         <input type="text" name="location" value="<?= htmlspecialchars($ef['location'] ?? '') ?>" required>
         <label>類型</label>
@@ -600,8 +608,10 @@ tr.editing { background: #e0f7f7; }
         <input type="hidden" name="action" value="create">
         <label>日期</label>
         <input type="date" name="date" required>
-        <label>時間 (HH:MM)</label>
+        <label>開始時間 (HH:MM)</label>
         <input type="text" name="time" placeholder="17:20" required>
+        <label>結束時間 (HH:MM，可留空)</label>
+        <input type="text" name="end_time" placeholder="18:30">
         <label>地點</label>
         <input type="text" name="location" placeholder="和緯黃昏市場" required>
         <label>類型</label>
@@ -632,7 +642,7 @@ tr.editing { background: #e0f7f7; }
     </div>
     <table id="scheduleTable">
         <thead>
-            <tr><th>#</th><th>日期</th><th>時間</th><th>地點</th><th>類型</th><th>座標</th><th>操作</th></tr>
+            <tr><th>#</th><th>日期</th><th>時間</th><th>結束</th><th>地點</th><th>類型</th><th>座標</th><th>操作</th></tr>
         </thead>
         <tbody>
         <?php foreach (array_reverse($schedule, true) as $i => $item): ?>
@@ -640,6 +650,7 @@ tr.editing { background: #e0f7f7; }
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($item['date'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['time'] ?? '') ?></td>
+                <td><?= htmlspecialchars($item['end_time'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['location'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['type'] ?? '') ?></td>
                 <td><?= ($item['lat'] ?? '') . ', ' . ($item['lng'] ?? '') ?></td>

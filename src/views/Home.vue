@@ -164,7 +164,7 @@ function updateScheduleMap() {
         <div style="text-align:center;padding:6px 4px;border-bottom:1px solid #eee">
           <div style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:${c};color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-bottom:4px">${index}</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
-          <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
+          <div style="font-size:13px;color:#666">${event.date} ${event.time}${event.end_time ? ' - ' + event.end_time : ''}</div>
           <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${c}20;color:${c};font-weight:600;margin:4px 0">${event.type}</div>
           ${joinBtn}
         </div>`;
@@ -379,7 +379,7 @@ onUnmounted(() => {
               <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :class="{ highlighted: highlightedEventIndex === eventIndexMap.get(event) }" :data-event-index="eventIndexMap.get(event)" :style="{ borderLeftColor: getTypeColor(event.type) }" @click="highlightEvent(event)">
                 <span class="event-index-badge" :style="{ background: getTypeColor(event.type) }">{{ eventIndexMap.get(event) }}</span>
                 <span class="event-type-badge" :style="{ background: getTypeColor(event.type) + '1a', color: getTypeColor(event.type) }">{{ event.type }}</span>
-                <span class="event-time">{{ event.time }}</span>
+                <span class="event-time">{{ event.time }}{{ event.end_time ? ' - ' + event.end_time : '' }}</span>
                 <span class="event-location">{{ event.location }}</span>
                 <a v-if="isEventFuture(event)" :href="buildVolunteerUrl(event)" target="_blank" rel="noopener" class="event-join-btn">我要參加</a>
               </div>
