@@ -109,6 +109,15 @@ onUnmounted(() => {
                 <RouterLink
                   class="nav-link"
                   :to="{
+                    name: 'Help',
+                  }"
+                  >幫助我</RouterLink
+                >
+              </li>
+              <li class="nav-item">
+                <RouterLink
+                  class="nav-link"
+                  :to="{
                     name: 'Donate',
                   }"
                   >政治獻金</RouterLink
@@ -205,6 +214,15 @@ onUnmounted(() => {
                   $route.name === 'StreetTalk',
               }"
               >選區</RouterLink
+            >
+          </li>
+          <li class="nav-item">
+            <RouterLink
+              class="nav-link"
+              :to="{
+                name: 'Help',
+              }"
+              >幫助我</RouterLink
             >
           </li>
           <li class="nav-item">
