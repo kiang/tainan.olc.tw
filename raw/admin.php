@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'geometry' => $geometry,
                 ];
                 saveJson($dataFiles['lines'], $lines);
-                $message = '已新增掃街路線';
+                $message = '已新增掃街紀錄';
                 $messageType = 'success';
             } else {
                 $message = '請填寫影片ID';
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $lines['features'][$idx]['geometry'] = ['type' => 'LineString', 'coordinates' => $coords];
                 }
                 saveJson($dataFiles['lines'], $lines);
-                $message = '已更新掃街路線 #' . $idx;
+                $message = '已更新掃街紀錄 #' . $idx;
                 $messageType = 'success';
             }
         } elseif ($action === 'delete') {
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($lines['features'][$idx])) {
                 array_splice($lines['features'], $idx, 1);
                 saveJson($dataFiles['lines'], $lines);
-                $message = '已刪除掃街路線 #' . $idx;
+                $message = '已刪除掃街紀錄 #' . $idx;
                 $messageType = 'success';
             }
         }
@@ -352,7 +352,7 @@ tr.editing { background: #e0f7f7; }
 <?php endif; ?>
 
 <div class="tabs">
-    <a href="?tab=lines" class="<?= $tab === 'lines' ? 'active' : '' ?>">掃街路線 (lines.json)</a>
+    <a href="?tab=lines" class="<?= $tab === 'lines' ? 'active' : '' ?>">掃街 (lines.json)</a>
     <a href="?tab=youtube" class="<?= $tab === 'youtube' ? 'active' : '' ?>">街講地點 (youtube.json)</a>
     <a href="?tab=schedule" class="<?= $tab === 'schedule' ? 'active' : '' ?>">行程 (schedule.json)</a>
     <a href="?tab=schedule_types" class="<?= $tab === 'schedule_types' ? 'active' : '' ?>">行程類型</a>
@@ -364,7 +364,7 @@ tr.editing { background: #e0f7f7; }
     <?php if ($editIndex >= 0 && isset($lines['features'][$editIndex])):
         $ef = $lines['features'][$editIndex];
     ?>
-    <h2>編輯掃街路線 #<?= $editIndex ?></h2>
+    <h2>編輯掃街 #<?= $editIndex ?></h2>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="update">
         <input type="hidden" name="index" value="<?= $editIndex ?>">
@@ -393,7 +393,7 @@ tr.editing { background: #e0f7f7; }
         <a href="?tab=lines" class="btn btn-secondary" style="margin-top:10px">取消</a>
     </form>
     <?php else: ?>
-    <h2>新增掃街路線<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
+    <h2>新增掃街<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="create">
         <label>日期時間 (ymdh 格式，如 2022080315)</label>
@@ -414,7 +414,7 @@ tr.editing { background: #e0f7f7; }
 </div>
 
 <div class="card">
-    <h2>掃街路線列表 (<?= count($lines['features'] ?? []) ?> 筆)</h2>
+    <h2>掃街列表 (<?= count($lines['features'] ?? []) ?> 筆)</h2>
     <div class="filter-bar">
         <input type="text" id="linesFilter" placeholder="搜尋日期時間或影片ID..." oninput="filterTable('linesTable', this.value, 'linesCount')">
         <span class="count" id="linesCount"></span>
@@ -427,7 +427,7 @@ tr.editing { background: #e0f7f7; }
         <?php foreach (array_reverse($lines['features'] ?? [], true) as $i => $feature):
             $gType = $feature['geometry']['type'] ?? 'LineString';
             $gCoords = $feature['geometry']['coordinates'] ?? [];
-            $coordInfo = $gType === 'Point' ? '點' : count($gCoords) . '點路線';
+            $coordInfo = $gType === 'Point' ? '點' : count($gCoords) . '點掃街';
         ?>
             <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
@@ -437,7 +437,7 @@ tr.editing { background: #e0f7f7; }
                 <td><?= $coordInfo ?></td>
                 <td class="actions">
                     <a href="?tab=lines&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
-                    <form method="post" onsubmit="return confirm('確定刪除此路線？')">
+                    <form method="post" onsubmit="return confirm('確定刪除此掃街紀錄？')">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="index" value="<?= $i ?>">
                         <button type="submit" class="btn btn-sm btn-danger">刪除</button>
@@ -646,7 +646,7 @@ tr.editing { background: #e0f7f7; }
                         $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                         $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => '1', 'pre_key' => $item['location'] ?? '', 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                     ?>
-                    <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街路線">+路線</a>
+                    <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街紀錄">+掃街</a>
                     <a href="?<?= $prefillYt ?>" class="btn btn-sm btn-secondary" title="以此行程建立街講地點">+街講</a>
                     <form method="post" onsubmit="return confirm('確定刪除此行程？')">
                         <input type="hidden" name="action" value="delete">
