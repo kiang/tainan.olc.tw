@@ -95,6 +95,8 @@ const hasEvents = computed(() => weekDays.value.some(d => d.events.length > 0));
 const scheduleMapContainer = ref(null);
 let scheduleMap = null;
 let scheduleMarkers = [];
+let markerByIndex = {};
+const highlightedEventIndex = ref(null);
 
 const weekEvents = computed(() => {
   return weekDays.value.flatMap(d => d.events);
@@ -116,6 +118,7 @@ function updateScheduleMap() {
 
   scheduleMarkers.forEach(m => scheduleMap.removeLayer(m));
   scheduleMarkers = [];
+  markerByIndex = {};
 
   const events = weekEvents.value.filter(e => e.lng && e.lat);
   if (events.length === 0) return;
@@ -169,6 +172,15 @@ function updateScheduleMap() {
 
     const popupHtml = `<div style="max-height:250px;overflow-y:auto">${popupItems}</div>`;
     marker.bindPopup(popupHtml, { closeButton: false, maxWidth: 280 });
+    marker.on('click', () => {
+      const idx = group[0].index;
+      highlightedEventIndex.value = idx;
+      nextTick(() => {
+        const el = document.querySelector(`.event-card[data-event-index="${idx}"]`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+    group.forEach(({ index }) => { markerByIndex[index] = marker; });
     scheduleMarkers.push(marker);
     bounds.push([first.event.lat, first.event.lng]);
   });
@@ -194,6 +206,19 @@ function initScheduleMap() {
   }).addTo(scheduleMap);
 
   updateScheduleMap();
+}
+
+function highlightEvent(event) {
+  const idx = eventIndexMap.value.get(event);
+  highlightedEventIndex.value = idx;
+  const marker = markerByIndex[idx];
+  if (marker && scheduleMap) {
+    scheduleMap.setView(marker.getLatLng(), scheduleMap.getZoom(), { animate: true });
+    marker.openPopup();
+    if (scheduleMapContainer.value) {
+      scheduleMapContainer.value.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
 }
 
 watch([weekEvents, scheduleTypes], async () => {
@@ -351,7 +376,7 @@ onUnmounted(() => {
               <span class="day-num" :class="{ 'today-num': day.isToday }">{{ day.dayNum }}</span>
             </div>
             <div class="day-events">
-              <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :style="{ borderLeftColor: getTypeColor(event.type) }">
+              <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :class="{ highlighted: highlightedEventIndex === eventIndexMap.get(event) }" :data-event-index="eventIndexMap.get(event)" :style="{ borderLeftColor: getTypeColor(event.type) }" @click="highlightEvent(event)">
                 <span class="event-index-badge" :style="{ background: getTypeColor(event.type) }">{{ eventIndexMap.get(event) }}</span>
                 <span class="event-type-badge" :style="{ background: getTypeColor(event.type) + '1a', color: getTypeColor(event.type) }">{{ event.type }}</span>
                 <span class="event-time">{{ event.time }}</span>
@@ -866,6 +891,17 @@ onUnmounted(() => {
   border-left: 3px solid #28c8c8;
   margin-bottom: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  &.highlighted {
+    box-shadow: 0 0 0 2px rgba(40, 200, 200, 0.5), 0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: scale(1.02);
+  }
 
   @media (max-width: 767px) {
     flex-direction: row;
