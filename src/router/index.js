@@ -29,7 +29,7 @@ const router = createRouter({
       name: "Help",
       component: () => import("@/views/Help.vue"),
       meta: {
-        title: `我需要你的幫助 | ${baseTitle}`,
+        title: `幫助明宗 | ${baseTitle}`,
         description: "捐款、提供廣告空間、舉辦客廳會、加入志工，用各種方式支持江明宗的選舉。",
       },
     },

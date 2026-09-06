@@ -107,7 +107,7 @@ onUnmounted(() => {
                   :to="{
                     name: 'Help',
                   }"
-                  >幫助我</RouterLink
+                  >幫助明宗</RouterLink
                 >
               </li>
               <li class="nav-item">
@@ -218,7 +218,7 @@ onUnmounted(() => {
               :to="{
                 name: 'Help',
               }"
-              >幫助我</RouterLink
+              >幫助明宗</RouterLink
             >
           </li>
           <li class="nav-item">
