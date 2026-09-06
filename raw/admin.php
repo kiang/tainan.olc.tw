@@ -424,7 +424,7 @@ tr.editing { background: #e0f7f7; }
             <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>標題</th><th>類型/座標</th><th>操作</th></tr>
         </thead>
         <tbody>
-        <?php foreach (($lines['features'] ?? []) as $i => $feature):
+        <?php foreach (array_reverse($lines['features'] ?? [], true) as $i => $feature):
             $gType = $feature['geometry']['type'] ?? 'LineString';
             $gCoords = $feature['geometry']['coordinates'] ?? [];
             $coordInfo = $gType === 'Point' ? '點' : count($gCoords) . '點路線';
@@ -535,7 +535,7 @@ tr.editing { background: #e0f7f7; }
             <tr><th>#</th><th>地點</th><th>座標</th><th>影片數</th><th>操作</th></tr>
         </thead>
         <tbody>
-        <?php foreach (($youtube['features'] ?? []) as $i => $feature):
+        <?php foreach (array_reverse($youtube['features'] ?? [], true) as $i => $feature):
             $key = $feature['properties']['key'] ?? '';
             $videos = $youtubeList[$key] ?? [];
         ?>
@@ -631,7 +631,7 @@ tr.editing { background: #e0f7f7; }
             <tr><th>#</th><th>日期</th><th>時間</th><th>地點</th><th>類型</th><th>座標</th><th>操作</th></tr>
         </thead>
         <tbody>
-        <?php foreach ($schedule as $i => $item): ?>
+        <?php foreach (array_reverse($schedule, true) as $i => $item): ?>
             <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($item['date'] ?? '') ?></td>
@@ -702,7 +702,7 @@ tr.editing { background: #e0f7f7; }
             <tr><th>#</th><th>名稱</th><th>顏色</th><th>預覽</th><th>操作</th></tr>
         </thead>
         <tbody>
-        <?php foreach ($scheduleTypes as $i => $st): ?>
+        <?php foreach (array_reverse($scheduleTypes, true) as $i => $st): ?>
             <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($st['name'] ?? '') ?></td>
