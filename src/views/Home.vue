@@ -100,6 +100,17 @@ const weekEvents = computed(() => {
   return weekDays.value.flatMap(d => d.events);
 });
 
+const eventIndexMap = computed(() => {
+  const map = new Map();
+  let idx = 1;
+  weekDays.value.forEach(d => {
+    d.events.forEach(event => {
+      map.set(event, idx++);
+    });
+  });
+  return map;
+});
+
 function updateScheduleMap() {
   if (!scheduleMap) return;
 
@@ -109,26 +120,37 @@ function updateScheduleMap() {
   const events = weekEvents.value.filter(e => e.lng && e.lat);
   if (events.length === 0) return;
 
+  const eventsWithIndex = events.map(event => ({
+    event,
+    index: eventIndexMap.value.get(event),
+  }));
+
   const grouped = {};
-  events.forEach(event => {
+  eventsWithIndex.forEach(({ event, index }) => {
     const key = `${event.lat.toFixed(5)},${event.lng.toFixed(5)}`;
     if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(event);
+    grouped[key].push({ event, index });
   });
 
   const bounds = [];
   Object.values(grouped).forEach(group => {
     const first = group[0];
-    const color = getTypeColor(first.type);
-    const marker = L.circleMarker([first.lat, first.lng], {
-      radius: 10,
-      fillColor: color,
-      color: '#fff',
-      weight: 2,
-      fillOpacity: 0.9,
+    const circles = group.map(({ event, index }) => {
+      const c = getTypeColor(event.type);
+      return `<div style="width:24px;height:24px;line-height:24px;text-align:center;background:${c};color:#fff;font-weight:700;font-size:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${index}</div>`;
+    }).join('');
+    const totalWidth = group.length * 24 + (group.length - 1) * 2;
+
+    const marker = L.marker([first.event.lat, first.event.lng], {
+      icon: L.divIcon({
+        className: 'schedule-marker',
+        html: `<div style="display:flex;gap:2px">${circles}</div>`,
+        iconSize: [totalWidth, 24],
+        iconAnchor: [totalWidth / 2, 12],
+      }),
     }).addTo(scheduleMap);
 
-    const popupItems = group.map(event => {
+    const popupItems = group.map(({ event, index }) => {
       const c = getTypeColor(event.type);
       const volunteerUrl = buildVolunteerUrl(event);
       const joinBtn = isEventFuture(event)
@@ -137,6 +159,7 @@ function updateScheduleMap() {
         : '';
       return `
         <div style="text-align:center;padding:6px 4px;border-bottom:1px solid #eee">
+          <div style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:${c};color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-bottom:4px">${index}</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
           <div style="font-size:13px;color:#666">${event.date} ${event.time}</div>
           <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${c}20;color:${c};font-weight:600;margin:4px 0">${event.type}</div>
@@ -147,7 +170,7 @@ function updateScheduleMap() {
     const popupHtml = `<div style="max-height:250px;overflow-y:auto">${popupItems}</div>`;
     marker.bindPopup(popupHtml, { closeButton: false, maxWidth: 280 });
     scheduleMarkers.push(marker);
-    bounds.push([first.lat, first.lng]);
+    bounds.push([first.event.lat, first.event.lng]);
   });
 
   if (bounds.length > 0) {
@@ -173,7 +196,7 @@ function initScheduleMap() {
   updateScheduleMap();
 }
 
-watch(weekEvents, async () => {
+watch([weekEvents, scheduleTypes], async () => {
   if (scheduleMap) {
     updateScheduleMap();
   } else {
@@ -329,6 +352,7 @@ onUnmounted(() => {
             </div>
             <div class="day-events">
               <div v-for="(event, idx) in day.events" :key="idx" class="event-card" :style="{ borderLeftColor: getTypeColor(event.type) }">
+                <span class="event-index-badge" :style="{ background: getTypeColor(event.type) }">{{ eventIndexMap.get(event) }}</span>
                 <span class="event-type-badge" :style="{ background: getTypeColor(event.type) + '1a', color: getTypeColor(event.type) }">{{ event.type }}</span>
                 <span class="event-time">{{ event.time }}</span>
                 <span class="event-location">{{ event.location }}</span>
@@ -422,6 +446,13 @@ onUnmounted(() => {
     <PetitionModal v-model="showPetitionModal" />
   </main>
 </template>
+
+<style lang="scss">
+.schedule-marker {
+  background: transparent;
+  border: none;
+}
+</style>
 
 <style lang="scss" scoped>
 .home-page {
@@ -841,6 +872,24 @@ onUnmounted(() => {
     align-items: center;
     gap: 10px;
     margin-bottom: 4px;
+  }
+}
+
+.event-index-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  align-self: flex-start;
+
+  @media (max-width: 767px) {
+    align-self: center;
   }
 }
 
