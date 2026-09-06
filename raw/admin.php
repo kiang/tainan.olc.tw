@@ -582,10 +582,12 @@ tr.editing { background: #e0f7f7; }
             <option value="<?= htmlspecialchars($st['name']) ?>"<?= ($ef['type'] ?? '') === $st['name'] ? ' selected' : '' ?>><?= htmlspecialchars($st['name']) ?></option>
             <?php endforeach; ?>
         </select>
+        <label>快速輸入座標（緯度, 經度）</label>
+        <input type="text" id="quickCoord" placeholder="22.996961, 120.197392" oninput="parseQuickCoord(this.value)">
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
-            <input type="text" name="lng" value="<?= $ef['lng'] ?? 0 ?>" required placeholder="經度" id="inputLng">
             <input type="text" name="lat" value="<?= $ef['lat'] ?? 0 ?>" required placeholder="緯度" id="inputLat">
+            <input type="text" name="lng" value="<?= $ef['lng'] ?? 0 ?>" required placeholder="經度" id="inputLng">
         </div>
         <div id="pickerMap"></div>
         <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
@@ -608,10 +610,12 @@ tr.editing { background: #e0f7f7; }
             <option value="<?= htmlspecialchars($st['name']) ?>"><?= htmlspecialchars($st['name']) ?></option>
             <?php endforeach; ?>
         </select>
+        <label>快速輸入座標（緯度, 經度）</label>
+        <input type="text" id="quickCoord" placeholder="22.996961, 120.197392" oninput="parseQuickCoord(this.value)">
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
-            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
             <input type="text" name="lat" placeholder="23.009592" required id="inputLat">
+            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
         </div>
         <div id="pickerMap"></div>
         <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
@@ -638,7 +642,7 @@ tr.editing { background: #e0f7f7; }
                 <td><?= htmlspecialchars($item['time'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['location'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['type'] ?? '') ?></td>
-                <td><?= ($item['lng'] ?? '') . ', ' . ($item['lat'] ?? '') ?></td>
+                <td><?= ($item['lat'] ?? '') . ', ' . ($item['lng'] ?? '') ?></td>
                 <td class="actions">
                     <a href="?tab=schedule&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <?php
@@ -726,6 +730,20 @@ tr.editing { background: #e0f7f7; }
 </div>
 
 <script>
+function parseQuickCoord(val) {
+    var parts = val.split(/[,\s]+/).filter(function(s) { return s !== ''; });
+    if (parts.length >= 2) {
+        var lat = parseFloat(parts[0]);
+        var lng = parseFloat(parts[1]);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            var latInput = document.getElementById('inputLat');
+            var lngInput = document.getElementById('inputLng');
+            if (latInput) latInput.value = lat;
+            if (lngInput) lngInput.value = lng;
+        }
+    }
+}
+
 function extractYoutubeId(input) {
     input = input.trim();
     var m;
