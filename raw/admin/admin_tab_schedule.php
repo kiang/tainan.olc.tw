@@ -34,29 +34,30 @@
         <a href="?tab=schedule" class="btn btn-secondary" style="margin-top:10px">取消</a>
     </form>
     <?php else: ?>
-    <h2>新增行程</h2>
+    <h2>新增行程<?= isset($_GET['dup']) ? ' (複製)' : '' ?></h2>
+    <?php $isDup = isset($_GET['dup']); $today = date('Y-m-d'); ?>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="create">
         <label>日期</label>
-        <input type="date" name="date" required>
+        <input type="date" name="date" value="<?= $isDup ? htmlspecialchars($today) : '' ?>" required>
         <label>開始時間 (HH:MM)</label>
-        <input type="text" name="time" placeholder="17:20" required>
+        <input type="text" name="time" placeholder="17:20" value="<?= htmlspecialchars($_GET['pre_time'] ?? '') ?>" required>
         <label>結束時間 (HH:MM，可留空)</label>
-        <input type="text" name="end_time" placeholder="18:30">
+        <input type="text" name="end_time" placeholder="18:30" value="<?= htmlspecialchars($_GET['pre_end_time'] ?? '') ?>">
         <label>地點</label>
-        <input type="text" name="location" placeholder="和緯黃昏市場" required>
+        <input type="text" name="location" placeholder="和緯黃昏市場" value="<?= htmlspecialchars($_GET['pre_location'] ?? '') ?>" required>
         <label>類型</label>
         <select name="type" style="width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px">
             <?php foreach ($scheduleTypes as $st): ?>
-            <option value="<?= htmlspecialchars($st['name']) ?>"><?= htmlspecialchars($st['name']) ?></option>
+            <option value="<?= htmlspecialchars($st['name']) ?>"<?= ($_GET['pre_type'] ?? '') === $st['name'] ? ' selected' : '' ?>><?= htmlspecialchars($st['name']) ?></option>
             <?php endforeach; ?>
         </select>
         <label>快速輸入座標（緯度, 經度）</label>
         <input type="text" id="quickCoord" placeholder="22.996961, 120.197392" oninput="parseQuickCoord(this.value)">
         <label>座標（點擊地圖或手動輸入）</label>
         <div style="display:flex;gap:8px;margin-bottom:6px">
-            <input type="text" name="lat" placeholder="23.009592" required id="inputLat">
-            <input type="text" name="lng" placeholder="120.193953" required id="inputLng">
+            <input type="text" name="lat" placeholder="23.009592" value="<?= htmlspecialchars($_GET['pre_lat'] ?? '') ?>" required id="inputLat">
+            <input type="text" name="lng" placeholder="120.193953" value="<?= htmlspecialchars($_GET['pre_lng'] ?? '') ?>" required id="inputLng">
         </div>
         <div id="pickerMap"></div>
         <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
@@ -92,6 +93,13 @@
                         $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                         $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => '1', 'pre_key' => $item['location'] ?? '', 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                     ?>
+                    <?php
+                        $prefillDup = http_build_query(['tab' => 'schedule', 'dup' => '1',
+                            'pre_time' => $item['time'] ?? '', 'pre_end_time' => $item['end_time'] ?? '',
+                            'pre_location' => $item['location'] ?? '', 'pre_type' => $item['type'] ?? '',
+                            'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
+                    ?>
+                    <a href="?<?= $prefillDup ?>" class="btn btn-sm btn-secondary" title="複製此行程（日期改為今天）">複製</a>
                     <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街紀錄">+掃街</a>
                     <a href="?<?= $prefillYt ?>" class="btn btn-sm btn-secondary" title="以此行程建立街講地點">+街講</a>
                     <form method="post" onsubmit="return confirm('確定刪除此行程？')">
