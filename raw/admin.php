@@ -29,7 +29,7 @@ $messageType = '';
 
 // Handle POST actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require __DIR__ . '/admin_handlers.php';
+    require __DIR__ . '/admin/admin_handlers.php';
     if ($message && $messageType === 'success') {
         header('Location: admin.php?tab=' . urlencode($tab) . '&msg=' . urlencode($message));
         exit;
@@ -57,7 +57,7 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 <title>資料管理 - 掃街/街講/行程</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<?php require __DIR__ . '/admin_assets.php'; ?>
+<?php require __DIR__ . '/admin/admin_css.php'; ?>
 </head>
 <body>
 <div class="container">
@@ -76,16 +76,17 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 
 <?php
 if ($tab === 'lines') {
-    require __DIR__ . '/admin_tab_lines.php';
+    require __DIR__ . '/admin/admin_tab_lines.php';
 } elseif ($tab === 'youtube') {
-    require __DIR__ . '/admin_tab_youtube.php';
+    require __DIR__ . '/admin/admin_tab_youtube.php';
 } elseif ($tab === 'schedule') {
-    require __DIR__ . '/admin_tab_schedule.php';
+    require __DIR__ . '/admin/admin_tab_schedule.php';
 } elseif ($tab === 'schedule_types') {
-    require __DIR__ . '/admin_tab_schedule_types.php';
+    require __DIR__ . '/admin/admin_tab_schedule_types.php';
 }
 ?>
 
 </div>
+<?php require __DIR__ . '/admin/admin_js.php'; ?>
 </body>
 </html>
