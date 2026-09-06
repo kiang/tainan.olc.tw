@@ -16,6 +16,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/Service",
+      name: "Service",
+      component: Home,
+      meta: {
+        title: `服務陳情 | ${baseTitle}`,
+        description: "反映北區、中西區地方問題，一起改善生活環境。",
+      },
+    },
+    {
       path: "/Help",
       name: "Help",
       component: () => import("@/views/Help.vue"),

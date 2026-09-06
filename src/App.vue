@@ -2,13 +2,9 @@
 import { useRoute } from "vue-router";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import PetitionModal from "@/components/PetitionModal.vue";
 
 const route = useRoute();
-const showBreadcrumb = computed(() => route.name !== "Home");
-
-// Petition modal
-const showPetitionModal = ref(false);
+const showBreadcrumb = computed(() => route.name !== "Home" && route.name !== "Service");
 
 // Mobile nav scroll indicators
 const navbarMobile = ref(null);
@@ -70,10 +66,10 @@ onUnmounted(() => {
                 >
               </li>
               <li class="nav-item">
-                <button
+                <RouterLink
                   class="nav-link nav-link-petition"
-                  @click="showPetitionModal = true"
-                >陳情</button>
+                  :to="{ name: 'Service' }"
+                >陳情</RouterLink>
               </li>
               <li class="nav-item">
                 <RouterLink
@@ -181,10 +177,10 @@ onUnmounted(() => {
             >
           </li>
           <li class="nav-item">
-            <button
+            <RouterLink
               class="nav-link nav-link-petition"
-              @click="showPetitionModal = true"
-            >陳情</button>
+              :to="{ name: 'Service' }"
+            >陳情</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink
@@ -268,9 +264,6 @@ onUnmounted(() => {
   <main id="main-content" role="main">
     <RouterView />
   </main>
-
-  <!-- Petition Modal -->
-  <PetitionModal v-model="showPetitionModal" />
 
   <footer class="site-footer" role="contentinfo">
     <div class="footer-content">

@@ -1,11 +1,25 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick, onUnmounted } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import PetitionModal from "@/components/PetitionModal.vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+const route = useRoute();
+const router = useRouter();
 const showPetitionModal = ref(false);
+
+watch(() => route.name, (name) => {
+  if (name === 'Service') {
+    showPetitionModal.value = true;
+  }
+}, { immediate: true });
+
+watch(showPetitionModal, (val) => {
+  if (!val && route.name === 'Service') {
+    router.push({ name: 'Home' });
+  }
+});
 const activeTab = ref('intro');
 
 const scheduleEvents = ref([]);
