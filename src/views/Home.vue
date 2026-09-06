@@ -92,6 +92,36 @@ const weekLabel = computed(() => {
 
 const hasEvents = computed(() => weekDays.value.some(d => d.events.length > 0));
 
+const copyStatus = ref('');
+function copyWeekText() {
+  const dayNames = ['一', '二', '三', '四', '五', '六', '日'];
+  const lines = [];
+  const first = weekDays.value[0];
+  const last = weekDays.value[6];
+  lines.push(`📅 行程 ${first.month}/${first.dayNum} - ${last.month}/${last.dayNum}`);
+  lines.push('');
+  weekDays.value.forEach((day, i) => {
+    if (day.events.length === 0) return;
+    lines.push(`【${day.month}/${day.dayNum}（${dayNames[i]}）】`);
+    day.events.forEach(event => {
+      const time = event.end_time ? `${event.time}-${event.end_time}` : event.time;
+      let line = `${time} ${event.location}（${event.type}）`;
+      if (event.lat && event.lng) {
+        line += `\nhttps://maps.google.com/maps?q=${event.lat},${event.lng}`;
+      }
+      lines.push(line);
+    });
+    lines.push('');
+  });
+  if (lines.length <= 2) {
+    lines.push('本週無行程');
+  }
+  navigator.clipboard.writeText(lines.join('\n').trim()).then(() => {
+    copyStatus.value = '已複製';
+    setTimeout(() => { copyStatus.value = ''; }, 2000);
+  });
+}
+
 const scheduleMapContainer = ref(null);
 let scheduleMap = null;
 let scheduleMarkers = [];
@@ -365,6 +395,12 @@ onUnmounted(() => {
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
               </svg>
+            </button>
+            <button class="copy-week-btn" @click="copyWeekText" title="複製本週行程文字">
+              <svg v-if="!copyStatus" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/>
+              </svg>
+              <span v-if="copyStatus" class="copy-status">{{ copyStatus }}</span>
             </button>
           </div>
         </div>
@@ -789,6 +825,33 @@ onUnmounted(() => {
   &:hover {
     border-color: #28c8c8;
     color: #28c8c8;
+  }
+}
+
+.copy-week-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 10px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 16px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  margin-left: 4px;
+
+  &:hover {
+    border-color: #28c8c8;
+    color: #28c8c8;
+  }
+
+  .copy-status {
+    color: #28c8c8;
+    font-weight: 600;
+    font-size: 12px;
   }
 }
 
