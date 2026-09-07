@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="2026 全台選舉候選人地圖">
+    <meta property="og:description" content="透過地圖瀏覽 2026 年各項選舉候選人及選區資訊">
+    <meta property="og:type" content="website">
+    <title>2026 全台選舉候選人地圖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: "Noto Sans TC", sans-serif;
+            color: #222;
+        }
+
+        /* Header */
+        .app-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 14px;
+            background: linear-gradient(90deg, #1a5276 0%, #2980b9 50%, #5dade2 100%);
+            color: #fff;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .app-header h1 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .app-header .subtitle {
+            font-size: 0.7rem;
+            opacity: 0.85;
+        }
+
+        /* Breadcrumb bar */
+        .breadcrumb-bar {
+            display: flex;
+            align-items: center;
+            padding: 4px 14px;
+            background: #f0f4f8;
+            border-bottom: 1px solid #dce4ec;
+            font-size: 0.85rem;
+            gap: 4px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-bar span {
+            color: #666;
+        }
+
+        .breadcrumb-bar a {
+            color: #2471a3;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .breadcrumb-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-bar .current {
+            color: #222;
+            font-weight: 700;
+        }
+
+        /* Map */
+        .map-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+
+        #map {
+            position: absolute;
+            inset: 0;
+        }
+
+        .leaflet-container {
+            font-family: "Noto Sans TC", sans-serif;
+        }
+
+        /* Info panel (full page overlay) */
+        .info-panel {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .info-panel.open {
+            display: flex;
+        }
+
+        .info-panel-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, #1a5276, #2980b9);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .info-panel-header .close-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 8px;
+            line-height: 1;
+        }
+
+        .info-panel-body {
+            overflow-y: auto;
+            padding: 16px;
+            flex: 1;
+        }
+
+        .info-panel-body .elections-grid {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Election section */
+        .election-section {
+            margin-bottom: 16px;
+        }
+
+        .election-section h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a5276;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 4px;
+            margin: 0 0 8px 0;
+        }
+
+        .election-section .district-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        /* Candidate card */
+        .cand-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            background: #f8fafe;
+            border: 1px solid #e8eef4;
+            transition: background 0.15s;
+        }
+
+        .cand-card:hover {
+            background: #eaf2fa;
+        }
+
+        .cand-card .cand-photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #ddd;
+        }
+
+        .cand-card .cand-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cand-card .cand-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .cand-card .cand-party {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .cand-card .cand-date {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .cand-card .cand-links {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .cand-card .cand-links a {
+            font-size: 0.75rem;
+            color: #2471a3;
+            text-decoration: none;
+        }
+
+        .cand-card .cand-links a:hover {
+            text-decoration: underline;
+        }
+
+        .cand-detail-toggle {
+            font-size: 0.8rem;
+            color: #2471a3;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            margin-top: 4px;
+        }
+
+        .cand-detail {
+            display: none;
+            font-size: 0.8rem;
+            color: #444;
+            margin-top: 6px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f0f4f8;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .cand-detail.open {
+            display: block;
+        }
+
+        /* Party color dots */
+        .party-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* Loading overlay */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            color: #1a5276;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        /* Legend */
+        .legend-box {
+            position: absolute;
+            bottom: 24px;
+            left: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            line-height: 1.6;
+        }
+
+        .legend-box b {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .leaflet-tooltip-pane {
+            pointer-events: none;
+        }
+
+        @media (min-width: 700px) {
+            .info-panel-body .elections-grid {
+                columns: 2;
+                column-gap: 24px;
+            }
+
+            .info-panel-body .election-section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-header">
+        <div>
+            <h1>2026 全台選舉候選人地圖</h1>
+            <div class="subtitle">點擊縣市 → 鄉鎮市區 → 村里，查看所有選舉候選人</div>
+        </div>
+        <a href="https://tainan.olc.tw" target="_blank" rel="noopener" style="margin-left:auto;color:#fff;font-size:0.8rem;opacity:0.85;text-decoration:none;white-space:nowrap;">江明宗</a>
+    </div>
+    <div class="breadcrumb-bar" id="breadcrumb">
+        <span class="current">全台灣</span>
+    </div>
+    <div class="map-wrap">
+        <div id="map"></div>
+        <div class="loading" id="loading">載入中...</div>
+        <div class="info-panel" id="infoPanel">
+            <div class="info-panel-header">
+                <span id="infoPanelTitle"></span>
+                <button class="close-btn" id="closePanel">&times;</button>
+            </div>
+            <div class="info-panel-body" id="infoPanelBody"></div>
+        </div>
+        <div class="legend-box" id="legend"></div>
+    </div>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            const TOPO_BASE = 'https://kiang.github.io/taiwan_basecode';
+            const CANDIDATE_BASE = 'https://kiang.github.io/vote2026/candidates';
+            const COUNTY_TOPO = TOPO_BASE + '/county/topo/20200820.json';
+            const CITY_TOPO = TOPO_BASE + '/city/topo/20230317.json';
+            const CUNLI_TOPO_BASE = TOPO_BASE + '/cunli/topo/city/20260407';
+
+            const PARTY_COLORS = {
+                '中國國民黨': '#000095',
+                '民主進步黨': '#1b9431',
+                '台灣民眾黨': '#28c8c8',
+                '時代力量': '#ffd700',
+                '台灣基進': '#a73f24',
+                '新黨': '#ffdb00',
+                '親民黨': '#ff6310',
+                '台聯黨': '#c69e6a',
+                '勞動黨': '#cc0000',
+                '台灣綠黨': '#55aa33',
+                '社會民主黨': '#ff7bad',
+                '無': '#888',
+            };
+
+            const ELECTION_ORDER = [
+                '直轄市長', '縣市長', '直轄市議員', '縣市議員',
+                '平地原住民議員', '山地原住民議員',
+                '山地原住民區長', '鄉鎮市長',
+                '山地原住民區民代表', '鄉鎮市民代表', '村里長'
+            ];
+
+            // State
+            let map, countyLayer, cityLayer, cunliLayer;
+            let cityTopoData = null;
+            let currentLevel = 'county'; // county | city | cunli
+            let currentCounty = null;
+            let currentTown = null;
+            let highlightedCunli = null;
+
+            // Cache
+            const cunliTopoCache = {};
+            const candidateCache = {};
+
+            // Init map
+            map = L.map('map', {
+                center: [23.7, 120.9],
+                zoom: 7,
+                zoomControl: true,
+                preferCanvas: true,
+            });
+
+            L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+                attribution: '&copy; NLSC',
+                maxZoom: 18,
+            }).addTo(map);
+
+            const loadingEl = document.getElementById('loading');
+            const infoPanelEl = document.getElementById('infoPanel');
+            const infoPanelTitle = document.getElementById('infoPanelTitle');
+            const infoPanelBody = document.getElementById('infoPanelBody');
+            const breadcrumbEl = document.getElementById('breadcrumb');
+            const legendEl = document.getElementById('legend');
+
+            function showLoading() { loadingEl.classList.add('show'); }
+            function hideLoading() { loadingEl.classList.remove('show'); }
+
+            function clearAllLayers() {
+                if (countyLayer) { map.removeLayer(countyLayer); countyLayer = null; }
+                if (cityLayer) { map.removeLayer(cityLayer); cityLayer = null; }
+                if (cunliLayer) { map.removeLayer(cunliLayer); cunliLayer = null; }
+                highlightedCunli = null;
+            }
+            function closePanel() { infoPanelEl.classList.remove('open'); highlightCunli(null); }
+            document.getElementById('closePanel').addEventListener('click', closePanel);
+
+            let clickHandledByFeature = false;
+
+            map.on('click', function () {
+                if (clickHandledByFeature) {
+                    clickHandledByFeature = false;
+                    return;
+                }
+                if (currentLevel === 'cunli' && currentCounty) {
+                    loadTowns(currentCounty.code, currentCounty.name);
+                } else if (currentLevel === 'city') {
+                    goToCounty();
+                }
+            });
+
+            // Fetch with cache
+            async function fetchJSON(url) {
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${url}`);
+                return resp.json();
+            }
+
+            // Colors
+            function countyColor(countyCode) {
+                const hue = (parseInt(countyCode, 10) * 137) % 360;
+                return `hsl(${hue}, 45%, 65%)`;
+            }
+
+            function townColor(townCode) {
+                const hue = (parseInt(townCode, 10) * 67) % 360;
+                return `hsl(${hue}, 40%, 62%)`;
+            }
+
+            function partyColor(party) {
+                if (!party || party === '無') return PARTY_COLORS['無'];
+                for (const [key, color] of Object.entries(PARTY_COLORS)) {
+                    if (party.includes(key) || key.includes(party)) return color;
+                }
+                return '#aaa';
+            }
+
+            // ===== County level =====
+            async function loadCounties() {
+                showLoading();
+                try {
+                    const topo = await fetchJSON(COUNTY_TOPO);
+                    const objName = Object.keys(topo.objects)[0];
+                    const geojson = topojson.feature(topo, topo.objects[objName]);
+
+                    clearAllLayers();
+
+                    countyLayer = L.geoJSON(geojson, {
+                        style: function (feature) {
+                            return {
+                                fillColor: countyColor(feature.properties.COUNTYCODE),
+                                fillOpacity: 0.5,
+                                color: '#fff',
+                                weight: 2,
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            const p = feature.properties;
+                            layer.bindTooltip(p.COUNTYNAME, { sticky: false });
+                            layer.on('click', function () {
+                                clickHandledByFeature = true;
+                                loadTowns(p.COUNTYCODE, p.COUNTYNAME);
+                            });
+                        }
+                    }).addTo(map);
+
+                    currentLevel = 'county';
+                    currentCounty = null;
+                    currentTown = null;
+                    closePanel();
+                    updateBreadcrumb();
+                    updateLegend();
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // ===== City/Town level =====
+            async function loadTowns(countyCode, countyName) {
+                showLoading();
+                try {
+                    if (!cityTopoData) {
+                        cityTopoData = await fetchJSON(CITY_TOPO);
+                    }
+
+                    const objName = Object.keys(cityTopoData.objects)[0];
+                    const allGeo = topojson.feature(cityTopoData, cityTopoData.objects[objName]);
+                    const filtered = {
+                        type: 'FeatureCollection',
+                        features: allGeo.features.filter(f => f.properties.COUNTYCODE === countyCode)
+                    };
+
+                    clearAllLayers();
+
+                    cityLayer = L.geoJSON(filtered, {
+                        style: function (feature) {
+                            return {
+                                fillColor: townColor(feature.properties.TOWNCODE),
+                                fillOpacity: 0.5,
+                                color: '#fff',
+                                weight: 1.5,
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            const p = feature.properties;
+                            layer.bindTooltip(p.TOWNNAME, { sticky: false });
+                            layer.on('click', function () {
+                                clickHandledByFeature = true;
+                                loadCunli(countyCode, countyName, p.TOWNCODE, p.TOWNNAME);
+                            });
+                        }
+                    }).addTo(map);
+
+                    map.fitBounds(cityLayer.getBounds(), { padding: [20, 20] });
+
+                    currentLevel = 'city';
+                    currentCounty = { code: countyCode, name: countyName };
+                    currentTown = null;
+                    closePanel();
+                    updateBreadcrumb();
+                    updateLegend();
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // ===== Cunli level =====
+            async function loadCunli(countyCode, countyName, townCode, townName) {
+                showLoading();
+                try {
+                    if (!cunliTopoCache[countyName]) {
+                        const url = `${CUNLI_TOPO_BASE}/${encodeURIComponent(countyName)}.json`;
+                        cunliTopoCache[countyName] = await fetchJSON(url);
+                    }
+                    const topo = cunliTopoCache[countyName];
+                    const objName = Object.keys(topo.objects)[0];
+                    const allGeo = topojson.feature(topo, topo.objects[objName]);
+                    const filtered = {
+                        type: 'FeatureCollection',
+                        features: allGeo.features.filter(f => f.properties.TOWNCODE === townCode)
+                    };
+
+                    clearAllLayers();
+
+                    cunliLayer = L.geoJSON(filtered, {
+                        style: function (feature) {
+                            return {
+                                fillColor: '#85c1e9',
+                                fillOpacity: 0.35,
+                                color: '#2471a3',
+                                weight: 1,
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            const p = feature.properties;
+                            const label = p.VILLNAME || p.NOTE || '';
+                            layer.bindTooltip(label, { sticky: false });
+                            layer.on('click', function () {
+                                clickHandledByFeature = true;
+                                showCandidates(p.VILLCODE, countyName, townName, label);
+                                highlightCunli(layer);
+                            });
+                        }
+                    }).addTo(map);
+
+                    map.fitBounds(cunliLayer.getBounds(), { padding: [20, 20] });
+
+                    currentLevel = 'cunli';
+                    currentCounty = { code: countyCode, name: countyName };
+                    currentTown = { code: townCode, name: townName };
+                    closePanel();
+                    updateBreadcrumb();
+                    updateLegend();
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            function highlightCunli(layer) {
+                if (highlightedCunli) {
+                    highlightedCunli.setStyle({ color: '#2471a3', weight: 1, fillOpacity: 0.35 });
+                }
+                highlightedCunli = layer;
+                if (layer) {
+                    layer.setStyle({ color: '#e74c3c', weight: 3, fillOpacity: 0.55 });
+                    layer.bringToFront();
+                }
+            }
+
+            // ===== Show candidates =====
+            async function showCandidates(villcode, countyName, townName, villName) {
+                infoPanelTitle.textContent = `${countyName}${townName}${villName}`;
+                infoPanelBody.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">載入候選人...</div>';
+                infoPanelEl.classList.add('open');
+
+                try {
+                    if (!candidateCache[villcode]) {
+                        const url = `${CANDIDATE_BASE}/${villcode}.json`;
+                        candidateCache[villcode] = await fetchJSON(url);
+                    }
+                    const data = candidateCache[villcode];
+                    renderCandidates(data);
+                } catch (e) {
+                    infoPanelBody.innerHTML = '<div style="text-align:center;padding:20px;color:#c0392b;">尚無候選人資料</div>';
+                }
+            }
+
+            function renderCandidates(data) {
+                const elections = data.elections || {};
+                if (Object.keys(elections).length === 0) {
+                    infoPanelBody.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">尚無候選人資料</div>';
+                    return;
+                }
+
+                const sorted = ELECTION_ORDER
+                    .filter(e => elections[e])
+                    .concat(Object.keys(elections).filter(e => !ELECTION_ORDER.includes(e)));
+
+                let html = '<div class="elections-grid">';
+                for (const etype of sorted) {
+                    const edata = elections[etype];
+                    if (!edata) continue;
+                    html += `<div class="election-section">`;
+                    html += `<h3>${etype}</h3>`;
+                    html += `<div class="district-label">${edata.district || ''}${edata.zone ? ' (' + edata.zone + ')' : ''}</div>`;
+
+                    for (const c of edata.candidates) {
+                        html += renderCandidateCard(c);
+                    }
+                    html += `</div>`;
+                }
+
+                html += '</div>';
+                infoPanelBody.innerHTML = html;
+
+                // Bind detail toggles
+                infoPanelBody.querySelectorAll('.cand-detail-toggle').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const detail = this.nextElementSibling;
+                        detail.classList.toggle('open');
+                        this.textContent = detail.classList.contains('open') ? '▲ 收合' : '▼ 經歷/政見';
+                    });
+                });
+            }
+
+            function renderCandidateCard(c) {
+                const pc = partyColor(c.party);
+                const photoSrc = c.photo
+                    ? `https://kiang.github.io/tainan.olc.tw/p/2026/${c.photo}`
+                    : '';
+
+                let html = `<div class="cand-card">`;
+
+                if (photoSrc) {
+                    html += `<img class="cand-photo" src="${photoSrc}" alt="${esc(c.name)}" onerror="this.style.display='none'">`;
+                }
+
+                html += `<div class="cand-info">`;
+                html += `<div class="cand-name"><span class="party-dot" style="background:${pc}"></span>${esc(c.name)}</div>`;
+                html += `<div class="cand-party">${esc(c.party)}</div>`;
+                html += `<div class="cand-date">登記日期：${esc(c.date)}</div>`;
+
+                // Social links
+                const links = [];
+                if (c.facebook) links.push(`<a href="${esc(c.facebook)}" target="_blank" rel="noopener">Facebook</a>`);
+                if (c.instagram) links.push(`<a href="${esc(c.instagram)}" target="_blank" rel="noopener">Instagram</a>`);
+                if (c.youtube) links.push(`<a href="${esc(c.youtube)}" target="_blank" rel="noopener">YouTube</a>`);
+                if (c.donate) links.push(`<a href="${esc(c.donate)}" target="_blank" rel="noopener">捐款</a>`);
+                if (links.length) {
+                    html += `<div class="cand-links">${links.join(' ')}</div>`;
+                }
+
+                // Experience/platform
+                if (c.experience || c.platform) {
+                    html += `<button class="cand-detail-toggle">▼ 經歷/政見</button>`;
+                    let detail = '';
+                    if (c.experience) detail += `【經歷】\n${c.experience}\n\n`;
+                    if (c.platform) detail += `【政見】\n${c.platform}`;
+                    html += `<div class="cand-detail">${esc(detail.trim())}</div>`;
+                }
+
+                html += `</div></div>`;
+                return html;
+            }
+
+            function esc(str) {
+                if (!str) return '';
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            // ===== Breadcrumb =====
+            function updateBreadcrumb() {
+                let html = '';
+                html += `<a onclick="goToCounty()">全台灣</a>`;
+
+                if (currentCounty) {
+                    html += ` <span>›</span> `;
+                    if (currentTown) {
+                        html += `<a onclick="goToTown('${currentCounty.code}','${esc(currentCounty.name)}')">${esc(currentCounty.name)}</a>`;
+                    } else {
+                        html += `<span class="current">${esc(currentCounty.name)}</span>`;
+                    }
+                }
+
+                if (currentTown) {
+                    html += ` <span>›</span> `;
+                    html += `<span class="current">${esc(currentTown.name)}</span>`;
+                }
+
+                breadcrumbEl.innerHTML = html;
+            }
+
+            // Global nav functions
+            window.goToCounty = function () {
+                loadCounties();
+                map.setView([23.7, 120.9], 7);
+            };
+
+            window.goToTown = function (countyCode, countyName) {
+                loadTowns(countyCode, countyName);
+            };
+
+            // ===== Legend =====
+            function updateLegend() {
+                if (currentLevel === 'county') {
+                    legendEl.innerHTML = '<b>操作說明</b>點擊縣市查看鄉鎮市區';
+                } else if (currentLevel === 'city') {
+                    legendEl.innerHTML = '<b>操作說明</b>點擊鄉鎮市區查看村里';
+                } else {
+                    legendEl.innerHTML = '<b>操作說明</b>點擊村里查看候選人';
+                }
+            }
+
+            // ===== Init =====
+            loadCounties();
+        })();
+    </script>
+</body>
+
+</html>
