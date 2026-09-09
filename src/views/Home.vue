@@ -556,6 +556,12 @@ onUnmounted(() => {
   align-items: flex-end;
   min-height: 400px;
 
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+    min-height: auto;
+  }
+
   @media (min-width: 768px) {
     min-height: 480px;
   }
@@ -573,9 +579,11 @@ onUnmounted(() => {
   max-width: 600px;
 
   @media (max-width: 767px) {
-    width: 45%;
-    max-width: 300px;
-    opacity: 0.85;
+    position: relative;
+    width: 60%;
+    max-width: 280px;
+    opacity: 1;
+    margin-top: 20px;
   }
 
   img {
@@ -595,8 +603,9 @@ onUnmounted(() => {
 
   @media (max-width: 767px) {
     max-width: 100%;
-    padding: 30px 20px 30px 40%;
-    text-align: left;
+    padding: 0 20px 30px;
+    text-align: center;
+    margin-left: 0;
   }
 }
 
@@ -1252,6 +1261,10 @@ onUnmounted(() => {
   display: flex;
   gap: 0;
   margin-bottom: 16px;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+  }
 }
 
 .hero-tab {
