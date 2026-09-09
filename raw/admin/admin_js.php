@@ -8,7 +8,10 @@ function parseQuickCoord(val) {
             var latInput = document.getElementById('inputLat');
             var lngInput = document.getElementById('inputLng');
             if (latInput) latInput.value = lat;
-            if (lngInput) lngInput.value = lng;
+            if (lngInput) {
+                lngInput.value = lng;
+                lngInput.dispatchEvent(new Event('change'));
+            }
         }
     }
 }
