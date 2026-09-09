@@ -112,7 +112,9 @@ function copyWeekText() {
   const lines = [];
   const first = weekDays.value[0];
   const last = weekDays.value[6];
+  lines.push('北中西區台南議員候選人 江明宗');
   lines.push(`📅 行程 ${first.month}/${first.dayNum} - ${last.month}/${last.dayNum}`);
+  lines.push('歡迎一起參與！');
   lines.push('');
   weekDays.value.forEach((day, i) => {
     if (day.events.length === 0) return;
