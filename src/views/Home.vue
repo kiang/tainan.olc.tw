@@ -138,6 +138,44 @@ function copyWeekText() {
   });
 }
 
+function downloadWeekIcs() {
+  const events = weekDays.value.flatMap(d => d.events);
+  if (events.length === 0) return;
+  const pad = (n) => String(n).padStart(2, '0');
+  const toIcsDate = (dateStr, timeStr) => {
+    const [y, m, d] = dateStr.split('-');
+    const [h, min] = timeStr.split(':');
+    return `${y}${pad(m)}${pad(d)}T${pad(h)}${pad(min)}00`;
+  };
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//江明宗//行程//ZH', 'CALSCALE:GREGORIAN'];
+  events.forEach(event => {
+    const dtStart = toIcsDate(event.date, event.time);
+    const dtEnd = event.end_time
+      ? toIcsDate(event.date, event.end_time)
+      : toIcsDate(event.date, `${pad(parseInt(event.time.split(':')[0]) + 1)}:${event.time.split(':')[1]}`);
+    const geo = (event.lat && event.lng) ? `https://maps.google.com/maps?q=${event.lat},${event.lng}` : '';
+    lines.push('BEGIN:VEVENT');
+    lines.push(`DTSTART;TZID=Asia/Taipei:${dtStart}`);
+    lines.push(`DTEND;TZID=Asia/Taipei:${dtEnd}`);
+    lines.push(`SUMMARY:${event.location}（${event.type}）- 江明宗`);
+    if (geo) lines.push(`LOCATION:${event.location}\\n${geo}`);
+    else lines.push(`LOCATION:${event.location}`);
+    if (geo) lines.push(`URL:${geo}`);
+    lines.push(`UID:${event.date}-${event.time}-${event.location}@tainan.olc.tw`);
+    lines.push('END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+  const first = weekDays.value[0];
+  const last = weekDays.value[6];
+  const filename = `江明宗行程_${first.month}${pad(first.dayNum)}-${last.month}${pad(last.dayNum)}.ics`;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 const scheduleMapContainer = ref(null);
 let scheduleMap = null;
 let scheduleMarkers = [];
@@ -422,6 +460,12 @@ onUnmounted(() => {
                 <path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/>
               </svg>
               <span v-if="copyStatus" class="copy-status">{{ copyStatus }}</span>
+            </button>
+            <button class="copy-week-btn" @click="downloadWeekIcs" title="下載本週行程 (匯入Google日曆)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
+                <path d="M8 7.5a.5.5 0 0 1 .5.5v2.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 10.793V8a.5.5 0 0 1 .5-.5z"/>
+              </svg>
             </button>
           </div>
         </div>
