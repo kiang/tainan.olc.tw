@@ -203,16 +203,21 @@ function updateScheduleMap() {
       const c = getTypeColor(event.type);
       const volunteerUrl = buildVolunteerUrl(event);
       const joinBtn = isEventFuture(event)
-        ? `<br><a href="${volunteerUrl}" target="_blank" rel="noopener"
-             style="display:inline-block;margin-top:4px;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>`
+        ? `<a href="${volunteerUrl}" target="_blank" rel="noopener"
+             style="display:inline-flex;align-items:center;padding:4px 14px;background:#28c8c8;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">我要參加</a>`
         : '';
+      const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${event.lat},${event.lng}`;
       return `
         <div style="text-align:center;padding:6px 4px;border-bottom:1px solid #eee">
           <div style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:${c};color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-bottom:4px">${index}</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:2px">${event.location}</div>
           <div style="font-size:13px;color:#666">${event.date} ${event.time}${event.end_time ? ' - ' + event.end_time : ''}</div>
           <div style="display:inline-block;font-size:11px;padding:1px 8px;border-radius:4px;background:${c}20;color:${c};font-weight:600;margin:4px 0">${event.type}</div>
-          ${joinBtn}
+          <div style="margin-top:4px;display:flex;gap:6px;justify-content:center">
+            <a href="${navUrl}" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:4px;padding:4px 14px;background:#4285F4;color:#fff;text-decoration:none;border-radius:12px;font-size:12px;font-weight:600">📍 導航</a>
+            ${joinBtn}
+          </div>
         </div>`;
     }).join('');
 
