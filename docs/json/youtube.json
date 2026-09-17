@@ -4,8 +4,8 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區和緯路四段/文賢路",
-                "count": 8
+                "key": "北區和緯路四段/文賢路 好市多",
+                "count": 7
             },
             "geometry": {
                 "type": "Point",
@@ -158,8 +158,8 @@
         {
             "type": "Feature",
             "properties": {
-                "key": "北區和緯路二段/西門路四段",
-                "count": 2
+                "key": "北區和緯路二段/西門路四段 小北新成功夜市",
+                "count": 3
             },
             "geometry": {
                 "type": "Point",
@@ -698,6 +698,34 @@
                 "coordinates": [
                     120.185933,
                     22.982341
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "武聖夜市",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.191132,
+                    23.004653
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "花園夜市",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.200369,
+                    23.011431
                 ]
             }
         }
