@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="2026 臺南市第08選區 里長選情分析 — 台灣民眾黨">
+<meta property="og:description" content="中西區、北區 53 里里長選情與議員候選人經營策略分析">
+<title>2026 臺南市第08選區 里長選情分析</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.cunli-section{margin-bottom:24px}
+.cunli-section h3{font-size:1em;margin-bottom:8px}
+.cand-list{list-style:none;padding:0;margin:0 0 8px}
+.cand-list li{font-size:.85em;padding:4px 8px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:6px}
+.cand-list li:last-child{border-bottom:none}
+.party-tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:.75em;font-weight:600;color:#fff}
+.party-tag.dpp{background:#1B9431}.party-tag.kmt{background:#000095}.party-tag.tpp{background:#28C7B7}.party-tag.none{background:#888}
+.priority-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.78em;font-weight:700;color:#fff;margin-left:6px}
+.priority-high{background:#D32F2F}.priority-mid{background:#F57F17}.priority-low{background:#757575}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px}
+.summary-card{background:var(--tpp-light);border-radius:8px;padding:12px;text-align:center}
+.summary-card .lb{font-size:.78em;color:var(--text2)}.summary-card .val{font-size:1.3em;font-weight:700;color:var(--tpp-dark)}
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-bar label{font-size:.85em;font-weight:600}
+.filter-bar select,.filter-bar input{padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:.85em}
+.strategy-note{background:#FFF8E1;border-left:4px solid #F57F17;padding:10px 14px;margin:8px 0;font-size:.85em;border-radius:0 6px 6px 0}
+.strategy-note.high{background:#FFEBEE;border-color:#D32F2F}
+.strategy-note.positive{background:#E8F5E9;border-color:#2E7D32}
+.contested-table{width:100%;border-collapse:collapse;font-size:.82em}
+.contested-table th,.contested-table td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:right}
+.contested-table th{background:#f5f5f5;font-weight:600;cursor:pointer;user-select:none}
+.contested-table th:first-child,.contested-table td:first-child{text-align:left}
+.contested-table tr:hover td{background:var(--tpp-light)}
+.heat{font-weight:700}
+.heat-5{color:#D32F2F}.heat-4{color:#E65100}.heat-3{color:#F57F17}.heat-2{color:#1565C0}
+.tab-bar{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)}
+.tab-btn{padding:8px 16px;border:none;background:none;font-size:.88em;font-weight:600;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab-btn.active{color:var(--tpp-dark);border-bottom-color:var(--tpp)}
+.tab-btn:hover{color:var(--tpp-dark)}
+.tab-content{display:none}.tab-content.active{display:block}
+.contested-table td small{display:block;color:var(--text2);font-size:.85em}
+.cand-list li[style*="FFF3E0"]{border-left:3px solid #E65100;padding-left:10px}
+.cand-list li[style*="E3F2FD"]{border-left:3px solid #1565C0;padding-left:10px}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FJ1JR851SJ');
+</script>
+</head>
+<body>
+<div id="app"><p style="text-align:center;padding:40px;color:var(--text2)">載入中...</p></div>
+<script>
+(function () {
+  'use strict';
+  const h = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+  const fmt = n => Number(n).toLocaleString();
+  const chg = v => (v >= 0 ? '+' : '') + v;
+
+  const CANDIDATE_BASE = 'https://kiang.github.io/vote2026/candidates/';
+  const AREA_NAMES_URL = '../data/area_names.json';
+  const ZONE_DATA_URL = '67000-08.json';
+  const LIZHANG_2022_URL = '67000-08-lizhang2022.json';
+
+  let zoneData = null;
+  let areaNames = null;
+  let cunliCandidates = {};
+  let lizhang2022 = {};
+
+  async function fetchJSON(url) {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    return resp.json();
+  }
+
+  async function init() {
+    const app = document.getElementById('app');
+    try {
+      [zoneData, areaNames, lizhang2022] = await Promise.all([
+        fetchJSON(ZONE_DATA_URL),
+        fetchJSON(AREA_NAMES_URL),
+        fetchJSON(LIZHANG_2022_URL)
+      ]);
+
+      const towns = areaNames.towns;
+      const villages = areaNames.villages;
+      const targetTowns = {};
+      for (const [code, name] of Object.entries(towns)) {
+        if (code.startsWith('67000') && (name === '北區' || name === '中西區')) {
+          targetTowns[code] = name;
+        }
+      }
+
+      const villList = [];
+      for (const [code, name] of Object.entries(villages)) {
+        for (const [tcode, tname] of Object.entries(targetTowns)) {
+          if (code.startsWith(tcode)) {
+            villList.push({ code, town: tname, name });
+          }
+        }
+      }
+
+      app.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text2)">載入 53 里候選人資料中... <span id="loadProgress">0</span>/53</p>';
+      let loaded = 0;
+      const progressEl = () => document.getElementById('loadProgress');
+
+      const results = await Promise.all(villList.map(async (v) => {
+        try {
+          const data = await fetchJSON(CANDIDATE_BASE + v.code + '.json');
+          const elections = data.elections || {};
+          const lizhang = elections['村里長'];
+          loaded++;
+          const pe = progressEl();
+          if (pe) pe.textContent = loaded;
+          if (lizhang && lizhang.candidates) {
+            return { label: v.town + v.name, code: v.code, town: v.town, name: v.name, candidates: lizhang.candidates };
+          }
+          return { label: v.town + v.name, code: v.code, town: v.town, name: v.name, candidates: [] };
+        } catch (e) {
+          loaded++;
+          const pe = progressEl();
+          if (pe) pe.textContent = loaded;
+          return { label: v.town + v.name, code: v.code, town: v.town, name: v.name, candidates: [] };
+        }
+      }));
+
+      results.forEach(r => { cunliCandidates[r.label] = r; });
+      render();
+    } catch (e) {
+      app.innerHTML = '<p style="color:#c00;padding:20px">載入失敗：' + h(e.message) + '</p>';
+    }
+  }
+
+  function getCunliData(label) {
+    return zoneData.cunlis.find(c => c.label === label) || null;
+  }
+
+  function vPres(cd) {
+    return Math.round(cd.total2024 * cd.r2024p / 100);
+  }
+
+  function get2022(label) {
+    return lizhang2022[label] || null;
+  }
+
+  function normParty(p) {
+    if (!p || p === '無' || p === '無黨籍及未經政黨推薦') return '無';
+    if (p.includes('民主進步')) return '民進黨';
+    if (p.includes('國民黨')) return '國民黨';
+    if (p.includes('民眾黨')) return '民眾黨';
+    if (p.includes('時代力量')) return '時代力量';
+    return p;
+  }
+
+  function getCandComparison(label) {
+    const d22 = get2022(label);
+    const c26 = cunliCandidates[label];
+    if (!d22 || !c26) return { returning: [], switched: [], new2026: [], retired: [] };
+
+    const names22 = new Map();
+    d22.candidates_2022.forEach(c => names22.set(c.name, c));
+    const names26 = new Map();
+    c26.candidates.forEach(c => names26.set(c.name, c));
+
+    const returning = [];
+    const switched = [];
+    const new2026 = [];
+    const retired = [];
+
+    names26.forEach((c26entry, name) => {
+      if (names22.has(name)) {
+        const c22entry = names22.get(name);
+        const p22 = normParty(c22entry.party);
+        const p26 = normParty(c26entry.party);
+        if (p22 !== p26) {
+          switched.push({ name, party2022: c22entry.party, party2026: c26entry.party, votes2022: c22entry.votes, elected2022: c22entry.elected });
+        } else {
+          returning.push({ name, party: c26entry.party, votes2022: c22entry.votes, elected2022: c22entry.elected });
+        }
+      } else {
+        new2026.push({ name, party: c26entry.party });
+      }
+    });
+
+    names22.forEach((c22entry, name) => {
+      if (!names26.has(name)) {
+        retired.push({ name, party: c22entry.party, votes: c22entry.votes, elected: c22entry.elected });
+      }
+    });
+
+    return { returning, switched, new2026, retired };
+  }
+
+  function render2022Block(label) {
+    const d = get2022(label);
+    if (!d) return '';
+    const cands = d.candidates_2022;
+    if (cands.length === 0) return '';
+    const wasContested = cands.length > 1;
+    const comp = getCandComparison(label);
+    const returningNames = new Set(comp.returning.map(r => r.name));
+    const switchedNames = new Set(comp.switched.map(r => r.name));
+
+    let html = '<div style="margin-top:6px;padding:8px 10px;background:#f5f5f5;border-radius:6px;font-size:.82em">';
+    html += '<div style="font-weight:600;margin-bottom:4px">2022 里長選舉結果' + (wasContested ? '（' + cands.length + '人競爭）' : '（同額當選）') + '</div>';
+    html += '<table style="width:100%;font-size:.95em"><tr><th style="text-align:left">候選人</th><th style="text-align:left">政黨</th><th>得票</th><th>結果</th><th>2026</th></tr>';
+    cands.forEach(c => {
+      const isReturning = returningNames.has(c.name);
+      const isSwitched = switchedNames.has(c.name);
+      const rowStyle = isSwitched ? 'background:#FFF3E0' : isReturning ? 'background:#E3F2FD' : '';
+      let tag2026 = '';
+      if (isSwitched) {
+        const sw = comp.switched.find(s => s.name === c.name);
+        tag2026 = '<span style="color:#E65100;font-weight:700">⚠ 轉黨</span><br><small>' + partyTag(c.party) + '→' + partyTag(sw.party2026) + '</small>';
+      } else if (isReturning) {
+        tag2026 = '<span style="color:#1565C0;font-weight:600">↩ 續選</span>';
+      }
+      html += '<tr style="' + rowStyle + '"><td>' + h(c.name) + '</td><td>' + partyTag(c.party) + '</td><td style="text-align:right">' + fmt(c.votes) + '</td><td style="text-align:right">' + (c.elected ? '<span class="elected">當選</span>' : '') + '</td><td style="text-align:center">' + tag2026 + '</td></tr>';
+    });
+    html += '</table>';
+
+    if (comp.switched.length > 0) {
+      html += '<div style="margin-top:6px;padding:6px 8px;background:#FFF3E0;border-left:3px solid #E65100;border-radius:0 4px 4px 0">';
+      comp.switched.forEach(s => {
+        html += '<div><strong>⚠ ' + h(s.name) + '</strong> 轉黨：' + partyTag(s.party2022) + ' → ' + partyTag(s.party2026);
+        html += '（2022得票 ' + fmt(s.votes2022) + '，' + (s.elected2022 ? '當選' : '落選') + '）</div>';
+      });
+      html += '</div>';
+    }
+
+    if (comp.retired.length > 0) {
+      const retiredElected = comp.retired.filter(r => r.elected);
+      if (retiredElected.length > 0) {
+        html += '<div style="margin-top:4px;font-size:.92em;color:var(--text2)">2022 當選但未登記 2026：' + retiredElected.map(r => h(r.name) + '（' + fmt(r.votes) + '票）').join('、') + '</div>';
+      }
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  function renderCandList2026(c) {
+    const comp = getCandComparison(c.label);
+    const returningNames = new Set(comp.returning.map(r => r.name));
+    const switchedMap = new Map(comp.switched.map(s => [s.name, s]));
+
+    return c.candidates.map(x => {
+      const isReturning = returningNames.has(x.name);
+      const sw = switchedMap.get(x.name);
+      let badge = '';
+      let style = '';
+      if (sw) {
+        badge = ' <span style="color:#E65100;font-weight:700;font-size:.8em">⚠ 轉黨（2022 ' + partyTag(sw.party2022) + ' ' + fmt(sw.votes2022) + '票' + (sw.elected2022 ? ' 當選' : '') + '）</span>';
+        style = 'background:#FFF3E0';
+      } else if (isReturning) {
+        const ret = comp.returning.find(r => r.name === x.name);
+        badge = ' <span style="color:#1565C0;font-size:.8em">↩ 續選（2022 ' + fmt(ret.votes2022) + '票' + (ret.elected2022 ? ' 當選' : '') + '）</span>';
+        style = 'background:#E3F2FD';
+      }
+      return `<li style="${style}">${partyTag(x.party)} ${h(x.name)}${badge}</li>`;
+    }).join('');
+  }
+
+  function partyTag(party) {
+    if (!party || party === '無' || party === '無黨籍及未經政黨推薦') return '<span class="party-tag none">無</span>';
+    if (party.includes('民主進步')) return '<span class="party-tag dpp">民進黨</span>';
+    if (party.includes('國民黨')) return '<span class="party-tag kmt">國民黨</span>';
+    if (party.includes('民眾黨')) return '<span class="party-tag tpp">民眾黨</span>';
+    return '<span class="party-tag none">' + h(party) + '</span>';
+  }
+
+  function priorityScore(cunliData, candCount) {
+    if (!cunliData) return 0;
+    let score = 0;
+    score += cunliData.r2024 * 2;
+    score += cunliData.chg * 1.5;
+    score += cunliData.pvp * 1;
+    score += Math.log2(candCount) * 5;
+    score += cunliData.est * 0.02;
+    score += cunliData.v2024 * 0.005;
+    return Math.round(score * 10) / 10;
+  }
+
+  function render() {
+    const d = zoneData;
+    const app = document.getElementById('app');
+
+    const allCunlis = Object.values(cunliCandidates);
+    const contested = allCunlis.filter(c => c.candidates.length > 1).sort((a, b) => {
+      const da = getCunliData(a.label), db = getCunliData(b.label);
+      return priorityScore(db, b.candidates.length) - priorityScore(da, a.candidates.length);
+    });
+    const uncontested = allCunlis.filter(c => c.candidates.length === 1);
+    const noCand = allCunlis.filter(c => c.candidates.length === 0);
+
+    const totalCands = allCunlis.reduce((s, c) => s + c.candidates.length, 0);
+    const dppCount = allCunlis.reduce((s, c) => s + c.candidates.filter(x => x.party && x.party.includes('民主進步')).length, 0);
+    const kmtCount = allCunlis.reduce((s, c) => s + c.candidates.filter(x => x.party && x.party.includes('國民黨')).length, 0);
+    const indCount = totalCands - dppCount - kmtCount;
+
+    const contestedVotes = contested.reduce((s, c) => {
+      const cd = getCunliData(c.label);
+      return s + (cd ? cd.v2024 : 0);
+    }, 0);
+    const uncontestedVotes = uncontested.reduce((s, c) => {
+      const cd = getCunliData(c.label);
+      return s + (cd ? cd.v2024 : 0);
+    }, 0);
+
+    app.innerHTML = `
+    <header>
+      <h1>2026 臺南市第08選區<br>里長選情與議員經營策略</h1>
+      <div class="sub">台灣民眾黨 ｜ ${h(d.areas)} ｜ 53 里完整分析</div>
+    </header>
+
+    <section>
+      <h2>議員經營優先順序分析</h2>
+      <p style="font-size:.85em;color:var(--text2);margin-bottom:12px">
+        綜合考量：2024 政黨票得票率、成長幅度、總統票外溢空間、里長候選人數（競爭越激烈投票率越高）、預估票數。
+        分數越高代表對議員候選人越具經營價值。
+      </p>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="contested">競爭里分析（${contested.length}里）</button>
+        <button class="tab-btn" data-tab="uncontested">同額里（${uncontested.length}里）</button>
+        <button class="tab-btn" data-tab="full">完整排序表</button>
+      </div>
+
+      <div class="tab-content active" id="tab-contested">
+        ${renderContestedTable(contested)}
+      </div>
+
+      <div class="tab-content" id="tab-uncontested">
+        ${renderUncontestedTable(uncontested)}
+      </div>
+
+      <div class="tab-content" id="tab-full">
+        ${renderFullRanking(allCunlis)}
+      </div>
+    </section>
+
+    <section>
+      <h2>選情總覽</h2>
+      <div class="summary-grid">
+        <div class="summary-card"><div class="lb">總里數</div><div class="val">53</div></div>
+        <div class="summary-card"><div class="lb">競爭里（≥2人）</div><div class="val" style="color:#D32F2F">${contested.length}</div></div>
+        <div class="summary-card"><div class="lb">同額里（1人）</div><div class="val">${uncontested.length}</div></div>
+        <div class="summary-card"><div class="lb">里長候選人總數</div><div class="val">${totalCands}</div></div>
+        <div class="summary-card"><div class="lb">民進黨提名</div><div class="val" style="color:var(--dpp)">${dppCount}</div></div>
+        <div class="summary-card"><div class="lb">國民黨提名</div><div class="val" style="color:var(--kmt)">${kmtCount}</div></div>
+        <div class="summary-card"><div class="lb">無黨籍</div><div class="val" style="color:#888">${indCount}</div></div>
+        <div class="summary-card"><div class="lb">2024民眾黨政黨票</div><div class="val">${d.rates.tpp_2024}%</div><div class="lb">${fmt(d.votes.tpp_2024)}票</div></div>
+      </div>
+
+      <div class="strategy-note positive">
+        <strong>策略觀察：</strong>全區 53 里中有 ${contested.length} 里出現競爭（${(contested.length/53*100).toFixed(0)}%），
+        這些里的 2024 政黨票合計 ${fmt(contestedVotes)} 票，佔全區 ${(contestedVotes/d.votes.tpp_2024*100).toFixed(1)}%。
+        里長選舉的競爭態勢可為議員候選人帶來更高投票率與曝光機會。
+      </div>
+    </section>
+
+    <section>
+      <h2>萬票目標：各里配票分析</h2>
+      <p style="font-size:.85em;color:var(--text2);margin-bottom:12px">
+        以 10,000 票為議員當選目標，依各里 2024 政黨票基礎、成長趨勢、總統票外溢空間與里長選情，推算各里應達成票數。
+        2022 年最低當選門檻為 ${fmt(d.threshold_2022)} 票（${h(d.threshold_who)}），10,000 票可確保安全當選。
+      </p>
+      ${renderTenKTarget(allCunlis, d)}
+    </section>
+
+    <section>
+      <h2>重點競爭里詳細分析</h2>
+      <p style="font-size:.85em;color:var(--text2);margin-bottom:16px">
+        依經營優先度排序，列出各競爭里的里長候選人與議員候選人可運用的策略建議。
+      </p>
+      ${contested.map((c, i) => renderContestedDetail(c, i + 1)).join('')}
+    </section>
+
+    <section>
+      <h2>同額競選里詳細分析</h2>
+      <p style="font-size:.85em;color:var(--text2);margin-bottom:16px">
+        僅 1 位里長候選人的里，投票率通常偏低。依經營優先度排序，議員候選人需靠自身動員拉高投票率。
+      </p>
+      ${renderUncontestedDetail(uncontested)}
+    </section>
+
+    <section>
+      <h2>策略總結與行動建議</h2>
+      ${renderStrategyConclusion(contested, uncontested, d)}
+    </section>
+
+    <footer>
+      資料來源：中央選舉委員會選舉資料庫、<a href="../all.html" target="_blank">2026全台選舉候選人地圖</a> ｜ 涵蓋選舉：2024不分區、2024總統、2026里長<br>
+      目標選舉：2026 縣市議員（第08選區：中西區、北區）<br>
+      競爭里定義：有 2 位以上里長候選人登記參選<br>
+      資料整理：<a href="https://facebook.com/k.olc.tw" target="_blank" rel="noopener">江明宗</a>
+    </footer>`;
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Table sorting
+    document.querySelectorAll('.contested-table th[data-sort]').forEach(th => {
+      th.addEventListener('click', function() {
+        const table = this.closest('table');
+        const idx = Array.from(this.parentNode.children).indexOf(this);
+        const type = this.dataset.sort;
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const asc = table.dataset.sc === String(idx) && table.dataset.sd === 'asc';
+        table.dataset.sc = idx;
+        table.dataset.sd = asc ? 'desc' : 'asc';
+        rows.sort((a, b) => {
+          let av = a.cells[idx]?.textContent.trim().replace(/[%,票+]/g, '') || '';
+          let bv = b.cells[idx]?.textContent.trim().replace(/[%,票+]/g, '') || '';
+          if (type === 'num') { av = parseFloat(av) || -999; bv = parseFloat(bv) || -999; }
+          return (av < bv ? 1 : av > bv ? -1 : 0) * (asc ? -1 : 1);
+        });
+        const tbody = table.querySelector('tbody');
+        rows.forEach(r => tbody.appendChild(r));
+        this.parentNode.querySelectorAll('th').forEach((t, i) => {
+          t.textContent = t.textContent.replace(/ [▲▼]$/, '');
+          if (i === idx) t.textContent += asc ? ' ▲' : ' ▼';
+        });
+      });
+    });
+  }
+
+  function renderContestedTable(contested) {
+    let rows = contested.map((c, i) => {
+      const cd = getCunliData(c.label);
+      if (!cd) return '';
+      const score = priorityScore(cd, c.candidates.length);
+      const hasDpp = c.candidates.some(x => x.party && x.party.includes('民主進步'));
+      const hasKmt = c.candidates.some(x => x.party && x.party.includes('國民黨'));
+      const heatClass = c.candidates.length >= 5 ? 'heat-5' : c.candidates.length >= 4 ? 'heat-4' : c.candidates.length >= 3 ? 'heat-3' : 'heat-2';
+      const partyFlag = (hasDpp ? '<span style="color:var(--dpp)">●</span>' : '') + (hasKmt ? '<span style="color:var(--kmt)">●</span>' : '');
+      const d22 = get2022(c.label);
+      const winner22 = d22 ? h(d22.winner_2022 || '-') : '-';
+      const was22 = d22 ? (d22.contested_2022 ? d22.candidates_2022.length + '人' : '同額') : '-';
+      return `<tr>
+        <td>${i + 1}</td>
+        <td>${h(c.label)}</td>
+        <td class="heat ${heatClass}">${c.candidates.length}人</td>
+        <td>${partyFlag || '-'}</td>
+        <td>${cd.r2024}%<br><small>${fmt(cd.v2024)}</small></td>
+        <td>${cd.r2024p}%<br><small>${fmt(vPres(cd))}</small></td>
+        <td class="${cd.chg >= 0 ? 'pos' : 'neg'}">${chg(cd.chg)}</td>
+        <td>${was22}</td>
+        <td>${winner22}</td>
+        <td>${fmt(cd.est)}</td>
+        <td><span class="tier tier-${cd.tier}">${cd.tier}</span></td>
+        <td style="font-weight:700">${score}</td>
+      </tr>`;
+    }).join('');
+
+    return `<table class="contested-table">
+      <thead><tr>
+        <th data-sort="num">#</th>
+        <th data-sort="str">里</th>
+        <th data-sort="num">2026候選</th>
+        <th>政黨</th>
+        <th data-sort="num">2024政黨票</th>
+        <th data-sort="num">2024總統票</th>
+        <th data-sort="num">成長</th>
+        <th data-sort="num">2022競爭</th>
+        <th data-sort="str">2022當選</th>
+        <th data-sort="num">預估票</th>
+        <th data-sort="str">級</th>
+        <th data-sort="num">優先分</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function renderUncontestedTable(uncontested) {
+    const sorted = uncontested.slice().sort((a, b) => {
+      const da = getCunliData(a.label), db = getCunliData(b.label);
+      return (db ? db.r2024 : 0) - (da ? da.r2024 : 0);
+    });
+    let rows = sorted.map((c, i) => {
+      const cd = getCunliData(c.label);
+      if (!cd) return '';
+      const cand = c.candidates[0] || {};
+      const d22 = get2022(c.label);
+      const winner22 = d22 ? h(d22.winner_2022 || '-') : '-';
+      const was22 = d22 ? (d22.contested_2022 ? d22.candidates_2022.length + '人' : '同額') : '-';
+      return `<tr>
+        <td>${i + 1}</td>
+        <td>${h(c.label)}</td>
+        <td>${h(cand.name || '-')}</td>
+        <td>${partyTag(cand.party)}</td>
+        <td>${cd.r2024}%<br><small>${fmt(cd.v2024)}</small></td>
+        <td>${cd.r2024p}%<br><small>${fmt(vPres(cd))}</small></td>
+        <td class="${cd.chg >= 0 ? 'pos' : 'neg'}">${chg(cd.chg)}</td>
+        <td>${was22}</td>
+        <td>${winner22}</td>
+        <td>${fmt(cd.est)}</td>
+        <td><span class="tier tier-${cd.tier}">${cd.tier}</span></td>
+      </tr>`;
+    }).join('');
+
+    return `<p style="font-size:.85em;color:var(--text2);margin-bottom:8px">同額競選的里投票率通常偏低，議員候選人需靠自身動員拉高投票率。</p>
+    <table class="contested-table">
+      <thead><tr>
+        <th data-sort="num">#</th>
+        <th data-sort="str">里</th>
+        <th>2026里長候選人</th>
+        <th>政黨</th>
+        <th data-sort="num">2024政黨票</th>
+        <th data-sort="num">2024總統票</th>
+        <th data-sort="num">成長</th>
+        <th data-sort="num">2022競爭</th>
+        <th data-sort="str">2022當選</th>
+        <th data-sort="num">預估票</th>
+        <th data-sort="str">級</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function renderFullRanking(allCunlis) {
+    const sorted = allCunlis.slice().sort((a, b) => {
+      const da = getCunliData(a.label), db = getCunliData(b.label);
+      const sa = priorityScore(da, a.candidates.length);
+      const sb = priorityScore(db, b.candidates.length);
+      return sb - sa;
+    });
+
+    let rows = sorted.map((c, i) => {
+      const cd = getCunliData(c.label);
+      if (!cd) return '';
+      const score = priorityScore(cd, c.candidates.length);
+      const isContested = c.candidates.length > 1;
+      const d22 = get2022(c.label);
+      const winner22 = d22 ? h(d22.winner_2022 || '-') : '-';
+      const was22 = d22 ? (d22.contested_2022 ? d22.candidates_2022.length + '人' : '同額') : '-';
+      return `<tr style="${isContested ? 'background:var(--tpp-light)' : ''}">
+        <td>${i + 1}</td>
+        <td>${h(c.label)}</td>
+        <td>${c.candidates.length}</td>
+        <td>${cd.r2024}%<br><small>${fmt(cd.v2024)}</small></td>
+        <td>${cd.r2024p}%<br><small>${fmt(vPres(cd))}</small></td>
+        <td class="${cd.chg >= 0 ? 'pos' : 'neg'}">${chg(cd.chg)}</td>
+        <td>${was22}</td>
+        <td>${winner22}</td>
+        <td>${fmt(cd.est)}</td>
+        <td><span class="tier tier-${cd.tier}">${cd.tier}</span></td>
+        <td style="font-weight:700">${score}</td>
+      </tr>`;
+    }).join('');
+
+    return `<p style="font-size:.85em;color:var(--text2);margin-bottom:8px">淺綠底色為競爭里，依綜合優先分數排序。點擊欄位標題可排序。</p>
+    <table class="contested-table">
+      <thead><tr>
+        <th data-sort="num">#</th>
+        <th data-sort="str">里</th>
+        <th data-sort="num">2026候選</th>
+        <th data-sort="num">2024政黨票</th>
+        <th data-sort="num">2024總統票</th>
+        <th data-sort="num">成長</th>
+        <th data-sort="num">2022競爭</th>
+        <th data-sort="str">2022當選</th>
+        <th data-sort="num">預估票</th>
+        <th data-sort="str">級</th>
+        <th data-sort="num">優先分</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function renderContestedDetail(c, rank) {
+    const cd = getCunliData(c.label);
+    if (!cd) return '';
+    const score = priorityScore(cd, c.candidates.length);
+
+    const hasDpp = c.candidates.some(x => x.party && x.party.includes('民主進步'));
+    const hasKmt = c.candidates.some(x => x.party && x.party.includes('國民黨'));
+    const indOnly = !hasDpp && !hasKmt;
+
+    let strategy = '';
+    if (cd.tier === 'A') {
+      strategy = '核心票倉，里長選戰激烈有利提高投票率，應積極掃街拜票、設定服務據點，鞏固既有支持者。';
+    } else if (cd.tier === 'B') {
+      strategy = '高成長區域，支持度快速攀升中。趁里長選舉帶動人氣，加強社區互動與曝光。';
+    } else if (cd.r2024 >= 20) {
+      strategy = '政黨票表現優異，應善用里長選戰帶來的投票率提升效果，強化候選人品牌連結。';
+    } else if (cd.pvp > 4) {
+      strategy = '總統票外溢明顯（差距 +' + cd.pvp + '%），選民「認人不認黨」傾向高，候選人應以個人特質與服務實績吸引支持。';
+    } else if (cd.chg > 10) {
+      strategy = '成長動能強勁（+' + cd.chg + '%），趁勢深耕，將政黨認同轉化為議員票。';
+    } else {
+      strategy = '競爭態勢下投票率可望提升，議員候選人應把握機會接觸更多選民。';
+    }
+
+    if (c.candidates.length >= 4) {
+      strategy += ' 里長候選人多達 ' + c.candidates.length + ' 人，選情混亂有利新面孔曝光。';
+    }
+    if (hasDpp && hasKmt) {
+      strategy += ' 藍綠對決格局，民眾黨可爭取中間選民。';
+    } else if (indOnly && c.candidates.length >= 3) {
+      strategy += ' 全為無黨籍競爭，政黨標籤弱化，議員候選人可專注政見溝通。';
+    }
+
+    const priorityClass = score >= 55 ? 'high' : score >= 45 ? 'mid' : 'low';
+    const priorityLabel = score >= 55 ? '最優先' : score >= 45 ? '重要' : '一般';
+
+    return `<div class="cunli-section">
+      <h3>#${rank} ${h(c.label)} <span class="priority-badge priority-${priorityClass}">${priorityLabel}</span>
+        <span class="tier tier-${cd.tier}" style="margin-left:4px">${cd.tier}</span>
+      </h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.82em;color:var(--text2);margin-bottom:6px">
+        <span>2024政黨票 ${cd.r2024}%（${fmt(cd.v2024)}票）</span>
+        <span>2024總統票 ${cd.r2024p}%（${fmt(vPres(cd))}票）</span>
+        <span>成長 <span class="${cd.chg >= 0 ? 'pos' : 'neg'}">${chg(cd.chg)}</span></span>
+        <span>外溢 +${cd.pvp}%</span>
+        <span>預估 ${fmt(cd.est)} 票</span>
+        <span>優先分 ${score}</span>
+      </div>
+      <div style="font-size:.85em;font-weight:600;margin-bottom:4px">2026 里長候選人（${c.candidates.length}人）：</div>
+      <ul class="cand-list">
+        ${renderCandList2026(c)}
+      </ul>
+      ${render2022Block(c.label)}
+      <div class="strategy-note ${priorityClass === 'high' ? 'high' : priorityClass === 'mid' ? '' : 'positive'}">
+        <strong>經營建議：</strong>${strategy}
+      </div>
+    </div>`;
+  }
+
+  function renderTenKTarget(allCunlis, d) {
+    const TARGET = 10000;
+    const turnout = d.turnout_ratio;
+
+    const rows = allCunlis.map(c => {
+      const cd = getCunliData(c.label);
+      if (!cd) return null;
+
+      const totalVoters = cd.total2024;
+      const isContested = c.candidates.length > 1;
+      const contestedBoost = isContested ? 1.05 : 1.0;
+
+      // v2024 = actual TPP party votes in this cunli at 2024 election
+      // total2024 = total valid votes in this cunli at 2024 election
+      // For councillor election, turnout is typically lower than presidential.
+      // turnout_ratio = councillor turnout / presidential turnout
+
+      // Base scenario: v2024 party votes × councillor turnout adjustment
+      const baseVotes = Math.round(cd.v2024 * turnout * contestedBoost);
+      // Growth scenario: (r2024 + 2%) applied to total voters × councillor turnout
+      const growthRate = Math.min((cd.r2024 + 2) / 100, cd.r2024p / 100);
+      const growthVotes = Math.round(totalVoters * growthRate * turnout * contestedBoost);
+      // Optimistic scenario: reach presidential vote level × councillor turnout
+      const optVotes = Math.round(totalVoters * (cd.r2024p / 100) * turnout * contestedBoost);
+
+      return {
+        label: c.label,
+        town: cd.town,
+        tier: cd.tier,
+        r2024: cd.r2024,
+        r2024p: cd.r2024p,
+        chg: cd.chg,
+        pvp: cd.pvp,
+        v2024: cd.v2024,
+        totalVoters,
+        baseVotes,
+        growthVotes,
+        optVotes,
+        isContested,
+        candCount: c.candidates.length,
+        v2024: cd.v2024,
+        v2024p: Math.round(totalVoters * cd.r2024p / 100)
+      };
+    }).filter(Boolean).sort((a, b) => b.growthVotes - a.growthVotes);
+
+    const totalBase = rows.reduce((s, r) => s + r.baseVotes, 0);
+    const totalGrowth = rows.reduce((s, r) => s + r.growthVotes, 0);
+    const totalOpt = rows.reduce((s, r) => s + r.optVotes, 0);
+
+    const baseGap = TARGET - totalBase;
+    const growthGap = TARGET - totalGrowth;
+    const optGap = TARGET - totalOpt;
+
+    // Calculate target allocation per cunli (proportional to growth scenario, adjusted to sum to 10000)
+    const allocFactor = TARGET / totalGrowth;
+    rows.forEach(r => {
+      r.target = Math.round(r.growthVotes * allocFactor);
+      r.difficulty = r.target <= r.baseVotes ? 'easy' : r.target <= r.growthVotes ? 'medium' : 'hard';
+      r.gap = r.target - r.baseVotes;
+    });
+    // Adjust rounding to exactly 10000
+    const allocSum = rows.reduce((s, r) => s + r.target, 0);
+    if (allocSum !== TARGET && rows.length > 0) {
+      rows[0].target += (TARGET - allocSum);
+      rows[0].gap = rows[0].target - rows[0].baseVotes;
+    }
+
+    // Summary gauges
+    const baseW = Math.min((totalBase / TARGET * 100), 100).toFixed(1);
+    const growthW = Math.min((totalGrowth / TARGET * 100), 100).toFixed(1);
+    const optW = Math.min((totalOpt / TARGET * 100), 100).toFixed(1);
+
+    let html = `
+    <div class="est-box" style="margin-bottom:20px">
+      <div style="font-size:.95em;font-weight:700;color:var(--tpp-dark);margin-bottom:10px">三種情境預估 vs 萬票目標</div>
+      <div class="row"><span>保守情境（維持 2024 政黨票得票率）</span><span>${fmt(totalBase)} 票（${totalBase >= TARGET ? '✓ 達標' : '差 ' + fmt(baseGap) + ' 票'}）</span></div>
+      <div style="margin:4px 0"><div class="gauge"><div class="fill" style="width:${baseW}%;background:${totalBase >= TARGET ? '#2E7D32' : '#F57F17'}"></div><div class="marker" style="left:${Math.min(100, (TARGET / Math.max(totalOpt, TARGET) * 100) * 1.0).toFixed(1)}%" title="萬票目標"></div></div></div>
+      <div class="row"><span>成長情境（2024 得票率 +2%，里長競爭帶動）</span><span>${fmt(totalGrowth)} 票（${totalGrowth >= TARGET ? '✓ 達標，餘裕 +' + fmt(totalGrowth - TARGET) : '差 ' + fmt(growthGap)} 票）</span></div>
+      <div style="margin:4px 0"><div class="gauge"><div class="fill" style="width:${growthW}%;background:${totalGrowth >= TARGET ? '#2E7D32' : '#F57F17'}"></div><div class="marker" style="left:${Math.min(100, (TARGET / Math.max(totalOpt, TARGET) * 100) * 1.0).toFixed(1)}%" title="萬票目標"></div></div></div>
+      <div class="row"><span>樂觀情境（達到 2024 總統票水準）</span><span>${fmt(totalOpt)} 票（${totalOpt >= TARGET ? '✓ 達標，餘裕 +' + fmt(totalOpt - TARGET) : '差 ' + fmt(optGap)} 票）</span></div>
+      <div style="margin:4px 0"><div class="gauge"><div class="fill" style="width:${optW}%;background:${totalOpt >= TARGET ? '#2E7D32' : '#1565C0'}"></div><div class="marker" style="left:${Math.min(100, (TARGET / Math.max(totalOpt, TARGET) * 100) * 1.0).toFixed(1)}%" title="萬票目標"></div></div></div>
+      <div style="font-size:.78em;color:var(--text2);margin-top:6px">
+        ▲ 紅線為萬票目標 ｜ 投票率以 2022→2024 比值 ${(turnout * 100).toFixed(1)}% 推算 ｜ 競爭里投票率額外 +5%
+      </div>
+    </div>`;
+
+    // Town subtotals
+    const townMap = {};
+    rows.forEach(r => {
+      if (!townMap[r.town]) townMap[r.town] = { base: 0, growth: 0, opt: 0, target: 0, count: 0, contested: 0 };
+      townMap[r.town].base += r.baseVotes;
+      townMap[r.town].growth += r.growthVotes;
+      townMap[r.town].opt += r.optVotes;
+      townMap[r.town].target += r.target;
+      townMap[r.town].count++;
+      if (r.isContested) townMap[r.town].contested++;
+    });
+
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:.9em;font-weight:600;margin-bottom:6px">分區匯總</div>
+      <table class="contested-table">
+        <thead><tr><th style="text-align:left">區域</th><th>里數</th><th>競爭里</th><th>保守</th><th>成長</th><th>樂觀</th><th style="color:var(--tpp-dark)">目標配票</th></tr></thead>
+        <tbody>${Object.entries(townMap).map(([tn, tv]) =>
+          `<tr><td>${h(tn)}</td><td>${tv.count}</td><td>${tv.contested}</td><td>${fmt(tv.base)}</td><td>${fmt(tv.growth)}</td><td>${fmt(tv.opt)}</td><td style="font-weight:700;color:var(--tpp-dark)">${fmt(tv.target)}</td></tr>`
+        ).join('')}
+        <tr class="sub-row"><td>合計</td><td>${rows.length}</td><td>${rows.filter(r => r.isContested).length}</td><td>${fmt(totalBase)}</td><td>${fmt(totalGrowth)}</td><td>${fmt(totalOpt)}</td><td style="font-weight:700;color:var(--tpp-dark)">${fmt(TARGET)}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+
+    // Full table by town
+    html += `<div style="font-size:.9em;font-weight:600;margin-bottom:6px">各里配票明細（依目標票數排序）</div>`;
+
+    d.towns.forEach(tn => {
+      const townRows = rows.filter(r => r.town === tn);
+      if (townRows.length === 0) return;
+      const tBase = townRows.reduce((s, r) => s + r.baseVotes, 0);
+      const tTarget = townRows.reduce((s, r) => s + r.target, 0);
+
+      html += `<table class="contested-table">
+        <tr class="town-hdr"><td colspan="11">${h(tn)}</td></tr>
+        <thead><tr>
+          <th data-sort="str" style="text-align:left">里</th>
+          <th data-sort="num">2024政黨票</th>
+          <th data-sort="num">2024總統票</th>
+          <th data-sort="num">成長</th>
+          <th data-sort="num">里長人數</th>
+          <th data-sort="num">保守</th>
+          <th data-sort="num">成長</th>
+          <th data-sort="num">樂觀</th>
+          <th data-sort="num" style="color:var(--tpp-dark)">目標</th>
+          <th data-sort="num">缺口</th>
+          <th data-sort="str">難度</th>
+        </tr></thead>
+        <tbody>`;
+
+      townRows.forEach(r => {
+        const diffClass = r.difficulty === 'easy' ? 'pos' : r.difficulty === 'hard' ? 'neg' : '';
+        const diffLabel = r.difficulty === 'easy' ? '✓ 可達' : r.difficulty === 'medium' ? '△ 需努力' : '✗ 困難';
+        const diffBg = r.difficulty === 'easy' ? 'background:#E8F5E9' : r.difficulty === 'hard' ? 'background:#FFEBEE' : '';
+        html += `<tr style="${diffBg}">
+          <td>${h(r.label)}${r.isContested ? ' <span style="color:#D32F2F;font-size:.75em">⚔</span>' : ''}</td>
+          <td>${r.r2024}%<br><small>${fmt(r.v2024)}</small></td>
+          <td>${r.r2024p}%<br><small>${fmt(r.v2024p)}</small></td>
+          <td class="${r.chg >= 0 ? 'pos' : 'neg'}">${chg(r.chg)}</td>
+          <td>${r.candCount}${r.isContested ? '人' : ''}</td>
+          <td>${fmt(r.baseVotes)}</td>
+          <td>${fmt(r.growthVotes)}</td>
+          <td>${fmt(r.optVotes)}</td>
+          <td style="font-weight:700;color:var(--tpp-dark)">${fmt(r.target)}</td>
+          <td class="${diffClass}">${r.gap > 0 ? '+' + fmt(r.gap) : fmt(r.gap)}</td>
+          <td><span style="font-size:.78em">${diffLabel}</span></td>
+        </tr>`;
+      });
+
+      html += `<tr class="sub-row"><td>小計</td><td colspan="4"></td><td>${fmt(tBase)}</td><td colspan="2"></td><td style="font-weight:700;color:var(--tpp-dark)">${fmt(tTarget)}</td><td colspan="2"></td></tr>
+        </tbody></table>`;
+    });
+
+    // Feasibility analysis
+    const easyCount = rows.filter(r => r.difficulty === 'easy').length;
+    const mediumCount = rows.filter(r => r.difficulty === 'medium').length;
+    const hardCount = rows.filter(r => r.difficulty === 'hard').length;
+    const easyVotes = rows.filter(r => r.difficulty === 'easy').reduce((s, r) => s + r.target, 0);
+    const mediumVotes = rows.filter(r => r.difficulty === 'medium').reduce((s, r) => s + r.target, 0);
+    const hardVotes = rows.filter(r => r.difficulty === 'hard').reduce((s, r) => s + r.target, 0);
+
+    html += `<div style="margin-top:16px">
+      <div style="font-size:.9em;font-weight:600;margin-bottom:8px">達標可行性評估</div>
+      <div class="summary-grid">
+        <div class="summary-card" style="border-left:4px solid #2E7D32"><div class="lb">✓ 可達（保守即可）</div><div class="val" style="color:#2E7D32">${easyCount} 里</div><div class="lb">${fmt(easyVotes)} 票</div></div>
+        <div class="summary-card" style="border-left:4px solid #F57F17"><div class="lb">△ 需努力（需成長）</div><div class="val" style="color:#F57F17">${mediumCount} 里</div><div class="lb">${fmt(mediumVotes)} 票</div></div>
+        <div class="summary-card" style="border-left:4px solid #D32F2F"><div class="lb">✗ 困難（需突破）</div><div class="val" style="color:#D32F2F">${hardCount} 里</div><div class="lb">${fmt(hardVotes)} 票</div></div>
+      </div>
+      <div class="strategy-note">
+        <strong>結論：</strong>
+        ${totalGrowth >= TARGET
+          ? `成長情境下全區合計 ${fmt(totalGrowth)} 票，已超過萬票目標。關鍵在於確保各里達成配票目標，特別是「需努力」的 ${mediumCount} 里合計 ${fmt(mediumVotes)} 票。建議將 ${easyCount} 個「可達」里作為基本盤鞏固，集中資源攻克「需努力」里。`
+          : `成長情境下全區合計 ${fmt(totalGrowth)} 票，距萬票目標尚差 ${fmt(growthGap)} 票。需在多數里超越成長情境預估，特別關注「困難」的 ${hardCount} 里。樂觀情境可達 ${fmt(totalOpt)} 票，需候選人有效承接總統票外溢。`}
+      </div>
+    </div>`;
+
+    return html;
+  }
+
+  function renderUncontestedDetail(uncontested) {
+    const sorted = uncontested.slice().sort((a, b) => {
+      const da = getCunliData(a.label), db = getCunliData(b.label);
+      return priorityScore(db, b.candidates.length) - priorityScore(da, a.candidates.length);
+    });
+
+    return sorted.map((c, i) => {
+      const cd = getCunliData(c.label);
+      if (!cd) return '';
+      const score = priorityScore(cd, c.candidates.length);
+      const cand = c.candidates[0] || {};
+      const isDpp = cand.party && cand.party.includes('民主進步');
+      const isKmt = cand.party && cand.party.includes('國民黨');
+
+      let strategy = '';
+      if (cd.tier === 'A' || cd.tier === 'B') {
+        strategy = '高支持度區域但同額競選，投票率可能偏低。議員候選人應主動創造投票動機，加強掃街與社區活動。';
+      } else if (cd.r2024 >= 20) {
+        strategy = '政黨票表現優異，需靠候選人自身動員拉高投票率。建議與里長候選人建立合作關係，爭取推薦或合作曝光。';
+      } else if (cd.pvp > 4) {
+        strategy = '總統票外溢明顯（差距 +' + cd.pvp + '%），選民對人的認同高於黨。同額競選下投票率可能低，候選人需強化個人品牌吸引選民出門投票。';
+      } else if (cd.chg > 10) {
+        strategy = '成長動能強（+' + cd.chg + '%），但同額競選投票率低可能壓縮議員票。需主動動員支持者出門投票。';
+      } else {
+        strategy = '同額競選投票率偏低，議員候選人需靠自身動員創造投票動機。建議與里長候選人維持友善關係。';
+      }
+
+      if (isDpp) {
+        strategy += ' 里長為民進黨提名，需注意綠營組織動員可能不利民眾黨議員票。';
+      } else if (isKmt) {
+        strategy += ' 里長為國民黨提名，藍營組織動員下可爭取中間選民。';
+      } else {
+        strategy += ' 里長為無黨籍，政黨色彩淡，有利議員候選人跨黨派接觸選民。';
+      }
+
+      const priorityClass = score >= 50 ? 'high' : score >= 40 ? 'mid' : 'low';
+      const priorityLabel = score >= 50 ? '優先' : score >= 40 ? '重要' : '一般';
+
+      return `<div class="cunli-section">
+        <h3>#${i + 1} ${h(c.label)} <span class="priority-badge priority-${priorityClass}">${priorityLabel}</span>
+          <span class="tier tier-${cd.tier}" style="margin-left:4px">${cd.tier}</span>
+        </h3>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.82em;color:var(--text2);margin-bottom:6px">
+          <span>2024政黨票 ${cd.r2024}%（${fmt(cd.v2024)}票）</span>
+          <span>2024總統票 ${cd.r2024p}%（${fmt(vPres(cd))}票）</span>
+          <span>成長 <span class="${cd.chg >= 0 ? 'pos' : 'neg'}">${chg(cd.chg)}</span></span>
+          <span>外溢 +${cd.pvp}%</span>
+          <span>預估 ${fmt(cd.est)} 票</span>
+          <span>優先分 ${score}</span>
+        </div>
+        <div style="font-size:.85em;font-weight:600;margin-bottom:4px">2026 里長候選人（同額）：</div>
+        <ul class="cand-list">
+          ${renderCandList2026(c)}
+        </ul>
+        ${render2022Block(c.label)}
+        <div class="strategy-note ${priorityClass === 'high' ? '' : 'positive'}">
+          <strong>經營建議：</strong>${strategy}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderStrategyConclusion(contested, uncontested, d) {
+    const tier_a_contested = contested.filter(c => { const cd = getCunliData(c.label); return cd && cd.tier === 'A'; });
+    const high_growth_contested = contested.filter(c => { const cd = getCunliData(c.label); return cd && cd.chg > d.rates.change + 2; });
+    const high_pvp = contested.filter(c => { const cd = getCunliData(c.label); return cd && cd.pvp > 4; });
+    const big_contested = contested.filter(c => c.candidates.length >= 4);
+
+    const tier_a_votes = tier_a_contested.reduce((s, c) => { const cd = getCunliData(c.label); return s + (cd ? cd.est : 0); }, 0);
+    const total_contested_est = contested.reduce((s, c) => { const cd = getCunliData(c.label); return s + (cd ? cd.est : 0); }, 0);
+
+    return `
+    <div class="act">
+      <h4>1. 最優先經營：A級 + 競爭里</h4>
+      <p>${tier_a_contested.length > 0
+        ? tier_a_contested.map(c => h(c.label)).join('、') + '，預估可貢獻約 ' + fmt(tier_a_votes) + ' 票。里長選戰激烈有利提高投票率，應優先投入資源。'
+        : '目前無 A 級里同時為競爭里，可優先關注 B 級以上且候選人多的里。'}</p>
+    </div>
+    <div class="act">
+      <h4>2. 把握高成長動能</h4>
+      <p>${high_growth_contested.length > 0
+        ? high_growth_contested.slice(0, 5).map(c => h(c.label)).join('、') + ' 等 ' + high_growth_contested.length + ' 個高成長競爭里，支持度快速攀升且選情激烈，是投報率最高的經營區域。'
+        : '高成長區域多為同額競選，需靠議員候選人自身動員拉票。'}</p>
+    </div>
+    <div class="act">
+      <h4>3. 轉化總統票外溢</h4>
+      <p>${high_pvp.length > 0
+        ? high_pvp.slice(0, 5).map(c => { const cd = getCunliData(c.label); return h(c.label) + '（差距+' + cd.pvp + '%）'; }).join('、') + ' — 總統票顯著高於政黨票，選民已有投票意願但尚未認同政黨品牌。候選人應強調個人特質與在地服務。'
+        : '外溢空間有限，應聚焦鞏固既有支持。'}</p>
+    </div>
+    <div class="act">
+      <h4>4. 激烈選區特別關注</h4>
+      <p>${big_contested.length > 0
+        ? big_contested.map(c => h(c.label) + '（' + c.candidates.length + '人）').join('、') + ' — 里長候選人眾多，選情混亂度高，投票率可望大幅提升。議員候選人應積極走訪、把握每次接觸機會。'
+        : '多數競爭里為 2 人對決格局。'}</p>
+    </div>
+    <div class="act">
+      <h4>5. 同額里的挑戰</h4>
+      <p>有 ${uncontested.length} 里僅 1 位里長候選人，投票率可能偏低。議員候選人需靠自身動員創造投票動機。
+        建議與這些里的里長候選人建立友善關係、爭取推薦或合作曝光機會。</p>
+    </div>
+    <div class="act">
+      <h4>6. 全區資源配置建議</h4>
+      <p>競爭里合計預估 ${fmt(total_contested_est)} 票（佔全區基本盤 ${(total_contested_est / d.est_base * 100).toFixed(1)}%），
+        是議員選票的主要來源。建議將 70% 以上的掃街、站路口、拜訪時間投入競爭里，
+        其餘 30% 用於維繫同額里的支持者關係。</p>
+    </div>`;
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
