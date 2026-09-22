@@ -47,7 +47,7 @@
             "type": "Feature",
             "properties": {
                 "key": "北區中華西路二段/和緯路四段",
-                "count": 8
+                "count": 9
             },
             "geometry": {
                 "type": "Point",
@@ -159,7 +159,7 @@
             "type": "Feature",
             "properties": {
                 "key": "北區和緯路二段/西門路四段 小北新成功夜市",
-                "count": 3
+                "count": 5
             },
             "geometry": {
                 "type": "Point",
@@ -635,7 +635,7 @@
             "type": "Feature",
             "properties": {
                 "key": "永康區中央路/中華路",
-                "count": 2
+                "count": 3
             },
             "geometry": {
                 "type": "Point",
@@ -726,6 +726,20 @@
                 "coordinates": [
                     120.200369,
                     23.011431
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "新光三越小北店旁",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.207394,
+                    23.008998
                 ]
             }
         }
