@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="2026 候選人前科紀錄地圖">
+    <meta property="og:description" content="透過地圖瀏覽 2026 年各項選舉候選人的刑事前科與相關紀錄">
+    <meta property="og:type" content="website">
+    <title>2026 候選人前科紀錄地圖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cr-red: #c0392b;
+            --cr-red-dark: #922b21;
+            --cr-red-deep: #641e16;
+            --cr-red-light: #fadbd8;
+            --cr-orange: #e67e22;
+            --cr-yellow: #f1c40f;
+            --cr-gray: #7f8c8d;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: "Noto Sans TC", 微軟正黑體, "Microsoft JhengHei", sans-serif;
+        }
+
+        .cr-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 8px 14px;
+            background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+        }
+
+        .cr-header h1 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .cr-header small {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .cr-stats {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .cr-stats .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cr-stats .stat-num {
+            font-size: 1.1rem;
+            color: #e74c3c;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar .btn {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+        }
+
+        .filter-bar .btn.active {
+            background: var(--cr-red);
+            border-color: var(--cr-red);
+            color: #fff;
+        }
+
+        .map-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+
+        #map {
+            position: absolute;
+            inset: 0;
+        }
+
+        .leaflet-container {
+            font-family: "Noto Sans TC", 微軟正黑體, "Microsoft JhengHei", sans-serif;
+        }
+
+        .locate-btn {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+        }
+
+        .city-marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            font-weight: 900;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .city-marker:hover {
+            transform: scale(1.15);
+        }
+
+        .city-marker .marker-count {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .city-marker .marker-label {
+            font-size: 0.55rem;
+            line-height: 1;
+            margin-top: 1px;
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .modal-header .btn-close-white {
+            filter: invert(1);
+        }
+
+        .candidate-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #fef9f8 100%);
+        }
+
+        .candidate-card.has-conviction {
+            border-left: 4px solid var(--cr-red);
+        }
+
+        .candidate-card.has-indictment {
+            border-left: 4px solid var(--cr-orange);
+        }
+
+        .candidate-card h6 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .badge-conviction {
+            background: var(--cr-red);
+        }
+
+        .badge-indictment {
+            background: var(--cr-orange);
+        }
+
+        .badge-admin {
+            background: var(--cr-gray);
+        }
+
+        .badge-invalidation {
+            background: #8e44ad;
+        }
+
+        .badge-family {
+            background: #2980b9;
+        }
+
+        .badge-dui {
+            background: #d35400;
+        }
+
+        .record-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        .record-item .record-label {
+            font-weight: 700;
+            color: var(--cr-red-dark);
+        }
+
+        .record-item a {
+            color: #2980b9;
+            word-break: break-all;
+        }
+
+        .tag-filters {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .legend-box {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend-box .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+
+        .legend-box .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 576px) {
+            .cr-header h1 {
+                font-size: 0.9rem;
+            }
+
+            .cr-stats {
+                font-size: 0.7rem;
+            }
+
+            .cr-stats .stat-num {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="cr-header">
+        <div>
+            <h1><i class="bi bi-shield-exclamation"></i> 2026 候選人前科紀錄地圖</h1>
+            <small>資料來源：<a href="https://council2026.taiwangogo.tw/" target="_blank" rel="noopener" style="color:#adf;">council2026.taiwangogo.tw</a>、<a href="https://local2026.taiwangogo.tw/" target="_blank" rel="noopener" style="color:#adf;">local2026.taiwangogo.tw</a></small>
+        </div>
+        <div class="cr-stats" id="headerStats"></div>
+    </header>
+
+    <div class="filter-bar" id="filterBar">
+        <span style="font-size:0.75rem;font-weight:700;color:#555;">篩選：</span>
+    </div>
+
+    <div class="map-wrap">
+        <div id="map"></div>
+        <button class="btn btn-light btn-sm locate-btn shadow" onclick="locateUser()">
+            <i class="bi bi-geo-alt-fill"></i>
+        </button>
+        <div class="legend-box" id="legend"></div>
+    </div>
+
+    <!-- City detail modal -->
+    <div class="modal fade" id="cityModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title mb-0" id="cityModalTitle"></h6>
+                    <input type="text" id="citySearch" class="form-control form-control-sm ms-3"
+                        placeholder="搜尋姓名、選區、政黨..." style="max-width:220px;" oninput="filterCityList(this.value)">
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="cityModalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</body>
+
+</html>
