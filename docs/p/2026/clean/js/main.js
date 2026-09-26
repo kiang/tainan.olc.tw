@@ -164,7 +164,7 @@ function mapCandidatesToZones() {
     candidatesByZone = {};
     var cityDistrictMap = {};
     allCandidates.forEach(function (c) {
-        if (c.source !== 'council') return;
+        if (c.source !== 'council' || c.level !== '議員') return;
         var m = c.district.match(/(\d+)/);
         if (!m) return;
         var distNum = parseInt(m[1], 10);
@@ -195,13 +195,34 @@ function mapCandidatesToZones() {
     });
 }
 
+var cityCentroids = {
+    '台北市': [25.033, 121.565], '臺北市': [25.033, 121.565],
+    '新北市': [25.012, 121.465], '基隆市': [25.128, 121.739],
+    '桃園市': [24.994, 121.301], '新竹市': [24.804, 120.969],
+    '新竹縣': [24.839, 121.174], '苗栗縣': [24.560, 120.821],
+    '台中市': [24.148, 120.674], '臺中市': [24.148, 120.674],
+    '彰化縣': [24.052, 120.516], '南投縣': [23.911, 120.687],
+    '雲林縣': [23.710, 120.431], '嘉義市': [23.480, 120.449],
+    '嘉義縣': [23.452, 120.255],
+    '台南市': [23.000, 120.227], '臺南市': [23.000, 120.227],
+    '高雄市': [22.627, 120.301], '屏東縣': [22.552, 120.549],
+    '宜蘭縣': [24.702, 121.738], '花蓮縣': [23.992, 121.601],
+    '台東縣': [22.756, 121.144], '臺東縣': [22.756, 121.144],
+    '澎湖縣': [23.571, 119.579], '金門縣': [24.449, 118.377],
+    '連江縣': [26.160, 119.950]
+};
+
 function assignLocalCoordinates() {
     allCandidates.forEach(function (c) {
-        if (c.source !== 'local' || !c.locationKey) return;
-        var coords = localCentroids[c.locationKey];
-        if (!coords) coords = localCentroids[c.locationKey.replace(/台/g, '臺')];
-        if (!coords) coords = localCentroids[c.locationKey.replace(/臺/g, '台')];
-        if (coords) c.latlng = coords;
+        if (c.source === 'local' && c.locationKey) {
+            var coords = localCentroids[c.locationKey];
+            if (!coords) coords = localCentroids[c.locationKey.replace(/台/g, '臺')];
+            if (!coords) coords = localCentroids[c.locationKey.replace(/臺/g, '台')];
+            if (coords) c.latlng = coords;
+        } else if (c.source === 'council' && c.level !== '議員') {
+            var cc = cityCentroids[c.city];
+            if (cc) c.latlng = cc;
+        }
     });
 }
 
@@ -338,9 +359,9 @@ function renderMap() {
         zoneLayer.addLayer(layer);
     });
 
-    // Local candidates: clustered markers
+    // Non-議員 candidates: clustered markers
     filtered.forEach(function (c) {
-        if (c.source === 'council') return;
+        if (c.source === 'council' && c.level === '議員') return;
         if (!c.latlng) return;
         var color = getMarkerColor(c);
         var icon = L.divIcon({
