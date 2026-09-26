@@ -2,7 +2,8 @@ var map, clusterGroup, zoneLayer, cityModal;
 var allCandidates = [];
 var currentCityCandidates = [];
 var activeFilters = new Set();
-var zoneCentroids = {};
+var zoneFeatures = [];
+var candidatesByZone = {};
 var localCentroids = {};
 
 var NLSC_TILE = 'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}';
@@ -66,14 +67,12 @@ function loadZoneOverviews(zoneIndex) {
     Promise.all(fetches).then(function (results) {
         results.forEach(function (r) {
             r.features.forEach(function (f) {
-                var code = f.properties.code;
-                var centroid = f.properties.centroid;
-                if (centroid) {
-                    zoneCentroids[code] = [centroid[1], centroid[0]];
-                }
+                f.properties._electionType = r.type;
+                zoneFeatures.push(f);
             });
         });
-        assignCoordinates();
+        mapCandidatesToZones();
+        assignLocalCoordinates();
         renderMap();
     });
 }
@@ -161,50 +160,48 @@ function normalizeData(council, localData) {
     });
 }
 
-function assignCoordinates() {
-    // Assign coordinates to local candidates from cunli centroids
+function mapCandidatesToZones() {
+    candidatesByZone = {};
+    var cityDistrictMap = {};
     allCandidates.forEach(function (c) {
-        if (c.source === 'local' && c.locationKey) {
-            var coords = localCentroids[c.locationKey];
-            if (!coords) {
-                var altKey = c.locationKey.replace(/台/g, '臺');
-                coords = localCentroids[altKey];
-            }
-            if (!coords) {
-                var altKey2 = c.locationKey.replace(/臺/g, '台');
-                coords = localCentroids[altKey2];
-            }
-            if (coords) {
-                c.latlng = coords;
-            }
-        }
+        if (c.source !== 'council') return;
+        var m = c.district.match(/(\d+)/);
+        if (!m) return;
+        var distNum = parseInt(m[1], 10);
+        var keys = [c.city + '|' + distNum];
+        var altCity = c.city.replace(/台/g, '臺');
+        if (altCity !== c.city) keys.push(altCity + '|' + distNum);
+        altCity = c.city.replace(/臺/g, '台');
+        if (altCity !== c.city) keys.push(altCity + '|' + distNum);
+        keys.forEach(function (key) {
+            if (!cityDistrictMap[key]) cityDistrictMap[key] = [];
+            cityDistrictMap[key].push(c);
+        });
     });
 
-    // Assign coordinates to council candidates from zone centroids
-    // Build zone code lookup by city+district
-    var zoneCodeByCity = {};
-    Object.keys(zoneCentroids).forEach(function (code) {
+    zoneFeatures.forEach(function (f) {
+        var code = f.properties.code;
         var parts = code.split('-');
         var countyCode = parts[1] || '';
         var distPadded = parts[2] || '';
         var distNum = parseInt(distPadded, 10);
         var cityName = countyCodeToName[countyCode] || '';
         if (!cityName || isNaN(distNum)) return;
-        zoneCodeByCity[cityName + '|' + distNum] = code;
-        var altCity = cityName.replace(/臺/g, '台');
-        if (altCity !== cityName) zoneCodeByCity[altCity + '|' + distNum] = code;
-    });
-
-    allCandidates.forEach(function (c) {
-        if (c.source !== 'council') return;
-        var m = c.district.match(/(\d+)/);
-        if (!m) return;
-        var distNum = parseInt(m[1], 10);
-        var key = c.city + '|' + distNum;
-        var zoneCode = zoneCodeByCity[key];
-        if (zoneCode && zoneCentroids[zoneCode]) {
-            c.latlng = zoneCentroids[zoneCode];
+        var key = cityName + '|' + distNum;
+        var matched = cityDistrictMap[key] || [];
+        if (matched.length > 0) {
+            candidatesByZone[code] = matched;
         }
+    });
+}
+
+function assignLocalCoordinates() {
+    allCandidates.forEach(function (c) {
+        if (c.source !== 'local' || !c.locationKey) return;
+        var coords = localCentroids[c.locationKey];
+        if (!coords) coords = localCentroids[c.locationKey.replace(/台/g, '臺')];
+        if (!coords) coords = localCentroids[c.locationKey.replace(/臺/g, '台')];
+        if (coords) c.latlng = coords;
     });
 }
 
@@ -304,10 +301,46 @@ function getMarkerColor(c) {
 }
 
 function renderMap() {
+    zoneLayer.clearLayers();
     clusterGroup.clearLayers();
     var filtered = getFilteredCandidates();
+    var filteredSet = new Set(filtered);
 
+    // Council candidates: zone polygons
+    zoneFeatures.forEach(function (f) {
+        var code = f.properties.code;
+        var zoneCandidates = candidatesByZone[code] || [];
+        var visible = zoneCandidates.filter(function (c) { return filteredSet.has(c); });
+        if (visible.length === 0) return;
+
+        var fillColor = levelColors['議員'];
+        var fillOpacity = 0.3 + Math.min(visible.length * 0.08, 0.4);
+
+        var layer = L.geoJSON(f, {
+            style: {
+                fillColor: fillColor,
+                fillOpacity: fillOpacity,
+                color: fillColor,
+                weight: 2,
+                opacity: 0.7
+            }
+        });
+
+        var zoneName = f.properties.name || code;
+        var tooltipLines = [zoneName + '：' + visible.length + ' 人有紀錄'];
+        visible.forEach(function (c) {
+            tooltipLines.push('• ' + c.name + ' (' + c.party + ') ' + c.tags.join('、'));
+        });
+        layer.bindTooltip(tooltipLines.join('\n'), { sticky: true, direction: 'top' });
+        layer.on('click', function () {
+            openCityModal(zoneName, visible);
+        });
+        zoneLayer.addLayer(layer);
+    });
+
+    // Local candidates: clustered markers
     filtered.forEach(function (c) {
+        if (c.source === 'council') return;
         if (!c.latlng) return;
         var color = getMarkerColor(c);
         var icon = L.divIcon({
@@ -319,7 +352,7 @@ function renderMap() {
         });
         var marker = L.marker(c.latlng, { icon: icon });
         var tooltip = c.name + ' (' + c.party + ')\n' +
-            c.city + ' ' + c.district + '\n' +
+            c.city + ' ' + c.district + ' · ' + c.level + '\n' +
             c.tags.join('、');
         marker.bindTooltip(tooltip, { direction: 'top' });
         marker.on('click', function () {
@@ -331,11 +364,12 @@ function renderMap() {
 
 function buildLegend() {
     var el = document.getElementById('legend');
-    var html = '';
+    var html = '<div class="legend-item"><div class="legend-dot" style="background:' + levelColors['議員'] + ';opacity:0.5;"></div>議員（選區）</div>';
     Object.keys(levelColors).forEach(function (lv) {
+        if (lv === '議員') return;
         html += '<div class="legend-item"><div class="legend-dot" style="background:' + levelColors[lv] + ';"></div>' + lv + '</div>';
     });
-    html += '<div style="margin-top:4px;color:#888;font-size:0.65rem;">點擊標記查看候選人詳情<br>數字圓圈為群組，點擊展開</div>';
+    html += '<div style="margin-top:4px;color:#888;font-size:0.65rem;">點擊選區或標記查看詳情</div>';
     el.innerHTML = html;
 }
 
