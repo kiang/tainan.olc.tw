@@ -291,13 +291,16 @@ function countCities(list) {
     return Object.keys(s).length;
 }
 
+var levelColors = {
+    '議員': '#c0392b',
+    '村里長': '#2980b9',
+    '鄉鎮市民代表': '#8e44ad',
+    '鄉鎮市長': '#d35400',
+    '縣市長': '#1a1a2e'
+};
+
 function getMarkerColor(c) {
-    if (c.tags.indexOf('刑事犯罪') >= 0) return '#c0392b';
-    if (c.tags.indexOf('起訴') >= 0) return '#e67e22';
-    if (c.tags.indexOf('酒駕') >= 0) return '#d35400';
-    if (c.tags.indexOf('當選無效') >= 0) return '#8e44ad';
-    if (c.tags.indexOf('親屬紀錄') >= 0) return '#2980b9';
-    return '#c0392b';
+    return levelColors[c.level] || '#c0392b';
 }
 
 function renderMap() {
@@ -328,13 +331,12 @@ function renderMap() {
 
 function buildLegend() {
     var el = document.getElementById('legend');
-    el.innerHTML =
-        '<div class="legend-item"><div class="legend-dot" style="background:#c0392b;"></div>刑事犯罪（有罪）</div>' +
-        '<div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div>起訴中</div>' +
-        '<div class="legend-item"><div class="legend-dot" style="background:#d35400;"></div>酒駕</div>' +
-        '<div class="legend-item"><div class="legend-dot" style="background:#8e44ad;"></div>當選無效</div>' +
-        '<div class="legend-item"><div class="legend-dot" style="background:#2980b9;"></div>親屬紀錄</div>' +
-        '<div style="margin-top:4px;color:#888;font-size:0.65rem;">點擊標記查看候選人詳情<br>數字圓圈為群組，點擊展開</div>';
+    var html = '';
+    Object.keys(levelColors).forEach(function (lv) {
+        html += '<div class="legend-item"><div class="legend-dot" style="background:' + levelColors[lv] + ';"></div>' + lv + '</div>';
+    });
+    html += '<div style="margin-top:4px;color:#888;font-size:0.65rem;">點擊標記查看候選人詳情<br>數字圓圈為群組，點擊展開</div>';
+    el.innerHTML = html;
 }
 
 function openCityModal(title, candidates) {
