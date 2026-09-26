@@ -1,11 +1,9 @@
-var map, zoneLayer, cityModal;
+var map, clusterGroup, zoneLayer, cityModal;
 var allCandidates = [];
-var councilRaw = [];
-var localRaw = {};
 var currentCityCandidates = [];
 var activeFilters = new Set();
-var zoneFeatures = [];
-var candidatesByZone = {};
+var zoneCentroids = {};
+var localCentroids = {};
 
 var NLSC_TILE = 'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}';
 
@@ -30,17 +28,26 @@ function initMap() {
     map = L.map('map', { center: [23.7, 120.9], zoom: 7, zoomControl: true });
     L.tileLayer(NLSC_TILE, { maxZoom: 18, attribution: '&copy; NLSC' }).addTo(map);
     zoneLayer = L.layerGroup().addTo(map);
+    clusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 50,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true
+    });
+    map.addLayer(clusterGroup);
     cityModal = new bootstrap.Modal(document.getElementById('cityModal'));
 
     Promise.all([
         fetch('../../../json/council2026.json').then(function (r) { return r.json(); }),
         fetch('../../../json/local2026.json').then(function (r) { return r.json(); }),
-        fetch('../zones/index.json').then(function (r) { return r.json(); })
+        fetch('../zones/index.json').then(function (r) { return r.json(); }),
+        fetch('data/centroids.json').then(function (r) { return r.json(); })
     ]).then(function (results) {
-        councilRaw = results[0];
-        localRaw = results[1];
+        var council = results[0];
+        var localData = results[1];
         var zoneIndex = results[2];
-        normalizeData(councilRaw, localRaw);
+        localCentroids = results[3];
+        normalizeData(council, localData);
         buildFilters();
         updateStats();
         buildLegend();
@@ -59,11 +66,14 @@ function loadZoneOverviews(zoneIndex) {
     Promise.all(fetches).then(function (results) {
         results.forEach(function (r) {
             r.features.forEach(function (f) {
-                f.properties._electionType = r.type;
-                zoneFeatures.push(f);
+                var code = f.properties.code;
+                var centroid = f.properties.centroid;
+                if (centroid) {
+                    zoneCentroids[code] = [centroid[1], centroid[0]];
+                }
             });
         });
-        mapCandidatesToZones();
+        assignCoordinates();
         renderMap();
     });
 }
@@ -97,7 +107,8 @@ function normalizeData(council, localData) {
             }),
             electionInvalidityRecords: c.electionInvalidityRecords || [],
             familyRecords: c.familyRecords || [],
-            source: 'council'
+            source: 'council',
+            latlng: null
         });
     });
 
@@ -118,6 +129,7 @@ function normalizeData(council, localData) {
             else if (ot === 'county-mayor') level = '縣市長';
             else level = ot;
         }
+        var locationKey = (p.county || '') + (p.township || '') + (p.village || '');
         allCandidates.push({
             name: p.name,
             city: p.county,
@@ -142,58 +154,57 @@ function normalizeData(council, localData) {
             }),
             electionInvalidityRecords: [],
             familyRecords: [],
-            source: 'local'
+            source: 'local',
+            locationKey: locationKey,
+            latlng: null
         });
     });
 }
 
-function mapCandidatesToZones() {
-    candidatesByZone = {};
-
-    // Build lookup: normalize city name (台→臺 and vice versa) + district number → candidates
-    var cityDistrictMap = {};
+function assignCoordinates() {
+    // Assign coordinates to local candidates from cunli centroids
     allCandidates.forEach(function (c) {
-        if (c.source !== 'council') return;
-        var m = c.district.match(/(\d+)/);
-        if (!m) return;
-        var distNum = parseInt(m[1], 10);
-        var keys = [c.city + '|' + distNum];
-        // Also add normalized variants (台↔臺)
-        var altCity = c.city.replace(/台/g, '臺');
-        if (altCity !== c.city) keys.push(altCity + '|' + distNum);
-        altCity = c.city.replace(/臺/g, '台');
-        if (altCity !== c.city) keys.push(altCity + '|' + distNum);
-
-        keys.forEach(function (key) {
-            if (!cityDistrictMap[key]) cityDistrictMap[key] = [];
-            cityDistrictMap[key].push(c);
-        });
+        if (c.source === 'local' && c.locationKey) {
+            var coords = localCentroids[c.locationKey];
+            if (!coords) {
+                var altKey = c.locationKey.replace(/台/g, '臺');
+                coords = localCentroids[altKey];
+            }
+            if (!coords) {
+                var altKey2 = c.locationKey.replace(/臺/g, '台');
+                coords = localCentroids[altKey2];
+            }
+            if (coords) {
+                c.latlng = coords;
+            }
+        }
     });
 
-    zoneFeatures.forEach(function (f) {
-        var code = f.properties.code;
+    // Assign coordinates to council candidates from zone centroids
+    // Build zone code lookup by city+district
+    var zoneCodeByCity = {};
+    Object.keys(zoneCentroids).forEach(function (code) {
         var parts = code.split('-');
         var countyCode = parts[1] || '';
         var distPadded = parts[2] || '';
         var distNum = parseInt(distPadded, 10);
         var cityName = countyCodeToName[countyCode] || '';
-
         if (!cityName || isNaN(distNum)) return;
-
-        var key = cityName + '|' + distNum;
-        var matched = cityDistrictMap[key] || [];
-
-        if (matched.length > 0) {
-            candidatesByZone[code] = matched;
-        }
+        zoneCodeByCity[cityName + '|' + distNum] = code;
+        var altCity = cityName.replace(/臺/g, '台');
+        if (altCity !== cityName) zoneCodeByCity[altCity + '|' + distNum] = code;
     });
 
-    // Add local candidates grouped by city
     allCandidates.forEach(function (c) {
-        if (c.source !== 'local') return;
-        var cityKey = 'city-' + c.city;
-        if (!candidatesByZone[cityKey]) candidatesByZone[cityKey] = [];
-        candidatesByZone[cityKey].push(c);
+        if (c.source !== 'council') return;
+        var m = c.district.match(/(\d+)/);
+        if (!m) return;
+        var distNum = parseInt(m[1], 10);
+        var key = c.city + '|' + distNum;
+        var zoneCode = zoneCodeByCity[key];
+        if (zoneCode && zoneCentroids[zoneCode]) {
+            c.latlng = zoneCentroids[zoneCode];
+        }
     });
 }
 
@@ -280,111 +291,38 @@ function countCities(list) {
     return Object.keys(s).length;
 }
 
-function filterZoneCandidates(candidates) {
-    if (activeFilters.size === 0) return candidates;
-    var tagFilters = [];
-    var levelFilters = [];
-    activeFilters.forEach(function (f) {
-        if (f.startsWith('tag:')) tagFilters.push(f.substring(4));
-        if (f.startsWith('level:')) levelFilters.push(f.substring(6));
-    });
-    return candidates.filter(function (c) {
-        var tagMatch = tagFilters.length === 0 || tagFilters.some(function (t) { return c.tags.indexOf(t) >= 0; });
-        var levelMatch = levelFilters.length === 0 || levelFilters.indexOf(c.level) >= 0;
-        return tagMatch && levelMatch;
-    });
+function getMarkerColor(c) {
+    if (c.tags.indexOf('刑事犯罪') >= 0) return '#c0392b';
+    if (c.tags.indexOf('起訴') >= 0) return '#e67e22';
+    if (c.tags.indexOf('酒駕') >= 0) return '#d35400';
+    if (c.tags.indexOf('當選無效') >= 0) return '#8e44ad';
+    if (c.tags.indexOf('親屬紀錄') >= 0) return '#2980b9';
+    return '#c0392b';
 }
 
 function renderMap() {
-    zoneLayer.clearLayers();
+    clusterGroup.clearLayers();
     var filtered = getFilteredCandidates();
-    var filteredSet = new Set(filtered);
 
-    // Render zone polygons for council candidates
-    zoneFeatures.forEach(function (f) {
-        var code = f.properties.code;
-        var zoneCandidates = candidatesByZone[code] || [];
-        var visibleCandidates = zoneCandidates.filter(function (c) { return filteredSet.has(c); });
-        if (visibleCandidates.length === 0) return;
-
-        var hasConviction = visibleCandidates.some(function (c) { return c.tags.indexOf('刑事犯罪') >= 0; });
-        var hasIndictment = visibleCandidates.some(function (c) { return c.tags.indexOf('起訴') >= 0; });
-        var hasDUI = visibleCandidates.some(function (c) { return c.tags.indexOf('酒駕') >= 0; });
-
-        var fillColor = hasConviction ? '#e74c3c' : hasIndictment ? '#e67e22' : hasDUI ? '#d35400' : '#8e44ad';
-        var weight = 2;
-        var fillOpacity = 0.35 + Math.min(visibleCandidates.length * 0.08, 0.35);
-
-        var layer = L.geoJSON(f, {
-            style: {
-                fillColor: fillColor,
-                fillOpacity: fillOpacity,
-                color: fillColor,
-                weight: weight,
-                opacity: 0.7
-            }
+    filtered.forEach(function (c) {
+        if (!c.latlng) return;
+        var color = getMarkerColor(c);
+        var icon = L.divIcon({
+            className: '',
+            html: '<div class="candidate-marker" style="background:' + color + ';">' +
+                escHtml(c.name.charAt(0)) + '</div>',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
         });
-
-        var zoneName = f.properties.name || code;
-        var tooltipLines = [zoneName + '：' + visibleCandidates.length + ' 人有紀錄'];
-        visibleCandidates.forEach(function (c) {
-            tooltipLines.push('• ' + c.name + ' (' + c.party + ') ' + c.tags.join('、'));
-        });
-        layer.bindTooltip(tooltipLines.join('\n'), { sticky: true, direction: 'top' });
-
-        layer.on('click', function () {
-            openCityModal(zoneName, visibleCandidates);
-        });
-
-        zoneLayer.addLayer(layer);
-    });
-
-    var cityCentroids = {
-        '台北市': [25.033, 121.565], '臺北市': [25.033, 121.565],
-        '新北市': [25.012, 121.465], '基隆市': [25.128, 121.739],
-        '桃園市': [24.994, 121.301], '新竹市': [24.804, 120.969],
-        '新竹縣': [24.839, 121.174], '苗栗縣': [24.560, 120.821],
-        '台中市': [24.148, 120.674], '臺中市': [24.148, 120.674],
-        '彰化縣': [24.052, 120.516], '南投縣': [23.911, 120.687],
-        '雲林縣': [23.710, 120.431], '嘉義市': [23.480, 120.449],
-        '嘉義縣': [23.452, 120.255],
-        '台南市': [23.000, 120.227], '臺南市': [23.000, 120.227],
-        '高雄市': [22.627, 120.301], '屏東縣': [22.552, 120.549],
-        '宜蘭縣': [24.702, 121.738], '花蓮縣': [23.992, 121.601],
-        '台東縣': [22.756, 121.144], '臺東縣': [22.756, 121.144],
-        '澎湖縣': [23.571, 119.579], '金門縣': [24.449, 118.377],
-        '連江縣': [26.160, 119.950]
-    };
-
-    Object.keys(candidatesByZone).forEach(function (key) {
-        if (!key.startsWith('city-')) return;
-        var city = key.substring(5);
-        var candidates = candidatesByZone[key];
-        var visibleCandidates = candidates.filter(function (c) { return filteredSet.has(c); });
-        if (visibleCandidates.length === 0) return;
-
-        var coords = cityCentroids[city];
-        if (!coords) return;
-
-        var hasConviction = visibleCandidates.some(function (c) { return c.tags.indexOf('刑事犯罪') >= 0; });
-        var color = hasConviction ? '#c0392b' : '#e67e22';
-        var radius = Math.max(8, Math.min(20, 8 + visibleCandidates.length));
-
-        var marker = L.circleMarker(coords, {
-            radius: radius,
-            fillColor: color,
-            fillOpacity: 0.7,
-            color: '#fff',
-            weight: 2
-        });
-
-        var tooltipLines = [city + ' 村里長等：' + visibleCandidates.length + ' 人有紀錄'];
-        marker.bindTooltip(tooltipLines.join('\n'), { direction: 'top' });
+        var marker = L.marker(c.latlng, { icon: icon });
+        var tooltip = c.name + ' (' + c.party + ')\n' +
+            c.city + ' ' + c.district + '\n' +
+            c.tags.join('、');
+        marker.bindTooltip(tooltip, { direction: 'top' });
         marker.on('click', function () {
-            openCityModal(city + ' — 村里長/鄉鎮市代表等', visibleCandidates);
+            openCityModal(c.city + ' ' + c.district, [c]);
         });
-
-        zoneLayer.addLayer(marker);
+        clusterGroup.addLayer(marker);
     });
 }
 
@@ -394,8 +332,9 @@ function buildLegend() {
         '<div class="legend-item"><div class="legend-dot" style="background:#c0392b;"></div>刑事犯罪（有罪）</div>' +
         '<div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div>起訴中</div>' +
         '<div class="legend-item"><div class="legend-dot" style="background:#d35400;"></div>酒駕</div>' +
-        '<div class="legend-item"><div class="legend-dot" style="background:#8e44ad;"></div>當選無效／其他</div>' +
-        '<div style="margin-top:4px;color:#888;font-size:0.65rem;">顏色深淺代表人數多寡<br>點擊選區查看候選人詳情</div>';
+        '<div class="legend-item"><div class="legend-dot" style="background:#8e44ad;"></div>當選無效</div>' +
+        '<div class="legend-item"><div class="legend-dot" style="background:#2980b9;"></div>親屬紀錄</div>' +
+        '<div style="margin-top:4px;color:#888;font-size:0.65rem;">點擊標記查看候選人詳情<br>數字圓圈為群組，點擊展開</div>';
 }
 
 function openCityModal(title, candidates) {
