@@ -364,12 +364,14 @@ function renderMap() {
         if (c.source === 'council' && c.level === '議員') return;
         if (!c.latlng) return;
         var color = getMarkerColor(c);
+        var size = c.level === '縣市長' ? 40 : c.level === '鄉鎮市長' ? 34 : 28;
+        var fontSize = c.level === '縣市長' ? '1rem' : c.level === '鄉鎮市長' ? '0.85rem' : '0.7rem';
         var icon = L.divIcon({
             className: '',
-            html: '<div class="candidate-marker" style="background:' + color + ';">' +
+            html: '<div class="candidate-marker" style="background:' + color + ';width:' + size + 'px;height:' + size + 'px;font-size:' + fontSize + ';">' +
                 escHtml(c.name.charAt(0)) + '</div>',
-            iconSize: [28, 28],
-            iconAnchor: [14, 14]
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2]
         });
         var marker = L.marker(c.latlng, { icon: icon });
         var tooltip = c.name + ' (' + c.party + ')\n' +
