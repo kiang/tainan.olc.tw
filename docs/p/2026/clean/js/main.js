@@ -295,6 +295,21 @@ function filterZoneCandidates(candidates) {
     });
 }
 
+function deriveZoneName(code, fallback) {
+    var parts = code.split('-');
+    var prefix = parts[0] || '';
+    var countyCode = parts[1] || '';
+    var distPadded = parts[2] || '';
+    var city = countyCodeToName[countyCode] || '';
+    if (!city) return fallback || code;
+    if (prefix === 'mayor') return city;
+    if (prefix === 'village') return city + (fallback || '');
+    var distNum = parseInt(distPadded, 10);
+    if (isNaN(distNum)) return city;
+    var distStr = (distNum < 10 ? '0' : '') + distNum;
+    return city + '第' + distStr + '選區';
+}
+
 function renderMap() {
     zoneLayer.clearLayers();
     var filtered = getFilteredCandidates();
@@ -325,7 +340,7 @@ function renderMap() {
             }
         });
 
-        var zoneName = f.properties.name || code;
+        var zoneName = deriveZoneName(code, f.properties.name);
         var tooltipLines = [zoneName + '：' + visibleCandidates.length + ' 人有紀錄'];
         visibleCandidates.forEach(function (c) {
             tooltipLines.push('• ' + c.name + ' (' + c.party + ') ' + c.tags.join('、'));
