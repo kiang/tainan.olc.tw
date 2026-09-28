@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="2026 臺南市第08選區 里級深度分析 — 台灣民眾黨">
+<meta property="og:description" content="中西區、北區 53 里人口結構、所得趨勢與選情行動策略">
+<title>2026 臺南市第08選區 里級深度分析</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.detail-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;transition:box-shadow .2s}
+.detail-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.detail-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.detail-header h3{font-size:1em;margin:0}
+.meta-row{display:flex;gap:12px;flex-wrap:wrap;font-size:.8em;color:var(--text2);margin-bottom:10px}
+.meta-row span{white-space:nowrap}
+.mini-chart{display:flex;align-items:flex-end;gap:2px;height:40px}
+.mini-bar{width:14px;border-radius:2px 2px 0 0;transition:height .3s;position:relative}
+.mini-bar:hover::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:2px 6px;border-radius:3px;font-size:.7em;white-space:nowrap;z-index:2}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:12px}
+.data-panel{background:#FAFAFA;border-radius:8px;padding:12px;border:1px solid #eee}
+.data-panel h4{font-size:.82em;font-weight:700;color:var(--tpp-dark);margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.data-panel table{width:100%;font-size:.78em}
+.data-panel td,.data-panel th{padding:3px 6px}
+.action-list{list-style:none;padding:0;margin:0}
+.action-list li{padding:8px 10px;margin-bottom:6px;border-radius:6px;font-size:.83em;position:relative;padding-left:28px}
+.action-list li::before{content:'▸';position:absolute;left:10px;color:var(--tpp-dark);font-weight:700}
+.action-list li.critical{background:#FFEBEE;border-left:3px solid #D32F2F}
+.action-list li.important{background:#FFF3E0;border-left:3px solid #F57F17}
+.action-list li.normal{background:#E8F5E9;border-left:3px solid #2E7D32}
+.action-list li.info{background:#E3F2FD;border-left:3px solid #1565C0}
+.pop-trend{display:flex;align-items:center;gap:4px;font-size:.78em}
+.pop-trend .arrow{font-weight:700}
+.pop-trend .arrow.up{color:var(--tier-a)}.pop-trend .arrow.down{color:var(--warn)}
+.income-tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:.72em;font-weight:600;color:#fff}
+.income-tag.high{background:#2E7D32}.income-tag.mid{background:#1565C0}.income-tag.low{background:#F57F17}
+.age-bar{display:flex;height:16px;border-radius:3px;overflow:hidden;margin:4px 0}
+.age-bar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6em;font-weight:600}
+.age-bar .young{background:#42A5F5}.age-bar .wy{background:#66BB6A}.age-bar .wm{background:#FFA726}.age-bar .elderly{background:#EF5350}
+.summary-insight{background:linear-gradient(135deg,var(--tpp-light),#fff);border:2px solid var(--tpp);border-radius:10px;padding:16px;margin-bottom:16px;font-size:.88em}
+.filter-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.filter-controls select,.filter-controls input{padding:5px 8px;border:1px solid var(--border);border-radius:5px;font-size:.85em}
+.filter-controls label{font-size:.82em;font-weight:600}
+.hidden{display:none}
+.scatter-wrap{position:relative;width:100%;max-width:600px;margin:0 auto}
+.scatter-canvas{width:100%;border:1px solid var(--border);border-radius:8px;background:#fff}
+.quadrant-label{position:absolute;font-size:.7em;color:var(--text2);font-weight:600;pointer-events:none}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FJ1JR851SJ');
+</script>
+</head>
+<body>
+<div id="app"><p style="text-align:center;padding:40px;color:var(--text2)">載入中...</p></div>
+<script>
+(function(){
+'use strict';
+const h=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const fmt=n=>Number(n).toLocaleString();
+const chg=v=>(v>=0?'+':'')+v;
+const pct=(a,b)=>b?Math.round(a/b*1000)/10:0;
+
+const ZONE_URL='67000-08.json';
+const DETAIL_URL='67000-08_detail_data.json';
+const LIZHANG_URL='67000-08-lizhang2022.json';
+const AREA_NAMES_URL='../data/area_names.json';
+const CANDIDATE_BASE='https://kiang.github.io/vote2026/candidates/';
+
+let zone,detail,lizhang,areaNames,cunliCands={};
+
+async function fetchJSON(url){const r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+
+function getPopTrend(label){
+  const p=detail.pop[label];
+  if(!p)return null;
+  const years=Object.keys(p).sort();
+  if(years.length<2)return null;
+  const latest=p[years[years.length-1]];
+  const earliest=p[years[0]];
+  const popChg=latest.pop-earliest.pop;
+  const popChgPct=Math.round(popChg/earliest.pop*1000)/10;
+  const elderlyPct=Math.round(latest.e/latest.pop*1000)/10;
+  const youngPct=Math.round(latest.y/latest.pop*1000)/10;
+  const wyPct=Math.round(latest.wy/latest.pop*1000)/10;
+  const wmPct=Math.round(latest.wm/latest.pop*1000)/10;
+
+  const yearlyPop=years.map(y=>({year:y,pop:p[y].pop,e:p[y].e,y:p[y].y,wy:p[y].wy,wm:p[y].wm,hh:p[y].hh}));
+
+  let recent=null;
+  const y24=p['2024'],y26=p['2026'];
+  if(y24&&y26){
+    recent={popChg:y26.pop-y24.pop,hhChg:y26.hh-y24.hh};
+  }
+
+  return{popChg,popChgPct,elderlyPct,youngPct,wyPct,wmPct,latest,earliest,yearlyPop,recent,
+    hhSize:Math.round(latest.pop/latest.hh*10)/10};
+}
+
+function getSalaryTrend(label){
+  const s=detail.sal[label];
+  if(!s)return null;
+  const years=Object.keys(s).sort();
+  const latest=s[years[years.length-1]];
+  const earliest=s[years[0]];
+  const medianChg=latest.median-earliest.median;
+  const medianChgPct=Math.round(medianChg/earliest.median*1000)/10;
+  const yearlyData=years.map(y=>({year:y,...s[y]}));
+  const gini=Math.round((latest.q3-latest.q1)/latest.median*100)/100;
+  return{medianChg,medianChgPct,latest,earliest,yearlyData,gini,
+    latestYear:years[years.length-1],earliestYear:years[0]};
+}
+
+function getCunliData(label){return zone.cunlis.find(c=>c.label===label)||null}
+function get2022(label){return lizhang[label]||null}
+
+function normParty(p){
+  if(!p||p==='無'||p==='無黨籍及未經政黨推薦')return'無';
+  if(p.includes('民主進步'))return'民進黨';
+  if(p.includes('國民黨'))return'國民黨';
+  if(p.includes('民眾黨'))return'民眾黨';
+  return p;
+}
+
+function partyTag(party){
+  if(!party||party==='無'||party==='無黨籍及未經政黨推薦')return'<span class="party-tag none">無</span>';
+  if(party.includes('民主進步'))return'<span class="party-tag dpp">民進黨</span>';
+  if(party.includes('國民黨'))return'<span class="party-tag kmt">國民黨</span>';
+  if(party.includes('民眾黨'))return'<span class="party-tag tpp">民眾黨</span>';
+  return'<span class="party-tag none">'+h(party)+'</span>';
+}
+
+function incomeLevel(median){
+  if(median>=650)return{cls:'high',label:'高所得'};
+  if(median>=450)return{cls:'mid',label:'中所得'};
+  return{cls:'low',label:'低所得'};
+}
+
+function priorityScore(cd,candCount){
+  if(!cd)return 0;
+  let s=0;
+  s+=cd.r2024*2;s+=cd.chg*1.5;s+=cd.pvp*1;
+  s+=Math.log2(candCount)*5;s+=cd.est*0.02;s+=cd.v2024*0.005;
+  return Math.round(s*10)/10;
+}
+
+function generateActions(label,cd,popT,salT,cands,lz22){
+  const actions=[];
+  const candCount=cands?cands.candidates.length:0;
+  const isContested=candCount>1;
+
+  if(!cd)return actions;
+
+  // Population-based actions
+  if(popT){
+    if(popT.elderlyPct>=25){
+      actions.push({level:'critical',text:'高齡化嚴重（'+popT.elderlyPct+'%），長照、醫療接駁、獨居關懷議題切入。建議聯繫里內日照中心或關懷據點合辦活動。'});
+    }else if(popT.elderlyPct>=20){
+      actions.push({level:'important',text:'老年人口占比偏高（'+popT.elderlyPct+'%），強調社區照顧、敬老福利、無障礙設施議題。'});
+    }
+    if(popT.youngPct>=18){
+      actions.push({level:'info',text:'青少年比例較高（'+popT.youngPct+'%），教育、托育、親子活動議題有共鳴。'});
+    }
+    if(popT.wyPct>=30){
+      actions.push({level:'info',text:'青年工作人口占比高（'+popT.wyPct+'%），居住正義、薪資成長、交通通勤議題可引起共鳴。適合在晚間或假日掃街。'});
+    }
+    if(popT.popChgPct<=-10){
+      actions.push({level:'critical',text:'人口流失嚴重（'+popT.popChgPct+'%），應關注地方衰退議題，如空屋活化、市場再造、公共運輸維持。'});
+    }else if(popT.popChgPct<=-5){
+      actions.push({level:'important',text:'人口持續外流（'+popT.popChgPct+'%），結合在地就業與生活機能議題爭取認同。'});
+    }else if(popT.popChgPct>=5){
+      actions.push({level:'normal',text:'人口正成長（+'+popT.popChgPct+'%），新移入居民多、社區認同尚在建立中，是爭取新支持者的好時機。'});
+    }
+    if(popT.recent&&popT.recent.hhChg>20){
+      actions.push({level:'normal',text:'近兩年戶數增加 '+popT.recent.hhChg+' 戶，新住民密集遷入，應優先拜訪新社區或新大樓。'});
+    }
+    if(popT.hhSize<2.0){
+      actions.push({level:'info',text:'戶均人口僅 '+popT.hhSize+' 人，獨居或小家庭為主，重視個人化服務與獨居安全議題。'});
+    }
+  }
+
+  // Income-based actions
+  if(salT){
+    const il=incomeLevel(salT.latest.median);
+    if(il.cls==='low'){
+      actions.push({level:'critical',text:'所得中位數偏低（'+salT.latest.median+'千元），經濟弱勢選民多，強調生活補貼、公共服務、就業輔導等務實政策。'});
+    }else if(il.cls==='high'){
+      actions.push({level:'info',text:'所得水準較高（中位數 '+salT.latest.median+'千元），選民重視環境品質、教育資源、公共建設效率等議題。'});
+    }
+    if(salT.gini>=2.0){
+      actions.push({level:'important',text:'所得差距極大（Q3/Q1比 '+salT.gini+'），貧富懸殊明顯。應同時關注弱勢扶助與中產議題，避免單一訴求。'});
+    }
+    if(salT.medianChgPct>=30){
+      actions.push({level:'normal',text:'所得成長強勁（中位數 '+salT.earliestYear+'→'+salT.latestYear+' 成長 '+salT.medianChgPct+'%），選民生活改善中，訴求進步與創新。'});
+    }else if(salT.medianChgPct<10){
+      actions.push({level:'important',text:'所得成長停滯（中位數僅成長 '+salT.medianChgPct+'%），選民對現狀不滿，改革訴求有市場。'});
+    }
+  }
+
+  // Election-based actions
+  if(cd.tier==='A'){
+    actions.push({level:'normal',text:'A級核心票倉，每月至少安排 2 次掃街或站路口，維持曝光度與支持者黏著度。'});
+  }else if(cd.tier==='B'){
+    actions.push({level:'normal',text:'B級成長區域，支持度快速攀升，加強社區互動。每月至少 1 次實體活動。'});
+  }
+
+  if(cd.pvp>4){
+    actions.push({level:'important',text:'總統票外溢 +'+cd.pvp+'%，選民「認人不認黨」傾向高。候選人應強調個人經歷與服務能力，避免過度強調政黨。'});
+  }
+
+  if(cd.chg>12){
+    actions.push({level:'normal',text:'政黨票成長 '+chg(cd.chg)+'%，動能強勁。趁勢辦座談會或服務站，把新增認同轉為穩定票源。'});
+  }
+
+  if(isContested){
+    if(candCount>=4){
+      actions.push({level:'normal',text:'里長 '+candCount+' 人混戰，投票率可望大幅提升。積極出席里長候選人的造勢場合，增加交叉曝光。'});
+    }else{
+      actions.push({level:'info',text:'里長 '+candCount+' 人競爭，投票率將提升。把握里長選戰帶來的熱度，站在投票所附近拜票。'});
+    }
+    // Check for party candidates
+    if(cands){
+      const hasDpp=cands.candidates.some(x=>x.party&&x.party.includes('民主進步'));
+      const hasKmt=cands.candidates.some(x=>x.party&&x.party.includes('國民黨'));
+      if(hasDpp&&hasKmt){
+        actions.push({level:'info',text:'藍綠里長對決格局，民眾黨議員可主打超越藍綠、中間路線，爭取厭倦對立的選民。'});
+      }else if(!hasDpp&&!hasKmt){
+        actions.push({level:'info',text:'里長全為無黨籍，政黨色彩淡，議員候選人可專注個人政見溝通，不受里長選戰政黨動員影響。'});
+      }
+    }
+  }else{
+    if(candCount===1){
+      actions.push({level:'important',text:'同額競選，投票率偏低風險高。需主動創造投票動機——辦社區議題座談、發文宣提醒投票日。'});
+      if(cands&&cands.candidates.length>0){
+        const candParty=cands.candidates[0].party;
+        if(candParty&&candParty.includes('民主進步')){
+          actions.push({level:'important',text:'里長為民進黨提名，綠營組織動員可能壓縮民眾黨議員票。需主動接觸中間選民。'});
+        }else if(candParty&&candParty.includes('國民黨')){
+          actions.push({level:'info',text:'里長為國民黨提名，可爭取非藍基本盤的中間與淺綠選民。'});
+        }else{
+          actions.push({level:'normal',text:'里長為無黨籍，爭取與里長候選人建立友善關係、合作曝光。'});
+        }
+      }
+    }else if(candCount===0){
+      actions.push({level:'critical',text:'尚無里長候選人登記，投票率可能極低。議員候選人需完全靠自身動員拉票。'});
+    }
+  }
+
+  // 2022 comparison
+  if(lz22){
+    const retiredElected=lz22.candidates_2022.filter(c=>c.elected).filter(c=>{
+      if(!cands)return true;
+      return!cands.candidates.some(x=>x.name===c.name);
+    });
+    if(retiredElected.length>0){
+      actions.push({level:'info',text:'上屆當選里長 '+retiredElected.map(r=>r.name).join('、')+' 未登記連任，權力真空有機會爭取其樁腳或支持者。'});
+    }
+  }
+
+  return actions;
+}
+
+function renderPopMiniChart(popT){
+  if(!popT||!popT.yearlyPop||popT.yearlyPop.length<2)return'';
+  const pops=popT.yearlyPop.map(y=>y.pop);
+  const maxP=Math.max(...pops);
+  const minP=Math.min(...pops);
+  const range=maxP-minP||1;
+  return'<div class="mini-chart">'+popT.yearlyPop.map(y=>{
+    const ht=Math.max(8,Math.round((y.pop-minP)/range*36));
+    return'<div class="mini-bar" style="height:'+ht+'px;background:var(--tpp)" data-tip="'+y.year+': '+fmt(y.pop)+'人"></div>';
+  }).join('')+'</div>';
+}
+
+function renderSalaryMiniChart(salT){
+  if(!salT||!salT.yearlyData||salT.yearlyData.length<2)return'';
+  const meds=salT.yearlyData.map(y=>y.median);
+  const maxM=Math.max(...meds);
+  const minM=Math.min(...meds);
+  const range=maxM-minM||1;
+  return'<div class="mini-chart">'+salT.yearlyData.map(y=>{
+    const ht=Math.max(8,Math.round((y.median-minM)/range*36));
+    return'<div class="mini-bar" style="height:'+ht+'px;background:#F57F17" data-tip="'+y.year+': '+y.median+'千元"></div>';
+  }).join('')+'</div>';
+}
+
+function renderAgeBar(popT){
+  if(!popT)return'';
+  const t=popT.latest;
+  const total=t.pop||1;
+  return`<div class="age-bar">
+    <div class="young" style="width:${pct(t.y,total)}%" title="0-19歲 ${pct(t.y,total)}%">${pct(t.y,total)>8?pct(t.y,total)+'%':''}</div>
+    <div class="wy" style="width:${pct(t.wy,total)}%" title="20-39歲 ${pct(t.wy,total)}%">${pct(t.wy,total)}%</div>
+    <div class="wm" style="width:${pct(t.wm,total)}%" title="40-64歲 ${pct(t.wm,total)}%">${pct(t.wm,total)}%</div>
+    <div class="elderly" style="width:${pct(t.e,total)}%" title="65歲以上 ${pct(t.e,total)}%">${pct(t.e,total)}%</div>
+  </div>
+  <div style="display:flex;gap:8px;font-size:.68em;color:var(--text2);flex-wrap:wrap">
+    <span style="color:#42A5F5">■ 0-19歲</span>
+    <span style="color:#66BB6A">■ 20-39歲</span>
+    <span style="color:#FFA726">■ 40-64歲</span>
+    <span style="color:#EF5350">■ 65歲+</span>
+  </div>`;
+}
+
+function renderDetailCard(label,rank){
+  const cd=getCunliData(label);
+  if(!cd)return'';
+  const popT=getPopTrend(label);
+  const salT=getSalaryTrend(label);
+  const cands=cunliCands[label];
+  const lz22=get2022(label);
+  const candCount=cands?cands.candidates.length:0;
+  const score=priorityScore(cd,candCount);
+  const isContested=candCount>1;
+
+  const actions=generateActions(label,cd,popT,salT,cands,lz22);
+
+  const priorityClass=score>=55?'high':score>=45?'mid':'low';
+  const priorityLabel=score>=55?'最優先':score>=45?'重要':'一般';
+
+  const il=salT?incomeLevel(salT.latest.median):null;
+
+  let html=`<div class="detail-card" id="cunli-${h(cd.name)}" data-town="${cd.town}" data-tier="${cd.tier}" data-contested="${isContested?1:0}" data-score="${score}">
+    <div class="detail-header">
+      <h3>#${rank} ${h(label)}</h3>
+      <span class="tier tier-${cd.tier}">${cd.tier}</span>
+      <span class="priority-badge priority-${priorityClass}">${priorityLabel}</span>
+      ${isContested?'<span style="color:#D32F2F;font-size:.8em;font-weight:700">⚔ '+candCount+'人競爭</span>':'<span style="font-size:.8em;color:var(--text2)">同額</span>'}
+      ${il?'<span class="income-tag '+il.cls+'">'+il.label+'</span>':''}
+    </div>
+
+    <div class="meta-row">
+      <span>2024政黨票 ${cd.r2024}%（${fmt(cd.v2024)}票）</span>
+      <span>2024總統票 ${cd.r2024p}%</span>
+      <span>成長 <span class="${cd.chg>=0?'pos':'neg'}">${chg(cd.chg)}</span></span>
+      <span>外溢 +${cd.pvp}%</span>
+      <span>預估 ${fmt(cd.est)} 票</span>
+      <span>優先分 ${score}</span>
+    </div>
+
+    <div class="data-grid">`;
+
+  // Population panel
+  if(popT){
+    html+=`<div class="data-panel">
+      <h4>📊 人口結構（最新資料）</h4>
+      <table>
+        <tr><td>總人口</td><td style="text-align:right;font-weight:700">${fmt(popT.latest.pop)} 人</td></tr>
+        <tr><td>戶數</td><td style="text-align:right">${fmt(popT.latest.hh)} 戶（戶均 ${popT.hhSize} 人）</td></tr>
+        <tr><td>人口增減（${popT.earliest?popT.yearlyPop[0].year:''}→${popT.yearlyPop[popT.yearlyPop.length-1].year}）</td>
+          <td style="text-align:right" class="${popT.popChg>=0?'pos':'neg'}">${chg(popT.popChg)} 人（${chg(popT.popChgPct)}%）</td></tr>
+        ${popT.recent?'<tr><td>近兩年增減</td><td style="text-align:right" class="'+(popT.recent.popChg>=0?'pos':'neg')+'">'+chg(popT.recent.popChg)+' 人</td></tr>':''}
+        <tr><td>65歲以上</td><td style="text-align:right;${popT.elderlyPct>=25?'color:#D32F2F;font-weight:700':popT.elderlyPct>=20?'color:#E65100':''}">
+          ${popT.elderlyPct}%（${fmt(popT.latest.e)} 人）</td></tr>
+      </table>
+      ${renderAgeBar(popT)}
+      <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:.72em;color:var(--text2)">人口趨勢</span>
+        ${renderPopMiniChart(popT)}
+      </div>
+    </div>`;
+  }
+
+  // Salary panel
+  if(salT){
+    html+=`<div class="data-panel">
+      <h4>💰 所得概況（${salT.latestYear}年）</h4>
+      <table>
+        <tr><td>納稅單位</td><td style="text-align:right">${fmt(salT.latest.units)} 戶</td></tr>
+        <tr><td>所得中位數</td><td style="text-align:right;font-weight:700">${fmt(salT.latest.median)} 千元</td></tr>
+        <tr><td>所得平均數</td><td style="text-align:right">${fmt(salT.latest.mean)} 千元</td></tr>
+        <tr><td>第一四分位</td><td style="text-align:right">${fmt(salT.latest.q1)} 千元</td></tr>
+        <tr><td>第三四分位</td><td style="text-align:right">${fmt(salT.latest.q3)} 千元</td></tr>
+        <tr><td>貧富比（Q3-Q1/中位數）</td><td style="text-align:right;${salT.gini>=2?'color:#D32F2F;font-weight:700':''}">${salT.gini}</td></tr>
+        <tr><td>中位數成長（${salT.earliestYear}→${salT.latestYear}）</td>
+          <td style="text-align:right" class="${salT.medianChgPct>=0?'pos':'neg'}">${chg(salT.medianChgPct)}%</td></tr>
+      </table>
+      <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:.72em;color:var(--text2)">所得趨勢</span>
+        ${renderSalaryMiniChart(salT)}
+      </div>
+    </div>`;
+  }
+
+  html+=`</div>`;
+
+  // Candidates panel
+  if(cands&&cands.candidates.length>0){
+    html+=`<div style="margin-bottom:10px">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:4px">2026 里長候選人（${candCount}人${isContested?'，競爭':'，同額'}）：</div>
+      <ul class="cand-list">`;
+    cands.candidates.forEach(x=>{
+      html+=`<li>${partyTag(x.party)} ${h(x.name)}</li>`;
+    });
+    html+=`</ul></div>`;
+  }
+
+  // 2022 comparison
+  if(lz22&&lz22.candidates_2022.length>0){
+    html+=`<div style="padding:8px 10px;background:#f5f5f5;border-radius:6px;font-size:.8em;margin-bottom:10px">
+      <div style="font-weight:600;margin-bottom:4px">2022 里長結果（${lz22.contested_2022?lz22.candidates_2022.length+'人競爭':'同額'}）：
+        當選 ${h(lz22.winner_2022||'-')}</div>
+      <table style="font-size:.92em"><tr><th style="text-align:left">候選人</th><th>政黨</th><th>得票</th><th>結果</th></tr>`;
+    lz22.candidates_2022.forEach(c=>{
+      html+=`<tr><td>${h(c.name)}</td><td>${partyTag(c.party)}</td><td style="text-align:right">${fmt(c.votes)}</td><td style="text-align:center">${c.elected?'<span class="elected">當選</span>':''}</td></tr>`;
+    });
+    html+=`</table></div>`;
+  }
+
+  // Action strategies
+  if(actions.length>0){
+    html+=`<div style="margin-top:8px">
+      <div style="font-size:.85em;font-weight:700;color:var(--tpp-dark);margin-bottom:6px">⚡ 行動策略建議</div>
+      <ul class="action-list">`;
+    actions.forEach(a=>{
+      html+=`<li class="${a.level}">${a.text}</li>`;
+    });
+    html+=`</ul></div>`;
+  }
+
+  html+=`</div>`;
+  return html;
+}
+
+function renderOverviewInsights(){
+  const allLabels=zone.cunlis.map(c=>c.label);
+  let totalPop=0,totalElderly=0,totalYoung=0,totalWy=0;
+  let popDecline=0,popGrow=0;
+  let highIncome=0,lowIncome=0;
+  let medianSum=0,medianCount=0;
+  let maxElderly={pct:0,label:''},minElderly={pct:100,label:''};
+  let maxMedian={val:0,label:''},minMedian={val:9999,label:''};
+  let maxGrowth={val:-999,label:''},minGrowth={val:999,label:''};
+
+  allLabels.forEach(label=>{
+    const popT=getPopTrend(label);
+    const salT=getSalaryTrend(label);
+    if(popT){
+      totalPop+=popT.latest.pop;
+      totalElderly+=popT.latest.e;
+      totalYoung+=popT.latest.y;
+      totalWy+=popT.latest.wy;
+      if(popT.popChgPct<0)popDecline++;
+      if(popT.popChgPct>0)popGrow++;
+      if(popT.elderlyPct>maxElderly.pct){maxElderly={pct:popT.elderlyPct,label};}
+      if(popT.elderlyPct<minElderly.pct){minElderly={pct:popT.elderlyPct,label};}
+    }
+    if(salT){
+      medianSum+=salT.latest.median;medianCount++;
+      const il=incomeLevel(salT.latest.median);
+      if(il.cls==='high')highIncome++;
+      if(il.cls==='low')lowIncome++;
+      if(salT.latest.median>maxMedian.val){maxMedian={val:salT.latest.median,label};}
+      if(salT.latest.median<minMedian.val){minMedian={val:salT.latest.median,label};}
+      if(salT.medianChgPct>maxGrowth.val){maxGrowth={val:salT.medianChgPct,label};}
+      if(salT.medianChgPct<minGrowth.val){minGrowth={val:salT.medianChgPct,label};}
+    }
+  });
+
+  const avgMedian=medianCount?Math.round(medianSum/medianCount):0;
+  const elderlyPctAll=Math.round(totalElderly/totalPop*1000)/10;
+
+  return`<div class="summary-insight">
+    <div style="font-weight:700;color:var(--tpp-dark);margin-bottom:10px;font-size:1.05em">全區人口與所得概覽</div>
+    <div class="grid">
+      <div class="card"><div class="lb">全區總人口</div><div class="val">${fmt(totalPop)}</div></div>
+      <div class="card"><div class="lb">平均所得中位數</div><div class="val">${fmt(avgMedian)}</div><div class="dt">千元</div></div>
+      <div class="card"><div class="lb">全區老年占比</div><div class="val" style="${elderlyPctAll>=20?'color:#D32F2F':''}">${elderlyPctAll}%</div></div>
+      <div class="card"><div class="lb">人口衰退里數</div><div class="val" style="color:#E65100">${popDecline}</div><div class="dt">/ ${allLabels.length} 里</div></div>
+      <div class="card"><div class="lb">高所得里</div><div class="val" style="color:var(--tier-a)">${highIncome}</div></div>
+      <div class="card"><div class="lb">低所得里</div><div class="val" style="color:#F57F17">${lowIncome}</div></div>
+    </div>
+    <div style="font-size:.82em;color:var(--text2);line-height:1.8">
+      <div>🏆 最高所得：${h(maxMedian.label)}（中位數 ${fmt(maxMedian.val)} 千元）｜最低：${h(minMedian.label)}（${fmt(minMedian.val)} 千元）</div>
+      <div>👴 最高齡化：${h(maxElderly.label)}（${maxElderly.pct}%）｜最年輕：${h(minElderly.label)}（${minElderly.pct}%）</div>
+      <div>📈 所得成長最快：${h(maxGrowth.label)}（+${maxGrowth.val}%）｜最慢：${h(minGrowth.label)}（${chg(minGrowth.val)}%）</div>
+    </div>
+  </div>`;
+}
+
+function renderRankingTable(){
+  const rows=zone.cunlis.map(c=>{
+    const popT=getPopTrend(c.label);
+    const salT=getSalaryTrend(c.label);
+    const cands=cunliCands[c.label];
+    const candCount=cands?cands.candidates.length:0;
+    const score=priorityScore(c,candCount);
+    return{...c,popT,salT,candCount,score,isContested:candCount>1};
+  }).sort((a,b)=>b.score-a.score);
+
+  let html=`<table class="contested-table" id="rankTable">
+    <thead><tr>
+      <th data-sort="num">#</th>
+      <th data-sort="str">里</th>
+      <th data-sort="str">級</th>
+      <th data-sort="num">優先分</th>
+      <th data-sort="num">2024政黨票</th>
+      <th data-sort="num">成長</th>
+      <th data-sort="num">人口</th>
+      <th data-sort="num">老年%</th>
+      <th data-sort="num">所得中位</th>
+      <th data-sort="num">所得成長</th>
+      <th data-sort="num">里長人數</th>
+    </tr></thead><tbody>`;
+
+  rows.forEach((r,i)=>{
+    const bg=r.isContested?'background:var(--tpp-light)':'';
+    html+=`<tr style="${bg}">
+      <td>${i+1}</td>
+      <td><a href="#cunli-${h(r.name)}" style="text-decoration:none">${h(r.label)}</a></td>
+      <td><span class="tier tier-${r.tier}">${r.tier}</span></td>
+      <td style="font-weight:700">${r.score}</td>
+      <td>${r.r2024}%<br><small>${fmt(r.v2024)}</small></td>
+      <td class="${r.chg>=0?'pos':'neg'}">${chg(r.chg)}</td>
+      <td>${r.popT?fmt(r.popT.latest.pop):'-'}</td>
+      <td style="${r.popT&&r.popT.elderlyPct>=25?'color:#D32F2F;font-weight:700':r.popT&&r.popT.elderlyPct>=20?'color:#E65100':''}">${r.popT?r.popT.elderlyPct+'%':'-'}</td>
+      <td>${r.salT?fmt(r.salT.latest.median):'-'}</td>
+      <td class="${r.salT&&r.salT.medianChgPct>=0?'pos':'neg'}">${r.salT?chg(r.salT.medianChgPct)+'%':'-'}</td>
+      <td>${r.candCount}${r.isContested?' ⚔':''}</td>
+    </tr>`;
+  });
+
+  html+=`</tbody></table>`;
+  return html;
+}
+
+function renderScatterSection(){
+  return`<div style="margin-bottom:16px">
+    <div style="font-size:.9em;font-weight:600;margin-bottom:8px">所得 vs 支持度矩陣</div>
+    <p style="font-size:.78em;color:var(--text2);margin-bottom:8px">
+      橫軸：所得中位數（千元） ｜ 縱軸：2024 民眾黨政黨票得票率 ｜ 圓圈大小：人口數 ｜ 顏色：級別
+    </p>
+    <canvas id="scatterCanvas" class="scatter-canvas" width="600" height="400"></canvas>
+  </div>`;
+}
+
+function drawScatter(){
+  const canvas=document.getElementById('scatterCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  const pad={t:30,r:30,b:40,l:50};
+  const pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+
+  const pts=[];
+  zone.cunlis.forEach(c=>{
+    const salT=getSalaryTrend(c.label);
+    const popT=getPopTrend(c.label);
+    if(!salT||!popT)return;
+    pts.push({label:c.label,x:salT.latest.median,y:c.r2024,pop:popT.latest.pop,tier:c.tier,name:c.name});
+  });
+
+  const xMin=Math.min(...pts.map(p=>p.x))-30;
+  const xMax=Math.max(...pts.map(p=>p.x))+30;
+  const yMin=Math.min(...pts.map(p=>p.y))-2;
+  const yMax=Math.max(...pts.map(p=>p.y))+2;
+  const maxPop=Math.max(...pts.map(p=>p.pop));
+
+  const sx=v=>pad.l+(v-xMin)/(xMax-xMin)*pw;
+  const sy=v=>pad.t+ph-(v-yMin)/(yMax-yMin)*ph;
+
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle='#eee';ctx.lineWidth=1;
+  for(let v=Math.ceil(xMin/100)*100;v<=xMax;v+=100){
+    const x=sx(v);ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,H-pad.b);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText(v,x,H-pad.b+14);
+  }
+  for(let v=Math.ceil(yMin/5)*5;v<=yMax;v+=5){
+    const y=sy(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';ctx.fillText(v+'%',pad.l-6,y+4);
+  }
+
+  // Axis labels
+  ctx.fillStyle='#666';ctx.font='11px sans-serif';
+  ctx.textAlign='center';ctx.fillText('所得中位數（千元）',W/2,H-4);
+  ctx.save();ctx.translate(12,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('2024 政黨票得票率 %',0,0);ctx.restore();
+
+  // Average lines
+  const avgX=pts.reduce((s,p)=>s+p.x,0)/pts.length;
+  const avgY=pts.reduce((s,p)=>s+p.y,0)/pts.length;
+  ctx.strokeStyle='rgba(40,199,183,0.3)';ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(sx(avgX),pad.t);ctx.lineTo(sx(avgX),H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,sy(avgY));ctx.lineTo(W-pad.r,sy(avgY));ctx.stroke();
+  ctx.setLineDash([]);
+
+  const tierColors={A:'#2E7D32',B:'#1565C0',C:'#F57F17',D:'#6A1B9A',E:'#9E9E9E'};
+
+  pts.forEach(p=>{
+    const r=Math.max(4,Math.sqrt(p.pop/maxPop)*20);
+    ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),r,0,Math.PI*2);
+    ctx.fillStyle=(tierColors[p.tier]||'#999')+'66';ctx.fill();
+    ctx.strokeStyle=tierColors[p.tier]||'#999';ctx.lineWidth=1.5;ctx.stroke();
+    if(r>=6){
+      ctx.fillStyle='#333';ctx.font='8px sans-serif';ctx.textAlign='center';
+      ctx.fillText(p.name,sx(p.x),sy(p.y)-r-3);
+    }
+  });
+}
+
+async function init(){
+  const app=document.getElementById('app');
+  try{
+    [zone,detail,lizhang,areaNames]=await Promise.all([
+      fetchJSON(ZONE_URL),fetchJSON(DETAIL_URL),fetchJSON(LIZHANG_URL),fetchJSON(AREA_NAMES_URL)
+    ]);
+
+    const towns=areaNames.towns;
+    const villages=areaNames.villages;
+    const targetTowns={};
+    for(const[code,name]of Object.entries(towns)){
+      if(code.startsWith('67000')&&(name==='北區'||name==='中西區')){
+        targetTowns[code]=name;
+      }
+    }
+    const villList=[];
+    for(const[code,name]of Object.entries(villages)){
+      for(const[tcode,tname]of Object.entries(targetTowns)){
+        if(code.startsWith(tcode))villList.push({code,town:tname,name});
+      }
+    }
+
+    app.innerHTML='<p style="text-align:center;padding:20px;color:var(--text2)">載入候選人資料中... <span id="lp">0</span>/53</p>';
+    let loaded=0;
+    const results=await Promise.all(villList.map(async v=>{
+      try{
+        const data=await fetchJSON(CANDIDATE_BASE+v.code+'.json');
+        const elections=data.elections||{};
+        const lz=elections['村里長'];
+        loaded++;
+        const pe=document.getElementById('lp');if(pe)pe.textContent=loaded;
+        if(lz&&lz.candidates)return{label:v.town+v.name,code:v.code,town:v.town,name:v.name,candidates:lz.candidates};
+        return{label:v.town+v.name,code:v.code,town:v.town,name:v.name,candidates:[]};
+      }catch(e){
+        loaded++;const pe=document.getElementById('lp');if(pe)pe.textContent=loaded;
+        return{label:v.town+v.name,code:v.code,town:v.town,name:v.name,candidates:[]};
+      }
+    }));
+
+    results.forEach(r=>{cunliCands[r.label]=r;});
+    render();
+  }catch(e){
+    app.innerHTML='<p style="color:#c00;padding:20px">載入失敗：'+h(e.message)+'</p>';
+  }
+}
+
+function render(){
+  const app=document.getElementById('app');
+  const allCunlis=zone.cunlis.map(c=>{
+    const cands=cunliCands[c.label];
+    const candCount=cands?cands.candidates.length:0;
+    return{...c,candCount,score:priorityScore(c,candCount)};
+  }).sort((a,b)=>b.score-a.score);
+
+  app.innerHTML=`
+    <header>
+      <h1>2026 臺南市第08選區<br>里級深度分析報告</h1>
+      <div class="sub">台灣民眾黨 ｜ ${h(zone.areas)} ｜ 人口結構 × 所得趨勢 × 選情行動策略</div>
+    </header>
+
+    <div style="margin-bottom:16px;font-size:.85em">
+      <a href="67000-08.html">← 返回選情總覽</a>
+    </div>
+
+    <section>
+      <h2>數據總覽</h2>
+      ${renderOverviewInsights()}
+    </section>
+
+    <section>
+      <h2>所得 vs 支持度分析</h2>
+      ${renderScatterSection()}
+    </section>
+
+    <section>
+      <h2>綜合排序表</h2>
+      <p style="font-size:.82em;color:var(--text2);margin-bottom:10px">
+        整合選舉數據、人口結構與所得水準，依綜合優先分數排序。淺綠底色為競爭里。點擊里名跳至詳細分析。
+      </p>
+      ${renderRankingTable()}
+    </section>
+
+    <section>
+      <h2>53 里逐里深度分析</h2>
+      <p style="font-size:.82em;color:var(--text2);margin-bottom:12px">
+        每里包含人口趨勢、年齡結構、所得概況、里長候選人資訊，以及基於各項數據的具體行動策略建議。
+      </p>
+      <div class="filter-controls">
+        <label>篩選：</label>
+        <select id="filterTown"><option value="">全部區域</option><option value="北區">北區</option><option value="中西區">中西區</option></select>
+        <select id="filterTier"><option value="">全部級別</option><option value="A">A級</option><option value="B">B級</option><option value="C">C級</option><option value="D">D級</option><option value="E">E級</option></select>
+        <select id="filterContested"><option value="">全部</option><option value="1">競爭里</option><option value="0">同額里</option></select>
+      </div>
+      <div id="detailCards">
+        ${allCunlis.map((c,i)=>renderDetailCard(c.label,i+1)).join('')}
+      </div>
+    </section>
+
+    <section>
+      <h2>跨里策略總結</h2>
+      ${renderCrossStrategy()}
+    </section>
+
+    <footer>
+      資料來源：中央選舉委員會選舉資料庫、<a href="https://github.com/kiang/tw_population" target="_blank">戶政人口統計</a>、<a href="https://github.com/kiang/salary" target="_blank">財政部綜合所得稅</a>、<a href="../all.html" target="_blank">2026全台選舉候選人地圖</a><br>
+      涵蓋選舉：2024不分區、2024總統、2026里長 ｜ 人口資料至 2026年8月 ｜ 所得資料至 2024年度<br>
+      深度分析報告 ｜ <a href="67000-08.html">返回選情總覽</a> ｜ 資料整理：<a href="https://facebook.com/k.olc.tw" target="_blank" rel="noopener">江明宗</a>
+    </footer>`;
+
+  // Scatter chart
+  setTimeout(drawScatter,100);
+
+  // Filter
+  ['filterTown','filterTier','filterContested'].forEach(id=>{
+    document.getElementById(id).addEventListener('change',applyFilters);
+  });
+
+  // Table sorting
+  document.querySelectorAll('.contested-table th[data-sort]').forEach(th=>{
+    th.addEventListener('click',function(){
+      const table=this.closest('table');
+      const idx=Array.from(this.parentNode.children).indexOf(this);
+      const type=this.dataset.sort;
+      const rows=Array.from(table.querySelectorAll('tbody tr'));
+      const asc=table.dataset.sc===String(idx)&&table.dataset.sd==='asc';
+      table.dataset.sc=idx;table.dataset.sd=asc?'desc':'asc';
+      rows.sort((a,b)=>{
+        let av=a.cells[idx]?.textContent.trim().replace(/[%,票+千元]/g,'')||'';
+        let bv=b.cells[idx]?.textContent.trim().replace(/[%,票+千元]/g,'')||'';
+        if(type==='num'){av=parseFloat(av)||-999;bv=parseFloat(bv)||-999;}
+        return(av<bv?1:av>bv?-1:0)*(asc?-1:1);
+      });
+      const tbody=table.querySelector('tbody');
+      rows.forEach(r=>tbody.appendChild(r));
+      this.parentNode.querySelectorAll('th').forEach((t,i)=>{
+        t.textContent=t.textContent.replace(/ [▲▼]$/,'');
+        if(i===idx)t.textContent+=asc?' ▲':' ▼';
+      });
+    });
+  });
+}
+
+function applyFilters(){
+  const town=document.getElementById('filterTown').value;
+  const tier=document.getElementById('filterTier').value;
+  const contested=document.getElementById('filterContested').value;
+  document.querySelectorAll('.detail-card').forEach(card=>{
+    let show=true;
+    if(town&&card.dataset.town!==town)show=false;
+    if(tier&&card.dataset.tier!==tier)show=false;
+    if(contested!==''&&card.dataset.contested!==contested)show=false;
+    card.style.display=show?'':'none';
+  });
+}
+
+function renderCrossStrategy(){
+  const allLabels=zone.cunlis.map(c=>c.label);
+  const elderly25=[],popDecline=[],lowIncome=[],highGrowth=[];
+  const highPvp=[],tierA=[],contested4=[];
+
+  allLabels.forEach(label=>{
+    const cd=getCunliData(label);
+    const popT=getPopTrend(label);
+    const salT=getSalaryTrend(label);
+    const cands=cunliCands[label];
+    if(!cd)return;
+
+    if(popT&&popT.elderlyPct>=25)elderly25.push(label);
+    if(popT&&popT.popChgPct<=-5)popDecline.push(label);
+    if(salT&&salT.latest.median<450)lowIncome.push(label);
+    if(cd.chg>12)highGrowth.push(label);
+    if(cd.pvp>4)highPvp.push(label);
+    if(cd.tier==='A')tierA.push(label);
+    if(cands&&cands.candidates.length>=4)contested4.push(label);
+  });
+
+  return`<div class="actions">
+    <div class="act">
+      <h4>高齡化社區：長照與銀髮議題專攻</h4>
+      <p>${elderly25.length} 里老年人口超過 25%（${elderly25.map(l=>h(l)).join('、')}），建議安排老人關懷訪視、長照政策說明會、健康檢查站等活動，同步提升候選人知名度。</p>
+    </div>
+    <div class="act">
+      <h4>人口外流區：挽留與活化</h4>
+      <p>${popDecline.length} 里人口持續衰退（${popDecline.slice(0,8).map(l=>h(l)).join('、')}${popDecline.length>8?'等':''}），這些里的選民對現狀不滿比例較高，改革與創新訴求容易引起共鳴。</p>
+    </div>
+    <div class="act">
+      <h4>經濟弱勢里：務實政策溝通</h4>
+      <p>${lowIncome.length} 里所得中位數低於 450 千元（${lowIncome.slice(0,8).map(l=>h(l)).join('、')}${lowIncome.length>8?'等':''}），應強調生活補貼、就業輔導、公共服務等實質政策，避免抽象論述。</p>
+    </div>
+    <div class="act">
+      <h4>高成長動能區：趁勢深耕</h4>
+      <p>${highGrowth.length} 里政黨票成長超過 12%（${highGrowth.slice(0,8).map(l=>h(l)).join('、')}${highGrowth.length>8?'等':''}），支持度快速攀升中，應加倍投入鞏固新增選民認同。</p>
+    </div>
+    <div class="act">
+      <h4>總統票外溢區：個人品牌突破</h4>
+      <p>${highPvp.length} 里總統票與政黨票差距超過 4%（${highPvp.slice(0,8).map(l=>h(l)).join('、')}${highPvp.length>8?'等':''}），選民「認人不認黨」。候選人應強調個人經歷與在地服務。</p>
+    </div>
+    <div class="act">
+      <h4>A級核心票倉：鞏固基本盤</h4>
+      <p>${tierA.length} 里為 A 級票倉（${tierA.map(l=>h(l)).join('、')}），這是最穩定的支持基礎。每月至少安排 2 次掃街，維持高曝光度。</p>
+    </div>
+    ${contested4.length>0?`<div class="act">
+      <h4>激烈選區：混戰中搶曝光</h4>
+      <p>${contested4.length} 里有 4 人以上競爭（${contested4.map(l=>h(l)).join('、')}），選情混亂有利新面孔。積極出席造勢場合，增加交叉曝光機會。</p>
+    </div>`:''}
+  </div>`;
+}
+
+document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+</body>
+</html>
