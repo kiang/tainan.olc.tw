@@ -39,6 +39,15 @@ form.edit-form textarea { min-height: 100px; }
 .filter-bar input { flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
 .filter-bar .count { font-size: 12px; color: #888; white-space: nowrap; }
 tr.editing { background: #e0f7f7; }
+.link-badges { white-space: nowrap; }
+.badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; text-decoration: none; color: #fff; }
+.badge-line { background: #28c8c8; }
+.badge-youtube { background: #f0a030; }
+.badge-schedule { background: #6c7ae0; }
+.badge:hover { opacity: 0.85; }
+tr.highlighted { background: #fff3cd; }
+@keyframes highlight-fade { from { background: #ffe08a; } to { background: #fff3cd; } }
+tr.highlighted { animation: highlight-fade 0.6s ease; }
 #pickerMap { height: 300px; border-radius: 6px; margin-top: 6px; border: 1px solid #ccc; }
 .map-hint { font-size: 12px; color: #888; margin-top: 4px; }
 </style>

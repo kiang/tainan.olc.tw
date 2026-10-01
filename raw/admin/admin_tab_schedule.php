@@ -72,36 +72,71 @@
         <input type="text" id="scheduleFilter" placeholder="搜尋日期、地點或類型..." oninput="filterTable('scheduleTable', this.value, 'scheduleCount')">
         <span class="count" id="scheduleCount"></span>
     </div>
+    <?php
+        // Build lookup: lines ymdh -> index, youtube key -> index
+        $linesYmdhMap = [];
+        foreach (($lines['features'] ?? []) as $li => $lf) {
+            $linesYmdhMap[strval($lf['properties']['ymdh'] ?? '')] = $li;
+        }
+        $youtubeKeyMap = [];
+        foreach (($youtube['features'] ?? []) as $yi => $yf) {
+            $youtubeKeyMap[$yf['properties']['key'] ?? ''] = $yi;
+        }
+        $highlightIndices = isset($_GET['highlight']) ? array_flip(array_map('intval', explode(',', $_GET['highlight']))) : [];
+    ?>
     <table id="scheduleTable">
         <thead>
-            <tr><th>#</th><th>日期</th><th>時間</th><th>結束</th><th>地點</th><th>類型</th><th>座標</th><th>操作</th></tr>
+            <tr><th>#</th><th>日期</th><th>時間</th><th>結束</th><th>地點</th><th>類型</th><th>連結</th><th>座標</th><th>操作</th></tr>
         </thead>
         <tbody>
         <?php foreach (array_reverse($schedule, true) as $i => $item): ?>
-            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
+            <?php
+                $ymdh = str_replace('-', '', $item['date'] ?? '') . str_replace(':', '', substr($item['time'] ?? '00:00', 0, 2));
+                $location = $item['location'] ?? '';
+
+                $linkedLine = $item['line_id'] ?? null;
+                $linkedYoutube = $item['youtube_key'] ?? null;
+                $lineExists = $linkedLine !== null && isset($linesYmdhMap[strval($linkedLine)]);
+                $ytExists = $linkedYoutube !== null && isset($youtubeKeyMap[$linkedYoutube]);
+
+                $isHighlighted = isset($highlightIndices[$i]);
+                $trClass = trim(($editIndex === $i ? 'editing' : '') . ' ' . ($isHighlighted ? 'highlighted' : ''));
+            ?>
+            <tr<?= $trClass ? ' class="' . $trClass . '"' : '' ?> data-index="<?= $i ?>">
                 <td><?= $i ?></td>
                 <td><?= htmlspecialchars($item['date'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['time'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['end_time'] ?? '') ?></td>
-                <td><?= htmlspecialchars($item['location'] ?? '') ?></td>
+                <td><?= htmlspecialchars($location) ?></td>
                 <td><?= htmlspecialchars($item['type'] ?? '') ?></td>
+                <td class="link-badges">
+                    <?php if ($lineExists): ?>
+                        <a href="?tab=lines&highlight=<?= $linesYmdhMap[strval($linkedLine)] ?>" class="badge badge-line" title="掃街紀錄 ymdh=<?= $linkedLine ?>">掃街</a>
+                    <?php endif; ?>
+                    <?php if ($ytExists): ?>
+                        <a href="?tab=youtube&highlight=<?= $youtubeKeyMap[$linkedYoutube] ?>" class="badge badge-youtube" title="街講地點: <?= htmlspecialchars($linkedYoutube) ?>">街講</a>
+                    <?php endif; ?>
+                </td>
                 <td><?= ($item['lat'] ?? '') . ', ' . ($item['lng'] ?? '') ?></td>
                 <td class="actions">
                     <a href="?tab=schedule&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <?php
-                        $ymdh = str_replace('-', '', $item['date'] ?? '') . str_replace(':', '', substr($item['time'] ?? '00:00', 0, 2));
-                        $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => '1', 'pre_ymdh' => $ymdh, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
-                        $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => '1', 'pre_key' => $item['location'] ?? '', 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
+                        $prefillLines = http_build_query(['tab' => 'lines', 'from_schedule' => $i, 'pre_ymdh' => $ymdh, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
+                        $prefillYt = http_build_query(['tab' => 'youtube', 'from_schedule' => $i, 'pre_key' => $location, 'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                     ?>
                     <?php
                         $prefillDup = http_build_query(['tab' => 'schedule', 'dup' => '1',
                             'pre_time' => $item['time'] ?? '', 'pre_end_time' => $item['end_time'] ?? '',
-                            'pre_location' => $item['location'] ?? '', 'pre_type' => $item['type'] ?? '',
+                            'pre_location' => $location, 'pre_type' => $item['type'] ?? '',
                             'pre_lng' => $item['lng'] ?? 0, 'pre_lat' => $item['lat'] ?? 0]);
                     ?>
                     <a href="?<?= $prefillDup ?>" class="btn btn-sm btn-secondary" title="複製此行程（日期改為今天）">複製</a>
+                    <?php if (!$lineExists): ?>
                     <a href="?<?= $prefillLines ?>" class="btn btn-sm btn-secondary" title="以此行程建立掃街紀錄">+掃街</a>
+                    <?php endif; ?>
+                    <?php if (!$ytExists): ?>
                     <a href="?<?= $prefillYt ?>" class="btn btn-sm btn-secondary" title="以此行程建立街講地點">+街講</a>
+                    <?php endif; ?>
                     <form method="post" onsubmit="return confirm('確定刪除此行程？')">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="index" value="<?= $i ?>">

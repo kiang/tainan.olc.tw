@@ -83,6 +83,9 @@ var ef = document.getElementById('editFocus');
 if (ef) {
     ef.closest('.card').scrollIntoView({ behavior: 'smooth' });
     ef.focus();
+} else {
+    var firstHL = document.querySelector('tr.highlighted');
+    if (firstHL) firstHL.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 document.querySelectorAll('input[type="color"]').forEach(function(picker) {

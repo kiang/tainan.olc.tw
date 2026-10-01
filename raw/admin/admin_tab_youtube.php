@@ -47,6 +47,9 @@
     <h2>新增街講地點<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
     <form method="post" class="edit-form" id="createForm">
         <input type="hidden" name="action" value="create">
+        <?php if (isset($_GET['from_schedule'])): ?>
+        <input type="hidden" name="from_schedule" value="<?= htmlspecialchars($_GET['from_schedule']) ?>">
+        <?php endif; ?>
         <label>地點名稱 (key)</label>
         <input type="text" name="key" placeholder="北區和緯路四段/文賢路" value="<?= htmlspecialchars($_GET['pre_key'] ?? '') ?>" required>
         <label>座標（點擊地圖或手動輸入）</label>
@@ -79,22 +82,40 @@
         <span class="count" id="youtubeCount"></span>
     </div>
     <table id="youtubeTable">
+        <?php
+            // Build reverse lookup: find schedule entries that link to each youtube by key
+            $scheduleByYtKey = [];
+            foreach ($schedule as $si => $sItem) {
+                $yk = $sItem['youtube_key'] ?? null;
+                if ($yk !== null) $scheduleByYtKey[$yk] = $si;
+            }
+            $highlightIndices = isset($_GET['highlight']) ? array_flip(array_map('intval', explode(',', $_GET['highlight']))) : [];
+        ?>
         <thead>
-            <tr><th>#</th><th>地點</th><th>座標</th><th>影片數</th><th>操作</th></tr>
+            <tr><th>#</th><th>地點</th><th>座標</th><th>影片數</th><th>行程</th><th>操作</th></tr>
         </thead>
         <tbody>
         <?php foreach (array_reverse($youtube['features'] ?? [], true) as $i => $feature):
             $key = $feature['properties']['key'] ?? '';
             $videos = $youtubeList[$key] ?? [];
+            $linkedSchedule = $scheduleByYtKey[$key] ?? null;
+            $isHighlighted = isset($highlightIndices[$i]);
+            $trClass = trim(($editIndex === $i ? 'editing' : '') . ' ' . ($isHighlighted ? 'highlighted' : ''));
         ?>
             <?php
                 $videoMeta = array_map(function($v) { return ($v['id'] ?? '') . ' ' . ($v['title'] ?? ''); }, $videos);
             ?>
-            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?> data-videos="<?= htmlspecialchars(implode(' ', $videoMeta)) ?>">
+            <tr<?= $trClass ? ' class="' . $trClass . '"' : '' ?> data-index="<?= $i ?>" data-videos="<?= htmlspecialchars(implode(' ', $videoMeta)) ?>">
                 <td><?= $i ?></td>
                 <td class="truncate" title="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($key) ?></td>
                 <td><?= ($feature['geometry']['coordinates'][0] ?? '') . ', ' . ($feature['geometry']['coordinates'][1] ?? '') ?></td>
                 <td><?= count($videos) ?></td>
+                <td class="link-badges">
+                    <?php if ($linkedSchedule !== null): ?>
+                        <?php $sItem = $schedule[$linkedSchedule]; ?>
+                        <a href="?tab=schedule&highlight=<?= $linkedSchedule ?>" class="badge badge-schedule" title="行程: <?= htmlspecialchars($sItem['date'] . ' ' . $sItem['time'] . ' ' . $sItem['location']) ?>"><?= htmlspecialchars($sItem['date']) ?></a>
+                    <?php endif; ?>
+                </td>
                 <td class="actions">
                     <a href="?tab=youtube&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <form method="post" onsubmit="return confirm('確定刪除此地點及所有影片？')">

@@ -17,8 +17,9 @@ if ($tab === 'lines') {
             } else {
                 $geometry = ['type' => 'Point', 'coordinates' => [0, 0]];
             }
+            $ymdh = intval($_POST['ymdh']);
             $props = [
-                'ymdh' => intval($_POST['ymdh']),
+                'ymdh' => $ymdh,
                 'v' => $_POST['v'],
             ];
             $title = trim($_POST['title'] ?? '');
@@ -29,6 +30,18 @@ if ($tab === 'lines') {
                 'geometry' => $geometry,
             ];
             saveJson($dataFiles['lines'], $lines);
+
+            // Link back to schedule if created from schedule
+            $fromSchedule = $_POST['from_schedule'] ?? '';
+            if ($fromSchedule !== '') {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $si = intval($fromSchedule);
+                if (isset($schedule[$si])) {
+                    $schedule[$si]['line_id'] = $ymdh;
+                    saveJson($dataFiles['schedule'], $schedule);
+                }
+            }
+
             $message = '已新增掃街紀錄';
             $messageType = 'success';
         } else {
@@ -43,7 +56,9 @@ if ($tab === 'lines') {
                 return count($parts) === 2 ? [$parts[0], $parts[1]] : null;
             }, array_filter(explode("\n", trim($_POST['coordinates'] ?? ''))));
             $coords = array_values(array_filter($coords));
-            $lines['features'][$idx]['properties']['ymdh'] = intval($_POST['ymdh']);
+            $oldYmdh = $lines['features'][$idx]['properties']['ymdh'] ?? null;
+            $newYmdh = intval($_POST['ymdh']);
+            $lines['features'][$idx]['properties']['ymdh'] = $newYmdh;
             $lines['features'][$idx]['properties']['v'] = $_POST['v'];
             $title = trim($_POST['title'] ?? '');
             if ($title !== '') {
@@ -57,14 +72,45 @@ if ($tab === 'lines') {
                 $lines['features'][$idx]['geometry'] = ['type' => 'LineString', 'coordinates' => $coords];
             }
             saveJson($dataFiles['lines'], $lines);
+
+            // Update schedule link if ymdh changed
+            if ($oldYmdh !== null && $oldYmdh !== $newYmdh) {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $changed = false;
+                foreach ($schedule as &$sItem) {
+                    if (isset($sItem['line_id']) && $sItem['line_id'] === $oldYmdh) {
+                        $sItem['line_id'] = $newYmdh;
+                        $changed = true;
+                    }
+                }
+                unset($sItem);
+                if ($changed) saveJson($dataFiles['schedule'], $schedule);
+            }
+
             $message = '已更新掃街紀錄 #' . $idx;
             $messageType = 'success';
         }
     } elseif ($action === 'delete') {
         $idx = intval($_POST['index']);
         if (isset($lines['features'][$idx])) {
+            $deletedYmdh = $lines['features'][$idx]['properties']['ymdh'] ?? null;
             array_splice($lines['features'], $idx, 1);
             saveJson($dataFiles['lines'], $lines);
+
+            // Clear link from schedule
+            if ($deletedYmdh !== null) {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $changed = false;
+                foreach ($schedule as &$sItem) {
+                    if (isset($sItem['line_id']) && $sItem['line_id'] === $deletedYmdh) {
+                        unset($sItem['line_id']);
+                        $changed = true;
+                    }
+                }
+                unset($sItem);
+                if ($changed) saveJson($dataFiles['schedule'], $schedule);
+            }
+
             $message = '已刪除掃街紀錄 #' . $idx;
             $messageType = 'success';
         }
@@ -105,6 +151,8 @@ if ($tab === 'lines') {
         $idx = intval($_POST['index']);
         if (isset($schedule[$idx])) {
             $endTime = trim($_POST['end_time'] ?? '');
+            $existingLineId = $schedule[$idx]['line_id'] ?? null;
+            $existingYtKey = $schedule[$idx]['youtube_key'] ?? null;
             $schedule[$idx] = [
                 'date' => trim($_POST['date'] ?? ''),
                 'time' => trim($_POST['time'] ?? ''),
@@ -114,6 +162,8 @@ if ($tab === 'lines') {
                 'lat' => floatval($_POST['lat'] ?? 0),
             ];
             if ($endTime !== '') $schedule[$idx]['end_time'] = $endTime;
+            if ($existingLineId !== null) $schedule[$idx]['line_id'] = $existingLineId;
+            if ($existingYtKey !== null) $schedule[$idx]['youtube_key'] = $existingYtKey;
             usort($schedule, function($a, $b) {
                 return strcmp($a['date'] . $a['time'], $b['date'] . $b['time']);
             });
@@ -199,6 +249,18 @@ if ($tab === 'lines') {
             $youtubeList[$key] = $videos;
             saveJson($dataFiles['youtube'], $youtube);
             saveJson($dataFiles['youtube_list'], $youtubeList);
+
+            // Link back to schedule if created from schedule
+            $fromSchedule = $_POST['from_schedule'] ?? '';
+            if ($fromSchedule !== '') {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $si = intval($fromSchedule);
+                if (isset($schedule[$si])) {
+                    $schedule[$si]['youtube_key'] = $key;
+                    saveJson($dataFiles['schedule'], $schedule);
+                }
+            }
+
             $message = '已新增街講地點：' . htmlspecialchars($key);
             $messageType = 'success';
         } else {
@@ -232,6 +294,21 @@ if ($tab === 'lines') {
             $youtubeList[$key] = $videos;
             saveJson($dataFiles['youtube'], $youtube);
             saveJson($dataFiles['youtube_list'], $youtubeList);
+
+            // Update schedule link if key changed
+            if ($oldKey !== $key && $oldKey !== '') {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $changed = false;
+                foreach ($schedule as &$sItem) {
+                    if (isset($sItem['youtube_key']) && $sItem['youtube_key'] === $oldKey) {
+                        $sItem['youtube_key'] = $key;
+                        $changed = true;
+                    }
+                }
+                unset($sItem);
+                if ($changed) saveJson($dataFiles['schedule'], $schedule);
+            }
+
             $message = '已更新街講地點：' . htmlspecialchars($key);
             $messageType = 'success';
         }
@@ -245,6 +322,21 @@ if ($tab === 'lines') {
             }
             saveJson($dataFiles['youtube'], $youtube);
             saveJson($dataFiles['youtube_list'], $youtubeList);
+
+            // Clear link from schedule
+            if ($key !== '') {
+                $schedule = loadJson($dataFiles['schedule']) ?: [];
+                $changed = false;
+                foreach ($schedule as &$sItem) {
+                    if (isset($sItem['youtube_key']) && $sItem['youtube_key'] === $key) {
+                        unset($sItem['youtube_key']);
+                        $changed = true;
+                    }
+                }
+                unset($sItem);
+                if ($changed) saveJson($dataFiles['schedule'], $schedule);
+            }
+
             $message = '已刪除街講地點：' . htmlspecialchars($key);
             $messageType = 'success';
         }

@@ -35,6 +35,9 @@
     <h2>新增掃街<?= isset($_GET['from_schedule']) ? ' (從行程帶入)' : '' ?></h2>
     <form method="post" class="edit-form">
         <input type="hidden" name="action" value="create">
+        <?php if (isset($_GET['from_schedule'])): ?>
+        <input type="hidden" name="from_schedule" value="<?= htmlspecialchars($_GET['from_schedule']) ?>">
+        <?php endif; ?>
         <label>日期時間 (ymdh 格式，如 2022080315)</label>
         <input type="text" name="ymdh" placeholder="2022080315" value="<?= htmlspecialchars($_GET['pre_ymdh'] ?? '') ?>" required>
         <label>YouTube 網址或影片 ID</label>
@@ -59,21 +62,40 @@
         <span class="count" id="linesCount"></span>
     </div>
     <table id="linesTable">
+        <?php
+            // Build reverse lookup: find schedule entries that link to each line by ymdh
+            $scheduleByLineId = [];
+            foreach ($schedule as $si => $sItem) {
+                $lid = $sItem['line_id'] ?? null;
+                if ($lid !== null) $scheduleByLineId[strval($lid)] = $si;
+            }
+            $highlightIndices = isset($_GET['highlight']) ? array_flip(array_map('intval', explode(',', $_GET['highlight']))) : [];
+        ?>
         <thead>
-            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>標題</th><th>類型/座標</th><th>操作</th></tr>
+            <tr><th>#</th><th>日期時間</th><th>影片ID</th><th>標題</th><th>類型/座標</th><th>行程</th><th>操作</th></tr>
         </thead>
         <tbody>
         <?php foreach (array_reverse($lines['features'] ?? [], true) as $i => $feature):
             $gType = $feature['geometry']['type'] ?? 'LineString';
             $gCoords = $feature['geometry']['coordinates'] ?? [];
             $coordInfo = $gType === 'Point' ? '點' : count($gCoords) . '點掃街';
+            $ymdh = strval($feature['properties']['ymdh'] ?? '');
+            $linkedSchedule = $scheduleByLineId[$ymdh] ?? null;
+            $isHighlighted = isset($highlightIndices[$i]);
+            $trClass = trim(($editIndex === $i ? 'editing' : '') . ' ' . ($isHighlighted ? 'highlighted' : ''));
         ?>
-            <tr<?= $editIndex === $i ? ' class="editing"' : '' ?>>
+            <tr<?= $trClass ? ' class="' . $trClass . '"' : '' ?> data-index="<?= $i ?>">
                 <td><?= $i ?></td>
-                <td><?= htmlspecialchars($feature['properties']['ymdh'] ?? '') ?></td>
+                <td><?= htmlspecialchars($ymdh) ?></td>
                 <td><a href="https://www.youtube.com/watch?v=<?= htmlspecialchars($feature['properties']['v'] ?? '') ?>" target="_blank"><?= htmlspecialchars($feature['properties']['v'] ?? '') ?></a></td>
                 <td class="truncate" title="<?= htmlspecialchars($feature['properties']['title'] ?? '') ?>"><?= htmlspecialchars($feature['properties']['title'] ?? '') ?></td>
                 <td><?= $coordInfo ?></td>
+                <td class="link-badges">
+                    <?php if ($linkedSchedule !== null): ?>
+                        <?php $sItem = $schedule[$linkedSchedule]; ?>
+                        <a href="?tab=schedule&highlight=<?= $linkedSchedule ?>" class="badge badge-schedule" title="行程: <?= htmlspecialchars($sItem['date'] . ' ' . $sItem['time'] . ' ' . $sItem['location']) ?>"><?= htmlspecialchars($sItem['date']) ?></a>
+                    <?php endif; ?>
+                </td>
                 <td class="actions">
                     <a href="?tab=lines&edit=<?= $i ?>" class="btn btn-sm btn-primary">編輯</a>
                     <form method="post" onsubmit="return confirm('確定刪除此掃街紀錄？')">
