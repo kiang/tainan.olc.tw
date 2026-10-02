@@ -99,17 +99,19 @@ document.querySelectorAll('input[type="color"]').forEach(function(picker) {
 
 function addVisitRow(containerId) {
     var div = document.getElementById(containerId);
+    var idx = div.querySelectorAll('.visit-row').length;
     var row = document.createElement('div');
     row.className = 'visit-row';
+    row.setAttribute('data-visit-index', idx);
     row.style.cssText = 'border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;background:#f9f9f9';
     row.innerHTML = '<div style="display:flex;gap:8px;margin-bottom:6px">'
         + '<div style="flex:1"><label style="font-size:12px">日期</label><input type="date" name="visit_date[]" required></div>'
         + '<div style="flex:1"><label style="font-size:12px">事由</label><input type="text" name="visit_reason[]" required></div>'
         + '</div>'
         + '<div style="margin-bottom:6px"><label style="font-size:12px">備註</label><input type="text" name="visit_note[]" placeholder="選填"></div>'
-        + '<div style="margin-bottom:6px"><label style="font-size:12px">照片網址（每行一個）</label>'
-        + '<textarea name="visit_photos[]" rows="2" placeholder="https://example.com/photo1.jpg"></textarea></div>'
-        + '<span class="remove-video" onclick="this.closest(\'.visit-row\').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆</span>';
+        + '<div style="margin-bottom:6px"><label style="font-size:12px">上傳照片</label>'
+        + '<input type="file" name="visit_upload_' + idx + '[]" multiple accept="image/*" style="font-size:13px"></div>'
+        + '<span class="remove-video" onclick="this.closest(\'.visit-row\').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆參訪</span>';
     div.appendChild(row);
 }
 

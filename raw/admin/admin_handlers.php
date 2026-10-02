@@ -219,6 +219,37 @@ if ($tab === 'lines') {
 } elseif ($tab === 'temples') {
     $temples = loadJson($dataFiles['temples']);
     $templesVisits = loadJson($dataFiles['temples_visits']) ?: [];
+    $templeUploadDir = __DIR__ . '/../../docs/json/temples/';
+    $templeUploadUrl = '/json/temples/';
+    $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+    function handleTempleVisitPhotos($visitIndex, $existingKey = null) {
+        global $templeUploadDir, $templeUploadUrl, $allowedExts;
+        $photos = [];
+        // Keep existing photos (from hidden inputs)
+        $existingPhotos = $_POST['visit_existing_photos_' . $visitIndex] ?? [];
+        foreach ($existingPhotos as $url) {
+            $url = trim($url);
+            if ($url !== '') $photos[] = $url;
+        }
+        // Handle uploaded files
+        $fileKey = 'visit_upload_' . $visitIndex;
+        if (isset($_FILES[$fileKey]) && is_array($_FILES[$fileKey]['name'])) {
+            for ($j = 0; $j < count($_FILES[$fileKey]['name']); $j++) {
+                if ($_FILES[$fileKey]['error'][$j] !== UPLOAD_ERR_OK) continue;
+                $origName = $_FILES[$fileKey]['name'][$j];
+                $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+                if (!in_array($ext, $allowedExts)) continue;
+                $filename = date('Ymd_His') . '_' . $j . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
+                $dest = $templeUploadDir . $filename;
+                if (move_uploaded_file($_FILES[$fileKey]['tmp_name'][$j], $dest)) {
+                    $photos[] = $templeUploadUrl . $filename;
+                }
+            }
+        }
+        return $photos;
+    }
+
     if ($action === 'create') {
         $key = trim($_POST['key'] ?? '');
         $lng = floatval($_POST['lng'] ?? 0);
@@ -227,12 +258,11 @@ if ($tab === 'lines') {
         $dates = $_POST['visit_date'] ?? [];
         $reasons = $_POST['visit_reason'] ?? [];
         $notes = $_POST['visit_note'] ?? [];
-        $photoFields = $_POST['visit_photos'] ?? [];
         for ($i = 0; $i < count($dates); $i++) {
             $d = trim($dates[$i] ?? '');
             $r = trim($reasons[$i] ?? '');
             if ($d !== '' && $r !== '') {
-                $photos = array_values(array_filter(array_map('trim', explode("\n", $photoFields[$i] ?? ''))));
+                $photos = handleTempleVisitPhotos($i);
                 $visit = ['date' => $d, 'reason' => $r];
                 $n = trim($notes[$i] ?? '');
                 if ($n !== '') $visit['note'] = $n;
@@ -266,12 +296,11 @@ if ($tab === 'lines') {
             $dates = $_POST['visit_date'] ?? [];
             $reasons = $_POST['visit_reason'] ?? [];
             $notes = $_POST['visit_note'] ?? [];
-            $photoFields = $_POST['visit_photos'] ?? [];
             for ($i = 0; $i < count($dates); $i++) {
                 $d = trim($dates[$i] ?? '');
                 $r = trim($reasons[$i] ?? '');
                 if ($d !== '' && $r !== '') {
-                    $photos = array_values(array_filter(array_map('trim', explode("\n", $photoFields[$i] ?? ''))));
+                    $photos = handleTempleVisitPhotos($i);
                     $visit = ['date' => $d, 'reason' => $r];
                     $n = trim($notes[$i] ?? '');
                     if ($n !== '') $visit['note'] = $n;

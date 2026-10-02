@@ -1,4 +1,50 @@
 <!-- Temples Tab -->
+<?php
+$uploadDir = __DIR__ . '/../../docs/json/temples/';
+$uploadUrl = '/json/temples/';
+$dirExists = is_dir($uploadDir);
+$dirWritable = $dirExists && is_writable($uploadDir);
+?>
+<div class="card" style="padding:12px 16px;margin-bottom:0">
+    <h3 style="margin:0 0 8px;font-size:15px">照片上傳目錄檢查</h3>
+    <table style="font-size:13px;margin:0">
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>路徑</strong></td>
+            <td><code><?= htmlspecialchars(realpath($uploadDir) ?: $uploadDir) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>目錄存在</strong></td>
+            <td><?= $dirExists ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否</span>' ?></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>可寫入</strong></td>
+            <td><?= $dirWritable ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否 — 請執行 chmod 775 ' . htmlspecialchars($uploadDir) . '</span>' ?></td>
+        </tr>
+        <?php if ($dirExists): ?>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>權限</strong></td>
+            <td><code><?= substr(sprintf('%o', fileperms($uploadDir)), -4) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>擁有者</strong></td>
+            <td><code><?= posix_getpwuid(fileowner($uploadDir))['name'] ?? fileowner($uploadDir) ?>:<?= posix_getgrgid(filegroup($uploadDir))['name'] ?? filegroup($uploadDir) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>已有照片</strong></td>
+            <td><?= count(glob($uploadDir . '*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE)) ?> 張</td>
+        </tr>
+        <?php endif; ?>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>PHP upload_max_filesize</strong></td>
+            <td><code><?= ini_get('upload_max_filesize') ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>PHP post_max_size</strong></td>
+            <td><code><?= ini_get('post_max_size') ?></code></td>
+        </tr>
+    </table>
+</div>
+
 <div class="card" id="formCard">
     <?php if ($editIndex >= 0 && isset($temples['features'][$editIndex])):
         $ef = $temples['features'][$editIndex];
@@ -29,24 +75,36 @@
                 </div>
                 <div style="margin-bottom:6px"><label style="font-size:12px">備註</label><input type="text" name="visit_note[]" value="<?= htmlspecialchars($visit['note'] ?? '') ?>" placeholder="選填"></div>
                 <div style="margin-bottom:6px">
-                    <label style="font-size:12px">照片網址（每行一個）</label>
-                    <textarea name="visit_photos[]" rows="2" placeholder="https://example.com/photo1.jpg"><?= htmlspecialchars(implode("\n", $visit['photos'] ?? [])) ?></textarea>
+                    <label style="font-size:12px">已有照片</label>
+                    <?php if (!empty($visit['photos'])): ?>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">
+                        <?php foreach ($visit['photos'] as $pi => $photo): ?>
+                        <div style="position:relative;display:inline-block" class="photo-thumb">
+                            <img src="<?= htmlspecialchars($photo) ?>" style="width:80px;height:60px;object-fit:cover;border-radius:4px;border:1px solid #ddd" onerror="this.style.display='none'">
+                            <input type="hidden" name="visit_existing_photos_<?= $vi ?>[]" value="<?= htmlspecialchars($photo) ?>">
+                            <span onclick="this.parentElement.remove()" style="position:absolute;top:-6px;right:-6px;background:#dc3545;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;line-height:1">✕</span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    <label style="font-size:12px">上傳新照片</label>
+                    <input type="file" name="visit_upload_<?= $vi ?>[]" multiple accept="image/*" style="font-size:13px">
                 </div>
-                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆</span>
+                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆參訪</span>
             </div>
             <?php endforeach; ?>
             <?php if (empty($eVisits)): ?>
-            <div class="visit-row" style="border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;background:#f9f9f9">
+            <div class="visit-row" data-visit-index="0" style="border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;background:#f9f9f9">
                 <div style="display:flex;gap:8px;margin-bottom:6px">
                     <div style="flex:1"><label style="font-size:12px">日期</label><input type="date" name="visit_date[]" required></div>
                     <div style="flex:1"><label style="font-size:12px">事由</label><input type="text" name="visit_reason[]" required></div>
                 </div>
                 <div style="margin-bottom:6px"><label style="font-size:12px">備註</label><input type="text" name="visit_note[]" placeholder="選填"></div>
                 <div style="margin-bottom:6px">
-                    <label style="font-size:12px">照片網址（每行一個）</label>
-                    <textarea name="visit_photos[]" rows="2" placeholder="https://example.com/photo1.jpg"></textarea>
+                    <label style="font-size:12px">上傳照片</label>
+                    <input type="file" name="visit_upload_0[]" multiple accept="image/*" style="font-size:13px">
                 </div>
-                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆</span>
+                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆參訪</span>
             </div>
             <?php endif; ?>
         </div>
@@ -70,17 +128,17 @@
         <div class="map-hint">點擊地圖設定座標，或拖曳標記調整位置</div>
         <label>參訪紀錄</label>
         <div id="createVisits">
-            <div class="visit-row" style="border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;background:#f9f9f9">
+            <div class="visit-row" data-visit-index="0" style="border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;background:#f9f9f9">
                 <div style="display:flex;gap:8px;margin-bottom:6px">
                     <div style="flex:1"><label style="font-size:12px">日期</label><input type="date" name="visit_date[]" required></div>
                     <div style="flex:1"><label style="font-size:12px">事由</label><input type="text" name="visit_reason[]" required></div>
                 </div>
                 <div style="margin-bottom:6px"><label style="font-size:12px">備註</label><input type="text" name="visit_note[]" placeholder="選填"></div>
                 <div style="margin-bottom:6px">
-                    <label style="font-size:12px">照片網址（每行一個）</label>
-                    <textarea name="visit_photos[]" rows="2" placeholder="https://example.com/photo1.jpg"></textarea>
+                    <label style="font-size:12px">上傳照片</label>
+                    <input type="file" name="visit_upload_0[]" multiple accept="image/*" style="font-size:13px">
                 </div>
-                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆</span>
+                <span class="remove-video" onclick="this.closest('.visit-row').remove()" style="cursor:pointer;color:#dc3545;font-size:13px">✕ 移除此筆參訪</span>
             </div>
         </div>
         <span class="add-video-btn" onclick="addVisitRow('createVisits')">+ 新增參訪紀錄</span>
