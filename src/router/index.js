@@ -88,6 +88,15 @@ const router = createRouter({
             description: "台南三江街講活動紀錄。",
           },
         },
+        {
+          path: "Temple",
+          name: "Temple",
+          component: () => import("@/views/District/Temple.vue"),
+          meta: {
+            title: `宮廟參訪 | ${baseTitle}`,
+            description: "江明宗宮廟參訪紀錄，記錄每次參訪的原因與照片。",
+          },
+        },
       ],
     },
     {

@@ -177,6 +177,12 @@ function createPopupContent(feature) {
       <p><strong>街講次數：</strong>${p.count} 次</p>
     </div>`;
     return content;
+  } else if (props.mapType === "temples") {
+    let content = `<div class="map-popup">
+      <h4>${p.key || "未知宮廟"}</h4>
+      <p><strong>參訪次數：</strong>${p.count} 次</p>
+    </div>`;
+    return content;
   }
 
   return "";
@@ -194,7 +200,7 @@ async function loadGeoJson() {
     }
 
     // Handle point features differently
-    if (props.mapType === "points") {
+    if (props.mapType === "points" || props.mapType === "temples") {
       geoJsonLayer = L.geoJSON(data, {
         pointToLayer: (feature, latlng) => {
           const count = feature.properties.count || 1;
