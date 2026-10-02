@@ -5,45 +5,6 @@ $uploadUrl = '/json/temples/';
 $dirExists = is_dir($uploadDir);
 $dirWritable = $dirExists && is_writable($uploadDir);
 ?>
-<div class="card" style="padding:12px 16px;margin-bottom:0">
-    <h3 style="margin:0 0 8px;font-size:15px">照片上傳目錄檢查</h3>
-    <table style="font-size:13px;margin:0">
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>路徑</strong></td>
-            <td><code><?= htmlspecialchars(realpath($uploadDir) ?: $uploadDir) ?></code></td>
-        </tr>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>目錄存在</strong></td>
-            <td><?= $dirExists ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否</span>' ?></td>
-        </tr>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>可寫入</strong></td>
-            <td><?= $dirWritable ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否 — 請執行 chmod 775 ' . htmlspecialchars($uploadDir) . '</span>' ?></td>
-        </tr>
-        <?php if ($dirExists): ?>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>權限</strong></td>
-            <td><code><?= substr(sprintf('%o', fileperms($uploadDir)), -4) ?></code></td>
-        </tr>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>擁有者</strong></td>
-            <td><code><?= posix_getpwuid(fileowner($uploadDir))['name'] ?? fileowner($uploadDir) ?>:<?= posix_getgrgid(filegroup($uploadDir))['name'] ?? filegroup($uploadDir) ?></code></td>
-        </tr>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>已有照片</strong></td>
-            <td><?= count(glob($uploadDir . '*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE)) ?> 張</td>
-        </tr>
-        <?php endif; ?>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>PHP upload_max_filesize</strong></td>
-            <td><code><?= ini_get('upload_max_filesize') ?></code></td>
-        </tr>
-        <tr>
-            <td style="padding:2px 12px 2px 0"><strong>PHP post_max_size</strong></td>
-            <td><code><?= ini_get('post_max_size') ?></code></td>
-        </tr>
-    </table>
-</div>
 
 <div class="card" id="formCard">
     <?php if ($editIndex >= 0 && isset($temples['features'][$editIndex])):
@@ -181,3 +142,43 @@ $dirWritable = $dirExists && is_writable($uploadDir);
         </tbody>
     </table>
 </div>
+
+<details class="card" style="padding:12px 16px">
+    <summary style="cursor:pointer;font-size:15px;font-weight:600;margin-bottom:4px">照片上傳目錄檢查</summary>
+    <table style="font-size:13px;margin:8px 0 0">
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>路徑</strong></td>
+            <td><code><?= htmlspecialchars(realpath($uploadDir) ?: $uploadDir) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>目錄存在</strong></td>
+            <td><?= $dirExists ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否</span>' ?></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>可寫入</strong></td>
+            <td><?= $dirWritable ? '<span style="color:green">✓ 是</span>' : '<span style="color:red">✗ 否 — 請執行 chmod 775 ' . htmlspecialchars($uploadDir) . '</span>' ?></td>
+        </tr>
+        <?php if ($dirExists): ?>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>權限</strong></td>
+            <td><code><?= substr(sprintf('%o', fileperms($uploadDir)), -4) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>擁有者</strong></td>
+            <td><code><?= posix_getpwuid(fileowner($uploadDir))['name'] ?? fileowner($uploadDir) ?>:<?= posix_getgrgid(filegroup($uploadDir))['name'] ?? filegroup($uploadDir) ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>已有照片</strong></td>
+            <td><?= count(glob($uploadDir . '*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE)) ?> 張</td>
+        </tr>
+        <?php endif; ?>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>PHP upload_max_filesize</strong></td>
+            <td><code><?= ini_get('upload_max_filesize') ?></code></td>
+        </tr>
+        <tr>
+            <td style="padding:2px 12px 2px 0"><strong>PHP post_max_size</strong></td>
+            <td><code><?= ini_get('post_max_size') ?></code></td>
+        </tr>
+    </table>
+</details>
