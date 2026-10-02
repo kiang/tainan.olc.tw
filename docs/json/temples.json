@@ -1,27 +1,33 @@
 {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "key": "大觀音亭",
-        "count": 2
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [120.2051, 23.0008]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "key": "祀典武廟",
-        "count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [120.2035, 22.9972]
-      }
-    }
-  ]
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "大觀音亭",
+                "count": 2
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.2051,
+                    23.0008
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "key": "祀典武廟",
+                "count": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.2035,
+                    22.9972
+                ]
+            }
+        }
+    ]
 }

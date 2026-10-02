@@ -5,6 +5,8 @@ $dataFiles = [
     'youtube_list' => __DIR__ . '/../docs/json/youtube_list.json',
     'schedule' => __DIR__ . '/../docs/json/schedule.json',
     'schedule_types' => __DIR__ . '/../docs/json/schedule_types.json',
+    'temples' => __DIR__ . '/../docs/json/temples.json',
+    'temples_visits' => __DIR__ . '/../docs/json/temples_visits.json',
 ];
 
 function loadJson($path) {
@@ -46,6 +48,8 @@ $youtube = loadJson($dataFiles['youtube']);
 $youtubeList = loadJson($dataFiles['youtube_list']);
 $schedule = loadJson($dataFiles['schedule']) ?: [];
 $scheduleTypes = loadJson($dataFiles['schedule_types']) ?: [['name' => '掃街', 'color' => '#28c8c8'], ['name' => '街講', 'color' => '#f0a030']];
+$temples = loadJson($dataFiles['temples']) ?: ['type' => 'FeatureCollection', 'features' => []];
+$templesVisits = loadJson($dataFiles['temples_visits']) ?: [];
 
 $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 ?>
@@ -54,14 +58,14 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>資料管理 - 掃街/街講/行程</title>
+<title>資料管理 - 掃街/街講/行程/宮廟</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <?php require __DIR__ . '/admin/admin_css.php'; ?>
 </head>
 <body>
 <div class="container">
-<h1>資料管理 - 掃街紀錄 / 街講地點 / 行程</h1>
+<h1>資料管理 - 掃街紀錄 / 街講地點 / 行程 / 宮廟</h1>
 
 <?php if ($message): ?>
 <div class="msg <?= $messageType ?>"><?= htmlspecialchars($message) ?></div>
@@ -72,6 +76,7 @@ $editIndex = isset($_GET['edit']) ? intval($_GET['edit']) : -1;
     <a href="?tab=youtube" class="<?= $tab === 'youtube' ? 'active' : '' ?>">街講地點 (youtube.json)</a>
     <a href="?tab=schedule" class="<?= $tab === 'schedule' ? 'active' : '' ?>">行程 (schedule.json)</a>
     <a href="?tab=schedule_types" class="<?= $tab === 'schedule_types' ? 'active' : '' ?>">行程類型</a>
+    <a href="?tab=temples" class="<?= $tab === 'temples' ? 'active' : '' ?>">宮廟參訪</a>
 </div>
 
 <?php
@@ -83,6 +88,8 @@ if ($tab === 'lines') {
     require __DIR__ . '/admin/admin_tab_schedule.php';
 } elseif ($tab === 'schedule_types') {
     require __DIR__ . '/admin/admin_tab_schedule_types.php';
+} elseif ($tab === 'temples') {
+    require __DIR__ . '/admin/admin_tab_temples.php';
 }
 ?>
 

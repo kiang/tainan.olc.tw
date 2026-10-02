@@ -216,6 +216,95 @@ if ($tab === 'lines') {
             $messageType = 'success';
         }
     }
+} elseif ($tab === 'temples') {
+    $temples = loadJson($dataFiles['temples']);
+    $templesVisits = loadJson($dataFiles['temples_visits']) ?: [];
+    if ($action === 'create') {
+        $key = trim($_POST['key'] ?? '');
+        $lng = floatval($_POST['lng'] ?? 0);
+        $lat = floatval($_POST['lat'] ?? 0);
+        $visits = [];
+        $dates = $_POST['visit_date'] ?? [];
+        $reasons = $_POST['visit_reason'] ?? [];
+        $notes = $_POST['visit_note'] ?? [];
+        $photoFields = $_POST['visit_photos'] ?? [];
+        for ($i = 0; $i < count($dates); $i++) {
+            $d = trim($dates[$i] ?? '');
+            $r = trim($reasons[$i] ?? '');
+            if ($d !== '' && $r !== '') {
+                $photos = array_values(array_filter(array_map('trim', explode("\n", $photoFields[$i] ?? ''))));
+                $visit = ['date' => $d, 'reason' => $r];
+                $n = trim($notes[$i] ?? '');
+                if ($n !== '') $visit['note'] = $n;
+                $visit['photos'] = $photos;
+                $visits[] = $visit;
+            }
+        }
+        if ($key !== '' && $lng != 0 && $lat != 0) {
+            $temples['features'][] = [
+                'type' => 'Feature',
+                'properties' => ['key' => $key, 'count' => count($visits)],
+                'geometry' => ['type' => 'Point', 'coordinates' => [$lng, $lat]],
+            ];
+            $templesVisits[$key] = $visits;
+            saveJson($dataFiles['temples'], $temples);
+            saveJson($dataFiles['temples_visits'], $templesVisits);
+            $message = '已新增宮廟：' . htmlspecialchars($key);
+            $messageType = 'success';
+        } else {
+            $message = '請填寫完整資料（宮廟名稱與座標）';
+            $messageType = 'error';
+        }
+    } elseif ($action === 'update') {
+        $idx = intval($_POST['index']);
+        $oldKey = $_POST['old_key'] ?? '';
+        if (isset($temples['features'][$idx])) {
+            $key = trim($_POST['key'] ?? '');
+            $lng = floatval($_POST['lng'] ?? 0);
+            $lat = floatval($_POST['lat'] ?? 0);
+            $visits = [];
+            $dates = $_POST['visit_date'] ?? [];
+            $reasons = $_POST['visit_reason'] ?? [];
+            $notes = $_POST['visit_note'] ?? [];
+            $photoFields = $_POST['visit_photos'] ?? [];
+            for ($i = 0; $i < count($dates); $i++) {
+                $d = trim($dates[$i] ?? '');
+                $r = trim($reasons[$i] ?? '');
+                if ($d !== '' && $r !== '') {
+                    $photos = array_values(array_filter(array_map('trim', explode("\n", $photoFields[$i] ?? ''))));
+                    $visit = ['date' => $d, 'reason' => $r];
+                    $n = trim($notes[$i] ?? '');
+                    if ($n !== '') $visit['note'] = $n;
+                    $visit['photos'] = $photos;
+                    $visits[] = $visit;
+                }
+            }
+            $temples['features'][$idx]['properties']['key'] = $key;
+            $temples['features'][$idx]['properties']['count'] = count($visits);
+            $temples['features'][$idx]['geometry']['coordinates'] = [$lng, $lat];
+            if ($oldKey !== $key && isset($templesVisits[$oldKey])) {
+                unset($templesVisits[$oldKey]);
+            }
+            $templesVisits[$key] = $visits;
+            saveJson($dataFiles['temples'], $temples);
+            saveJson($dataFiles['temples_visits'], $templesVisits);
+            $message = '已更新宮廟：' . htmlspecialchars($key);
+            $messageType = 'success';
+        }
+    } elseif ($action === 'delete') {
+        $idx = intval($_POST['index']);
+        if (isset($temples['features'][$idx])) {
+            $key = $temples['features'][$idx]['properties']['key'] ?? '';
+            array_splice($temples['features'], $idx, 1);
+            if ($key !== '' && isset($templesVisits[$key])) {
+                unset($templesVisits[$key]);
+            }
+            saveJson($dataFiles['temples'], $temples);
+            saveJson($dataFiles['temples_visits'], $templesVisits);
+            $message = '已刪除宮廟：' . htmlspecialchars($key);
+            $messageType = 'success';
+        }
+    }
 } elseif ($tab === 'youtube') {
     $youtube = loadJson($dataFiles['youtube']);
     $youtubeList = loadJson($dataFiles['youtube_list']);
