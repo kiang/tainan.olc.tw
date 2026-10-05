@@ -70,8 +70,9 @@ const DETAIL_URL='67000-08_detail_data.json';
 const LIZHANG_URL='67000-08-lizhang2022.json';
 const AREA_NAMES_URL='../data/area_names.json';
 const CANDIDATE_BASE='https://kiang.github.io/vote2026/candidates/';
+const CUNLI_LINKS_URL='67000-08_cunli_links.json';
 
-let zone,detail,lizhang,areaNames,cunliCands={};
+let zone,detail,lizhang,areaNames,cunliCands={},cunliLinks={};
 
 async function fetchJSON(url){const r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
 
@@ -390,11 +391,18 @@ function renderDetailCard(label,rank){
 
   // Candidates panel
   if(cands&&cands.candidates.length>0){
+    const cl=cunliLinks[label]||{};
+    const clCands=cl.candidates||{};
     html+=`<div style="margin-bottom:10px">
       <div style="font-size:.85em;font-weight:600;margin-bottom:4px">2026 里長候選人（${candCount}人${isContested?'，競爭':'，同額'}）：</div>
       <ul class="cand-list">`;
     cands.candidates.forEach(x=>{
-      html+=`<li>${partyTag(x.party)} ${h(x.name)}</li>`;
+      const lk=clCands[x.name]||{};
+      let linkHtml='';
+      if(lk.facebook)linkHtml+=` <a href="${h(lk.facebook)}" target="_blank" rel="noopener" title="Facebook" style="font-size:.8em">FB</a>`;
+      if(lk.threads)linkHtml+=` <a href="${h(lk.threads)}" target="_blank" rel="noopener" title="Threads" style="font-size:.8em">Threads</a>`;
+      if(lk.website)linkHtml+=` <a href="${h(lk.website)}" target="_blank" rel="noopener" title="網站" style="font-size:.8em">🌐</a>`;
+      html+=`<li>${partyTag(x.party)} ${h(x.name)}${linkHtml}</li>`;
     });
     html+=`</ul></div>`;
   }
@@ -606,8 +614,9 @@ function drawScatter(){
 async function init(){
   const app=document.getElementById('app');
   try{
-    [zone,detail,lizhang,areaNames]=await Promise.all([
-      fetchJSON(ZONE_URL),fetchJSON(DETAIL_URL),fetchJSON(LIZHANG_URL),fetchJSON(AREA_NAMES_URL)
+    [zone,detail,lizhang,areaNames,cunliLinks]=await Promise.all([
+      fetchJSON(ZONE_URL),fetchJSON(DETAIL_URL),fetchJSON(LIZHANG_URL),fetchJSON(AREA_NAMES_URL),
+      fetchJSON(CUNLI_LINKS_URL).catch(()=>({}))
     ]);
 
     const towns=areaNames.towns;
