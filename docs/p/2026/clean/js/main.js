@@ -39,16 +39,18 @@ function initMap() {
     cityModal = new bootstrap.Modal(document.getElementById('cityModal'));
 
     Promise.all([
-        fetch('../council2026.json').then(function (r) { return r.json(); }),
-        fetch('../local2026.json').then(function (r) { return r.json(); }),
+        fetch('council2026.json').then(function (r) { return r.json(); }),
+        fetch('local2026.json').then(function (r) { return r.json(); }),
+        fetch('town2026.json').then(function (r) { return r.json(); }),
         fetch('../zones/index.json').then(function (r) { return r.json(); }),
         fetch('data/centroids.json').then(function (r) { return r.json(); })
     ]).then(function (results) {
         var council = results[0];
         var localData = results[1];
-        var zoneIndex = results[2];
-        localCentroids = results[3];
-        normalizeData(council, localData);
+        var townData = results[2];
+        var zoneIndex = results[3];
+        localCentroids = results[4];
+        normalizeData(council, localData, townData);
         buildFilters();
         updateStats();
         buildLegend();
@@ -77,7 +79,7 @@ function loadZoneOverviews(zoneIndex) {
     });
 }
 
-function normalizeData(council, localData) {
+function normalizeData(council, localData, townData) {
     council.forEach(function (c) {
         if (!c.hasCriminalRecord &&
             (!c.electionInvalidityRecords || c.electionInvalidityRecords.length === 0) &&
@@ -111,7 +113,8 @@ function normalizeData(council, localData) {
         });
     });
 
-    var localPeople = localData.people || [];
+    var townPeople = townData && townData.people ? townData.people : [];
+    var localPeople = (localData.people || []).concat(townPeople);
     localPeople.forEach(function (p) {
         if (!p.records || p.records.length === 0) return;
         var tags = [];
@@ -219,6 +222,10 @@ function assignLocalCoordinates() {
             if (!coords) coords = localCentroids[c.locationKey.replace(/台/g, '臺')];
             if (!coords) coords = localCentroids[c.locationKey.replace(/臺/g, '台')];
             if (coords) c.latlng = coords;
+            else if (c.city) {
+                var cc = cityCentroids[c.city];
+                if (cc) c.latlng = cc;
+            }
         } else if (c.source === 'council' && c.level !== '議員') {
             var cc = cityCentroids[c.city];
             if (cc) c.latlng = cc;
