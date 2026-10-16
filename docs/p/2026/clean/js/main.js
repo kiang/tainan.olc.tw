@@ -39,8 +39,8 @@ function initMap() {
     cityModal = new bootstrap.Modal(document.getElementById('cityModal'));
 
     Promise.all([
-        fetch('../../../json/council2026.json').then(function (r) { return r.json(); }),
-        fetch('../../../json/local2026.json').then(function (r) { return r.json(); }),
+        fetch('../council2026.json').then(function (r) { return r.json(); }),
+        fetch('../local2026.json').then(function (r) { return r.json(); }),
         fetch('../zones/index.json').then(function (r) { return r.json(); }),
         fetch('data/centroids.json').then(function (r) { return r.json(); })
     ]).then(function (results) {
