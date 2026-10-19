@@ -15,6 +15,8 @@ const checkinModeBtn = document.getElementById('checkin-mode');
 
 // Add this at the top with other global variables
 var additionalImages = {};
+var wealthData = {};
+const OVERLAY_BASE_URL = 'https://sigma-snaken.github.io/tainan2026-billboard-wealth/tainan2026/overlay/';
 
 // Add check-in mode state variables
 var isCheckinMode = false;
@@ -269,6 +271,18 @@ const nameCounts = {
     '其他': 0
 };
 
+// Function to fetch wealth data
+function fetchWealthData() {
+    return fetch('data/wealth.json')
+        .then(response => response.json())
+        .then(data => {
+            wealthData = data;
+        })
+        .catch(error => {
+            console.error('Error fetching wealth data:', error);
+        });
+}
+
 // Function to fetch additional images using PapaParse
 function fetchAdditionalImages() {
     return new Promise((resolve, reject) => {
@@ -462,13 +476,29 @@ function showPopup(feature, coordinate) {
     var hasLocal = feature.get('hasLocal');
     var uuid = feature.get('uuid');
     
-    // Display original image
-    if(hasLocal == '1'){
+    var wealth = wealthData[uuid];
+
+    // Display original image - prefer overlay from wealth data
+    if (wealth && wealth.overlay) {
+        content += '<div class="card-img-top"><img class="wealth-img" src="' + OVERLAY_BASE_URL + wealth.overlay + '" width="300" style="width:100%;height:auto;"></div>';
+    } else if(hasLocal == '1'){
         content += '<div class="card-img-top"><img src="pic/' + uuid + '.jpg" width="300"></div>';
     } else if (fileId) {
         content += '<div class="card-img-top"><iframe src="https://drive.google.com/file/d/' + fileId + '/preview" width="100%" height="300" allow="autoplay"></iframe></div>';
     }
-    
+
+    // Display extra overlays from wealth data
+    if (wealth && wealth.extra_overlays && wealth.extra_overlays.length > 0) {
+        content += '<div class="card-img-top additional-images">';
+        content += '<h6 class="text-center mt-2">其他偵測結果</h6>';
+        wealth.extra_overlays.forEach(function(overlayFile) {
+            content += '<div class="additional-image-container mb-2">';
+            content += '<img class="wealth-img" src="' + OVERLAY_BASE_URL + overlayFile + '" width="100%" style="width:100%;height:auto;">';
+            content += '</div>';
+        });
+        content += '</div>';
+    }
+
     // Display additional images if they exist
     if (additionalImages[uuid] && additionalImages[uuid].length > 0) {
         content += '<div class="card-img-top additional-images">';
@@ -501,7 +531,25 @@ function showPopup(feature, coordinate) {
     content += '<p class="card-text">時間: ' + feature.get('timestamp') + '</p>';
     content += '<p class="card-text">縣市: ' + feature.get('city') + '</p>';
     content += '<p class="card-text">鄉鎮市區: ' + feature.get('town') + '</p>';
-    
+
+    // Display wealth/candidate info
+    if (wealth && wealth.candidates && wealth.candidates.length > 0) {
+        content += '<div class="mt-2 mb-2">';
+        content += '<h6>財產申報資訊</h6>';
+        wealth.candidates.forEach(function(c) {
+            content += '<div class="border rounded p-2 mb-1" style="font-size:0.85em;">';
+            content += '<strong>' + c.name + '</strong>';
+            if (c.elect_type) content += ' (' + c.elect_type + ')';
+            content += '<br>';
+            content += '不動產淨值: ' + (c.net_with_re !== null ? Math.round(c.net_with_re).toLocaleString() : 'N/A') + ' 元<br>';
+            content += '不動產: ' + (c.re_est !== null ? Math.round(c.re_est).toLocaleString() : 'N/A') + ' 元<br>';
+            content += '貸款: ' + (c.mortgage !== null ? Math.round(c.mortgage).toLocaleString() : 'N/A') + ' 元<br>';
+            content += '有價證券: ' + (c.securities !== null ? Math.round(c.securities).toLocaleString() : 'N/A') + ' 元';
+            content += '</div>';
+        });
+        content += '</div>';
+    }
+
     // Add collapsible reply section if reply exists
     const reply = feature.get('reply');
     if (reply) {
@@ -871,10 +919,11 @@ function initMap() {
         });
     });
 
-    // Add markers from CSV and fetch additional images
+    // Add markers from CSV, fetch additional images, and load wealth data
     Promise.all([
         fetchAdditionalImages(),
-        addMarkersFromCSV()
+        addMarkersFromCSV(),
+        fetchWealthData()
     ]).then(() => {
         // Refresh markers after both operations are complete
         refreshMarkers();

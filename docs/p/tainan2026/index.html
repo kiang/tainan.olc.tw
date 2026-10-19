@@ -127,6 +127,42 @@
             cursor: pointer;
             font-size: 20px;
         }
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox-overlay.active {
+            display: flex;
+        }
+        .lightbox-overlay img {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 3001;
+            line-height: 1;
+        }
+        .wealth-img {
+            cursor: pointer;
+        }
         .video-container {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 aspect ratio */
@@ -246,5 +282,25 @@
     <script src="../js/ol-10.2.1.js"></script>
     <script src="../js/routie.min.js"></script>
     <script src="js/main.js"></script>
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+    <script>
+        (function() {
+            var lb = document.getElementById('lightbox');
+            var lbImg = document.getElementById('lightbox-img');
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('wealth-img')) {
+                    lbImg.src = e.target.src;
+                    lb.classList.add('active');
+                }
+            });
+            lb.addEventListener('click', function() {
+                lb.classList.remove('active');
+                lbImg.src = '';
+            });
+        })();
+    </script>
 </body>
 </html>
