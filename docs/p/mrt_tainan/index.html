@@ -1,0 +1,413 @@
+<title>臺南捷運綠線路線圖</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f5f6f8;
+    color: #1a1d23;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  #map { width: 100%; height: 100vh; }
+
+  .legend {
+    position: absolute;
+    bottom: 28px;
+    left: 10px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.92);
+    border-radius: 8px;
+    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .legend h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #1a1d23;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-line {
+    width: 24px;
+    height: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-dash {
+    width: 24px;
+    height: 0;
+    border-top: 3px dashed #888;
+    flex-shrink: 0;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .legend-sq {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .legend-sep {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 5px 0;
+  }
+
+  .info-panel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.92);
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    font-size: 12px;
+    max-width: 260px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+  }
+  .info-panel h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: #2d9a46;
+  }
+  .info-panel .subtitle {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  .station-list-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .station-list-item:hover { background: #e6f5eb; }
+  .station-code {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 5px;
+    min-width: 28px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .station-code.elevated { background: #2d9a46; }
+  .station-code.underground { background: #7c5cbf; }
+  .station-info .name { font-size: 12px; font-weight: 500; }
+  .station-info .en { font-size: 10px; color: #999; }
+  .station-badge {
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .badge-transfer { background: #dbeafe; color: #1e40af; }
+  .badge-depot { background: #fef3c7; color: #92400e; }
+
+  .section-divider {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 6px 6px 2px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  .notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(30,30,30,0.85);
+    color: #fde68a;
+    text-align: center;
+    font-size: 11px;
+    padding: 6px 16px;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+  }
+  .popup-content { text-align: center; min-width: 140px; }
+  .popup-code {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 10px;
+    margin-bottom: 4px;
+  }
+  .popup-name { font-size: 15px; font-weight: 700; margin: 4px 0 2px; }
+  .popup-en { font-size: 12px; color: #666; }
+  .popup-location { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.3; }
+  .popup-type {
+    font-size: 10px;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    font-weight: 500;
+  }
+  .popup-badge {
+    margin-top: 4px;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+</style>
+
+<div id="map"></div>
+<div class="notice">站點及路線依據可行性研究草案繪製，非最終核定方案 Stations and routes are based on the draft feasibility study, not confirmed plans.</div>
+
+<div class="legend" id="legend">
+  <h4>臺南捷運綠線</h4>
+  <div class="legend-item">
+    <div class="legend-line" style="background:#2d9a46;"></div>
+    <span>高架段 Elevated</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-line" style="background:#7c5cbf;"></div>
+    <span>地下段 Underground</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dash"></div>
+    <span>過渡段 Transition</span>
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#2d9a46;"></div>
+    <span>高架車站</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#7c5cbf;"></div>
+    <span>地下車站</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-sq" style="background:#d97706;"></div>
+    <span>機廠 Depot</span>
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" style="color:#999;font-size:10px;">
+    全長 17.23 km・19 站・跨座式單軌
+  </div>
+</div>
+
+<div class="info-panel" id="infoPanel">
+  <h4>綠線 Green Line</h4>
+  <div class="subtitle">Straddle Monorail・19 Stations</div>
+  <div id="stationList"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function() {
+  var stations = [
+    { code: "G01", name: "保吉路", en: "Baoji Rd.", lat: 23.006512, lng: 120.285656, type: "elevated", location: "保吉路／台39線路口" },
+    { code: "G02", name: "大灣民族", en: "Dawan Minzu", lat: 23.002891, lng: 120.271851, type: "elevated", location: "大灣路／民族路口" },
+    { code: "G03", name: "大灣南興", en: "Dawan Nanxing", lat: 22.998772, lng: 120.261197, type: "elevated", location: "大灣路／南興路口", badge: "depot", badgeText: "機廠" },
+    { code: "G04", name: "崑山科大", en: "Kunshan Univ.", lat: 22.998516, lng: 120.252732, type: "elevated", location: "崑山科技大學附近" },
+    { code: "G05", name: "復興里", en: "Fuxing Village", lat: 22.998593, lng: 120.245081, type: "elevated", location: "復興路附近" },
+    { code: "G06", name: "平實轉運站", en: "Pingshi Terminal", lat: 22.998397, lng: 120.234997, type: "elevated", location: "平實轉運站", badge: "transfer", badgeText: "轉乘" },
+    { code: "G07", name: "小東東興", en: "Xiaodong Dongxing", lat: 22.999820, lng: 120.228217, type: "elevated", location: "小東路／東興路口" },
+    { code: "G08", name: "成功大學", en: "NCKU", lat: 23.000531, lng: 120.224978, type: "underground", location: "成功大學成杏校區" },
+    { code: "G09", name: "成大醫院", en: "NCKU Hospital", lat: 23.000907, lng: 120.219657, type: "underground", location: "成大醫院附近" },
+    { code: "G10", name: "臺南車站", en: "Tainan Station", lat: 22.999938, lng: 120.212821, type: "underground", location: "北門路／公園南路口", badge: "transfer", badgeText: "轉乘台鐵" },
+    { code: "G11", name: "臺南南區", en: "Tainan South", lat: 22.994823, lng: 120.208498, type: "underground", location: "中山路／衛民街口附近" },
+    { code: "G12", name: "美術2館", en: "Art Museum 2", lat: 22.990773, lng: 120.202512, type: "underground", location: "臺南市美術館2館附近" },
+    { code: "G13", name: "西門和意", en: "Ximen Heyi", lat: 22.987394, lng: 120.197576, type: "underground", location: "西門路／和意路口" },
+    { code: "G14", name: "市政府", en: "City Hall", lat: 22.989380, lng: 120.184775, type: "elevated", location: "臺南市議會附近" },
+    { code: "G15", name: "永華安平", en: "Yonghua Anping", lat: 22.990536, lng: 120.175023, type: "elevated", location: "永華路／文平路口" },
+    { code: "G16", name: "永華育平", en: "Yonghua Yuping", lat: 22.991622, lng: 120.167362, type: "elevated", location: "永華路／育平路口" },
+    { code: "G17", name: "安億轉運站", en: "Anyi Terminal", lat: 22.997539, lng: 120.164337, type: "elevated", location: "安億轉運站" },
+    { code: "G18", name: "億載金城", en: "Eternal Fortress", lat: 22.987128, lng: 120.160700, type: "elevated", location: "健康路／光州路口" },
+    { code: "G19", name: "地方法院", en: "District Court", lat: 22.984254, lng: 120.171032, type: "elevated", location: "臺南地方法院前" }
+  ];
+
+  var routes = [
+    { from: 0, to: 1, type: "elevated", waypoints: [[23.005883,120.277407]] },
+    { from: 1, to: 2, type: "elevated", waypoints: [[23.000827,120.268203]] },
+    { from: 2, to: 3, type: "elevated", waypoints: [[22.997834,120.25829]] },
+    { from: 3, to: 4, type: "elevated", waypoints: [] },
+    { from: 4, to: 5, type: "elevated", waypoints: [] },
+    { from: 5, to: 6, type: "elevated", waypoints: [[22.998693,120.231704]] },
+    { from: 6, to: 7, type: "transition", waypoints: [[23.000412,120.226082]] },
+    { from: 7, to: 8, type: "underground", waypoints: [] },
+    { from: 8, to: 9, type: "underground", waypoints: [[23.001548,120.213174]] },
+    { from: 9, to: 10, type: "underground", waypoints: [[22.997143,120.21207]] },
+    { from: 10, to: 11, type: "underground", waypoints: [] },
+    { from: 11, to: 12, type: "underground", waypoints: [] },
+    { from: 12, to: 13, type: "transition", waypoints: [[22.987553,120.19485],[22.988718,120.189089]] },
+    { from: 13, to: 14, type: "elevated", waypoints: [] },
+    { from: 14, to: 15, type: "elevated", waypoints: [] },
+    { from: 15, to: 16, type: "elevated", waypoints: [[22.997796,120.16746]] },
+    { from: 16, to: 17, type: "elevated", waypoints: [[22.997361,120.163597],[22.994961,120.163704],[22.993875,120.159326]] },
+    { from: 17, to: 18, type: "elevated", waypoints: [[22.984896,120.16158],[22.985084,120.16615]] }
+  ];
+
+  var greenColor = '#2d9a46';
+  var purpleColor = '#7c5cbf';
+
+  var map = L.map('map', { center: [22.995, 120.220], zoom: 14 });
+
+  L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+    attribution: '&copy; <a href="https://maps.nlsc.gov.tw/">NLSC</a>',
+    maxZoom: 18
+  }).addTo(map);
+
+  // Draw route lines
+  routes.forEach(function(r) {
+    var pts = [];
+    pts.push([stations[r.from].lat, stations[r.from].lng]);
+    r.waypoints.forEach(function(wp) { pts.push(wp); });
+    pts.push([stations[r.to].lat, stations[r.to].lng]);
+
+    var color, dash = null;
+    if (r.type === 'transition') { color = '#888'; dash = '6 4'; }
+    else if (r.type === 'underground') { color = purpleColor; }
+    else { color = greenColor; }
+
+    L.polyline(pts, { color: color, weight: 5, opacity: 0.85, dashArray: dash }).addTo(map);
+  });
+
+  // Station markers with popups
+  stations.forEach(function(s) {
+    var isUG = s.type === 'underground';
+    var color = isUG ? purpleColor : greenColor;
+
+    var icon = L.divIcon({
+      className: '',
+      html: '<div style="position:relative;">' +
+        '<div style="width:14px;height:14px;border-radius:50%;background:' + color +
+        ';border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>' +
+        '<div style="position:absolute;left:16px;top:-2px;font-size:10px;font-weight:600;color:' + color +
+        ';text-shadow:1px 1px 1px #fff,-1px -1px 1px #fff,1px -1px 1px #fff,-1px 1px 1px #fff;white-space:nowrap;pointer-events:none;">' +
+        s.code + ' ' + s.name + '</div></div>',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+
+    var marker = L.marker([s.lat, s.lng], { icon: icon }).addTo(map);
+
+    var typeLabel = isUG ? '地下站 Underground' : '高架站 Elevated';
+    var typeBg = color;
+
+    var badgeHtml = '';
+    if (s.badge === 'transfer') {
+      badgeHtml = '<div class="popup-badge" style="color:#1e40af;background:#dbeafe;">🔄 ' + s.badgeText + '</div>';
+    } else if (s.badge === 'depot') {
+      badgeHtml = '<div class="popup-badge" style="color:#92400e;background:#fef3c7;">🏭 ' + s.badgeText + '</div>';
+    }
+
+    marker.bindPopup(
+      '<div class="popup-content">' +
+      '<div class="popup-code" style="background:' + typeBg + ';">' + s.code + '</div>' +
+      '<div class="popup-name">' + s.name + '</div>' +
+      '<div class="popup-en">' + s.en + '</div>' +
+      '<div class="popup-location">' + s.location + '</div>' +
+      '<div class="popup-type" style="background:' + typeBg + '18;color:' + typeBg + ';">' + typeLabel + '</div>' +
+      badgeHtml +
+      '</div>',
+      { maxWidth: 220 }
+    );
+  });
+
+  // Depot marker (大灣機廠, near G03)
+  var depotIcon = L.divIcon({
+    className: '',
+    html: '<div style="position:relative;">' +
+      '<div style="width:16px;height:16px;border-radius:4px;background:#d97706;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">' +
+      '<span style="font-size:9px;color:#fff;font-weight:bold;">D</span></div>' +
+      '<div style="position:absolute;left:18px;top:-2px;font-size:10px;font-weight:600;color:#d97706;' +
+      'text-shadow:1px 1px 1px #fff,-1px -1px 1px #fff,1px -1px 1px #fff,-1px 1px 1px #fff;white-space:nowrap;pointer-events:none;">' +
+      '大灣機廠</div></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8]
+  });
+  L.marker([22.999523, 120.263901], { icon: depotIcon }).addTo(map)
+    .bindPopup(
+      '<div class="popup-content">' +
+      '<div class="popup-code" style="background:#d97706;">機廠</div>' +
+      '<div class="popup-name">大灣機廠</div>' +
+      '<div class="popup-en">Dawan Depot</div>' +
+      '</div>'
+    );
+
+  // Build station list in side panel
+  var listEl = document.getElementById('stationList');
+  var sections = [
+    { label: '永康歸仁段（高架）', range: [0, 6] },
+    { label: '核心市區段（地下）', range: [7, 12] },
+    { label: '安平段（高架）', range: [13, 18] }
+  ];
+
+  sections.forEach(function(sec) {
+    var div = document.createElement('div');
+    div.className = 'section-divider';
+    div.textContent = sec.label;
+    listEl.appendChild(div);
+
+    for (var i = sec.range[0]; i <= sec.range[1]; i++) {
+      var s = stations[i];
+      var item = document.createElement('div');
+      item.className = 'station-list-item';
+
+      var badgeHtml = '';
+      if (s.badge === 'transfer') badgeHtml = '<span class="station-badge badge-transfer">' + s.badgeText + '</span>';
+      else if (s.badge === 'depot') badgeHtml = '<span class="station-badge badge-depot">' + s.badgeText + '</span>';
+
+      item.innerHTML =
+        '<span class="station-code ' + s.type + '">' + s.code + '</span>' +
+        '<div class="station-info"><div class="name">' + s.name + '</div><div class="en">' + s.en + '</div></div>' +
+        badgeHtml;
+
+      (function(station) {
+        item.onclick = function() {
+          map.setView([station.lat, station.lng], 16, { animate: true });
+        };
+      })(s);
+
+      listEl.appendChild(item);
+    }
+  });
+
+  // Prevent map drag on panels
+  [document.getElementById('legend'), document.getElementById('infoPanel')].forEach(function(el) {
+    L.DomEvent.disableClickPropagation(el);
+    L.DomEvent.disableScrollPropagation(el);
+  });
+
+  // Fit to route
+  var allPts = stations.map(function(s) { return [s.lat, s.lng]; });
+  map.fitBounds(L.latLngBounds(allPts).pad(0.08));
+})();
+</script>
