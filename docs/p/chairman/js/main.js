@@ -24,6 +24,7 @@
     var challengeData = null;
     var allZonesFc = null;
     var filterJoinedOnly = true;
+    var currentZoneProps = null;
 
     function initMap() {
         map = L.map('map', { center: [23.5, 121], zoom: 7, zoomControl: true });
@@ -142,6 +143,7 @@
         var panel = document.getElementById('infoPanel');
         var title = document.getElementById('infoPanelTitle');
 
+        currentZoneProps = props;
         title.textContent = props.name;
         panel.classList.add('open');
         renderZonePanel(props);
@@ -210,12 +212,71 @@
             html += '<div class="cand-party">' + esc(c.party) + '</div>';
         }
 
-        if (isJoined && c.embed) {
-            html += renderEmbed(c.embed);
+        var embeds = c.embeds || [];
+        if (isJoined && embeds.length > 0) {
+            html += renderEmbed(embeds[0]);
+            if (embeds.length > 1) {
+                html += '<button class="more-posts-btn" onclick="showAllPosts(\'' + esc(c.name) + '\');event.stopPropagation();">';
+                html += '<i class="bi bi-collection-play"></i> 查看全部 ' + embeds.length + ' 則貼文';
+                html += '</button>';
+            }
         }
 
         html += '</div></div>';
         return html;
+    }
+
+    function showAllPostsPanel(candidateName) {
+        var panel = document.getElementById('infoPanel');
+        var title = document.getElementById('infoPanelTitle');
+        var body = document.getElementById('infoPanelBody');
+        var candidate = null;
+
+        if (challengeData && challengeData.zones) {
+            Object.keys(challengeData.zones).some(function (code) {
+                var z = challengeData.zones[code];
+                return (z.candidates || []).some(function (c) {
+                    if (c.name === candidateName && c.joined) {
+                        candidate = { c: c, zone: z };
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+
+        if (!candidate) return;
+        var c = candidate.c;
+        var embeds = c.embeds || [];
+
+        title.textContent = c.name + ' — 所有貼文';
+        var html = '';
+        html += '<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">';
+        html += '<button onclick="goBackToZone();event.stopPropagation();" style="background:none;border:none;color:#5b21b6;font-size:1.2rem;cursor:pointer;padding:0;"><i class="bi bi-arrow-left"></i></button>';
+
+        var photoSrc = c.photo || '';
+        if (photoSrc && !photoSrc.startsWith('http')) {
+            photoSrc = 'https://kiang.github.io/tainan.olc.tw/p/2026/' + photoSrc;
+        }
+        if (photoSrc) {
+            html += '<img src="' + esc(photoSrc) + '" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">';
+        }
+        html += '<div>';
+        html += '<div style="font-weight:700;font-size:1rem;">' + esc(c.name) + '</div>';
+        html += '<div style="font-size:0.8rem;color:#64748b;">' + esc(c.party || '') + ' · ' + esc(candidate.zone.name) + '</div>';
+        html += '</div></div>';
+
+        html += '<div style="font-size:0.85rem;color:#059669;font-weight:700;margin-bottom:12px;">' + embeds.length + ' 則輪椅踏查貼文</div>';
+
+        embeds.forEach(function (url, i) {
+            html += '<div style="margin-bottom:16px;">';
+            html += '<div style="font-size:0.75rem;color:#94a3b8;margin-bottom:4px;">第 ' + (i + 1) + ' 則</div>';
+            html += renderEmbed(url);
+            html += '</div>';
+        });
+
+        body.innerHTML = html;
+        panel.classList.add('open');
     }
 
     function renderEmbed(url) {
@@ -290,6 +351,16 @@
         btn.classList.toggle('active', filterJoinedOnly);
         if (allZonesFc) {
             renderOverview(allZonesFc);
+        }
+    };
+
+    window.showAllPosts = function (name) {
+        showAllPostsPanel(name);
+    };
+
+    window.goBackToZone = function () {
+        if (currentZoneProps) {
+            showZonePanel(currentZoneProps);
         }
     };
 
