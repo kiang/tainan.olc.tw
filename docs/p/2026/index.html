@@ -230,11 +230,19 @@
             border-color: var(--tpp-teal);
             transform: scale(1.03);
         }
+        .gallery-item {
+            position: relative;
+        }
         .gallery-item img {
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
             display: block;
+        }
+        .gallery-item .candidate-number-badge {
+            min-width: 30px;
+            height: 30px;
+            font-size: 1rem;
         }
         .gallery-item .gallery-label {
             padding: 6px;
@@ -261,11 +269,31 @@
             font-weight: 900;
             color: #222;
         }
+        .candidate-photo {
+            position: relative;
+        }
         .candidate-photo img {
             display: block;
             max-width: 100%;
             height: auto;
             border-radius: 8px;
+        }
+        .candidate-number-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--tpp-red);
+            color: #fff;
+            font-weight: 900;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            line-height: 1;
         }
         .candidate-card details summary {
             color: var(--tpp-teal-dark);

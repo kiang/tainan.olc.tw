@@ -373,6 +373,9 @@ function showZoneInfo(props, cunliName) {
             } else {
                 html += c.name ? c.name.charAt(0) : '?';
             }
+            if (c.number) {
+                html += '<span class="candidate-number-badge">' + c.number + '</span>';
+            }
             html += '</div>';
             html += '<div class="flex-grow-1">';
             html += '<h6 class="mb-1">' + (c.number || '') + (c.number ? '. ' : '') + c.name + '</h6>';
@@ -532,6 +535,9 @@ function openGallery() {
             html += '<img src="' + c.photo + '" alt="' + c.name + '" loading="lazy">';
         } else {
             html += '<div style="width:100%;aspect-ratio:1;background:#e9ecef;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#6c757d">' + (c.name ? c.name.charAt(0) : '?') + '</div>';
+        }
+        if (c.number) {
+            html += '<span class="candidate-number-badge">' + c.number + '</span>';
         }
         html += '<div class="gallery-label"><strong>' + c.name + '</strong>';
         var area = c.countyName || '';
