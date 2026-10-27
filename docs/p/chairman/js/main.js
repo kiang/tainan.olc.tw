@@ -25,12 +25,19 @@
     var allZonesFc = null;
     var filterJoinedOnly = true;
     var currentZoneProps = null;
+    var autoTourTimer = null;
+    var autoTourLayers = [];
+    var autoTourIndex = 0;
 
     function initMap() {
         map = L.map('map', { center: [23.5, 121], zoom: 7, zoomControl: true });
         L.tileLayer(NLSC_TILE, { maxZoom: 18, attribution: '&copy; NLSC' }).addTo(map);
 
         document.getElementById('closePanel').addEventListener('click', closePanel);
+
+        ['pointerdown', 'touchstart', 'wheel'].forEach(function (evt) {
+            document.getElementById('map').addEventListener(evt, stopAutoTour, { passive: true });
+        });
 
         Promise.all([
             fetch('candidates.json').then(function (r) { return r.json(); }),
@@ -126,9 +133,48 @@
         }
 
         updateStats();
+        startAutoTour();
+    }
+
+    function startAutoTour() {
+        stopAutoTour();
+        if (!overviewLayer) return;
+        var layers = overviewLayer.getLayers().filter(function (l) { return l.feature; });
+        if (layers.length === 0) return;
+        for (var i = layers.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = layers[i]; layers[i] = layers[j]; layers[j] = tmp;
+        }
+        autoTourLayers = layers;
+        autoTourIndex = 0;
+        autoTourStep();
+        autoTourTimer = setInterval(autoTourStep, 5000);
+    }
+
+    function autoTourStep() {
+        if (autoTourLayers.length === 0) return;
+        if (autoTourIndex >= autoTourLayers.length) autoTourIndex = 0;
+        var layer = autoTourLayers[autoTourIndex++];
+        var props = layer.feature.properties;
+        if (selectedLayer && overviewLayer) {
+            overviewLayer.resetStyle(selectedLayer);
+        }
+        selectedLayer = layer;
+        layer.setStyle({ fillColor: '#f59e0b', weight: 3, color: '#d97706', fillOpacity: 0.6 });
+        layer.bringToFront();
+        map.fitBounds(layer.getBounds());
+        layer.openTooltip(layer.getBounds().getCenter());
+    }
+
+    function stopAutoTour() {
+        if (autoTourTimer) {
+            clearInterval(autoTourTimer);
+            autoTourTimer = null;
+        }
     }
 
     function onZoneClick(props, layer) {
+        stopAutoTour();
         if (selectedLayer && overviewLayer) {
             overviewLayer.resetStyle(selectedLayer);
         }
