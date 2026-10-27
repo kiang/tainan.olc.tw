@@ -356,7 +356,7 @@ onUnmounted(() => {
         <div class="hero-text">
           <!-- Tab switcher -->
           <div class="hero-tabs">
-            <button :class="['hero-tab', { active: activeTab === 'intro' }]" @click="activeTab = 'intro'">關於我</button>
+            <button :class="['hero-tab', { active: activeTab === 'intro' }]" @click="activeTab = 'intro'">關於 2號 江明宗</button>
             <RouterLink :to="{ name: 'Donate' }" class="hero-tab" style="text-decoration: none;">
               政治獻金
               <span class="tab-badge">NEW</span>
@@ -366,7 +366,7 @@ onUnmounted(() => {
           <!-- Tab: Intro -->
           <div v-show="activeTab === 'intro'" class="hero-tab-panel">
             <div class="candidate-name">
-              <h1>江明宗 <span class="name-number-badge">2</span></h1>
+              <h1><span class="name-number-badge">2</span> 江明宗</h1>
               <span class="english-name">Finjon Kiang</span>
             </div>
             <p class="candidate-title">台南市議員參選人</p>
@@ -519,7 +519,7 @@ onUnmounted(() => {
             </svg>
           </div>
           <h3>政見</h3>
-          <p>了解我的政治理念與政策主張</p>
+          <p>了解 2號 江明宗的政治理念與政策主張</p>
         </RouterLink>
 
         <RouterLink :to="{ name: 'DistrictMap' }" class="nav-card">
@@ -549,8 +549,8 @@ onUnmounted(() => {
       <div class="intro-content">
         <h2>公民科技專家</h2>
         <p>
-          從登革熱地圖、口罩地圖到好食券地圖，過去多年來我一直用科技工具參與解決你我生活所面臨的問題。
-          這些創作已經幫助了數百萬人，我希望把這個能力帶進台南市議會，從北區、中西區開始帶動台南科技發展！
+          從登革熱地圖、口罩地圖到好食券地圖，過去多年來2號 江明宗一直用科技工具參與解決你我生活所面臨的問題。
+          這些創作已經幫助了數百萬人，2號 江明宗希望把這個能力帶進台南市議會，從北區、中西區開始帶動台南科技發展！
         </p>
         <div class="intro-stats">
           <div class="stat-item">
@@ -716,22 +716,16 @@ onUnmounted(() => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 1em;
+    height: 1em;
     background: #ff6b6b;
     color: white;
-    font-size: 28px;
+    font-size: inherit;
     font-weight: 900;
     border-radius: 50%;
     vertical-align: middle;
     box-shadow: 0 3px 12px rgba(255, 107, 107, 0.4);
-    margin-left: 8px;
-
-    @media (max-width: 767px) {
-      width: 36px;
-      height: 36px;
-      font-size: 20px;
-    }
+    margin-right: 0.2em;
   }
 }
 

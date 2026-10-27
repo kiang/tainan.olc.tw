@@ -311,7 +311,7 @@ onUnmounted(() => {
           <p class="footer-donate-detail">了解詳細劃撥步驟與收據寄送事宜 <i class="bi bi-arrow-right"></i></p>
         </div>
       </RouterLink>
-      <p class="footer-copyright">© 2024 江明宗. All rights reserved.</p>
+      <p class="footer-copyright">© 2026 北中西區台南議員候選人 江明宗. All rights reserved.</p>
     </div>
   </footer>
 </template>
