@@ -164,6 +164,7 @@
         layer.bringToFront();
         map.fitBounds(layer.getBounds());
         layer.openTooltip(layer.getBounds().getCenter());
+        showZonePanel(props);
     }
 
     function stopAutoTour() {
