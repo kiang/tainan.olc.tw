@@ -53,7 +53,7 @@ onUnmounted(() => {
             ><img
               src="@/assets/images/navbar-candidate-logo.png"
               alt="江明宗競選標誌"
-          /></RouterLink>
+          /><span class="navbar-number-badge">2</span></RouterLink>
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mb-2 mb-lg-0 me-2 mt-2 mt-lg-0" role="menubar">
               <li class="nav-item">
@@ -154,7 +154,7 @@ onUnmounted(() => {
             ><img
               src="@/assets/images/navbar-candidate-logo.png"
               alt="江明宗競選標誌"
-          /></RouterLink>
+          /><span class="navbar-number-badge">2</span></RouterLink>
           <a
             class="navbar-brand party-logo"
             href="https://www.tpp.org.tw/"
@@ -390,10 +390,31 @@ header {
     }
 
     &.candidate-logo {
+      position: relative;
+
       img {
         height: 100%;
         width: auto;
         border-radius: 50%;
+      }
+
+      .navbar-number-badge {
+        position: absolute;
+        top: -4px;
+        right: -10px;
+        width: 24px;
+        height: 24px;
+        background: #ff6b6b;
+        color: white;
+        font-size: 14px;
+        font-weight: 900;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(255, 107, 107, 0.5);
+        border: 2px solid white;
+        line-height: 1;
       }
     }
 

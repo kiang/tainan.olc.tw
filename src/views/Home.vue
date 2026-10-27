@@ -351,6 +351,7 @@ onUnmounted(() => {
       <div class="hero-content">
         <div class="hero-photo">
           <img src="@/assets/images/kiang.png" alt="江明宗" />
+          <span class="candidate-number-badge">2</span>
         </div>
         <div class="hero-text">
           <!-- Tab switcher -->
@@ -365,7 +366,7 @@ onUnmounted(() => {
           <!-- Tab: Intro -->
           <div v-show="activeTab === 'intro'" class="hero-tab-panel">
             <div class="candidate-name">
-              <h1>江明宗</h1>
+              <h1>江明宗 <span class="name-number-badge">2</span></h1>
               <span class="english-name">Finjon Kiang</span>
             </div>
             <p class="candidate-title">台南市議員參選人</p>
@@ -640,6 +641,33 @@ onUnmounted(() => {
     height: auto;
     display: block;
   }
+
+  .candidate-number-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 56px;
+    height: 56px;
+    background: #ff6b6b;
+    color: white;
+    font-size: 32px;
+    font-weight: 900;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+    border: 3px solid white;
+    z-index: 2;
+
+    @media (max-width: 767px) {
+      width: 44px;
+      height: 44px;
+      font-size: 24px;
+      top: 5px;
+      right: 5px;
+    }
+  }
 }
 
 .hero-text {
@@ -681,6 +709,28 @@ onUnmounted(() => {
 
     @media (min-width: 768px) {
       font-size: 18px;
+    }
+  }
+
+  .name-number-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #ff6b6b;
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    border-radius: 50%;
+    vertical-align: middle;
+    box-shadow: 0 3px 12px rgba(255, 107, 107, 0.4);
+    margin-left: 8px;
+
+    @media (max-width: 767px) {
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
     }
   }
 }

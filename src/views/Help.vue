@@ -22,7 +22,7 @@ function buildFormUrl(prefill) {
   <main class="help-page">
     <section class="page-header">
       <div class="header-content">
-        <h1>幫助明宗</h1>
+        <h1>幫助明宗 <span class="header-number-badge">2</span></h1>
         <p class="subtitle">選舉不是一個人的事<br>每一份支持都是改變台南的力量</p>
       </div>
     </section>
@@ -235,6 +235,29 @@ function buildFormUrl(prefill) {
 
     @media (min-width: 768px) {
       font-size: 52px;
+    }
+
+    .header-number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: #ff6b6b;
+      color: white;
+      font-size: 26px;
+      font-weight: 900;
+      border-radius: 50%;
+      vertical-align: middle;
+      box-shadow: 0 3px 12px rgba(255, 107, 107, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      margin-left: 8px;
+
+      @media (min-width: 768px) {
+        width: 52px;
+        height: 52px;
+        font-size: 30px;
+      }
     }
   }
 

@@ -82,6 +82,7 @@ onMounted(fetchNews);
   <div class="tainan-news">
     <div class="background-figure">
       <img src="@/assets/images/kiang.png" alt="" aria-hidden="true" />
+      <span class="candidate-number-badge">2</span>
     </div>
 
     <div class="news-body">
@@ -153,6 +154,23 @@ onMounted(fetchNews);
     @media (min-width: 1200px) {
       width: 700px;
     }
+  }
+
+  .candidate-number-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: #ff6b6b;
+    color: white;
+    font-size: 32px;
+    font-weight: 900;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
   }
 }
 

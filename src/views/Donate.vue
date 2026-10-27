@@ -33,7 +33,7 @@ onMounted(() => {
   <main class="donate-page">
     <section class="page-header">
       <div class="header-content">
-        <h1>支持江明宗</h1>
+        <h1>支持江明宗 <span class="header-number-badge">2</span></h1>
         <p class="subtitle">您的每一筆捐款，都是推動台南進步的力量</p>
       </div>
     </section>
@@ -285,9 +285,32 @@ onMounted(() => {
     font-weight: 800;
     margin: 0 0 16px;
     letter-spacing: 2px;
-    
+
     @media (min-width: 768px) {
       font-size: 48px;
+    }
+
+    .header-number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: #ff6b6b;
+      color: white;
+      font-size: 26px;
+      font-weight: 900;
+      border-radius: 50%;
+      vertical-align: middle;
+      box-shadow: 0 3px 12px rgba(255, 107, 107, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      margin-left: 8px;
+
+      @media (min-width: 768px) {
+        width: 52px;
+        height: 52px;
+        font-size: 30px;
+      }
     }
   }
 
