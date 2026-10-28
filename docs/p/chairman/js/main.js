@@ -230,7 +230,6 @@
         }
 
         body.innerHTML = html;
-        loadThreadsEmbed();
     }
 
     function renderCandCard(c) {
@@ -325,20 +324,6 @@
 
         body.innerHTML = html;
         panel.classList.add('open');
-        loadThreadsEmbed();
-    }
-
-    var needsThreadsEmbed = false;
-
-    function loadThreadsEmbed() {
-        if (!needsThreadsEmbed) return;
-        needsThreadsEmbed = false;
-        var existing = document.querySelector('script[src*="threads.com/embed.js"]');
-        if (existing) existing.remove();
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.threads.com/embed.js';
-        document.body.appendChild(s);
     }
 
     function renderEmbed(url) {
@@ -357,10 +342,7 @@
         } else if (url.match(/instagram\.com\/p\//)) {
             html += '<iframe src="' + esc(url) + 'embed/" style="min-height:480px;" scrolling="no" allowfullscreen loading="lazy"></iframe>';
         } else if (url.match(/threads\.(net|com)/)) {
-            html += '<blockquote class="text-post-media" data-text-post-permalink="' + esc(url) + '" style="background:#fff;border:1px solid #e0e0e0;border-radius:12px;margin:0;padding:16px;min-height:100px;">';
-            html += '<a href="' + esc(url) + '" target="_blank" rel="noopener" style="color:#5b21b6;font-weight:700;text-decoration:none;"><i class="bi bi-box-arrow-up-right"></i> 查看 Threads 貼文</a>';
-            html += '</blockquote>';
-            needsThreadsEmbed = true;
+            html += '<a href="' + esc(url) + '" target="_blank" rel="noopener" style="display:block;padding:12px;color:#5b21b6;font-weight:700;text-decoration:none;"><i class="bi bi-box-arrow-up-right"></i> 查看 Threads 貼文</a>';
         } else {
             html += '<a href="' + esc(url) + '" target="_blank" rel="noopener" style="display:block;padding:12px;color:#5b21b6;font-weight:700;text-decoration:none;"><i class="bi bi-box-arrow-up-right"></i> 查看貼文</a>';
         }
