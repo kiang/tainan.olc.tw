@@ -354,9 +354,11 @@
         {
           "name": "林珍羽",
           "party": "台灣民眾黨",
-          "joined": false,
+          "joined": true,
           "photo": "data/photos/tpp_169.png",
-          "embeds": []
+          "embeds": [
+            "https://www.youtube.com/shorts/0qLIIG3v3ZA"
+          ]
         },
         {
           "name": "朱政騏",
