@@ -147,6 +147,9 @@ function formatContent(text) {
 
             <Transition name="expand">
               <div v-if="expandedId === p.id" class="policy-body">
+                <div class="policy-image" v-if="p.image">
+                  <img :src="p.image" :alt="p.title" loading="lazy" />
+                </div>
                 <div class="review-block" v-if="p.review2022">
                   <div class="review-label">2022 中期檢驗</div>
                   <div class="review-text" v-html="formatContent(p.review2022)"></div>
@@ -292,6 +295,13 @@ function formatContent(text) {
 
 .policy-body {
   padding: 0 14px 14px;
+}
+
+.policy-image {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  img { width: 100%; height: auto; display: block; }
 }
 
 .review-block {
