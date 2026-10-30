@@ -434,7 +434,9 @@
             });
         }
 
-        var html = '<div style="font-size:0.85rem;color:#64748b;margin-bottom:12px;">' + joined.length + ' 位候選人已坐上輪椅體驗選區道路</div>';
+        var html = '<input type="text" id="overviewSearch" class="form-control form-control-sm" placeholder="搜尋姓名、政黨、選區..." oninput="filterOverview(this.value)" style="margin-bottom:10px;">';
+        html += '<div style="font-size:0.85rem;color:#64748b;margin-bottom:12px;" id="overviewCount">' + joined.length + ' 位候選人已坐上輪椅體驗選區道路</div>';
+        html += '<div id="overviewList">';
 
         joined.forEach(function (item) {
             var c = item.c;
@@ -444,7 +446,8 @@
             }
             var embeds = c.embeds || [];
 
-            html += '<div class="cand-card is-joined" style="flex-direction:column;">';
+            var searchText = [c.name, c.party, item.zone.name].filter(Boolean).join(' ');
+            html += '<div class="cand-card is-joined" style="flex-direction:column;" data-search="' + esc(searchText) + '">';
             html += '<div style="display:flex;align-items:center;gap:10px;width:100%;">';
             if (photoSrc) {
                 html += '<img class="cand-photo" src="' + esc(photoSrc) + '" alt="' + esc(c.name) + '" onerror="this.style.display=\'none\'">';
@@ -470,9 +473,24 @@
             html += '</div>';
         });
 
+        html += '</div>';
         body.innerHTML = html;
         panel.classList.add('open');
         if (html.indexOf('text-post-media') !== -1) reloadThreadsEmbed();
+    };
+
+    window.filterOverview = function (keyword) {
+        var kw = keyword.trim().toLowerCase();
+        var items = document.querySelectorAll('#overviewList .cand-card');
+        var visible = 0;
+        items.forEach(function (el) {
+            var text = (el.getAttribute('data-search') || '').toLowerCase();
+            var show = !kw || text.indexOf(kw) !== -1;
+            el.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        var countEl = document.getElementById('overviewCount');
+        if (countEl) countEl.textContent = visible + ' 位候選人';
     };
 
     window.showAllPosts = function (name) {
