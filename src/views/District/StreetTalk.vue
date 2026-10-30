@@ -164,6 +164,7 @@ function nextVideo() {
               <div class="item-number">{{ index + 1 }}</div>
               <div class="item-info">
                 <div class="item-title">{{ video.title }}</div>
+                <div class="item-date" v-if="video.date">{{ video.date }}</div>
               </div>
               <div class="item-play" v-if="index === currentVideoIndex">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -453,6 +454,12 @@ function nextVideo() {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .item-date {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
   }
 
   .item-play {
