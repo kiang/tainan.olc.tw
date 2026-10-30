@@ -49,6 +49,15 @@ function closeVideo() {
           </a>
         </div>
 
+        <div class="shorts-embed" v-if="topic.video">
+          <iframe
+            :src="topic.video.replace('shorts/', 'embed/') + '?autoplay=0'"
+            frameborder="0"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+
         <div class="hero-image" v-if="topic.images">
           <img :src="topic.images[0]" alt="烏山頭水庫光電" loading="lazy" />
         </div>
@@ -164,6 +173,17 @@ function closeVideo() {
   .topic-desc { color: #666; font-size: 15px; margin: 0 0 12px; }
   .source-link { font-size: 14px; color: #28c8c8; text-decoration: none; font-weight: 600;
     &:hover { text-decoration: underline; }
+  }
+}
+
+.shorts-embed {
+  max-width: 360px;
+  margin: 16px auto 24px;
+  iframe {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 12px;
+    display: block;
   }
 }
 

@@ -42,6 +42,15 @@ function toggleReport(id) {
           </a>
         </div>
 
+        <div class="shorts-embed" v-if="topic.video">
+          <iframe
+            :src="topic.video.replace('shorts/', 'embed/') + '?autoplay=0'"
+            frameborder="0"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+
         <div class="map-section" v-if="topic.mapImage">
           <img :src="topic.mapImage" alt="城西掩埋場位置圖" loading="lazy" />
         </div>
@@ -176,6 +185,18 @@ function toggleReport(id) {
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+.shorts-embed {
+  max-width: 360px;
+  margin: 16px auto 24px;
+
+  iframe {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 12px;
+    display: block;
   }
 }
 
