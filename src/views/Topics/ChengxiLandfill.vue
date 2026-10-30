@@ -75,7 +75,10 @@ function toggleReport(id) {
 
               <Transition name="expand">
                 <div v-if="expandedReport === report.id" class="report-body">
-                  <div class="report-image" v-if="report.image">
+                  <div class="report-image" v-if="report.images">
+                    <img v-for="(img, idx) in report.images" :key="idx" :src="img" :alt="`${report.title} (${idx + 1})`" loading="lazy" />
+                  </div>
+                  <div class="report-image" v-else-if="report.image">
                     <img :src="report.image" :alt="report.title" loading="lazy" />
                   </div>
                   <div class="table-wrapper" v-if="report.data">

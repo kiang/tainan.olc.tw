@@ -117,12 +117,15 @@
         },
         {
             "id": 7,
-            "title": "台宇環境科技（Eurofins）檢測",
+            "title": "台宇環境科技（Eurofins）檢測報告",
             "date": "2026-08-10",
             "lab": "台宇環境科技（Eurofins）",
             "client": "臺南市政府環境保護局",
-            "summary": "城西掩埋場專案監測，兩個採樣點的生化需氧量分別為 28.9 及 41.9 mg/L，氨氮 31.7 及 33.9 mg/L，鉛 0.21 及 0.25 mg/L 超過偵測極限 0.10 mg/L。",
-            "image": "https://hackmd.io/_uploads/Sy8rdI1czg.png",
+            "summary": "城西掩埋場專案監測，8/10 採樣、8/27 出報告。兩個採樣點的氨氮分別為 31.7 及 33.9 mg/L，鉛 0.21 及 0.25 mg/L 均超過偵測極限。此報告經環境部轉送，因環保局延誤行文，至 9/16 才送達立委辦公室。",
+            "images": [
+                "https://hackmd.io/_uploads/Sy8rdI1czg.png",
+                "https://hackmd.io/_uploads/SyUSdUJcGl.png"
+            ],
             "data": {
                 "headers": ["檢測項目", "採樣點1", "採樣點2", "偵測極限"],
                 "rows": [
@@ -135,14 +138,6 @@
                     ["銅 mg/L", "0.06", "0.12", "0.023"]
                 ]
             }
-        },
-        {
-            "id": 8,
-            "title": "環境部水質檢測報告",
-            "date": "2026-09-16",
-            "lab": "環境部",
-            "summary": "環境部最終報告，經多次延宕後於 9 月 16 日送達立委辦公室。從 8 月 28 日原定期限至 9 月 16 日，拖延近 3 週。",
-            "image": "https://hackmd.io/_uploads/SyUSdUJcGl.png"
         }
     ],
     "keypoints": [
