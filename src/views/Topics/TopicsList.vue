@@ -18,6 +18,12 @@ const topics = [
     desc: "烏山頭水庫浮動式光電場爭議追蹤",
     icon: "☀️",
   },
+  {
+    name: "XuejiaSlag",
+    title: "學甲爐渣",
+    desc: "學甲區 60 多萬噸爐渣違法掩埋事件",
+    icon: "⚠️",
+  },
 ];
 </script>
 

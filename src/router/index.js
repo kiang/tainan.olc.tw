@@ -174,6 +174,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/Topics/XuejiaSlag",
+      name: "XuejiaSlag",
+      component: () => import("@/views/Topics/XuejiaSlag.vue"),
+      meta: {
+        title: `學甲爐渣 | ${baseTitle}`,
+        description: "學甲區 60 多萬噸爐渣違法掩埋事件追蹤。",
+      },
+    },
+    {
       path: "/TainanNews",
       name: "TainanNews",
       component: () => import("@/views/TainanNews.vue"),
