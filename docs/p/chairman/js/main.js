@@ -414,6 +414,67 @@
         }
     };
 
+    window.showOverview = function () {
+        stopAutoTour();
+        var panel = document.getElementById('infoPanel');
+        var title = document.getElementById('infoPanelTitle');
+        var body = document.getElementById('infoPanelBody');
+
+        title.textContent = '♿ 已坐輪椅候選人總覽';
+
+        var joined = [];
+        if (challengeData && challengeData.zones) {
+            Object.keys(challengeData.zones).forEach(function (code) {
+                var z = challengeData.zones[code];
+                (z.candidates || []).forEach(function (c) {
+                    if (c.joined) {
+                        joined.push({ c: c, zone: z });
+                    }
+                });
+            });
+        }
+
+        var html = '<div style="font-size:0.85rem;color:#64748b;margin-bottom:12px;">' + joined.length + ' 位候選人已坐上輪椅體驗選區道路</div>';
+
+        joined.forEach(function (item) {
+            var c = item.c;
+            var photoSrc = c.photo || '';
+            if (photoSrc && !photoSrc.startsWith('http')) {
+                photoSrc = 'https://kiang.github.io/tainan.olc.tw/p/2026/' + photoSrc;
+            }
+            var embeds = c.embeds || [];
+
+            html += '<div class="cand-card is-joined" style="flex-direction:column;">';
+            html += '<div style="display:flex;align-items:center;gap:10px;width:100%;">';
+            if (photoSrc) {
+                html += '<img class="cand-photo" src="' + esc(photoSrc) + '" alt="' + esc(c.name) + '" onerror="this.style.display=\'none\'">';
+            }
+            html += '<div class="cand-info">';
+            html += '<div class="cand-name">';
+            if (c.party) {
+                html += '<span class="party-dot" style="background:' + partyColor(c.party) + '"></span>';
+            }
+            html += esc(c.name);
+            html += '</div>';
+            html += '<div class="cand-party">' + esc(c.party || '') + ' · ' + esc(item.zone.name) + '</div>';
+            html += '</div></div>';
+
+            if (embeds.length > 0) {
+                html += renderEmbed(embeds[0]);
+                if (embeds.length > 1) {
+                    html += '<button class="more-posts-btn" onclick="showAllPosts(\'' + esc(c.name) + '\');event.stopPropagation();">';
+                    html += '<i class="bi bi-collection-play"></i> 查看全部 ' + embeds.length + ' 則貼文';
+                    html += '</button>';
+                }
+            }
+            html += '</div>';
+        });
+
+        body.innerHTML = html;
+        panel.classList.add('open');
+        if (html.indexOf('text-post-media') !== -1) reloadThreadsEmbed();
+    };
+
     window.showAllPosts = function (name) {
         showAllPostsPanel(name);
     };
