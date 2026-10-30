@@ -74,7 +74,7 @@ onUnmounted(() => {
               <li class="nav-item">
                 <RouterLink
                   class="nav-link"
-                  :to="{ name: 'TenQuestions' }"
+                  :to="{ name: 'Topics' }"
                   :class="{
                     'router-link-exact-active':
                       $route.path.startsWith('/Topics'),

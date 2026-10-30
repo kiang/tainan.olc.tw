@@ -138,12 +138,30 @@ const router = createRouter({
       ],
     },
     {
+      path: "/Topics",
+      name: "Topics",
+      component: () => import("@/views/Topics/TopicsList.vue"),
+      meta: {
+        title: `主題 | ${baseTitle}`,
+        description: "江明宗關注的台南市政議題。",
+      },
+    },
+    {
       path: "/Topics/TenQuestions",
       name: "TenQuestions",
       component: () => import("@/views/Topics/TenQuestions.vue"),
       meta: {
         title: `十問邱莉莉 | ${baseTitle}`,
         description: "公開提問台南市議長邱莉莉，要求說清楚、講明白。",
+      },
+    },
+    {
+      path: "/Topics/ChengxiLandfill",
+      name: "ChengxiLandfill",
+      component: () => import("@/views/Topics/ChengxiLandfill.vue"),
+      meta: {
+        title: `城西掩埋場黑水 | ${baseTitle}`,
+        description: "台南城西掩埋場污水外洩事件追蹤。",
       },
     },
     {
