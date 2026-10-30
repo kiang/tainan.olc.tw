@@ -23,17 +23,10 @@ function formatContent(text) {
     .replace(/$/, "</p>");
 }
 
-const limits = [
-  [null, null, 60, 1],
-  [null, null, 200, null],
-  [null, null, null, 4],
-];
+const expandedReport = ref(null);
 
-function isOverLimit(rowIdx, colIdx, value) {
-  const num = parseFloat(value);
-  if (isNaN(num)) return false;
-  const limit = limits[rowIdx]?.[colIdx - 1];
-  return limit !== null && limit !== undefined && num > limit;
+function toggleReport(id) {
+  expandedReport.value = expandedReport.value === id ? null : id;
 }
 </script>
 
@@ -53,23 +46,55 @@ function isOverLimit(rowIdx, colIdx, value) {
           <img :src="topic.mapImage" alt="城西掩埋場位置圖" loading="lazy" />
         </div>
 
-        <div class="table-section" v-if="topic.waterQuality">
-          <h2>{{ topic.waterQuality.caption }}</h2>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th v-for="h in topic.waterQuality.headers" :key="h">{{ h }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, i) in topic.waterQuality.rows" :key="i">
-                  <td v-for="(cell, j) in row" :key="j" :class="{ highlight: j > 0 && cell !== 'x' && isOverLimit(i, j, cell) }">
-                    {{ cell === 'x' ? '-' : cell }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="reports-section" v-if="topic.reports">
+          <h2>檢測報告彙整</h2>
+          <div class="reports-list">
+            <div
+              v-for="report in topic.reports"
+              :key="report.id"
+              class="report-card"
+              :class="{ expanded: expandedReport === report.id }"
+            >
+              <button class="report-toggle" @click="toggleReport(report.id)">
+                <div class="report-badge">{{ report.id }}</div>
+                <div class="report-header-info">
+                  <h3>{{ report.title }}</h3>
+                  <div class="report-meta">
+                    <span class="report-date">{{ report.date }}</span>
+                    <span class="report-lab" v-if="report.lab">{{ report.lab }}</span>
+                  </div>
+                  <p class="report-summary">{{ report.summary }}</p>
+                </div>
+                <div class="report-arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"
+                    :style="{ transform: expandedReport === report.id ? 'rotate(180deg)' : '' }">
+                    <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                  </svg>
+                </div>
+              </button>
+
+              <Transition name="expand">
+                <div v-if="expandedReport === report.id" class="report-body">
+                  <div class="report-image" v-if="report.image">
+                    <img :src="report.image" :alt="report.title" loading="lazy" />
+                  </div>
+                  <div class="table-wrapper" v-if="report.data">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th v-for="h in report.data.headers" :key="h">{{ h }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(row, i) in report.data.rows" :key="i">
+                          <td v-for="(cell, j) in row" :key="j" :class="{ 'row-header': j === 0 }">{{ cell }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </Transition>
+            </div>
           </div>
         </div>
 
@@ -164,7 +189,7 @@ function isOverLimit(rowIdx, colIdx, value) {
   }
 }
 
-.table-section {
+.reports-section {
   margin-bottom: 32px;
 
   h2 {
@@ -176,6 +201,118 @@ function isOverLimit(rowIdx, colIdx, value) {
   }
 }
 
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.report-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+
+  &.expanded {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.report-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover { background: #fafafa; }
+}
+
+.report-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #28c8c8;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.report-header-info {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 4px;
+  }
+
+  .report-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .report-date {
+    font-size: 12px;
+    color: #28c8c8;
+    font-weight: 600;
+  }
+
+  .report-lab {
+    font-size: 11px;
+    color: #999;
+    background: #f0f0f0;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  .report-summary {
+    font-size: 13px;
+    color: #777;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.report-arrow {
+  color: #ccc;
+  flex-shrink: 0;
+  margin-top: 4px;
+
+  svg { transition: transform 0.3s; }
+}
+
+.report-body {
+  padding: 0 16px 16px;
+}
+
+.report-image {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
 .table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -183,17 +320,16 @@ function isOverLimit(rowIdx, colIdx, value) {
   table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
+    background: #fafafa;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    min-width: 480px;
+    min-width: 400px;
+    font-size: 13px;
   }
 
   th, td {
-    padding: 12px 16px;
+    padding: 8px 12px;
     text-align: center;
-    font-size: 14px;
     border-bottom: 1px solid #eee;
   }
 
@@ -201,20 +337,15 @@ function isOverLimit(rowIdx, colIdx, value) {
     background: #28c8c8;
     color: white;
     font-weight: 600;
+    font-size: 12px;
     white-space: nowrap;
   }
 
-  td:first-child {
+  td.row-header {
     text-align: left;
     font-weight: 600;
     color: #333;
     white-space: nowrap;
-  }
-
-  td.highlight {
-    color: #e53e3e;
-    font-weight: 700;
-    background: #fff5f5;
   }
 }
 
@@ -307,5 +438,19 @@ function isOverLimit(rowIdx, colIdx, value) {
   padding: 60px 20px;
   color: #999;
   font-size: 16px;
+}
+
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 </style>
