@@ -19,6 +19,12 @@ const topics = [
     icon: "☀️",
   },
   {
+    name: "HuangPolicies",
+    title: "黃偉哲100政見檢驗",
+    desc: "2018 年 100 項政見的 2022 中期與 2026 最終檢驗",
+    icon: "📋",
+  },
+  {
     name: "XuejiaSlag",
     title: "學甲爐渣",
     desc: "學甲區 60 多萬噸爐渣違法掩埋事件",

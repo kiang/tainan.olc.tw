@@ -174,6 +174,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/Topics/HuangPolicies",
+      name: "HuangPolicies",
+      component: () => import("@/views/Topics/HuangPolicies.vue"),
+      meta: {
+        title: `黃偉哲100政見檢驗 | ${baseTitle}`,
+        description: "黃偉哲 2018 年 100 項政見，2022 年中期檢驗與 2026 年最終檢驗。",
+      },
+    },
+    {
       path: "/Topics/XuejiaSlag",
       name: "XuejiaSlag",
       component: () => import("@/views/Topics/XuejiaSlag.vue"),
