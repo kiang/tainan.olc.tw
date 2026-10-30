@@ -165,6 +165,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/Topics/WushantouSolar",
+      name: "WushantouSolar",
+      component: () => import("@/views/Topics/WushantouSolar.vue"),
+      meta: {
+        title: `烏山頭水庫光電 | ${baseTitle}`,
+        description: "烏山頭水庫浮動式光電場爭議追蹤。",
+      },
+    },
+    {
       path: "/TainanNews",
       name: "TainanNews",
       component: () => import("@/views/TainanNews.vue"),

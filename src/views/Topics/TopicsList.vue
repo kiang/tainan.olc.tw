@@ -12,6 +12,12 @@ const topics = [
     desc: "台南城西掩埋場污水外洩事件追蹤",
     icon: "🏭",
   },
+  {
+    name: "WushantouSolar",
+    title: "烏山頭水庫光電",
+    desc: "烏山頭水庫浮動式光電場爭議追蹤",
+    icon: "☀️",
+  },
 ];
 </script>
 
