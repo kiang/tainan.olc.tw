@@ -138,6 +138,15 @@ const router = createRouter({
       ],
     },
     {
+      path: "/Topics/TenQuestions",
+      name: "TenQuestions",
+      component: () => import("@/views/Topics/TenQuestions.vue"),
+      meta: {
+        title: `十問邱莉莉 | ${baseTitle}`,
+        description: "公開提問台南市議長邱莉莉，要求說清楚、講明白。",
+      },
+    },
+    {
       path: "/TainanNews",
       name: "TainanNews",
       component: () => import("@/views/TainanNews.vue"),

@@ -74,6 +74,16 @@ onUnmounted(() => {
               <li class="nav-item">
                 <RouterLink
                   class="nav-link"
+                  :to="{ name: 'TenQuestions' }"
+                  :class="{
+                    'router-link-exact-active':
+                      $route.path.startsWith('/Topics'),
+                  }"
+                >主題</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink
+                  class="nav-link"
                   :to="{ name: 'TainanNews' }"
                 >台南焦點</RouterLink>
               </li>
@@ -181,6 +191,16 @@ onUnmounted(() => {
               class="nav-link nav-link-petition"
               :to="{ name: 'Service' }"
             >陳情</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink
+              class="nav-link"
+              :to="{ name: 'TenQuestions' }"
+              :class="{
+                'router-link-exact-active':
+                  $route.path.startsWith('/Topics'),
+              }"
+            >主題</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink
