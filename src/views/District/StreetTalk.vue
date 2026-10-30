@@ -10,8 +10,8 @@ const zoom = computed(() => {
 });
 
 const center = [23.004582, 120.198];
-const geoJsonUrl = "https://tainan.olc.tw/json/youtube.json";
-const boundaryUrl = "https://tainan.olc.tw/json/67000-08.json";
+const geoJsonUrl = "/json/youtube.json";
+const boundaryUrl = "/json/67000-08.json";
 
 // Video player state
 const videoList = ref({});
@@ -30,7 +30,7 @@ const currentVideo = computed(() => {
 // Load video list data
 onMounted(async () => {
   try {
-    const response = await fetch("https://tainan.olc.tw/json/youtube_list.json");
+    const response = await fetch("/json/youtube_list.json");
     videoList.value = await response.json();
   } catch (error) {
     console.error("Failed to load video list:", error);
