@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import TopicsNav from "@/components/TopicsNav.vue";
 
 const topic = ref(null);
 const expandedId = ref(null);
@@ -165,6 +166,8 @@ function formatContent(text) {
       </div>
     </div>
     <div v-else class="loading">載入中...</div>
+
+    <TopicsNav />
   </main>
 </template>
 

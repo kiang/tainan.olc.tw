@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import TopicsNav from "@/components/TopicsNav.vue";
 
 const topic = ref(null);
 
@@ -137,6 +138,8 @@ function closeVideo() {
       </div>
     </div>
     <div v-else class="loading">載入中...</div>
+
+    <TopicsNav />
 
     <Transition name="fade">
       <div v-if="activeVideo" class="video-overlay" @click.self="closeVideo">
