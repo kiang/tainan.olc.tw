@@ -79,9 +79,9 @@ function formatContent(text) {
       </div>
 
       <div v-else class="loading">載入中...</div>
-    </div>
 
-    <TopicsNav />
+      <TopicsNav />
+    </div>
   </main>
 </template>
 
