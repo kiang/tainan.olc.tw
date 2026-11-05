@@ -1,0 +1,719 @@
+{
+    "date": "2026-11-05",
+    "projectName": "陳亭妃&妃妃鐵馬車隊37區",
+    "dotName": "妃妃鐵馬車隊",
+    "totalDistance": 5050,
+    "totalDistanceKm": 5.05,
+    "restCount": 2,
+    "anomalyCount": 0,
+    "center": {
+        "lat": 22.96680744736842,
+        "lng": 120.23004339473685
+    },
+    "points": [
+        {
+            "lat": 22.97495,
+            "lng": 120.226067
+        },
+        {
+            "lat": 22.974117,
+            "lng": 120.227183
+        },
+        {
+            "lat": 22.973,
+            "lng": 120.227417
+        },
+        {
+            "lat": 22.97165,
+            "lng": 120.227433
+        },
+        {
+            "lat": 22.970517,
+            "lng": 120.227483
+        },
+        {
+            "lat": 22.96905,
+            "lng": 120.227517
+        },
+        {
+            "lat": 22.968667,
+            "lng": 120.227483
+        },
+        {
+            "lat": 22.967183,
+            "lng": 120.227483
+        },
+        {
+            "lat": 22.966117,
+            "lng": 120.227433
+        },
+        {
+            "lat": 22.964383,
+            "lng": 120.227433
+        },
+        {
+            "lat": 22.9621,
+            "lng": 120.227383
+        },
+        {
+            "lat": 22.961583,
+            "lng": 120.228283
+        },
+        {
+            "lat": 22.961667,
+            "lng": 120.2295
+        },
+        {
+            "lat": 22.9618,
+            "lng": 120.231067
+        },
+        {
+            "lat": 22.96175,
+            "lng": 120.233483
+        },
+        {
+            "lat": 22.9618,
+            "lng": 120.23555
+        },
+        {
+            "lat": 22.962117,
+            "lng": 120.2362
+        },
+        {
+            "lat": 22.9637,
+            "lng": 120.235
+        },
+        {
+            "lat": 22.964533,
+            "lng": 120.234367
+        },
+        {
+            "lat": 22.965333,
+            "lng": 120.234483
+        },
+        {
+            "lat": 22.965967,
+            "lng": 120.234833
+        },
+        {
+            "lat": 22.966033,
+            "lng": 120.2349
+        },
+        {
+            "lat": 22.96615,
+            "lng": 120.235017
+        },
+        {
+            "lat": 22.966383,
+            "lng": 120.235667
+        },
+        {
+            "lat": 22.967033,
+            "lng": 120.235783
+        },
+        {
+            "lat": 22.967367,
+            "lng": 120.2343
+        },
+        {
+            "lat": 22.9668,
+            "lng": 120.23315
+        },
+        {
+            "lat": 22.966333,
+            "lng": 120.232133
+        },
+        {
+            "lat": 22.96565,
+            "lng": 120.230717
+        },
+        {
+            "lat": 22.96495,
+            "lng": 120.228917
+        },
+        {
+            "lat": 22.964933,
+            "lng": 120.228167
+        },
+        {
+            "lat": 22.964967,
+            "lng": 120.226767
+        },
+        {
+            "lat": 22.966667,
+            "lng": 120.22575
+        },
+        {
+            "lat": 22.968033,
+            "lng": 120.225733
+        },
+        {
+            "lat": 22.969417,
+            "lng": 120.225717
+        },
+        {
+            "lat": 22.9708,
+            "lng": 120.225717
+        },
+        {
+            "lat": 22.972083,
+            "lng": 120.2256
+        },
+        {
+            "lat": 22.9731,
+            "lng": 120.224533
+        }
+    ],
+    "timeline": [
+        {
+            "time": "09:33:01",
+            "lat": 22.97495,
+            "lng": 120.226067,
+            "addr": "臺南市東區崇德路434號",
+            "power": "09.0V",
+            "gpsType": "GPS停止發送",
+            "distance": 0,
+            "speed": 0,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:34:02",
+            "lat": 22.974117,
+            "lng": 120.227183,
+            "addr": "臺南市東區崇德路480號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 147,
+            "speed": 8.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:35:01",
+            "lat": 22.973,
+            "lng": 120.227417,
+            "addr": "臺南市東區崇德路528號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 126,
+            "speed": 7.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:36:03",
+            "lat": 22.97165,
+            "lng": 120.227433,
+            "addr": "臺南市東區崇德路621號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 150,
+            "speed": 8.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:37:03",
+            "lat": 22.970517,
+            "lng": 120.227483,
+            "addr": "臺南市東區崇德路659號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 126,
+            "speed": 7.6,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:38:02",
+            "lat": 22.96905,
+            "lng": 120.227517,
+            "addr": "臺南市東區崇德路673號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 163,
+            "speed": 10,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:39:02",
+            "lat": 22.968667,
+            "lng": 120.227483,
+            "addr": "臺南市東區崇德路35號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 43,
+            "speed": 2.6,
+            "status": "rest",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:40:02",
+            "lat": 22.967183,
+            "lng": 120.227483,
+            "addr": "臺南市東區崇德路765號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 165,
+            "speed": 9.9,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:41:02",
+            "lat": 22.966117,
+            "lng": 120.227433,
+            "addr": "臺南市東區崇德路791號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 119,
+            "speed": 7.1,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:42:02",
+            "lat": 22.964383,
+            "lng": 120.227433,
+            "addr": "臺南市東區崇德路790號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 193,
+            "speed": 11.6,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:43:02",
+            "lat": 22.9621,
+            "lng": 120.227383,
+            "addr": "臺南市東區崇德路941號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 254,
+            "speed": 15.2,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:44:02",
+            "lat": 22.961583,
+            "lng": 120.228283,
+            "addr": "臺南市東區德東街20號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 109,
+            "speed": 6.5,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:45:02",
+            "lat": 22.961667,
+            "lng": 120.2295,
+            "addr": "臺南市東區德東街77號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 125,
+            "speed": 7.5,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:46:02",
+            "lat": 22.9618,
+            "lng": 120.231067,
+            "addr": "臺南市東區長東街103巷33弄19號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 161,
+            "speed": 9.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:47:02",
+            "lat": 22.96175,
+            "lng": 120.233483,
+            "addr": "臺南市東區德東街204號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 247,
+            "speed": 14.8,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:48:02",
+            "lat": 22.9618,
+            "lng": 120.23555,
+            "addr": "臺南市東區德東街343號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 212,
+            "speed": 12.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:49:02",
+            "lat": 22.962117,
+            "lng": 120.2362,
+            "addr": "臺南市東區德東街342號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 75,
+            "speed": 4.5,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:50:02",
+            "lat": 22.9637,
+            "lng": 120.235,
+            "addr": "臺南市東區崇善路1093號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 215,
+            "speed": 12.9,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:51:02",
+            "lat": 22.964533,
+            "lng": 120.234367,
+            "addr": "臺南市東區崇善路1071號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 113,
+            "speed": 6.8,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:52:02",
+            "lat": 22.965333,
+            "lng": 120.234483,
+            "addr": "臺南市東區城東街10號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 90,
+            "speed": 5.4,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "09:53:02",
+            "lat": 22.965967,
+            "lng": 120.234833,
+            "addr": "臺南市東區城東街28號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 79,
+            "speed": 4.7,
+            "status": "normal",
+            "stationaryUntil": "09:57:02",
+            "stationaryDuration": 4
+        },
+        {
+            "time": "09:58:03",
+            "lat": 22.966033,
+            "lng": 120.2349,
+            "addr": "臺南市東區城東街28號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 10,
+            "speed": 0.1,
+            "status": "rest",
+            "stationaryUntil": "10:01:02",
+            "stationaryDuration": 3
+        },
+        {
+            "time": "10:02:03",
+            "lat": 22.96615,
+            "lng": 120.235017,
+            "addr": "臺南市東區城東街43號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 18,
+            "speed": 0.3,
+            "status": "rest",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:03:02",
+            "lat": 22.966383,
+            "lng": 120.235667,
+            "addr": "臺南市東區城東街75號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 71,
+            "speed": 4.4,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:04:02",
+            "lat": 22.967033,
+            "lng": 120.235783,
+            "addr": "臺南市東區仁和路173-9號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 73,
+            "speed": 4.4,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:05:03",
+            "lat": 22.967367,
+            "lng": 120.2343,
+            "addr": "臺南市東區德高街47號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 156,
+            "speed": 9.2,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:06:02",
+            "lat": 22.9668,
+            "lng": 120.23315,
+            "addr": "臺南市東區崇善路835巷10號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 134,
+            "speed": 8.1,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:07:02",
+            "lat": 22.966333,
+            "lng": 120.232133,
+            "addr": "臺南市東區生產路644號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 116,
+            "speed": 7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:08:02",
+            "lat": 22.96565,
+            "lng": 120.230717,
+            "addr": "臺南市東區生產路556號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 164,
+            "speed": 9.8,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:09:03",
+            "lat": 22.96495,
+            "lng": 120.228917,
+            "addr": "臺南市東區生產路279號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 200,
+            "speed": 11.8,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:10:03",
+            "lat": 22.964933,
+            "lng": 120.228167,
+            "addr": "臺南市東區生產路267號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 77,
+            "speed": 4.6,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:11:02",
+            "lat": 22.964967,
+            "lng": 120.226767,
+            "addr": "臺南市東區崇德路835號",
+            "power": "08.3V",
+            "gpsType": "GPS發送中",
+            "distance": 143,
+            "speed": 8.7,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:12:02",
+            "lat": 22.966667,
+            "lng": 120.22575,
+            "addr": "臺南市東區崇明二十四街19號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 216,
+            "speed": 12.9,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:13:02",
+            "lat": 22.968033,
+            "lng": 120.225733,
+            "addr": "臺南市東區崇明路591號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 152,
+            "speed": 9.1,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:14:02",
+            "lat": 22.969417,
+            "lng": 120.225717,
+            "addr": "臺南市東區崇明路589-13號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 154,
+            "speed": 9.2,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:15:02",
+            "lat": 22.9708,
+            "lng": 120.225717,
+            "addr": "臺南市東區崇明路569號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 154,
+            "speed": 9.2,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:16:02",
+            "lat": 22.972083,
+            "lng": 120.2256,
+            "addr": "臺南市東區崇道路1號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 143,
+            "speed": 8.6,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        },
+        {
+            "time": "10:17:03",
+            "lat": 22.9731,
+            "lng": 120.224533,
+            "addr": "臺南市東區崇明路453號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 157,
+            "speed": 9.3,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        }
+    ],
+    "restStops": [
+        {
+            "index": 6,
+            "pointIndex": 6,
+            "time": "09:39:02",
+            "lat": 22.968667,
+            "lng": 120.227483,
+            "addr": "臺南市東區崇德路35號",
+            "cumulativeDistance": 755.6737032620676
+        },
+        {
+            "index": 21,
+            "pointIndex": 21,
+            "time": "09:58:03",
+            "lat": 22.966033,
+            "lng": 120.2349,
+            "addr": "臺南市東區城東街28號",
+            "cumulativeDistance": 2921.740323621602
+        }
+    ],
+    "speedAnomalies": [],
+    "segments": [
+        {
+            "from": "起點",
+            "fromTime": "09:33:01",
+            "fromAddr": "臺南市東區崇德路434號",
+            "fromPointIndex": 0,
+            "to": "休息 1",
+            "toTime": "09:39:02",
+            "toAddr": "臺南市東區崇德路35號",
+            "toPointIndex": 6,
+            "distance": 0.76
+        },
+        {
+            "from": "休息 1",
+            "fromTime": "09:39:02",
+            "fromAddr": "臺南市東區崇德路35號",
+            "fromPointIndex": 6,
+            "to": "休息 2",
+            "toTime": "09:58:03",
+            "toAddr": "臺南市東區城東街28號",
+            "toPointIndex": 21,
+            "distance": 2.17
+        },
+        {
+            "from": "休息 2",
+            "fromTime": "09:58:03",
+            "fromAddr": "臺南市東區城東街28號",
+            "fromPointIndex": 21,
+            "to": "終點",
+            "toTime": "10:17:03",
+            "toAddr": "臺南市東區崇明路453號",
+            "toPointIndex": 37,
+            "distance": 2.13
+        }
+    ]
+}
