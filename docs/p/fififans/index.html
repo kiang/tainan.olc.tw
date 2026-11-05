@@ -790,6 +790,20 @@
                 const fromIdx = seg.fromPointIndex;
                 const toIdx = seg.toPointIndex;
 
+                // Calculate average speed for the segment
+                let avgSpeedText = '';
+                if (seg.fromTime && seg.toTime) {
+                    const fromParts = seg.fromTime.split(':').map(Number);
+                    const toParts = seg.toTime.split(':').map(Number);
+                    const fromSec = fromParts[0] * 3600 + fromParts[1] * 60 + fromParts[2];
+                    const toSec = toParts[0] * 3600 + toParts[1] * 60 + toParts[2];
+                    const diffHours = (toSec - fromSec) / 3600;
+                    if (diffHours > 0) {
+                        const avgSpeed = (seg.distance / diffHours).toFixed(1);
+                        avgSpeedText = ' · ' + avgSpeed + ' km/h';
+                    }
+                }
+
                 // Create segment polyline for highlighting
                 const segmentCoords = data.points.slice(fromIdx, toIdx + 1).map(p => [p.lat, p.lng]);
                 const segmentLine = L.polyline(segmentCoords, {
@@ -805,7 +819,7 @@
                     const marker = L.marker([midPoint.lat, midPoint.lng], {
                         icon: L.divIcon({
                             className: 'custom-marker',
-                            html: '<div class="segment-label">' + seg.distance + ' km</div>',
+                            html: '<div class="segment-label">' + seg.distance + ' km' + avgSpeedText + '</div>',
                             iconSize: null,
                             iconAnchor: [30, 10]
                         })
