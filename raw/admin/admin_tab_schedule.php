@@ -104,7 +104,15 @@
             ?>
             <tr<?= $trClass ? ' class="' . $trClass . '"' : '' ?> data-index="<?= $i ?>">
                 <td><?= $i ?></td>
-                <td><?= htmlspecialchars($item['date'] ?? '') ?></td>
+                <?php
+                    $dateStr = $item['date'] ?? '';
+                    $dayOfWeek = '';
+                    if ($dateStr) {
+                        $weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+                        $dayOfWeek = '(' . $weekDays[date('w', strtotime($dateStr))] . ')';
+                    }
+                ?>
+                <td><?= htmlspecialchars($dateStr . $dayOfWeek) ?></td>
                 <td><?= htmlspecialchars($item['time'] ?? '') ?></td>
                 <td><?= htmlspecialchars($item['end_time'] ?? '') ?></td>
                 <td><?= htmlspecialchars($location) ?></td>
