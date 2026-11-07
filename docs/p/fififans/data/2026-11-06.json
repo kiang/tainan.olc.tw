@@ -2,13 +2,13 @@
     "date": "2026-11-06",
     "projectName": "陳亭妃&妃妃鐵馬車隊37區",
     "dotName": "妃妃鐵馬車隊",
-    "totalDistance": 13096,
-    "totalDistanceKm": 13.1,
-    "restCount": 9,
+    "totalDistance": 13109,
+    "totalDistanceKm": 13.11,
+    "restCount": 10,
     "anomalyCount": 0,
     "center": {
-        "lat": 22.978260784313722,
-        "lng": 120.19709935294117
+        "lat": 22.978227990291256,
+        "lng": 120.19700534951455
     },
     "points": [
         {
@@ -418,6 +418,10 @@
         {
             "lat": 22.974917,
             "lng": 120.1873
+        },
+        {
+            "lat": 22.974883,
+            "lng": 120.187417
         }
     ],
     "timeline": [
@@ -1744,8 +1748,21 @@
             "distance": 62,
             "speed": 0.3,
             "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
+            "stationaryUntil": "17:15:02",
+            "stationaryDuration": 10
+        },
+        {
+            "time": "17:16:02",
+            "lat": 22.974883,
+            "lng": 120.187417,
+            "addr": "臺南市南區新興路432號",
+            "power": "09.0V",
+            "gpsType": "GPS發送中",
+            "distance": 13,
+            "speed": 0.1,
+            "status": "rest",
+            "stationaryUntil": "17:19:02",
+            "stationaryDuration": 3
         }
     ],
     "restStops": [
@@ -1829,6 +1846,15 @@
             "lng": 120.187983,
             "addr": "臺南市南區新興路507號",
             "cumulativeDistance": 13013.35960647973
+        },
+        {
+            "index": 102,
+            "pointIndex": 102,
+            "time": "17:16:02",
+            "lat": 22.974883,
+            "lng": 120.187417,
+            "addr": "臺南市南區新興路432號",
+            "cumulativeDistance": 13108.827054870744
         }
     ],
     "speedAnomalies": [],
@@ -1937,11 +1963,22 @@
             "fromTime": "16:32:02",
             "fromAddr": "臺南市南區新興路507號",
             "fromPointIndex": 98,
+            "to": "休息 10",
+            "toTime": "17:16:02",
+            "toAddr": "臺南市南區新興路432號",
+            "toPointIndex": 102,
+            "distance": 0.1
+        },
+        {
+            "from": "休息 10",
+            "fromTime": "17:16:02",
+            "fromAddr": "臺南市南區新興路432號",
+            "fromPointIndex": 102,
             "to": "終點",
-            "toTime": "17:05:02",
-            "toAddr": "臺南市南區新興路517號",
-            "toPointIndex": 101,
-            "distance": 0.08
+            "toTime": "17:16:02",
+            "toAddr": "臺南市南區新興路432號",
+            "toPointIndex": 102,
+            "distance": 0
         }
     ]
 }

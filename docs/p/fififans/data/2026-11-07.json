@@ -1,0 +1,49 @@
+{
+    "date": "2026-11-07",
+    "projectName": "陳亭妃&妃妃鐵馬車隊37區",
+    "dotName": "妃妃鐵馬車隊",
+    "totalDistance": 0,
+    "totalDistanceKm": 0,
+    "restCount": 0,
+    "anomalyCount": 0,
+    "center": {
+        "lat": 22.974867,
+        "lng": 120.18745
+    },
+    "points": [
+        {
+            "lat": 22.974867,
+            "lng": 120.18745
+        }
+    ],
+    "timeline": [
+        {
+            "time": "00:00:02",
+            "lat": 22.974867,
+            "lng": 120.18745,
+            "addr": "臺南市南區新興路430號",
+            "power": "09.0V",
+            "gpsType": "GPS停止發送",
+            "distance": 0,
+            "speed": 0,
+            "status": "normal",
+            "stationaryUntil": "",
+            "stationaryDuration": 0
+        }
+    ],
+    "restStops": [],
+    "speedAnomalies": [],
+    "segments": [
+        {
+            "from": "起點",
+            "fromTime": "00:00:02",
+            "fromAddr": "臺南市南區新興路430號",
+            "fromPointIndex": 0,
+            "to": "終點",
+            "toTime": "00:00:02",
+            "toAddr": "臺南市南區新興路430號",
+            "toPointIndex": 0,
+            "distance": 0
+        }
+    ]
+}
