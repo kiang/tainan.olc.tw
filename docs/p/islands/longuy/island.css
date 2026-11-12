@@ -400,6 +400,10 @@ button.chip { cursor: pointer; }
 .fact { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 14px; background: var(--t, #f6f3ee); font-size: 14.5px; font-weight: 700; line-height: 1.45; }
 .fact b { flex: none; font: italic 700 20px/1 Georgia, serif; color: var(--c); }
 .c-body { margin: 14px 0 0; font-size: 14.5px; line-height: 1.85; color: #333a35; }
+.c-video-link { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; padding: 8px 12px; border-radius: 12px; background: #f0f0f0; text-decoration: none; color: #1a5276; font-size: 13.5px; font-weight: 700; transition: background .2s; }
+.c-video-link:hover { background: #e4e4e4; }
+.c-video-link img { border-radius: 6px; object-fit: cover; flex: none; }
+.c-video-link span { flex: 1; }
 .c-list { margin: 8px 0 0; padding: 12px 14px; border-radius: 14px; background: #faf7f1; }
 .c-list h4 { margin: 0 0 6px; font-size: 12.5px; color: var(--muted); }
 .c-list ol, .c-list ul { margin: 0; padding-left: 1.4em; font-size: 13.5px; line-height: 1.75; }

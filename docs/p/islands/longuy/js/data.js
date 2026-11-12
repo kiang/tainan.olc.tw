@@ -40,7 +40,7 @@ export const DATA = {
       lead: "只做四年不連任，大刀闊斧推動改革，用四年拚出八年成績。",
       quote: "沒有連任壓力，才能拋開人情、選票與派系包袱，全心全力拚市政。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "UA2h_mEYJZ0", poster: "https://i.ytimg.com/vi/UA2h_mEYJZ0/hqdefault.jpg" },
       items: [
         {
           id: "lj-fouryear",
@@ -49,7 +49,8 @@ export const DATA = {
           tag: "fourYear",
           facts: ["拋開人情與派系包袱", "大刀闊斧推動改革", "用四年拚出八年成績"],
           body: "龍介承諾市長只做一任四年，絕對不連任。沒有連任壓力，才能拋開人情、選票與派系包袱，不必看誰的臉色，只看台南需要什麼。四年任期一天都不能浪費，把台南累積的問題一一解決。",
-          src: ["fb"],
+          video: "uZ2qEj4GSxI",
+          src: ["fb", "yt"],
         },
         {
           id: "lj-transparent",
@@ -57,7 +58,8 @@ export const DATA = {
           model: "dashboard",
           facts: ["施政成果公開上網", "重大採購與工程進度公開", "壓縮黑箱與關說空間"],
           body: "推動「透明政府行動方案」，各局處施政成果、重大採購資訊及重要工程進度公開上網。採購花多少錢、由誰得標、工程做到哪裡、延誤原因是什麼，都要一項項交代清楚。",
-          src: ["fb"],
+          video: "fn5W4-l8EGo",
+          src: ["fb", "yt"],
         },
         {
           id: "lj-callin",
@@ -65,7 +67,8 @@ export const DATA = {
           model: "tower",
           facts: ["週一到週五天天直播", "市民 Call-in 陳情", "政務官輪番回答問題"],
           body: "直播從每週兩次升級為「週一到週五天天開講」，每天向鄉親報告施政進度、受理陳情，並安排市府政務官輪番上陣，親自回答問題、面對民意。",
-          src: ["fb"],
+          video: "ncdstHUj-JY",
+          src: ["fb", "yt"],
         },
         {
           id: "lj-cleanup",
@@ -73,6 +76,7 @@ export const DATA = {
           model: "pillars",
           facts: ["徹查爐渣案與光電弊案", "全面改善道路坑洞", "清理城西垃圾山"],
           body: "徹查台南學甲爐渣案、光電弊案，追究責任到底。全面改善道路坑洞，還給市民安全平整的道路。清理城西垃圾山，改善台南垃圾堆置問題。",
+          video: "DeYYGYkJTJY",
           src: ["yt"],
         },
       ],
@@ -94,7 +98,7 @@ export const DATA = {
       lead: "健保補滿、敬老加碼、共餐巡迴，三箭齊發照顧長輩。",
       quote: "長輩辛苦一輩子，市府就要實實在在照顧。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "--WWxDW6l4Q", poster: "https://i.ytimg.com/vi/--WWxDW6l4Q/hqdefault.jpg" },
       items: [
         {
           id: "el-health",
@@ -111,7 +115,8 @@ export const DATA = {
           model: "interchange",
           facts: ["敬老卡每月 1,000 元點數", "可搭計程車", "逐步納入超商、超市、藥局"],
           body: "推動「敬老卡點數化」，比照台中每月補助1000元。敬老卡除了搭公車，也能搭計程車，逐步將超商、超市、藥局納入使用範圍，連看醫生的掛號費也能用敬老卡點數支付。",
-          src: ["fb"],
+          video: "--WWxDW6l4Q",
+          src: ["fb", "yt"],
         },
         {
           id: "el-meal",
@@ -140,7 +145,7 @@ export const DATA = {
       lead: "治水辦公室、下水道建設、AI 智慧水網，三管齊下終結水患。",
       quote: "治水不能這個局處挖、那個局處補，要統一協調、追蹤進度。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "1btEl9Octfo", poster: "https://i.ytimg.com/vi/1btEl9Octfo/hqdefault.jpg" },
       items: [
         {
           id: "wa-office",
@@ -185,7 +190,7 @@ export const DATA = {
       lead: "清查光電、建立冷鏈、輔導外銷，讓農漁民收入有保障。",
       quote: "外銷不能只出國辦展覽、簽MOU，而要真正出貨、上架，拿到長期訂單。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "mR0mT6GQcQE", poster: "https://i.ytimg.com/vi/mR0mT6GQcQE/hqdefault.jpg" },
       items: [
         {
           id: "ag-solar",
@@ -193,7 +198,8 @@ export const DATA = {
           model: "alert",
           facts: ["跨局處光電弊案清查專案小組", "一案一案追查到底", "光電資訊公開平台"],
           body: "成立跨局處「光電弊案清查專案小組」，由市長直接督導，清查歷年有爭議的光電開發案。同時建置光電資訊公開平台，讓市民上網查得到每塊光電板的資料。",
-          src: ["fb"],
+          video: "mR0mT6GQcQE",
+          src: ["fb", "yt"],
         },
         {
           id: "ag-cold",
@@ -210,7 +216,8 @@ export const DATA = {
           model: "export",
           facts: ["農漁產品外銷輔導平台", "整合檢疫、認證、冷鏈運輸", "拓展日韓、東南亞、歐美市場"],
           body: "成立農漁產品外銷輔導平台，整合檢疫、國際認證、加工升級、冷鏈運輸、包裝、報關及買主媒合，帶著農漁民拓展日韓、東南亞、歐美市場。",
-          src: ["fb"],
+          video: "16ql53Uur4I",
+          src: ["fb", "yt"],
         },
       ],
     },
@@ -230,7 +237,7 @@ export const DATA = {
       lead: "從備孕到育兒，凍卵、尿布、健保全免費，婚育宅最低每坪 15 萬。",
       quote: "你生孩子，我供房子。讓少年人不再被高房價嚇到。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "Yy5Wks3vR08", poster: "https://i.ytimg.com/vi/Yy5Wks3vR08/hqdefault.jpg" },
       items: [
         {
           id: "fm-egg",
@@ -246,7 +253,8 @@ export const DATA = {
           model: "nursery",
           facts: ["市府大量採購降低成本", "嬰幼兒免費使用", "替新手爸媽省下開銷"],
           body: "由市府大量採購、降低成本，直接讓嬰幼兒免費使用，實實在在替新手爸媽省下育兒開銷。",
-          src: ["fb"],
+          video: "GJCYTAvtMLw",
+          src: ["fb", "yt"],
         },
         {
           id: "fm-health",
@@ -263,7 +271,8 @@ export const DATA = {
           model: "housing",
           facts: ["每坪 15 萬元營建成本價", "免頭期款", "生一胎兩房 375 萬、三胎四房 675 萬"],
           body: "透過都更容積回饋、公辦重劃土地及住宅基金運用，以每坪15萬元的純營建成本價、免自備款提供婚育宅。生一個有兩房、生兩個有三房、生三個就有四房。",
-          src: ["fb"],
+          video: "Yy5Wks3vR08",
+          src: ["fb", "yt"],
         },
         {
           id: "fm-subsidy",
@@ -272,7 +281,8 @@ export const DATA = {
           tag: "subsidy",
           facts: ["6-18 歲市府每月再加碼 2,500 元", "每月 5,000 元領好領滿", "第一胎生育津貼 3 萬元"],
           body: "中央方案照樣領，6至18歲台南市府每月再加碼2500元，讓孩子每月5000元領好領滿。生育津貼第一胎3萬元，第二胎以上每胎5萬元。",
-          src: ["fb"],
+          video: "snJdRLhUGSA",
+          src: ["fb", "yt"],
         },
         {
           id: "fm-nursery",
@@ -280,7 +290,8 @@ export const DATA = {
           model: "kids",
           facts: ["目前僅 19 處公共托育機構", "數量直接翻倍", "活化閒置校舍轉型公托"],
           body: "讓公托數量直接翻倍，擴大托育量能。同時活化閒置校舍，轉型公托空間，就近提供托育服務。",
-          src: ["fb"],
+          video: "PJtuBysEhQ4",
+          src: ["fb", "yt"],
         },
       ],
     },
@@ -300,7 +311,7 @@ export const DATA = {
       lead: "捷運十字路網、北外環加速、整頓交通亂象。",
       quote: "該抓的要抓，不合理的罰單也要檢討。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "QwirTGhdERo", poster: "https://i.ytimg.com/vi/QwirTGhdERo/hqdefault.jpg" },
       items: [
         {
           id: "tr-metro",
@@ -317,7 +328,8 @@ export const DATA = {
           model: "interchange",
           facts: ["北外環 2031 年全線完工", "增加公車幹線班次", "廣設綠色人行道"],
           body: "全力協調中央加速北外環工程進度。全面檢視公車路網，增加市區主要幹線班次。針對缺乏人行道的路段，規劃綠色人行道。",
-          src: ["fb"],
+          video: "dYJi13TTUuE",
+          src: ["fb", "yt"],
         },
         {
           id: "tr-order",
@@ -325,7 +337,8 @@ export const DATA = {
           model: "signpost",
           facts: ["酒駕毒駕鐵腕取締", "檢討不合理罰單", "盤點高風險路口"],
           body: "鐵腕取締酒駕毒駕，同時檢視交通執法與罰單合理性，主動改善標線不清的路段。全面盤點高風險路口及事故熱點，從道路設計源頭降低事故風險。",
-          src: ["fb"],
+          video: "QwirTGhdERo",
+          src: ["fb", "yt"],
         },
         {
           id: "tr-bus",
@@ -341,7 +354,8 @@ export const DATA = {
           model: "bikeway",
           facts: ["廣設綠色人行道", "加設行人庇護道", "改善學區周邊通學路"],
           body: "提升市民及遊客步行安全，減少人車事故。加速評估全市重點道路，加設行人庇護道、穿越道；改善學區周邊通學路狀況。",
-          src: ["fb"],
+          video: "kLxZhz9CMrs",
+          src: ["fb", "yt"],
         },
       ],
     },
@@ -361,7 +375,7 @@ export const DATA = {
       lead: "防災型都更、老屋健檢、AI 地震防災網，加上免費營養午餐與雙語教育。",
       quote: "台南屋齡30年以上老屋超過六成，都市更新要把安全擺在第一位。",
       source: "fb",
-      video: null,
+      video: { youtubeId: "56RSBFxH8Jc", poster: "https://i.ytimg.com/vi/56RSBFxH8Jc/hqdefault.jpg" },
       items: [
         {
           id: "ur-renew",
@@ -370,7 +384,8 @@ export const DATA = {
           model: "housing",
           facts: ["邀請李鴻源部長擔任顧問", "防災型都更示範建築", "2031 年完成 12,045 戶社宅"],
           body: "推動「防災型都更」，四年任期內至少完成一棟防災型都更示範建築。加速社宅及婚育宅規劃，朝2031年完成12,045戶社宅目標推進。三胎家庭免抽籤優先入住。",
-          src: ["fb"],
+          video: "QVJ34zK2gBM",
+          src: ["fb", "yt"],
         },
         {
           id: "ur-check",

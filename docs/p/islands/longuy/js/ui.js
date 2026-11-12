@@ -210,6 +210,7 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
       ${it.tag ? `<div class="chips">${tagHTML(it.tag)}</div>` : ""}
       <div class="facts">${it.facts.map((f, k) => `<div class="fact" style="--c:${pc};--t:${isl.tint}"><b>${k + 1}</b><span>${h(f)}</span></div>`).join("")}</div>
       <p class="c-body">${h(it.body)}</p>
+      ${it.video ? `<a class="c-video-link" href="https://www.youtube.com/shorts/${encodeURIComponent(it.video)}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${encodeURIComponent(it.video)}/hqdefault.jpg" alt="" width="120" height="68" loading="lazy"><span>▶ 看短影音</span></a>` : ""}
       ${it.list ? `<div class="c-list"><h4>${h(it.listTitle || "清單")}</h4><ol>${it.list.map((x) => `<li>${h(x)}</li>`).join("")}</ol></div>` : ""}
       <p class="c-src">依據：${h(srcText(it.src))}</p>
       <div class="c-nav">
