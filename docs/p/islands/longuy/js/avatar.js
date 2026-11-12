@@ -4,7 +4,7 @@ import { TOP } from "./world.js?v=20261029-3";
 import { store, clamp, mulberry32, escapeHTML as h } from "./util.js?v=20261029-3";
 import { track } from "./track.js?v=20261029-3";
 
-const KEY = "feifei-island:avatar:v1";
+const KEY = "longuy-island:avatar:v1";
 const hex = (n) => "#" + n.toString(16).padStart(6, "0");
 
 export const AVATAR = {

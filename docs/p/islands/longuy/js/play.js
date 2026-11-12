@@ -110,7 +110,7 @@ export function createPlay({ app, ui, D, stamps, kiosk, pinColor }) {
       if (st.dataset.st === "eggs") { app.openEggs(); return; }
       track(st.dataset.st === "save" ? "save_image" : "share", { kind: "stamps" });
       if (st.dataset.st === "save") saveImage(posterBlob, "台南政策島集章卡.png", { title: "台南政策島集章卡", text: "我集滿台南政策島 7 個章了！" }, ui.toast);
-      if (st.dataset.st === "share") shareLink({ title: "台南政策島｜妃妃市長・接棒台南", text: `我集滿台南政策島 ${stamps.total} 個章了！你也來逛逛`, url: shareURL("tainan") }, ui.toast);
+      if (st.dataset.st === "share") shareLink({ title: "龍介政策島｜謝龍介・拚四年做八年", text: `我集滿龍介政策島 ${stamps.total} 個章了！你也來逛逛`, url: shareURL("tainan") }, ui.toast);
     };
   }
 
@@ -255,8 +255,8 @@ export function createPlay({ app, ui, D, stamps, kiosk, pinColor }) {
       return;
     }
     ui.openModal(`
-      <div class="m-head"><div class="eyebrow">TELL FEIFEI</div><h2 class="m-title" id="modal-title">把想法告訴妃妃</h2>
-        <p class="m-lead">用手機掃描 QR code，會打開 LINE 和妃妃的官方帳號對話，訊息已經先幫你寫好「${topic ? `我對「${h(topic)}」的想法：` : "妃妃市長，我想說："}」。</p></div>
+      <div class="m-head"><div class="eyebrow">TELL LONGUY</div><h2 class="m-title" id="modal-title">把想法告訴龍介</h2>
+        <p class="m-lead">用手機掃描 QR code，會打開 LINE 和龍介的官方帳號對話，訊息已經先幫你寫好「${topic ? `我對「${h(topic)}」的想法：` : "龍介市長，我想說："}」。</p></div>
       <div class="m-qr big">${qrSVG(url, { label: "掃描 QR code 打開 LINE" })}</div>`, { cls: "m-take-modal", label: "我有話想說" });
   }
   // 卡片上的按鈕（ui.js 的 data-act）
@@ -264,7 +264,7 @@ export function createPlay({ app, ui, D, stamps, kiosk, pinColor }) {
     if (!ctx) return;
     track(name === "take" ? "take_qr" : name === "share" ? "share" : "card_" + name, { kind: "card", id: ctx.id });
     if (name === "share") {
-      shareLink({ title: `${ctx.title}｜台南政策島`, text: `妃妃市長的台南政策島：${ctx.title}`, url: shareURL(ctx.page, ctx.id === ctx.page ? "" : ctx.id) }, ui.toast);
+      shareLink({ title: `${ctx.title}｜龍介政策島`, text: `龍介市長的政策島：${ctx.title}`, url: shareURL(ctx.page, ctx.id === ctx.page ? "" : ctx.id) }, ui.toast);
     } else if (name === "take") openTake(ctx);
     else if (name === "opinion") openOpinion(ctx.title);
   }

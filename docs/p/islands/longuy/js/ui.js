@@ -11,7 +11,7 @@ import { track } from "./track.js?v=20261029-3";
 const CIRCLED = "①②③④⑤⑥⑦⑧⑨⑩";
 // 每個版本資料夾各記各的「看過導覽說明」，新版本的說明才會再出現一次
 // （v2：/island 換成新版，看過舊版說明的人會再看到一次）
-const INTRO_KEY = `feifei-${location.pathname.split("/")[1] || "island"}:intro:v2`;
+const INTRO_KEY = `longuy-${location.pathname.split("/")[1] || "island"}:intro:v2`;
 export const circled = (i) => CIRCLED[i] || String(i + 1);
 const srcText = (ids) => (Array.isArray(ids) ? ids : [ids]).map((s) => SOURCES[s] || s).join("、");
 export const pinColor = (isl, i) => (isl.rainbow ? "#" + RAINBOW[i % RAINBOW.length].toString(16).padStart(6, "0") : isl.color);
@@ -246,22 +246,22 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
     if (kind === "sister") {
       const isl = byId.get("sister");
       open(`
-        <img class="c-fig" src="./img/sister-main.jpg" alt="抱著小熊的 Q 版姐姐妃妃" width="96">
-        <div class="eyebrow">CHARACTER · 06 姐姐</div><h2 class="c-title">姐姐妃妃市長</h2>
+        <img class="c-fig" src="./img/longuy-stand.jpg" alt="謝龍介" width="96">
+        <div class="eyebrow">CHARACTER · 06 都更</div><h2 class="c-title">翻轉舊城</h2>
         <p class="c-lead" style="--c:${isl.color}">${h(isl.lead)}</p>
         <p class="c-sub">${h(isl.sub)}</p>
         <div class="c-nav"><button type="button" data-pick="sister">走進姐姐島 →</button></div>
       `, `--c:${isl.color};--t:${isl.tint}`);
     } else {
       open(`
-        <img class="c-fig" src="./img/feifei-bike.jpg" alt="騎單車的 Q 版妃妃市長" width="96">
-        <div class="eyebrow">CHARACTER · 妃妃市長</div><h2 class="c-title">騎單車巡島的妃妃市長</h2>
-        <p class="c-lead" style="--c:#176b38">綠色・陽光・行動力・台南的未來・一起騎出來！</p>
-        <p class="c-sub">她正沿著步道與跨溪大橋，一座一座騎過 7 座政策島，就像持續走遍台南 37 區。</p>
-        <div class="c-acts"><button class="act" type="button" data-act="ask">💬 問妃妃</button><button class="act game" type="button" data-act="game">🎮 四季農漁接接樂</button></div>
+        <img class="c-fig" src="./img/longuy-stand.jpg" alt="謝龍介" width="96">
+        <div class="eyebrow">CHARACTER · 龍介市長</div><h2 class="c-title">巡視政策島的龍介市長</h2>
+        <p class="c-lead" style="--c:#1a5276">只做四年不連任，用四年做八年的事！</p>
+        <p class="c-sub">他正沿著步道與跨溪大橋，一座一座走過 7 座政策島，翻轉大台南。</p>
+        <div class="c-acts"><button class="act" type="button" data-act="ask">💬 問龍介</button><button class="act game" type="button" data-act="game">🎮 四季農漁接接樂</button></div>
         <div class="c-nav"><button type="button" data-pick="tainan">從大台南出發 →</button></div>
-        <p class="c-src"><a href="/">回到 6 大政策影片 →</a></p>
-      `, "--c:#176b38;--t:#eaf3ec");
+        <p class="c-src"><a href="https://www.longuy.com/">回到龍介官網 →</a></p>
+      `, "--c:#1a5276;--t:#e8f0f6");
     }
   }
 
@@ -484,11 +484,11 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
 
   // ---------- 導覽說明（第一次進入） ----------
   const STEPS = [
-    { title: "每座島是一項政策", text: "中央是「一個大台南」，周圍 6 座島是科技、農漁、觀光、福利、交通與姐姐市長。曾文溪把島群分成溪北與溪南。", fig: "./img/feifei-stand.jpg" },
-    { title: "點一座島，看細項", text: "點島或用右側清單，就能看到每項政策的細項、依據與政策影片；①②③ 是島上的細項。", fig: "./img/feifei-bike.jpg" },
-    { title: "看見政策怎麼串聯", text: "打開「串聯線」，小人會沿著線搬運，告訴你交通怎麼帶動觀光、科技怎麼帶動農業。", fig: "./img/sister-main.jpg" },
+    { title: "每座島是一項政策", text: "中央是「大台南施政承諾」，周圍 6 座島是長照、治水、農漁、家庭、交通與都更六大三箭政策。", fig: "./img/longuy-stand.jpg" },
+    { title: "點一座島，看細項", text: "點島或用右側清單，就能看到每項政策的細項與依據；①②③ 是島上的細項。", fig: "./img/longuy-stand.jpg" },
+    { title: "看見政策怎麼串聯", text: "打開「串聯線」，小人會沿著線搬運，告訴你交通怎麼帶動都更、治水怎麼帶動農業。", fig: "./img/longuy-stand.jpg" },
     { title: "集章、測驗，一起玩", text: "每走進一座島就蓋一個章，集滿 7 個章領集章卡；「測驗」找出跟你最有關的 3 項政策；按「角色」捏一個自己的小人。", fig: "./img/pose/flag.jpg" },
-    { title: "問妃妃、找寶物", text: "點左下角的妃妃問問題；把鏡頭拉近，島上還藏著 6 樣台南物產等你找；點下方「台南人的一天」看每個時段的政策。", fig: "./img/pose/point.jpg" },
+    { title: "問龍介、找寶物", text: "點左下角的龍介問問題；把鏡頭拉近，島上還藏著 6 樣台南物產等你找；點下方「台南人的一天」看每個時段的政策。", fig: "./img/pose/point.jpg" },
   ];
   let step = 0;
   const intro = $("intro");

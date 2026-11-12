@@ -3,7 +3,7 @@ import { drawQR } from "./qr.js?v=20261029-3";
 import { stampCanvas, FONT } from "./stamps.js?v=20261029-3";
 
 const W = 1080, H = 1350;
-const GREEN = "#176b38", PINK = "#e04a67", INK = "#1f2421", MUTED = "#5d665f", CREAM = "#fff8f1";
+const GREEN = "#1a5276", PINK = "#e04a67", INK = "#1f2421", MUTED = "#5d665f", CREAM = "#fff8f1";
 
 const imgCache = new Map();
 // 網路很慢時最多等 5 秒，少一張圖也照樣出圖；沒載到的下次再重抓
@@ -122,7 +122,7 @@ function footer(g, url, title, img) {
 
 // 集章完成卡
 export async function stampPoster({ islands, url, date }) {
-  const { c, g } = await base("妃妃市長・6 大政策集章卡");
+  const { c, g } = await base("龍介市長・6 大政策集章卡");
   const flag = await loadImage("./img/pose/flag.jpg");
   const rows = [islands.slice(0, 4), islands.slice(4)];
   rows.forEach((row, ri) => {

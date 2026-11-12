@@ -83,6 +83,6 @@ function download(blob, filename, toast) {
 export function opinionURL(topic) {
   const id = String(DATA.opinion?.lineId || "").trim();
   if (!/^@[\w.-]{2,}$/.test(id)) return "";
-  const msg = topic ? `我對「${topic}」的想法：` : "妃妃市長，我想說：";
+  const msg = topic ? `我對「${topic}」的想法：` : "龍介市長，我想說：";
   return `https://line.me/R/oaMessage/${id}/?${encodeURIComponent(msg)}`;
 }

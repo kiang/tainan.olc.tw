@@ -1,10 +1,10 @@
-// 問妃妃：像聊天一樣點問題、妃妃回答。不開放打字，答案由 data.js 的島與細項組成（都出自新聞稿），
+// 問龍介：像聊天一樣點問題、龍介回答。不開放打字，答案由 data.js 的島與細項組成（都出自公開政見），
 // 不另外寫承諾；福利類細項照樣標出「對標六都補齊」等狀態。
 import { TAGS } from "./data.js?v=20261029-3";
 import { escapeHTML as h } from "./util.js?v=20261029-3";
 import { track } from "./track.js?v=20261029-3";
 
-const ACT_LABEL = { quiz: "🙋 你是哪一種台南人？", stamps: "🔖 集章卡", eggs: "🥭 找台南寶物", game: "🎮 四季農漁接接樂", avatar: "🧑 捏我的角色", opinion: "💬 用 LINE 告訴妃妃" };
+const ACT_LABEL = { quiz: "🙋 你是哪一種台南人？", stamps: "🔖 集章卡", eggs: "🥭 找台南寶物", game: "🎮 四季農漁接接樂", avatar: "🧑 捏我的角色", opinion: "💬 用 LINE 告訴龍介" };
 
 export function createAsk({ ui, D, app, actions, canOpinion }) {
   const itemRef = new Map();
@@ -31,14 +31,14 @@ export function createAsk({ ui, D, app, actions, canOpinion }) {
   }
   const bubble = (m) => m.who === "me"
     ? `<div class="bub me">${h(m.text)}</div>`
-    : `<div class="bub ff"><img src="./img/feifei-face.jpg" alt="" width="34" height="34"><div class="txt">${m.html}</div></div>`;
+    : `<div class="bub ff"><img src="./img/longuy-face.jpg" alt="" width="34" height="34"><div class="txt">${m.html}</div></div>`;
 
   function render() {
     const box = ui.openModal(`
-      <div class="ask-head"><img src="./img/feifei-face.jpg" alt="" width="52" height="52">
-        <div><h2 class="m-title" id="modal-title">問妃妃</h2><small>點下面的問題，回答整理自競選總部新聞稿</small></div></div>
+      <div class="ask-head"><img src="./img/longuy-face.jpg" alt="" width="52" height="52">
+        <div><h2 class="m-title" id="modal-title">問龍介</h2><small>點下面的問題，回答整理自公開政見資料</small></div></div>
       <div class="ask-log" id="ask-log">${log.map(bubble).join("")}</div>
-      <div class="ask-qs" id="ask-qs">${Q.map((q) => `<button type="button" class="ask-q" data-q="${q.id}">${h(q.q)}</button>`).join("")}</div>`, { cls: "m-ask", label: "問妃妃" });
+      <div class="ask-qs" id="ask-qs">${Q.map((q) => `<button type="button" class="ask-q" data-q="${q.id}">${h(q.q)}</button>`).join("")}</div>`, { cls: "m-ask", label: "問龍介" });
     box.onclick = onClick;
     scrollDown();
   }
@@ -53,7 +53,7 @@ export function createAsk({ ui, D, app, actions, canOpinion }) {
       if (!q) return;
       log.push({ who: "me", text: q.q });
       const lg = document.getElementById("ask-log");
-      lg.insertAdjacentHTML("beforeend", bubble(log[log.length - 1]) + '<div class="bub ff typing" id="ask-typing"><img src="./img/feifei-face.jpg" alt="" width="34" height="34"><div class="txt"><i></i><i></i><i></i></div></div>');
+      lg.insertAdjacentHTML("beforeend", bubble(log[log.length - 1]) + '<div class="bub ff typing" id="ask-typing"><img src="./img/longuy-face.jpg" alt="" width="34" height="34"><div class="txt"><i></i><i></i><i></i></div></div>');
       scrollDown();
       track("ask_question", { question: q.id });
       busy = setTimeout(() => {

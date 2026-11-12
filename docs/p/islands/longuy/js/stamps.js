@@ -2,7 +2,7 @@
 // 網頁版記在這台裝置的瀏覽器；總部觸控機只記在記憶體，閒置重置時歸零換下一位。
 import { store, mulberry32, hashString, escapeHTML as h } from "./util.js?v=20261029-3";
 
-const KEY = "feifei-island:stamps:v1";
+const KEY = "longuy-island:stamps:v1";
 export const FONT = '"PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Heiti TC", sans-serif';
 
 // 章中央的圖案，畫在 24×24 的格子裡，只用線條
