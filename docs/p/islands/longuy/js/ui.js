@@ -329,7 +329,7 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
     $("video-link").href = `https://www.youtube.com/shorts/${id}`;
     video.hidden = false;
     app.pauseForModal(true);
-    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1&modestbranding=1" title="政策短影音" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1&playsinline=1&modestbranding=1" title="政策短影音" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
   }
   function openVideo(isl) {
     if (!isl?.video) return;
