@@ -5,76 +5,148 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1a1a2e">
 <title>台南市長政見比較島｜2026 台南市長選舉</title>
-<meta name="description" content="2026 台南市長選舉政見比較：陳亭妃 vs 謝龍介，兩座政策島並列對照，一目了然。">
-<link rel="stylesheet" href="./compare.css">
+<meta name="description" content="2026 台南市長選舉：陳亭妃 vs 謝龍介，兩座 3D 政策島，互動探索、一鍵切換。">
+<style>
+:root {
+  --feifei: #176b38;
+  --longuy: #1a5276;
+  --bg: #0f0f14;
+  --text: #fff;
+  --bar-h: 52px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--bar-h);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: rgba(15,15,20,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding: 0 12px;
+}
+.bar-title {
+  font-size: .82rem; font-weight: 600; opacity: .6;
+  margin-right: 8px;
+  display: none;
+}
+@media (min-width: 600px) { .bar-title { display: block; } }
+.tab {
+  font: inherit; font-size: .88rem; font-weight: 700;
+  padding: 7px 22px;
+  border: 2px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255,255,255,.65);
+  cursor: pointer;
+  transition: all .25s;
+  white-space: nowrap;
+}
+.tab:hover { border-color: rgba(255,255,255,.35); color: #fff; }
+.tab.active-feifei {
+  background: var(--feifei); border-color: var(--feifei); color: #fff;
+}
+.tab.active-longuy {
+  background: var(--longuy); border-color: var(--longuy); color: #fff;
+}
+.tab .badge {
+  display: inline-block;
+  width: 22px; height: 22px; line-height: 22px;
+  border-radius: 50%;
+  font-size: .72rem; font-weight: 800;
+  text-align: center;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.tab .badge-f { background: var(--feifei); }
+.tab .badge-l { background: var(--longuy); }
+.tab.active-feifei .badge-f,
+.tab.active-longuy .badge-l { background: rgba(255,255,255,.25); }
+
+.source-link {
+  font-size: .72rem;
+  color: rgba(255,255,255,.4);
+  text-decoration: none;
+  margin-left: 8px;
+}
+.source-link:hover { color: rgba(255,255,255,.7); }
+
+.frames {
+  position: fixed;
+  top: var(--bar-h); left: 0; right: 0; bottom: 0;
+}
+.frames iframe {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+  transition: opacity .35s, visibility .35s;
+}
+.frames iframe.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+.kb-hint {
+  position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-size: .72rem; color: rgba(255,255,255,.3);
+  pointer-events: none; z-index: 100;
+}
+@media (pointer: coarse) { .kb-hint { display: none; } }
+</style>
 </head>
 <body>
-<div id="app">
 
-  <header class="top-bar">
-    <h1 class="site-title">台南市長政見比較島</h1>
-    <p class="site-sub">2026 台南市長選舉・政策並列對照</p>
-    <nav class="view-toggle" role="tablist" aria-label="檢視模式">
-      <button role="tab" aria-selected="true" data-view="compare" class="active">並列比較</button>
-      <button role="tab" aria-selected="false" data-view="feifei">陳亭妃</button>
-      <button role="tab" aria-selected="false" data-view="longji">謝龍介</button>
-    </nav>
-  </header>
+<nav class="bar">
+  <span class="bar-title">2026 台南市長政見比較</span>
+  <button class="tab active-feifei" id="tab-feifei" title="陳亭妃政策島">
+    <span class="badge badge-f">妃</span>陳亭妃
+  </button>
+  <button class="tab" id="tab-longuy" title="謝龍介政策島">
+    <span class="badge badge-l">龍</span>謝龍介
+  </button>
+  <a class="source-link" href="https://hackmd.io/@kiang/tainan_mayor_2026" target="_blank" rel="noopener">資料來源 ↗</a>
+</nav>
 
-  <div class="category-nav" id="category-nav">
-    <button class="cat-btn active" data-cat="all">全部</button>
-    <button class="cat-btn" data-cat="elderly">老人福利</button>
-    <button class="cat-btn" data-cat="water">治水防災</button>
-    <button class="cat-btn" data-cat="integrity">廉能施政</button>
-    <button class="cat-btn" data-cat="agriculture">農漁產業</button>
-    <button class="cat-btn" data-cat="education">教育</button>
-    <button class="cat-btn" data-cat="urban">都更住宅</button>
-    <button class="cat-btn" data-cat="transport">交通</button>
-    <button class="cat-btn" data-cat="fertility">生育備孕</button>
-    <button class="cat-btn" data-cat="childcare">育兒托育</button>
-    <button class="cat-btn" data-cat="tech">科技</button>
-    <button class="cat-btn" data-cat="tourism">觀光</button>
-    <button class="cat-btn" data-cat="welfare">福利</button>
-    <button class="cat-btn" data-cat="youth">青年</button>
-  </div>
-
-  <main class="columns" id="columns">
-    <section class="col col-feifei" id="col-feifei">
-      <div class="col-header feifei-header">
-        <div class="avatar-circle feifei-bg">妃</div>
-        <div>
-          <h2>陳亭妃</h2>
-          <p class="col-party">民主進步黨</p>
-          <p class="col-slogan">一個大台南，6 種前進的力量</p>
-        </div>
-      </div>
-      <div class="col-body" id="feifei-body"></div>
-      <div class="col-foot">
-        <a href="https://feifei-tainan-policy.com/island/" target="_blank" rel="noopener">前往 3D 政策島 ↗</a>
-        <span>內容整理自競選總部新聞稿</span>
-      </div>
-    </section>
-
-    <section class="col col-longji" id="col-longji">
-      <div class="col-header longji-header">
-        <div class="avatar-circle longji-bg">龍</div>
-        <div>
-          <h2>謝龍介</h2>
-          <p class="col-party">中國國民黨</p>
-          <p class="col-slogan">只做四年不連任，用四年做八年的事</p>
-        </div>
-      </div>
-      <div class="col-body" id="longji-body"></div>
-      <div class="col-foot">
-        <a href="https://hackmd.io/@kiang/tainan_mayor_2026" target="_blank" rel="noopener">資料來源：HackMD ↗</a>
-        <span>內容整理自公開政見發表</span>
-      </div>
-    </section>
-  </main>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="frames" id="frames">
+  <iframe id="if-feifei" src="./feifei/" title="陳亭妃政策島"></iframe>
+  <iframe id="if-longuy" src="./longuy/" title="謝龍介政策島" class="hidden"></iframe>
 </div>
 
-<script src="./compare.js" defer></script>
+<div class="kb-hint">按 1 / 2 快速切換候選人</div>
+
+<script>
+const tabF = document.getElementById("tab-feifei");
+const tabL = document.getElementById("tab-longuy");
+const ifF = document.getElementById("if-feifei");
+const ifL = document.getElementById("if-longuy");
+
+function show(who) {
+  if (who === "feifei") {
+    tabF.className = "tab active-feifei";
+    tabL.className = "tab";
+    ifF.classList.remove("hidden");
+    ifL.classList.add("hidden");
+  } else {
+    tabL.className = "tab active-longuy";
+    tabF.className = "tab";
+    ifL.classList.remove("hidden");
+    ifF.classList.add("hidden");
+  }
+}
+
+tabF.addEventListener("click", () => show("feifei"));
+tabL.addEventListener("click", () => show("longuy"));
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  if (e.key === "1") show("feifei");
+  else if (e.key === "2") show("longuy");
+});
+</script>
 </body>
 </html>
