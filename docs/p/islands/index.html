@@ -103,18 +103,18 @@ body {
 
 <nav class="bar">
   <span class="bar-title">2026 台南市長政見比較</span>
-  <button class="tab active-feifei" id="tab-feifei" title="陳亭妃政策島">
-    <span class="badge badge-f">妃</span>陳亭妃
-  </button>
   <button class="tab" id="tab-longuy" title="謝龍介政策島">
     <span class="badge badge-l">龍</span>謝龍介
+  </button>
+  <button class="tab" id="tab-feifei" title="陳亭妃政策島">
+    <span class="badge badge-f">妃</span>陳亭妃
   </button>
   <a class="source-link" href="https://hackmd.io/@kiang/tainan_mayor_2026" target="_blank" rel="noopener">資料來源 ↗</a>
 </nav>
 
 <div class="frames" id="frames">
-  <iframe id="if-feifei" src="./feifei/" title="陳亭妃政策島"></iframe>
-  <iframe id="if-longuy" src="./longuy/" title="謝龍介政策島" class="hidden"></iframe>
+  <iframe id="if-longuy" src="./longuy/" title="謝龍介政策島"></iframe>
+  <iframe id="if-feifei" src="./feifei/" title="陳亭妃政策島" class="hidden"></iframe>
 </div>
 
 <div class="kb-hint">按 1 / 2 快速切換候選人</div>
@@ -125,7 +125,7 @@ const tabL = document.getElementById("tab-longuy");
 const ifF = document.getElementById("if-feifei");
 const ifL = document.getElementById("if-longuy");
 
-function show(who) {
+function show(who, push) {
   if (who === "feifei") {
     tabF.className = "tab active-feifei";
     tabL.className = "tab";
@@ -137,16 +137,25 @@ function show(who) {
     ifL.classList.remove("hidden");
     ifF.classList.add("hidden");
   }
+  if (push) history.replaceState(null, "", "#" + who);
 }
 
-tabF.addEventListener("click", () => show("feifei"));
-tabL.addEventListener("click", () => show("longuy"));
+tabF.addEventListener("click", () => show("feifei", true));
+tabL.addEventListener("click", () => show("longuy", true));
 
 document.addEventListener("keydown", (e) => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-  if (e.key === "1") show("feifei");
-  else if (e.key === "2") show("longuy");
+  if (e.key === "1") show("feifei", true);
+  else if (e.key === "2") show("longuy", true);
 });
+
+window.addEventListener("hashchange", () => {
+  const h = location.hash.slice(1);
+  if (h === "feifei" || h === "longuy") show(h);
+});
+
+const init = location.hash.slice(1);
+show(init === "feifei" ? "feifei" : "longuy", !location.hash);
 </script>
 </body>
 </html>
