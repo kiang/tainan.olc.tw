@@ -210,7 +210,7 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
       ${it.tag ? `<div class="chips">${tagHTML(it.tag)}</div>` : ""}
       <div class="facts">${it.facts.map((f, k) => `<div class="fact" style="--c:${pc};--t:${isl.tint}"><b>${k + 1}</b><span>${h(f)}</span></div>`).join("")}</div>
       <p class="c-body">${h(it.body)}</p>
-      ${it.video ? `<a class="c-video-link" href="https://www.youtube.com/shorts/${encodeURIComponent(it.video)}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${encodeURIComponent(it.video)}/hqdefault.jpg" alt="" width="120" height="68" loading="lazy"><span>▶ 看短影音</span></a>` : ""}
+      ${it.video ? `<button class="c-video-link" type="button" data-shortvideo="${it.video}"><img src="https://i.ytimg.com/vi/${encodeURIComponent(it.video)}/hqdefault.jpg" alt="" width="120" height="68" loading="lazy"><span>▶ 看短影音</span></button>` : ""}
       ${it.list ? `<div class="c-list"><h4>${h(it.listTitle || "清單")}</h4><ol>${it.list.map((x) => `<li>${h(x)}</li>`).join("")}</ol></div>` : ""}
       <p class="c-src">依據：${h(srcText(it.src))}</p>
       <div class="c-nav">
@@ -285,6 +285,8 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
     if (a) return app.act(a.dataset.act, current);
     const v = e.target.closest("[data-video]");
     if (v) return openVideo(byId.get(v.dataset.video));
+    const sv = e.target.closest("[data-shortvideo]");
+    if (sv) return openShortVideo(sv.dataset.shortvideo);
     const it = e.target.closest("[data-item]");
     if (it && it.dataset.item) return app.selectItem(it.dataset.item);
     const fl = e.target.closest("[data-flow]");
@@ -319,6 +321,15 @@ export function createUI(app, D, { isMobile, onePanel, kiosk = false }) {
       document.head.appendChild(sc);
     });
     return ytReady;
+  }
+  function openShortVideo(ytId) {
+    track("video_play", { item: ytId });
+    $("video-title").textContent = "政策短影音";
+    const id = encodeURIComponent(ytId);
+    $("video-link").href = `https://www.youtube.com/shorts/${id}`;
+    video.hidden = false;
+    app.pauseForModal(true);
+    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1&modestbranding=1" title="政策短影音" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
   }
   function openVideo(isl) {
     if (!isl?.video) return;
