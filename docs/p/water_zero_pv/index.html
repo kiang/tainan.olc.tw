@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="水庫零光電宣言 — 2026 參選人簽署">
+    <meta property="og:description" content="翡翠水庫可以拒絕，每座民生水庫都可以。不分黨派，九種選舉參選人皆可簽署。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tainan.olc.tw/p/water_zero_pv/og_image.png">
+    <title>水庫零光電宣言 — 2026 參選人簽署</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:'Noto Sans TC',sans-serif;color:#14171c;background:#f0f2f5}
+
+        .site-header{background:#0E2640;padding:28px 24px 22px;text-align:center}
+        .site-header .tag{font-size:14px;font-weight:700;letter-spacing:0.16em;color:#FFD600}
+        .site-header h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(32px,8vw,56px);color:#fff;margin:8px 0 0;letter-spacing:0.04em;line-height:1.15}
+        .site-header .sub{font-size:clamp(14px,3.5vw,19px);font-weight:500;color:#FFD600;margin-top:8px}
+
+        .steps-bar{background:#17375c;padding:20px 16px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+        .step-chip{background:#0E2640;border-radius:10px;padding:12px 18px;color:#fff;text-align:center;min-width:120px;flex:1;max-width:200px}
+        .step-chip.active{background:#1d4a7a;outline:2px solid #FFD600}
+        .step-chip .num{font-size:14px;font-weight:900;color:#FFD600}
+        .step-chip .label{font-size:16px;font-weight:900;margin-top:2px}
+        .step-chip .desc{font-size:12px;color:#d6dfea;margin-top:2px}
+
+        .section{max-width:720px;margin:0 auto;padding:24px 16px}
+        .section.wide{max-width:960px}
+        .section-title{font-size:22px;font-weight:900;color:#0E2640;margin-bottom:16px;padding-left:12px;border-left:4px solid #FFD600}
+
+        .manifesto{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .manifesto .intro{font-size:15px;line-height:1.75;color:#2b323b;margin-bottom:20px}
+        .point{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+        .point .num-circle{flex:none;width:38px;height:38px;border-radius:50%;background:#0E2640;color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center}
+        .point .title{font-size:18px;font-weight:900;line-height:1.3}
+        .point .desc{font-size:14px;color:#2b323b;line-height:1.55;margin-top:2px}
+
+        /* Map section */
+        .map-section{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .map-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f0f4f8;border-bottom:1px solid #dce4ec;flex-wrap:wrap;gap:8px}
+        .map-breadcrumb{display:flex;align-items:center;gap:4px;font-size:14px}
+        .map-breadcrumb a{color:#2471a3;text-decoration:none;cursor:pointer;font-weight:500}
+        .map-breadcrumb a:hover{text-decoration:underline}
+        .map-breadcrumb .sep{color:#999}
+        .map-breadcrumb .current{color:#0E2640;font-weight:700}
+        .map-hint{font-size:12px;color:#888}
+        #map{width:100%;height:420px}
+        @media(min-width:600px){#map{height:500px}}
+
+        /* Candidate picker panel */
+        .candidate-panel{display:none;background:#fff;border-radius:12px;padding:0;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden}
+        .candidate-panel.show{display:block}
+        .cpanel-header{display:flex;align-items:center;padding:14px 16px;background:#0E2640;color:#fff;font-weight:700;font-size:16px}
+        .cpanel-header .close-btn{margin-left:auto;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:0 4px;line-height:1}
+        .cpanel-body{padding:16px;max-height:400px;overflow-y:auto}
+        .cpanel-election{margin-bottom:14px}
+        .cpanel-election h4{font-size:14px;font-weight:700;color:#1a5276;border-bottom:2px solid #2980b9;padding-bottom:4px;margin:0 0 8px}
+        .cpanel-election .district-label{font-size:12px;color:#666;margin-bottom:6px}
+
+        .cand-pick{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;border-radius:8px;background:#f8fafe;border:1.5px solid #e8eef4;cursor:pointer;transition:all .15s}
+        .cand-pick:hover{background:#eaf2fa;border-color:#2980b9}
+        .cand-pick.selected{background:#e1f0ff;border-color:#0E2640}
+        .cand-pick .party-dot{flex:none;width:10px;height:10px;border-radius:50%}
+        .cand-pick .cand-name{font-weight:700;font-size:15px}
+        .cand-pick .cand-party{font-size:12px;color:#555}
+        .cand-pick .pick-icon{margin-left:auto;font-size:12px;color:#0E2640;font-weight:700;opacity:0}
+        .cand-pick:hover .pick-icon,.cand-pick.selected .pick-icon{opacity:1}
+
+        /* Form */
+        .form-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .form-row{margin-bottom:16px}
+        .form-row label{display:block;font-size:13px;font-weight:700;color:#3d4652;margin-bottom:6px}
+        .form-row input,.form-row select{width:100%;padding:10px 12px;border:1.5px solid #c9ced6;border-radius:8px;font-size:15px;font-family:inherit;background:#fafbfc}
+        .form-row input:focus,.form-row select:focus{outline:none;border-color:#2980b9;box-shadow:0 0 0 3px rgba(41,128,185,0.15)}
+        .form-row input.filled-from-map{border-color:#0E2640;background:#f8fbff}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        @media(max-width:500px){.form-grid{grid-template-columns:1fr}}
+
+        .radio-group{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+        @media(max-width:500px){.radio-group{grid-template-columns:repeat(2,1fr)}}
+        .radio-group label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:400;cursor:pointer;padding:6px 8px;border:1.5px solid #e0e4ea;border-radius:8px;transition:all .15s}
+        .radio-group label:has(input:checked){border-color:#0E2640;background:#f0f6ff}
+        .radio-group input[type=radio]{accent-color:#0E2640;width:16px;height:16px;margin:0}
+
+        .or-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:#999;font-size:13px}
+        .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:#dce4ec}
+
+        .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#0E2640;color:#FFD600;border:none;padding:14px 32px;border-radius:10px;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;transition:background .15s;width:100%}
+        .btn-primary:hover{background:#17375c}
+        .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+        .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#0E2640;border:2px solid #0E2640;padding:14px 32px;border-radius:10px;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+        .btn-outline:hover{background:#f0f6ff}
+
+        .print-preview{display:none;background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .print-preview.show{display:block}
+        .print-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+        .print-actions .btn-primary,.print-actions .btn-outline{flex:1;min-width:200px}
+
+        .a4-frame{width:100%;aspect-ratio:794/1123;border:1px solid #e0e4ea;border-radius:4px;overflow:hidden;position:relative;background:#fff}
+        .a4-frame iframe{width:794px;height:1123px;border:none;transform-origin:top left;position:absolute;top:0;left:0}
+
+        .upload-section{display:none;background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .upload-section.show{display:block}
+        .upload-info{background:#f0f6ff;border-radius:8px;padding:16px;margin-bottom:16px;font-size:14px;line-height:1.6;color:#2b323b}
+        .upload-info strong{color:#0E2640}
+
+        .site-footer{background:#0E2640;color:#c9d4e2;text-align:center;padding:20px;font-size:13px;margin-top:32px}
+        .site-footer a{color:#FFD600;text-decoration:none}
+        .site-footer a:hover{text-decoration:underline}
+        .bottom-banner{background:#FFD600;text-align:center;padding:14px;font-size:16px;font-weight:900;color:#0E2640}
+
+        .hashtag-cta{display:flex;align-items:center;gap:12px;background:#0E2640;border-radius:10px;padding:14px 18px;margin-top:12px}
+        .hashtag-cta span{color:#fff;font-size:14px;line-height:1.5}
+        .hashtag-cta strong{color:#FFD600}
+
+        .loading-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:800;background:rgba(255,255,255,0.9);padding:12px 24px;border-radius:8px;font-weight:700;color:#1a5276;box-shadow:0 2px 12px rgba(0,0,0,0.15);display:none;pointer-events:none}
+        .loading-overlay.show{display:block}
+
+        /* Signed badge */
+        .signed-badge-inline{display:inline-flex;align-items:center;gap:4px;background:#1b9431;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+        .cand-pick.is-signed{border-color:#1b9431;background:#f0faf3}
+        .cand-pick.is-signed:hover{background:#e0f5e8}
+
+        /* Signed list section */
+        .signed-summary{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .signed-counter{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+        .signed-counter .count-box{background:#0E2640;color:#FFD600;font-size:36px;font-weight:900;padding:12px 24px;border-radius:10px;line-height:1}
+        .signed-counter .count-label{font-size:15px;color:#3d4652;line-height:1.5}
+        .signed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+        .signed-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8fafe;border-radius:8px;border:1px solid #e8eef4}
+        .signed-item .s-dot{flex:none;width:10px;height:10px;border-radius:50%}
+        .signed-item .s-name{font-weight:700;font-size:14px}
+        .signed-item .s-meta{font-size:12px;color:#666}
+        .signed-item .s-check{margin-left:auto;color:#1b9431;font-weight:900;font-size:16px}
+
+        /* Showcase carousel */
+        .showcase{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden}
+        .showcase-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:#f0f4f8;border-bottom:1px solid #dce4ec}
+        .showcase-label{font-size:14px;color:#3d4652}
+        .showcase-label strong{color:#0E2640}
+        .showcase-nav{display:flex;gap:8px}
+        .showcase-nav button{background:#0E2640;color:#FFD600;border:none;width:32px;height:32px;border-radius:8px;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center}
+        .showcase-nav button:hover{background:#17375c}
+        .showcase-body{padding:20px}
+        .showcase-card{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+        @media(max-width:640px){.showcase-card{flex-direction:column}}
+        .showcase-a4{flex:1;min-width:280px;max-width:400px;aspect-ratio:794/1123;border:1px solid #e0e4ea;border-radius:4px;overflow:hidden;position:relative;background:#fff}
+        .showcase-a4 iframe{width:794px;height:1123px;border:none;transform-origin:top left;position:absolute;top:0;left:0;pointer-events:none}
+        .showcase-info{flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px}
+        .showcase-name{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:900;color:#0E2640;line-height:1.2}
+        .showcase-meta{font-size:14px;color:#3d4652;line-height:1.6}
+        .showcase-meta .party-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+        .showcase-badge{display:inline-flex;align-items:center;gap:6px;background:#1b9431;color:#fff;font-size:13px;font-weight:700;padding:6px 14px;border-radius:20px}
+        .showcase-cta{margin-top:8px;font-size:14px;color:#666;line-height:1.6}
+
+        /* Photo preview */
+        .photo-frame{border-radius:8px;overflow:hidden;border:1px solid #e0e4ea;background:#f0f2f5}
+        .photo-frame iframe{width:100%;height:240px;border:none}
+        .photo-thumb{width:100%;height:auto;cursor:pointer;border-radius:6px;transition:opacity .15s}
+        .photo-thumb:hover{opacity:.85}
+        .signed-item .s-photo{flex:none;width:48px;height:48px;border-radius:6px;object-fit:cover;cursor:pointer;border:1px solid #e0e4ea}
+        .cand-pick .cand-photo-small{width:36px;height:36px;border-radius:6px;object-fit:cover;border:1px solid #e0e4ea}
+
+        /* Lightbox */
+        .lightbox-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:5000;justify-content:center;align-items:center;cursor:pointer}
+        .lightbox-overlay.active{display:flex}
+        .lightbox-overlay img{max-width:95vw;max-height:95vh;object-fit:contain;border-radius:4px;box-shadow:0 0 20px rgba(0,0,0,0.5)}
+        .lightbox-close{position:absolute;top:10px;right:16px;color:#fff;font-size:32px;cursor:pointer;z-index:5001;line-height:1}
+
+        /* Showcase photo */
+        .showcase-photo{margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid #e0e4ea}
+        .showcase-photo iframe{width:100%;height:280px;border:none}
+
+        @media print{
+            body{background:#fff}
+            .site-header,.steps-bar,.section,.site-footer,.bottom-banner,.print-actions,.upload-section,.no-print{display:none!important}
+            .print-preview{display:block!important;padding:0;box-shadow:none;border-radius:0}
+            .a4-frame{border:none;aspect-ratio:auto;width:100%;height:auto}
+            .a4-frame iframe{position:static;width:100%;height:auto;transform:none!important}
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FJ1JR851SJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FJ1JR851SJ');
+    </script>
+</head>
+
+<body>
+    <div class="site-header">
+        <div class="tag">2026 地方選舉參選人簽署</div>
+        <h1>水庫零光電宣言</h1>
+        <div class="sub">民生用水，不拿來做實驗</div>
+    </div>
+
+    <div class="steps-bar">
+        <div class="step-chip active" id="stepChip1">
+            <div class="num">STEP 1</div>
+            <div class="label">選擇候選人</div>
+            <div class="desc">從地圖或手動填寫</div>
+        </div>
+        <div class="step-chip" id="stepChip2">
+            <div class="num">STEP 2</div>
+            <div class="label">列印簽署</div>
+            <div class="desc">手持宣言拍照</div>
+        </div>
+        <div class="step-chip" id="stepChip3">
+            <div class="num">STEP 3</div>
+            <div class="label">上傳照片</div>
+            <div class="desc">完成簽署登記</div>
+        </div>
+    </div>
+
+    <!-- Manifesto -->
+    <div class="section">
+        <div class="section-title">宣言內容</div>
+        <div class="manifesto">
+            <p class="intro">水庫是民生用水的源頭。翡翠水庫被中央三度發函詢問能否設置光電，三次都依法拒絕；全國每一座民生用水水庫，都應該有同樣的保護。</p>
+            <div class="point">
+                <span class="num-circle">1</span>
+                <div>
+                    <div class="title">民生用水水庫水面光電板，立刻移除</div>
+                    <div class="desc">包括烏山頭水庫在內，已設置在民生用水水庫水面上的光電板，全部立刻移除。</div>
+                </div>
+            </div>
+            <div class="point">
+                <span class="num-circle">2</span>
+                <div>
+                    <div class="title">民生用水水庫，零新增水面光電板</div>
+                    <div class="desc">不論中央發幾次公文，民生用水水庫一片都不准再鋪。</div>
+                </div>
+            </div>
+            <div class="point">
+                <span class="num-circle">3</span>
+                <div>
+                    <div class="title">水庫光電，地方說不就不准</div>
+                    <div class="desc">任何水庫光電案，沒有在地居民與地方議會同意，一律不准。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signed candidates summary -->
+    <div class="section wide" id="signedSection" style="display:none">
+        <div class="section-title">已簽署候選人</div>
+        <div class="signed-summary">
+            <div class="signed-counter">
+                <div class="count-box" id="signedCount">0</div>
+                <div class="count-label">位候選人<br>已簽署宣言</div>
+            </div>
+            <div class="signed-grid" id="signedGrid"></div>
+        </div>
+    </div>
+
+    <!-- Showcase: random signed candidate preview -->
+    <div class="section wide" id="showcaseSection" style="display:none">
+        <div class="section-title">簽署範例</div>
+        <div class="showcase">
+            <div class="showcase-header">
+                <div class="showcase-label">隨機展示 · <strong id="showcaseIndex">1</strong> / <strong id="showcaseTotal">1</strong></div>
+                <div class="showcase-nav">
+                    <button id="showcasePrev" title="上一位">&#8249;</button>
+                    <button id="showcaseNext" title="下一位">&#8250;</button>
+                </div>
+            </div>
+            <div class="showcase-body">
+                <div class="showcase-card">
+                    <div class="showcase-a4" id="showcaseA4">
+                        <iframe id="showcaseIframe" sandbox="allow-same-origin"></iframe>
+                    </div>
+                    <div class="showcase-info">
+                        <div class="showcase-badge">&#10003; 已簽署宣言</div>
+                        <div class="showcase-name" id="showcaseName"></div>
+                        <div class="showcase-meta" id="showcaseMeta"></div>
+                        <div class="showcase-photo" id="showcasePhoto" style="display:none"></div>
+                        <div class="showcase-cta">每一位簽署，都是對水庫的一份守護。<br>您也是候選人嗎？往下捲動立即加入簽署！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map + Candidate Picker -->
+    <div class="section wide" id="mapSection">
+        <div class="section-title">STEP 1：從地圖選擇候選人</div>
+        <p style="font-size:14px;color:#666;margin-bottom:12px">點擊縣市 → 鄉鎮市區 → 村里，找到您的選區並選取候選人，資料將自動帶入表單。</p>
+        <div class="map-section">
+            <div class="map-header">
+                <div class="map-breadcrumb" id="mapBreadcrumb">
+                    <span class="current">全台灣</span>
+                </div>
+                <div class="map-hint" id="mapHint">點擊縣市查看鄉鎮市區</div>
+            </div>
+            <div style="position:relative">
+                <div id="map"></div>
+                <div class="loading-overlay" id="mapLoading">載入中...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidate panel (shows after clicking a cunli) -->
+    <div class="section wide">
+        <div class="candidate-panel" id="candidatePanel">
+            <div class="cpanel-header">
+                <span id="cpanelTitle">選擇候選人</span>
+                <button class="close-btn" id="closeCpanel">&times;</button>
+            </div>
+            <div class="cpanel-body" id="cpanelBody"></div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="section" id="formSection">
+        <div class="or-divider">或直接手動填寫</div>
+        <div class="form-card">
+            <div class="form-grid">
+                <div class="form-row">
+                    <label for="candName">簽署人姓名 *</label>
+                    <input type="text" id="candName" placeholder="請輸入姓名" required>
+                </div>
+                <div class="form-row">
+                    <label for="candNumber">號次</label>
+                    <input type="text" id="candNumber" placeholder="如已抽籤請填入">
+                </div>
+            </div>
+            <div class="form-row">
+                <label>參選類別 *</label>
+                <div class="radio-group" id="electionType">
+                    <label><input type="radio" name="electionType" value="直轄市長">直轄市長</label>
+                    <label><input type="radio" name="electionType" value="縣市長">縣市長</label>
+                    <label><input type="radio" name="electionType" value="直轄市議員">直轄市議員</label>
+                    <label><input type="radio" name="electionType" value="縣市議員">縣市議員</label>
+                    <label><input type="radio" name="electionType" value="鄉鎮市長">鄉鎮市長</label>
+                    <label><input type="radio" name="electionType" value="鄉鎮市民代表">鄉鎮市民代表</label>
+                    <label><input type="radio" name="electionType" value="原住民區長">原住民區長</label>
+                    <label><input type="radio" name="electionType" value="原住民區民代表">原住民區民代表</label>
+                    <label><input type="radio" name="electionType" value="村里長">村里長</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="candDistrict">選區 *</label>
+                <input type="text" id="candDistrict" placeholder="例：臺南市第一選區、新營區">
+            </div>
+            <div class="form-row">
+                <label for="candParty">政黨</label>
+                <input type="text" id="candParty" placeholder="例：民主進步黨、無">
+            </div>
+            <div class="form-row" style="margin-top:20px">
+                <button class="btn-primary" id="generateBtn">產生簽署宣言</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Preview -->
+    <div class="section">
+        <div class="print-preview" id="printPreview">
+            <div class="section-title">STEP 2：列印並簽署</div>
+            <div class="a4-frame" id="a4Frame">
+                <iframe id="a4Iframe" sandbox="allow-same-origin"></iframe>
+            </div>
+            <div class="print-actions">
+                <button class="btn-primary" id="printBtn">列印宣言 (A4)</button>
+                <button class="btn-outline" id="editBtn">修改資料</button>
+            </div>
+            <div class="hashtag-cta">
+                <span>列印後親筆簽名，手持宣言拍照，接著進入 <strong>STEP 3</strong> 上傳照片完成登記。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload -->
+    <div class="section">
+        <div class="upload-section" id="uploadSection">
+            <div class="section-title">STEP 3：上傳簽署照片</div>
+            <div class="upload-info">
+                <strong>簽署人：</strong><span id="uploadName"></span><br>
+                <strong>參選類別：</strong><span id="uploadType"></span><br>
+                <strong>選區：</strong><span id="uploadDistrict"></span>
+            </div>
+            <p style="font-size:14px;color:#666;margin-bottom:16px;line-height:1.6">
+                點擊下方按鈕前往 Google 表單，上傳手持簽署宣言的照片。<br>
+                表單已預先填入您的基本資料，只需上傳照片即可完成。
+            </p>
+            <button class="btn-primary" id="uploadBtn">
+                前往上傳簽署照片
+            </button>
+            <div class="hashtag-cta" style="margin-top:16px">
+                <span>上傳完成後，也歡迎在 Threads / Facebook / IG 分享照片並標註 <strong>#水庫零光電</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-banner">不分黨派 — 九種選舉參選人皆可簽署</div>
+    <div class="site-footer">
+        <a href="https://tainan.olc.tw" target="_blank">江明宗</a> — 水庫零光電宣言
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        // ===== Config =====
+        const TOPO_BASE = 'https://kiang.github.io/taiwan_basecode';
+        const CANDIDATE_BASE = 'https://kiang.github.io/vote2026/candidates';
+        const COUNTY_TOPO = TOPO_BASE + '/county/topo/20200820.json';
+        const CITY_TOPO = TOPO_BASE + '/city/topo/20230317.json';
+        const CUNLI_TOPO_BASE = TOPO_BASE + '/cunli/topo/city/20260407';
+
+        const GOOGLE_FORM_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLSfC3ZjY0YpQj7bGsRhnUDLWiV55hzSZ1nZbB2pBkSVTfgRmxA/viewform';
+        const FORM_FIELDS = {
+            name: 'entry.1091453197',
+            electionType: 'entry.252684043',
+            district: 'entry.1575556589',
+            number: 'entry.1047309925',
+            party: 'entry.1956043932',
+        };
+
+        const PARTY_COLORS = {
+            '中國國民黨':'#000095','民主進步黨':'#1b9431','台灣民眾黨':'#28c8c8',
+            '時代力量':'#ffd700','台灣基進':'#a73f24','新黨':'#ffdb00',
+            '親民黨':'#ff6310','台灣綠黨':'#55aa33','社會民主黨':'#ff7bad',
+            '無':'#888',
+        };
+
+        const ELECTION_ORDER = [
+            '直轄市長','縣市長','直轄市議員','縣市議員',
+            '平地原住民議員','山地原住民議員',
+            '山地原住民區長','鄉鎮市長',
+            '山地原住民區民代表','鄉鎮市民代表','村里長'
+        ];
+
+        const ELECTION_TYPE_MAP = {
+            '直轄市長':'直轄市長','縣市長':'縣市長',
+            '直轄市議員':'直轄市議員','縣市議員':'縣市議員',
+            '平地原住民議員':'直轄市議員','山地原住民議員':'直轄市議員',
+            '山地原住民區長':'原住民區長','鄉鎮市長':'鄉鎮市長',
+            '山地原住民區民代表':'原住民區民代表','鄉鎮市民代表':'鄉鎮市民代表',
+            '村里長':'村里長',
+        };
+
+        // ===== Map state =====
+        let map, countyLayer, cityLayer, cunliLayer;
+        let cityTopoData = null;
+        let currentLevel = 'county';
+        let currentCounty = null;
+        let currentTown = null;
+        let highlightedCunli = null;
+        const cunliTopoCache = {};
+        const candidateCache = {};
+        let currentData = null;
+        let lastA4Html = '';
+
+        // ===== Signed candidates from Google Sheets =====
+        const SIGNED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRXcAyUYOdlOg5Xq52YxWA-kS3DSWGHzWCdqGo4MnwLXhYseOGTs9x46X4XwM2IXJL91gnaCmr_cgVj/pub?output=csv';
+        let signedMap = {};
+        let signedList = [];
+
+        function parseCSV(text) {
+            var lines = text.split('\n');
+            if (lines.length < 2) return [];
+            var rows = [];
+            for (var i = 1; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (!line) continue;
+                var cols = [];
+                var inQuote = false;
+                var field = '';
+                for (var k = 0; k < line.length; k++) {
+                    var ch = line[k];
+                    if (inQuote) {
+                        if (ch === '"') {
+                            if (k + 1 < line.length && line[k+1] === '"') { field += '"'; k++; }
+                            else inQuote = false;
+                        } else { field += ch; }
+                    } else {
+                        if (ch === '"') inQuote = true;
+                        else if (ch === ',') { cols.push(field); field = ''; }
+                        else field += ch;
+                    }
+                }
+                cols.push(field);
+                if (cols.length >= 3 && cols[1].trim()) {
+                    var photoUrl = (cols[6] || '').trim();
+                    var photoId = extractDriveId(photoUrl);
+                    rows.push({
+                        timestamp: cols[0] || '',
+                        name: cols[1].trim(),
+                        electionType: cols[2] || '',
+                        district: cols[3] || '',
+                        number: cols[4] || '',
+                        party: cols[5] || '',
+                        photoUrl: photoUrl,
+                        photoId: photoId,
+                    });
+                }
+            }
+            return rows;
+        }
+
+        function extractDriveId(url) {
+            if (!url) return '';
+            var m = url.match(/[-\w]{25,}/);
+            return m ? m[0] : '';
+        }
+
+        function drivePreviewUrl(id) {
+            return 'https://drive.google.com/file/d/' + id + '/preview';
+        }
+
+        function driveThumbnailUrl(id) {
+            return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w400';
+        }
+
+        function signedKey(name, electionType) {
+            return (name || '').trim() + '|' + (electionType || '').trim();
+        }
+
+        function isSigned(name, electionType) {
+            return !!signedMap[signedKey(name, electionType)];
+        }
+
+        async function loadSignedData() {
+            try {
+                var resp = await fetch(SIGNED_CSV_URL);
+                if (!resp.ok) return;
+                var text = await resp.text();
+                signedList = parseCSV(text);
+                signedMap = {};
+                for (var i = 0; i < signedList.length; i++) {
+                    var s = signedList[i];
+                    signedMap[signedKey(s.name, s.electionType)] = s;
+                }
+                renderSignedSection();
+            } catch(e) {}
+        }
+
+        function renderSignedSection() {
+            var section = document.getElementById('signedSection');
+            var grid = document.getElementById('signedGrid');
+            var countEl = document.getElementById('signedCount');
+            if (signedList.length === 0) { section.style.display = 'none'; return; }
+            section.style.display = '';
+            countEl.textContent = signedList.length;
+            var html = '';
+            for (var i = 0; i < signedList.length; i++) {
+                var s = signedList[i];
+                var pc = partyColor(s.party);
+                html += '<div class="signed-item">';
+                if (s.photoId) {
+                    html += '<img class="s-photo" src="' + driveThumbnailUrl(s.photoId) + '" alt="' + esc(s.name) + '" onerror="this.style.display=\'none\'">';
+                } else {
+                    html += '<span class="s-dot" style="background:' + pc + '"></span>';
+                }
+                html += '<div><div class="s-name">' + esc(s.name) + '</div>';
+                html += '<div class="s-meta">' + esc(s.electionType) + ' · ' + esc(s.district) + (s.party ? ' · ' + esc(s.party) : '') + '</div></div>';
+                html += '<span class="s-check">&#10003;</span>';
+                html += '</div>';
+            }
+            grid.innerHTML = html;
+            initShowcase();
+        }
+
+        // ===== Showcase carousel =====
+        var showcaseOrder = [];
+        var showcaseIdx = 0;
+        var showcaseTimer = null;
+
+        function initShowcase() {
+            var section = document.getElementById('showcaseSection');
+            if (signedList.length === 0) { section.style.display = 'none'; return; }
+
+            showcaseOrder = [];
+            for (var i = 0; i < signedList.length; i++) showcaseOrder.push(i);
+            for (var i = showcaseOrder.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = showcaseOrder[i]; showcaseOrder[i] = showcaseOrder[j]; showcaseOrder[j] = tmp;
+            }
+            showcaseIdx = 0;
+            section.style.display = '';
+            renderShowcase();
+            startShowcaseTimer();
+        }
+
+        function renderShowcase() {
+            if (signedList.length === 0) return;
+            var s = signedList[showcaseOrder[showcaseIdx]];
+            var pc = partyColor(s.party);
+
+            document.getElementById('showcaseIndex').textContent = showcaseIdx + 1;
+            document.getElementById('showcaseTotal').textContent = signedList.length;
+            document.getElementById('showcaseName').textContent = s.name;
+
+            var meta = '<span class="party-dot" style="background:' + pc + '"></span>' + esc(s.party || '無') + '<br>'
+                + esc(s.electionType) + '<br>'
+                + esc(s.district);
+            if (s.number) meta += ' · 號次 ' + esc(s.number);
+            document.getElementById('showcaseMeta').innerHTML = meta;
+
+            var formType = ELECTION_TYPE_MAP[s.electionType] || s.electionType;
+            var today = new Date();
+            var dateStr = s.timestamp ? s.timestamp.split(' ')[0].replace(/\//g, '/') : (today.getFullYear() + '/' + String(today.getMonth()+1).padStart(2,'0') + '/' + String(today.getDate()).padStart(2,'0'));
+            var a4html = buildA4Html({
+                name: s.name,
+                number: s.number || '',
+                electionType: formType,
+                district: s.district,
+                party: s.party,
+            }, dateStr);
+
+            var iframe = document.getElementById('showcaseIframe');
+            iframe.srcdoc = a4html;
+            requestAnimationFrame(scaleShowcaseIframe);
+
+            var photoEl = document.getElementById('showcasePhoto');
+            if (s.photoId) {
+                photoEl.innerHTML = '<iframe src="' + drivePreviewUrl(s.photoId) + '" allow="autoplay"></iframe>';
+                photoEl.style.display = '';
+            } else {
+                photoEl.innerHTML = '';
+                photoEl.style.display = 'none';
+            }
+        }
+
+        function scaleShowcaseIframe() {
+            var frame = document.getElementById('showcaseA4');
+            var iframe = document.getElementById('showcaseIframe');
+            if (!frame || !iframe) return;
+            var w = frame.clientWidth;
+            var scale = w / 794;
+            iframe.style.transform = 'scale(' + scale + ')';
+            frame.style.height = (1123 * scale) + 'px';
+        }
+
+        function showcaseNav(dir) {
+            if (signedList.length === 0) return;
+            showcaseIdx = (showcaseIdx + dir + showcaseOrder.length) % showcaseOrder.length;
+            renderShowcase();
+            startShowcaseTimer();
+        }
+
+        function startShowcaseTimer() {
+            if (showcaseTimer) clearInterval(showcaseTimer);
+            if (signedList.length > 1) {
+                showcaseTimer = setInterval(function() { showcaseNav(1); }, 8000);
+            }
+        }
+
+        document.getElementById('showcasePrev').addEventListener('click', function() { showcaseNav(-1); });
+        document.getElementById('showcaseNext').addEventListener('click', function() { showcaseNav(1); });
+
+        window.addEventListener('resize', function() {
+            if (document.getElementById('showcaseSection').style.display !== 'none') {
+                scaleShowcaseIframe();
+            }
+        });
+
+        // ===== Init map =====
+        map = L.map('map', {
+            center: [23.7, 120.9],
+            zoom: 7,
+            zoomControl: true,
+            preferCanvas: true,
+        });
+
+        L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+            attribution: '&copy; NLSC',
+            maxZoom: 18,
+        }).addTo(map);
+
+        const loadingEl = document.getElementById('mapLoading');
+        function showLoading() { loadingEl.classList.add('show'); }
+        function hideLoading() { loadingEl.classList.remove('show'); }
+
+        async function fetchJSON(url) {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error('HTTP ' + resp.status + ': ' + url);
+            return resp.json();
+        }
+
+        function esc(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function partyColor(party) {
+            if (!party || party === '無') return PARTY_COLORS['無'];
+            for (var key in PARTY_COLORS) {
+                if (party.indexOf(key) >= 0 || key.indexOf(party) >= 0) return PARTY_COLORS[key];
+            }
+            return '#aaa';
+        }
+
+        function countyColor(code) { return 'hsl(' + ((parseInt(code,10)*137)%360) + ', 45%, 65%)'; }
+        function townColor(code) { return 'hsl(' + ((parseInt(code,10)*67)%360) + ', 40%, 62%)'; }
+
+        // ===== Layers =====
+        function clearAllLayers() {
+            if (countyLayer) { map.removeLayer(countyLayer); countyLayer = null; }
+            if (cityLayer) { map.removeLayer(cityLayer); cityLayer = null; }
+            if (cunliLayer) { map.removeLayer(cunliLayer); cunliLayer = null; }
+            highlightedCunli = null;
+        }
+
+        let clickHandledByFeature = false;
+        map.on('click', function() {
+            if (clickHandledByFeature) { clickHandledByFeature = false; return; }
+            if (currentLevel === 'cunli' && currentCounty) {
+                loadTowns(currentCounty.code, currentCounty.name);
+            } else if (currentLevel === 'city') {
+                goToCounty();
+            }
+        });
+
+        // ===== County =====
+        async function loadCounties() {
+            showLoading();
+            try {
+                var topo = await fetchJSON(COUNTY_TOPO);
+                var objName = Object.keys(topo.objects)[0];
+                var geojson = topojson.feature(topo, topo.objects[objName]);
+                clearAllLayers();
+                countyLayer = L.geoJSON(geojson, {
+                    style: function(f) { return { fillColor: countyColor(f.properties.COUNTYCODE), fillOpacity: 0.5, color: '#fff', weight: 2 }; },
+                    onEachFeature: function(f, layer) {
+                        layer.bindTooltip(f.properties.COUNTYNAME, { sticky: false });
+                        layer.on('click', function() { clickHandledByFeature = true; loadTowns(f.properties.COUNTYCODE, f.properties.COUNTYNAME); });
+                    }
+                }).addTo(map);
+                currentLevel = 'county'; currentCounty = null; currentTown = null;
+                closeCandidatePanel();
+                updateMapBreadcrumb();
+            } finally { hideLoading(); }
+        }
+
+        // ===== Town =====
+        async function loadTowns(countyCode, countyName) {
+            showLoading();
+            try {
+                if (!cityTopoData) cityTopoData = await fetchJSON(CITY_TOPO);
+                var objName = Object.keys(cityTopoData.objects)[0];
+                var allGeo = topojson.feature(cityTopoData, cityTopoData.objects[objName]);
+                var filtered = { type:'FeatureCollection', features: allGeo.features.filter(function(f){ return f.properties.COUNTYCODE === countyCode; }) };
+                clearAllLayers();
+                cityLayer = L.geoJSON(filtered, {
+                    style: function(f) { return { fillColor: townColor(f.properties.TOWNCODE), fillOpacity: 0.5, color: '#fff', weight: 1.5 }; },
+                    onEachFeature: function(f, layer) {
+                        layer.bindTooltip(f.properties.TOWNNAME, { sticky: false });
+                        layer.on('click', function() { clickHandledByFeature = true; loadCunli(countyCode, countyName, f.properties.TOWNCODE, f.properties.TOWNNAME); });
+                    }
+                }).addTo(map);
+                map.fitBounds(cityLayer.getBounds(), { padding: [20,20] });
+                currentLevel = 'city'; currentCounty = { code: countyCode, name: countyName }; currentTown = null;
+                closeCandidatePanel();
+                updateMapBreadcrumb();
+            } finally { hideLoading(); }
+        }
+
+        // ===== Cunli =====
+        async function loadCunli(countyCode, countyName, townCode, townName) {
+            showLoading();
+            try {
+                if (!cunliTopoCache[countyName]) {
+                    cunliTopoCache[countyName] = await fetchJSON(CUNLI_TOPO_BASE + '/' + encodeURIComponent(countyName) + '.json');
+                }
+                var topo = cunliTopoCache[countyName];
+                var objName = Object.keys(topo.objects)[0];
+                var allGeo = topojson.feature(topo, topo.objects[objName]);
+                var filtered = { type:'FeatureCollection', features: allGeo.features.filter(function(f){ return f.properties.TOWNCODE === townCode; }) };
+                clearAllLayers();
+                cunliLayer = L.geoJSON(filtered, {
+                    style: function() { return { fillColor: '#85c1e9', fillOpacity: 0.35, color: '#2471a3', weight: 1 }; },
+                    onEachFeature: function(f, layer) {
+                        var label = f.properties.VILLNAME || f.properties.NOTE || '';
+                        layer.bindTooltip(label, { sticky: false });
+                        layer.on('click', function() {
+                            clickHandledByFeature = true;
+                            showCandidatePicker(f.properties.VILLCODE, countyName, townName, label);
+                            highlightCunliLayer(layer);
+                        });
+                    }
+                }).addTo(map);
+                map.fitBounds(cunliLayer.getBounds(), { padding: [20,20] });
+                currentLevel = 'cunli'; currentCounty = { code: countyCode, name: countyName }; currentTown = { code: townCode, name: townName };
+                closeCandidatePanel();
+                updateMapBreadcrumb();
+            } finally { hideLoading(); }
+        }
+
+        function highlightCunliLayer(layer) {
+            if (highlightedCunli) highlightedCunli.setStyle({ color: '#2471a3', weight: 1, fillOpacity: 0.35 });
+            highlightedCunli = layer;
+            if (layer) { layer.setStyle({ color: '#e74c3c', weight: 3, fillOpacity: 0.55 }); layer.bringToFront(); }
+        }
+
+        // ===== Breadcrumb =====
+        function updateMapBreadcrumb() {
+            var bc = document.getElementById('mapBreadcrumb');
+            var hint = document.getElementById('mapHint');
+            var html = '<a onclick="window._mapGoCounty()">全台灣</a>';
+            if (currentCounty) {
+                html += '<span class="sep">›</span>';
+                if (currentTown) {
+                    html += '<a onclick="window._mapGoTown(\'' + currentCounty.code + '\',\'' + esc(currentCounty.name) + '\')">' + esc(currentCounty.name) + '</a>';
+                } else {
+                    html += '<span class="current">' + esc(currentCounty.name) + '</span>';
+                }
+            }
+            if (currentTown) {
+                html += '<span class="sep">›</span><span class="current">' + esc(currentTown.name) + '</span>';
+            }
+            bc.innerHTML = html;
+            if (currentLevel === 'county') hint.textContent = '點擊縣市查看鄉鎮市區';
+            else if (currentLevel === 'city') hint.textContent = '點擊鄉鎮市區查看村里';
+            else hint.textContent = '點擊村里選擇候選人';
+        }
+
+        window._mapGoCounty = function() { loadCounties(); map.setView([23.7, 120.9], 7); };
+        window._mapGoTown = function(code, name) { loadTowns(code, name); };
+
+        // ===== Candidate picker =====
+        async function showCandidatePicker(villcode, countyName, townName, villName) {
+            var panel = document.getElementById('candidatePanel');
+            var title = document.getElementById('cpanelTitle');
+            var body = document.getElementById('cpanelBody');
+
+            title.textContent = countyName + townName + villName + ' — 選擇候選人';
+            body.innerHTML = '<div style="text-align:center;padding:20px;color:#999">載入候選人...</div>';
+            panel.classList.add('show');
+
+            try {
+                if (!candidateCache[villcode]) {
+                    candidateCache[villcode] = await fetchJSON(CANDIDATE_BASE + '/' + villcode + '.json');
+                }
+                var data = candidateCache[villcode];
+                renderCandidatePicker(data);
+            } catch(e) {
+                body.innerHTML = '<div style="text-align:center;padding:20px;color:#c0392b">尚無候選人資料</div>';
+            }
+
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function renderCandidatePicker(data) {
+            var elections = data.elections || {};
+            var body = document.getElementById('cpanelBody');
+            if (Object.keys(elections).length === 0) {
+                body.innerHTML = '<div style="text-align:center;padding:20px;color:#999">尚無候選人資料</div>';
+                return;
+            }
+
+            var sorted = ELECTION_ORDER.filter(function(e){ return elections[e]; })
+                .concat(Object.keys(elections).filter(function(e){ return ELECTION_ORDER.indexOf(e) < 0; }));
+
+            var html = '';
+            for (var i = 0; i < sorted.length; i++) {
+                var etype = sorted[i];
+                var edata = elections[etype];
+                if (!edata) continue;
+                html += '<div class="cpanel-election">';
+                html += '<h4>' + esc(etype) + '</h4>';
+                html += '<div class="district-label">' + esc(edata.district || '') + (edata.zone ? ' (' + esc(edata.zone) + ')' : '') + '</div>';
+
+                for (var j = 0; j < edata.candidates.length; j++) {
+                    var c = edata.candidates[j];
+                    var pc = partyColor(c.party);
+                    var cdata = JSON.stringify({
+                        name: c.name,
+                        party: c.party || '無',
+                        electionType: etype,
+                        district: edata.district || '',
+                    }).replace(/"/g, '&quot;');
+
+                    var candSignedData = signedMap[signedKey(c.name, etype)];
+                    var candSigned = !!candSignedData;
+                    html += '<div class="cand-pick' + (candSigned ? ' is-signed' : '') + '" data-cand="' + cdata + '">';
+                    if (candSigned && candSignedData.photoId) {
+                        html += '<img class="cand-photo-small" src="' + driveThumbnailUrl(candSignedData.photoId) + '" alt="" onerror="this.style.display=\'none\'">';
+                    } else {
+                        html += '<span class="party-dot" style="background:' + pc + '"></span>';
+                    }
+                    html += '<div><div class="cand-name">' + esc(c.name);
+                    if (candSigned) html += '<span class="signed-badge-inline">&#10003; 已簽署</span>';
+                    html += '</div>';
+                    html += '<div class="cand-party">' + esc(c.party) + '</div></div>';
+                    html += '<span class="pick-icon">選取 →</span>';
+                    html += '</div>';
+                }
+                html += '</div>';
+            }
+
+            body.innerHTML = html;
+
+            body.querySelectorAll('.cand-pick').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    body.querySelectorAll('.cand-pick').forEach(function(e){ e.classList.remove('selected'); });
+                    el.classList.add('selected');
+                    var cand = JSON.parse(el.getAttribute('data-cand'));
+                    fillFormFromCandidate(cand);
+                });
+            });
+        }
+
+        function fillFormFromCandidate(cand) {
+            var nameInput = document.getElementById('candName');
+            var districtInput = document.getElementById('candDistrict');
+            var partyInput = document.getElementById('candParty');
+
+            nameInput.value = cand.name;
+            nameInput.classList.add('filled-from-map');
+            districtInput.value = cand.district;
+            districtInput.classList.add('filled-from-map');
+            partyInput.value = cand.party || '';
+            partyInput.classList.add('filled-from-map');
+
+            var formType = ELECTION_TYPE_MAP[cand.electionType] || cand.electionType;
+            var radios = document.querySelectorAll('input[name="electionType"]');
+            radios.forEach(function(r) {
+                r.checked = (r.value === formType);
+            });
+
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+
+            setTimeout(function() {
+                nameInput.classList.remove('filled-from-map');
+                districtInput.classList.remove('filled-from-map');
+                partyInput.classList.remove('filled-from-map');
+            }, 2000);
+        }
+
+        function closeCandidatePanel() {
+            document.getElementById('candidatePanel').classList.remove('show');
+        }
+        document.getElementById('closeCpanel').addEventListener('click', closeCandidatePanel);
+
+        // ===== Form =====
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            var data = getFormData();
+            if (!data) return;
+            currentData = data;
+
+            var today = new Date();
+            var dateStr = today.getFullYear() + '/' + String(today.getMonth()+1).padStart(2,'0') + '/' + String(today.getDate()).padStart(2,'0');
+
+            lastA4Html = buildA4Html(data, dateStr);
+            var iframe = document.getElementById('a4Iframe');
+            iframe.srcdoc = lastA4Html;
+
+            requestAnimationFrame(scaleIframe);
+
+            document.getElementById('printPreview').classList.add('show');
+            document.getElementById('uploadSection').classList.add('show');
+
+            document.getElementById('uploadName').textContent = data.name;
+            document.getElementById('uploadType').textContent = data.electionType;
+            document.getElementById('uploadDistrict').textContent = data.district;
+
+            setActiveStep(2);
+            setTimeout(function() {
+                document.getElementById('printPreview').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+
+        document.getElementById('printBtn').addEventListener('click', function() {
+            if (!lastA4Html) return;
+            var w = window.open('', '_blank');
+            if (!w) { alert('請允許彈出視窗以列印宣言'); return; }
+            w.document.write(lastA4Html);
+            w.document.close();
+            w.onload = function() { w.print(); };
+        });
+
+        document.getElementById('editBtn').addEventListener('click', function() {
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+            setActiveStep(1);
+        });
+
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            if (!currentData) return;
+            var params = new URLSearchParams();
+            params.set(FORM_FIELDS.name, currentData.name);
+            params.set(FORM_FIELDS.electionType, currentData.electionType);
+            params.set(FORM_FIELDS.district, currentData.district);
+            if (currentData.number) params.set(FORM_FIELDS.number, currentData.number);
+            if (currentData.party) params.set(FORM_FIELDS.party, currentData.party);
+            window.open(GOOGLE_FORM_BASE + '?' + params.toString(), '_blank');
+            setActiveStep(3);
+        });
+
+        function getFormData() {
+            var name = document.getElementById('candName').value.trim();
+            var number = document.getElementById('candNumber').value.trim();
+            var typeEl = document.querySelector('input[name="electionType"]:checked');
+            var district = document.getElementById('candDistrict').value.trim();
+            var party = document.getElementById('candParty').value.trim();
+
+            if (!name) { alert('請輸入簽署人姓名'); return null; }
+            if (!typeEl) { alert('請選擇參選類別'); return null; }
+            if (!district) { alert('請輸入選區'); return null; }
+
+            return { name:name, number:number, electionType:typeEl.value, district:district, party:party };
+        }
+
+        function setActiveStep(n) {
+            for (var i = 1; i <= 3; i++) {
+                var chip = document.getElementById('stepChip' + i);
+                if (i <= n) chip.classList.add('active');
+                else chip.classList.remove('active');
+            }
+        }
+
+        function scaleIframe() {
+            var frame = document.getElementById('a4Frame');
+            var iframe = document.getElementById('a4Iframe');
+            var w = frame.clientWidth;
+            var scale = w / 794;
+            iframe.style.transform = 'scale(' + scale + ')';
+            frame.style.height = (1123 * scale) + 'px';
+        }
+
+        window.addEventListener('resize', function() {
+            if (document.getElementById('printPreview').classList.contains('show')) scaleIframe();
+        });
+
+        function buildA4Html(data, dateStr) {
+            var types = ['直轄市長','縣市長','直轄市議員','縣市議員','鄉鎮市長','鄉鎮市民代表','原住民區長','原住民區民代表','村里長'];
+            var checkboxes = types.map(function(t) {
+                var checked = t === data.electionType;
+                var cs = checked
+                    ? 'width:15px;height:15px;border:1.5px solid #14171c;border-radius:2px;background:#0E2640;position:relative'
+                    : 'width:15px;height:15px;border:1.5px solid #14171c;border-radius:2px';
+                var cm = checked
+                    ? '<svg style="position:absolute;top:1px;left:1px" width="11" height="11" viewBox="0 0 11 11"><path d="M2 5.5L4.5 8L9 3" stroke="#FFD600" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+                    : '';
+                return '<span style="display:flex;align-items:center;gap:8px;font-size:14px"><span style="flex:none;' + cs + '">' + cm + '</span>' + esc(t) + '</span>';
+            }).join('');
+
+            return '<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><style>'
+                + "@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap');"
+                + '*{box-sizing:border-box;margin:0;padding:0}body{margin:0;background:#fff}'
+                + '@media print{@page{size:A4;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
+                + '</style></head><body>'
+                + '<div style="width:794px;height:1123px;box-sizing:border-box;background:#fff;font-family:\'Noto Sans TC\',sans-serif;color:#14171c;display:flex;flex-direction:column">'
+                + '<div style="background:#0E2640;padding:34px 56px 26px;display:flex;flex-direction:column;gap:8px">'
+                + '<div style="display:flex;align-items:center;justify-content:space-between">'
+                + '<span style="font-size:15px;font-weight:700;letter-spacing:0.16em;color:#FFD600">2026 地方選舉參選人簽署</span>'
+                + '<span style="font-size:13px;color:#c9d4e2"></span></div>'
+                + '<h1 style="margin:0;font-family:\'Noto Serif TC\',serif;font-weight:900;font-size:62px;line-height:1.1;color:#fff;letter-spacing:0.04em">水庫零光電宣言</h1>'
+                + '<p style="margin:0;font-size:19px;font-weight:500;color:#FFD600">民生用水，不拿來做實驗</p></div>'
+                + '<div style="flex:1;padding:24px 56px 0;display:flex;flex-direction:column;gap:20px">'
+                + '<p style="margin:0;font-size:15px;line-height:1.7">水庫是民生用水的源頭。翡翠水庫被中央三度發函詢問能否設置光電，三次都依法拒絕；全國每一座民生用水水庫，都應該有同樣的保護。本人參選 2026 年地方公職人員選舉，願意簽署本宣言，並承諾以職權與影響力落實以下三點：</p>'
+                + '<div style="display:flex;flex-direction:column;gap:18px">'
+                + '<div style="display:flex;gap:18px;align-items:flex-start"><span style="flex:none;width:42px;height:42px;border-radius:50%;background:#0E2640;color:#fff;font-weight:900;font-size:21px;display:flex;align-items:center;justify-content:center">1</span><div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:23px;font-weight:900;line-height:1.3">民生用水水庫水面光電板，立刻移除</strong><span style="font-size:16px;line-height:1.55;color:#2b323b">包括烏山頭水庫在內，已設置在民生用水水庫水面上的光電板，全部立刻移除。</span></div></div>'
+                + '<div style="display:flex;gap:18px;align-items:flex-start"><span style="flex:none;width:42px;height:42px;border-radius:50%;background:#0E2640;color:#fff;font-weight:900;font-size:21px;display:flex;align-items:center;justify-content:center">2</span><div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:23px;font-weight:900;line-height:1.3">民生用水水庫，零新增水面光電板</strong><span style="font-size:16px;line-height:1.55;color:#2b323b">不論中央發幾次公文，民生用水水庫一片都不准再鋪。</span></div></div>'
+                + '<div style="display:flex;gap:18px;align-items:flex-start"><span style="flex:none;width:42px;height:42px;border-radius:50%;background:#0E2640;color:#fff;font-weight:900;font-size:21px;display:flex;align-items:center;justify-content:center">3</span><div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:23px;font-weight:900;line-height:1.3">水庫光電，地方說不就不准</strong><span style="font-size:16px;line-height:1.55;color:#2b323b">任何水庫光電案，沒有在地居民與地方議會同意，一律不准。</span></div></div>'
+                + '</div>'
+                + '<div style="border:2px solid #0E2640;border-radius:10px;padding:16px 22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;row-gap:14px">'
+                + '<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:700;color:#3d4652">簽署人姓名</span><div style="height:28px;border-bottom:1.5px solid #14171c;font-size:18px;font-weight:700;padding-top:2px">' + esc(data.name) + '</div></div>'
+                + '<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:700;color:#3d4652">號次</span><div style="height:28px;border-bottom:1.5px solid #14171c;font-size:18px;font-weight:700;padding-top:2px">' + esc(data.number) + '</div></div>'
+                + '<div style="grid-column:1/-1;display:flex;flex-direction:column;gap:8px"><span style="font-size:13px;font-weight:700;color:#3d4652">參選類別</span><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));row-gap:8px;column-gap:12px">' + checkboxes + '</div></div>'
+                + '<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:700;color:#3d4652">選區</span><div style="height:28px;border-bottom:1.5px solid #14171c;font-size:18px;font-weight:700;padding-top:2px">' + esc(data.district) + '</div></div>'
+                + '<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:700;color:#3d4652">簽署日期</span><div style="height:28px;border-bottom:1.5px solid #14171c;font-size:18px;font-weight:700;padding-top:2px">' + esc(dateStr) + '</div></div>'
+                + '<div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:700;color:#3d4652">親筆簽名</span><div style="height:48px;border-bottom:1.5px solid #14171c"></div></div>'
+                + '</div></div>'
+                + '<div style="margin-top:16px;padding:14px 56px 26px;border-top:1px solid #c9ced6;display:flex;justify-content:space-between;align-items:center;gap:16px">'
+                + '<span style="font-size:13px;line-height:1.5;color:#3d4652">簽署後手持本宣言拍照，上傳 Threads／Facebook／IG<br>並標註 <strong style="color:#0E2640">#水庫零光電</strong></span>'
+                + '<span style="font-size:13px;font-weight:700;color:#0E2640;text-align:right">不分黨派・九種選舉參選人皆可簽署</span></div>'
+                + '</div></body></html>';
+        }
+
+        // ===== Init =====
+        loadCounties();
+        loadSignedData();
+    })();
+    </script>
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="簽署照片">
+    </div>
+    <script>
+    (function(){
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lightbox-img');
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('photo-thumb') || e.target.classList.contains('s-photo')) {
+                lbImg.src = e.target.src;
+                lb.classList.add('active');
+            }
+        });
+        lb.addEventListener('click', function() { lb.classList.remove('active'); lbImg.src = ''; });
+    })();
+    </script>
+</body>
+
+</html>
