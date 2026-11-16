@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<title>我已簽署 分享圖</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&amp;family=Noto+Serif+TC:wght@900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FFD600}a:hover{color:#ffe866}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1080px; box-sizing: border-box; background: #0E2640; font-family: 'Noto Sans TC', sans-serif; color: #ffffff; display: flex; flex-direction: column">
+  <div style="height: 700px; margin: 48px 48px 0; border-radius: 16px; background: #26496f; border: 3px dashed #7d97b5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px">
+    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#c9d4e2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+    <span style="font-size: 32px; font-weight: 700; color: #e3e9f1">放入手持宣言的簽署照片</span>
+    <span style="font-size: 22px; color: #c9d4e2">選取此區，替換成你的照片</span>
+  </div>
+  <div style="flex: 1; padding: 0 64px; display: flex; align-items: center; justify-content: space-between; gap: 32px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 30px; font-weight: 900; color: {{accent}}">我已簽署</span>
+      <span style="font-family: 'Noto Serif TC', serif; font-size: 84px; font-weight: 900; line-height: 1.1">水庫零光電宣言</span>
+    </div>
+    <div style="flex: none; width: 150px; height: 150px; border-radius: 50%; border: 6px solid {{accent}}; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-10deg)">
+      <span style="font-size: 26px; font-weight: 900; color: {{accent}}">立刻</span>
+      <span style="font-size: 26px; font-weight: 900; color: {{accent}}">移除</span>
+    </div>
+  </div>
+  <div style="height: 110px; background: {{accent}}; display: flex; align-items: center; justify-content: space-between; padding: 0 64px">
+    <span style="font-size: 36px; font-weight: 900; color: #0E2640">[參選職務／選區] [號次] [姓名]</span>
+    <span style="font-size: 30px; font-weight: 900; color: #0E2640">#水庫零光電</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFD600","options":["#FFD600","#FFFFFF","#7FD1FF"]},"$preview":{"width":1080,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FFD600' };
+  }
+}
+</script>
+</body>
+</html>
