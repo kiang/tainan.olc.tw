@@ -159,6 +159,30 @@
         .showcase-badge{display:inline-flex;align-items:center;gap:6px;background:#1b9431;color:#fff;font-size:13px;font-weight:700;padding:6px 14px;border-radius:20px}
         .showcase-cta{margin-top:8px;font-size:14px;color:#666;line-height:1.6}
 
+        /* Evidence slideshow */
+        .evidence{background:#0E2640;overflow:hidden;position:relative}
+        .evidence .section-title{color:#FFD600;border-left-color:#FFD600}
+        .evidence-intro{font-size:15px;color:#c9d4e2;line-height:1.7;margin-bottom:16px;max-width:720px}
+        .evidence-intro strong{color:#FFD600}
+        .slideshow{position:relative;width:100%;max-width:720px;margin:0 auto;overflow:hidden;border-radius:12px;background:#000}
+        .slideshow-track{display:flex;transition:transform .5s ease}
+        .slide{flex:none;width:100%;position:relative}
+        .slide img{width:100%;height:auto;display:block}
+        .slide-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:48px 20px 16px;color:#fff;font-size:14px;line-height:1.5}
+        .slide-caption strong{color:#FFD600;display:block;font-size:16px;margin-bottom:2px}
+        .slide-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(14,38,64,0.7);color:#FFD600;border:none;width:40px;height:40px;border-radius:50%;font-size:20px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .15s}
+        .slide-nav:hover{background:rgba(14,38,64,0.95)}
+        .slide-nav.prev{left:10px}
+        .slide-nav.next{right:10px}
+        .slide-dots{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap}
+        .slide-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.3);cursor:pointer;padding:0;transition:all .15s}
+        .slide-dots button.active{background:#FFD600;width:20px;border-radius:4px}
+        .slide-counter{text-align:center;margin-top:8px;font-size:12px;color:rgba(255,255,255,0.5)}
+        .evidence-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:20px;max-width:720px}
+        .fact-card{background:rgba(255,255,255,0.08);border-radius:10px;padding:16px;border-left:3px solid #FFD600}
+        .fact-card .fact-num{font-size:28px;font-weight:900;color:#FFD600;line-height:1}
+        .fact-card .fact-label{font-size:13px;color:#c9d4e2;margin-top:4px;line-height:1.4}
+
         /* Photo preview */
         .photo-frame{border-radius:8px;overflow:hidden;border:1px solid #e0e4ea;background:#f0f2f5}
         .photo-frame iframe{width:100%;height:240px;border:none}
@@ -217,6 +241,35 @@
             <div class="num">STEP 3</div>
             <div class="label">上傳照片</div>
             <div class="desc">完成簽署登記</div>
+        </div>
+    </div>
+
+    <!-- Evidence slideshow -->
+    <div class="evidence">
+        <div class="section" style="max-width:720px">
+            <div class="section-title">現場直擊：水庫光電的真相</div>
+            <p class="evidence-intro">這些不是別人說的，是<strong>你喝的水</strong>正在經歷的事。烏山頭水庫供應南台灣四分之一民生用水，光電板卻鋪在水面上——水退了，剩下的是這些。</p>
+            <div class="slideshow" id="slideshow">
+                <button class="slide-nav prev" id="slidePrev">&#8249;</button>
+                <button class="slide-nav next" id="slideNext">&#8250;</button>
+                <div class="slideshow-track" id="slideTrack"></div>
+            </div>
+            <div class="slide-dots" id="slideDots"></div>
+            <div class="slide-counter" id="slideCounter"></div>
+            <div class="evidence-facts">
+                <div class="fact-card">
+                    <div class="fact-num">1/4</div>
+                    <div class="fact-label">南台灣民生用水<br>來自烏山頭水庫</div>
+                </div>
+                <div class="fact-card">
+                    <div class="fact-num">3 次</div>
+                    <div class="fact-label">翡翠水庫依法拒絕<br>中央設置光電</div>
+                </div>
+                <div class="fact-card">
+                    <div class="fact-num">24 張</div>
+                    <div class="fact-label">現場實拍照片<br>記錄光電板污染</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1077,6 +1130,96 @@
                 + '<span style="font-size:13px;font-weight:700;color:#0E2640;text-align:right">不分黨派・九種選舉參選人皆可簽署</span></div>'
                 + '</div></body></html>';
         }
+
+        // ===== Evidence slideshow =====
+        var SLIDES = [
+            { img: 'photos/06.jpg', title: '光電板佔據水面', desc: '大片光電板鋪滿水庫，遮蔽水面、阻礙日照與水體自淨' },
+            { img: 'photos/05.jpg', title: '水庫全景', desc: '低水位時光電板仍覆蓋大面積水面，纜線散落四周' },
+            { img: 'photos/16.jpg', title: '光電板傾斜擱淺', desc: '水位下降後光電板失去浮力，大面積傾倒在淤泥上' },
+            { img: 'photos/12.jpg', title: '電纜纏繞泥地', desc: '水位退去，裸露的電纜、水管遍佈龜裂的庫底泥地' },
+            { img: 'photos/10.jpg', title: '纜線纏上枯木', desc: '光電設備纜線纏繞漂流木，結成無法清理的廢棄物' },
+            { img: 'photos/02.jpg', title: '電纜堆積岸邊', desc: '大量線管從水中拖上岸邊，藍色浮體散落一地' },
+            { img: 'photos/09.jpg', title: '浮體與線管', desc: '近距離拍攝破損的藍色浮體與交纏的輸電線管' },
+            { img: 'photos/24.jpg', title: '浮體沉入淤泥', desc: '原本漂浮的藍色浮座陷入庫底泥沙，金屬支架扭曲' },
+            { img: 'photos/18.jpg', title: '面板變形', desc: '面板在泥沙上大面積扭曲變形，結構嚴重損壞' },
+            { img: 'photos/07.jpg', title: '面板傾倒特寫', desc: '浮座傾覆、支架斷裂，面板疊壓在泥面上' },
+            { img: 'photos/08.jpg', title: '泥沙中的設備', desc: '光電設備近拍：變壓器、纜線暴露在含泥水體中' },
+            { img: 'photos/13.jpg', title: '全景鳥瞰', desc: '水庫低水位全景——大片光電板擱淺在乾涸的庫底' },
+            { img: 'photos/11.jpg', title: '水管與水泥塊', desc: '固定光電板的水泥配重與大量水管橫陳泥地' },
+            { img: 'photos/03.jpg', title: '岸邊纜線蔓延', desc: '纜線從水面延伸至岸上，與漂流木混雜' },
+            { img: 'photos/04.jpg', title: '工作船擱淺', desc: '維護用的小船擱淺在泥灘上，光電板遠方可見' },
+            { img: 'photos/01.jpg', title: '水庫遠景', desc: '從高處看烏山頭水庫——光電板佔據水面中央' },
+            { img: 'photos/14.jpg', title: '底部結構暴露', desc: '浮座翻覆後暴露底部金屬結構，鏽蝕嚴重' },
+            { img: 'photos/15.jpg', title: '線管特寫', desc: '纜線管路橫越泥面，與廢棄繩索纏結在一起' },
+            { img: 'photos/17.jpg', title: '線管拖行痕跡', desc: '泥地上清晰可見線管被拖拉的痕跡' },
+            { img: 'photos/19.jpg', title: '連續記錄 1', desc: '同一地點連續拍攝：光電板群在低水位時的慘狀' },
+            { img: 'photos/20.jpg', title: '連續記錄 2', desc: '大面積面板傾斜，藍色浮座半沒入泥中' },
+            { img: 'photos/21.jpg', title: '連續記錄 3', desc: '面板鏽蝕、泥垢堆積，與乾淨飲用水形成強烈對比' },
+            { img: 'photos/22.jpg', title: '連續記錄 4', desc: '不同角度拍攝——光電板已不堪使用' },
+            { img: 'photos/23.jpg', title: '連續記錄 5', desc: '最後一張全景——這就是你喝的水上面的東西' },
+        ];
+
+        var slideIdx = 0;
+        var slideTimer = null;
+
+        function initSlideshow() {
+            var track = document.getElementById('slideTrack');
+            var dots = document.getElementById('slideDots');
+            var html = '';
+            var dotHtml = '';
+            for (var i = 0; i < SLIDES.length; i++) {
+                var s = SLIDES[i];
+                html += '<div class="slide"><img src="' + s.img + '" alt="' + esc(s.title) + '" loading="' + (i < 3 ? 'eager' : 'lazy') + '"><div class="slide-caption"><strong>' + esc(s.title) + '</strong>' + esc(s.desc) + '</div></div>';
+                dotHtml += '<button data-idx="' + i + '" class="' + (i===0?'active':'') + '"></button>';
+            }
+            track.innerHTML = html;
+            dots.innerHTML = dotHtml;
+            updateSlideCounter();
+
+            dots.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON' && e.target.dataset.idx !== undefined) {
+                    goToSlide(parseInt(e.target.dataset.idx));
+                }
+            });
+
+            document.getElementById('slidePrev').addEventListener('click', function() { slideNav(-1); });
+            document.getElementById('slideNext').addEventListener('click', function() { slideNav(1); });
+
+            startSlideTimer();
+
+            var slideshow = document.getElementById('slideshow');
+            var touchStartX = 0;
+            slideshow.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+            slideshow.addEventListener('touchend', function(e) {
+                var dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) slideNav(dx < 0 ? 1 : -1);
+            }, { passive: true });
+        }
+
+        function goToSlide(idx) {
+            slideIdx = idx;
+            var track = document.getElementById('slideTrack');
+            track.style.transform = 'translateX(-' + (slideIdx * 100) + '%)';
+            var btns = document.getElementById('slideDots').querySelectorAll('button');
+            btns.forEach(function(b, i) { b.classList.toggle('active', i === slideIdx); });
+            updateSlideCounter();
+            startSlideTimer();
+        }
+
+        function slideNav(dir) {
+            goToSlide((slideIdx + dir + SLIDES.length) % SLIDES.length);
+        }
+
+        function updateSlideCounter() {
+            document.getElementById('slideCounter').textContent = (slideIdx + 1) + ' / ' + SLIDES.length;
+        }
+
+        function startSlideTimer() {
+            if (slideTimer) clearInterval(slideTimer);
+            slideTimer = setInterval(function() { slideNav(1); }, 5000);
+        }
+
+        initSlideshow();
 
         // ===== Init =====
         loadCounties();
