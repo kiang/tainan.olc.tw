@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>水庫零光電 A2 橫式</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#111}a:hover{color:#000}
+.bgphoto{background-image:url(./assets/f6029a4ea36bf0c5327864078188db8e.jpg);background-size:cover;background-position:50% 62%}
+</style>
+</helmet>
+<div style="width: 2245px; height: 1587px; position: relative; overflow: hidden; background: #111; font-family: 'Noto Sans TC', sans-serif; color: #111">
+
+  <div class="bgphoto" style="position: absolute; left: 0; top: 0; width: 2245px; height: 1587px"></div>
+
+  <div style="position: absolute; left: 0; top: 0; width: 2245px; height: 470px; background: {{yellow}}; display: flex; align-items: center; justify-content: center">
+    <div style="font-weight: 900; font-size: 390px; line-height: 1; letter-spacing: 24px; padding-left: 24px">水庫零光電</div>
+  </div>
+
+  <div style="position: absolute; left: 96px; top: 590px; transform: rotate(-4deg); transform-origin: left top; background: {{red}}; border: 14px solid #ffffff; padding: 18px 56px 34px 56px">
+    <div style="font-weight: 900; font-size: 230px; line-height: 1.05; color: #ffffff; letter-spacing: 12px">立即拆除</div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 1227px; width: 2245px; height: 360px; background: #111; box-sizing: border-box; padding: 0 96px; display: flex; align-items: center; gap: 56px">
+    <div style="width: 286px; height: 286px; flex: none; border-radius: 143px; background: {{yellow}}; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 250px; line-height: 1; color: #111">2</div>
+    <div style="font-weight: 900; font-size: 250px; line-height: 1; letter-spacing: 20px; color: {{yellow}}">江明宗</div>
+    <div style="flex: 1"></div>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px">
+      <div style="font-weight: 700; font-size: 76px; line-height: 1.15; color: #ffffff">北中西區</div>
+      <div style="font-weight: 700; font-size: 76px; line-height: 1.15; color: #ffffff">台南市議員候選人</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"yellow":{"editor":"color","default":"#F2E500"},"red":{"editor":"color","default":"#D7261E"},"$preview":{"width":2245,"height":1587}}'>
+class Component extends DCLogic {
+renderVals() {
+return { yellow: this.props.yellow ?? '#F2E500', red: this.props.red ?? '#D7261E' };
+}
+}
+</script>
+</body>
+</html>
