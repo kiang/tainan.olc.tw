@@ -1033,6 +1033,13 @@
 
             document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
 
+            // Also fill poster fields
+            var formType = ELECTION_TYPE_MAP[cand.electionType] || cand.electionType;
+            document.getElementById('posterName').value = cand.name;
+            document.getElementById('posterDistrict').value = cand.district;
+            document.getElementById('posterTitle').value = formType;
+            if (typeof updatePosterPreview === 'function') updatePosterPreview();
+
             setTimeout(function() {
                 nameInput.classList.remove('filled-from-map');
                 districtInput.classList.remove('filled-from-map');
@@ -1299,7 +1306,7 @@
                 + '<div style="position:absolute;left:96px;top:590px;transform:rotate(-4deg);transform-origin:left top;background:#D7261E;border:14px solid #fff;padding:18px 56px 34px 56px">'
                 + '<div style="font-weight:900;font-size:230px;line-height:1.05;color:#fff;letter-spacing:12px">立即拆除</div></div>'
                 + '<div style="position:absolute;left:0;top:1227px;width:2245px;height:360px;background:#111;padding:0 96px;display:flex;align-items:center;gap:56px">'
-                + '<div style="width:286px;height:286px;flex:none;border-radius:143px;background:#F2E500;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:250px;line-height:1;color:#111">' + esc(d.num) + '</div>'
+                + '<div style="width:286px;height:286px;flex:none;border-radius:143px;background:#F2E500;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:' + (d.num.length > 1 ? '160' : '250') + 'px;line-height:1;color:#111">' + esc(d.num) + '</div>'
                 + '<div style="font-weight:900;font-size:250px;line-height:1;letter-spacing:20px;color:#F2E500">' + esc(d.name) + '</div>'
                 + '<div style="flex:1"></div>'
                 + '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">'
@@ -1385,7 +1392,7 @@
                 ctx.fillStyle = yellow;
                 ctx.fill();
                 ctx.fillStyle = '#111';
-                ctx.font = '900 250px "Noto Sans TC"';
+                ctx.font = '900 ' + (d.num.length > 1 ? '160' : '250') + 'px "Noto Sans TC"';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(d.num, circleX, circleY + 8);
