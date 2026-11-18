@@ -183,6 +183,30 @@
         .fact-card .fact-num{font-size:28px;font-weight:900;color:#FFD600;line-height:1}
         .fact-card .fact-label{font-size:13px;color:#c9d4e2;margin-top:4px;line-height:1.4}
 
+        /* Poster generator */
+        .poster-section{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .poster-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+        @media(max-width:500px){.poster-form{grid-template-columns:1fr}}
+        .poster-form label{display:block;font-size:13px;font-weight:700;color:#3d4652;margin-bottom:4px}
+        .poster-form input{width:100%;padding:8px 10px;border:1.5px solid #c9ced6;border-radius:8px;font-size:15px;font-family:inherit;background:#fafbfc}
+        .poster-form input:focus{outline:none;border-color:#2980b9;box-shadow:0 0 0 3px rgba(41,128,185,0.15)}
+        .poster-wrap{position:relative;width:100%;max-width:720px;margin:0 auto}
+        .poster-frame{width:100%;aspect-ratio:2245/1587;position:relative;overflow:hidden;border-radius:8px;border:1px solid #e0e4ea;background:#111;font-family:'Noto Sans TC',sans-serif;color:#111}
+        .poster-frame *{box-sizing:border-box}
+        .poster-bg{position:absolute;left:0;top:0;width:100%;height:100%;background-image:url(poster/bg.jpg);background-size:cover;background-position:50% 62%}
+        .poster-top{position:absolute;left:0;top:0;width:100%;height:29.6%;display:flex;align-items:center;justify-content:center}
+        .poster-top-text{font-weight:900;font-size:17.4%;line-height:1;letter-spacing:0.01em}
+        .poster-badge{position:absolute;left:4.3%;top:37.2%;transform:rotate(-4deg);transform-origin:left top;border:0.62% solid #fff;padding:0.8% 2.5% 1.5%}
+        .poster-badge-text{font-weight:900;font-size:10.2%;line-height:1.05;color:#fff;letter-spacing:0.005em}
+        .poster-bottom{position:absolute;left:0;bottom:0;width:100%;height:22.7%;background:#111;padding:0 4.3%;display:flex;align-items:center;gap:2.5%}
+        .poster-num-circle{width:12.74%;aspect-ratio:1;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11.1%;line-height:1;color:#111}
+        .poster-cand-name{font-weight:900;font-size:11.1%;line-height:1;letter-spacing:0.009em}
+        .poster-cand-info{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:0.6%}
+        .poster-cand-info span{font-weight:700;font-size:3.39%;line-height:1.15;color:#fff}
+        .poster-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+        .poster-actions .btn-primary,.poster-actions .btn-outline{flex:1;min-width:200px}
+        .poster-note{font-size:13px;color:#666;margin-top:12px;line-height:1.5}
+
         /* Photo preview */
         .photo-frame{border-radius:8px;overflow:hidden;border:1px solid #e0e4ea;background:#f0f2f5}
         .photo-frame iframe{width:100%;height:240px;border:none}
@@ -449,6 +473,55 @@
             <div class="hashtag-cta" style="margin-top:16px">
                 <span>上傳完成後，也歡迎在 Threads / Facebook / IG 分享照片並標註 <strong>#水庫零光電</strong></span>
             </div>
+        </div>
+    </div>
+
+    <!-- Poster generator -->
+    <div class="section wide" id="posterSection">
+        <div class="section-title">製作競選海報（A2 橫式）</div>
+        <div class="poster-section">
+            <p style="font-size:14px;color:#666;margin-bottom:14px;line-height:1.6">填入您的資料，即時預覽海報效果。完成後可下載高解析度圖片，直接送印 A2 海報。</p>
+            <div class="poster-form">
+                <div>
+                    <label for="posterName">候選人姓名</label>
+                    <input type="text" id="posterName" placeholder="例：江明宗" maxlength="5">
+                </div>
+                <div>
+                    <label for="posterNumber">號次</label>
+                    <input type="text" id="posterNumber" placeholder="例：2" maxlength="2">
+                </div>
+                <div>
+                    <label for="posterDistrict">選區</label>
+                    <input type="text" id="posterDistrict" placeholder="例：北中西區">
+                </div>
+                <div>
+                    <label for="posterTitle">參選職務</label>
+                    <input type="text" id="posterTitle" placeholder="例：台南市議員候選人">
+                </div>
+            </div>
+            <div class="poster-wrap">
+                <div class="poster-frame" id="posterFrame">
+                    <div class="poster-bg"></div>
+                    <div class="poster-top" id="posterTop" style="background:#F2E500">
+                        <div class="poster-top-text">水庫零光電</div>
+                    </div>
+                    <div class="poster-badge" id="posterBadge" style="background:#D7261E">
+                        <div class="poster-badge-text">立即拆除</div>
+                    </div>
+                    <div class="poster-bottom">
+                        <div class="poster-num-circle" id="posterNumCircle" style="background:#F2E500"><span id="posterNumText">2</span></div>
+                        <div class="poster-cand-name" id="posterNameText" style="color:#F2E500">江明宗</div>
+                        <div class="poster-cand-info">
+                            <span id="posterDistrictText">北中西區</span>
+                            <span id="posterTitleText">台南市議員候選人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="poster-actions">
+                <button class="btn-primary" id="posterDownload">下載高解析度海報圖片</button>
+            </div>
+            <div class="poster-note">下載後可直接送印 A2（594×420mm）海報。建議使用電腦操作以獲得最佳解析度。</div>
         </div>
     </div>
 
@@ -1220,6 +1293,137 @@
         }
 
         initSlideshow();
+
+        // ===== Poster generator =====
+        var posterInputs = ['posterName','posterNumber','posterDistrict','posterTitle'];
+        posterInputs.forEach(function(id) {
+            document.getElementById(id).addEventListener('input', updatePosterPreview);
+        });
+
+        function updatePosterPreview() {
+            var name = document.getElementById('posterName').value.trim() || '江明宗';
+            var num = document.getElementById('posterNumber').value.trim() || '2';
+            var district = document.getElementById('posterDistrict').value.trim() || '北中西區';
+            var title = document.getElementById('posterTitle').value.trim() || '台南市議員候選人';
+
+            document.getElementById('posterNumText').textContent = num;
+            document.getElementById('posterNameText').textContent = name;
+            document.getElementById('posterDistrictText').textContent = district;
+            document.getElementById('posterTitleText').textContent = title;
+        }
+
+        document.getElementById('posterDownload').addEventListener('click', function() {
+            var name = document.getElementById('posterName').value.trim() || '江明宗';
+            var num = document.getElementById('posterNumber').value.trim() || '2';
+            var district = document.getElementById('posterDistrict').value.trim() || '北中西區';
+            var title = document.getElementById('posterTitle').value.trim() || '台南市議員候選人';
+
+            var W = 2245, H = 1587;
+            var canvas = document.createElement('canvas');
+            canvas.width = W; canvas.height = H;
+            var ctx = canvas.getContext('2d');
+
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                // Draw background photo (cover fit at 50% 62%)
+                var iw = img.width, ih = img.height;
+                var scale = Math.max(W / iw, H / ih);
+                var sw = iw * scale, sh = ih * scale;
+                var dx = (W - sw) * 0.5;
+                var dy = (H - sh) * 0.62;
+                ctx.drawImage(img, dx, dy, sw, sh);
+
+                var yellow = '#F2E500';
+                var red = '#D7261E';
+
+                // Top bar
+                ctx.fillStyle = yellow;
+                ctx.fillRect(0, 0, W, 470);
+                ctx.fillStyle = '#111';
+                ctx.font = '900 390px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('水庫零光電', W / 2 + 12, 235);
+
+                // Red badge "立即拆除"
+                ctx.save();
+                ctx.translate(96, 590);
+                ctx.rotate(-4 * Math.PI / 180);
+                var badgeText = '立即拆除';
+                ctx.font = '900 230px "Noto Sans TC"';
+                var tw = ctx.measureText(badgeText).width;
+                var bw = tw + 112, bh = 310;
+                ctx.fillStyle = red;
+                ctx.fillRect(-14, -14, bw + 28, bh + 28);
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 14;
+                ctx.strokeRect(0, 0, bw, bh);
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText(badgeText, 56, 18);
+                ctx.restore();
+
+                // Bottom bar
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, H - 360, W, 360);
+
+                // Number circle
+                var circleX = 96 + 143, circleY = H - 360 + 180;
+                ctx.beginPath();
+                ctx.arc(circleX, circleY, 143, 0, Math.PI * 2);
+                ctx.fillStyle = yellow;
+                ctx.fill();
+                ctx.fillStyle = '#111';
+                ctx.font = '900 250px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(num, circleX, circleY + 8);
+
+                // Name
+                ctx.fillStyle = yellow;
+                ctx.font = '900 250px "Noto Sans TC"';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(name, 96 + 286 + 56, circleY + 8);
+
+                // District + title (right side)
+                ctx.fillStyle = '#fff';
+                ctx.font = '700 76px "Noto Sans TC"';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(district, W - 96, circleY - 48);
+                ctx.fillText(title, W - 96, circleY + 48);
+
+                canvas.toBlob(function(blob) {
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = '水庫零光電_' + name + '_A2.png';
+                    a.click();
+                    URL.revokeObjectURL(a.href);
+                }, 'image/png');
+            };
+            img.onerror = function() {
+                alert('背景圖片載入失敗，請重試');
+            };
+            img.src = 'poster/bg.jpg';
+        });
+
+        // Also auto-fill poster from form data when generating the signing doc
+        var origGenerate = document.getElementById('generateBtn');
+        origGenerate.addEventListener('click', function() {
+            setTimeout(function() {
+                if (!currentData) return;
+                var pn = document.getElementById('posterName');
+                var pd = document.getElementById('posterDistrict');
+                var pt = document.getElementById('posterTitle');
+                if (!pn.value) pn.value = currentData.name;
+                if (!pd.value) pd.value = currentData.district;
+                if (!pt.value) pt.value = currentData.electionType;
+                updatePosterPreview();
+            }, 100);
+        }, true);
 
         // ===== Init =====
         loadCounties();
