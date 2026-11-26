@@ -1,0 +1,49 @@
+{
+  "date": "2026-01-12",
+  "projectName": "【行動政府-行動正能量】女力鐵馬精神",
+  "dotName": "前導車",
+  "totalDistance": 0,
+  "totalDistanceKm": 0.0,
+  "restCount": 0,
+  "anomalyCount": 0,
+  "center": {
+    "lat": 22.991267,
+    "lng": 120.184733
+  },
+  "points": [
+    {
+      "lat": 22.991267,
+      "lng": 120.184733
+    }
+  ],
+  "timeline": [
+    {
+      "time": "00:00:02",
+      "lat": 22.991267,
+      "lng": 120.184733,
+      "addr": "臺南市安平區南島路",
+      "power": "12.3V",
+      "gpsType": null,
+      "distance": 0,
+      "speed": 0.0,
+      "status": "normal",
+      "stationaryUntil": "06:49:02",
+      "stationaryDuration": 1
+    }
+  ],
+  "restStops": [],
+  "speedAnomalies": [],
+  "segments": [
+    {
+      "from": "起點",
+      "fromTime": "00:00:02",
+      "fromAddr": "臺南市安平區南島路",
+      "fromPointIndex": 0,
+      "to": "終點",
+      "toTime": "00:00:02",
+      "toAddr": "臺南市安平區南島路",
+      "toPointIndex": 0,
+      "distance": 0.0
+    }
+  ]
+}

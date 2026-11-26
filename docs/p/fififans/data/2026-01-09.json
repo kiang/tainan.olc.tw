@@ -1,0 +1,49 @@
+{
+  "date": "2026-01-09",
+  "projectName": "【行動政府-行動正能量】女力鐵馬精神",
+  "dotName": "前導車",
+  "totalDistance": 0,
+  "totalDistanceKm": 0.0,
+  "restCount": 0,
+  "anomalyCount": 0,
+  "center": {
+    "lat": 23.041967,
+    "lng": 120.249733
+  },
+  "points": [
+    {
+      "lat": 23.041967,
+      "lng": 120.249733
+    }
+  ],
+  "timeline": [
+    {
+      "time": "00:00:02",
+      "lat": 23.041967,
+      "lng": 120.249733,
+      "addr": "臺南市永康區中正北路347號",
+      "power": "12.3V",
+      "gpsType": null,
+      "distance": 0,
+      "speed": 0.0,
+      "status": "normal",
+      "stationaryUntil": "18:02:02",
+      "stationaryDuration": 3
+    }
+  ],
+  "restStops": [],
+  "speedAnomalies": [],
+  "segments": [
+    {
+      "from": "起點",
+      "fromTime": "00:00:02",
+      "fromAddr": "臺南市永康區中正北路347號",
+      "fromPointIndex": 0,
+      "to": "終點",
+      "toTime": "00:00:02",
+      "toAddr": "臺南市永康區中正北路347號",
+      "toPointIndex": 0,
+      "distance": 0.0
+    }
+  ]
+}

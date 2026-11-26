@@ -1,2454 +1,3387 @@
 {
-    "date": "2026-11-16",
-    "projectName": "陳亭妃&妃妃鐵馬車隊37區",
-    "dotName": "妃妃鐵馬車隊",
-    "totalDistance": 23499,
-    "totalDistanceKm": 23.5,
-    "restCount": 11,
-    "anomalyCount": 1,
-    "center": {
-        "lat": 23.136749480620153,
-        "lng": 120.2972509457363
+  "date": "2026-11-16",
+  "projectName": "陳亭妃&妃妃鐵馬車隊37區",
+  "dotName": "妃妃鐵馬車隊",
+  "totalDistance": 41645,
+  "totalDistanceKm": 41.64,
+  "restCount": 13,
+  "anomalyCount": 0,
+  "center": {
+    "lat": 23.126590373626392,
+    "lng": 120.31370910439546
+  },
+  "points": [
+    {
+      "lat": 23.13255,
+      "lng": 120.2897
     },
-    "points": [
-        {
-            "lat": 23.13255,
-            "lng": 120.2897
-        },
-        {
-            "lat": 23.13245,
-            "lng": 120.289733
-        },
-        {
-            "lat": 23.1324,
-            "lng": 120.289917
-        },
-        {
-            "lat": 23.132267,
-            "lng": 120.29075
-        },
-        {
-            "lat": 23.132183,
-            "lng": 120.292367
-        },
-        {
-            "lat": 23.13215,
-            "lng": 120.2933
-        },
-        {
-            "lat": 23.132117,
-            "lng": 120.29455
-        },
-        {
-            "lat": 23.132033,
-            "lng": 120.295367
-        },
-        {
-            "lat": 23.132,
-            "lng": 120.295933
-        },
-        {
-            "lat": 23.132083,
-            "lng": 120.296633
-        },
-        {
-            "lat": 23.132183,
-            "lng": 120.2971
-        },
-        {
-            "lat": 23.132467,
-            "lng": 120.29885
-        },
-        {
-            "lat": 23.1326,
-            "lng": 120.2998
-        },
-        {
-            "lat": 23.132667,
-            "lng": 120.300633
-        },
-        {
-            "lat": 23.1329,
-            "lng": 120.302167
-        },
-        {
-            "lat": 23.133183,
-            "lng": 120.304067
-        },
-        {
-            "lat": 23.133283,
-            "lng": 120.304867
-        },
-        {
-            "lat": 23.133333,
-            "lng": 120.305567
-        },
-        {
-            "lat": 23.1323,
-            "lng": 120.305767
-        },
-        {
-            "lat": 23.131633,
-            "lng": 120.305283
-        },
-        {
-            "lat": 23.131483,
-            "lng": 120.304267
-        },
-        {
-            "lat": 23.13125,
-            "lng": 120.302783
-        },
-        {
-            "lat": 23.13115,
-            "lng": 120.30205
-        },
-        {
-            "lat": 23.13105,
-            "lng": 120.30125
-        },
-        {
-            "lat": 23.13065,
-            "lng": 120.299117
-        },
-        {
-            "lat": 23.130583,
-            "lng": 120.298883
-        },
-        {
-            "lat": 23.1304,
-            "lng": 120.297433
-        },
-        {
-            "lat": 23.130083,
-            "lng": 120.295367
-        },
-        {
-            "lat": 23.13005,
-            "lng": 120.294817
-        },
-        {
-            "lat": 23.1301,
-            "lng": 120.29445
-        },
-        {
-            "lat": 23.129933,
-            "lng": 120.293283
-        },
-        {
-            "lat": 23.1296,
-            "lng": 120.292283
-        },
-        {
-            "lat": 23.12925,
-            "lng": 120.291233
-        },
-        {
-            "lat": 23.128633,
-            "lng": 120.289433
-        },
-        {
-            "lat": 23.128117,
-            "lng": 120.288117
-        },
-        {
-            "lat": 23.12735,
-            "lng": 120.288
-        },
-        {
-            "lat": 23.12755,
-            "lng": 120.289667
-        },
-        {
-            "lat": 23.128467,
-            "lng": 120.292433
-        },
-        {
-            "lat": 23.1288,
-            "lng": 120.2933
-        },
-        {
-            "lat": 23.1292,
-            "lng": 120.294767
-        },
-        {
-            "lat": 23.129417,
-            "lng": 120.296233
-        },
-        {
-            "lat": 23.129467,
-            "lng": 120.296517
-        },
-        {
-            "lat": 23.129683,
-            "lng": 120.298117
-        },
-        {
-            "lat": 23.129817,
-            "lng": 120.2989
-        },
-        {
-            "lat": 23.13005,
-            "lng": 120.300533
-        },
-        {
-            "lat": 23.1302,
-            "lng": 120.301583
-        },
-        {
-            "lat": 23.130567,
-            "lng": 120.303983
-        },
-        {
-            "lat": 23.1306,
-            "lng": 120.30595
-        },
-        {
-            "lat": 23.129467,
-            "lng": 120.310033
-        },
-        {
-            "lat": 23.128417,
-            "lng": 120.311267
-        },
-        {
-            "lat": 23.126617,
-            "lng": 120.31055
-        },
-        {
-            "lat": 23.125133,
-            "lng": 120.31005
-        },
-        {
-            "lat": 23.123717,
-            "lng": 120.310817
-        },
-        {
-            "lat": 23.12405,
-            "lng": 120.312417
-        },
-        {
-            "lat": 23.124517,
-            "lng": 120.314
-        },
-        {
-            "lat": 23.124833,
-            "lng": 120.316
-        },
-        {
-            "lat": 23.126183,
-            "lng": 120.317667
-        },
-        {
-            "lat": 23.12685,
-            "lng": 120.318183
-        },
-        {
-            "lat": 23.12725,
-            "lng": 120.318367
-        },
-        {
-            "lat": 23.127467,
-            "lng": 120.318917
-        },
-        {
-            "lat": 23.129533,
-            "lng": 120.319817
-        },
-        {
-            "lat": 23.13275,
-            "lng": 120.32105
-        },
-        {
-            "lat": 23.1349,
-            "lng": 120.3219
-        },
-        {
-            "lat": 23.1354,
-            "lng": 120.323217
-        },
-        {
-            "lat": 23.135317,
-            "lng": 120.325833
-        },
-        {
-            "lat": 23.13545,
-            "lng": 120.326867
-        },
-        {
-            "lat": 23.135333,
-            "lng": 120.326967
-        },
-        {
-            "lat": 23.136233,
-            "lng": 120.326917
-        },
-        {
-            "lat": 23.138533,
-            "lng": 120.327
-        },
-        {
-            "lat": 23.140933,
-            "lng": 120.327667
-        },
-        {
-            "lat": 23.142083,
-            "lng": 120.327217
-        },
-        {
-            "lat": 23.140367,
-            "lng": 120.326583
-        },
-        {
-            "lat": 23.138983,
-            "lng": 120.325267
-        },
-        {
-            "lat": 23.1389,
-            "lng": 120.324233
-        },
-        {
-            "lat": 23.1389,
-            "lng": 120.324067
-        },
-        {
-            "lat": 23.138167,
-            "lng": 120.319833
-        },
-        {
-            "lat": 23.138017,
-            "lng": 120.319283
-        },
-        {
-            "lat": 23.139283,
-            "lng": 120.318367
-        },
-        {
-            "lat": 23.1396,
-            "lng": 120.316417
-        },
-        {
-            "lat": 23.141433,
-            "lng": 120.3161
-        },
-        {
-            "lat": 23.144667,
-            "lng": 120.316083
-        },
-        {
-            "lat": 23.148283,
-            "lng": 120.316017
-        },
-        {
-            "lat": 23.151017,
-            "lng": 120.3164
-        },
-        {
-            "lat": 23.153833,
-            "lng": 120.316867
-        },
-        {
-            "lat": 23.1558,
-            "lng": 120.31705
-        },
-        {
-            "lat": 23.1562,
-            "lng": 120.3159
-        },
-        {
-            "lat": 23.1561,
-            "lng": 120.313
-        },
-        {
-            "lat": 23.155917,
-            "lng": 120.310167
-        },
-        {
-            "lat": 23.15575,
-            "lng": 120.30705
-        },
-        {
-            "lat": 23.15495,
-            "lng": 120.30465
-        },
-        {
-            "lat": 23.15375,
-            "lng": 120.302333
-        },
-        {
-            "lat": 23.152767,
-            "lng": 120.300367
-        },
-        {
-            "lat": 23.151533,
-            "lng": 120.2978
-        },
-        {
-            "lat": 23.151883,
-            "lng": 120.295333
-        },
-        {
-            "lat": 23.15325,
-            "lng": 120.292683
-        },
-        {
-            "lat": 23.153367,
-            "lng": 120.290317
-        },
-        {
-            "lat": 23.15315,
-            "lng": 120.288033
-        },
-        {
-            "lat": 23.153117,
-            "lng": 120.287733
-        },
-        {
-            "lat": 23.151283,
-            "lng": 120.28395
-        },
-        {
-            "lat": 23.1514,
-            "lng": 120.283867
-        },
-        {
-            "lat": 23.15005,
-            "lng": 120.282
-        },
-        {
-            "lat": 23.14865,
-            "lng": 120.279717
-        },
-        {
-            "lat": 23.14585,
-            "lng": 120.27935
-        },
-        {
-            "lat": 23.144067,
-            "lng": 120.27925
-        },
-        {
-            "lat": 23.142233,
-            "lng": 120.277833
-        },
-        {
-            "lat": 23.140917,
-            "lng": 120.27545
-        },
-        {
-            "lat": 23.14275,
-            "lng": 120.273867
-        },
-        {
-            "lat": 23.143783,
-            "lng": 120.273017
-        },
-        {
-            "lat": 23.1458,
-            "lng": 120.272367
-        },
-        {
-            "lat": 23.147067,
-            "lng": 120.27185
-        },
-        {
-            "lat": 23.146467,
-            "lng": 120.269917
-        },
-        {
-            "lat": 23.144817,
-            "lng": 120.26925
-        },
-        {
-            "lat": 23.14335,
-            "lng": 120.26865
-        },
-        {
-            "lat": 23.1411,
-            "lng": 120.267033
-        },
-        {
-            "lat": 23.138367,
-            "lng": 120.264983
-        },
-        {
-            "lat": 23.137683,
-            "lng": 120.264333
-        },
-        {
-            "lat": 23.135917,
-            "lng": 120.262717
-        },
-        {
-            "lat": 23.133917,
-            "lng": 120.261867
-        },
-        {
-            "lat": 23.133683,
-            "lng": 120.2601
-        },
-        {
-            "lat": 23.133467,
-            "lng": 120.259533
-        },
-        {
-            "lat": 23.13345,
-            "lng": 120.259417
-        },
-        {
-            "lat": 23.133433,
-            "lng": 120.259583
-        },
-        {
-            "lat": 23.13355,
-            "lng": 120.25975
-        },
-        {
-            "lat": 23.134283,
-            "lng": 120.259767
-        },
-        {
-            "lat": 23.137317,
-            "lng": 120.264033
-        },
-        {
-            "lat": 23.13045,
-            "lng": 120.267467
-        },
-        {
-            "lat": 23.130333,
-            "lng": 120.268917
-        },
-        {
-            "lat": 23.131417,
-            "lng": 120.273217
-        },
-        {
-            "lat": 23.1316,
-            "lng": 120.274567
-        }
-    ],
-    "timeline": [
-        {
-            "time": "09:04:02",
-            "lat": 23.13255,
-            "lng": 120.2897,
-            "addr": "臺南市善化區中山路483號",
-            "power": "09.0V",
-            "gpsType": "GPS停止發送",
-            "distance": 0,
-            "speed": 0,
-            "status": "normal",
-            "stationaryUntil": "09:05:03",
-            "stationaryDuration": 1
-        },
-        {
-            "time": "09:06:02",
-            "lat": 23.13245,
-            "lng": 120.289733,
-            "addr": "臺南市善化區中山路472號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 12,
-            "speed": 0.3,
-            "status": "rest",
-            "stationaryUntil": "09:57:02",
-            "stationaryDuration": 51
-        },
-        {
-            "time": "09:58:02",
-            "lat": 23.1324,
-            "lng": 120.289917,
-            "addr": "臺南市善化區中山路459號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 20,
-            "speed": 0,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:00:02",
-            "lat": 23.132267,
-            "lng": 120.29075,
-            "addr": "臺南市善化區中山路436號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 86,
-            "speed": 2.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:01:02",
-            "lat": 23.132183,
-            "lng": 120.292367,
-            "addr": "臺南市善化區中山路372號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 166,
-            "speed": 9.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:02:02",
-            "lat": 23.13215,
-            "lng": 120.2933,
-            "addr": "臺南市善化區中山路354號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 95,
-            "speed": 5.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:03:02",
-            "lat": 23.132117,
-            "lng": 120.29455,
-            "addr": "臺南市善化區中山路310號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 128,
-            "speed": 7.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:04:02",
-            "lat": 23.132033,
-            "lng": 120.295367,
-            "addr": "臺南市善化區中山路294號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 84,
-            "speed": 5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:05:02",
-            "lat": 23.132,
-            "lng": 120.295933,
-            "addr": "臺南市善化區中山路283-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 58,
-            "speed": 3.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:06:02",
-            "lat": 23.132083,
-            "lng": 120.296633,
-            "addr": "臺南市善化區中山路259號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 72,
-            "speed": 4.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:07:02",
-            "lat": 23.132183,
-            "lng": 120.2971,
-            "addr": "臺南市善化區中山路253號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 49,
-            "speed": 2.9,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:08:02",
-            "lat": 23.132467,
-            "lng": 120.29885,
-            "addr": "臺南市善化區中山路216-2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 182,
-            "speed": 10.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:09:02",
-            "lat": 23.1326,
-            "lng": 120.2998,
-            "addr": "臺南市善化區中山路204號",
-            "power": "08.9V",
-            "gpsType": "GPS發送中",
-            "distance": 98,
-            "speed": 5.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:10:02",
-            "lat": 23.132667,
-            "lng": 120.300633,
-            "addr": "臺南市善化區中山路187號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 86,
-            "speed": 5.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:11:02",
-            "lat": 23.1329,
-            "lng": 120.302167,
-            "addr": "臺南市善化區中山路125號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 159,
-            "speed": 9.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:12:01",
-            "lat": 23.133183,
-            "lng": 120.304067,
-            "addr": "臺南市善化區中山路57號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 197,
-            "speed": 12,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:13:07",
-            "lat": 23.133283,
-            "lng": 120.304867,
-            "addr": "臺南市善化區中山路43之3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 83,
-            "speed": 4.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:14:02",
-            "lat": 23.133333,
-            "lng": 120.305567,
-            "addr": "臺南市善化區中山路36號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 72,
-            "speed": 4.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:15:02",
-            "lat": 23.1323,
-            "lng": 120.305767,
-            "addr": "臺南市善化區光文路8-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 117,
-            "speed": 7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:16:02",
-            "lat": 23.131633,
-            "lng": 120.305283,
-            "addr": "臺南市善化區民生路28號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 89,
-            "speed": 5.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:17:02",
-            "lat": 23.131483,
-            "lng": 120.304267,
-            "addr": "臺南市善化區民生路72號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 105,
-            "speed": 6.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:18:02",
-            "lat": 23.13125,
-            "lng": 120.302783,
-            "addr": "臺南市善化區民生路131號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 154,
-            "speed": 9.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:19:02",
-            "lat": 23.13115,
-            "lng": 120.30205,
-            "addr": "臺南市善化區仁愛路40號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 76,
-            "speed": 4.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:20:02",
-            "lat": 23.13105,
-            "lng": 120.30125,
-            "addr": "臺南市善化區民生路186號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 83,
-            "speed": 5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:21:02",
-            "lat": 23.13065,
-            "lng": 120.299117,
-            "addr": "臺南市善化區民生路277號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 223,
-            "speed": 13.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:22:02",
-            "lat": 23.130583,
-            "lng": 120.298883,
-            "addr": "臺南市善化區民生路283號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 25,
-            "speed": 1.5,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:23:02",
-            "lat": 23.1304,
-            "lng": 120.297433,
-            "addr": "臺南市善化區民生路356號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 150,
-            "speed": 9,
-            "status": "normal",
-            "stationaryUntil": "10:24:02",
-            "stationaryDuration": 1
-        },
-        {
-            "time": "10:25:02",
-            "lat": 23.130083,
-            "lng": 120.295367,
-            "addr": "臺南市善化區民生路423號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 214,
-            "speed": 6.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:26:02",
-            "lat": 23.13005,
-            "lng": 120.294817,
-            "addr": "臺南市善化區民生路468號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 56,
-            "speed": 3.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:27:02",
-            "lat": 23.1301,
-            "lng": 120.29445,
-            "addr": "臺南市善化區中正路418巷6號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 38,
-            "speed": 2.3,
-            "status": "rest",
-            "stationaryUntil": "10:28:02",
-            "stationaryDuration": 1
-        },
-        {
-            "time": "10:29:02",
-            "lat": 23.129933,
-            "lng": 120.293283,
-            "addr": "臺南市善化區文昌路6之2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 121,
-            "speed": 3.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:30:02",
-            "lat": 23.1296,
-            "lng": 120.292283,
-            "addr": "臺南市善化區文昌路15號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 109,
-            "speed": 6.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:31:02",
-            "lat": 23.12925,
-            "lng": 120.291233,
-            "addr": "臺南市善化區大同路242-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 114,
-            "speed": 6.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:32:01",
-            "lat": 23.128633,
-            "lng": 120.289433,
-            "addr": "臺南市善化區文昌路81號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 196,
-            "speed": 12,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:33:02",
-            "lat": 23.128117,
-            "lng": 120.288117,
-            "addr": "臺南市善化區文昌路76號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 146,
-            "speed": 8.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:34:02",
-            "lat": 23.12735,
-            "lng": 120.288,
-            "addr": "臺南市善化區光復路297號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 86,
-            "speed": 5.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:35:02",
-            "lat": 23.12755,
-            "lng": 120.289667,
-            "addr": "臺南市善化區光復路202號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 172,
-            "speed": 10.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:36:02",
-            "lat": 23.128467,
-            "lng": 120.292433,
-            "addr": "臺南市善化區光復路48號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 301,
-            "speed": 18,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:37:02",
-            "lat": 23.1288,
-            "lng": 120.2933,
-            "addr": "臺南市善化區大信路65號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 96,
-            "speed": 5.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:38:02",
-            "lat": 23.1292,
-            "lng": 120.294767,
-            "addr": "臺南市善化區大成路426號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 156,
-            "speed": 9.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:39:02",
-            "lat": 23.129417,
-            "lng": 120.296233,
-            "addr": "臺南市善化區大成路368號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 152,
-            "speed": 9.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:40:02",
-            "lat": 23.129467,
-            "lng": 120.296517,
-            "addr": "臺南市善化區大成路351–365號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 30,
-            "speed": 1.8,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:41:02",
-            "lat": 23.129683,
-            "lng": 120.298117,
-            "addr": "臺南市善化區大成路312號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 165,
-            "speed": 9.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:42:02",
-            "lat": 23.129817,
-            "lng": 120.2989,
-            "addr": "臺南市善化區大成路274號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 81,
-            "speed": 4.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:43:02",
-            "lat": 23.13005,
-            "lng": 120.300533,
-            "addr": "臺南市善化區大成路210號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 169,
-            "speed": 10.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:44:01",
-            "lat": 23.1302,
-            "lng": 120.301583,
-            "addr": "臺南市善化區大成路168號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 109,
-            "speed": 6.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:45:02",
-            "lat": 23.130567,
-            "lng": 120.303983,
-            "addr": "臺南市善化區大成路85號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 249,
-            "speed": 14.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:46:02",
-            "lat": 23.1306,
-            "lng": 120.30595,
-            "addr": "臺南市善化區大成路9號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 201,
-            "speed": 12.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:47:02",
-            "lat": 23.129467,
-            "lng": 120.310033,
-            "addr": "臺南市善化區成功路387號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 436,
-            "speed": 26.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:48:01",
-            "lat": 23.128417,
-            "lng": 120.311267,
-            "addr": "臺南市善化區成功路349巷7-3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 172,
-            "speed": 10.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:49:02",
-            "lat": 23.126617,
-            "lng": 120.31055,
-            "addr": "臺南市善化區成功路349巷2-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 213,
-            "speed": 12.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:50:02",
-            "lat": 23.125133,
-            "lng": 120.31005,
-            "addr": "臺南市善化區小新里小新營97-5號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 173,
-            "speed": 10.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:51:02",
-            "lat": 23.123717,
-            "lng": 120.310817,
-            "addr": "臺南市善化區小新里小新營97號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 176,
-            "speed": 10.6,
-            "status": "normal",
-            "stationaryUntil": "10:54:02",
-            "stationaryDuration": 3
-        },
-        {
-            "time": "10:55:02",
-            "lat": 23.12405,
-            "lng": 120.312417,
-            "addr": "臺南市善化區小新里小新營72-6號",
-            "power": "08.9V",
-            "gpsType": "GPS發送中",
-            "distance": 168,
-            "speed": 2.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:56:02",
-            "lat": 23.124517,
-            "lng": 120.314,
-            "addr": "臺南市善化區小新營45號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 170,
-            "speed": 10.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:57:01",
-            "lat": 23.124833,
-            "lng": 120.316,
-            "addr": "臺南市善化區小新營3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 208,
-            "speed": 12.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:58:02",
-            "lat": 23.126183,
-            "lng": 120.317667,
-            "addr": "臺南市善化區成功路3巷39號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 227,
-            "speed": 13.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "10:59:02",
-            "lat": 23.12685,
-            "lng": 120.318183,
-            "addr": "臺南市善化區成功路3巷5號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 91,
-            "speed": 5.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:00:02",
-            "lat": 23.12725,
-            "lng": 120.318367,
-            "addr": "臺南市善化區成功路15號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 48,
-            "speed": 2.9,
-            "status": "rest",
-            "stationaryUntil": "11:01:02",
-            "stationaryDuration": 1
-        },
-        {
-            "time": "11:02:02",
-            "lat": 23.127467,
-            "lng": 120.318917,
-            "addr": "臺南市善化區小新里小新營296號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 61,
-            "speed": 1.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:03:02",
-            "lat": 23.129533,
-            "lng": 120.319817,
-            "addr": "臺南市善化區縱貫公路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 247,
-            "speed": 14.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:04:07",
-            "lat": 23.13275,
-            "lng": 120.32105,
-            "addr": "臺南市善化區嘉南里茄拔370之2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 379,
-            "speed": 21,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:05:02",
-            "lat": 23.1349,
-            "lng": 120.3219,
-            "addr": "臺南市善化區嘉南里茄拔368-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 254,
-            "speed": 16.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:06:02",
-            "lat": 23.1354,
-            "lng": 120.323217,
-            "addr": "臺南市善化區嘉南里茄拔331號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 146,
-            "speed": 8.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:07:02",
-            "lat": 23.135317,
-            "lng": 120.325833,
-            "addr": "臺南市善化區茄拔74號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 268,
-            "speed": 16.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:08:02",
-            "lat": 23.13545,
-            "lng": 120.326867,
-            "addr": "臺南市善化區嘉南里茄拔85號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 107,
-            "speed": 6.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:09:02",
-            "lat": 23.135333,
-            "lng": 120.326967,
-            "addr": "臺南市嘉南里76號之2",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 17,
-            "speed": 1,
-            "status": "rest",
-            "stationaryUntil": "11:21:02",
-            "stationaryDuration": 12
-        },
-        {
-            "time": "11:22:02",
-            "lat": 23.136233,
-            "lng": 120.326917,
-            "addr": "臺南市善化區嘉南里茄拔57-6號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 100,
-            "speed": 0.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:23:02",
-            "lat": 23.138533,
-            "lng": 120.327,
-            "addr": "臺南市善化區茄拔29號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 256,
-            "speed": 15.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:24:01",
-            "lat": 23.140933,
-            "lng": 120.327667,
-            "addr": "臺南市善化區茄拔181號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 275,
-            "speed": 16.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:25:02",
-            "lat": 23.142083,
-            "lng": 120.327217,
-            "addr": "臺南市善化區茄拔185號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 136,
-            "speed": 8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:26:02",
-            "lat": 23.140367,
-            "lng": 120.326583,
-            "addr": "臺南市善化區茄拔175號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 202,
-            "speed": 12.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:27:02",
-            "lat": 23.138983,
-            "lng": 120.325267,
-            "addr": "臺南市善化區茄拔265-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 204,
-            "speed": 12.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:28:02",
-            "lat": 23.1389,
-            "lng": 120.324233,
-            "addr": "臺南市善化區茄拔265-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 106,
-            "speed": 6.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:29:02",
-            "lat": 23.1389,
-            "lng": 120.324067,
-            "addr": "臺南市善化區嘉北里茄拔280之1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 17,
-            "speed": 1,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:30:02",
-            "lat": 23.138167,
-            "lng": 120.319833,
-            "addr": "臺南市善化區牛庄26號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 441,
-            "speed": 26.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:31:02",
-            "lat": 23.138017,
-            "lng": 120.319283,
-            "addr": "臺南市善化區光文路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 59,
-            "speed": 3.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:32:02",
-            "lat": 23.139283,
-            "lng": 120.318367,
-            "addr": "臺南市善化區牛莊里牛莊50號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 169,
-            "speed": 10.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:33:02",
-            "lat": 23.1396,
-            "lng": 120.316417,
-            "addr": "臺南市善化區牛庄114號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 202,
-            "speed": 12.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:34:02",
-            "lat": 23.141433,
-            "lng": 120.3161,
-            "addr": "臺南市善化區牛莊里牛莊125-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 206,
-            "speed": 12.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:35:02",
-            "lat": 23.144667,
-            "lng": 120.316083,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 360,
-            "speed": 21.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:36:02",
-            "lat": 23.148283,
-            "lng": 120.316017,
-            "addr": "臺南市善化區.",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 402,
-            "speed": 24.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:37:02",
-            "lat": 23.151017,
-            "lng": 120.3164,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 307,
-            "speed": 18.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:38:02",
-            "lat": 23.153833,
-            "lng": 120.316867,
-            "addr": "臺南市善化區昌隆里南127",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 317,
-            "speed": 19,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:39:02",
-            "lat": 23.1558,
-            "lng": 120.31705,
-            "addr": "臺南市善化區東隆里東勢寮",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 220,
-            "speed": 13.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:40:02",
-            "lat": 23.1562,
-            "lng": 120.3159,
-            "addr": "臺南市善化區昌隆里東隆186之5號.",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 126,
-            "speed": 7.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:41:02",
-            "lat": 23.1561,
-            "lng": 120.313,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 297,
-            "speed": 17.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:42:02",
-            "lat": 23.155917,
-            "lng": 120.310167,
-            "addr": "臺南市善化區東隆里東勢寮",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 290,
-            "speed": 17.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:43:02",
-            "lat": 23.15575,
-            "lng": 120.30705,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 319,
-            "speed": 19.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:44:02",
-            "lat": 23.15495,
-            "lng": 120.30465,
-            "addr": "臺南市善化區六德里六分寮250之3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 261,
-            "speed": 15.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:45:02",
-            "lat": 23.15375,
-            "lng": 120.302333,
-            "addr": "臺南市善化區六德里南122",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 272,
-            "speed": 16.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:46:02",
-            "lat": 23.152767,
-            "lng": 120.300367,
-            "addr": "臺南市六分寮六德里330號之1",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 229,
-            "speed": 13.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:47:02",
-            "lat": 23.151533,
-            "lng": 120.2978,
-            "addr": "臺南市善化區建業路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 296,
-            "speed": 17.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:48:02",
-            "lat": 23.151883,
-            "lng": 120.295333,
-            "addr": "臺南市善化區東勢宅",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 255,
-            "speed": 15.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:49:02",
-            "lat": 23.15325,
-            "lng": 120.292683,
-            "addr": "臺南市善化區溪美里東勢宅南122",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 311,
-            "speed": 18.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:50:02",
-            "lat": 23.153367,
-            "lng": 120.290317,
-            "addr": "臺南市善化區溪美里溪尾226號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 242,
-            "speed": 14.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:51:02",
-            "lat": 23.15315,
-            "lng": 120.288033,
-            "addr": "臺南市善化區溪美里溪尾204號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 235,
-            "speed": 14.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:52:02",
-            "lat": 23.153117,
-            "lng": 120.287733,
-            "addr": "臺南市善化區溪美里溪尾573-3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 31,
-            "speed": 1.9,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "11:54:02",
-            "lat": 23.151283,
-            "lng": 120.28395,
-            "addr": "臺南市善化區溪美里溪尾71號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 437,
-            "speed": 13.1,
-            "status": "normal",
-            "stationaryUntil": "11:55:02",
-            "stationaryDuration": 1
-        },
-        {
-            "time": "11:56:01",
-            "lat": 23.1514,
-            "lng": 120.283867,
-            "addr": "臺南市善化區溪美里溪尾68號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 16,
-            "speed": 0.5,
-            "status": "rest",
-            "stationaryUntil": "12:01:02",
-            "stationaryDuration": 5
-        },
-        {
-            "time": "12:02:02",
-            "lat": 23.15005,
-            "lng": 120.282,
-            "addr": "臺南市善化區南清公路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 243,
-            "speed": 2.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:03:02",
-            "lat": 23.14865,
-            "lng": 120.279717,
-            "addr": "臺南市善化區南清公路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 281,
-            "speed": 16.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:04:02",
-            "lat": 23.14585,
-            "lng": 120.27935,
-            "addr": "臺南市善化區什乃29之2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 314,
-            "speed": 18.8,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:05:02",
-            "lat": 23.144067,
-            "lng": 120.27925,
-            "addr": "臺南市善化區什乃10號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 199,
-            "speed": 11.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:06:07",
-            "lat": 23.142233,
-            "lng": 120.277833,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 250,
-            "speed": 13.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:07:03",
-            "lat": 23.140917,
-            "lng": 120.27545,
-            "addr": "臺南市善化區胡厝寮435號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 284,
-            "speed": 18.3,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:08:01",
-            "lat": 23.14275,
-            "lng": 120.273867,
-            "addr": "臺南市善化區陽明路416號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 260,
-            "speed": 16.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:09:02",
-            "lat": 23.143783,
-            "lng": 120.273017,
-            "addr": "臺南市善化區陽明路302-5號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 144,
-            "speed": 8.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:10:02",
-            "lat": 23.1458,
-            "lng": 120.272367,
-            "addr": "臺南市善化區胡厝寮52之2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 234,
-            "speed": 14,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:11:02",
-            "lat": 23.147067,
-            "lng": 120.27185,
-            "addr": "臺南市善化區胡厝寮131號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 150,
-            "speed": 9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:12:02",
-            "lat": 23.146467,
-            "lng": 120.269917,
-            "addr": "臺南市善化區胡厝寮181-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 209,
-            "speed": 12.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:13:02",
-            "lat": 23.144817,
-            "lng": 120.26925,
-            "addr": "臺南市善化區胡厝里胡厝寮109-3號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 196,
-            "speed": 11.7,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:14:02",
-            "lat": 23.14335,
-            "lng": 120.26865,
-            "addr": "臺南市善化區胡厝里胡厝寮220之1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 174,
-            "speed": 10.5,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:15:02",
-            "lat": 23.1411,
-            "lng": 120.267033,
-            "addr": "臺南市善化區胡厝寮251-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 300,
-            "speed": 18,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:16:02",
-            "lat": 23.138367,
-            "lng": 120.264983,
-            "addr": "臺南市善化區烏橋中路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 369,
-            "speed": 22.2,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:17:02",
-            "lat": 23.137683,
-            "lng": 120.264333,
-            "addr": "臺南市善化區",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 101,
-            "speed": 6.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:18:02",
-            "lat": 23.135917,
-            "lng": 120.262717,
-            "addr": "臺南市善化區胡厝里西衛5-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 257,
-            "speed": 15.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:19:01",
-            "lat": 23.133917,
-            "lng": 120.261867,
-            "addr": "臺南市善化區西衛20之13號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 239,
-            "speed": 14.6,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:20:01",
-            "lat": 23.133683,
-            "lng": 120.2601,
-            "addr": "臺南市善化區西衛29號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 183,
-            "speed": 11,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "12:21:02",
-            "lat": 23.133467,
-            "lng": 120.259533,
-            "addr": "臺南市善化區西衛34-2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 63,
-            "speed": 3.7,
-            "status": "normal",
-            "stationaryUntil": "12:24:02",
-            "stationaryDuration": 3
-        },
-        {
-            "time": "12:25:02",
-            "lat": 23.13345,
-            "lng": 120.259417,
-            "addr": "臺南市善化區西衛30-1號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 12,
-            "speed": 0.2,
-            "status": "rest",
-            "stationaryUntil": "13:00:02",
-            "stationaryDuration": 34
-        },
-        {
-            "time": "13:01:02",
-            "lat": 23.133433,
-            "lng": 120.259583,
-            "addr": "臺南市善化區西衛34-2號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 17,
-            "speed": 0,
-            "status": "rest",
-            "stationaryUntil": "13:10:02",
-            "stationaryDuration": 9
-        },
-        {
-            "time": "13:11:02",
-            "lat": 23.13355,
-            "lng": 120.25975,
-            "addr": "臺南市善化區西衛34-2號",
-            "power": "09.1V",
-            "gpsType": "GPS發送中",
-            "distance": 21,
-            "speed": 0.1,
-            "status": "rest",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:12:02",
-            "lat": 23.134283,
-            "lng": 120.259767,
-            "addr": "臺南市善化區胡厝里西衛32-10號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 82,
-            "speed": 4.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:13:02",
-            "lat": 23.137317,
-            "lng": 120.264033,
-            "addr": "臺南市善化區烏橋中路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 551,
-            "speed": 33.1,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:14:02",
-            "lat": 23.13045,
-            "lng": 120.267467,
-            "addr": "臺南市善化區興農路588號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 840,
-            "speed": 50.4,
-            "status": "speed_anomaly",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:15:02",
-            "lat": 23.130333,
-            "lng": 120.268917,
-            "addr": "臺南市善化區興農路464號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 149,
-            "speed": 8.9,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:16:02",
-            "lat": 23.131417,
-            "lng": 120.273217,
-            "addr": "臺南市善化區興農路",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 456,
-            "speed": 27.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        },
-        {
-            "time": "13:17:02",
-            "lat": 23.1316,
-            "lng": 120.274567,
-            "addr": "臺南市善化區興農路297號",
-            "power": "09.0V",
-            "gpsType": "GPS發送中",
-            "distance": 140,
-            "speed": 8.4,
-            "status": "normal",
-            "stationaryUntil": "",
-            "stationaryDuration": 0
-        }
-    ],
-    "restStops": [
-        {
-            "index": 1,
-            "pointIndex": 1,
-            "time": "09:06:02",
-            "lat": 23.13245,
-            "lng": 120.289733,
-            "addr": "臺南市善化區中山路472號",
-            "cumulativeDistance": 11.62022941574473
-        },
-        {
-            "index": 10,
-            "pointIndex": 10,
-            "time": "10:07:02",
-            "lat": 23.132183,
-            "lng": 120.2971,
-            "addr": "臺南市善化區中山路253號",
-            "cumulativeDistance": 769.9048288212632
-        },
-        {
-            "index": 25,
-            "pointIndex": 25,
-            "time": "10:22:02",
-            "lat": 23.130583,
-            "lng": 120.298883,
-            "addr": "臺南市善化區民生路283號",
-            "cumulativeDistance": 2516.5201505022496
-        },
-        {
-            "index": 29,
-            "pointIndex": 29,
-            "time": "10:27:02",
-            "lat": 23.1301,
-            "lng": 120.29445,
-            "addr": "臺南市善化區中正路418巷6號",
-            "cumulativeDistance": 2974.6622137524073
-        },
-        {
-            "index": 41,
-            "pointIndex": 41,
-            "time": "10:40:02",
-            "lat": 23.129467,
-            "lng": 120.296517,
-            "addr": "臺南市善化區大成路351–365號",
-            "cumulativeDistance": 4653.766208689674
-        },
-        {
-            "index": 58,
-            "pointIndex": 58,
-            "time": "11:00:02",
-            "lat": 23.12725,
-            "lng": 120.318367,
-            "addr": "臺南市善化區成功路15號",
-            "cumulativeDistance": 7709.742186440295
-        },
-        {
-            "index": 66,
-            "pointIndex": 66,
-            "time": "11:09:02",
-            "lat": 23.135333,
-            "lng": 120.326967,
-            "addr": "臺南市嘉南里76號之2",
-            "cumulativeDistance": 9188.731023776572
-        },
-        {
-            "index": 74,
-            "pointIndex": 74,
-            "time": "11:29:02",
-            "lat": 23.1389,
-            "lng": 120.324067,
-            "addr": "臺南市善化區嘉北里茄拔280之1號",
-            "cumulativeDistance": 10485.219553344261
-        },
-        {
-            "index": 97,
-            "pointIndex": 97,
-            "time": "11:52:02",
-            "lat": 23.153117,
-            "lng": 120.287733,
-            "addr": "臺南市善化區溪美里溪尾573-3號",
-            "cumulativeDistance": 16330.444125004455
-        },
-        {
-            "index": 99,
-            "pointIndex": 99,
-            "time": "11:56:01",
-            "lat": 23.1514,
-            "lng": 120.283867,
-            "addr": "臺南市善化區溪美里溪尾68號",
-            "cumulativeDistance": 16783.219635083147
-        },
-        {
-            "index": 120,
-            "pointIndex": 120,
-            "time": "12:25:02",
-            "lat": 23.13345,
-            "lng": 120.259417,
-            "addr": "臺南市善化區西衛30-1號",
-            "cumulativeDistance": 21243.22667644283
-        }
-    ],
-    "speedAnomalies": [
-        {
-            "index": 125,
-            "time": "13:14:02",
-            "speed": 50.4,
-            "lat": 23.13045,
-            "lng": 120.267467
-        }
-    ],
-    "segments": [
-        {
-            "from": "起點",
-            "fromTime": "09:04:02",
-            "fromAddr": "臺南市善化區中山路483號",
-            "fromPointIndex": 0,
-            "to": "休息 1",
-            "toTime": "09:06:02",
-            "toAddr": "臺南市善化區中山路472號",
-            "toPointIndex": 1,
-            "distance": 0.01
-        },
-        {
-            "from": "休息 1",
-            "fromTime": "09:06:02",
-            "fromAddr": "臺南市善化區中山路472號",
-            "fromPointIndex": 1,
-            "to": "休息 2",
-            "toTime": "10:07:02",
-            "toAddr": "臺南市善化區中山路253號",
-            "toPointIndex": 10,
-            "distance": 0.76
-        },
-        {
-            "from": "休息 2",
-            "fromTime": "10:07:02",
-            "fromAddr": "臺南市善化區中山路253號",
-            "fromPointIndex": 10,
-            "to": "休息 3",
-            "toTime": "10:22:02",
-            "toAddr": "臺南市善化區民生路283號",
-            "toPointIndex": 25,
-            "distance": 1.75
-        },
-        {
-            "from": "休息 3",
-            "fromTime": "10:22:02",
-            "fromAddr": "臺南市善化區民生路283號",
-            "fromPointIndex": 25,
-            "to": "休息 4",
-            "toTime": "10:27:02",
-            "toAddr": "臺南市善化區中正路418巷6號",
-            "toPointIndex": 29,
-            "distance": 0.46
-        },
-        {
-            "from": "休息 4",
-            "fromTime": "10:27:02",
-            "fromAddr": "臺南市善化區中正路418巷6號",
-            "fromPointIndex": 29,
-            "to": "休息 5",
-            "toTime": "10:40:02",
-            "toAddr": "臺南市善化區大成路351–365號",
-            "toPointIndex": 41,
-            "distance": 1.68
-        },
-        {
-            "from": "休息 5",
-            "fromTime": "10:40:02",
-            "fromAddr": "臺南市善化區大成路351–365號",
-            "fromPointIndex": 41,
-            "to": "休息 6",
-            "toTime": "11:00:02",
-            "toAddr": "臺南市善化區成功路15號",
-            "toPointIndex": 58,
-            "distance": 3.06
-        },
-        {
-            "from": "休息 6",
-            "fromTime": "11:00:02",
-            "fromAddr": "臺南市善化區成功路15號",
-            "fromPointIndex": 58,
-            "to": "休息 7",
-            "toTime": "11:09:02",
-            "toAddr": "臺南市嘉南里76號之2",
-            "toPointIndex": 66,
-            "distance": 1.48
-        },
-        {
-            "from": "休息 7",
-            "fromTime": "11:09:02",
-            "fromAddr": "臺南市嘉南里76號之2",
-            "fromPointIndex": 66,
-            "to": "休息 8",
-            "toTime": "11:29:02",
-            "toAddr": "臺南市善化區嘉北里茄拔280之1號",
-            "toPointIndex": 74,
-            "distance": 1.3
-        },
-        {
-            "from": "休息 8",
-            "fromTime": "11:29:02",
-            "fromAddr": "臺南市善化區嘉北里茄拔280之1號",
-            "fromPointIndex": 74,
-            "to": "休息 9",
-            "toTime": "11:52:02",
-            "toAddr": "臺南市善化區溪美里溪尾573-3號",
-            "toPointIndex": 97,
-            "distance": 5.85
-        },
-        {
-            "from": "休息 9",
-            "fromTime": "11:52:02",
-            "fromAddr": "臺南市善化區溪美里溪尾573-3號",
-            "fromPointIndex": 97,
-            "to": "休息 10",
-            "toTime": "11:56:01",
-            "toAddr": "臺南市善化區溪美里溪尾68號",
-            "toPointIndex": 99,
-            "distance": 0.45
-        },
-        {
-            "from": "休息 10",
-            "fromTime": "11:56:01",
-            "fromAddr": "臺南市善化區溪美里溪尾68號",
-            "fromPointIndex": 99,
-            "to": "休息 11",
-            "toTime": "12:25:02",
-            "toAddr": "臺南市善化區西衛30-1號",
-            "toPointIndex": 120,
-            "distance": 4.46
-        },
-        {
-            "from": "休息 11",
-            "fromTime": "12:25:02",
-            "fromAddr": "臺南市善化區西衛30-1號",
-            "fromPointIndex": 120,
-            "to": "終點",
-            "toTime": "13:17:02",
-            "toAddr": "臺南市善化區興農路297號",
-            "toPointIndex": 128,
-            "distance": 2.26
-        }
-    ]
+    {
+      "lat": 23.13245,
+      "lng": 120.289733
+    },
+    {
+      "lat": 23.1324,
+      "lng": 120.289917
+    },
+    {
+      "lat": 23.132267,
+      "lng": 120.29075
+    },
+    {
+      "lat": 23.132183,
+      "lng": 120.292367
+    },
+    {
+      "lat": 23.13215,
+      "lng": 120.2933
+    },
+    {
+      "lat": 23.132117,
+      "lng": 120.29455
+    },
+    {
+      "lat": 23.132033,
+      "lng": 120.295367
+    },
+    {
+      "lat": 23.132,
+      "lng": 120.295933
+    },
+    {
+      "lat": 23.132083,
+      "lng": 120.296633
+    },
+    {
+      "lat": 23.132183,
+      "lng": 120.2971
+    },
+    {
+      "lat": 23.132467,
+      "lng": 120.29885
+    },
+    {
+      "lat": 23.1326,
+      "lng": 120.2998
+    },
+    {
+      "lat": 23.132667,
+      "lng": 120.300633
+    },
+    {
+      "lat": 23.1329,
+      "lng": 120.302167
+    },
+    {
+      "lat": 23.133183,
+      "lng": 120.304067
+    },
+    {
+      "lat": 23.133283,
+      "lng": 120.304867
+    },
+    {
+      "lat": 23.133333,
+      "lng": 120.305567
+    },
+    {
+      "lat": 23.1323,
+      "lng": 120.305767
+    },
+    {
+      "lat": 23.131633,
+      "lng": 120.305283
+    },
+    {
+      "lat": 23.131483,
+      "lng": 120.304267
+    },
+    {
+      "lat": 23.13125,
+      "lng": 120.302783
+    },
+    {
+      "lat": 23.13115,
+      "lng": 120.30205
+    },
+    {
+      "lat": 23.13105,
+      "lng": 120.30125
+    },
+    {
+      "lat": 23.13065,
+      "lng": 120.299117
+    },
+    {
+      "lat": 23.130583,
+      "lng": 120.298883
+    },
+    {
+      "lat": 23.1304,
+      "lng": 120.297433
+    },
+    {
+      "lat": 23.130083,
+      "lng": 120.295367
+    },
+    {
+      "lat": 23.13005,
+      "lng": 120.294817
+    },
+    {
+      "lat": 23.1301,
+      "lng": 120.29445
+    },
+    {
+      "lat": 23.129933,
+      "lng": 120.293283
+    },
+    {
+      "lat": 23.1296,
+      "lng": 120.292283
+    },
+    {
+      "lat": 23.12925,
+      "lng": 120.291233
+    },
+    {
+      "lat": 23.128633,
+      "lng": 120.289433
+    },
+    {
+      "lat": 23.128117,
+      "lng": 120.288117
+    },
+    {
+      "lat": 23.12735,
+      "lng": 120.288
+    },
+    {
+      "lat": 23.12755,
+      "lng": 120.289667
+    },
+    {
+      "lat": 23.128467,
+      "lng": 120.292433
+    },
+    {
+      "lat": 23.1288,
+      "lng": 120.2933
+    },
+    {
+      "lat": 23.1292,
+      "lng": 120.294767
+    },
+    {
+      "lat": 23.129417,
+      "lng": 120.296233
+    },
+    {
+      "lat": 23.129467,
+      "lng": 120.296517
+    },
+    {
+      "lat": 23.129683,
+      "lng": 120.298117
+    },
+    {
+      "lat": 23.129817,
+      "lng": 120.2989
+    },
+    {
+      "lat": 23.13005,
+      "lng": 120.300533
+    },
+    {
+      "lat": 23.1302,
+      "lng": 120.301583
+    },
+    {
+      "lat": 23.130567,
+      "lng": 120.303983
+    },
+    {
+      "lat": 23.1306,
+      "lng": 120.30595
+    },
+    {
+      "lat": 23.129467,
+      "lng": 120.310033
+    },
+    {
+      "lat": 23.128417,
+      "lng": 120.311267
+    },
+    {
+      "lat": 23.126617,
+      "lng": 120.31055
+    },
+    {
+      "lat": 23.125133,
+      "lng": 120.31005
+    },
+    {
+      "lat": 23.123717,
+      "lng": 120.310817
+    },
+    {
+      "lat": 23.12405,
+      "lng": 120.312417
+    },
+    {
+      "lat": 23.124517,
+      "lng": 120.314
+    },
+    {
+      "lat": 23.124833,
+      "lng": 120.316
+    },
+    {
+      "lat": 23.126183,
+      "lng": 120.317667
+    },
+    {
+      "lat": 23.12685,
+      "lng": 120.318183
+    },
+    {
+      "lat": 23.12725,
+      "lng": 120.318367
+    },
+    {
+      "lat": 23.127467,
+      "lng": 120.318917
+    },
+    {
+      "lat": 23.129533,
+      "lng": 120.319817
+    },
+    {
+      "lat": 23.13275,
+      "lng": 120.32105
+    },
+    {
+      "lat": 23.1349,
+      "lng": 120.3219
+    },
+    {
+      "lat": 23.1354,
+      "lng": 120.323217
+    },
+    {
+      "lat": 23.135317,
+      "lng": 120.325833
+    },
+    {
+      "lat": 23.13545,
+      "lng": 120.326867
+    },
+    {
+      "lat": 23.135333,
+      "lng": 120.326967
+    },
+    {
+      "lat": 23.136233,
+      "lng": 120.326917
+    },
+    {
+      "lat": 23.138533,
+      "lng": 120.327
+    },
+    {
+      "lat": 23.140933,
+      "lng": 120.327667
+    },
+    {
+      "lat": 23.142083,
+      "lng": 120.327217
+    },
+    {
+      "lat": 23.140367,
+      "lng": 120.326583
+    },
+    {
+      "lat": 23.138983,
+      "lng": 120.325267
+    },
+    {
+      "lat": 23.1389,
+      "lng": 120.324233
+    },
+    {
+      "lat": 23.1389,
+      "lng": 120.324067
+    },
+    {
+      "lat": 23.138167,
+      "lng": 120.319833
+    },
+    {
+      "lat": 23.138017,
+      "lng": 120.319283
+    },
+    {
+      "lat": 23.139283,
+      "lng": 120.318367
+    },
+    {
+      "lat": 23.1396,
+      "lng": 120.316417
+    },
+    {
+      "lat": 23.141433,
+      "lng": 120.3161
+    },
+    {
+      "lat": 23.144667,
+      "lng": 120.316083
+    },
+    {
+      "lat": 23.148283,
+      "lng": 120.316017
+    },
+    {
+      "lat": 23.151017,
+      "lng": 120.3164
+    },
+    {
+      "lat": 23.153833,
+      "lng": 120.316867
+    },
+    {
+      "lat": 23.1558,
+      "lng": 120.31705
+    },
+    {
+      "lat": 23.1562,
+      "lng": 120.3159
+    },
+    {
+      "lat": 23.1561,
+      "lng": 120.313
+    },
+    {
+      "lat": 23.155917,
+      "lng": 120.310167
+    },
+    {
+      "lat": 23.15575,
+      "lng": 120.30705
+    },
+    {
+      "lat": 23.15495,
+      "lng": 120.30465
+    },
+    {
+      "lat": 23.15375,
+      "lng": 120.302333
+    },
+    {
+      "lat": 23.152767,
+      "lng": 120.300367
+    },
+    {
+      "lat": 23.151533,
+      "lng": 120.2978
+    },
+    {
+      "lat": 23.151883,
+      "lng": 120.295333
+    },
+    {
+      "lat": 23.15325,
+      "lng": 120.292683
+    },
+    {
+      "lat": 23.153367,
+      "lng": 120.290317
+    },
+    {
+      "lat": 23.15315,
+      "lng": 120.288033
+    },
+    {
+      "lat": 23.153117,
+      "lng": 120.287733
+    },
+    {
+      "lat": 23.151283,
+      "lng": 120.28395
+    },
+    {
+      "lat": 23.1514,
+      "lng": 120.283867
+    },
+    {
+      "lat": 23.15005,
+      "lng": 120.282
+    },
+    {
+      "lat": 23.14865,
+      "lng": 120.279717
+    },
+    {
+      "lat": 23.14585,
+      "lng": 120.27935
+    },
+    {
+      "lat": 23.144067,
+      "lng": 120.27925
+    },
+    {
+      "lat": 23.142233,
+      "lng": 120.277833
+    },
+    {
+      "lat": 23.140917,
+      "lng": 120.27545
+    },
+    {
+      "lat": 23.14275,
+      "lng": 120.273867
+    },
+    {
+      "lat": 23.143783,
+      "lng": 120.273017
+    },
+    {
+      "lat": 23.1458,
+      "lng": 120.272367
+    },
+    {
+      "lat": 23.147067,
+      "lng": 120.27185
+    },
+    {
+      "lat": 23.146467,
+      "lng": 120.269917
+    },
+    {
+      "lat": 23.144817,
+      "lng": 120.26925
+    },
+    {
+      "lat": 23.14335,
+      "lng": 120.26865
+    },
+    {
+      "lat": 23.1411,
+      "lng": 120.267033
+    },
+    {
+      "lat": 23.138367,
+      "lng": 120.264983
+    },
+    {
+      "lat": 23.137683,
+      "lng": 120.264333
+    },
+    {
+      "lat": 23.135917,
+      "lng": 120.262717
+    },
+    {
+      "lat": 23.133917,
+      "lng": 120.261867
+    },
+    {
+      "lat": 23.133683,
+      "lng": 120.2601
+    },
+    {
+      "lat": 23.133467,
+      "lng": 120.259533
+    },
+    {
+      "lat": 23.13345,
+      "lng": 120.259417
+    },
+    {
+      "lat": 23.133433,
+      "lng": 120.259583
+    },
+    {
+      "lat": 23.13355,
+      "lng": 120.25975
+    },
+    {
+      "lat": 23.134283,
+      "lng": 120.259767
+    },
+    {
+      "lat": 23.137317,
+      "lng": 120.264033
+    },
+    {
+      "lat": 23.13045,
+      "lng": 120.267467
+    },
+    {
+      "lat": 23.130333,
+      "lng": 120.268917
+    },
+    {
+      "lat": 23.131417,
+      "lng": 120.273217
+    },
+    {
+      "lat": 23.1316,
+      "lng": 120.274567
+    },
+    {
+      "lat": 23.096467,
+      "lng": 120.360333
+    },
+    {
+      "lat": 23.0975,
+      "lng": 120.358183
+    },
+    {
+      "lat": 23.09925,
+      "lng": 120.357767
+    },
+    {
+      "lat": 23.098717,
+      "lng": 120.356883
+    },
+    {
+      "lat": 23.0981,
+      "lng": 120.356
+    },
+    {
+      "lat": 23.097683,
+      "lng": 120.355383
+    },
+    {
+      "lat": 23.0944,
+      "lng": 120.354717
+    },
+    {
+      "lat": 23.095017,
+      "lng": 120.35455
+    },
+    {
+      "lat": 23.097017,
+      "lng": 120.354617
+    },
+    {
+      "lat": 23.098717,
+      "lng": 120.356083
+    },
+    {
+      "lat": 23.100283,
+      "lng": 120.355083
+    },
+    {
+      "lat": 23.099783,
+      "lng": 120.353583
+    },
+    {
+      "lat": 23.102067,
+      "lng": 120.352967
+    },
+    {
+      "lat": 23.101483,
+      "lng": 120.351333
+    },
+    {
+      "lat": 23.099567,
+      "lng": 120.352333
+    },
+    {
+      "lat": 23.099183,
+      "lng": 120.35355
+    },
+    {
+      "lat": 23.099817,
+      "lng": 120.3551
+    },
+    {
+      "lat": 23.100467,
+      "lng": 120.3533
+    },
+    {
+      "lat": 23.102083,
+      "lng": 120.352717
+    },
+    {
+      "lat": 23.102433,
+      "lng": 120.3505
+    },
+    {
+      "lat": 23.103183,
+      "lng": 120.3507
+    },
+    {
+      "lat": 23.1038,
+      "lng": 120.351917
+    },
+    {
+      "lat": 23.10545,
+      "lng": 120.349967
+    },
+    {
+      "lat": 23.1053,
+      "lng": 120.34735
+    },
+    {
+      "lat": 23.10645,
+      "lng": 120.348
+    },
+    {
+      "lat": 23.105433,
+      "lng": 120.34865
+    },
+    {
+      "lat": 23.106533,
+      "lng": 120.347633
+    },
+    {
+      "lat": 23.107833,
+      "lng": 120.347667
+    },
+    {
+      "lat": 23.1079,
+      "lng": 120.347767
+    },
+    {
+      "lat": 23.108,
+      "lng": 120.34795
+    },
+    {
+      "lat": 23.107667,
+      "lng": 120.349267
+    },
+    {
+      "lat": 23.105833,
+      "lng": 120.350717
+    },
+    {
+      "lat": 23.10505,
+      "lng": 120.351033
+    },
+    {
+      "lat": 23.104083,
+      "lng": 120.351517
+    },
+    {
+      "lat": 23.103033,
+      "lng": 120.3528
+    },
+    {
+      "lat": 23.10215,
+      "lng": 120.354267
+    },
+    {
+      "lat": 23.102,
+      "lng": 120.354767
+    },
+    {
+      "lat": 23.102883,
+      "lng": 120.3547
+    },
+    {
+      "lat": 23.103383,
+      "lng": 120.353383
+    },
+    {
+      "lat": 23.1034,
+      "lng": 120.352383
+    },
+    {
+      "lat": 23.102183,
+      "lng": 120.354183
+    },
+    {
+      "lat": 23.101783,
+      "lng": 120.355817
+    },
+    {
+      "lat": 23.1025,
+      "lng": 120.357017
+    },
+    {
+      "lat": 23.102983,
+      "lng": 120.358483
+    },
+    {
+      "lat": 23.101317,
+      "lng": 120.359417
+    },
+    {
+      "lat": 23.099617,
+      "lng": 120.357667
+    },
+    {
+      "lat": 23.100017,
+      "lng": 120.356067
+    },
+    {
+      "lat": 23.10125,
+      "lng": 120.355867
+    },
+    {
+      "lat": 23.101617,
+      "lng": 120.356567
+    },
+    {
+      "lat": 23.099683,
+      "lng": 120.357767
+    },
+    {
+      "lat": 23.100967,
+      "lng": 120.358283
+    },
+    {
+      "lat": 23.102667,
+      "lng": 120.357633
+    },
+    {
+      "lat": 23.102783,
+      "lng": 120.3575
+    }
+  ],
+  "timeline": [
+    {
+      "time": "09:04:02",
+      "lat": 23.13255,
+      "lng": 120.2897,
+      "addr": "臺南市善化區中山路483號",
+      "power": "09.0V",
+      "gpsType": "GPS停止發送",
+      "distance": 0,
+      "speed": 0.0,
+      "status": "normal",
+      "stationaryUntil": "09:05:03",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "09:06:02",
+      "lat": 23.13245,
+      "lng": 120.289733,
+      "addr": "臺南市善化區中山路472號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 12,
+      "speed": 0.4,
+      "status": "rest",
+      "stationaryUntil": "09:57:02",
+      "stationaryDuration": 51
+    },
+    {
+      "time": "09:58:02",
+      "lat": 23.1324,
+      "lng": 120.289917,
+      "addr": "臺南市善化區中山路459號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 20,
+      "speed": 0.0,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:00:02",
+      "lat": 23.132267,
+      "lng": 120.29075,
+      "addr": "臺南市善化區中山路436號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 86,
+      "speed": 2.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:01:02",
+      "lat": 23.132183,
+      "lng": 120.292367,
+      "addr": "臺南市善化區中山路372號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 166,
+      "speed": 8.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:02:02",
+      "lat": 23.13215,
+      "lng": 120.2933,
+      "addr": "臺南市善化區中山路354號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 95,
+      "speed": 5.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:03:02",
+      "lat": 23.132117,
+      "lng": 120.29455,
+      "addr": "臺南市善化區中山路310號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 128,
+      "speed": 7.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:04:02",
+      "lat": 23.132033,
+      "lng": 120.295367,
+      "addr": "臺南市善化區中山路294號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 84,
+      "speed": 6.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:05:02",
+      "lat": 23.132,
+      "lng": 120.295933,
+      "addr": "臺南市善化區中山路283-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 58,
+      "speed": 2.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:06:02",
+      "lat": 23.132083,
+      "lng": 120.296633,
+      "addr": "臺南市善化區中山路259號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 72,
+      "speed": 4.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:07:02",
+      "lat": 23.132183,
+      "lng": 120.2971,
+      "addr": "臺南市善化區中山路253號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 49,
+      "speed": 6.1,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:08:02",
+      "lat": 23.132467,
+      "lng": 120.29885,
+      "addr": "臺南市善化區中山路216-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 182,
+      "speed": 6.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:09:02",
+      "lat": 23.1326,
+      "lng": 120.2998,
+      "addr": "臺南市善化區中山路204號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 98,
+      "speed": 8.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:10:02",
+      "lat": 23.132667,
+      "lng": 120.300633,
+      "addr": "臺南市善化區中山路187號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 86,
+      "speed": 7.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:11:02",
+      "lat": 23.1329,
+      "lng": 120.302167,
+      "addr": "臺南市善化區中山路125號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 159,
+      "speed": 7.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:12:01",
+      "lat": 23.133183,
+      "lng": 120.304067,
+      "addr": "臺南市善化區中山路57號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 197,
+      "speed": 9.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:13:07",
+      "lat": 23.133283,
+      "lng": 120.304867,
+      "addr": "臺南市善化區中山路43之3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 83,
+      "speed": 5.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:14:02",
+      "lat": 23.133333,
+      "lng": 120.305567,
+      "addr": "臺南市善化區中山路36號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 72,
+      "speed": 4.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:15:02",
+      "lat": 23.1323,
+      "lng": 120.305767,
+      "addr": "臺南市善化區光文路8-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 117,
+      "speed": 7.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:16:02",
+      "lat": 23.131633,
+      "lng": 120.305283,
+      "addr": "臺南市善化區民生路28號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 89,
+      "speed": 5.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:17:02",
+      "lat": 23.131483,
+      "lng": 120.304267,
+      "addr": "臺南市善化區民生路72號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 105,
+      "speed": 6.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:18:02",
+      "lat": 23.13125,
+      "lng": 120.302783,
+      "addr": "臺南市善化區民生路131號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 154,
+      "speed": 7.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:19:02",
+      "lat": 23.13115,
+      "lng": 120.30205,
+      "addr": "臺南市善化區仁愛路40號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 76,
+      "speed": 6.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:20:02",
+      "lat": 23.13105,
+      "lng": 120.30125,
+      "addr": "臺南市善化區民生路186號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 83,
+      "speed": 5.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:21:02",
+      "lat": 23.13065,
+      "lng": 120.299117,
+      "addr": "臺南市善化區民生路277號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 223,
+      "speed": 10.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:22:02",
+      "lat": 23.130583,
+      "lng": 120.298883,
+      "addr": "臺南市善化區民生路283號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 25,
+      "speed": 2.1,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:23:02",
+      "lat": 23.1304,
+      "lng": 120.297433,
+      "addr": "臺南市善化區民生路356號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 150,
+      "speed": 9.1,
+      "status": "normal",
+      "stationaryUntil": "10:24:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "10:25:02",
+      "lat": 23.130083,
+      "lng": 120.295367,
+      "addr": "臺南市善化區民生路423號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 214,
+      "speed": 5.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:26:02",
+      "lat": 23.13005,
+      "lng": 120.294817,
+      "addr": "臺南市善化區民生路468號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 56,
+      "speed": 3.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:27:02",
+      "lat": 23.1301,
+      "lng": 120.29445,
+      "addr": "臺南市善化區中正路418巷6號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 38,
+      "speed": 2.3,
+      "status": "rest",
+      "stationaryUntil": "10:28:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "10:29:02",
+      "lat": 23.129933,
+      "lng": 120.293283,
+      "addr": "臺南市善化區文昌路6之2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 121,
+      "speed": 3.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:30:02",
+      "lat": 23.1296,
+      "lng": 120.292283,
+      "addr": "臺南市善化區文昌路15號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 109,
+      "speed": 6.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:31:02",
+      "lat": 23.12925,
+      "lng": 120.291233,
+      "addr": "臺南市善化區大同路242-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 114,
+      "speed": 7.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:32:01",
+      "lat": 23.128633,
+      "lng": 120.289433,
+      "addr": "臺南市善化區文昌路81號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 196,
+      "speed": 12.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:33:02",
+      "lat": 23.128117,
+      "lng": 120.288117,
+      "addr": "臺南市善化區文昌路76號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 146,
+      "speed": 7.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:34:02",
+      "lat": 23.12735,
+      "lng": 120.288,
+      "addr": "臺南市善化區光復路297號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 86,
+      "speed": 5.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:35:02",
+      "lat": 23.12755,
+      "lng": 120.289667,
+      "addr": "臺南市善化區光復路202號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 172,
+      "speed": 14.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:36:02",
+      "lat": 23.128467,
+      "lng": 120.292433,
+      "addr": "臺南市善化區光復路48號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 301,
+      "speed": 14.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:37:02",
+      "lat": 23.1288,
+      "lng": 120.2933,
+      "addr": "臺南市善化區大信路65號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 96,
+      "speed": 5.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:38:02",
+      "lat": 23.1292,
+      "lng": 120.294767,
+      "addr": "臺南市善化區大成路426號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 156,
+      "speed": 9.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:39:02",
+      "lat": 23.129417,
+      "lng": 120.296233,
+      "addr": "臺南市善化區大成路368號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 152,
+      "speed": 9.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:40:02",
+      "lat": 23.129467,
+      "lng": 120.296517,
+      "addr": "臺南市善化區大成路351–365號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 30,
+      "speed": 1.8,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:41:02",
+      "lat": 23.129683,
+      "lng": 120.298117,
+      "addr": "臺南市善化區大成路312號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 165,
+      "speed": 10.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:42:02",
+      "lat": 23.129817,
+      "lng": 120.2989,
+      "addr": "臺南市善化區大成路274號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 81,
+      "speed": 5.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:43:02",
+      "lat": 23.13005,
+      "lng": 120.300533,
+      "addr": "臺南市善化區大成路210號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 169,
+      "speed": 10.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:44:01",
+      "lat": 23.1302,
+      "lng": 120.301583,
+      "addr": "臺南市善化區大成路168號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 109,
+      "speed": 6.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:45:02",
+      "lat": 23.130567,
+      "lng": 120.303983,
+      "addr": "臺南市善化區大成路85號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 249,
+      "speed": 15.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:46:02",
+      "lat": 23.1306,
+      "lng": 120.30595,
+      "addr": "臺南市善化區大成路9號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 201,
+      "speed": 12.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:47:02",
+      "lat": 23.129467,
+      "lng": 120.310033,
+      "addr": "臺南市善化區成功路387號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 436,
+      "speed": 21.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:48:01",
+      "lat": 23.128417,
+      "lng": 120.311267,
+      "addr": "臺南市善化區成功路349巷7-3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 172,
+      "speed": 10.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:49:02",
+      "lat": 23.126617,
+      "lng": 120.31055,
+      "addr": "臺南市善化區成功路349巷2-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 213,
+      "speed": 17.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:50:02",
+      "lat": 23.125133,
+      "lng": 120.31005,
+      "addr": "臺南市善化區小新里小新營97-5號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 173,
+      "speed": 13.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:51:02",
+      "lat": 23.123717,
+      "lng": 120.310817,
+      "addr": "臺南市善化區小新里小新營97號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 176,
+      "speed": 7.2,
+      "status": "normal",
+      "stationaryUntil": "10:54:02",
+      "stationaryDuration": 3
+    },
+    {
+      "time": "10:55:02",
+      "lat": 23.12405,
+      "lng": 120.312417,
+      "addr": "臺南市善化區小新里小新營72-6號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 168,
+      "speed": 2.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:56:02",
+      "lat": 23.124517,
+      "lng": 120.314,
+      "addr": "臺南市善化區小新營45號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 170,
+      "speed": 10.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:57:01",
+      "lat": 23.124833,
+      "lng": 120.316,
+      "addr": "臺南市善化區小新營3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 208,
+      "speed": 12.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:58:02",
+      "lat": 23.126183,
+      "lng": 120.317667,
+      "addr": "臺南市善化區成功路3巷39號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 227,
+      "speed": 13.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "10:59:02",
+      "lat": 23.12685,
+      "lng": 120.318183,
+      "addr": "臺南市善化區成功路3巷5號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 91,
+      "speed": 5.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:00:02",
+      "lat": 23.12725,
+      "lng": 120.318367,
+      "addr": "臺南市善化區成功路15號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 48,
+      "speed": 2.9,
+      "status": "rest",
+      "stationaryUntil": "11:01:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "11:02:02",
+      "lat": 23.127467,
+      "lng": 120.318917,
+      "addr": "臺南市善化區小新里小新營296號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 61,
+      "speed": 1.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:03:02",
+      "lat": 23.129533,
+      "lng": 120.319817,
+      "addr": "臺南市善化區縱貫公路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 247,
+      "speed": 15.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:04:07",
+      "lat": 23.13275,
+      "lng": 120.32105,
+      "addr": "臺南市善化區嘉南里茄拔370之2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 379,
+      "speed": 18.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:05:02",
+      "lat": 23.1349,
+      "lng": 120.3219,
+      "addr": "臺南市善化區嘉南里茄拔368-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 254,
+      "speed": 15.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:06:02",
+      "lat": 23.1354,
+      "lng": 120.323217,
+      "addr": "臺南市善化區嘉南里茄拔331號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 146,
+      "speed": 8.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:07:02",
+      "lat": 23.135317,
+      "lng": 120.325833,
+      "addr": "臺南市善化區茄拔74號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 268,
+      "speed": 16.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:08:02",
+      "lat": 23.13545,
+      "lng": 120.326867,
+      "addr": "臺南市善化區嘉南里茄拔85號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 107,
+      "speed": 6.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:09:02",
+      "lat": 23.135333,
+      "lng": 120.326967,
+      "addr": "臺南市嘉南里76號之2",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 17,
+      "speed": 1.0,
+      "status": "rest",
+      "stationaryUntil": "11:21:02",
+      "stationaryDuration": 12
+    },
+    {
+      "time": "11:22:02",
+      "lat": 23.136233,
+      "lng": 120.326917,
+      "addr": "臺南市善化區嘉南里茄拔57-6號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 100,
+      "speed": 0.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:23:02",
+      "lat": 23.138533,
+      "lng": 120.327,
+      "addr": "臺南市善化區茄拔29號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 256,
+      "speed": 15.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:24:01",
+      "lat": 23.140933,
+      "lng": 120.327667,
+      "addr": "臺南市善化區茄拔181號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 275,
+      "speed": 16.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:25:02",
+      "lat": 23.142083,
+      "lng": 120.327217,
+      "addr": "臺南市善化區茄拔185號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 136,
+      "speed": 8.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:26:02",
+      "lat": 23.140367,
+      "lng": 120.326583,
+      "addr": "臺南市善化區茄拔175號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 202,
+      "speed": 12.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:27:02",
+      "lat": 23.138983,
+      "lng": 120.325267,
+      "addr": "臺南市善化區茄拔265-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 204,
+      "speed": 12.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:28:02",
+      "lat": 23.1389,
+      "lng": 120.324233,
+      "addr": "臺南市善化區茄拔265-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 106,
+      "speed": 13.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:29:02",
+      "lat": 23.1389,
+      "lng": 120.324067,
+      "addr": "臺南市善化區嘉北里茄拔280之1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 17,
+      "speed": 1.7,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:30:02",
+      "lat": 23.138167,
+      "lng": 120.319833,
+      "addr": "臺南市善化區牛庄26號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 441,
+      "speed": 13.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:31:02",
+      "lat": 23.138017,
+      "lng": 120.319283,
+      "addr": "臺南市善化區光文路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 59,
+      "speed": 3.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:32:02",
+      "lat": 23.139283,
+      "lng": 120.318367,
+      "addr": "臺南市善化區牛莊里牛莊50號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 169,
+      "speed": 10.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:33:02",
+      "lat": 23.1396,
+      "lng": 120.316417,
+      "addr": "臺南市善化區牛庄114號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 202,
+      "speed": 12.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:34:02",
+      "lat": 23.141433,
+      "lng": 120.3161,
+      "addr": "臺南市善化區牛莊里牛莊125-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 206,
+      "speed": 12.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:35:02",
+      "lat": 23.144667,
+      "lng": 120.316083,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 360,
+      "speed": 21.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:36:02",
+      "lat": 23.148283,
+      "lng": 120.316017,
+      "addr": "臺南市善化區.",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 402,
+      "speed": 19.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:37:02",
+      "lat": 23.151017,
+      "lng": 120.3164,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 307,
+      "speed": 18.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:38:02",
+      "lat": 23.153833,
+      "lng": 120.316867,
+      "addr": "臺南市善化區昌隆里南127",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 317,
+      "speed": 19.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:39:02",
+      "lat": 23.1558,
+      "lng": 120.31705,
+      "addr": "臺南市善化區東隆里東勢寮",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 220,
+      "speed": 13.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:40:02",
+      "lat": 23.1562,
+      "lng": 120.3159,
+      "addr": "臺南市善化區昌隆里東隆186之5號.",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 126,
+      "speed": 7.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:41:02",
+      "lat": 23.1561,
+      "lng": 120.313,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 297,
+      "speed": 18.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:42:02",
+      "lat": 23.155917,
+      "lng": 120.310167,
+      "addr": "臺南市善化區東隆里東勢寮",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 290,
+      "speed": 17.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:43:02",
+      "lat": 23.15575,
+      "lng": 120.30705,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 319,
+      "speed": 19.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:44:02",
+      "lat": 23.15495,
+      "lng": 120.30465,
+      "addr": "臺南市善化區六德里六分寮250之3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 261,
+      "speed": 15.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:45:02",
+      "lat": 23.15375,
+      "lng": 120.302333,
+      "addr": "臺南市善化區六德里南122",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 272,
+      "speed": 16.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:46:02",
+      "lat": 23.152767,
+      "lng": 120.300367,
+      "addr": "臺南市六分寮六德里330號之1",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 229,
+      "speed": 14.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:47:02",
+      "lat": 23.151533,
+      "lng": 120.2978,
+      "addr": "臺南市善化區建業路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 296,
+      "speed": 18.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:48:02",
+      "lat": 23.151883,
+      "lng": 120.295333,
+      "addr": "臺南市善化區東勢宅",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 255,
+      "speed": 12.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:49:02",
+      "lat": 23.15325,
+      "lng": 120.292683,
+      "addr": "臺南市善化區溪美里東勢宅南122",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 311,
+      "speed": 19.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:50:02",
+      "lat": 23.153367,
+      "lng": 120.290317,
+      "addr": "臺南市善化區溪美里溪尾226號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 242,
+      "speed": 14.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:51:02",
+      "lat": 23.15315,
+      "lng": 120.288033,
+      "addr": "臺南市善化區溪美里溪尾204號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 235,
+      "speed": 14.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:52:02",
+      "lat": 23.153117,
+      "lng": 120.287733,
+      "addr": "臺南市善化區溪美里溪尾573-3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 31,
+      "speed": 2.5,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "11:54:02",
+      "lat": 23.151283,
+      "lng": 120.28395,
+      "addr": "臺南市善化區溪美里溪尾71號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 437,
+      "speed": 11.5,
+      "status": "normal",
+      "stationaryUntil": "11:55:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "11:56:01",
+      "lat": 23.1514,
+      "lng": 120.283867,
+      "addr": "臺南市善化區溪美里溪尾68號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 16,
+      "speed": 0.5,
+      "status": "rest",
+      "stationaryUntil": "12:01:02",
+      "stationaryDuration": 5
+    },
+    {
+      "time": "12:02:02",
+      "lat": 23.15005,
+      "lng": 120.282,
+      "addr": "臺南市善化區南清公路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 243,
+      "speed": 2.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:03:02",
+      "lat": 23.14865,
+      "lng": 120.279717,
+      "addr": "臺南市善化區南清公路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 281,
+      "speed": 17.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:04:02",
+      "lat": 23.14585,
+      "lng": 120.27935,
+      "addr": "臺南市善化區什乃29之2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 314,
+      "speed": 15.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:05:02",
+      "lat": 23.144067,
+      "lng": 120.27925,
+      "addr": "臺南市善化區什乃10號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 199,
+      "speed": 15.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:06:07",
+      "lat": 23.142233,
+      "lng": 120.277833,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 250,
+      "speed": 12.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:07:03",
+      "lat": 23.140917,
+      "lng": 120.27545,
+      "addr": "臺南市善化區胡厝寮435號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 284,
+      "speed": 17.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:08:01",
+      "lat": 23.14275,
+      "lng": 120.273867,
+      "addr": "臺南市善化區陽明路416號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 260,
+      "speed": 15.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:09:02",
+      "lat": 23.143783,
+      "lng": 120.273017,
+      "addr": "臺南市善化區陽明路302-5號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 144,
+      "speed": 8.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:10:02",
+      "lat": 23.1458,
+      "lng": 120.272367,
+      "addr": "臺南市善化區胡厝寮52之2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 234,
+      "speed": 14.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:11:02",
+      "lat": 23.147067,
+      "lng": 120.27185,
+      "addr": "臺南市善化區胡厝寮131號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 150,
+      "speed": 9.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:12:02",
+      "lat": 23.146467,
+      "lng": 120.269917,
+      "addr": "臺南市善化區胡厝寮181-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 209,
+      "speed": 12.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:13:02",
+      "lat": 23.144817,
+      "lng": 120.26925,
+      "addr": "臺南市善化區胡厝里胡厝寮109-3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 196,
+      "speed": 11.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:14:02",
+      "lat": 23.14335,
+      "lng": 120.26865,
+      "addr": "臺南市善化區胡厝里胡厝寮220之1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 174,
+      "speed": 10.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:15:02",
+      "lat": 23.1411,
+      "lng": 120.267033,
+      "addr": "臺南市善化區胡厝寮251-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 300,
+      "speed": 18.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:16:02",
+      "lat": 23.138367,
+      "lng": 120.264983,
+      "addr": "臺南市善化區烏橋中路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 369,
+      "speed": 22.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:17:02",
+      "lat": 23.137683,
+      "lng": 120.264333,
+      "addr": "臺南市善化區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 101,
+      "speed": 6.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:18:02",
+      "lat": 23.135917,
+      "lng": 120.262717,
+      "addr": "臺南市善化區胡厝里西衛5-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 257,
+      "speed": 15.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:19:01",
+      "lat": 23.133917,
+      "lng": 120.261867,
+      "addr": "臺南市善化區西衛20之13號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 239,
+      "speed": 11.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:20:01",
+      "lat": 23.133683,
+      "lng": 120.2601,
+      "addr": "臺南市善化區西衛29號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 183,
+      "speed": 14.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "12:21:02",
+      "lat": 23.133467,
+      "lng": 120.259533,
+      "addr": "臺南市善化區西衛34-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 63,
+      "speed": 3.8,
+      "status": "normal",
+      "stationaryUntil": "12:24:02",
+      "stationaryDuration": 3
+    },
+    {
+      "time": "12:25:02",
+      "lat": 23.13345,
+      "lng": 120.259417,
+      "addr": "臺南市善化區西衛30-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 12,
+      "speed": 0.2,
+      "status": "rest",
+      "stationaryUntil": "13:00:02",
+      "stationaryDuration": 34
+    },
+    {
+      "time": "13:01:02",
+      "lat": 23.133433,
+      "lng": 120.259583,
+      "addr": "臺南市善化區西衛34-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 17,
+      "speed": 0.0,
+      "status": "rest",
+      "stationaryUntil": "13:10:02",
+      "stationaryDuration": 9
+    },
+    {
+      "time": "13:11:02",
+      "lat": 23.13355,
+      "lng": 120.25975,
+      "addr": "臺南市善化區西衛34-2號",
+      "power": "09.1V",
+      "gpsType": "GPS發送中",
+      "distance": 21,
+      "speed": 0.1,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:12:02",
+      "lat": 23.134283,
+      "lng": 120.259767,
+      "addr": "臺南市善化區胡厝里西衛32-10號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 82,
+      "speed": 6.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:13:02",
+      "lat": 23.137317,
+      "lng": 120.264033,
+      "addr": "臺南市善化區烏橋中路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 551,
+      "speed": 33.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:14:02",
+      "lat": 23.13045,
+      "lng": 120.267467,
+      "addr": "臺南市善化區興農路588號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 840,
+      "speed": 41.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:15:02",
+      "lat": 23.130333,
+      "lng": 120.268917,
+      "addr": "臺南市善化區興農路464號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 149,
+      "speed": 9.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:16:02",
+      "lat": 23.131417,
+      "lng": 120.273217,
+      "addr": "臺南市善化區興農路",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 456,
+      "speed": 27.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "13:17:02",
+      "lat": 23.1316,
+      "lng": 120.274567,
+      "addr": "臺南市善化區興農路297號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 140,
+      "speed": 16.7,
+      "status": "normal",
+      "stationaryUntil": "13:27:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "15:25:02",
+      "lat": 23.096467,
+      "lng": 120.360333,
+      "addr": "臺南市山上區山上里山上11之8號",
+      "power": "09.0V",
+      "gpsType": "GPS停止發送",
+      "distance": 9602,
+      "speed": 4.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:26:02",
+      "lat": 23.0975,
+      "lng": 120.358183,
+      "addr": "臺南市山上區山上里山上34-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 248,
+      "speed": 15.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:27:02",
+      "lat": 23.09925,
+      "lng": 120.357767,
+      "addr": "臺南市山上區山上里山上41號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 199,
+      "speed": 12.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:28:02",
+      "lat": 23.098717,
+      "lng": 120.356883,
+      "addr": "臺南市山上區南洲里南洲",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 108,
+      "speed": 6.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:29:02",
+      "lat": 23.0981,
+      "lng": 120.356,
+      "addr": "臺南市山上區南洲里南洲8之27號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 113,
+      "speed": 7.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:30:01",
+      "lat": 23.097683,
+      "lng": 120.355383,
+      "addr": "臺南市山上區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 78,
+      "speed": 18.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:31:02",
+      "lat": 23.0944,
+      "lng": 120.354717,
+      "addr": "臺南市山上區新莊里大莊32-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 371,
+      "speed": 13.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:33:02",
+      "lat": 23.095017,
+      "lng": 120.35455,
+      "addr": "臺南市山上區大庄41號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 71,
+      "speed": 2.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:34:02",
+      "lat": 23.097017,
+      "lng": 120.354617,
+      "addr": "臺南市山上區南洲里南洲39-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 222,
+      "speed": 13.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:35:02",
+      "lat": 23.098717,
+      "lng": 120.356083,
+      "addr": "臺南市山上區山上里山上40之13號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 241,
+      "speed": 14.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:36:02",
+      "lat": 23.100283,
+      "lng": 120.355083,
+      "addr": "臺南市山上區南洲里南洲4號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 202,
+      "speed": 10.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:37:02",
+      "lat": 23.099783,
+      "lng": 120.353583,
+      "addr": "臺南市山上區南洲里南洲223號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 163,
+      "speed": 13.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:38:02",
+      "lat": 23.102067,
+      "lng": 120.352967,
+      "addr": "臺南市山上區南洲里南洲241號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 262,
+      "speed": 12.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:39:02",
+      "lat": 23.101483,
+      "lng": 120.351333,
+      "addr": "臺南市山上區",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 179,
+      "speed": 10.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:40:02",
+      "lat": 23.099567,
+      "lng": 120.352333,
+      "addr": "臺南市山上區南洲228號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 236,
+      "speed": 14.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:41:02",
+      "lat": 23.099183,
+      "lng": 120.35355,
+      "addr": "臺南市山上區南洲里南洲31號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 132,
+      "speed": 10.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:42:02",
+      "lat": 23.099817,
+      "lng": 120.3551,
+      "addr": "臺南市山上區南洲里南洲16-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 174,
+      "speed": 10.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:43:02",
+      "lat": 23.100467,
+      "lng": 120.3533,
+      "addr": "臺南市山上區南洲里南洲271號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 198,
+      "speed": 9.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:44:02",
+      "lat": 23.102083,
+      "lng": 120.352717,
+      "addr": "臺南市山上區南洲里南洲316-3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 189,
+      "speed": 11.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:45:02",
+      "lat": 23.102433,
+      "lng": 120.3505,
+      "addr": "臺南市山上區南洲里南洲342-3號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 230,
+      "speed": 14.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:46:02",
+      "lat": 23.103183,
+      "lng": 120.3507,
+      "addr": "臺南市山上區南洲里明和10之16號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 86,
+      "speed": 7.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:47:01",
+      "lat": 23.1038,
+      "lng": 120.351917,
+      "addr": "臺南市山上區南洲里南洲327之2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 142,
+      "speed": 6.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:48:02",
+      "lat": 23.10545,
+      "lng": 120.349967,
+      "addr": "臺南市山上區明和里明和33-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 271,
+      "speed": 16.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:49:02",
+      "lat": 23.1053,
+      "lng": 120.34735,
+      "addr": "臺南市山上區明和139之5號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 268,
+      "speed": 13.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:50:02",
+      "lat": 23.10645,
+      "lng": 120.348,
+      "addr": "臺南市山上區明和122號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 144,
+      "speed": 8.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:51:02",
+      "lat": 23.105433,
+      "lng": 120.34865,
+      "addr": "臺南市山上區明和152號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 131,
+      "speed": 8.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:52:02",
+      "lat": 23.106533,
+      "lng": 120.347633,
+      "addr": "臺南市山上區明和里明和125號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 161,
+      "speed": 9.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:53:02",
+      "lat": 23.107833,
+      "lng": 120.347667,
+      "addr": "臺南市山上區明和里明和101號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 145,
+      "speed": 8.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:54:02",
+      "lat": 23.1079,
+      "lng": 120.347767,
+      "addr": "臺南市山上區明和里明和100號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 13,
+      "speed": 0.8,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:55:03",
+      "lat": 23.108,
+      "lng": 120.34795,
+      "addr": "臺南市山上區明和98號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 22,
+      "speed": 1.3,
+      "status": "rest",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:56:02",
+      "lat": 23.107667,
+      "lng": 120.349267,
+      "addr": "臺南市山上區明和里明和222-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 140,
+      "speed": 8.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:57:02",
+      "lat": 23.105833,
+      "lng": 120.350717,
+      "addr": "臺南市山上區明和里明和199-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 252,
+      "speed": 15.4,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:58:02",
+      "lat": 23.10505,
+      "lng": 120.351033,
+      "addr": "臺南市山上區明和里明和195之5號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 93,
+      "speed": 5.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "15:59:02",
+      "lat": 23.104083,
+      "lng": 120.351517,
+      "addr": "臺南市山上區明和里明和11-8號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 118,
+      "speed": 7.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:00:02",
+      "lat": 23.103033,
+      "lng": 120.3528,
+      "addr": "臺南市山上區南洲里南洲335號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 176,
+      "speed": 10.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:01:02",
+      "lat": 23.10215,
+      "lng": 120.354267,
+      "addr": "臺南市山上區南洲里南洲156-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 179,
+      "speed": 11.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:02:02",
+      "lat": 23.102,
+      "lng": 120.354767,
+      "addr": "臺南市山上區南洲里南洲103號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 54,
+      "speed": 3.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:03:01",
+      "lat": 23.102883,
+      "lng": 120.3547,
+      "addr": "臺南市山上區南洲里南洲90之9號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 98,
+      "speed": 4.8,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:04:02",
+      "lat": 23.103383,
+      "lng": 120.353383,
+      "addr": "臺南市山上區南洲里南洲335號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 146,
+      "speed": 11.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:05:02",
+      "lat": 23.1034,
+      "lng": 120.352383,
+      "addr": "臺南市山上區南洲里南洲313號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 102,
+      "speed": 5.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:06:01",
+      "lat": 23.102183,
+      "lng": 120.354183,
+      "addr": "臺南市山上區南洲里南洲156-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 228,
+      "speed": 14.2,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:07:02",
+      "lat": 23.101783,
+      "lng": 120.355817,
+      "addr": "臺南市山上區南洲里南洲72-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 173,
+      "speed": 10.6,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:08:01",
+      "lat": 23.1025,
+      "lng": 120.357017,
+      "addr": "臺南市山上區山上里山上146號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 146,
+      "speed": 8.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:09:02",
+      "lat": 23.102983,
+      "lng": 120.358483,
+      "addr": "臺南市山上區山上里山上127-2號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 159,
+      "speed": 9.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:10:02",
+      "lat": 23.101317,
+      "lng": 120.359417,
+      "addr": "臺南市山上區山上里山上68號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 208,
+      "speed": 12.7,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:11:02",
+      "lat": 23.099617,
+      "lng": 120.357667,
+      "addr": "臺南市山上區山上里山上41號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 260,
+      "speed": 15.9,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:12:02",
+      "lat": 23.100017,
+      "lng": 120.356067,
+      "addr": "臺南市山上區山上201之9號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 170,
+      "speed": 10.3,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:13:02",
+      "lat": 23.10125,
+      "lng": 120.355867,
+      "addr": "臺南市山上區南洲里南洲72-1號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 139,
+      "speed": 8.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:14:02",
+      "lat": 23.101617,
+      "lng": 120.356567,
+      "addr": "臺南市山上區山上里山上224-4號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 82,
+      "speed": 5.1,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:15:02",
+      "lat": 23.099683,
+      "lng": 120.357767,
+      "addr": "臺南市山上區山上里山上41號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 248,
+      "speed": 12.0,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:16:02",
+      "lat": 23.100967,
+      "lng": 120.358283,
+      "addr": "臺南市山上區山上里山上180號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 152,
+      "speed": 12.5,
+      "status": "normal",
+      "stationaryUntil": "",
+      "stationaryDuration": 0
+    },
+    {
+      "time": "16:17:01",
+      "lat": 23.102667,
+      "lng": 120.357633,
+      "addr": "臺南市山上區山上里山上139號",
+      "power": "08.9V",
+      "gpsType": "GPS發送中",
+      "distance": 200,
+      "speed": 9.7,
+      "status": "normal",
+      "stationaryUntil": "16:18:02",
+      "stationaryDuration": 1
+    },
+    {
+      "time": "16:19:02",
+      "lat": 23.102783,
+      "lng": 120.3575,
+      "addr": "臺南市山上區山上里山上221號",
+      "power": "09.0V",
+      "gpsType": "GPS發送中",
+      "distance": 19,
+      "speed": 0.6,
+      "status": "rest",
+      "stationaryUntil": "17:11:02",
+      "stationaryDuration": 43
+    }
+  ],
+  "restStops": [
+    {
+      "index": 1,
+      "pointIndex": 1,
+      "time": "09:06:02",
+      "lat": 23.13245,
+      "lng": 120.289733,
+      "addr": "臺南市善化區中山路472號",
+      "cumulativeDistance": 11.62022941574473
+    },
+    {
+      "index": 10,
+      "pointIndex": 10,
+      "time": "10:07:02",
+      "lat": 23.132183,
+      "lng": 120.2971,
+      "addr": "臺南市善化區中山路253號",
+      "cumulativeDistance": 769.9048288212632
+    },
+    {
+      "index": 25,
+      "pointIndex": 25,
+      "time": "10:22:02",
+      "lat": 23.130583,
+      "lng": 120.298883,
+      "addr": "臺南市善化區民生路283號",
+      "cumulativeDistance": 2516.5201505022496
+    },
+    {
+      "index": 29,
+      "pointIndex": 29,
+      "time": "10:27:02",
+      "lat": 23.1301,
+      "lng": 120.29445,
+      "addr": "臺南市善化區中正路418巷6號",
+      "cumulativeDistance": 2974.6622137524073
+    },
+    {
+      "index": 41,
+      "pointIndex": 41,
+      "time": "10:40:02",
+      "lat": 23.129467,
+      "lng": 120.296517,
+      "addr": "臺南市善化區大成路351–365號",
+      "cumulativeDistance": 4653.766208689674
+    },
+    {
+      "index": 58,
+      "pointIndex": 58,
+      "time": "11:00:02",
+      "lat": 23.12725,
+      "lng": 120.318367,
+      "addr": "臺南市善化區成功路15號",
+      "cumulativeDistance": 7709.742186440295
+    },
+    {
+      "index": 66,
+      "pointIndex": 66,
+      "time": "11:09:02",
+      "lat": 23.135333,
+      "lng": 120.326967,
+      "addr": "臺南市嘉南里76號之2",
+      "cumulativeDistance": 9188.731023776572
+    },
+    {
+      "index": 74,
+      "pointIndex": 74,
+      "time": "11:29:02",
+      "lat": 23.1389,
+      "lng": 120.324067,
+      "addr": "臺南市善化區嘉北里茄拔280之1號",
+      "cumulativeDistance": 10485.219553344261
+    },
+    {
+      "index": 97,
+      "pointIndex": 97,
+      "time": "11:52:02",
+      "lat": 23.153117,
+      "lng": 120.287733,
+      "addr": "臺南市善化區溪美里溪尾573-3號",
+      "cumulativeDistance": 16330.444125004455
+    },
+    {
+      "index": 99,
+      "pointIndex": 99,
+      "time": "11:56:01",
+      "lat": 23.1514,
+      "lng": 120.283867,
+      "addr": "臺南市善化區溪美里溪尾68號",
+      "cumulativeDistance": 16783.219635083147
+    },
+    {
+      "index": 120,
+      "pointIndex": 120,
+      "time": "12:25:02",
+      "lat": 23.13345,
+      "lng": 120.259417,
+      "addr": "臺南市善化區西衛30-1號",
+      "cumulativeDistance": 21243.22667644283
+    },
+    {
+      "index": 157,
+      "pointIndex": 157,
+      "time": "15:54:02",
+      "lat": 23.1079,
+      "lng": 120.347767,
+      "addr": "臺南市山上區明和里明和100號",
+      "cumulativeDistance": 38079.244721880634
+    },
+    {
+      "index": 181,
+      "pointIndex": 181,
+      "time": "16:19:02",
+      "lat": 23.102783,
+      "lng": 120.3575,
+      "addr": "臺南市山上區山上里山上221號",
+      "cumulativeDistance": 41644.65669604401
+    }
+  ],
+  "speedAnomalies": [],
+  "segments": [
+    {
+      "from": "起點",
+      "fromTime": "09:04:02",
+      "fromAddr": "臺南市善化區中山路483號",
+      "fromPointIndex": 0,
+      "to": "休息 1",
+      "toTime": "09:06:02",
+      "toAddr": "臺南市善化區中山路472號",
+      "toPointIndex": 1,
+      "distance": 0.01
+    },
+    {
+      "from": "休息 1",
+      "fromTime": "09:06:02",
+      "fromAddr": "臺南市善化區中山路472號",
+      "fromPointIndex": 1,
+      "to": "休息 2",
+      "toTime": "10:07:02",
+      "toAddr": "臺南市善化區中山路253號",
+      "toPointIndex": 10,
+      "distance": 0.76
+    },
+    {
+      "from": "休息 2",
+      "fromTime": "10:07:02",
+      "fromAddr": "臺南市善化區中山路253號",
+      "fromPointIndex": 10,
+      "to": "休息 3",
+      "toTime": "10:22:02",
+      "toAddr": "臺南市善化區民生路283號",
+      "toPointIndex": 25,
+      "distance": 1.75
+    },
+    {
+      "from": "休息 3",
+      "fromTime": "10:22:02",
+      "fromAddr": "臺南市善化區民生路283號",
+      "fromPointIndex": 25,
+      "to": "休息 4",
+      "toTime": "10:27:02",
+      "toAddr": "臺南市善化區中正路418巷6號",
+      "toPointIndex": 29,
+      "distance": 0.46
+    },
+    {
+      "from": "休息 4",
+      "fromTime": "10:27:02",
+      "fromAddr": "臺南市善化區中正路418巷6號",
+      "fromPointIndex": 29,
+      "to": "休息 5",
+      "toTime": "10:40:02",
+      "toAddr": "臺南市善化區大成路351–365號",
+      "toPointIndex": 41,
+      "distance": 1.68
+    },
+    {
+      "from": "休息 5",
+      "fromTime": "10:40:02",
+      "fromAddr": "臺南市善化區大成路351–365號",
+      "fromPointIndex": 41,
+      "to": "休息 6",
+      "toTime": "11:00:02",
+      "toAddr": "臺南市善化區成功路15號",
+      "toPointIndex": 58,
+      "distance": 3.06
+    },
+    {
+      "from": "休息 6",
+      "fromTime": "11:00:02",
+      "fromAddr": "臺南市善化區成功路15號",
+      "fromPointIndex": 58,
+      "to": "休息 7",
+      "toTime": "11:09:02",
+      "toAddr": "臺南市嘉南里76號之2",
+      "toPointIndex": 66,
+      "distance": 1.48
+    },
+    {
+      "from": "休息 7",
+      "fromTime": "11:09:02",
+      "fromAddr": "臺南市嘉南里76號之2",
+      "fromPointIndex": 66,
+      "to": "休息 8",
+      "toTime": "11:29:02",
+      "toAddr": "臺南市善化區嘉北里茄拔280之1號",
+      "toPointIndex": 74,
+      "distance": 1.3
+    },
+    {
+      "from": "休息 8",
+      "fromTime": "11:29:02",
+      "fromAddr": "臺南市善化區嘉北里茄拔280之1號",
+      "fromPointIndex": 74,
+      "to": "休息 9",
+      "toTime": "11:52:02",
+      "toAddr": "臺南市善化區溪美里溪尾573-3號",
+      "toPointIndex": 97,
+      "distance": 5.85
+    },
+    {
+      "from": "休息 9",
+      "fromTime": "11:52:02",
+      "fromAddr": "臺南市善化區溪美里溪尾573-3號",
+      "fromPointIndex": 97,
+      "to": "休息 10",
+      "toTime": "11:56:01",
+      "toAddr": "臺南市善化區溪美里溪尾68號",
+      "toPointIndex": 99,
+      "distance": 0.45
+    },
+    {
+      "from": "休息 10",
+      "fromTime": "11:56:01",
+      "fromAddr": "臺南市善化區溪美里溪尾68號",
+      "fromPointIndex": 99,
+      "to": "休息 11",
+      "toTime": "12:25:02",
+      "toAddr": "臺南市善化區西衛30-1號",
+      "toPointIndex": 120,
+      "distance": 4.46
+    },
+    {
+      "from": "休息 11",
+      "fromTime": "12:25:02",
+      "fromAddr": "臺南市善化區西衛30-1號",
+      "fromPointIndex": 120,
+      "to": "休息 12",
+      "toTime": "15:54:02",
+      "toAddr": "臺南市山上區明和里明和100號",
+      "toPointIndex": 157,
+      "distance": 16.84
+    },
+    {
+      "from": "休息 12",
+      "fromTime": "15:54:02",
+      "fromAddr": "臺南市山上區明和里明和100號",
+      "fromPointIndex": 157,
+      "to": "休息 13",
+      "toTime": "16:19:02",
+      "toAddr": "臺南市山上區山上里山上221號",
+      "toPointIndex": 181,
+      "distance": 3.57
+    },
+    {
+      "from": "休息 13",
+      "fromTime": "16:19:02",
+      "fromAddr": "臺南市山上區山上里山上221號",
+      "fromPointIndex": 181,
+      "to": "終點",
+      "toTime": "16:19:02",
+      "toAddr": "臺南市山上區山上里山上221號",
+      "toPointIndex": 181,
+      "distance": 0.0
+    }
+  ]
 }
