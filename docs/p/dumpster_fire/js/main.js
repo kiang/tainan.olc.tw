@@ -80,6 +80,16 @@ const categoryColors = {
 };
 
 // Function to create style for markers
+function formatDateLabel(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return '' + y + m + day;
+}
+
 function createMarkerStyle(feature) {
     var category = feature.get('category') || '其他';
     var backgroundColor = categoryColors[category] || categoryColors['其他'];
@@ -88,21 +98,34 @@ function createMarkerStyle(feature) {
     const featureId = feature.get('uuid');
     const hasAdditionalImages = featureId && additionalImages[featureId] && additionalImages[featureId].length > 0;
 
-    return new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 22,
-            fill: new ol.style.Fill({color: backgroundColor}),
-            stroke: new ol.style.Stroke({
-                color: hasAdditionalImages ? '#0000ff' : '#ffffff',
-                width: hasAdditionalImages ? 3 : 2
+    var dateLabel = formatDateLabel(feature.get('startDate'));
+
+    return [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 22,
+                fill: new ol.style.Fill({color: backgroundColor}),
+                stroke: new ol.style.Stroke({
+                    color: hasAdditionalImages ? '#0000ff' : '#ffffff',
+                    width: hasAdditionalImages ? 3 : 2
+                })
+            }),
+            text: new ol.style.Text({
+                text: '🔥',
+                font: '20px sans-serif',
+                offsetY: -4
             })
         }),
-        text: new ol.style.Text({
-            text: '🔥',
-            font: '20px sans-serif',
-            offsetY: 1
+        new ol.style.Style({
+            text: new ol.style.Text({
+                text: dateLabel,
+                font: 'bold 10px Arial,sans-serif',
+                fill: new ol.style.Fill({color: '#ffffff'}),
+                stroke: new ol.style.Stroke({color: '#000000', width: 3}),
+                offsetY: 12
+            })
         })
-    });
+    ];
 }
 
 // Function to create style for clusters
