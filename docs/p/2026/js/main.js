@@ -1,8 +1,8 @@
 var map, overviewLayer, detailLayer, locateMarker, selectedLayer, selectedCunliLayer, cunliLabel;
-var autoTourTimer = null, autoTourZones = [], autoTourIndex = 0, autoTourTooltipLayer = null;
 var candidatesData = null;
 var indexData = null;
 var tppZonesData = null;
+var electionResults = null;
 var currentElType = '';
 var overviewCache = {};
 var infoModal, galleryModal;
@@ -24,29 +24,23 @@ function initMap() {
     infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
     galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
 
-    // Any real user interaction on the map terminates the auto tour
-    var mapEl = document.getElementById('map');
-    ['pointerdown', 'touchstart', 'wheel'].forEach(function (evt) {
-        mapEl.addEventListener(evt, stopAutoTour, { passive: true });
-    });
-
     Promise.all([
         fetch('zones/index.json').then(function (r) { return r.json(); }),
         fetch('data/candidates.json').then(function (r) { return r.json(); }),
-        fetch('tpp/zones.json').then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch('tpp/zones.json').then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch('data/election_results.json').then(function (r) { return r.json(); }).catch(function () { return null; })
     ]).then(function (results) {
         indexData = results[0];
         candidatesData = results[1];
         tppZonesData = results[2];
+        electionResults = results[3];
         buildElectionTypeSelector();
-        // Preload indigenous overview caches for gallery type detection
         ['平地原住民議員', '山地原住民議員'].forEach(function (t) {
             if (indexData.counts[t]) loadOverviewCache(t);
         });
-        // Default to first type that has zones
         var types = indexData.types.filter(function (t) { return indexData.counts[t]; });
         if (types.length > 0) {
-            selectElectionType(types[Math.floor(Math.random() * types.length)]);
+            selectElectionType(types[0]);
         }
     });
 }
@@ -203,52 +197,9 @@ function renderOverview(fc) {
     if (overviewLayer.getLayers().length > 0) {
         map.fitBounds(overviewLayer.getBounds());
     }
-
-    startAutoTour();
 }
 
-function startAutoTour() {
-    stopAutoTour();
-    if (!overviewLayer) return;
-    var layers = overviewLayer.getLayers().filter(function (l) { return l.feature; });
-    if (layers.length === 0) return;
-    for (var i = layers.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = layers[i]; layers[i] = layers[j]; layers[j] = tmp;
-    }
-    autoTourZones = layers;
-    autoTourIndex = 0;
-    autoTourTimer = setInterval(autoTourStep, 3000);
-}
-
-function autoTourStep() {
-    if (autoTourZones.length === 0) {
-        stopAutoTour();
-        return;
-    }
-    if (autoTourIndex >= autoTourZones.length) autoTourIndex = 0;
-    var layer = autoTourZones[autoTourIndex++];
-    onZoneClick(layer.feature.properties, layer, { auto: true });
-}
-
-function stopAutoTour() {
-    if (autoTourTimer) {
-        clearInterval(autoTourTimer);
-        autoTourTimer = null;
-    }
-    closeAutoTourTooltip();
-}
-
-function closeAutoTourTooltip() {
-    if (autoTourTooltipLayer) {
-        autoTourTooltipLayer.closeTooltip();
-        autoTourTooltipLayer = null;
-    }
-}
-
-function onZoneClick(props, layer, opts) {
-    opts = opts || {};
-    if (!opts.auto) stopAutoTour();
+function onZoneClick(props, layer) {
     if (selectedLayer && overviewLayer) {
         overviewLayer.resetStyle(selectedLayer);
     }
@@ -256,13 +207,7 @@ function onZoneClick(props, layer, opts) {
     layer.setStyle(selectedStyle());
     layer.bringToFront();
     map.fitBounds(layer.getBounds());
-    if (opts.auto) {
-        closeAutoTourTooltip();
-        layer.openTooltip(layer.getBounds().getCenter());
-        autoTourTooltipLayer = layer;
-    } else {
-        showZoneInfo(props);
-    }
+    showZoneInfo(props);
     loadDetail(props.code);
 }
 
@@ -363,6 +308,11 @@ function showZoneInfo(props, cunliName) {
 
     var html = '';
 
+    // Election results section — highlight TPP candidates from this zone
+    var zoneResults = findElectionResultsForZone(code, currentElType);
+    var highlightNames = candidates.map(function (c) { return c.name; });
+    html += renderElectionResults(zoneResults, highlightNames);
+
     // Candidates section
     if (candidates.length > 0) {
         candidates.forEach(function (c) {
@@ -424,8 +374,6 @@ function findCandidatesForZone(zoneCode, elType) {
     return candidatesData.candidates.filter(function (c) {
         if (matchElTypes.indexOf(c.election) === -1) return false;
 
-        // Match based on zone code pattern
-        // Zone codes: T1-67000-07, R1-10002010-01, mayor-67000, village-67000180001
         if (zoneCode.startsWith('mayor-')) {
             var areaCode = zoneCode.substring(6);
             if (areaCode.length === 5) return c.countyCode === areaCode;
@@ -435,16 +383,13 @@ function findCandidatesForZone(zoneCode, elType) {
         if (zoneCode.startsWith('village-')) {
             return c.villCode === zoneCode.substring(8);
         }
-        // District-based: T1-67000-07 → countyCode=67000, district=第07選區 or 第7選舉區
         var parts = zoneCode.split('-');
         if (parts.length === 3) {
             var districtNum = parseInt(parts[2], 10);
             var districtMatch = c.district && parseInt(c.district.replace(/[^\d]/g, ''), 10) === districtNum;
-            // For R-type (town-based), match on townCode
             if (parts[0].startsWith('R')) {
                 return c.townCode === parts[1] && districtMatch;
             }
-            // For T-type (county-based), match on countyCode
             return c.countyCode === parts[1] && districtMatch;
         }
         return false;
@@ -495,12 +440,79 @@ function renderCandidateLinks(candidate) {
 
 function findTppZoneInfo(zoneCode) {
     if (!tppZonesData || !Array.isArray(tppZonesData)) return null;
-    // tpp zones.json uses code like "67000-07", zone code is "T1-67000-07"
     var shortCode = zoneCode.replace(/^[A-Z]\d-/, '');
     for (var i = 0; i < tppZonesData.length; i++) {
         if (tppZonesData[i].code === shortCode) return tppZonesData[i];
     }
     return null;
+}
+
+function findElectionResultsForZone(zoneCode, elType) {
+    if (!electionResults) return null;
+    var councilMatch = zoneCode.match(/^[TR]\d-(\d+)-(\d+)$/);
+    if (councilMatch) {
+        var matchCode = councilMatch[1];
+        var distNum = parseInt(councilMatch[2], 10);
+        var key = 'district_' + distNum;
+        var countyCode = matchCode.length <= 5 ? matchCode : matchCode.substring(0, 5);
+        if (electionResults.councils && electionResults.councils[countyCode] && electionResults.councils[countyCode][key]) {
+            return electionResults.councils[countyCode][key];
+        }
+    }
+    if (zoneCode.startsWith('mayor-')) {
+        var areaCode = zoneCode.substring(6);
+        var cc = areaCode.length <= 5 ? areaCode : areaCode.substring(0, 5);
+        if (electionResults.mayors && electionResults.mayors[cc]) {
+            return electionResults.mayors[cc];
+        }
+    }
+    return null;
+}
+
+function renderElectionResults(result, highlightNames) {
+    if (!result || !result.candidates || result.candidates.length === 0) return '';
+    var sorted = result.candidates.slice().sort(function (a, b) { return b.votes - a.votes; });
+    var maxVotes = sorted[0].votes || 1;
+    var seats = result.seats || 1;
+    var names = highlightNames || [];
+
+    var html = '<div class="election-results mb-3">';
+    html += '<div class="d-flex justify-content-between align-items-center mb-2">';
+    html += '<strong style="font-size:0.95rem"><i class="bi bi-bar-chart-fill me-1"></i>開票結果</strong>';
+    html += '<span style="font-size:0.75rem;color:#7f8c8d">';
+    var done = result.reportedStations === result.totalStations;
+    html += '<i class="bi ' + (done ? 'bi-check-circle-fill text-success' : 'bi-clock') + ' me-1"></i>';
+    html += result.reportedStations + '/' + result.totalStations + ' 投票所';
+    if (result.updateTime) html += ' (' + result.updateTime + ')';
+    html += '</span></div>';
+
+    sorted.forEach(function (c, i) {
+        var isElected = i < seats;
+        var isHighlight = names.indexOf(c.name) !== -1;
+        var barPct = maxVotes > 0 ? (c.votes / maxVotes * 100) : 0;
+        var color = partyColors[c.party] || '#7f8c8d';
+
+        var rowStyle = 'font-size:0.85rem';
+        if (isHighlight) {
+            rowStyle += ';background:#fff3cd;border-radius:4px;padding:4px 6px;margin:0 -6px;border:2px solid #ffc107;font-size:0.95rem';
+        } else if (isElected) {
+            rowStyle += ';background:#eafaf1;border-radius:4px;padding:2px 4px;margin:0 -4px';
+        }
+
+        html += '<div class="d-flex align-items-center gap-1 mb-1" style="' + rowStyle + '">';
+        html += '<span style="width:20px;height:20px;border-radius:50%;background:' + (isHighlight ? '#ffc107' : '#ecf0f1') + ';display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0">' + c.number + '</span>';
+        html += '<span style="font-weight:700;min-width:48px">' + c.name;
+        if (isElected) html += '<span style="display:inline-block;background:#27ae60;color:#fff;font-size:0.6rem;font-weight:700;padding:0 4px;border-radius:6px;margin-left:3px">當選</span>';
+        html += '</span>';
+        html += '<span style="flex:1;height:' + (isHighlight ? '20' : '16') + 'px;background:#ecf0f1;border-radius:8px;overflow:hidden">';
+        html += '<span style="display:block;height:100%;width:' + barPct.toFixed(1) + '%;background:' + color + ';border-radius:8px"></span></span>';
+        html += '<span style="font-weight:700;font-size:' + (isHighlight ? '0.9' : '0.78') + 'rem;min-width:55px;text-align:right">' + c.votes.toLocaleString() + '</span>';
+        html += '<span style="font-size:0.72rem;color:#7f8c8d;min-width:40px;text-align:right">' + c.percentage.toFixed(1) + '%</span>';
+        html += '</div>';
+    });
+
+    html += '</div>';
+    return html;
 }
 
 function candidateSortKey(c) {
@@ -515,7 +527,6 @@ function candidateSortKey(c) {
 
 function openGallery() {
     if (!candidatesData) return;
-    stopAutoTour();
     var grid = document.getElementById('galleryGrid');
     var searchInput = document.getElementById('gallerySearch');
     searchInput.value = '';
@@ -566,7 +577,6 @@ function getDisplayElType(candidate) {
         if (!isNaN(num)) {
             var code = candidate.countyCode;
             var numStr = (num < 10 ? '0' : '') + num;
-            // Check if this zone exists in the preloaded overview caches
             var types = ['平地原住民議員', '山地原住民議員'];
             var prefixes = ['T2', 'T3'];
             for (var i = 0; i < types.length; i++) {
@@ -643,7 +653,6 @@ function findZoneCodeForCandidate(c) {
 }
 
 function locateUser() {
-    stopAutoTour();
     if (!navigator.geolocation) {
         alert('無法取得您的位置');
         return;

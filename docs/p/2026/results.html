@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="2026 臺南市選舉開票結果">
+    <meta property="og:description" content="2026 年臺南市各項選舉即時開票結果，含市長、議員、村里長">
+    <meta property="og:type" content="website">
+    <title>2026 臺南市選舉開票結果</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --elected: #27ae60;
+            --elected-bg: #eafaf1;
+            --bar-dpp: #1B9431;
+            --bar-kmt: #000095;
+            --bar-tpp: #28C8C8;
+            --bar-npp: #FBBE01;
+            --bar-tsp: #A73F24;
+            --bar-ind: #95a5a6;
+            --bar-other: #7f8c8d;
+        }
+
+        body {
+            font-family: "Noto Sans TC", sans-serif;
+            background: #f4f6f9;
+            color: #2c3e50;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #fff;
+            padding: 20px 0;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-weight: 900;
+            font-size: 1.6rem;
+            margin: 0;
+        }
+
+        .page-header .meta {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        .nav-pills .nav-link {
+            color: var(--primary);
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 6px 18px;
+        }
+
+        .nav-pills .nav-link.active {
+            background: var(--primary);
+        }
+
+        .section-title {
+            font-weight: 900;
+            font-size: 1.2rem;
+            border-left: 4px solid var(--primary-light);
+            padding-left: 10px;
+            margin: 20px 0 12px;
+        }
+
+        .result-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .result-card .card-title {
+            font-weight: 900;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .result-card .card-subtitle {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .candidate-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .candidate-row.is-elected {
+            background: var(--elected-bg);
+            border-radius: 6px;
+            padding: 4px 8px;
+            margin-left: -8px;
+            margin-right: -8px;
+        }
+
+        .candidate-row .c-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .candidate-row .c-name {
+            font-weight: 700;
+            min-width: 60px;
+        }
+
+        .candidate-row .c-party {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            min-width: 50px;
+        }
+
+        .candidate-row .c-bar-wrap {
+            flex: 1;
+            min-width: 60px;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .candidate-row .c-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        .candidate-row .c-votes {
+            font-weight: 700;
+            font-size: 0.8rem;
+            min-width: 70px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .candidate-row .c-pct {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        .elected-badge {
+            display: inline-block;
+            background: var(--elected);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+            margin-left: 4px;
+        }
+
+        .progress-info {
+            font-size: 0.75rem;
+            color: #95a5a6;
+        }
+
+        .progress-info .bi {
+            margin-right: 2px;
+        }
+
+        .search-box {
+            max-width: 350px;
+        }
+
+        .town-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .town-toggle .bi {
+            transition: transform 0.2s;
+        }
+
+        .town-toggle.collapsed .bi {
+            transform: rotate(-90deg);
+        }
+
+        .village-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .village-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid #e8ecef;
+        }
+
+        .village-card .village-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .village-card .candidate-row {
+            font-size: 0.82rem;
+            margin-bottom: 4px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            padding: 16px;
+        }
+
+        .summary-stat .stat-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .summary-stat .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 576px) {
+            .candidate-row .c-party { display: none; }
+            .candidate-row .c-name { min-width: 48px; }
+            .village-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="bi bi-clipboard2-data-fill me-2"></i>2026 臺南市選舉開票結果</h1>
+            <div class="meta" id="scrapeInfo"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabMayor">市長</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabCouncil">議員</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabVillage">村里長</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabMayor"></div>
+            <div class="tab-pane fade" id="tabCouncil"></div>
+            <div class="tab-pane fade" id="tabVillage">
+                <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">
+                    <div class="search-box flex-grow-1">
+                        <input type="text" class="form-control form-control-sm" id="villageSearch"
+                            placeholder="搜尋行政區、里名、候選人...">
+                    </div>
+                </div>
+                <div id="villageContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var partyBarColors = {
+            '民主進步黨': 'var(--bar-dpp)',
+            '中國國民黨': 'var(--bar-kmt)',
+            '台灣民眾黨': 'var(--bar-tpp)',
+            '時代力量': 'var(--bar-npp)',
+            '台灣基進': 'var(--bar-tsp)',
+            '台聯黨': '#c0392b',
+            '臺灣SoR無法黨': '#8e44ad',
+            '無黨籍及未經政黨推薦': 'var(--bar-ind)'
+        };
+
+        function barColor(party) {
+            return partyBarColors[party] || 'var(--bar-other)';
+        }
+
+        function shortParty(party) {
+            var map = {
+                '民主進步黨': '民進黨',
+                '中國國民黨': '國民黨',
+                '台灣民眾黨': '民眾黨',
+                '無黨籍及未經政黨推薦': '無黨籍',
+                '臺灣SoR無法黨': 'SoR無法黨'
+            };
+            return map[party] || party;
+        }
+
+        function renderCandidateRow(c, seats, maxVotes) {
+            var isElected = c._rank <= seats;
+            var pct = maxVotes > 0 ? (c.votes / maxVotes * 100) : 0;
+            var cls = isElected ? ' is-elected' : '';
+            var html = '<div class="candidate-row' + cls + '">';
+            html += '<span class="c-number">' + c.number + '</span>';
+            html += '<span class="c-name">' + c.name;
+            if (isElected) html += '<span class="elected-badge">當選</span>';
+            html += '</span>';
+            html += '<span class="c-party">' + shortParty(c.party) + '</span>';
+            html += '<span class="c-bar-wrap"><span class="c-bar" style="width:' + pct.toFixed(1) + '%;background:' + barColor(c.party) + '"></span></span>';
+            html += '<span class="c-votes">' + c.votes.toLocaleString() + '</span>';
+            html += '<span class="c-pct">' + c.percentage.toFixed(2) + '%</span>';
+            html += '</div>';
+            return html;
+        }
+
+        function progressHtml(reported, total) {
+            var pct = total > 0 ? (reported / total * 100).toFixed(0) : 0;
+            var done = reported === total;
+            var icon = done ? 'bi-check-circle-fill text-success' : 'bi-clock';
+            return '<span class="progress-info"><i class="bi ' + icon + '"></i>' + reported + '/' + total + ' 投票所 (' + pct + '%)</span>';
+        }
+
+        function rankCandidates(candidates) {
+            var sorted = candidates.slice().sort(function (a, b) { return b.votes - a.votes; });
+            sorted.forEach(function (c, i) { c._rank = i + 1; });
+            return sorted;
+        }
+
+        function renderMayor(data) {
+            var el = document.getElementById('tabMayor');
+            if (!data) { el.innerHTML = '<p class="text-muted">尚無資料</p>'; return; }
+
+            var sorted = rankCandidates(data.candidates);
+            var maxVotes = sorted[0] ? sorted[0].votes : 1;
+
+            var html = '<div class="result-card">';
+            html += '<div class="card-title">臺南市 直轄市長選舉</div>';
+            html += '<div class="card-subtitle">應選 ' + data.seats + ' 人 ' + progressHtml(data.reportedStations, data.totalStations) + '</div>';
+            sorted.forEach(function (c) {
+                html += renderCandidateRow(c, data.seats, maxVotes);
+            });
+            html += '</div>';
+            el.innerHTML = html;
+        }
+
+        function renderCouncil(data) {
+            var el = document.getElementById('tabCouncil');
+            if (!data || Object.keys(data).length === 0) { el.innerHTML = '<p class="text-muted">尚無資料</p>'; return; }
+
+            var html = '';
+            var totalCandidates = 0, totalSeats = 0;
+
+            for (var i = 1; i <= 20; i++) {
+                var key = 'district_' + i;
+                if (!data[key]) break;
+                var d = data[key];
+                var sorted = rankCandidates(d.candidates);
+                var maxVotes = sorted[0] ? sorted[0].votes : 1;
+                totalCandidates += sorted.length;
+                totalSeats += d.seats;
+
+                html += '<div class="result-card">';
+                html += '<div class="card-title">' + d.district + '</div>';
+                html += '<div class="card-subtitle">應選 ' + d.seats + ' 人 ' + progressHtml(d.reportedStations, d.totalStations) + '</div>';
+                sorted.forEach(function (c) {
+                    html += renderCandidateRow(c, d.seats, maxVotes);
+                });
+                html += '</div>';
+            }
+
+            var summary = '<div class="row mb-3">';
+            summary += '<div class="col-4"><div class="summary-stat"><div class="stat-num">' + Object.keys(data).length + '</div><div class="stat-label">選舉區</div></div></div>';
+            summary += '<div class="col-4"><div class="summary-stat"><div class="stat-num">' + totalSeats + '</div><div class="stat-label">應選席次</div></div></div>';
+            summary += '<div class="col-4"><div class="summary-stat"><div class="stat-num">' + totalCandidates + '</div><div class="stat-label">候選人</div></div></div>';
+            summary += '</div>';
+
+            el.innerHTML = summary + html;
+        }
+
+        function renderVillageChiefs(data) {
+            if (!data || Object.keys(data).length === 0) {
+                document.getElementById('villageContent').innerHTML = '<p class="text-muted">尚無資料</p>';
+                return;
+            }
+
+            var container = document.getElementById('villageContent');
+            var html = '';
+
+            var towns = Object.keys(data);
+            towns.forEach(function (town) {
+                var villages = data[town];
+                var vNames = Object.keys(villages);
+                var contested = vNames.filter(function (v) { return villages[v].candidates.length > 1; }).length;
+                var townId = 'town_' + town.replace(/[^a-zA-Z0-9一-鿿]/g, '');
+
+                html += '<div class="mb-3 town-section" data-town="' + town + '">';
+                html += '<div class="section-title town-toggle" data-bs-toggle="collapse" data-bs-target="#' + townId + '">';
+                html += '<i class="bi bi-chevron-down me-1"></i>' + town;
+                html += ' <span class="badge bg-secondary ms-2" style="font-size:0.7rem">' + vNames.length + ' 里';
+                if (contested > 0) html += '，' + contested + ' 競選';
+                html += '</span></div>';
+                html += '<div class="collapse show" id="' + townId + '">';
+                html += '<div class="village-grid">';
+
+                vNames.forEach(function (vName) {
+                    var v = villages[vName];
+                    var sorted = rankCandidates(v.candidates);
+                    var maxVotes = sorted[0] ? sorted[0].votes : 1;
+
+                    html += '<div class="village-card" data-search="' + town + ' ' + vName + ' ' + sorted.map(function (c) { return c.name + ' ' + c.party; }).join(' ') + '">';
+                    html += '<div class="village-name">' + vName + ' ' + progressHtml(v.reportedStations, v.totalStations) + '</div>';
+                    sorted.forEach(function (c) {
+                        html += renderCandidateRow(c, v.seats, maxVotes);
+                    });
+                    html += '</div>';
+                });
+
+                html += '</div></div></div>';
+            });
+
+            container.innerHTML = html;
+
+            // Setup collapse toggle icon
+            container.querySelectorAll('.town-toggle').forEach(function (el) {
+                var target = document.querySelector(el.getAttribute('data-bs-target'));
+                if (target) {
+                    target.addEventListener('hidden.bs.collapse', function () { el.classList.add('collapsed'); });
+                    target.addEventListener('shown.bs.collapse', function () { el.classList.remove('collapsed'); });
+                }
+            });
+        }
+
+        function setupVillageSearch() {
+            var input = document.getElementById('villageSearch');
+            if (!input) return;
+            input.addEventListener('input', function () {
+                var kw = this.value.trim().toLowerCase();
+                document.querySelectorAll('.village-card').forEach(function (card) {
+                    var text = (card.getAttribute('data-search') || '').toLowerCase();
+                    card.style.display = (!kw || text.indexOf(kw) !== -1) ? '' : 'none';
+                });
+                // Show all town sections, hide empty ones
+                document.querySelectorAll('.town-section').forEach(function (sec) {
+                    if (!kw) {
+                        sec.style.display = '';
+                        return;
+                    }
+                    var visible = sec.querySelectorAll('.village-card[style=""], .village-card:not([style])');
+                    var anyVisible = false;
+                    sec.querySelectorAll('.village-card').forEach(function (c) {
+                        if (c.style.display !== 'none') anyVisible = true;
+                    });
+                    sec.style.display = anyVisible ? '' : 'none';
+                    // Auto-expand matching towns
+                    if (anyVisible) {
+                        var collapse = sec.querySelector('.collapse');
+                        if (collapse && !collapse.classList.contains('show')) {
+                            new bootstrap.Collapse(collapse, { show: true });
+                        }
+                    }
+                });
+            });
+        }
+
+        fetch('data/election_results.json')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                document.getElementById('scrapeInfo').textContent =
+                    '資料來源：中選會 ｜ 擷取時間：' + data.scrapeTime;
+
+                renderMayor(data.mayor);
+                renderCouncil(data.council);
+                renderVillageChiefs(data.village_chiefs);
+                setupVillageSearch();
+            })
+            .catch(function (err) {
+                console.error('Failed to load data:', err);
+                document.getElementById('tabMayor').innerHTML = '<p class="text-danger">載入資料失敗</p>';
+            });
+    </script>
+</body>
+
+</html>
