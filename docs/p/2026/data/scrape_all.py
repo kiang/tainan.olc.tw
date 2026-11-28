@@ -133,16 +133,83 @@ def scrape_council(county_code, county_name):
         result["countyCode"] = county_code
         result["countyName"] = county_name
         results[f"district_{d}"] = result
+    # Indigenous council districts (T2=平地原住民, T3=山地原住民)
+    # These start at higher district numbers, so scan the full range
+    for prefix, label in [("T2", "平地原住民"), ("T3", "山地原住民")]:
+        for d in range(1, 20):
+            dist = f"{d:02d}"
+            url = make_url(prefix, county_code, y=dist)
+            html = fetch(url)
+            result = parse_candidates(html)
+            if result is None:
+                continue
+            result["district"] = f"第{d}選舉區({label})"
+            result["districtCode"] = dist
+            result["countyCode"] = county_code
+            result["countyName"] = county_name
+            results[f"{prefix}-district_{d}"] = result
     return results
+
+
+def scrape_town_mayor(town_code):
+    county_code = town_code[:5]
+    d_code = town_code[5:]
+    url = make_url("TD", county_code, d=d_code)
+    html = fetch(url)
+    return parse_candidates(html)
+
+
+def scrape_town_reps(town_code):
+    county_code = town_code[:5]
+    d_code = town_code[5:]
+    results = {}
+    for d in range(1, 30):
+        dist = f"{d:02d}"
+        url = make_url("T4", county_code, y=dist, d=d_code)
+        html = fetch(url)
+        result = parse_candidates(html)
+        if result is None:
+            break
+        result["district"] = f"第{d}選舉區"
+        result["districtCode"] = dist
+        results[f"district_{d}"] = result
+    return results
+
+
+def scrape_village_chief(county_code, town_d, village_v):
+    url = make_url("TV", county_code, d=town_d, v=village_v)
+    html = fetch(url)
+    return parse_candidates(html)
 
 
 def main():
     output_dir = sys.argv[1] if len(sys.argv) > 1 else "."
 
+    # Load candidates to know which specific races to scrape
+    candidates_path = os.path.join(output_dir, "candidates.json")
+    extra_races = {"town_mayors": set(), "town_reps": set(), "villages": set()}
+    if os.path.exists(candidates_path):
+        with open(candidates_path, encoding="utf-8") as f:
+            cdata = json.load(f)
+        for c in cdata.get("candidates", []):
+            tc = c.get("townCode", "")
+            et = c.get("election", "")
+            if et in ("鄉鎮市長", "直轄市山地原住民區區長") and tc:
+                extra_races["town_mayors"].add(tc)
+            elif et == "鄉鎮市民代表" and tc:
+                extra_races["town_reps"].add(tc)
+            elif et == "村里長":
+                vc = c.get("villCode", "")
+                if len(vc) >= 11:
+                    extra_races["villages"].add((vc[:5], vc[5:8], vc[8:11]))
+
     all_results = {
         "scrapeTime": time.strftime("%Y-%m-%d %H:%M:%S"),
         "mayors": {},
         "councils": {},
+        "town_mayors": {},
+        "town_reps": {},
+        "village_chiefs": {},
     }
 
     total_candidates = 0
@@ -167,6 +234,36 @@ def main():
                 total_candidates += n
             print(f"  Council: {len(council)} districts, {sum(len(d['candidates']) for d in council.values())} candidates", file=sys.stderr)
 
+    # Town mayors (鄉鎮市長 / 直轄市山地原住民區區長)
+    for tc in sorted(extra_races["town_mayors"]):
+        result = scrape_town_mayor(tc)
+        if result:
+            all_results["town_mayors"][tc] = result
+            total_candidates += len(result["candidates"])
+            print(f"  Town mayor {tc}: {len(result['candidates'])} candidates", file=sys.stderr)
+
+    # Town reps (鄉鎮市民代表)
+    for tc in sorted(extra_races["town_reps"]):
+        reps = scrape_town_reps(tc)
+        if reps:
+            all_results["town_reps"][tc] = reps
+            n = sum(len(d["candidates"]) for d in reps.values())
+            total_candidates += n
+            print(f"  Town reps {tc}: {len(reps)} districts, {n} candidates", file=sys.stderr)
+
+    # Village chiefs
+    for county_code, town_d, vill_code in sorted(extra_races["villages"]):
+        if not town_d or not vill_code:
+            continue
+        result = scrape_village_chief(county_code, town_d, vill_code)
+        if result:
+            key = county_code + town_d + vill_code
+            all_results["village_chiefs"][key] = result
+            total_candidates += len(result["candidates"])
+
+    if all_results["village_chiefs"]:
+        print(f"  Village chiefs: {len(all_results['village_chiefs'])} races", file=sys.stderr)
+
     output_path = os.path.join(output_dir, "election_results.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2)
@@ -175,6 +272,9 @@ def main():
     print(f"Counties: {len(COUNTIES)}", file=sys.stderr)
     print(f"Mayors: {len(all_results['mayors'])}", file=sys.stderr)
     print(f"Council districts: {sum(len(c) for c in all_results['councils'].values())}", file=sys.stderr)
+    print(f"Town mayors: {len(all_results['town_mayors'])}", file=sys.stderr)
+    print(f"Town reps: {sum(len(c) for c in all_results['town_reps'].values())} districts", file=sys.stderr)
+    print(f"Village chiefs: {len(all_results['village_chiefs'])}", file=sys.stderr)
     print(f"Total candidates: {total_candidates}", file=sys.stderr)
     print(f"Output: {output_path}", file=sys.stderr)
 

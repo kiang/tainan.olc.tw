@@ -449,21 +449,41 @@ function findTppZoneInfo(zoneCode) {
 
 function findElectionResultsForZone(zoneCode, elType) {
     if (!electionResults) return null;
-    var councilMatch = zoneCode.match(/^[TR]\d-(\d+)-(\d+)$/);
+    var councilMatch = zoneCode.match(/^([TR]\d)-(\d+)-(\d+)$/);
     if (councilMatch) {
-        var matchCode = councilMatch[1];
-        var distNum = parseInt(councilMatch[2], 10);
-        var key = 'district_' + distNum;
+        var prefix = councilMatch[1];
+        var matchCode = councilMatch[2];
+        var distNum = parseInt(councilMatch[3], 10);
+        // R-type = town reps (鄉鎮市民代表), matchCode is townCode
+        if (prefix.charAt(0) === 'R' && electionResults.town_reps && electionResults.town_reps[matchCode]) {
+            var repKey = 'district_' + distNum;
+            if (electionResults.town_reps[matchCode][repKey]) {
+                return electionResults.town_reps[matchCode][repKey];
+            }
+        }
         var countyCode = matchCode.length <= 5 ? matchCode : matchCode.substring(0, 5);
+        var key = (prefix === 'T2' || prefix === 'T3') ? prefix + '-district_' + distNum : 'district_' + distNum;
         if (electionResults.councils && electionResults.councils[countyCode] && electionResults.councils[countyCode][key]) {
             return electionResults.councils[countyCode][key];
         }
     }
     if (zoneCode.startsWith('mayor-')) {
         var areaCode = zoneCode.substring(6);
-        var cc = areaCode.length <= 5 ? areaCode : areaCode.substring(0, 5);
+        // Town-level mayor (鄉鎮市長/原住民區長): mayor-{townCode8}
+        if (areaCode.length > 5 && electionResults.town_mayors && electionResults.town_mayors[areaCode]) {
+            return electionResults.town_mayors[areaCode];
+        }
+        // County-level mayor: mayor-{countyCode5}
+        var cc = areaCode.substring(0, 5);
         if (electionResults.mayors && electionResults.mayors[cc]) {
             return electionResults.mayors[cc];
+        }
+    }
+    // Village chief: village-{countyCode5}{townCode3}{villCode3+}
+    if (zoneCode.startsWith('village-') && electionResults.village_chiefs) {
+        var villKey = zoneCode.substring(8);
+        if (electionResults.village_chiefs[villKey]) {
+            return electionResults.village_chiefs[villKey];
         }
     }
     return null;
