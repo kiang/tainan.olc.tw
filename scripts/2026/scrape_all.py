@@ -183,7 +183,9 @@ def scrape_village_chief(county_code, town_d, village_v):
 
 
 def main():
-    output_dir = sys.argv[1] if len(sys.argv) > 1 else "."
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(script_dir, '..', '..', 'docs', 'p', '2026', 'data')
+    output_dir = os.path.normpath(output_dir)
 
     # Load candidates to know which specific races to scrape
     candidates_path = os.path.join(output_dir, "candidates.json")
