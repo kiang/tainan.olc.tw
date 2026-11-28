@@ -419,34 +419,8 @@
     <script src="js/main.js?v=20261128f"></script>
     <script>
         (function () {
-            var target = new Date('2026-11-28T08:00:00+08:00').getTime();
             var el = document.getElementById('tppCountdown');
-            function digits(num, minLen) {
-                var s = String(num);
-                while (s.length < minLen) s = '0' + s;
-                return s.split('').map(function (d) {
-                    return '<span class="cd-digit">' + d + '</span>';
-                }).join('');
-            }
-            function tick() {
-                var diff = target - Date.now();
-                if (diff <= 0) {
-                    el.innerHTML = '<span class="cd-unit">2026/11/28 投票日，記得去投票！</span>';
-                    return;
-                }
-                var sec = Math.floor(diff / 1000);
-                var d = Math.floor(sec / 86400);
-                var h = Math.floor((sec % 86400) / 3600);
-                var m = Math.floor((sec % 3600) / 60);
-                var s = sec % 60;
-                el.innerHTML = '<span class="cd-unit">距離 2026/11/28 投票日</span>' +
-                    digits(d, 3) + '<span class="cd-unit">天</span>' +
-                    digits(h, 2) + '<span class="cd-unit">時</span>' +
-                    digits(m, 2) + '<span class="cd-unit">分</span>' +
-                    digits(s, 2) + '<span class="cd-unit">秒</span>';
-            }
-            tick();
-            setInterval(tick, 1000);
+            el.style.display = 'none';
         })();
     </script>
 
