@@ -537,17 +537,32 @@ function renderElectionResults(result, highlightNames) {
 
 function isCandidateElected(c) {
     if (!electionResults) return false;
-    var countyCode = c.countyCode;
-    var district = c.district;
     var result = null;
-    if (district) {
-        var num = parseInt(district.replace(/[^\d]/g, ''), 10);
-        if (!isNaN(num) && electionResults.councils && electionResults.councils[countyCode]) {
-            result = electionResults.councils[countyCode]['district_' + num];
+    var et = c.election;
+    var district = c.district;
+    var countyCode = c.countyCode;
+    var townCode = c.townCode;
+    var distNum = district ? parseInt(district.replace(/[^\d]/g, ''), 10) : NaN;
+
+    if (et === '鄉鎮市民代表' && townCode && !isNaN(distNum)) {
+        if (electionResults.town_reps && electionResults.town_reps[townCode]) {
+            result = electionResults.town_reps[townCode]['district_' + distNum];
         }
-    } else if (c.election.indexOf('首長') !== -1 || c.election.indexOf('市長') !== -1 || c.election.indexOf('縣長') !== -1) {
+    } else if ((et === '鄉鎮市長' || et === '直轄市山地原住民區區長') && townCode) {
+        if (electionResults.town_mayors) result = electionResults.town_mayors[townCode];
+    } else if (et === '村里長') {
+        var villCode = c.villCode;
+        if (villCode && electionResults.village_chiefs) result = electionResults.village_chiefs[villCode];
+    } else if ((et === '縣市首長' || et.indexOf('市長') !== -1) && !townCode) {
         if (electionResults.mayors) result = electionResults.mayors[countyCode];
+    } else if (!isNaN(distNum) && countyCode) {
+        if (electionResults.councils && electionResults.councils[countyCode]) {
+            result = electionResults.councils[countyCode]['district_' + distNum];
+            if (!result) result = electionResults.councils[countyCode]['T2-district_' + distNum];
+            if (!result) result = electionResults.councils[countyCode]['T3-district_' + distNum];
+        }
     }
+
     if (!result || !result.candidates) return false;
     var sorted = result.candidates.slice().sort(function (a, b) { return b.votes - a.votes; });
     var seats = result.seats || 1;
