@@ -112,8 +112,33 @@ function loadOverview(et) {
         });
 }
 
+function hasElectedCandidate(feature) {
+    if (!electionResults) return false;
+    var code = feature.properties.code;
+    var names = feature.properties.candidates || [];
+    if (names.length === 0) return false;
+    var result = findElectionResultsForZone(code, '');
+    if (!result || !result.candidates) return false;
+    var sorted = result.candidates.slice().sort(function (a, b) { return b.votes - a.votes; });
+    var seats = result.seats || 1;
+    for (var i = 0; i < seats && i < sorted.length; i++) {
+        if (names.indexOf(sorted[i].name) !== -1) return true;
+    }
+    return false;
+}
+
 function getZoneStyle(feature) {
     var count = feature.properties.candidateCount || 0;
+    var elected = count > 0 && hasElectedCandidate(feature);
+    if (elected) {
+        return {
+            fillColor: '#f39c12',
+            weight: 3,
+            opacity: 1,
+            color: '#d35400',
+            fillOpacity: 0.55
+        };
+    }
     if (count > 0) {
         return {
             fillColor: '#0ABAB5',
