@@ -515,6 +515,28 @@ function renderElectionResults(result, highlightNames) {
     return html;
 }
 
+function isCandidateElected(c) {
+    if (!electionResults) return false;
+    var countyCode = c.countyCode;
+    var district = c.district;
+    var result = null;
+    if (district) {
+        var num = parseInt(district.replace(/[^\d]/g, ''), 10);
+        if (!isNaN(num) && electionResults.councils && electionResults.councils[countyCode]) {
+            result = electionResults.councils[countyCode]['district_' + num];
+        }
+    } else if (c.election.indexOf('首長') !== -1 || c.election.indexOf('市長') !== -1 || c.election.indexOf('縣長') !== -1) {
+        if (electionResults.mayors) result = electionResults.mayors[countyCode];
+    }
+    if (!result || !result.candidates) return false;
+    var sorted = result.candidates.slice().sort(function (a, b) { return b.votes - a.votes; });
+    var seats = result.seats || 1;
+    for (var i = 0; i < seats && i < sorted.length; i++) {
+        if (sorted[i].name === c.name) return true;
+    }
+    return false;
+}
+
 function candidateSortKey(c) {
     var key = c.election + '-' + (c.countyCode || '') + '-' + (c.townCode || '') + '-';
     if (c.district) {
@@ -530,18 +552,21 @@ function openGallery() {
     var grid = document.getElementById('galleryGrid');
     var searchInput = document.getElementById('gallerySearch');
     searchInput.value = '';
+    var filterBtn = document.getElementById('galleryElectedFilter');
+    if (filterBtn) filterBtn.classList.remove('active');
     var sorted = candidatesData.candidates.map(function (c, idx) {
-        return { c: c, idx: idx, key: candidateSortKey(c) };
+        return { c: c, idx: idx, key: candidateSortKey(c), elected: isCandidateElected(c) };
     });
     for (var i = sorted.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var tmp = sorted[i]; sorted[i] = sorted[j]; sorted[j] = tmp;
     }
+    var electedCount = sorted.filter(function (item) { return item.elected; }).length;
     var html = '';
     sorted.forEach(function (item) {
         var c = item.c;
         var searchText = [c.name, c.election, c.party, c.district, c.countyName].filter(Boolean).join(' ');
-        html += '<div class="gallery-item" data-search="' + searchText + '" onclick="onGallerySelect(' + item.idx + ')">';
+        html += '<div class="gallery-item" data-search="' + searchText + '" data-elected="' + (item.elected ? '1' : '0') + '" onclick="onGallerySelect(' + item.idx + ')">';
         if (c.photo) {
             html += '<img src="' + c.photo + '" alt="' + c.name + '" loading="lazy">';
         } else {
@@ -550,6 +575,9 @@ function openGallery() {
         if (c.number) {
             html += '<span class="candidate-number-badge">' + c.number + '</span>';
         }
+        if (item.elected) {
+            html += '<span style="position:absolute;top:6px;left:6px;background:#27ae60;color:#fff;font-size:0.65rem;font-weight:700;padding:2px 6px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.3)">當選</span>';
+        }
         html += '<div class="gallery-label"><strong>' + c.name + '</strong>';
         var area = c.countyName || '';
         if (c.townName) area += c.townName;
@@ -557,15 +585,37 @@ function openGallery() {
         html += '</div>';
     });
     grid.innerHTML = html;
+    var countEl = document.getElementById('galleryElectedCount');
+    if (countEl) countEl.textContent = electedCount;
     galleryModal.show();
+}
+
+function toggleElectedFilter() {
+    var btn = document.getElementById('galleryElectedFilter');
+    var active = btn.classList.toggle('active');
+    var items = document.querySelectorAll('#galleryGrid .gallery-item');
+    items.forEach(function (el) {
+        if (active && el.getAttribute('data-elected') !== '1') {
+            el.style.display = 'none';
+        } else {
+            el.style.display = '';
+        }
+    });
+    if (active) {
+        document.getElementById('gallerySearch').value = '';
+    }
 }
 
 function filterGallery(keyword) {
     var items = document.querySelectorAll('#galleryGrid .gallery-item');
     var kw = keyword.trim().toLowerCase();
+    var btn = document.getElementById('galleryElectedFilter');
+    var electedOnly = btn && btn.classList.contains('active');
     items.forEach(function (el) {
         var text = (el.getAttribute('data-search') || '').toLowerCase();
-        el.style.display = (!kw || text.indexOf(kw) !== -1) ? '' : 'none';
+        var matchSearch = !kw || text.indexOf(kw) !== -1;
+        var matchElected = !electedOnly || el.getAttribute('data-elected') === '1';
+        el.style.display = (matchSearch && matchElected) ? '' : 'none';
     });
 }
 
